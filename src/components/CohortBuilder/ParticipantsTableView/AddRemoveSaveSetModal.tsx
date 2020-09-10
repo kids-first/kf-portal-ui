@@ -4,7 +4,7 @@ import { FunctionComponent, useState } from 'react';
 import { Button, Col, Form, Modal, notification, Row, Select } from 'antd';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
-import { selectUserSaveSets } from 'store/selectors/saveSetsSelectors';
+import { selectIsEditingSets, selectUserSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { DispatchSaveSets, SaveSetState, SetSubActionTypes } from 'store/saveSetTypes';
 import { connect, ConnectedProps } from 'react-redux';
@@ -40,11 +40,11 @@ const mapState = (state: RootState): SaveSetState => ({
     error: null,
   },
   userSets: {
-    sets: selectUserSaveSets(state),
+    sets: selectUserSets(state),
     isLoading: false,
     error: null,
     isDeleting: false,
-    isEditing: false,
+    isEditing: selectIsEditingSets(state),
   },
 });
 
@@ -120,7 +120,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
         break;
       case SetSubActionTypes.REMOVE_IDS:
         onAddRemoveSetIds({
-          setId: '',
+          setId: setId,
           userId: user.egoId,
           subActionType: SetSubActionTypes.REMOVE_IDS,
           sqon: sqon,
@@ -154,7 +154,6 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
   };
 
   const onCancel = () => {
-    // reInitializeState();
     setIsVisible(false);
     hideModalCb();
   };
@@ -175,8 +174,8 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
             htmlType="submit"
             key="save"
             type="primary"
-            disabled={false}
-            loading={false}
+            // disabled={userSets.isEditing}
+            loading={userSets.isEditing}
           >
             {finishButtonText(subActionType)}
           </Button>

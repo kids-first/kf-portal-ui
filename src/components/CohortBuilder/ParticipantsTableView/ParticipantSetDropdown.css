@@ -1,4 +1,4 @@
-.ant-dropdown > ul > li {
+.ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled){
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;

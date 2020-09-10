@@ -296,7 +296,7 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <div className={'action-btns-layout'}>
+            <div className={'action-btns-layout'} id={'dropdown-container'}>
               {isPartOfGroup('kf-investigator', loggedInUser) && (
                 <ParticipantSetDropdown
                   sqon={sqon}
@@ -383,7 +383,6 @@ ParticipantsTable.propTypes = {
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
   loggedInUser: PropTypes.object,
-  userSaveSets: PropTypes.func.isRequired,
   saveSets: PropTypes.array.isRequired,
 };
 

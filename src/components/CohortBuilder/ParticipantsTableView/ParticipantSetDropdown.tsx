@@ -9,7 +9,7 @@ import {
   UsergroupDeleteOutlined,
 } from '@ant-design/icons';
 import { Sqon } from 'store/sqon';
-import { UserSaveSets } from 'store/saveSetTypes';
+import { UserSet } from 'store/saveSetTypes';
 import './ParticipantSetDropdown.css';
 
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
   onAddToSet: Function;
   onDeleteToSet: Function;
   sqon: Sqon;
-  userSets: UserSaveSets[];
+  userSets: UserSet[];
 };
 
 const ParticipantSetDropdown = (props: Props) => {
@@ -62,7 +62,12 @@ const ParticipantSetDropdown = (props: Props) => {
   );
 
   return (
-    <Dropdown overlay={menu()} placement="bottomLeft" trigger={['click']}>
+    <Dropdown
+      overlay={menu()}
+      placement="bottomLeft"
+      trigger={['click']}
+      getPopupContainer={() => document.getElementById('dropdown-container') as HTMLElement}
+    >
       <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
         Save participants set
         <DownOutlined />

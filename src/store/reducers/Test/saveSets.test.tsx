@@ -108,7 +108,7 @@ describe('Save Sets Reducer', () => {
 
   it('should handle editing save sets tag', () => {
     const set = {
-      setId: '1234',
+      key: '1234',
       name: 'someSet',
       currentUser: 'me',
     } as SetInfo;

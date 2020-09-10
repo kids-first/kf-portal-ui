@@ -2,7 +2,8 @@ import { RootState } from '../rootState';
 
 export const selectIsLoading = (state: RootState) => state.saveSets.create.isLoading;
 export const selectError = (state: RootState) => state.saveSets.create.error;
-export const selectIsLoadingSaveSets = (state: RootState) => state.saveSets.userSets.isLoading;
-export const selectUserSaveSets = (state: RootState) => state.saveSets.userSets.sets;
-export const selectErrorUserSaveSets = (state: RootState) => state.saveSets.userSets.error;
-export const selectIsDeletingSaveSets = (state: RootState) => state.saveSets.userSets.isDeleting;
+export const selectIsLoadingSets = (state: RootState) => state.saveSets.userSets.isLoading;
+export const selectUserSets = (state: RootState) => state.saveSets.userSets.sets;
+export const selectErrorUserSets = (state: RootState) => state.saveSets.userSets.error;
+export const selectIsDeletingSets = (state: RootState) => state.saveSets.userSets.isDeleting;
+export const selectIsEditingSets = (state: RootState) => state.saveSets.userSets.isEditing;

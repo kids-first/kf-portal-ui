@@ -18,7 +18,7 @@ import {
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
-  UserSaveSets,
+  UserSet,
 } from '../saveSetTypes';
 import {
   createSet as saveSet,
@@ -30,10 +30,14 @@ import {
 import { RootState } from '../rootState';
 import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 import { AddRemoveSetParams } from 'components/CohortBuilder/ParticipantsTableView/AddRemoveSaveSetModal';
+import { selectUserSets } from '../selectors/saveSetsSelectors';
 
 export const createSet = (
   payload: SaveSetParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
   const { tag, userId, sqon, onSuccess } = payload;
 
   dispatch(isLoadingCreateSet(true));
@@ -45,10 +49,15 @@ export const createSet = (
       sqon,
       tag,
     });
+
     if (response.errors && response.errors.length > 0) {
-      dispatch(failureCreate(new Error('Cannot create Set')));
+      dispatch(failureCreate(new Error(response.errors[0].message)));
       return;
     }
+
+    const createdSet: UserSet = response.data.saveSet;
+
+    dispatch(displayUserSets([...selectUserSets(getState()), createdSet]));
 
     if (onSuccess) {
       onSuccess();
@@ -97,15 +106,15 @@ export const editSetTag = (
       const data: SetUpdateInputData = {
         newTag: setInfo.name,
       };
-      const nOfSaveSetEdited = await updateSet(
+      const { updatedResults } = await updateSet(
         SetSourceType.SAVE_SET,
         data,
         SetSubActionTypes.RENAME_TAG,
         setInfo.currentUser,
-        setInfo.setId,
+        setInfo.key,
       );
 
-      if (nOfSaveSetEdited && nOfSaveSetEdited > 0) {
+      if (updatedResults && updatedResults > 0) {
         dispatch(isEditingTag(setInfo));
         onSuccess();
         return;
@@ -131,7 +140,7 @@ export const getUserSets = (
   dispatch(isLoadingSets(true));
   try {
     const userSets = await getSetAndParticipantsCountByUser(userId);
-    const payload: UserSaveSets[] = userSets.map((s: { node: UserSaveSets }) => ({
+    const payload: UserSet[] = userSets.map((s: { node: UserSet }) => ({
       setId: s.node.setId,
       size: s.node.size,
       tag: s.node.tag,
@@ -145,7 +154,10 @@ export const getUserSets = (
 
 export const addRemoveSetIds = (
   payload: AddRemoveSetParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
   const { onSuccess, onFail, sqon, path, type, subActionType, userId, setId } = payload;
 
   dispatch(isAddingOrRemovingToSet(true));
@@ -157,7 +169,7 @@ export const addRemoveSetIds = (
   };
 
   try {
-    const nOfSaveSetEdited = await updateSet(
+    const { setSize, updatedResults } = await updateSet(
       SetSourceType.QUERY,
       data,
       subActionType,
@@ -165,18 +177,28 @@ export const addRemoveSetIds = (
       setId,
     );
 
-    if (nOfSaveSetEdited && nOfSaveSetEdited > 0) {
-      // dispatch(isEditingTag(setInfo));
+    if (updatedResults && updatedResults > 0) {
+      const sets: UserSet[] = selectUserSets(getState());
+      const setsWithUpdatedCount = sets.map((s) => {
+        if (s.setId === setId) {
+          return { setId: s.setId, size: setSize, tag: s.tag };
+        } else {
+          return s;
+        }
+      });
+
+      dispatch(displayUserSets(setsWithUpdatedCount));
+
       onSuccess();
-      return;
     } else {
       onFail();
-      return;
     }
   } catch (e) {
-    console.error(e.message);
+    console.error(e);
+    onFail();
+  } finally {
+    dispatch(isAddingOrRemovingToSet(false));
   }
-  dispatch(isAddingOrRemovingToSet(false));
 };
 
 export const deleteUserSets = (
@@ -231,7 +253,7 @@ export const isAddingOrRemovingToSet = (isEditing: boolean): SetsActionTypes => 
   isEditing,
 });
 
-export const displayUserSets = (payload: UserSaveSets[]): SetsActionTypes => ({
+export const displayUserSets = (payload: UserSet[]): SetsActionTypes => ({
   type: USER_SAVE_SETS,
   payload,
 });

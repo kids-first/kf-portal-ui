@@ -114,7 +114,7 @@ export default provideState({
         isLoadingUser: false,
       });
     },
-    setUser: (effects, { api, egoGroups, isJoining = false, ...user }) =>
+    setUser: (effects, { api, egoGroups = [], isJoining = false, ...user }) =>
       getAllFieldNamesPromise(api)
         .then(({ data }) =>
           get(data, '__type.fields', [])
@@ -122,11 +122,12 @@ export default provideState({
             .map((field) => field.name),
         )
         .then(() => (state) => {
-          trackUserSession({ ...user, egoGroups });
+          const enhancedLoggedInUser = { ...user, egoGroups };
+          trackUserSession(enhancedLoggedInUser);
           return {
             ...state,
             isLoadingUser: false,
-            loggedInUser: user,
+            loggedInUser: enhancedLoggedInUser,
             isAdmin: state.loggedInUserToken
               ? isAdminToken({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : false,

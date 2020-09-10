@@ -11,7 +11,7 @@ import {
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
-  UserSaveSets,
+  UserSet,
 } from '../saveSetTypes';
 
 const initialState: SaveSetState = {
@@ -62,7 +62,7 @@ export default (state = initialState, action: SetsActionTypes): SaveSetState => 
         ...state,
         userSets: {
           ...state.userSets,
-          sets: editSaveSetTag(state.userSets.sets, action.set.setId, action.set.name),
+          sets: editSaveSetTag(state.userSets.sets, action.set.key, action.set.name),
         },
       };
     }
@@ -80,8 +80,8 @@ export default (state = initialState, action: SetsActionTypes): SaveSetState => 
   }
 };
 
-const removeSets = (currentSets: UserSaveSets[], setIdsToRemove: string[]) =>
+const removeSets = (currentSets: UserSet[], setIdsToRemove: string[]) =>
   currentSets.filter((set) => !setIdsToRemove.includes(set.setId));
 
-const editSaveSetTag = (currentSets: UserSaveSets[], setId: string, tag: string) =>
+const editSaveSetTag = (currentSets: UserSet[], setId: string, tag: string) =>
   currentSets.map((s) => (s.setId === setId ? { ...s, tag: tag } : s));

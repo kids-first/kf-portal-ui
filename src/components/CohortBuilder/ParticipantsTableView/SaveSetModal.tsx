@@ -13,20 +13,20 @@ import {
   SaveSetActionsTypes,
   SaveSetParams,
   SaveSetState,
-  UserSaveSets,
+  UserSet,
 } from 'store/saveSetTypes';
 import {
   createSetIfUnique,
   editSetTag,
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
-import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
+import { selectError, selectIsLoading, selectUserSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
 import { SetInfo } from '../../UserDashboard/ParticipantSets';
 
 export const MAX_LENGTH_NAME = 50;
-const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
+const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_ ]*$/;
 const FORM_NAME = 'save-set';
 
 type OwnProps = {
@@ -49,7 +49,7 @@ const mapState = (state: RootState): SaveSetState => ({
     error: selectError(state),
   },
   userSets: {
-    sets: [],
+    sets: selectUserSets(state),
     isLoading: false,
     error: null,
     isDeleting: false,
@@ -69,10 +69,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & OwnProps;
 
-export const extractTagNumbers = (userSets: [{ node: UserSaveSets }]) => {
+export const extractTagNumbers = (userSets: [{ node: UserSet }]) => {
   const regExp = /saved_set_([0-9]+)/i;
 
-  return userSets.reduce((acc: number[], s: { node: UserSaveSets }) => {
+  return userSets.reduce((acc: number[], s: { node: UserSet }) => {
     const match = s.node.tag.match(regExp);
     if (match && match.length > 0) {
       return [...acc, Number(match[1])];
@@ -81,7 +81,8 @@ export const extractTagNumbers = (userSets: [{ node: UserSaveSets }]) => {
   }, []);
 };
 
-export const validateNameSetInput = (value: string): NameSetValidator => {
+export const validateNameSetInput = (rawValue: string): NameSetValidator => {
+  const value = (rawValue || '').trim();
   if (!value) {
     return { msg: 'Please input the name of your set', err: true };
   } else if (value.length > MAX_LENGTH_NAME) {
@@ -137,7 +138,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
 
         await onEditSet({
           setInfo: {
-            setId: setToRename.setId,
+            key: setToRename.key,
             name: nameSet,
             currentUser: user.egoId,
           } as SetInfo,
@@ -188,7 +189,9 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     if (error && !isSaveSetNameConflictError(error)) {
       notification.error({
         message: 'Error',
-        description: 'We were unable to save your participant set. Please try again.',
+        description: `We were unable to save your participant set: [${
+          error.message || 'Unknown Error'
+        }]`,
         duration: 10,
       });
     }

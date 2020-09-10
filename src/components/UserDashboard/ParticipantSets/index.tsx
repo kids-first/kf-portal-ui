@@ -11,10 +11,10 @@ import {
   SaveSetState,
 } from 'store/saveSetTypes';
 import {
-  selectErrorUserSaveSets,
-  selectIsDeletingSaveSets,
-  selectIsLoadingSaveSets,
-  selectUserSaveSets,
+  selectErrorUserSets,
+  selectIsDeletingSets,
+  selectIsLoadingSets,
+  selectUserSets,
 } from 'store/selectors/saveSetsSelectors';
 import { deleteUserSets, getUserSets } from 'store/actionCreators/saveSets';
 
@@ -30,7 +30,7 @@ type OwnProps = {
 };
 
 export type SetInfo = {
-  setId: string;
+  key: string;
   name: string;
   count?: number;
   currentUser: string;
@@ -42,10 +42,10 @@ const mapState = (state: RootState): SaveSetState => ({
     error: null,
   },
   userSets: {
-    isLoading: selectIsLoadingSaveSets(state),
-    sets: selectUserSaveSets(state),
-    error: selectErrorUserSaveSets(state),
-    isDeleting: selectIsDeletingSaveSets(state),
+    isLoading: selectIsLoadingSets(state),
+    sets: selectUserSets(state),
+    error: selectErrorUserSets(state),
+    isDeleting: selectIsDeletingSets(state),
     isEditing: false, //TODO
   },
 });
@@ -75,7 +75,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
-    setId: '',
+    key: '',
     name: '',
     count: 0,
     currentUser: '',
@@ -115,16 +115,18 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       align: align,
       // eslint-disable-next-line react/display-name
       render: (count: number) => (
-        <Button className={'count-button'} type="text">
+        // <Button className={'count-button'} type="text"> todo reactivate button and delete div on task 2614 completion
+        <div className={'count-button'}>
           <img src={participantMagenta} alt="Participants" />
           <div className={'save-sets-participants-count'}>{count}</div>
-        </Button>
+        </div>
+        // </Button>
       ),
     },
     {
       title: '',
       key: 'delete',
-      dataIndex: 'setId',
+      dataIndex: 'key',
       width: 40,
       // eslint-disable-next-line react/display-name
       render: (setId: string) => (
@@ -146,12 +148,12 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     userSaveSets(user.egoId);
   }, [userSaveSets, user]);
 
-  const data = userSets.sets.map((s) => ({
-    setId: s.setId,
+  const data: SetInfo[] = userSets.sets.map((s) => ({
+    key: s.setId,
     name: s.tag,
     count: s.size,
     currentUser: user.egoId,
-  })) as SetInfo[];
+  }));
 
   return (
     <Fragment>
@@ -161,7 +163,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           user={user}
           hideModalCb={() => {
             setShowModal(false);
-            setEditSet({ setId: '', name: '', count: 0, currentUser: '' });
+            setEditSet({ key: '', name: '', count: 0, currentUser: '' });
           }}
           onFail={onDeleteFail}
           setToRename={editSet}

@@ -219,7 +219,7 @@ describe('createSaveSet', () => {
   it('should generate the correct flow editing save sets tag ', async () => {
     (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (editSaveSetTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(12));
-    const set = { setId: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SetInfo;
+    const set = { key: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SetInfo;
     const expectedActions = [{ type: EDIT_SAVE_SET_TAG, set: set }];
 
     const store = mockStore({

@@ -27,6 +27,7 @@ import {
 } from './UserDashboard.module.css';
 import { Col, Row } from 'antd';
 import ParticipantSets from './ParticipantSets';
+import { isPartOfGroup } from '../../common/profile';
 
 export default compose(
   injectState,
@@ -80,11 +81,13 @@ export default compose(
             </div>
           </DashboardCard>
         </Col>
-        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <DashboardCard title="My Participant Sets">
-            <ParticipantSets user={loggedInUser} />
-          </DashboardCard>
-        </Col>
+        {isPartOfGroup('kf-investigator', loggedInUser) && (
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <DashboardCard title="My Participant Sets">
+              <ParticipantSets user={loggedInUser} />
+            </DashboardCard>
+          </Col>
+        )}
       </Row>
     </div>
   </div>

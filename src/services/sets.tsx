@@ -123,6 +123,8 @@ export const createSet = async (userId: string, params: CreateSetParams) => {
             $path: String!, $sort: [Sort], $tag: String) {
               saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path, sort: $sort, tag: $tag) {
                 setId
+                size
+               tag
               }
             }`,
     variables: {
@@ -160,7 +162,10 @@ export const updateSet = async (
   const response = await graphql(initializeApi())({
     query: `mutation($source: SetUpdateSource!, $data: SetUpdateInputData!, $subAction: SetSubActionTypes!, 
             $userId: String!, $target: SetUpdateTarget! ){
-              updateSet(source:$source, data: $data, subAction: $subAction, userId:$userId, target: $target)
+              updateSet(source:$source, data: $data, subAction: $subAction, userId:$userId, target: $target){
+                setSize
+                updatedResults
+              }
             }`,
     variables: {
       source: {

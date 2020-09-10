@@ -35,7 +35,7 @@ interface IsLoadingSaveSets {
 
 interface DisplayUserSaveSets {
   type: typeof USER_SAVE_SETS;
-  payload: UserSaveSets[];
+  payload: UserSet[];
 }
 
 interface FailureLoadSaveSets {
@@ -77,7 +77,7 @@ export type SetsActionTypes =
 
 export type DispatchSaveSets = ThunkDispatch<RootState, null, SetsActionTypes>;
 
-export type UserSaveSets = {
+export type UserSet = {
   setId: string;
   size: number;
   tag: string;
@@ -91,7 +91,7 @@ export interface SaveSetState {
   userSets: {
     isLoading: boolean;
     error?: Error | null;
-    sets: UserSaveSets[];
+    sets: UserSet[];
     isDeleting: boolean;
     isEditing: boolean;
   };
@@ -101,6 +101,7 @@ export type SaveSetParams = {
   tag: string;
   userId: string;
   sqon: Sqon;
+  // sets: UserSaveSets[];
   onSuccess: Function;
   onNameConflict: Function;
 };

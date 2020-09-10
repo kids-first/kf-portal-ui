@@ -11,12 +11,8 @@ import TableErrorView from './TableErrorView';
 
 import './index.css';
 import { connect } from 'react-redux';
-import { getUserSets } from '../../../store/actionCreators/saveSets';
-import {
-  selectUserSaveSets,
-  selectError,
-  selectIsLoading,
-} from 'store/selectors/saveSetsSelectors';
+import { getUserSets } from 'store/actionCreators/saveSets';
+import { selectUserSets, selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 
 const ParticipantsTableView = ({
   sqon,
@@ -131,7 +127,7 @@ const mapStateToProps = (state) => ({
     error: selectError(state),
   },
   userSets: {
-    sets: selectUserSaveSets(state),
+    sets: selectUserSets(state),
     isLoading: false,
     error: null,
     isDeleting: false,

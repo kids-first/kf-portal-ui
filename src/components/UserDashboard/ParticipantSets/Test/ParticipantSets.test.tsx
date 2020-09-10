@@ -6,7 +6,7 @@ import { LoggedInUser } from 'store/userTypes';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import { SaveSetState, UserSaveSets } from 'store/saveSetTypes';
+import { SaveSetState, UserSet } from 'store/saveSetTypes';
 import { jestPatchMatchMedia } from 'utils';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
 
@@ -17,7 +17,7 @@ configure({ adapter: new Adapter() });
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
 
-const userSaveSets = [] as UserSaveSets[];
+const userSaveSets = [] as UserSet[];
 
 const initialState: SaveSetState = {
   create: {
