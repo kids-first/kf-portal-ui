@@ -5,7 +5,7 @@ import './SummaryCard.css';
 type CardProps = {
   title?: string;
   loading?: boolean;
-  children: ReactElement[] | any | Function;
+  children: ReactElement[] | React.ReactNode | Function;
 };
 
 const Card = ({ title, loading, children, ...props }: CardProps) => {
