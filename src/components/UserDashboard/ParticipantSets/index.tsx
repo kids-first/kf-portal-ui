@@ -11,12 +11,12 @@ import {
   SaveSetState,
 } from 'store/saveSetTypes';
 import {
-  selectErrorUserSaveSets,
-  selectIsDeletingSaveSets,
-  selectIsLoadingSaveSets,
-  selectUserSaveSets,
+  selectErrorUserSets,
+  selectIsDeletingSets,
+  selectIsLoadingSets,
+  selectUserSets,
 } from 'store/selectors/saveSetsSelectors';
-import { deleteUserSaveSets, getUserSaveSets } from 'store/actionCreators/saveSets';
+import { deleteUserSets, getUserSets } from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
@@ -29,7 +29,7 @@ type OwnProps = {
   user: LoggedInUser;
 };
 
-export type SaveSetInfo = {
+export type SetInfo = {
   key: string;
   name: string;
   count?: number;
@@ -42,17 +42,17 @@ const mapState = (state: RootState): SaveSetState => ({
     error: null,
   },
   userSets: {
-    isLoading: selectIsLoadingSaveSets(state),
-    sets: selectUserSaveSets(state),
-    error: selectErrorUserSaveSets(state),
-    isDeleting: selectIsDeletingSaveSets(state),
+    isLoading: selectIsLoadingSets(state),
+    sets: selectUserSets(state),
+    error: selectErrorUserSets(state),
+    isDeleting: selectIsDeletingSets(state),
+    isEditing: false, //TODO
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  userSaveSets: (userId: string) => dispatch(getUserSaveSets(userId)),
-  deleteSaveSet: (deleteSetParams: DeleteSetParams) =>
-    dispatch(deleteUserSaveSets(deleteSetParams)),
+  userSaveSets: (userId: string) => dispatch(getUserSets(userId)),
+  deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -79,13 +79,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     name: '',
     count: 0,
     currentUser: '',
-  } as SaveSetInfo);
+  } as SetInfo);
 
-  const confirm = (key: string, userId: string) => {
-    deleteSaveSet({ userId: userId, setIds: [key], onFail: onDeleteFail } as DeleteSetParams);
+  const confirm = (setId: string, userId: string) => {
+    deleteSaveSet({ userId: userId, setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
   };
 
-  const onEditClick = (record: SaveSetInfo) => {
+  const onEditClick = (record: SetInfo) => {
     setEditSet(record);
     setShowModal(true);
   };
@@ -96,7 +96,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       dataIndex: 'name',
       key: 'name',
       // eslint-disable-next-line react/display-name
-      render: (name: string, record: SaveSetInfo) => (
+      render: (name: string, record: SetInfo) => (
         <div className={'save-set-column-name'}>
           <div className={'save-set-table-name'}>
             {name}{' '}
@@ -115,10 +115,12 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       align: align,
       // eslint-disable-next-line react/display-name
       render: (count: number) => (
-        <Button className={'count-button'} type="text">
+        // <Button className={'count-button'} type="text"> todo reactivate button and delete div on task 2614 completion
+        <div className={'count-button'}>
           <img src={participantMagenta} alt="Participants" />
           <div className={'save-sets-participants-count'}>{count}</div>
-        </Button>
+        </div>
+        // </Button>
       ),
     },
     {
@@ -127,10 +129,10 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       dataIndex: 'key',
       width: 40,
       // eslint-disable-next-line react/display-name
-      render: (key: string) => (
+      render: (setId: string) => (
         <Popconfirm
           title="Permanently delete this set?"
-          onConfirm={() => confirm(key, user.egoId)}
+          onConfirm={() => confirm(setId, user.egoId)}
           okText="Delete"
           cancelText="Cancel"
         >
@@ -146,12 +148,12 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     userSaveSets(user.egoId);
   }, [userSaveSets, user]);
 
-  const data = userSets.sets.map((s) => ({
+  const data: SetInfo[] = userSets.sets.map((s) => ({
     key: s.setId,
     name: s.tag,
     count: s.size,
     currentUser: user.egoId,
-  })) as SaveSetInfo[];
+  }));
 
   return (
     <Fragment>

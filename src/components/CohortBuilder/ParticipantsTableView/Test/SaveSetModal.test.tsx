@@ -10,14 +10,14 @@ import { jestPatchMatchMedia } from 'utils';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { SaveSetState, UserSaveSets } from 'store/saveSetTypes';
+import { SaveSetState, UserSet } from 'store/saveSetTypes';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
 
 configure({ adapter: new Adapter() });
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
-const userSaveSets = [] as UserSaveSets[];
+const userSaveSets = [] as UserSet[];
 
 const initialSaveSetModalState: SaveSetState = {
   create: {
@@ -28,6 +28,8 @@ const initialSaveSetModalState: SaveSetState = {
     sets: userSaveSets,
     error: null,
     isLoading: true,
+    isEditing: false,
+    isDeleting: false,
   },
 };
 
@@ -111,27 +113,24 @@ describe('validateNameSetInput', () => {
   it('should not allow special character %', () => {
     expect(validateNameSetInput('mySave%Set')).toHaveProperty('err', true);
   });
-
   it('should not allow empty input', () => {
     expect(validateNameSetInput('')).toHaveProperty('err', true);
   });
-
-  it('should not contain blank or empty space(s)', () => {
-    expect(validateNameSetInput('mySave Set')).toHaveProperty('err', true);
+  it('should not allow blank input', () => {
+    expect(validateNameSetInput(' ')).toHaveProperty('err', true);
   });
-
+  it('should allow blank or empty space(s)', () => {
+    expect(validateNameSetInput('mySave Set')).toHaveProperty('err', false);
+  });
   it(`should not allow more than ${MAX_LENGTH_NAME} characters`, () => {
     expect(validateNameSetInput('a'.repeat(MAX_LENGTH_NAME + 1))).toHaveProperty('err', true);
   });
-
   it(`should allow "-"`, () => {
     expect(validateNameSetInput('my-set')).toHaveProperty('err', false);
   });
-
   it(`should allow "_"`, () => {
     expect(validateNameSetInput('my_set')).toHaveProperty('err', false);
   });
-
   it('should return 1st default saved set tag name if none already exists', async () => {
     const input = [
       {
@@ -163,7 +162,6 @@ describe('validateNameSetInput', () => {
         },
       },
     ];
-
-    expect(extractTagNumbers(input as [{ node: UserSaveSets }])).toEqual([1, 3]);
+    expect(extractTagNumbers(input as [{ node: UserSet }])).toEqual([1, 3]);
   });
 });

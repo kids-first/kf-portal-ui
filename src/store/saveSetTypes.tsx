@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { Sqon } from './sqon';
 import { RootState } from './rootState';
-import { SaveSetInfo } from '../components/UserDashboard/ParticipantSets';
+import { SetInfo } from '../components/UserDashboard/ParticipantSets';
 
 export const TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET';
 export const FAILURE_CREATE = 'FAILURE_CREATE_SAVE_SETS';
@@ -10,6 +10,7 @@ export const TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS';
 export const USER_SAVE_SETS = 'USER_SAVE_SETS';
 export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
 export const TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS';
+export const TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET';
 export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
 export const EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG';
 
@@ -34,7 +35,7 @@ interface IsLoadingSaveSets {
 
 interface DisplayUserSaveSets {
   type: typeof USER_SAVE_SETS;
-  payload: UserSaveSets[];
+  payload: UserSet[];
 }
 
 interface FailureLoadSaveSets {
@@ -47,30 +48,36 @@ interface IsDeletingSaveSets {
   isDeleting: boolean;
 }
 
-interface RemoveUserSaveSets {
+interface isAddingOrRemovingToSet {
+  type: typeof TOGGLE_IS_ADD_DELETE_TO_SET;
+  isEditing: boolean;
+}
+
+interface RemoveUserSets {
   type: typeof REMOVE_USER_SAVE_SETS;
   sets: string[];
 }
 
-interface EditSaveSetTag {
+interface EditSetTag {
   type: typeof EDIT_SAVE_SET_TAG;
-  set: SaveSetInfo;
+  set: SetInfo;
 }
 
-export type SaveSetsActionTypes =
+export type SetsActionTypes =
   | TogglePendingCreate
   | FailureCreate
   | ReInitializedState
   | IsLoadingSaveSets
   | DisplayUserSaveSets
   | IsDeletingSaveSets
-  | RemoveUserSaveSets
-  | EditSaveSetTag
+  | RemoveUserSets
+  | EditSetTag
+  | isAddingOrRemovingToSet
   | FailureLoadSaveSets;
 
-export type DispatchSaveSets = ThunkDispatch<RootState, null, SaveSetsActionTypes>;
+export type DispatchSaveSets = ThunkDispatch<RootState, null, SetsActionTypes>;
 
-export type UserSaveSets = {
+export type UserSet = {
   setId: string;
   size: number;
   tag: string;
@@ -84,8 +91,9 @@ export interface SaveSetState {
   userSets: {
     isLoading: boolean;
     error?: Error | null;
-    sets: UserSaveSets[];
+    sets: UserSet[];
     isDeleting: boolean;
+    isEditing: boolean;
   };
 }
 
@@ -93,12 +101,13 @@ export type SaveSetParams = {
   tag: string;
   userId: string;
   sqon: Sqon;
+  // sets: UserSaveSets[];
   onSuccess: Function;
   onNameConflict: Function;
 };
 
-export type EditSetParams = {
-  saveSetInfo: SaveSetInfo;
+export type EditSetTagParams = {
+  setInfo: SetInfo;
   onSuccess: Function;
   onFail: Function;
   onNameConflict: Function;
@@ -110,17 +119,38 @@ export type DeleteSetParams = {
   onFail: Function;
 };
 
-export class SaveSetNameConflictError extends Error {
+export class SetNameConflictError extends Error {
   constructor(message?: string) {
     super(message);
     this.name = 'SaveSetNameConflictError';
   }
 }
 
-export const isSaveSetNameConflictError = (e?: Error | null) =>
-  e instanceof SaveSetNameConflictError;
+export const isSaveSetNameConflictError = (e?: Error | null) => e instanceof SetNameConflictError;
 
 export enum SaveSetActionsTypes {
   CREATE = 'create',
   EDIT = 'edit',
 }
+
+export enum SetSourceType {
+  QUERY = 'QUERY',
+  SAVE_SET = 'SAVE_SET',
+}
+
+export enum SetSubActionTypes {
+  RENAME_TAG = 'RENAME_TAG',
+  ADD_IDS = 'ADD_IDS',
+  REMOVE_IDS = 'REMOVE_IDS',
+}
+
+export type SetUpdateSource = {
+  sourceType: SetUpdateSource;
+};
+
+export type SetUpdateInputData = {
+  type?: string;
+  sqon?: Sqon;
+  path?: string;
+  newTag?: string;
+};

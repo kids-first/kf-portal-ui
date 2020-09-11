@@ -1,0 +1,12 @@
+.ant-select-item-option-content {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px !important;
+  color: #515885;
+}
+
+.ant-select-item-option-content .secondary-text-color {
+  color: #A9ADC0;
+}
