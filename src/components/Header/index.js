@@ -82,7 +82,7 @@ const Header = (props) => {
     dismissError,
     history,
     match: { path },
-    state: { loggedInUser },
+    state: { loggedInUser, egoGroups },
   } = props;
 
   const canSeeProtectedRoutes = path !== '/join';
@@ -110,7 +110,7 @@ const Header = (props) => {
                   <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
-              {isPartOfGroup('kf-investigator', loggedInUser) && (
+              {isPartOfGroup('kf-investigator', egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
                     <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>

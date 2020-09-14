@@ -18,4 +18,4 @@ export const extractInfoFromRoles = (roles) => {
   };
 };
 
-export const isPartOfGroup = (group, user) => (user?.egoGroups || []).includes(group);
+export const isPartOfGroup = (group, egoGroups) => (egoGroups || []).includes(group);

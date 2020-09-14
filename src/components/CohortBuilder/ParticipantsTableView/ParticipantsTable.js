@@ -22,7 +22,7 @@ import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
 import ParticipantSetDropdown from './ParticipantSetDropdown';
 import { SaveSetActionsTypes } from 'store/saveSetTypes';
-import { SetSubActionTypes } from '../../../store/saveSetTypes';
+import { SetSubActionTypes } from 'store/saveSetTypes';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -241,6 +241,7 @@ class ParticipantsTable extends Component {
       sqon,
       loggedInUser,
       saveSets,
+      egoGroups,
     } = this.props;
     // I know. Sometimes, you gotta do what you gotta do.
     this.dirtyHack.allRowsSelected = allRowsSelected;
@@ -297,7 +298,7 @@ class ParticipantsTable extends Component {
               </Fragment>
             </ToolbarGroup>
             <div className={'action-btns-layout'} id={'dropdown-container'}>
-              {isPartOfGroup('kf-investigator', loggedInUser) && (
+              {isPartOfGroup('kf-investigator', egoGroups) && (
                 <ParticipantSetDropdown
                   sqon={sqon}
                   onSave={() => {

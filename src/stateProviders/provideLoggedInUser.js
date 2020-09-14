@@ -114,7 +114,7 @@ export default provideState({
         isLoadingUser: false,
       });
     },
-    setUser: (effects, { api, egoGroups = [], isJoining = false, ...user }) =>
+    setUser: (effects, { api, isJoining = false, ...user }) =>
       getAllFieldNamesPromise(api)
         .then(({ data }) =>
           get(data, '__type.fields', [])
@@ -122,19 +122,21 @@ export default provideState({
             .map((field) => field.name),
         )
         .then(() => (state) => {
-          const enhancedLoggedInUser = { ...user, egoGroups };
-          trackUserSession(enhancedLoggedInUser);
+          const userGroups = state.loggedInUserToken
+            ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
+            : [];
+
+          trackUserSession(user);
           return {
             ...state,
             isLoadingUser: false,
-            loggedInUser: enhancedLoggedInUser,
+            loggedInUser: user,
             isAdmin: state.loggedInUserToken
               ? isAdminToken({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : false,
-            userGroups: state.loggedInUserToken
-              ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
-              : [],
+            userGroups,
             isJoining,
+            egoGroups: userGroups,
           };
         })
         .catch((err) => console.error(err)),

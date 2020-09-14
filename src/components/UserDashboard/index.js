@@ -36,7 +36,7 @@ export default compose(
     ({ state: { loggedInUser } }) => !loggedInUser,
     renderComponent(() => <div />),
   ),
-)(({ state: { loggedInUser }, api }) => (
+)(({ state: { loggedInUser, egoGroups }, api }) => (
   <div className={userDashboardContainer}>
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
@@ -81,7 +81,7 @@ export default compose(
             </div>
           </DashboardCard>
         </Col>
-        {isPartOfGroup('kf-investigator', loggedInUser) && (
+        {isPartOfGroup('kf-investigator', egoGroups) && (
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
             <DashboardCard title="My Participant Sets">
               <ParticipantSets user={loggedInUser} />
