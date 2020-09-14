@@ -8,7 +8,6 @@ import CloseIcon from 'react-icons/lib/md/close';
 
 import { searchByIds } from 'services/arranger/searchByIds';
 import Row from 'uikit/Column';
-import { WhiteButton, TealActionButton } from 'uikit/Button';
 import { H3 } from 'uikit/Headings';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
@@ -18,14 +17,17 @@ import { setSqons } from 'store/actionCreators/virtualStudies';
 import SearchResults from './SearchResults';
 
 import './styles.scss';
+import { Button } from 'antd';
+import LoadingOnClick from '../../LoadingOnClick';
 
-const parseInput = inputText => uniq(inputText.split(/,|\s|\t(,|\s|\t)*/).filter(id => !!id));
+//  Fixme: this modal is kind of a duplicated refactored of UploadIdsModal.
+const parseInput = (inputText) => uniq(inputText.split(/,|\s|\t(,|\s|\t)*/).filter((id) => !!id));
 
 function handleViewResults() {
   if (this.state.loading || !this.opened) return;
   this.setState({ loading: true });
   return searchByIds(this.state.inputIds)
-    .then(results => {
+    .then((results) => {
       this.setState({ loading: false, results });
     })
     .catch(() => {
@@ -59,13 +61,13 @@ class SearchByIdModal extends React.Component {
 
   handleFilesUpload(evt) {
     parseInputFiles(evt.currentTarget.files)
-      .then(contents => {
+      .then((contents) => {
         const inputIds = contents
           .reduce((ids, fileContent) => ids.concat(parseInput(fileContent)), this.state.inputIds)
-          .filter(id => !!id);
+          .filter((id) => !!id);
         this.setInputIds(inputIds);
       })
-      .catch(console.err);
+      .catch(console.error);
   }
 
   handleInputIdsChange(evt) {
@@ -80,7 +82,7 @@ class SearchByIdModal extends React.Component {
     const { virtualStudy, setSqons, closeModal } = this.props;
 
     this.setState({ loading: true });
-    const participantIds = uniq(flatMap(this.state.results.participants, r => r.participantIds));
+    const participantIds = uniq(flatMap(this.state.results.participants, (r) => r.participantIds));
 
     const participantsSqon = {
       op: 'in',
@@ -146,9 +148,9 @@ class SearchByIdModal extends React.Component {
             Type or copy-and-paste a list of comma delimited identifiers (participant, biospecimen,
             file, family)
           </p>
-          <WhiteButton key="cancel" onClick={this.handleClear} className="clear">
+          <Button key="clear" type={'secondary'} onClick={this.handleClear}>
             Clear
-          </WhiteButton>
+          </Button>
         </section>
         <section className="sbi-id-input">
           <textarea
@@ -168,16 +170,26 @@ class SearchByIdModal extends React.Component {
             onChange={this.handleFilesUpload}
             ref={this.fileInpuRef}
           />
-          <TealActionButton
-            className="btn-upload"
+          <LoadingOnClick
+            key="uploadLoader"
             onClick={() => {
               this.fileInpuRef.current.click();
             }}
-          >
-            Upload csv
-          </TealActionButton>
+            render={({ onClick, loadingOnClick }) => (
+              <Button
+                className="btn-upload"
+                loading={loadingOnClick}
+                disabled={loadingOnClick}
+                key="upload"
+                type="primary"
+                onClick={onClick}
+              >
+                Upload csv
+              </Button>
+            )}
+          />
         </section>
-        {!!results ? (
+        {results ? (
           <section className="sbi-results">
             <hr />
             <H3>Matching Participants</H3>
@@ -189,35 +201,44 @@ class SearchByIdModal extends React.Component {
   }
 
   renderFooter() {
-    const { loading, inputIds, results } = this.state;
+    const { inputIds, results } = this.state;
     return (
       <React.Fragment>
-        <WhiteButton key="cancel" onClick={this.handleClose}>
+        <Button key="cancel" onClick={this.handleClose}>
           Cancel
-        </WhiteButton>
-        <TealActionButton
-          key="apply"
-          disabled={loading || inputIds.length === 0 || results === null}
+        </Button>
+        <LoadingOnClick
+          key="applyLoader"
           onClick={this.handleApplyFilterClick}
-        >
-          View Results
-        </TealActionButton>
+          render={({ onClick, loadingOnClick }) => (
+            <Button
+              loading={loadingOnClick}
+              disabled={loadingOnClick || inputIds.length === 0 || results === null}
+              key="apply"
+              type="primary"
+              onClick={onClick}
+              className={'view-results-btn'}
+            >
+              View Results
+            </Button>
+          )}
+        />
       </React.Fragment>
     );
   }
 
   render() {
     return (
-      <React.Fragment>
+      <div>
         <Row className="header">{this.renderHeader()}</Row>
         <Row className="body">{this.renderBody()}</Row>
-        <Row className="footer">{this.renderFooter()}</Row>
-      </React.Fragment>
+        <Row className="footer fix-footer">{this.renderFooter()}</Row>
+      </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 
