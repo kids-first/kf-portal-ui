@@ -258,7 +258,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                 className="cb-tab-content"
               >
                 {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
-                <ParticipantsTableView sqon={sqon} />
+                <ParticipantsTableView sqon={sqon} egoGroups={state.egoGroups} />
               </TabPane>
             </Tabs>
           </div>
