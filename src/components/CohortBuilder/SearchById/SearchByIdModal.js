@@ -67,7 +67,7 @@ class SearchByIdModal extends React.Component {
           .filter((id) => !!id);
         this.setInputIds(inputIds);
       })
-      .catch(console.err);
+      .catch(console.error);
   }
 
   handleInputIdsChange(evt) {
