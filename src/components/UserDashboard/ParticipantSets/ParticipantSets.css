@@ -7,11 +7,11 @@
 }
 
 .ant-btn-text:hover {
-  color: #7d84a6;
+  color: #a9adc0;
 }
 
 .save-sets-participants-count {
-  padding-left: 6.67px;
+  padding-left: 7px;
   /*color: #b5469e;*/ /*todo: replace color task 2614 completion*/
   color: #7d84a6;
 }
