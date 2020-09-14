@@ -224,8 +224,12 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     } else if (hasError) {
       return hasErrorMessage;
     } else {
-      return 'Letters, numbers, hyphens (-), and underscores (_)';
+      return '';
     }
+  };
+
+  const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.select();
   };
 
   return (
@@ -292,7 +296,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
               autoFocus
               maxLength={maxNumOfCharsToDisplay}
               placeholder="Enter the name of your new set"
-              allowClear
+              allowClear={true}
+              onFocus={handleFocus}
             />
           </Form.Item>
         </Form>

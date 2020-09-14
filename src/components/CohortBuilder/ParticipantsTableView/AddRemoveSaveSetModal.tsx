@@ -127,7 +127,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
           onSuccess: () => {
             notification.success({
               message: 'Success',
-              description: `The participants were removed to the set.`,
+              description: `The participants were removed from the set.`,
               duration: 10,
             });
             setIsVisible(false);
@@ -136,7 +136,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
           onFail: () => {
             notification.error({
               message: 'Error',
-              description: `Removing participants to this set has failed`,
+              description: `Removing participants from this set has failed`,
               duration: 10,
             });
             setIsVisible(false);
