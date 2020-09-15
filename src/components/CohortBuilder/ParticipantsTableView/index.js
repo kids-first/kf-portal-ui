@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 
 import { withApi } from 'services/api';
-import { participantsQuery } from './queries';
+import { participantsQuery, SORTABLE_FIELDS_MAPPING } from './queries';
 
 import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
-import Card from 'uikit/Card';
-
-import { SORTABLE_FIELDS_MAPPING } from './queries';
+import './index.css';
 import { connect } from 'react-redux';
+import { getUserSets } from 'store/actionCreators/saveSets';
+import { selectUserSets, selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 
 const ParticipantsTableView = ({
   sqon,
@@ -28,36 +28,45 @@ const ParticipantsTableView = ({
   sort,
   setSort,
   loggedInUser,
-}) => (
-  <QueriesResolver
-    name="GQL_PARTICIPANTS_TABLE"
-    api={api}
-    queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
-  >
-    {({ isLoading, data, error }) => {
-      if (error) {
+  userSaveSets,
+  userSets,
+  egoGroups,
+}) => {
+  useEffect(() => {
+    if (loggedInUser) {
+      userSaveSets(loggedInUser.egoId);
+    }
+  }, [userSaveSets, loggedInUser]);
+
+  return (
+    <QueriesResolver
+      name="GQL_PARTICIPANTS_TABLE"
+      api={api}
+      queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
+    >
+      {({ isLoading, data, error }) => {
+        if (error) {
+          return (
+            <div className="ptv-error-message">
+              <TableErrorView error={error} />
+            </div>
+          );
+        }
+        const isRowSelected = (node) =>
+          allRowsSelected || selectedRows.some((row) => row === node.participantId);
+
+        const dataWithRowSelection = data[0]
+          ? data[0].nodes.map((node) => ({ ...node, selected: isRowSelected(node) }))
+          : [];
+
+        const selectionSQON = selectedRows.length
+          ? {
+              op: 'and',
+              content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
+            }
+          : sqon;
+
         return (
-          <Card>
-            <TableErrorView error={error} />
-          </Card>
-        );
-      }
-      const isRowSelected = (node) =>
-        allRowsSelected || selectedRows.some((row) => row === node.participantId);
-
-      const dataWithRowSelection = data[0]
-        ? data[0].nodes.map((node) => ({ ...node, selected: isRowSelected(node) }))
-        : [];
-
-      const selectionSQON = selectedRows.length
-        ? {
-            op: 'and',
-            content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
-          }
-        : sqon;
-
-      return (
-        <Card showHeader={false}>
           <ParticipantsTable
             sqon={selectionSQON}
             loading={isLoading}
@@ -98,12 +107,14 @@ const ParticipantsTableView = ({
             selectedRows={selectedRows}
             allRowsSelected={allRowsSelected}
             loggedInUser={loggedInUser}
+            saveSets={userSets.sets}
+            egoGroups={egoGroups}
           />
-        </Card>
-      );
-    }}
-  </QueriesResolver>
-);
+        );
+      }}
+    </QueriesResolver>
+  );
+};
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
@@ -112,6 +123,20 @@ ParticipantsTableView.propTypes = {
 
 const mapStateToProps = (state) => ({
   loggedInUser: state.user.loggedInUser,
+  create: {
+    isLoading: selectIsLoading(state),
+    error: selectError(state),
+  },
+  userSets: {
+    sets: selectUserSets(state),
+    isLoading: false,
+    error: null,
+    isDeleting: false,
+  },
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  userSaveSets: (userId) => dispatch(getUserSets(userId)),
 });
 
 export default compose(
@@ -121,5 +146,5 @@ export default compose(
   withState('selectedRows', 'setSelectedRows', []),
   withState('allRowsSelected', 'setAllRowsSelected', false),
   withState('sort', 'setSort', []),
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )(ParticipantsTableView);

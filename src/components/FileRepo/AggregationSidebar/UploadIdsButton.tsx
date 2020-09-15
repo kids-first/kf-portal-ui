@@ -3,14 +3,13 @@ import React, { FunctionComponent } from 'react';
 import UploadIdsModal from 'components/UploadIdsModal';
 import { Button } from 'antd';
 import { CloudUploadOutlined } from '@ant-design/icons';
-// @ts-ignore
-import { compose } from 'recompose';
 import './aggregationSideBar.css';
-// @ts-ignore
-import { injectState } from 'freactal';
 import { EsIndex, ProjectId } from 'store/esTypes';
 import { setSqonArrangerCB } from 'store/sqon';
-import { ModalStateEffects } from 'store/freactalModalState';
+import { connect, ConnectedProps } from 'react-redux';
+import { selectModalId } from 'store/selectors/modal';
+import { closeModal, openModal, DispatchModal } from 'store/actions/modal';
+import { RootState } from 'store/rootState';
 
 type OwnProps = {
   graphqlField: string;
@@ -21,16 +20,31 @@ type OwnProps = {
   matchboxPlaceholderText: string;
   projectId: ProjectId;
   searchFields?: string;
+  id: string;
 };
 
-type FreactalProps = {
-  effects: ModalStateEffects;
-};
+const mapStateToProps = (state: RootState) => ({
+  openModalId: selectModalId(state),
+});
 
-type Props = OwnProps & FreactalProps;
+const mapDispatchToProps = (dispatch: DispatchModal) => ({
+  openModal: (id: string) => {
+    dispatch(openModal(id));
+  },
+  closeModal: (id: string) => {
+    dispatch(closeModal(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = OwnProps & PropsFromRedux;
+
+const generateModalId = (id: string) => `UPLOAD_IDS_${id}`;
 
 const UploadIdsButton: FunctionComponent<Props> = ({
-  effects,
   searchFields,
   matchboxPlaceholderText,
   setSQON,
@@ -39,36 +53,33 @@ const UploadIdsButton: FunctionComponent<Props> = ({
   projectId,
   uploadableFields,
   whitelist,
+  openModalId,
+  closeModal,
+  openModal,
+  id,
 }) => (
-  <div className={'upload-btn-container'}>
-    <CloudUploadOutlined className={'upload-icon ant-btn-link'} />
-    <Button
-      size={'small'}
-      type="link"
-      onClick={() =>
-        effects.setModal({
-          title: 'Upload a List of Identifiers',
-          component: (
-            <UploadIdsModal
-              placeholderText={matchboxPlaceholderText}
-              {...{
-                graphqlField,
-                index,
-                projectId,
-                uploadableFields,
-                whitelist,
-                setSQON,
-                searchFields,
-              }}
-              closeModal={effects.unsetModal}
-            />
-          ),
-        })
-      }
-    >
-      {'upload your list of ids'}
-    </Button>
-  </div>
+  <>
+    <UploadIdsModal
+      placeholderText={matchboxPlaceholderText}
+      {...{
+        graphqlField,
+        index,
+        projectId,
+        uploadableFields,
+        whitelist,
+        setSQON,
+        searchFields,
+      }}
+      isVisible={openModalId === generateModalId(id)}
+      closeModal={() => closeModal(generateModalId(id))}
+    />
+    <div className={'upload-btn-container'}>
+      <CloudUploadOutlined className={'upload-icon ant-btn-link'} />
+      <Button size={'small'} type="link" onClick={() => openModal(generateModalId(id))}>
+        {'upload your list of ids'}
+      </Button>
+    </div>
+  </>
 );
 
-export default compose(injectState)(UploadIdsButton);
+export default connector(UploadIdsButton);

@@ -1,8 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import IntegrationItem from './IntegrationItem';
 import { compose, setPropTypes } from 'recompose';
-import { withRouter } from 'react-router';
 
 class IntegrationManager extends React.Component {
   state = {
@@ -11,17 +11,11 @@ class IntegrationManager extends React.Component {
     errorDisconnect: null,
   };
 
-  setConnecting = isConnecting => {
-    return this.setState({ connecting: isConnecting });
-  };
+  setConnecting = (isConnecting) => this.setState({ connecting: isConnecting });
 
-  setErrorConnect = error => {
-    return this.setState({ errorConnect: error });
-  };
+  setErrorConnect = (error) => this.setState({ errorConnect: error });
 
-  setErrorDisConnect = error => {
-    return this.setState({ errorDisconnect: error });
-  };
+  setErrorDisConnect = (error) => this.setState({ errorDisconnect: error });
 
   onClickConnect = () => {
     this.setState({ errorConnect: null });
@@ -45,14 +39,7 @@ class IntegrationManager extends React.Component {
     });
   };
 
-  onClickResetErrors = () => {
-    return this.setState({ errorConnect: null, errorDisconnect: null });
-  };
-
-  onClickActionButton = () => {
-    const { actionCb, actionCbParam } = this.props.actionWhenConnected;
-    return actionCb(actionCbParam);
-  };
+  onClickResetErrors = () => this.setState({ errorConnect: null, errorDisconnect: null });
 
   render() {
     const { connecting, errorConnect, errorDisconnect } = this.state;
@@ -62,12 +49,14 @@ class IntegrationManager extends React.Component {
       isConnected,
       isLoadingBeforeConnecting,
       actionWhenConnected,
+      fence,
     } = this.props;
 
-    const { buttonIcon, buttonLabel } = actionWhenConnected;
+    const { buttonIcon, buttonLabel, modalId } = actionWhenConnected;
 
     return (
       <IntegrationItem
+        fence={fence}
         logo={logo}
         description={description}
         connected={isConnected}
@@ -78,7 +67,7 @@ class IntegrationManager extends React.Component {
         errorDisconnect={errorDisconnect}
         onClickResetErrorsCb={this.onClickResetErrors}
         actionButtonWhenConnected={{
-          onClick: this.onClickActionButton,
+          modalId: modalId,
           icon: buttonIcon,
           label: buttonLabel,
         }}
@@ -88,11 +77,11 @@ class IntegrationManager extends React.Component {
 }
 
 const Enhanced = compose(
-  withRouter,
   setPropTypes({
+    fence: PropTypes.string,
     logo: PropTypes.node.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-    isConnected: PropTypes.bool.isRequired,
+    isConnected: PropTypes.bool,
     isLoadingBeforeConnecting: PropTypes.bool.isRequired,
     connection: PropTypes.shape({
       connectCb: PropTypes.func.isRequired,
@@ -103,11 +92,11 @@ const Enhanced = compose(
       disConnectCbParams: PropTypes.object.isRequired,
     }).isRequired,
     actionWhenConnected: PropTypes.shape({
-      actionCb: PropTypes.func.isRequired,
-      actionCbParam: PropTypes.object.isRequired,
+      modalId: PropTypes.string.isRequired,
       buttonIcon: PropTypes.element.isRequired,
       buttonLabel: PropTypes.string.isRequired,
     }),
+    modalExtraProps: PropTypes.object,
   }),
 )(IntegrationManager);
 

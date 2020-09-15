@@ -39,7 +39,7 @@
 
       & textarea {
         border: none;
-        flex: 1 1 0%;
+        flex: 1 1 0;
       }
     }
 
@@ -52,5 +52,16 @@
 
   & .ReactTable .input-type {
     text-transform: capitalize;
+  }
+
+  & .fix-footer {
+    /* quick fix - possible solution: remove duplicated/refactored modal */
+    margin: 0;
+    justify-content: flex-end;
+    box-shadow: none;
+  }
+
+  & .view-results-btn {
+    margin-left: 8px;
   }
 }

@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import isEqual from 'lodash/isEqual';
-
-import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
+import { Spinner } from 'uikit/Spinner';
 import { PhenotypeStore } from '../../OntologyBrowser/store';
+import { TreeNode } from '../../OntologyBrowser/Model';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
 import { Sqon } from 'store/sqon';
 import './Ontology.css';
@@ -17,11 +17,9 @@ type OntologySunburstState = {
   loading: boolean;
 };
 
-type FormatterDataType = { title: string; results: number };
-
-const tooltipFormatter = (data: FormatterDataType) => `${data.results}\n\n${data.title}`;
-const centerTextFormatter = (data: FormatterDataType) => `${data.results} ${data.title}`;
-const centerNoDataTextFormatter = (data: FormatterDataType) => `${data.title}`;
+const tooltipFormatter = (data: TreeNode) => `${data.valueText}\n\n${data.title}`;
+const centerTextFormatter = (data: TreeNode) => `${data.valueText} ${data.title}`;
+const centerNoDataTextFormatter = (data: TreeNode) => `${data.title}`;
 
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
   state = {
@@ -73,7 +71,7 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     return (
       <Fragment>
         {loading ? (
-          <ChartContentSpinner />
+          <Spinner size={'large'} />
         ) : (
           <div className="card-content-center">
             {data !== null ? (

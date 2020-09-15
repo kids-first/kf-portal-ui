@@ -1,21 +1,23 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import gql from 'graphql-tag';
 import { compose } from 'recompose';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import capitalize from 'lodash/capitalize';
+
 import { injectState } from 'freactal';
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 
 import Row from 'uikit/Row';
-import ViewLink from 'uikit/ViewLink';
 import { H2 } from 'uikit/Headings';
-import SummaryIcon from 'icons/AllAppsMenuIcon';
-import TableViewIcon from 'icons/TableViewIcon';
+import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
+
 import DemographicIcon from 'icons/DemographicIcon';
 import FilesIcon from 'icons/FilesIcon';
 import familyMembers from 'assets/icon-families-grey.svg';
+
+import { Tabs } from 'antd';
 
 import { withApi } from 'services/api';
 import graphql from 'services/arranger';
@@ -25,17 +27,17 @@ import ParticipantsTableView from './ParticipantsTableView';
 import QueriesResolver from './QueriesResolver';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
 import { createFileRepoLink } from './util';
-import ContentBar from './ContentBar';
 import Summary from './Summary';
-import { setActiveView } from './actionCreators';
-import './Results.css';
+
 import { Spin, notification } from 'antd';
 import ButtonWithRouter from '../../ui/ButtonWithRouter';
 import { CARDINALITY_PRECISION_THRESHOLD } from '../../common/constants';
 import { roundIntToChosenPowerOfTen } from '../../utils';
-import capitalize from 'lodash/capitalize';
+
+import './Results.css';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
+const { TabPane } = Tabs;
 const SUMMARY = 'summary';
 const TABLE = 'table';
 const LABELS = {
@@ -142,14 +144,7 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({
-  activeView,
-  activeSqonIndex,
-  setActiveView,
-  sqon = { op: 'and', content: [] },
-  api,
-  state,
-}) => (
+const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => (
   <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       if (error) {
@@ -166,92 +161,109 @@ const Results = ({
       const hasNoFile = filesCardinality === 0;
       const hasNoCohortQuery = isEmpty(sqon.content);
 
-      const showDetailsHeader = () => {
-        if (hasNoCohortQuery) {
-          return <H2>All Data</H2>;
-        }
-        return (
-          <Fragment>
-            <H2>Cohort Results</H2>
-            <h3 className="cb-sub-heading" style={{ fontWeight: 'normal', marginRight: '10px' }}>
-              for Query {activeSqonIndex + 1}
-            </h3>
-          </Fragment>
-        );
-      };
+      const showDetailsHeader = () => (
+        <div className="cb-extra-actions-header">
+          {hasNoCohortQuery ? (
+            <H2>All Data</H2>
+          ) : (
+            <Fragment>
+              <H2>Cohort Results</H2>
+              <h3 className="cb-sub-heading" style={{ fontWeight: 'normal', marginRight: '10px' }}>
+                for Query {activeSqonIndex + 1}
+              </h3>
+            </Fragment>
+          )}
+        </div>
+      );
+
+      const extraActions = (
+        <div className="cb-extra-actions">
+          {showDetailsHeader()}
+          {isLoading ? (
+            <div className={'cb-summary-is-loading'}>
+              <Spin size={'small'} />
+            </div>
+          ) : (
+            <div className="cb-summary">
+              <div className="cb-summary-entity">
+                <h3 className="cb-sub-heading">
+                  <DemographicIcon width="14px" height="17px" />
+                  {formatCountResult(participantCount, 'participant')}
+                </h3>
+              </div>
+              <div className="cb-summary-entity">
+                <h3 className="cb-sub-heading">
+                  <img src={familyMembers} alt="" height="13px" />
+                  {formatCountResult(familiesCount, 'family')}
+                </h3>
+              </div>
+              <div className="cb-summary-entity">
+                {hasNoFile ? (
+                  <h3 className="cb-sub-heading-without-count">
+                    <div className="cb-summary-files">
+                      <div>
+                        <FilesIcon style={{ marginRight: '6px' }} /> {'No File'}
+                      </div>
+                    </div>
+                  </h3>
+                ) : (
+                  <div>
+                    <ButtonWithRouter
+                      getLink={
+                        hasNoCohortQuery
+                          ? () => '/search/file'
+                          : () => generateAllFilesLink(state.loggedInUser, api, sqon)
+                      }
+                    >
+                      {formatCountResult(filesCardinality, 'file')}
+                      <ArrowRightOutlined />
+                    </ButtonWithRouter>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      );
 
       return (
         <Fragment>
-          <ContentBar style={{ padding: '0 30px 0 34px' }}>
-            <Row className="cb-view-links">
-              <ViewLink
-                onClick={() => setActiveView(SUMMARY)}
-                active={activeView === SUMMARY}
-                Icon={SummaryIcon}
+          <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
+            <Tabs
+              tabBarExtraContent={extraActions}
+              type="card"
+              style={{ marginBottom: '0px' }}
+              tabBarStyle={{ marginBottom: '0px' }}
+            >
+              <TabPane
+                tab={
+                  <span>
+                    <AppstoreFilled />
+                    Summary View
+                  </span>
+                }
+                key={SUMMARY}
+                className="cb-tab-content cb-tab-content-summary"
               >
-                Summary View
-              </ViewLink>
-              <ViewLink
-                onClick={() => setActiveView(TABLE)}
-                active={activeView === TABLE}
-                Icon={TableViewIcon}
+                <Summary sqon={sqon} />
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <TableOutlined />
+                    Table View
+                  </span>
+                }
+                key={TABLE}
+                className="cb-tab-content"
               >
-                Table View
-              </ViewLink>
-            </Row>
-            <Row className="cb-detail">
-              {showDetailsHeader()}
-              {isLoading ? (
-                <div className={'cb-summary-is-loading'}>
-                  <Spin size={'small'} />
-                </div>
-              ) : (
-                <div className="cb-summary">
-                  <div className="cb-summary-entity">
-                    <h3 className="cb-sub-heading">
-                      <DemographicIcon width="14px" height="17px" />
-                      {formatCountResult(participantCount, 'participant')}
-                    </h3>
-                  </div>
-                  <div className="cb-summary-entity">
-                    <h3 className="cb-sub-heading">
-                      <img src={familyMembers} alt="" height="13px" />
-                      {formatCountResult(familiesCount, 'family')}
-                    </h3>
-                  </div>
-                  <div className="cb-summary-entity">
-                    {hasNoFile ? (
-                      <h3 className="cb-sub-heading-without-count">
-                        <div className="cb-summary-files">
-                          <div>
-                            <FilesIcon style={{ marginRight: '6px' }} /> {'No File'}
-                          </div>
-                        </div>
-                      </h3>
-                    ) : (
-                      <div>
-                        <ButtonWithRouter
-                          getLink={
-                            hasNoCohortQuery
-                              ? () => '/search/file'
-                              : () => generateAllFilesLink(state.loggedInUser, api, sqon)
-                          }
-                        >
-                          {formatCountResult(filesCardinality, 'file')}
-                          <ArrowRightOutlined />
-                        </ButtonWithRouter>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </Row>
-          </ContentBar>
-          <div className={`cb-active-view ${activeView}`}>
-            <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} />
-            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
+                {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
+                <ParticipantsTableView sqon={sqon} egoGroups={state.egoGroups} />
+              </TabPane>
+            </Tabs>
           </div>
+          <Row className="cb-detail"></Row>
+          {}
         </Fragment>
       );
     }}
@@ -261,21 +273,8 @@ const Results = ({
 Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object,
-  setActiveView: PropTypes.func.isRequired,
-  activeView: PropTypes.string.isRequired,
   api: PropTypes.func.isRequired,
   state: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  const { activeView } = state.ui.cohortBuilderPage;
-  return {
-    activeView,
-  };
-};
-
-const mapDispatchToProps = {
-  setActiveView,
-};
-
-export default compose(withApi, injectState, connect(mapStateToProps, mapDispatchToProps))(Results);
+export default compose(withApi, injectState)(Results);

@@ -109,7 +109,7 @@
   line-height: 0.87;
   letter-spacing: 0.4px;
   text-align: center;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-top: 9px;
 }
 
@@ -120,4 +120,16 @@
   font-size: 16px;
   line-height: 1.44;
   letter-spacing: 0;
+}
+
+.splash-card-footer {
+  height: 52px;
+  border-top: 1px solid #f0f0f0;
+  padding: 10px;
+  /* use negative margins to counter padding from the card container */
+  margin: 24px -24px -24px;
+}
+
+.text-align-center {
+  text-align: center;
 }

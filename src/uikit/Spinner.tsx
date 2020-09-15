@@ -7,8 +7,10 @@ type SpinnerProps = SpinProps & {
   className?: string;
 };
 
-export const Spinner: FunctionComponent<SpinnerProps> = props => {
-  const { className = '', size, children } = props;
+const defaultClassName = 'spinner'; //  see index.css
+
+export const Spinner: FunctionComponent<SpinnerProps> = (props) => {
+  const { className = defaultClassName, size, children } = props;
   return (
     <div className={className}>
       <Spin size={size}>{children}</Spin>

@@ -3,12 +3,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Router } from 'react-router';
 import ScrollbarSizeProvider from './ScrollbarSizeProvider';
-import {
-  provideLoggedInUser,
-  provideModalState,
-  provideToast,
-  provideFenceConnections,
-} from 'stateProviders';
+import { provideLoggedInUser, provideModalState, provideFenceConnections } from 'stateProviders';
 import { initializeApi, ApiContext } from 'services/api';
 import history, { HistoryContext } from 'services/history';
 import { logoutAll } from 'services/login';
@@ -18,13 +13,12 @@ export default compose(
   provideLoggedInUser,
   provideFenceConnections,
   provideModalState,
-  provideToast,
   injectState,
-)(({ children, state, effects }) => (
+)(({ children }) => (
   <HistoryContext.Provider>
     <ApiContext.Provider
       value={initializeApi({
-        onUnauthorized: response => {
+        onUnauthorized: () => {
           if (localStorage[EGO_JWT_KEY]) {
             localStorage.removeItem(EGO_JWT_KEY);
             logoutAll().then(() => {

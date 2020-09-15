@@ -27,10 +27,10 @@ Footer.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-const findAllCheckedBoxes = (el) => el.querySelectorAll('input[type="checkbox"]:checked');
-const findAllActiveToggles = (el) => el.querySelectorAll('div.toggle-button-option.active');
+const findAllCheckedBoxes = (el) => el?.querySelectorAll('input[type="checkbox"]:checked');
+const findAllActiveToggles = (el) => el?.querySelectorAll('div.toggle-button-option.active');
 const findAllRanges = (el) =>
-  el.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
+  el?.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
 
 export const FieldFilterContainer = ({
   children,
@@ -46,9 +46,9 @@ export const FieldFilterContainer = ({
   const hasSelectedElements = () => {
     const termsWrapperElement = document.getElementById('terms-wrapper');
 
-    const checkboxes = findAllCheckedBoxes(termsWrapperElement);
-    const toggles = findAllActiveToggles(termsWrapperElement);
-    const rangeNodes = findAllRanges(termsWrapperElement);
+    const checkboxes = findAllCheckedBoxes(termsWrapperElement) || [];
+    const toggles = findAllActiveToggles(termsWrapperElement) || [];
+    const rangeNodes = findAllRanges(termsWrapperElement) || [];
 
     let ranges = 0;
     rangeNodes.forEach((input, key) => {

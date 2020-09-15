@@ -1,6 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { branch, compose, renderComponent } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
@@ -23,37 +21,31 @@ import {
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
+  wrapperMemberResearchInterests,
+  wrapperMostParticipantsStudiesChart,
+  wrapperVerticalBarChart,
 } from './UserDashboard.module.css';
 import { Col, Row } from 'antd';
-
-const Container = ({ className = '', children }) => (
-  // This is to cancel out the negative margin set by react-grid-system
-  <div style={{ marginLeft: '15px', marginRight: '15px' }}>
-    <Row className={className} children={children} />
-  </div>
-);
-
-Container.prototype = {
-  children: PropTypes.arrayOf(PropTypes.element),
-  className: PropTypes.string.isRequired,
-};
+import ParticipantSets from './ParticipantSets';
+import { isPartOfGroup } from '../../common/profile';
 
 export default compose(
   injectState,
-  withRouter,
   withApi,
   branch(
     ({ state: { loggedInUser } }) => !loggedInUser,
     renderComponent(() => <div />),
   ),
-)(({ state: { loggedInUser }, api }) => (
+)(({ state: { loggedInUser, egoGroups }, api }) => (
   <div className={userDashboardContainer}>
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
       <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <SavedQueries {...{ api, loggedInUser }} />
+          <div className={wrapperVerticalBarChart}>
+            <SavedQueries {...{ api, loggedInUser }} />
+          </div>
         </Col>
         {isFeatureEnabled('FT_SUNBURST') && (
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
@@ -69,20 +61,33 @@ export default compose(
           <CavaticaProjects />
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <DashboardCard showHeader={false}>
-            <MostParticipantsStudiesChart />
+          <DashboardCard showHeader={false} showScrollFullHeight={true}>
+            <div className={wrapperMostParticipantsStudiesChart}>
+              <MostParticipantsStudiesChart />
+            </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Member Research Interests">
-            <MemberResearchInterestsChart />
+            <div className={wrapperMemberResearchInterests}>
+              <MemberResearchInterestsChart />
+            </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Most Frequent Diagnoses">
-            <MostFrequentDiagnosesChart />
+            <div className={wrapperVerticalBarChart}>
+              <MostFrequentDiagnosesChart />
+            </div>
           </DashboardCard>
         </Col>
+        {isPartOfGroup('kf-investigator', egoGroups) && (
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <DashboardCard title="My Participant Sets">
+              <ParticipantSets user={loggedInUser} />
+            </DashboardCard>
+          </Col>
+        )}
       </Row>
     </div>
   </div>

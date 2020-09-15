@@ -18,20 +18,11 @@ const sunburstD3 = (ref, data, config, formatters) => {
     .innerRadius((d) => (d.y1 <= 2 ? d.y0 * (radius + 28) : d.y0 * (radius + 2)))
     .outerRadius((d) => Math.max(d.y0 * radius, d.y1 * radius - 2));
 
-  // since results varies on each phenotype selection
-  // e.g. a parent can have more results than it's single child
-  // each level need to countain the concatenated sum of all its child
-  // to be use all the reprensentive radia space in the circle
-  const countResults = (d) => {
-    if (d.length === 0) return 0;
-    d.reduce((accumulator, value) => accumulator + value.results + countResults(value.children));
-  };
-
   const partition = (data) => {
     const root = d3
       .hierarchy(data)
-      .sum((d) => d.results + countResults(d.children))
-      .sort((a, b) => b.results - a.results);
+      .sum((d) => d.value)
+      .sort((a, b) => b.value - a.value);
     return d3.partition().size([2.0 * Math.PI, root.height + 1])(root);
   };
 
@@ -40,7 +31,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
   root.each((d) => (d.current = d));
 
   const svg = d3.select(ref.current).style('width', width).style('height', height);
-  const g = svg.append('g').attr('transform', (d) => `translate(${[width / 2, width / 2]})`);
+  const g = svg.append('g').attr('transform', () => `translate(${[width / 2, width / 2]})`);
 
   const gData = g.append('g').selectAll('path').data(root.descendants());
 
@@ -54,7 +45,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
     .attr('fill-opacity', (d) => (arcVisible(d.current) ? (d.children ? 0.8 : 0.4) : 0));
 
   path
-    .filter((d) => d.children)
+    .filter((d) => d)
     .style('cursor', (d) => (arcVisible(d.current) ? 'pointer' : 'node'))
     .on('mouseover', function (p) {
       const data = d3.select(this).datum().current;

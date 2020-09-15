@@ -16,6 +16,8 @@ import {
   REQUEST_IS_ACTIVE_TOGGLE,
   RECEIVE_IS_ACTIVE_TOGGLE,
   FAILURE_IS_ACTIVE_TOGGLE,
+  REQUEST_SUBSCRIBE_USER,
+  FAILURE_SUBSCRIBE_USER,
 } from '../actionTypes';
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
   isTogglingProfileStatus: false,
   isTogglingProfileStatusInError: null,
   isProfileUpdating: false,
+  errorSubscribing: null,
 };
 
 export default (state = initialState, action) => {
@@ -64,7 +67,7 @@ export default (state = initialState, action) => {
       const copyOfProfile = { ...state.profile };
       copyOfProfile.isPublic = !isPublicBeforeToggle;
 
-      const copyOfLoggedInUser = Boolean(state.loggedInUser) ? { ...state.loggedInUser } : {};
+      const copyOfLoggedInUser = state.loggedInUser ? { ...state.loggedInUser } : {};
       copyOfLoggedInUser.isPublic = !isPublicBeforeToggle;
 
       return {
@@ -93,11 +96,21 @@ export default (state = initialState, action) => {
         profile: copyOfProfile,
       };
     }
+    case REQUEST_SUBSCRIBE_USER: {
+      return state;
+    }
+    case FAILURE_SUBSCRIBE_USER: {
+      return {
+        ...state,
+        errorSubscribing: action.error,
+      };
+    }
     case CLEAN_ERRORS:
       return {
         ...state,
         errorProfile: null,
         isTogglingProfileStatusInError: null,
+        errorSubscribing: null,
       };
     default:
       return state;

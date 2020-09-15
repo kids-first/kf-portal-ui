@@ -3,6 +3,7 @@
   padding: 15px;
   border-collapse: collapse;
   overflow-y: auto;
+  max-height: 500px;
 }
 
 .itemRowContainer {

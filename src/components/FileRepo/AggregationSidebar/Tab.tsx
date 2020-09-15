@@ -79,6 +79,7 @@ const Tab: FunctionComponent<Props> = ({
                 matchboxPlaceholderText: 'Eg. PT_RR05KSJC',
                 projectId,
                 whitelist: ['participants'],
+                id: 'participants',
               }}
             />
           </AggsWrapper>
@@ -98,6 +99,7 @@ const Tab: FunctionComponent<Props> = ({
                 matchboxPlaceholderText: 'Eg. BS_4F9171D5, S88-3',
                 projectId,
                 whitelist: ['participants.biospecimens'],
+                id: 'biospecimens',
               }}
             />
           </AggsWrapper>
@@ -120,6 +122,7 @@ const Tab: FunctionComponent<Props> = ({
               matchboxPlaceholderText: 'Eg. GF_851CMY87',
               projectId,
               whitelist: [''],
+              id: 'file',
             }}
           />
         </AggsWrapper>

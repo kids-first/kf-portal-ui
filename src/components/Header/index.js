@@ -19,14 +19,14 @@ import { LinkAsButton, NavBarList, NavLink } from './ui';
 import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
-import { loggedInUserShape } from 'shapes/index';
 
 import UserMenu from './UserMenu';
 
 import './Header.css';
 
 import { dismissError } from 'store/actionCreators/errors';
-import { isPartOfGroup } from '../../common/profile';
+import { isPartOfGroup } from 'common/profile';
+import { injectState } from 'freactal';
 
 const { Header: AntHeader } = Layout;
 
@@ -80,18 +80,13 @@ const Header = (props) => {
   const {
     currentError,
     dismissError,
-    loggedInUser,
     history,
     match: { path },
+    state: { loggedInUser, egoGroups },
   } = props;
 
-  const canSeeProtectedRoutes =
-    loggedInUser &&
-    loggedInUser.roles &&
-    loggedInUser.roles[0] &&
-    loggedInUser.acceptedTerms &&
-    path !== '/join' &&
-    path !== '/';
+  const canSeeProtectedRoutes = path !== '/join';
+
   const currentPathName = history.location.pathname;
 
   return (
@@ -115,7 +110,7 @@ const Header = (props) => {
                   <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
-              {isPartOfGroup('kf-investigator', loggedInUser) && (
+              {isPartOfGroup('kf-investigator', egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
                     <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
@@ -149,7 +144,7 @@ const Header = (props) => {
           )}
 
           <AppsMenu />
-          {canSeeProtectedRoutes ? <UserMenu loggedInUser={loggedInUser} /> : null}
+          {canSeeProtectedRoutes ? <UserMenu /> : null}
         </NavBarList>
       </Row>
     </AntHeader>
@@ -158,7 +153,6 @@ const Header = (props) => {
 
 Header.propTypes = {
   // redux
-  loggedInUser: loggedInUserShape,
   currentError: PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
@@ -174,10 +168,12 @@ Header.propTypes = {
     path: PropTypes.string.isRequired,
   }).isRequired,
   enabledFeatures: PropTypes.object,
+  state: PropTypes.shape({
+    loggedInUser: PropTypes.object.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  loggedInUser: state.user.loggedInUser,
   currentError: state.errors.currentError,
 });
 
@@ -185,4 +181,9 @@ const mapDispatchToProps = {
   dismissError,
 };
 
-export default compose(withRouter, withApi, connect(mapStateToProps, mapDispatchToProps))(Header);
+export default compose(
+  injectState,
+  withRouter,
+  withApi,
+  connect(mapStateToProps, mapDispatchToProps),
+)(Header);

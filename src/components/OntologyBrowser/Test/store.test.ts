@@ -1,10 +1,5 @@
-import {
-  PhenotypeSource,
-  PhenotypeStore,
-  removeSameTerms,
-  selectSameTerms,
-  TreeNode,
-} from '../store';
+import { PhenotypeSource, PhenotypeStore, removeSameTerms, selectSameTerms } from '../store';
+import { TreeNode } from '../Model';
 import { flatMockData, treeData } from './mockData';
 
 describe('Phenotype Store', () => {
@@ -182,5 +177,25 @@ describe('Phenotype Store', () => {
         'Skin appendage neoplasm (HP:0012842)',
     ];
     expect(res).toEqual(output);
+  });
+
+  describe('when the sum of children is greater than parent', () => {
+    it('should not set value on the parent node', () => {
+      let firstLevel = newStore.tree[0];
+      expect(firstLevel.key).toEqual('Phenotypic abnormality (HP:0000118)');
+      expect(firstLevel.valueText).toEqual(874);
+      expect(firstLevel.value).toEqual(undefined);
+    });
+  });
+
+  describe('when the sum of children is lower than parent', () => {
+    it('should set value on the parent node equal the parent results minus children sum', () => {
+      let firstLevel = newStore.tree[0].children[1];
+      expect(firstLevel.key).toEqual(
+        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)',
+      );
+      expect(firstLevel.valueText).toEqual(200);
+      expect(firstLevel.value).toEqual(66);
+    });
   });
 });

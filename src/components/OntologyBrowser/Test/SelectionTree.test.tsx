@@ -1,4 +1,4 @@
-import { TreeNode } from '../store';
+import { TreeNode } from '../Model';
 import { SelectionTree } from '../SelectionTree';
 import * as React from 'react';
 import Enzyme, { mount, shallow, ShallowWrapper } from 'enzyme';
@@ -61,15 +61,16 @@ describe('In SelectionTree', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('should return expected result', () => {
+  it('should return expected TreeNode', () => {
     const expectedResult: TreeNode[] = [
       {
         title: 'Abnormality of the integument (HP:0001574)',
         text: 'Abnormality of the integument (HP:0001574)',
         key: 'Abnormality of the integument (HP:0001574)',
         hidden: false,
-        results: 12,
+        results: 100,
         exactTagCount: 0,
+        valueText: 2120,
         children: [
           {
             title: 'Abnormality of the skin (HP:0000951)',
@@ -78,6 +79,8 @@ describe('In SelectionTree', () => {
             hidden: true,
             results: 6,
             exactTagCount: 2,
+            valueText: 1960,
+            value: 1954,
             children: [
               {
                 title: 'Abnormality of skin morphology (HP:0011121)',
@@ -88,6 +91,7 @@ describe('In SelectionTree', () => {
                 hidden: true,
                 results: 4,
                 exactTagCount: 4,
+                valueText: 1960,
                 children: [
                   {
                     title: 'Skin appendage neoplasm (HP:0012842)',
@@ -100,6 +104,8 @@ describe('In SelectionTree', () => {
                     exactTagCount: 2,
                     children: [],
                     hidden: true,
+                    valueText: 1960,
+                    value: 1960,
                   },
                 ],
               },
@@ -121,6 +127,7 @@ describe('In SelectionTree', () => {
             hidden: false,
             results: 6,
             exactTagCount: 1,
+            valueText: 160,
             children: [
               {
                 title: 'Skin appendage neoplasm (HP:0012842)',
@@ -132,6 +139,8 @@ describe('In SelectionTree', () => {
                 hidden: true,
                 results: 2,
                 exactTagCount: 2,
+                valueText: 12,
+                value: 12,
                 children: [],
               },
               {
@@ -144,6 +153,8 @@ describe('In SelectionTree', () => {
                 hidden: true,
                 results: 2,
                 exactTagCount: 2,
+                valueText: 24,
+                value: 24,
                 children: [],
               },
               {
@@ -155,6 +166,8 @@ describe('In SelectionTree', () => {
                 hidden: true,
                 results: 1,
                 exactTagCount: 1,
+                valueText: 112,
+                value: 112,
                 children: [],
               },
             ],
@@ -191,7 +204,6 @@ describe('In SelectionTree', () => {
         selectedField={''}
       />,
     );
-
     expect(
       component
         .find('Tag')

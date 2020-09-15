@@ -20,8 +20,6 @@ import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import Col from 'uikit/Column';
-
-import ChartContentSpinner from './ChartContentSpinner';
 import ChartError from './ChartError';
 
 import theme from 'theme/defaultTheme';
@@ -34,7 +32,7 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
-const studiesToolTip = data => {
+const studiesToolTip = (data) => {
   const { familyMembers, probands, name } = data;
   const participants = familyMembers + probands;
   return (
@@ -68,7 +66,7 @@ const StudiesChart = compose(
     ? data.reduce((prev, el) => prev + (el.familyMembers + el.probands), 0)
     : null;
 
-  const onClick = barData => {
+  const onClick = (barData) => {
     trackBarClick(studiesChartCategory, barData);
     resetVirtualStudy();
     const modifiedSqons = generateSqon('study.short_name', barData.data.name);
@@ -118,7 +116,7 @@ const StudiesChart = compose(
           { title: 'Probands', color: theme.chartColors.blue },
           { title: 'Other Participants', color: theme.chartColors.purple },
         ]}
-        padding={0.7}
+        padding={0.4}
       />
     </Col>
   );
@@ -128,19 +126,12 @@ export default compose(withApi)(({ api }) => (
   <DataProvider
     url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
     api={api}
-    transform={data =>
-      (data.studies || []).map(study => ({ ...study, label: startCase(study.name) }))
+    transform={(data) =>
+      (data.studies || []).map((study) => ({ ...study, label: startCase(study.name) }))
     }
   >
-    {fetchedState => {
-      return (
-        <ChartLoadGate
-          Error={ChartError}
-          Loader={ChartContentSpinner}
-          fetchedState={fetchedState}
-          Chart={StudiesChart}
-        />
-      );
-    }}
+    {(fetchedState) => (
+      <ChartLoadGate Error={ChartError} fetchedState={fetchedState} Chart={StudiesChart} />
+    )}
   </DataProvider>
 ));

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { Button } from 'antd';
 import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
@@ -17,9 +16,13 @@ import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import SaveSetModal from './SaveSetModal';
+import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
+import ParticipantSetDropdown from './ParticipantSetDropdown';
+import { SaveSetActionsTypes } from 'store/saveSetTypes';
+import { SetSubActionTypes } from 'store/saveSetTypes';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -215,7 +218,9 @@ class ParticipantsTable extends Component {
           ? { ...field, sortable: true }
           : { ...field, sortable: false },
       ),
-      showModal: false,
+      showModalSave: false,
+      showModalAddDelete: false,
+      actionType: '',
     };
     autobind(this);
   }
@@ -235,24 +240,42 @@ class ParticipantsTable extends Component {
       allRowsSelected,
       sqon,
       loggedInUser,
+      saveSets,
+      egoGroups,
     } = this.props;
     // I know. Sometimes, you gotta do what you gotta do.
     this.dirtyHack.allRowsSelected = allRowsSelected;
-    const { columns } = this.state;
+    const { columns, actionType } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
 
     return (
       <Fragment>
-        {this.state.showModal && (
+        {this.state.showModalSave && (
           <SaveSetModal
+            title={'Save Participant Set'}
             api={api}
             sqon={sqon}
             user={loggedInUser}
             hideModalCb={() =>
               this.setState({
-                showModal: false,
+                showModalSave: false,
               })
             }
+            saveSetActionType={SaveSetActionsTypes.CREATE}
+          />
+        )}
+        {this.state.showModalAddDelete && (
+          <AddRemoveSaveSetModal
+            api={api}
+            sqon={sqon}
+            user={loggedInUser}
+            subActionType={actionType}
+            hideModalCb={() =>
+              this.setState({
+                showModalAddDelete: false,
+              })
+            }
+            saveSetActionType={SaveSetActionsTypes.EDIT}
           />
         )}
         <Toolbar style={{ border: 'none' }}>
@@ -274,18 +297,29 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <div className={'action-btns-layout'}>
-              {isPartOfGroup('kf-investigator', loggedInUser) && (
-                <Button
-                  className={'save-set-btn'}
-                  onClick={() =>
+            <div className={'action-btns-layout'} id={'dropdown-container'}>
+              {isPartOfGroup('kf-investigator', egoGroups) && (
+                <ParticipantSetDropdown
+                  sqon={sqon}
+                  onSave={() => {
                     this.setState({
-                      showModal: true,
-                    })
-                  }
-                >
-                  Save participants set
-                </Button>
+                      showModalSave: true,
+                    });
+                  }}
+                  onAddToSet={() => {
+                    this.setState({
+                      actionType: SetSubActionTypes.ADD_IDS,
+                      showModalAddDelete: true,
+                    });
+                  }}
+                  onDeleteToSet={() => {
+                    this.setState({
+                      actionType: SetSubActionTypes.REMOVE_IDS,
+                      showModalAddDelete: true,
+                    });
+                  }}
+                  userSets={saveSets}
+                />
               )}
               <DownloadButton sqon={sqon} />
               <ColumnFilter
@@ -350,6 +384,7 @@ ParticipantsTable.propTypes = {
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
   loggedInUser: PropTypes.object,
+  saveSets: PropTypes.array.isRequired,
 };
 
 export default ParticipantsTable;

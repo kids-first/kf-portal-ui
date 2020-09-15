@@ -1,24 +1,39 @@
 import React from 'react';
-import SaveSetModal, { validateNameSetInput, MAX_LENGTH_NAME } from '../SaveSetModal';
+import SaveSetModal, {
+  extractTagNumbers,
+  MAX_LENGTH_NAME,
+  validateNameSetInput,
+} from '../SaveSetModal';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { jestPatchMatchMedia } from '../../../../utils';
+import { jestPatchMatchMedia } from 'utils';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { SaveSetState } from 'store/saveSetTypes';
+import { SaveSetState, UserSet } from 'store/saveSetTypes';
+import { getSetAndParticipantsCountByUser } from 'services/sets';
 
 configure({ adapter: new Adapter() });
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
+const userSaveSets = [] as UserSet[];
 
 const initialSaveSetModalState: SaveSetState = {
   create: {
     isLoading: false,
     error: null,
   },
+  userSets: {
+    sets: userSaveSets,
+    error: null,
+    isLoading: true,
+    isEditing: false,
+    isDeleting: false,
+  },
 };
+
+jest.mock('services/sets');
 
 describe('Save Set Modal', () => {
   const props = {
@@ -65,7 +80,14 @@ describe('Save Set Modal', () => {
     wrapper.unmount();
   });
 
+  beforeEach(() => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockReset();
+  });
+
   it('should render Save Set Modal', () => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve([]),
+    );
     const store = mockStore({
       saveSets: initialSaveSetModalState,
     });
@@ -91,24 +113,55 @@ describe('validateNameSetInput', () => {
   it('should not allow special character %', () => {
     expect(validateNameSetInput('mySave%Set')).toHaveProperty('err', true);
   });
-
   it('should not allow empty input', () => {
     expect(validateNameSetInput('')).toHaveProperty('err', true);
   });
-
-  it('should not contain blank or empty space(s)', () => {
-    expect(validateNameSetInput('mySave Set')).toHaveProperty('err', true);
+  it('should not allow blank input', () => {
+    expect(validateNameSetInput(' ')).toHaveProperty('err', true);
   });
-
+  it('should allow blank or empty space(s)', () => {
+    expect(validateNameSetInput('mySave Set')).toHaveProperty('err', false);
+  });
   it(`should not allow more than ${MAX_LENGTH_NAME} characters`, () => {
     expect(validateNameSetInput('a'.repeat(MAX_LENGTH_NAME + 1))).toHaveProperty('err', true);
   });
-
   it(`should allow "-"`, () => {
     expect(validateNameSetInput('my-set')).toHaveProperty('err', false);
   });
-
   it(`should allow "_"`, () => {
     expect(validateNameSetInput('my_set')).toHaveProperty('err', false);
+  });
+  it('should return 1st default saved set tag name if none already exists', async () => {
+    const input = [
+      {
+        node: {
+          setId: '1',
+          size: 1,
+          tag: 'SAVED_SET_1',
+        },
+      },
+      {
+        node: {
+          setId: '2',
+          size: 1,
+          tag: 'saved_set_3',
+        },
+      },
+      {
+        node: {
+          setId: '3',
+          size: 1,
+          tag: 'toto-name_4',
+        },
+      },
+      {
+        node: {
+          setId: '4',
+          size: 1,
+          tag: 'tutu-name_1',
+        },
+      },
+    ];
+    expect(extractTagNumbers(input as [{ node: UserSet }])).toEqual([1, 3]);
   });
 });

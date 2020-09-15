@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
-import autobind from 'auto-bind-es5';
-
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import Tooltip from './Tooltip';
 import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
-import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { verticalBarWrapper } from 'chartkit/chartkit.module.css';
 
 class VerticalBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      highlightedIndex: null,
-      highlightedIndexValue: null,
-    };
+  state = {
+    highlightedIndex: null,
+    highlightedIndexValue: null,
+  };
 
-    // TODO check that for participants tick interval < 1
-    const { tickInterval } = props;
-    this.maxValue = tickInterval ? this.maxValue : 'auto';
-    this.tickValues = tickInterval;
-
-    autobind(this);
-  }
-
-  onMouseEnter(data, e) {
+  onMouseEnter = (data, e) => {
     const { showCursor = true } = this.props;
     e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
@@ -42,22 +30,22 @@ class VerticalBar extends Component {
         });
       }
     }
-  }
+  };
 
-  onMouseLeave(data, e) {
+  onMouseLeave = (data, e) => {
     const target = e ? e.target : false;
     if (target) {
       target.style.cursor = 'default';
     }
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
-  }
+  };
 
-  onClick(data) {
+  onClick = (data) => {
     const { onClick } = this.props;
     if (onClick) onClick(data);
-  }
+  };
 
-  renderAxisLeftTick(tick) {
+  renderAxisLeftTick = (tick) => {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
@@ -71,8 +59,8 @@ class VerticalBar extends Component {
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
-    const onLabelClick = tick => {
-      const data = this.props.data.find(d => d.label === tick.value);
+    const onLabelClick = (tick) => {
+      const data = this.props.data.find((d) => d.label === tick.value);
       if (data) {
         onClick({ data });
       }
@@ -83,7 +71,7 @@ class VerticalBar extends Component {
         key={key}
         transform={`translate(${x - xOffset},${y})`}
         style={{ cursor: highlighted ? 'pointer' : 'default' }}
-        onMouseEnter={e => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+        onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
         onMouseLeave={this.onMouseLeave}
       >
         <text
@@ -97,20 +85,18 @@ class VerticalBar extends Component {
         </text>
       </g>
     );
-  }
+  };
 
-  sumUpKeys(obj) {
-    return this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
-  }
+  sumUpKeys = (obj) => this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
 
-  defaultSort(datumA, datumB) {
+  defaultSort = (datumA, datumB) => {
     if (/desc(ending)?/i.test('' + this.props.sortOrder)) {
       return this.sumUpKeys(datumB) - this.sumUpKeys(datumA);
     }
     return this.sumUpKeys(datumA) - this.sumUpKeys(datumB);
-  }
+  };
 
-  sortData(data) {
+  sortData = (data) => {
     const { sortBy, sortByKeys = null } = this.props;
     const sortFn =
       typeof sortBy === 'function'
@@ -120,9 +106,9 @@ class VerticalBar extends Component {
         : sortBy === true || sortByKeys
         ? this.defaultSort
         : null;
-    const filteredData = data.filter(x => x);
+    const filteredData = data.filter((x) => x);
     return sortFn ? filteredData.sort(sortFn) : filteredData;
-  }
+  };
 
   render() {
     const {
@@ -135,10 +121,11 @@ class VerticalBar extends Component {
       tooltipFormatter,
       axisLeftLegend = '',
       axisBottomLegend = '',
-      axisLeftFormat = v => (Number.isInteger(Number(v)) ? v.toLocaleString() : ''),
-      axisBottomFormat = v => v.toLocaleString(),
+      axisLeftFormat = (v) => (Number.isInteger(Number(v)) ? v.toLocaleString() : ''),
+      axisBottomFormat = (v) => v.toLocaleString(),
       bottomLegendOffset = 35,
       leftLegendOffset = -40,
+      tickInterval,
     } = this.props;
 
     const chartData = {
@@ -169,7 +156,7 @@ class VerticalBar extends Component {
       ],
       fill: [
         {
-          match: x => x.data.index === this.state.highlightedIndex,
+          match: (x) => x.data.index === this.state.highlightedIndex,
           id: 'lines',
         },
       ],
@@ -186,7 +173,7 @@ class VerticalBar extends Component {
         legend: axisBottomLegend,
         legendPosition: 'middle',
         legendOffset: bottomLegendOffset,
-        tickValues: this.tickValues,
+        tickValues: tickInterval,
         format: axisBottomFormat,
         theme: defaultTheme,
       },
@@ -203,7 +190,7 @@ class VerticalBar extends Component {
       },
       enableGridX: false,
       gridXValues: undefined,
-      maxValue: this.maxValue,
+      maxValue: tickInterval ? undefined : 'auto',
       enableGridY: true,
       enableLabel: false,
       labelSkipWidth: 12,
@@ -214,21 +201,17 @@ class VerticalBar extends Component {
       motionDamping: 15,
       isInteractive: true,
       theme: defaultTheme,
-      tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
+      tooltip: (props) => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
-      <div style={{ height: '100%' }}>
-        {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
+      <div className={verticalBarWrapper}>
+        {legends && <Legend legends={legends} theme={defaultTheme.legend} />}
         <TextBugWrapper>
-          <ChartDisplayContainer>
-            {height ? (
-              <ResponsiveBar {...chartData} height={height} />
-            ) : (
-              <ResponsiveBar {...chartData} />
-            )}
-          </ChartDisplayContainer>
+          <div style={{ height }}>
+            <ResponsiveBar {...chartData} height={height} />
+          </div>
         </TextBugWrapper>
       </div>
     );
@@ -253,6 +236,19 @@ VerticalBar.propTypes = {
   axisBottomFormat: PropTypes.func,
   axisLeftFormat: PropTypes.func,
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
+  tickInterval: PropTypes.number,
+  showCursor: PropTypes.bool,
+  onClick: PropTypes.func,
+  xTickTextLength: PropTypes.number,
+  leftLegendOffset: PropTypes.number,
+  bottomLegendOffset: PropTypes.number,
+  indexBy: PropTypes.string,
+  height: PropTypes.number.isRequired,
+  axisLeftLegend: PropTypes.string,
+  axisBottomLegend: PropTypes.string,
+  padding: PropTypes.number,
+  tooltipFormatter: PropTypes.any,
+  legends: PropTypes.array,
 };
 
 export default VerticalBar;

@@ -2,9 +2,13 @@ import reducer from '../saveSets';
 import { Action } from 'redux';
 import {
   failureCreate,
-  reInitializeSaveSetsState,
-  isLoadingCreateSaveSet,
+  reInitializeSetsState,
+  isLoadingCreateSet,
+  isLoadingSets,
+  isDeletingSets,
+  isEditingTag,
 } from '../../actionCreators/saveSets';
+import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -12,6 +16,13 @@ const initialState = {
   create: {
     isLoading: false,
     error: null,
+  },
+  userSets: {
+    sets: [],
+    error: null,
+    isLoading: false,
+    isDeleting: false,
+    isEditing: false,
   },
 };
 
@@ -21,10 +32,17 @@ describe('Save Sets Reducer', () => {
   });
 
   it('should handle togglePendingCreate', () => {
-    expect(reducer(initialState, isLoadingCreateSaveSet(true))).toEqual({
+    expect(reducer(initialState, isLoadingCreateSet(true))).toEqual({
       create: {
         isLoading: true,
         error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
+        isEditing: false,
       },
     });
   });
@@ -35,6 +53,13 @@ describe('Save Sets Reducer', () => {
         isLoading: false,
         error: new Error('error'),
       },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
+        isEditing: false,
+      },
     });
   });
 
@@ -44,7 +69,68 @@ describe('Save Sets Reducer', () => {
         isLoading: true,
         error: Error('Some Error'),
       },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
+        isEditing: false,
+      },
     };
-    expect(reducer(state, reInitializeSaveSetsState())).toEqual(initialState);
+    expect(reducer(state, reInitializeSetsState())).toEqual(initialState);
+  });
+
+  it('should handle toggle loading save sets', () => {
+    expect(reducer(initialState, isLoadingSets(true))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: true,
+        isDeleting: false,
+        isEditing: false,
+      },
+    });
+  });
+
+  it('should handle delete save sets', () => {
+    expect(reducer(initialState, isDeletingSets(true))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: true,
+        isEditing: false,
+      },
+    });
+  });
+
+  it('should handle editing save sets tag', () => {
+    const set = {
+      key: '1234',
+      name: 'someSet',
+      currentUser: 'me',
+    } as SetInfo;
+
+    expect(reducer(initialState, isEditingTag(set))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
+        isEditing: false,
+      },
+    });
   });
 });

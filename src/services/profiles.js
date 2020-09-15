@@ -91,7 +91,7 @@ const DEFAULT_FIELDS_OTHER_USER = `
 
 const url = urlJoin(personaApiRoot, 'graphql');
 
-export const getProfile = api => async () => {
+export const getProfile = (api) => async () => {
   const {
     data: { self },
   } = await api({
@@ -110,7 +110,7 @@ export const getProfile = api => async () => {
   return self;
 };
 
-export const getOtherUserProfile = async id => {
+export const getOtherUserProfile = async (id) => {
   const response = await apiInitialized({
     url,
     body: {
@@ -143,7 +143,7 @@ export const getUserLoggedInProfile = async () => {
   return response.data.self;
 };
 
-export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
+export const createProfile = (api) => async ({ egoId, lastName, firstName, email }) => {
   const {
     data: {
       userCreate: { record },
@@ -166,7 +166,7 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
   return record;
 };
 
-export const updateProfile = api => async ({ user }) => {
+export const updateProfile = (api) => async ({ user }) => {
   const {
     data: {
       userUpdate: { record },
@@ -190,8 +190,8 @@ export const updateProfile = api => async ({ user }) => {
   return record;
 };
 
-export const toggleActiveProfileAsAdmin = api => async ({ user }) => {
-  return api({
+export const toggleActiveProfileAsAdmin = (api) => async ({ user }) =>
+  api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       query: `
@@ -202,10 +202,8 @@ export const toggleActiveProfileAsAdmin = api => async ({ user }) => {
       }`,
     },
   });
-};
 
-
-export const deleteProfile = api => async ({ user }) => {
+export const deleteProfile = (api) => async ({ user }) => {
   const {
     data: {
       userRemove: { recordId },
@@ -227,7 +225,7 @@ export const deleteProfile = api => async ({ user }) => {
   return recordId;
 };
 
-export const getTags = api => async ({ filter, size }) => {
+export const getTags = (api) => async ({ filter, size }) => {
   const {
     data: { tags },
   } = await api({
@@ -250,8 +248,8 @@ export const getTags = api => async ({ filter, size }) => {
   return tags;
 };
 
-export const getAllFieldNamesPromise = api => {
-  return api({
+export const getAllFieldNamesPromise = (api) =>
+  api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       query: `
@@ -267,4 +265,11 @@ export const getAllFieldNamesPromise = api => {
       }`,
     },
   });
-};
+
+export const subscribeUser = async (loggedInUser) =>
+  await apiInitialized({
+    url: urlJoin(personaApiRoot, 'subscribe'),
+    body: {
+      user: loggedInUser,
+    },
+  });

@@ -66,3 +66,16 @@
   align-items: center;
   padding: 15px 7px 15px 12px;
 }
+
+.browseAllBtn {
+  margin-left: 10px;
+}
+
+.chevronLeftBtn {
+  margin-left: auto;
+}
+
+.chevronRightBth {
+  margin-top: 10px;
+  min-width: 14px;
+}

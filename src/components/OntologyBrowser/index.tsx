@@ -3,10 +3,17 @@ import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
-import { PhenotypeStore, TreeNode, removeSameTerms, selectSameTerms } from './store';
+import { PhenotypeStore, removeSameTerms, selectSameTerms } from './store';
+import { TreeNode } from './Model';
 import { Spinner } from 'uikit/Spinner';
 import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
+import { arrangerProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { getFieldDisplayName } from '../../utils';
+
+//@ts-ignore
+import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
 import './index.css';
 
@@ -205,64 +212,72 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
 
     return (
-      <Modal
-        style={{ height: '80vh', maxWidth: 1400 }}
-        title={`${title} Browser`}
-        visible={isVisible}
-        onOk={() => this.onApply(targetKeys)}
-        okText={'Apply'}
-        okButtonProps={{ disabled: hasError }}
-        onCancel={this.onCancel}
-        cancelText="Cancel"
-        width="90%"
+      <ExtendedMappingProvider
+        projectId={arrangerProjectId}
+        graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       >
-        {hasError ? (
-          <Result
-            status="error"
-            title="An error occurred"
-            subTitle="Please cancel and try again."
-          />
-        ) : (
-          <Transfer
-            dataSource={disabledSameTerms}
-            targetKeys={targetKeys}
-            onChange={this.onChange}
-            render={(item: TransferItem): RenderResult => item.title || item.key}
-            disabled={false}
-            showSelectAll={false}
-            locale={{
-              notFoundContent: this.isLoadingOrEmpty() ? (
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-              ) : (
-                'Select items from the panel on the left in order to add them to your query'
-              ),
-            }}
+        {({ extendedMapping = [] }) => (
+          <Modal
+            className="ontology-modal"
+            title={`${getFieldDisplayName(title, extendedMapping)} Browser`}
+            visible={isVisible}
+            onOk={() => this.onApply(targetKeys)}
+            okText={'Apply'}
+            okButtonProps={{ disabled: hasError }}
+            onCancel={this.onCancel}
+            cancelText="Cancel"
+            width="90%"
           >
-            {({ direction, onItemSelect, onItemSelectAll, selectedKeys }) => {
-              if (direction === 'left' && isLoading) {
-                return <Spinner className={'spinner'} size={'large'} />;
-              }
-              if (direction === 'left' && treeSource) {
-                const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
-                return (
-                  <SelectionTree
-                    dataSource={treeSource || []}
-                    onItemSelect={onItemSelect}
-                    checkedKeys={checkedKeys}
-                    targetKeys={targetKeys}
-                    onItemSelectAll={onItemSelectAll}
-                    selectedField={this.props.selectedField}
-                  />
-                );
-              }
-            }}
-          </Transfer>
+            {hasError ? (
+              <Result
+                status="error"
+                title="An error occurred"
+                subTitle="Please cancel and try again."
+              />
+            ) : (
+              <Transfer
+                dataSource={disabledSameTerms}
+                targetKeys={targetKeys}
+                onChange={this.onChange}
+                render={(item: TransferItem): RenderResult => item.title || item.key}
+                disabled={false}
+                showSelectAll={false}
+                locale={{
+                  notFoundContent: this.isLoadingOrEmpty() ? (
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                  ) : (
+                    'Select items from the panel on the left in order to add them to your query'
+                  ),
+                }}
+              >
+                {({ direction, onItemSelect, onItemSelectAll, selectedKeys }) => {
+                  if (direction === 'left' && isLoading) {
+                    return <Spinner className={'spinner'} size={'large'} />;
+                  }
+                  if (direction === 'left' && treeSource) {
+                    const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
+                    return (
+                      <SelectionTree
+                        dataSource={treeSource || []}
+                        onItemSelect={onItemSelect}
+                        checkedKeys={checkedKeys}
+                        targetKeys={targetKeys}
+                        onItemSelectAll={onItemSelectAll}
+                        selectedField={this.props.selectedField}
+                      />
+                    );
+                  }
+                }}
+              </Transfer>
+            )}
+            <div className={'text-color-TO-DELETE'}>
+              <UserOutlined /> Participants with this exact term
+              <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant
+              terms
+            </div>
+          </Modal>
         )}
-        <div className={'text-color-TO-DELETE'}>
-          <UserOutlined /> Participants with this exact term
-          <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant terms
-        </div>
-      </Modal>
+      </ExtendedMappingProvider>
     );
   }
 }

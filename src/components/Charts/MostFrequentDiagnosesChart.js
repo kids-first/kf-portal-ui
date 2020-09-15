@@ -20,31 +20,24 @@ import {
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
-
-import ChartContentSpinner from './ChartContentSpinner';
 import ChartError from './ChartError';
 
 export default compose(withApi)(({ api }) => (
   <DataProvider
     url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
     api={api}
-    transform={data => {
+    transform={(data) => {
       const dxs = data.diagnoses || [];
       const orderedDxs = orderBy(
         dxs,
-        diagnosis => diagnosis.familyMembers + diagnosis.probands,
+        (diagnosis) => diagnosis.familyMembers + diagnosis.probands,
         'desc',
       );
-      return orderedDxs.slice(0, 10).map(d => ({ ...d, label: startCase(d.name) }));
+      return orderedDxs.slice(0, 10).map((d) => ({ ...d, label: startCase(d.name) }));
     }}
   >
-    {fetchedState => (
-      <ChartLoadGate
-        Error={ChartError}
-        Loader={ChartContentSpinner}
-        fetchedState={fetchedState}
-        Chart={TopDiagnosesChart}
-      />
+    {(fetchedState) => (
+      <ChartLoadGate Error={ChartError} fetchedState={fetchedState} Chart={TopDiagnosesChart} />
     )}
   </DataProvider>
 ));
@@ -57,7 +50,7 @@ const trackBarClick = (trackingEventCategory, barData) => {
   });
 };
 
-const participantTooltipFormatter = data => {
+const participantTooltipFormatter = (data) => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
 };
@@ -80,7 +73,7 @@ const TopDiagnosesChart = connect(
   compose(withRouter)(({ data, setSqons, resetVirtualStudy, history }) => {
     const TEXT_DIAGNOSES_FIELD = 'diagnoses.diagnosis';
 
-    const onClick = barData => {
+    const onClick = (barData) => {
       trackBarClick(TRACKING_EVENTS.categories.charts.bar.diagnosesChartCategory, barData);
       resetVirtualStudy();
       generateSqon(TEXT_DIAGNOSES_FIELD, barData.data.name);

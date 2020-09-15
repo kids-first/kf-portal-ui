@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
@@ -10,7 +11,6 @@ import {
   fenceConnect,
   getAccessToken,
 } from 'services/fence';
-import FenceAuthorizedStudies from 'components/Fence/FenceAuthorizedStudies';
 import {
   analyticsTrigger,
   setUserDimension,
@@ -20,6 +20,7 @@ import {
 import PropTypes from 'prop-types';
 import IntegrationManager from './IntegrationManager';
 import { BookOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 
 const AUTHORIZED_STUDIES_DIM = '5';
 const CAVATICA_DIM = '6';
@@ -52,19 +53,6 @@ const trackFenceAction = async ({ fence, fenceDetails, category, action, label }
   await trackUserInteraction({ category, action, label });
 };
 
-const viewDetails = ({ fence, effects }) => {
-  return effects.setModal({
-    title: 'Authorized Studies',
-    component: (
-      <FenceAuthorizedStudies
-        fence={fence}
-        onComplete={effects.unsetModal}
-        onCancel={effects.unsetModal}
-      />
-    ),
-  });
-};
-
 const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(true);
   try {
@@ -84,7 +72,7 @@ const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(false);
 };
 
-const connect = ({ fence, api, setConnecting, effects, setError }) => {
+const connect = async ({ fence, api, setConnecting, effects, setError }) => {
   analyticsTrigger({
     property: 'portal',
     type: 'recording',
@@ -93,36 +81,35 @@ const connect = ({ fence, api, setConnecting, effects, setError }) => {
     label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
   });
   setConnecting(true);
-  fenceConnect(api, fence)
-    .then(() => getAccessToken(api, fence))
-    .then(token => {
-      effects.setIntegrationToken(fence, token);
-      const details = convertTokenToUser(token);
-      effects.addFenceConnection({ fence, details });
-      effects.fetchFenceStudies({ api, fence, details });
-      setConnecting(false);
-      effects.setToast({
-        id: `${Date.now()}`,
-        action: 'success',
-        component: <div>Controlled dataset access sucessfully connected.</div>,
-      });
-      trackFenceAction({
-        fence,
-        fenceDetails: JSON.stringify(details),
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.connected,
-        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
-      });
-    })
-    .catch(err => {
-      setError(err);
-      setConnecting(false);
-      trackFenceAction({
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.failed,
-        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
-      });
+  try {
+    await fenceConnect(api, fence);
+    const token = await getAccessToken(api, fence);
+    effects.setIntegrationToken(fence, token);
+    const details = convertTokenToUser(token);
+    effects.addFenceConnection({ fence, details });
+    await effects.fetchFenceStudies({ api, fence, details });
+    setConnecting(false);
+    notification.success({
+      message: 'Success',
+      description: ' Controlled dataset access sucessfully connected.',
+      duration: 10,
     });
+    await trackFenceAction({
+      fence,
+      fenceDetails: JSON.stringify(details),
+      category: TRACKING_EVENTS.categories.user.profile,
+      action: TRACKING_EVENTS.actions.integration.connected,
+      label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
+    });
+  } catch (e) {
+    setError(e);
+    setConnecting(false);
+    await trackFenceAction({
+      category: TRACKING_EVENTS.categories.user.profile,
+      action: TRACKING_EVENTS.actions.integration.failed,
+      label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
+    });
+  }
 };
 
 function Integration(props) {
@@ -137,13 +124,13 @@ function Integration(props) {
 
   return (
     <IntegrationManager
+      fence={fence}
       logo={logo}
       description={description}
       isConnected={!!get(fenceConnections, fence, false)}
       isLoadingBeforeConnecting={!fenceConnectionsInitialized}
       actionWhenConnected={{
-        actionCb: viewDetails,
-        actionCbParam: { fence, effects },
+        modalId: fence,
         buttonIcon: <BookOutlined />,
         buttonLabel: 'View studies',
       }}

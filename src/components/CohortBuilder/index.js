@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import Categories from './Categories';
 import ContentBar from './ContentBar';
 import Results from './Results';
@@ -8,11 +10,14 @@ import VirtualStudiesMenu from './VirtualStudiesMenu';
 import ParticipantIcon from 'icons/ParticipantIcon';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
 
+import { Modals, arrangerActions } from './Modals';
+
 import './CohortBuilder.css';
 
 const CohortBuilder = () => {
   const [showDelVSModal, setShowDelVSModal] = useState(false);
   const [virtualStudyToDelete, setVirtualStudyToDelete] = useState(null);
+  const dispatch = useDispatch();
 
   return (
     <SQONProvider>
@@ -49,6 +54,7 @@ const CohortBuilder = () => {
                 setVirtualStudyToDeleteCB={setVirtualStudyToDelete}
                 setShowDelVSModalCB={setShowDelVSModal}
               />
+              <Modals initialSqon={executableSqon} />
 
               <ContentBar className="cb-categories-container">
                 <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
@@ -66,6 +72,7 @@ const CohortBuilder = () => {
                     width: 18,
                     fill: '#a9adc0',
                   }}
+                  actionsProvider={arrangerActions(dispatch)}
                 />
               </div>
 
@@ -77,4 +84,5 @@ const CohortBuilder = () => {
     </SQONProvider>
   );
 };
+
 export default CohortBuilder;

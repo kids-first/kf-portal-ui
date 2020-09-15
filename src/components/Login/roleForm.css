@@ -1,0 +1,31 @@
+.text-align-left {
+    text-align: left;
+}
+
+.section-header-spacing {
+    color: #2b388f;
+    margin-bottom: 18px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.input {
+    width: 380px;
+}
+
+.role-card-active {
+    border: 1px solid #515885;
+}
+
+.role-card {
+    width: 65%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.role-avatar {
+    background-color: transparent;
+    margin-right: 8px;
+    margin-left: 8px;
+}

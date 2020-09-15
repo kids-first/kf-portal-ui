@@ -1,32 +1,51 @@
 import React from 'react';
+import {
+  cardContent,
+  cardScrollY,
+  cardFader,
+  scrollable as scrollableCss,
+  visible,
+  cardScrollYFullHeight,
+} from './Card.module.css';
+import PropTypes from 'prop-types';
 
-import { cardContent, cardScrollY, cardFader, scrollable as scrollableCss, visible } from './Card.module.css';
-
-const isScrolledToBottom = domElement => {
+const isScrolledToBottom = (domElement) => {
   const { scrollTop, scrollHeight, offsetHeight } = domElement;
   return scrollTop + offsetHeight >= scrollHeight;
 };
 
 class CardContent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isAtBottom: !props.scrollable };
-    this.handleScroll = this.handleScroll.bind(this);
-  }
+  static propTypes = {
+    scrollable: PropTypes.bool,
+    showsContentFader: PropTypes.bool,
+    className: PropTypes.string,
+    showScrollFullHeight: PropTypes.bool,
+    children: PropTypes.any,
+  };
 
-  handleScroll(evt) {
+  state = { isAtBottom: !this.props.scrollable };
+
+  handleScroll = (evt) =>
     this.setState({
       isAtBottom: isScrolledToBottom(evt.currentTarget),
     });
-  }
 
   render() {
-    const { children, scrollable = false, showsContentFader = true, className = '' } = this.props;
+    const {
+      children,
+      scrollable = false,
+      showsContentFader = true,
+      className = '',
+      showScrollFullHeight = false,
+    } = this.props;
+
     return (
       <div className={`${cardContent} ${className}`}>
         <div
           onScroll={this.handleScroll}
-          className={`${cardScrollY} ${scrollable ? scrollableCss : ''}`}
+          className={`${showScrollFullHeight ? cardScrollYFullHeight : cardScrollY} ${
+            scrollable ? scrollableCss : ''
+          }`}
         >
           {children}
         </div>

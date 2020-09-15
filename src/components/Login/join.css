@@ -1,0 +1,19 @@
+.steps-content {
+  margin-top: 10px;
+  min-height: 200px;
+  padding-top: 40px;
+}
+
+.step-consent-footer-wrapper,
+.step-basic-info-footer-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-basic-info-paragraph {
+  margin-bottom: 32px;
+}
+
+.submit-btn {
+  margin-left: 8px;
+}

@@ -6,7 +6,7 @@ import { graphql } from 'services/arranger';
 import { withApi } from 'services/api';
 import { ModalFooter } from 'components/Modal/index.js';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { SuccessToastComponent } from './CavaticaSuccessToast';
+import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
 import { copyToProject, isEveryFileTransferred, sumFilesTransfers } from './api';
 import CavaticaProjects from './CavaticaProjects';
 import { Link } from 'react-router-dom';
@@ -151,7 +151,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
   render() {
     const {
       state,
-      effects: { unsetModal, setToast },
+      effects: { unsetModal },
       onComplete,
     } = this.props;
 
@@ -238,10 +238,10 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                     duration: 0,
                   });
                 } else {
-                  setToast({
-                    id: `${Date.now()}`,
-                    action: 'success',
-                    component: SuccessToastComponent({ selectedProjectData }),
+                  notification.success({
+                    message: 'Success',
+                    description: CavaticaSuccessNotificationContent({ selectedProjectData }),
+                    duration: 10,
                   });
                 }
 
