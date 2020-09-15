@@ -127,7 +127,7 @@ class StudiesChart extends React.Component {
             </div>
           );
           return (
-            <Card title={Header} isLoading={isLoading}>
+            <Card title={Header} loading={isLoading}>
               {!data ? (
                 <div>No data</div>
               ) : (

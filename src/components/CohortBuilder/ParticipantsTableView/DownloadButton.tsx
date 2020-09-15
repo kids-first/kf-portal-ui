@@ -21,13 +21,7 @@ const DownloadButton: FunctionComponent<Props> = ({ sqon }) => {
     <Item key={RP_FAM_CLINICAL_DATA_KEY}>{'Clinical Data: Participant & Family Members'}</Item>,
     <Item key={RP_BIOSPECIMEN_DATA_KEY}>{'Biospecimen Data'}</Item>,
   ];
-  return (
-    <ReportsButton
-      sqon={sqon}
-      generatorMenuItems={generatorMenuItems}
-      className={'download-btn-file-repo'}
-    />
-  );
+  return <ReportsButton sqon={sqon} generatorMenuItems={generatorMenuItems} />;
 };
 
 export default DownloadButton;
