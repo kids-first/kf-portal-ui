@@ -7,6 +7,29 @@
 
 ### Technical / Other changes
 -->
+## 2020-09-15 kf-portal-ui 2.23.00
+
+### Features
+- [2534](https://github.com/kids-first/kf-portal-ui/issues/2534) Feature (Cohort Builder, Ontology Browser): Add a link to open the browser from the queries.
+- [2573](https://github.com/kids-first/kf-portal-ui/issues/2573) Feature (Cohort Builder, Participants Saved sets): When saving a set of Participants, the textbox is now already populated with a default name to speed up the saving process.
+- [2579](https://github.com/kids-first/kf-portal-ui/issues/2579) Feature (Cohort Builder, Participants Saved sets): The “Saved Participants set” button now offers more options than just saving a new set. The button now opens a dropdown menu showing all possible options for the user.
+- [2582](https://github.com/kids-first/kf-portal-ui/issues/2582) Feature (Dashboard, Participants Saved sets): The list of sets is now visible in its own card on the Dashboard
+- [2583](https://github.com/kids-first/kf-portal-ui/issues/2583) Feature (Dashboard, Participants Saved sets): It is now possible to edit the name of a set directly from the Dashboard.
+- [2603](https://github.com/kids-first/kf-portal-ui/issues/2603) Feature (Dashboard, Participants Saved sets): It is now possible to delete a set directly from the Dashboard.
+- [2615](https://github.com/kids-first/kf-portal-ui/issues/2615) Feature (Dashboard, Participants Saved sets): It is now possible to add the results of the active query to an already existing set.
+- [2666](https://github.com/kids-first/kf-portal-ui/issues/2666) Feature (Dashboard, Participants Saved sets): It is now possible to remove the results of the active query from an already existing set.
+
+### Technical / Other changes
+- [2541](https://github.com/kids-first/kf-portal-ui/issues/2541) Refactor (UI Theme, scss): Modifications to the structure of some .scss files.
+- [2621](https://github.com/kids-first/kf-portal-ui/issues/2621) Refactor (Login, Terms and Conditions): The user now has to accept the terms and conditions on every login.
+- [2633](https://github.com/kids-first/kf-portal-ui/issues/2633) Refactor (Cohort Builder, Summary/Table view): Refactor of the Summary view, and the Table view tabs UI.
+- [2634](https://github.com/kids-first/kf-portal-ui/issues/2634) Refactor (Antd, version): Update the Antd library version.
+- [2652](https://github.com/kids-first/kf-portal-ui/issues/2652) Refactor (Portal, Freactal): Remove ‘provideToast’.
+- [2653](https://github.com/kids-first/kf-portal-ui/issues/2653) Refactor (Portal, Freactal): Remove ‘provideLocalSqon’.
+- [2669](https://github.com/kids-first/kf-portal-ui/issues/2669) Refactor (Portal, Freactal): Remove ‘provideState’ in the Settings section.
+- [2676](https://github.com/kids-first/kf-portal-ui/issues/2676) Fix (Portal, Graphs): Remove extra spacing above and below the graphics on the dashboard and Cohort Builder pages.
+- [2683](https://github.com/kids-first/kf-portal-ui/issues/2683) Refactor (Portal, Freactal): Remove fractal modal from the uploadIds modal in the File Repository.  
+
 ## 2020-08-11 kf-portal-ui 2.22.00
 ### Technical / Other changes
 - [2581](https://github.com/kids-first/kf-portal-ui/issues/2581) Feature (Cohort Builder, Saved Sets): Unique name for participant save set
