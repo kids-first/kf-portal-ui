@@ -4,7 +4,7 @@ import { Button, Dropdown, Menu, message as antdMessage, notification } from 'an
 import { Sqon } from 'store/sqon';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { DispatchReport, ReportConfig } from 'store/reportTypes';
 import { reInitializeState, fetchReportIfNeeded } from 'store/actionCreators/report';
 import { MessageType as AntdMessageType } from 'antd/lib/message';
@@ -90,13 +90,9 @@ const DownloadButton: FunctionComponent<Props> = (props) => {
       overlay={<Menu onClick={handleClick}>{menuItems.map(identity)}</Menu>}
       disabled={error !== null}
     >
-      <Button
-        type={'primary'}
-        loading={isLoading}
-        icon={<DownloadOutlined />}
-        className={className}
-      >
+      <Button type={'primary'} loading={isLoading} className={className}>
         Download
+        <DownOutlined />
       </Button>
     </Dropdown>
   );

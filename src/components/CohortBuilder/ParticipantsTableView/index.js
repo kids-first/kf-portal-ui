@@ -29,8 +29,6 @@ const ParticipantsTableView = ({
   setSort,
   loggedInUser,
   userSaveSets,
-  userSets,
-  egoGroups,
 }) => {
   useEffect(() => {
     if (loggedInUser) {
@@ -65,7 +63,6 @@ const ParticipantsTableView = ({
               content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
             }
           : sqon;
-
         return (
           <ParticipantsTable
             sqon={selectionSQON}
@@ -107,8 +104,6 @@ const ParticipantsTableView = ({
             selectedRows={selectedRows}
             allRowsSelected={allRowsSelected}
             loggedInUser={loggedInUser}
-            saveSets={userSets.sets}
-            egoGroups={egoGroups}
           />
         );
       }}
