@@ -81,8 +81,8 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     currentUser: '',
   } as SetInfo);
 
-  const confirm = (setId: string, userId: string) => {
-    deleteSaveSet({ userId: userId, setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
+  const confirm = (setId: string) => {
+    deleteSaveSet({ setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
   };
 
   const onEditClick = (record: SetInfo) => {
@@ -132,7 +132,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       render: (setId: string) => (
         <Popconfirm
           title="Permanently delete this set?"
-          onConfirm={() => confirm(setId, user.egoId)}
+          onConfirm={() => confirm(setId)}
           okText="Delete"
           cancelText="Cancel"
         >

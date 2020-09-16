@@ -114,7 +114,6 @@ export type EditSetTagParams = {
 };
 
 export type DeleteSetParams = {
-  userId: string;
   setIds: string[];
   onFail: Function;
 };
