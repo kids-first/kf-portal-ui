@@ -18,8 +18,47 @@
   padding: 24px;
 }
 
-.variantdb-container {
+.variant-db-container {
   padding: 32px;
   max-width: 1300px;
   align-self: center;
+}
+
+.stats-container {
+  padding: 16px 24px 8px;
+}
+
+.main-title-row {
+  padding-bottom: 32px;
+}
+
+.data-header-row {
+  padding: 0;
+}
+
+.data-item-row {
+  display: contents;
+}
+
+.main-text-container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  font-family: 'Open Sans', serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #515885;
+  text-align: left;
+}
+
+.create-cluster-btn {
+  margin-right: 10px;
+}
+
+.logo-btns-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btns-container {
+  display: flex;
 }

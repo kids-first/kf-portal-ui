@@ -181,28 +181,14 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     this.resolveInterimState(api);
   };
 
-  //TODO all styles should be fixed at a later date
   render() {
     const { status, modalVisible } = this.state;
     return (
-      <div className="variantdb-container">
-        <Row style={{ paddingBottom: 32 }}>
+      <div className="variant-db-container">
+        <Row className={'main-title-row'}>
           <Col flex={'auto'} span={16}>
             <Title level={2} style={{ marginBottom: 8, color: '#2B388F' }}>
               Kids First Germline Variant Database
-            </Title>
-            {/*Fix for good later! should remove this shortly*/}
-            <Title
-              level={4}
-              style={{
-                margin: 0,
-                fontFamily: 'Open Sans',
-                fontSize: 20,
-                color: '#7D84A6',
-              }}
-            >
-              The variant warehouse contains harmonized variant calls and clinical data on probands
-              and their parents.
             </Title>
           </Col>
           <Col span={8} />
@@ -219,14 +205,10 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
             />
           </Col>
           <Col span={8}>
-            <div
-              className={'white-background'}
-              style={{ paddingTop: 16, paddingLeft: 24, paddingRight: 24, paddingBottom: 8 }}
-            >
+            <div className={'white-background stats-container'}>
               <List
                 header={
-                  <Row justify={'space-between'} style={{ padding: 0 }}>
-                    {/*Fix for good later! should remove this shortly*/}
+                  <Row justify={'space-between'} className={'data-header-row'}>
                     <Title
                       level={4}
                       style={{
@@ -254,8 +236,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
                 dataSource={this.data}
                 renderItem={(item) => (
                   <List.Item>
-                    <Row style={{ display: 'contents' }}>
-                      {/*Fix for good later! should remove this shortly*/}
+                    <Row className={'data-item-row'}>
                       <Col
                         style={{
                           fontFamily: 'Open Sans',
@@ -264,7 +245,6 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
                       >
                         {item.name}
                       </Col>
-                      {/*Fix for good later! should remove this shortly*/}
                       <Col
                         style={{
                           fontFamily: 'Open Sans',

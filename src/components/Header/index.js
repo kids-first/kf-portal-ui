@@ -114,7 +114,7 @@ const Header = (props) => {
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
                     <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
-                      <DatabaseOutlined /> Variant DB
+                      <DatabaseOutlined /> Variant Workbench
                     </Badge>
                   </NavLink>
                 </li>
