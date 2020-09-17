@@ -106,7 +106,11 @@ export const getSetAndParticipantsCountByUser = async (userId: string) => {
           },
           {
             op: 'not-in',
-            content: { field: 'tag.keyword', value: ['', null] },
+            content: { field: 'tag.keyword', value: [''] },
+          },
+          {
+            op: 'in',
+            content: { field: 'tag.keyword', value: ['__missing_not_wrapped__'] },
           },
         ],
       },
