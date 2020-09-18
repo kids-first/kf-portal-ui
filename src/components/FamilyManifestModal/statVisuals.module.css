@@ -1,0 +1,9 @@
+.inlineWithIcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
