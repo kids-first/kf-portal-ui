@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import sumBy from 'lodash/sumBy';
 import uniq from 'lodash/uniq';
 import { injectState } from 'freactal';
@@ -8,6 +8,7 @@ import Spinner from 'react-spinkit';
 import filesize from 'filesize';
 import formatNumber from '@kfarranger/components/dist/utils/formatNumber';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
+import { Table as ATable } from 'antd';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
@@ -21,14 +22,16 @@ import {
   fileSizeStatVisual,
   fileStatVisual,
   participantsStatVisual,
+  participantStatsHeader,
 } from './statVisuals';
 
-import { H3, TableHeader } from 'uikit/Headings';
+import { TableHeader } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
 
 import { flexColumn, flexRow } from 'theme/tempTheme.module.css';
 import './FamilyManifestModal.css';
 import { CheckCircleTwoTone } from '@ant-design/icons';
+import style from './FamilyManifestModal.module.css';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) =>
   sqon
@@ -106,9 +109,7 @@ const spinner = (
   />
 );
 
-const Section = ({ children }) => (
-  <section style={{ marginTop: '10px', marginBottom: '20px' }}>{children}</section>
-);
+const Section = ({ children }) => <section className={style.section}>{children}</section>;
 
 export default compose(
   injectState,
@@ -150,7 +151,6 @@ export default compose(
     setSetId,
     effects: { unsetModal },
   }) => {
-    const participantStats = [participantsStatVisual, fileStatVisual, fileSizeStatVisual];
     const familyMemberStats = [familyMembersStatVisual, fileStatVisual, fileSizeStatVisual];
     const participantsMemberCount = (participantIds || []).length;
 
@@ -158,7 +158,6 @@ export default compose(
       data.filter(({ fileType }) => checkedFileTypes.includes(fileType));
 
     const isFamilyMemberFilesAvailable = !!(dataTypes || []).length;
-
     return (
       <ColumnsState
         projectId={projectId}
@@ -217,33 +216,28 @@ export default compose(
               const participantSection = (
                 <Section>
                   <ModalSubHeader className={`modalSubHeader`}>
-                    <H3 style={{ fontSize: '16px', display: 'inline-block' }}>
-                      {'Participants Summary'}
-                    </H3>
-                    <span>
-                      {' '}
-                      <Paragraph display="inline-block">
-                        {'- all files will be included in the manifest'}
-                      </Paragraph>
-                    </span>
+                    <h3 style={{ display: 'inline-block' }}>Participants Summary &nbsp;</h3>
+                    <Paragraph display="inline-block">
+                      {' - all files will be included in the manifest'}
+                    </Paragraph>
                   </ModalSubHeader>
-                  <Table
-                    {...{
-                      reverseColor: !isFamilyMemberFilesAvailable,
-                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
-                    }}
-                  >
-                    <ManifestTableDataRow
-                      {...{
-                        fileType: 'All',
-                        members: participantsMemberCount,
+                  <ATable
+                    columns={participantStatsHeader}
+                    dataSource={[
+                      {
+                        key: '1',
+                        datatypes: {
+                          fileType: 'All',
+                          isChecked: isFamilyMemberFilesAvailable,
+                          leftComponent: <CheckCircleTwoTone className={`checkMark`} />,
+                        },
+                        participants: participantsMemberCount,
                         files: participantFilesCount,
-                        fileSize: fileSizeToString(participantFilesSize),
-                        isChecked: isFamilyMemberFilesAvailable,
-                        leftComponent: <CheckCircleTwoTone className={`checkMark`} />,
-                      }}
-                    />
-                  </Table>
+                        size: fileSizeToString(participantFilesSize),
+                      },
+                    ]}
+                    pagination={false}
+                  ></ATable>
                 </Section>
               );
               return loading ? (
@@ -275,15 +269,12 @@ export default compose(
                           return loadingFileTypeStats ? (
                             spinner
                           ) : (
-                            <Fragment>
+                            <>
                               {participantSection}
                               <Section>
                                 <ModalSubHeader className={`modalSubHeader`}>
-                                  <H3 style={{ fontSize: '16px', display: 'inline-block' }}>
-                                    Family Summary
-                                  </H3>
+                                  <h3 style={{ display: 'inline-block' }}>Family Summary&nbsp;</h3>
                                   <span>
-                                    {' '}
                                     <Paragraph display="inline-block">
                                       {
                                         ' - the participants in your query have related family member data.'
@@ -379,7 +370,7 @@ export default compose(
                                 />
                               </Section>
                               <FooterWithParticipantsAndFamilyMembers />
-                            </Fragment>
+                            </>
                           );
                         },
                       }}
