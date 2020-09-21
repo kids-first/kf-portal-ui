@@ -90,7 +90,7 @@ const LaunchClusterCard = (props: Props) => {
         SQL, Scala, Python, and more.
         <br />
         <br />
-        The Workbench contains variant calls and clinical data for probands and families registered
+        The Workbench contains germline variant calls and clinical data for probands and families registered
         in Kids First studies. The same variants found in the harmonized gVCF files provided by the
         Kids First DRC have been loaded into tables that can be explored using several programming
         languages.
