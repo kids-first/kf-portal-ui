@@ -3,9 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SetSubActionTypes } from 'store/saveSetTypes';
-
-import { getUserSets } from 'store/actionCreators/saveSets';
+import { SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
 
 import { Button, Dropdown, Menu } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
@@ -21,7 +19,6 @@ import { Sqon } from 'store/sqon';
 import './ParticipantSetDropdown.css';
 import SaveSetModal from './SaveSetModal';
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
-import { SaveSetActionsTypes } from 'store/saveSetTypes';
 
 type ParticipantSetDropdownProps = {
   sqon: Sqon;
@@ -32,11 +29,7 @@ const mapStateToProps = (state: RootState) => ({
   userSets: selectUserSets(state),
 });
 
-const mapDispatchToProps = (dispatch: DispatchSaveSets) => ({
-  userSaveSets: (userId: string) => dispatch(getUserSets(userId)),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(mapStateToProps, () => ({}));
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -144,4 +137,4 @@ const ParticipantSetDropdown = ({ sqon, userSets, loggedInUser }: Props): JSX.El
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ParticipantSetDropdown);
+export default connector(ParticipantSetDropdown);
