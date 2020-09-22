@@ -1,33 +1,11 @@
 @import '../../../node_modules/antd/dist/antd.less'; // Import Ant Design styles by less entry
+@import './colors.less';
 
-/**
-* modifyVars
-*     example : @primary-color: red;
-*/
-
-@layout-sider-background: #f4f5f8;
-
-//Buttons
-@btn-primary-bg: #008199;
-@btn-primary-color: #ffffff;
-@btn-default-color: #008199;
-@btn-danger-bg: #d82030;
-@btn-danger-border: #d82030;
-
-//Heading - Title
-@heading-color: #2b388f;
 //info: font-size-base: 14px;
 @heading-2-size: ceil(@font-size-base * 2);
 @heading-3-size: ceil(@font-size-base * 1.571);
 @heading-4-size: ceil(@font-size-base * 1);
 @typography-title-font-weight: 500;
-
-// LINK
-@link-color: #90278e;
-
-// Tag
-@tag-default-bg: #404c9a;
-@tag-default-color: #fff;
 
 .@{btn-prefix-cls} {
   &-link {
@@ -37,8 +15,9 @@
   }
 }
 
+// Filters
+
 //Tabs
-@tabs-highlight-color: #a6278f;
 @tabs-ink-bar-color: @tabs-highlight-color;
 
 @tab-prefix-cls: ~'@{ant-prefix}-tabs';
@@ -49,7 +28,7 @@
     border: 0;
   }
   &-tab {
-    color: #515885;
+    color: @tabs-color;
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
@@ -64,41 +43,3 @@
   }
 }
 //Cards
-
-//Table
-@table-header-bg: #f9f9fb; //@background-color-light
-
-h1,
-h2,
-h3,
-h4 {
-  color: #2b388f;
-  margin: 0;
-  padding: 0;
-  font-weight: 500;
-  line-height: 0.71;
-  letter-spacing: 0.4px;
-  font-family: Montserrat, sans-serif;
-  text-decoration: none;
-}
-
-h2 {
-  font-size: 22px;
-}
-
-h3 {
-  font-size: 16px;
-  line-height: 1;
-  letter-spacing: 0.3px;
-}
-
-h4 {
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.85;
-  text-align: left;
-  color: #74757d;
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}

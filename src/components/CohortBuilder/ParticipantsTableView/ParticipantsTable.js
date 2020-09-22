@@ -16,6 +16,7 @@ import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import './ParticipantTableView.css';
+import style from 'style/dist/colors.module.css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -253,7 +254,7 @@ class ParticipantsTable extends Component {
           </ToolbarGroup>
           <div className={'action-btns-layout'}>
             <ColumnFilter
-              colsPickerBtnClassName={'cols-picker-btn'}
+              colsPickerBtnClassName={`cols-picker-btn ${style.btnDefaultColor}`}
               columns={columns}
               defaultCols={[...columns]}
               onChange={(updatedCols, updatedCol) => {
@@ -278,7 +279,7 @@ class ParticipantsTable extends Component {
                 sqon: sqon,
                 sort,
                 dataTotalCount,
-                exportBtnClassName: 'export-btn',
+                exportBtnClassName: `export-btn ${style.btnDefaultColor}`,
               }}
             />
           </div>

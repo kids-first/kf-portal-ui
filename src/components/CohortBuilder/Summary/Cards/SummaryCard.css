@@ -12,6 +12,7 @@
   padding: 0px 0px;
   flex-grow: 1;
   margin: 20px;
+  margin-top: 0px;
   margin-bottom: 40px;
   position: relative;
 }
@@ -23,10 +24,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  /* display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center; */
+  border-top: thin solid #f0f0f0;
 }
 
 .cb-card-summary-chart .ant-card-loading-content {
@@ -35,4 +33,6 @@
 }
 .cb-card-summary-chart .ant-card-head {
   min-height: auto;
+  border-bottom: none;
+  margin: 10px 22px;
 }
