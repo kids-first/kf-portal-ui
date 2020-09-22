@@ -24505,10 +24505,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-upload-list-rtl.ant-upload-list-picture-card .ant-upload-list-item-info {
   padding: 0;
 }
-/**
-* modifyVars
-*     example : @primary-color: red;
-*/
 .ant-btn-link > span {
   text-decoration: underline;
 }
@@ -24528,28 +24524,4 @@ div.ant-typography-edit-content.ant-typography-rtl {
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
-}
-h2,
-h4 {
-  color: #2b388f;
-  margin: 0;
-  padding: 0;
-  font-weight: 500;
-  line-height: 0.71;
-  letter-spacing: 0.4px;
-  font-family: Montserrat, sans-serif;
-  text-decoration: none;
-}
-h2 {
-  font-size: 22px;
-}
-h4 {
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.85;
-  text-align: left;
-  color: #74757d;
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
 }

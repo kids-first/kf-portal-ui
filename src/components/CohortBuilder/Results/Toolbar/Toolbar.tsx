@@ -1,15 +1,15 @@
 import React from 'react';
-import DemographicIcon from 'icons/DemographicIcon';
 import get from 'lodash/get';
 import capitalize from 'lodash/capitalize';
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
 import { roundIntToChosenPowerOfTen } from 'utils';
 import { Spin, notification } from 'antd';
-import familyMembers from 'assets/icon-families-grey.svg';
-import { FileFilled } from '@ant-design/icons';
+import DemographicIcon from 'icons/DemographicIcon';
+import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 
-import ButtonWithRouter from '../../../../ui/ButtonWithRouter';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, FileFilled } from '@ant-design/icons';
+
+import ButtonWithRouter from 'ui/ButtonWithRouter';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
@@ -30,12 +30,12 @@ const LABELS = {
   [ToolbarLabels.participant]: {
     singular: 'participant',
     plural: 'participants',
-    icon: <DemographicIcon width="16px" height="18px" />,
+    icon: <DemographicIcon width="19px" height="18px" fill="#2b388f" />,
   },
   [ToolbarLabels.family]: {
     singular: 'family',
     plural: 'families',
-    icon: <img src={familyMembers} alt="" height="16px" />,
+    icon: <FamilyMembersIcon width="18px" height="16px" fill="#2b388f" />,
   },
   [ToolbarLabels.file]: {
     singular: 'file',
@@ -127,7 +127,9 @@ const ToolbarFile = ({ count }: { count: number }) => {
       <div>
         {prefix}{' '}
         <span>
-          {label} <ArrowRightOutlined />
+          {label}
+          <ArrowRightOutlined />
+          &nbsp;
         </span>
       </div>
     </div>
