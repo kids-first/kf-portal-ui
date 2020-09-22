@@ -188,7 +188,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
         <Row className={'main-title-row'}>
           <Col flex={'auto'} span={16}>
             <Title level={2} style={{ marginBottom: 8, color: '#2B388F' }}>
-              Kids First Germline Variant Database
+              Kids First Variant Workbench
             </Title>
           </Col>
           <Col span={8} />
