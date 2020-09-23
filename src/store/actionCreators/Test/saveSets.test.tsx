@@ -239,7 +239,7 @@ describe('createSaveSet', () => {
       },
     });
 
-    const payload = { userId: 'userId', setIds: ['setId1'], onFail: () => {} } as DeleteSetParams;
+    const payload = { setIds: ['setId1'], onFail: () => {} } as DeleteSetParams;
 
     // @ts-ignore
     await store.dispatch(deleteUserSets(payload));

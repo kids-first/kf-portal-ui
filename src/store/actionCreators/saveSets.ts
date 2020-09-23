@@ -109,7 +109,6 @@ export const editSetTag = (
         SetSourceType.SAVE_SET,
         data,
         SetSubActionTypes.RENAME_TAG,
-        setInfo.currentUser,
         setInfo.key,
       );
 
@@ -157,7 +156,7 @@ export const addRemoveSetIds = (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { onSuccess, onFail, sqon, path, type, subActionType, userId, setId } = payload;
+  const { onSuccess, onFail, sqon, path, type, subActionType, setId } = payload;
 
   dispatch(isAddingOrRemovingToSet(true));
 
@@ -172,7 +171,6 @@ export const addRemoveSetIds = (
       SetSourceType.QUERY,
       data,
       subActionType,
-      userId,
       setId,
     );
 
@@ -203,12 +201,12 @@ export const addRemoveSetIds = (
 export const deleteUserSets = (
   payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { userId, setIds, onFail } = payload;
+  const { setIds, onFail } = payload;
 
   dispatch(isDeletingSets(true));
 
   try {
-    const result = await deleteSets(userId, setIds);
+    const result = await deleteSets(setIds);
 
     if (result && result > 0) {
       dispatch(removeUserSets(setIds));

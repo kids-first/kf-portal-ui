@@ -3,7 +3,6 @@ import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { config as statsConfig } from 'components/Stats';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
-import { H2 } from 'uikit/Headings';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
 import { Button, Layout } from 'antd';
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons';
@@ -41,7 +40,7 @@ const AggregationSidebar = ({
       {expanded ? (
         <Fragment>
           <div className={aggregationHeader}>
-            <H2>Filter</H2>
+            <h2>Filter</h2>
             <Button
               type={'primary'}
               className={browseAllBtn}

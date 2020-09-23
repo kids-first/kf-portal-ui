@@ -1,5 +1,5 @@
 import azicon from '../../assets/appache-zeppelin.png';
-import { Button, Col, Modal, Row } from 'antd';
+import { Button, Modal } from 'antd';
 import { DeleteOutlined, LoadingOutlined, RocketOutlined, ToolOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { clusterStatus, isInterimState, canBeDeleted } from './store';
@@ -42,26 +42,21 @@ const LaunchClusterCard = (props: Props) => {
   }
   return (
     <div className={'white-background middle-align launch-cluster-container'}>
-      <img alt="AppacheZeppelin" src={azicon} />
-      {/*Fix for good later! should remove this shortly*/}
-      <div
-        style={{
-          paddingTop: 24,
-          paddingBottom: 24,
-          fontFamily: 'Open Sans',
-          fontSize: '16px',
-          lineHeight: '24px',
-          color: '#515885',
-        }}
+      <Modal
+        title="Shut Down Cluster"
+        visible={modalVisible}
+        onOk={hideModalOk}
+        onCancel={hideModal}
+        okText="OK"
+        cancelText="Cancel"
       >
-        Kids First provides members with their own SPARK cluster running a web-based Zeppelin
-        notebooks dansbox to explore, query and visualize its germline variant datasets. Using
-        Zeppelin, bioinformaticians can create interactive data analytics and collaborative
-        documents with SQL, Scala, Python, and more.
-      </div>
-      <Row justify={'center'} gutter={24}>
-        <Col>
+        <p>Do you want to shut down this cluster?</p>
+      </Modal>
+      <div className={'logo-btns-container'}>
+        <img alt="Appache-Zeppelin-Logo" src={azicon} />
+        <div className={'btns-container'}>
           <Button
+            className={'create-cluster-btn'}
             id="createClusterButton"
             type={status === clusterStatus.createComplete ? 'primary' : 'default'}
             icon={buttonIcon}
@@ -70,8 +65,6 @@ const LaunchClusterCard = (props: Props) => {
           >
             {buttonText}
           </Button>
-        </Col>
-        <Col>
           {canBeDeleted(status) && (
             <div>
               <Button
@@ -81,22 +74,37 @@ const LaunchClusterCard = (props: Props) => {
                 icon={<DeleteOutlined />}
                 onClick={showModal}
               >
-                Delete Cluster
+                Shut Down Cluster
               </Button>
-              <Modal
-                title="Delete Cluster"
-                visible={modalVisible}
-                onOk={hideModalOk}
-                onCancel={hideModal}
-                okText="OK"
-                cancelText="Cancel"
-              >
-                <p>You want to delete this cluster?</p>
-              </Modal>
             </div>
           )}
-        </Col>
-      </Row>
+        </div>
+      </div>
+      <div className={'main-text-container'}>
+        The Variant Workbench is a cloud-based analysis platform for querying and analyzing Kids
+        First data.
+        <br />
+        <br />
+        The Variant Workbench is powered by web-based Zeppelin Notebooks. Using Zeppelin,
+        bioinformaticians can create interactive data analytics and collaborative documents with
+        SQL, Scala, Python, and more.
+        <br />
+        <br />
+        The Workbench contains germline variant calls and clinical data for probands and families registered
+        in Kids First studies. The same variants found in the harmonized gVCF files provided by the
+        Kids First DRC have been loaded into tables that can be explored using several programming
+        languages.
+        <br />
+        <br />
+        Additionally, the Workbench is loaded with predicted consequences for these variants on
+        genes. Clinical information and family relationships have also been uploaded, with all of
+        these fields paired by Kids First Participant ID.
+        <br />
+        <br />
+        By combining clinical and genomic data together in one tool, the Variant Workbench allows
+        users to query across these data types in one cloud-based environment, accelerating research
+        in the field of pediatric cancer and structural birth defects.
+      </div>
     </div>
   );
 };

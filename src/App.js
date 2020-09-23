@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Modal from 'components/Modal';
 import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
@@ -16,8 +16,7 @@ import CohortBuilder from 'components/CohortBuilder';
 import MemberSearchPage from 'components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
-import Page from 'components/Page';
-import { FixedFooterPage } from 'components/Page';
+import Page, { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
@@ -37,6 +36,9 @@ import TermsConditions from 'components/Login/TermsConditions';
 import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
 import 'index.css';
+import { selectUserSets } from './store/selectors/saveSetsSelectors';
+import { getUserSets } from './store/actionCreators/saveSets';
+import { connect } from 'react-redux';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -44,10 +46,21 @@ const userIsRequiredToLogIn = (loggedInUser) =>
     (isPlainObject(loggedInUser) && isEmpty(loggedInUser))) &&
   requireLogin;
 
+const mapStateToProps = (state) => ({
+  userSets: selectUserSets(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchUserSets: (userId) => dispatch(getUserSets(userId)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
 const App = compose(
   injectState,
   withApi,
-)(({ state, api }) => {
+  connector,
+)(({ state, api, fetchUserSets }) => {
   const { loggedInUser, isLoadingUser, isJoining } = state;
 
   if (isLoadingUser) {
@@ -73,6 +86,12 @@ const App = compose(
     }
     return <WrapperPage {...props} />;
   };
+
+  useEffect(() => {
+    if (!isLoadingUser && loggedInUser) {
+      fetchUserSets(loggedInUser.egoId);
+    }
+  }, [loggedInUser, fetchUserSets, isLoadingUser]);
 
   return (
     <div className="appContainer">

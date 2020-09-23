@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import React, { Fragment, FunctionComponent, useState } from 'react';
 import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
@@ -16,7 +16,7 @@ import {
   selectIsLoadingSets,
   selectUserSets,
 } from 'store/selectors/saveSetsSelectors';
-import { deleteUserSets, getUserSets } from 'store/actionCreators/saveSets';
+import { deleteUserSets } from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
@@ -46,12 +46,11 @@ const mapState = (state: RootState): SaveSetState => ({
     sets: selectUserSets(state),
     error: selectErrorUserSets(state),
     isDeleting: selectIsDeletingSets(state),
-    isEditing: false, //TODO
+    isEditing: false,
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  userSaveSets: (userId: string) => dispatch(getUserSets(userId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
 });
 
@@ -72,7 +71,7 @@ const onDeleteFail = () => {
 };
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
-  const { user, userSaveSets, userSets, deleteSaveSet } = props;
+  const { user, userSets, deleteSaveSet } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
     key: '',
@@ -81,8 +80,8 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     currentUser: '',
   } as SetInfo);
 
-  const confirm = (setId: string, userId: string) => {
-    deleteSaveSet({ userId: userId, setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
+  const confirm = (setId: string) => {
+    deleteSaveSet({ setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
   };
 
   const onEditClick = (record: SetInfo) => {
@@ -132,7 +131,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       render: (setId: string) => (
         <Popconfirm
           title="Permanently delete this set?"
-          onConfirm={() => confirm(setId, user.egoId)}
+          onConfirm={() => confirm(setId)}
           okText="Delete"
           cancelText="Cancel"
         >
@@ -143,10 +142,6 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       ),
     },
   ];
-
-  useEffect(() => {
-    userSaveSets(user.egoId);
-  }, [userSaveSets, user]);
 
   const data: SetInfo[] = userSets.sets.map((s) => ({
     key: s.setId,

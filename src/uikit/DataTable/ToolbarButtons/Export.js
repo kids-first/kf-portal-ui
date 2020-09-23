@@ -13,7 +13,7 @@ import urlJoin from 'url-join';
 import { print } from 'graphql/language/printer';
 import exportTSV from './exportTSV';
 
-const formatDataForExport = result => (result ? result.nodes.map(node => ({ ...node })) : []);
+const formatDataForExport = (result) => (result ? result.nodes.map((node) => ({ ...node })) : []);
 
 export default class Export extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ export default class Export extends Component {
           `/${arrangerProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
         ),
         body: JSON.stringify(
-          queries.map(q => ({
+          queries.map((q) => ({
             query: typeof q.query === 'string' ? q.query : print(q.query),
             variables: q.variables,
           })),
@@ -86,9 +86,10 @@ export default class Export extends Component {
       <Button
         className={exportBtnClassName}
         loading={this.state.isLoading}
-        icon={<DownloadOutlined />}
         onClick={this.handleClick}
+        type="link"
       >
+        <DownloadOutlined />
         Export
       </Button>
     );

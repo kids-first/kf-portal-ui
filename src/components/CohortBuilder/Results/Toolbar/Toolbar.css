@@ -1,0 +1,79 @@
+.cb-toolbar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cb-toolbar-is-loading {
+  margin-left: 10px;
+}
+
+.cb-toolbar-details-header {
+  margin-right: 12px;
+}
+
+.cb-toolbar-info {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex: 2;
+  border-left: 1px solid #d7d8db;
+  margin-right: 16px;
+  height: 24px;
+}
+.cb-toolbar-info .ant-btn.ant-btn-link {
+  padding: 0;
+  height: auto;
+}
+
+.cb-toolbar-item {
+  align-items: center;
+  display: flex;
+  margin: 0 10px 0 10px;
+  font-weight: 600;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  margin-left: 16px;
+  color: #2b388f;
+}
+
+.cb-toolbar-item-files {
+  color: inherit;
+}
+
+.cb-toolbar-container:first-child {
+  margin: 0 10px 0 0;
+}
+
+.cb-toolbar-container:last-child {
+  margin: 0 5px 0 0;
+}
+
+.cb-toolbar-item div {
+  margin-left: 4px;
+}
+
+.cb-toolbar-item div span {
+  align-self: flex-end;
+  font-size: 12px;
+  color: #7d84a6;
+}
+
+.cb-toolbar-item-files div span {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.cb-toolbar-item-files div span span svg {
+  border-bottom: thin solid #90278e;
+  margin-bottom: -1px;
+}
+
+.ant-btn-link:hover .cb-toolbar-item-files div span span svg {
+  border-bottom: thin solid #008199;
+}
+
+.cb-toolbar-no-results {
+  color: #2b388f;
+}

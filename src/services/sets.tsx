@@ -106,7 +106,11 @@ export const getSetAndParticipantsCountByUser = async (userId: string) => {
           },
           {
             op: 'not-in',
-            content: { field: 'tag.keyword', value: ['', null] },
+            content: { field: 'tag.keyword', value: [''] },
+          },
+          {
+            op: 'in',
+            content: { field: 'tag.keyword', value: ['__missing_not_wrapped__'] },
           },
         ],
       },
@@ -138,14 +142,13 @@ export const createSet = async (userId: string, params: CreateSetParams) => {
   });
 };
 
-export const deleteSets = async (userId: string, setIds: string[]) => {
+export const deleteSets = async (setIds: string[]) => {
   const response = await graphql(initializeApi())({
-    query: `mutation ($setIds: [String!] $userId: String!) {
-              deleteSets(setIds: $setIds, userId: $userId)
+    query: `mutation ($setIds: [String!]) {
+              deleteSets(setIds: $setIds)
             }`,
     variables: {
       setIds: setIds,
-      userId: userId,
     },
   });
 
@@ -156,13 +159,16 @@ export const updateSet = async (
   sourceType: SetSourceType,
   data: SetUpdateInputData,
   subAction: SetSubActionTypes,
-  userId: string,
   setId: string,
 ) => {
   const response = await graphql(initializeApi())({
-    query: `mutation($source: SetUpdateSource!, $data: SetUpdateInputData!, $subAction: SetSubActionTypes!, 
-            $userId: String!, $target: SetUpdateTarget! ){
-              updateSet(source:$source, data: $data, subAction: $subAction, userId:$userId, target: $target){
+    query: `mutation(
+              $source: SetUpdateSource!,
+              $data: SetUpdateInputData!,
+              $subAction: SetSubActionTypes!,
+              $target: SetUpdateTarget!
+              ){
+              updateSet(source:$source, data: $data, subAction: $subAction, target: $target){
                 setSize
                 updatedResults
               }
@@ -173,7 +179,6 @@ export const updateSet = async (
       },
       data: data,
       subAction: subAction,
-      userId: userId,
       target: {
         setId: setId,
       },

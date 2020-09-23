@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
@@ -15,14 +15,8 @@ import { trackUserInteraction } from 'services/analyticsTracking';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-import SaveSetModal from './SaveSetModal';
-import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 import './ParticipantTableView.css';
-import { isPartOfGroup } from 'common/profile';
-import DownloadButton from './DownloadButton';
-import ParticipantSetDropdown from './ParticipantSetDropdown';
-import { SaveSetActionsTypes } from 'store/saveSetTypes';
-import { SetSubActionTypes } from 'store/saveSetTypes';
+import style from 'style/dist/colors.module.css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -218,9 +212,6 @@ class ParticipantsTable extends Component {
           ? { ...field, sortable: true }
           : { ...field, sortable: false },
       ),
-      showModalSave: false,
-      showModalAddDelete: false,
-      actionType: '',
     };
     autobind(this);
   }
@@ -239,120 +230,59 @@ class ParticipantsTable extends Component {
       selectedRows,
       allRowsSelected,
       sqon,
-      loggedInUser,
-      saveSets,
-      egoGroups,
     } = this.props;
     // I know. Sometimes, you gotta do what you gotta do.
     this.dirtyHack.allRowsSelected = allRowsSelected;
-    const { columns, actionType } = this.state;
+    const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
 
     return (
-      <Fragment>
-        {this.state.showModalSave && (
-          <SaveSetModal
-            title={'Save Participant Set'}
-            api={api}
-            sqon={sqon}
-            user={loggedInUser}
-            hideModalCb={() =>
-              this.setState({
-                showModalSave: false,
-              })
-            }
-            saveSetActionType={SaveSetActionsTypes.CREATE}
-          />
-        )}
-        {this.state.showModalAddDelete && (
-          <AddRemoveSaveSetModal
-            api={api}
-            sqon={sqon}
-            user={loggedInUser}
-            subActionType={actionType}
-            hideModalCb={() =>
-              this.setState({
-                showModalAddDelete: false,
-              })
-            }
-            saveSetActionType={SaveSetActionsTypes.EDIT}
-          />
-        )}
+      <>
         <Toolbar style={{ border: 'none' }}>
-          <Fragment>
-            <ToolbarGroup style={{ border: 'none' }}>
-              <Fragment>
-                {selectedRowsCount > 0 ? (
-                  <ToolbarSelectionCount>
-                    <Fragment>
-                      <span>{selectedRowsCount}</span>
-                      <span>{`\u00A0participant${
-                        selectedRowsCount > 1 ? 's are' : ' is'
-                      } selected\u00A0`}</span>
-                      <button onClick={() => onClearSelected()} className="clearSelection">
-                        {'clear selection'}
-                      </button>
-                    </Fragment>
-                  </ToolbarSelectionCount>
-                ) : null}
-              </Fragment>
-            </ToolbarGroup>
-            <div className={'action-btns-layout'} id={'dropdown-container'}>
-              {isPartOfGroup('kf-investigator', egoGroups) && (
-                <ParticipantSetDropdown
-                  sqon={sqon}
-                  onSave={() => {
-                    this.setState({
-                      showModalSave: true,
-                    });
-                  }}
-                  onAddToSet={() => {
-                    this.setState({
-                      actionType: SetSubActionTypes.ADD_IDS,
-                      showModalAddDelete: true,
-                    });
-                  }}
-                  onDeleteToSet={() => {
-                    this.setState({
-                      actionType: SetSubActionTypes.REMOVE_IDS,
-                      showModalAddDelete: true,
-                    });
-                  }}
-                  userSets={saveSets}
-                />
-              )}
-              <DownloadButton sqon={sqon} />
-              <ColumnFilter
-                colsPickerBtnClassName={'cols-picker-btn'}
-                columns={columns}
-                defaultCols={[...columns]}
-                onChange={(updatedCols, updatedCol) => {
-                  if (analyticsTracking && updatedCol) {
-                    trackUserInteraction({
-                      category: analyticsTracking.category,
-                      action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                        updatedCol.show ? 'show' : 'hide'
-                      }`,
-                      label: updatedCol.Header,
-                    });
-                  }
-                  this.setState({ columns: updatedCols });
-                }}
-              />
-              <Export
-                {...{
-                  columns,
-                  selectedRows: selectedRows || [],
-                  downloadName,
-                  api,
-                  sqon: sqon,
-                  sort,
-                  dataTotalCount,
-                  exportBtnClassName: 'export-btn',
-                }}
-              />
-            </div>
-          </Fragment>
+          <ToolbarGroup style={{ border: 'none' }}>
+            {selectedRowsCount > 0 ? (
+              <ToolbarSelectionCount>
+                <span>{selectedRowsCount}</span>
+                <span>{`\u00A0participant${
+                  selectedRowsCount > 1 ? 's are' : ' is'
+                } selected\u00A0`}</span>
+                <button onClick={() => onClearSelected()} className="clearSelection">
+                  {'clear selection'}
+                </button>
+              </ToolbarSelectionCount>
+            ) : null}
+          </ToolbarGroup>
+          <div className={'action-btns-layout'}>
+            <ColumnFilter
+              colsPickerBtnClassName={`cols-picker-btn ${style.btnDefaultColor}`}
+              columns={columns}
+              defaultCols={[...columns]}
+              onChange={(updatedCols, updatedCol) => {
+                if (analyticsTracking && updatedCol) {
+                  trackUserInteraction({
+                    category: analyticsTracking.category,
+                    action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
+                      updatedCol.show ? 'show' : 'hide'
+                    }`,
+                    label: updatedCol.Header,
+                  });
+                }
+                this.setState({ columns: updatedCols });
+              }}
+            />
+            <Export
+              {...{
+                columns,
+                selectedRows: selectedRows || [],
+                downloadName,
+                api,
+                sqon: sqon,
+                sort,
+                dataTotalCount,
+                exportBtnClassName: `export-btn ${style.btnDefaultColor}`,
+              }}
+            />
+          </div>
         </Toolbar>
         <ControlledDataTable
           columns={columns}
@@ -362,7 +292,7 @@ class ParticipantsTable extends Component {
           onFetchData={onFetchData}
           dataTotalCount={dataTotalCount}
         />
-      </Fragment>
+      </>
     );
   }
 }
@@ -383,8 +313,6 @@ ParticipantsTable.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
-  loggedInUser: PropTypes.object,
-  saveSets: PropTypes.array.isRequired,
 };
 
 export default ParticipantsTable;

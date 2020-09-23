@@ -1,33 +1,11 @@
 @import '../../../node_modules/antd/dist/antd.less'; // Import Ant Design styles by less entry
+@import './colors.less';
 
-/**
-* modifyVars
-*     example : @primary-color: red;
-*/
-
-@layout-sider-background: #f4f5f8;
-
-//Buttons
-@btn-primary-bg: #008199;
-@btn-primary-color: #ffffff;
-@btn-default-color: #008199;
-@btn-danger-bg: #d82030;
-@btn-danger-border: #d82030;
-
-//Heading - Title
-@heading-color: #2b388f;
 //info: font-size-base: 14px;
 @heading-2-size: ceil(@font-size-base * 2);
 @heading-3-size: ceil(@font-size-base * 1.571);
 @heading-4-size: ceil(@font-size-base * 1);
 @typography-title-font-weight: 500;
-
-// LINK
-@link-color: #90278e;
-
-// Tag
-@tag-default-bg: #404c9a;
-@tag-default-color: #fff;
 
 .@{btn-prefix-cls} {
   &-link {
@@ -37,8 +15,9 @@
   }
 }
 
+// Filters
+
 //Tabs
-@tabs-highlight-color: #a6278f;
 @tabs-ink-bar-color: @tabs-highlight-color;
 
 @tab-prefix-cls: ~'@{ant-prefix}-tabs';
@@ -49,7 +28,7 @@
     border: 0;
   }
   &-tab {
-    color: #515885;
+    color: @tabs-color;
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
@@ -64,6 +43,3 @@
   }
 }
 //Cards
-
-//Table
-@table-header-bg: #f9f9fb; //@background-color-light

@@ -7,6 +7,16 @@
 
 ### Technical / Other changes
 -->
+## 2020-09-23 kf-portal-ui 2.24.0
+
+### Features
+- [2687](https://github.com/kids-first/kf-portal-ui/issues/2687) Fix (Variant page): Update text on the Variant DB home page
+
+### Technical / Other changes
+- [2706](https://github.com/kids-first/kf-portal-ui/issues/2706) Fix (Cohort Builder, Sets): Make sure userId is not visible on the network (sets)
+- [2558](https://github.com/kids-first/kf-portal-ui/issues/2558) Fix (File Repo, Download Manifest): Make modal readable (layout was broken)
+- [2719](https://github.com/kids-first/kf-portal-ui/issues/2719) Fix (Cohort Builder, Sets ): Make sure sets are always up-to-date 
+
 ## 2020-09-15 kf-portal-ui 2.23.00
 
 ### Features
