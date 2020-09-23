@@ -78,6 +78,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
       const toolbar = (
         <Toolbar
           {...{
+            api,
             isLoading,
             data: data[0],
             participantCount,
@@ -85,6 +86,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
             activeSqonIndex,
             egoGroups: state.egoGroups,
             sqon,
+            loggedInUser: state.loggedInUser,
           }}
         />
       );

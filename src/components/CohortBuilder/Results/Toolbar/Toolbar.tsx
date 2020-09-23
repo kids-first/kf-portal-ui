@@ -19,6 +19,7 @@ import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDr
 import { isPartOfGroup } from 'common/profile';
 import { Sqon } from 'store/sqon';
 import './Toolbar.css';
+import { LoggedInUser } from 'store/userTypes';
 
 enum ToolbarLabels {
   participant,
@@ -53,9 +54,9 @@ const showErrorNotification = () =>
 type generateAllFilesLinkFn = (user: any, api: any, originalSqon: any) => Promise<string>;
 
 const generateAllFilesLink: generateAllFilesLinkFn = async (
-  user: any,
-  api: any,
-  originalSqon: any,
+  user: LoggedInUser,
+  api: Function,
+  originalSqon: Sqon,
 ) => {
   let fileSet = null;
   try {
@@ -148,10 +149,10 @@ type ToolbarProps = {
   isFiltered: boolean;
   participantCount: number;
   activeSqonIndex: number;
-  loggedInUser: object;
   api: object;
   sqon: Sqon;
   egoGroups: any;
+  loggedInUser: LoggedInUser;
 };
 
 const Toolbar = ({
