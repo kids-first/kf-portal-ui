@@ -31,6 +31,7 @@ export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...pr
         display: 'flex',
         alignItems: 'stretch',
         flexDirection: 'column',
+        overflowY: 'auto',
       }}
     >
       <Component {...props} />
