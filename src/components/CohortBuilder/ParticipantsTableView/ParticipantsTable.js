@@ -16,7 +16,7 @@ import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import './ParticipantTableView.css';
-import style from 'style/dist/colors.module.css';
+import style from 'style/themes/default/colors.module.scss';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input

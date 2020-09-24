@@ -20,6 +20,7 @@ import { isPartOfGroup } from 'common/profile';
 import { Sqon } from 'store/sqon';
 import './Toolbar.css';
 import { LoggedInUser } from 'store/userTypes';
+import colors from 'style/themes/default/colors.module.scss';
 
 enum ToolbarLabels {
   participant,
@@ -36,7 +37,7 @@ const LABELS = {
   [ToolbarLabels.family]: {
     singular: 'family',
     plural: 'families',
-    icon: <FamilyMembersIcon width="18px" height="16px" fill="#2b388f" />,
+    icon: <FamilyMembersIcon width="18px" height="16px" fill={colors.headingColor} />,
   },
   [ToolbarLabels.file]: {
     singular: 'file',
