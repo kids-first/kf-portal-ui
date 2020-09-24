@@ -2,12 +2,12 @@
 
 ## Strategy
 
-1. Use .less to customize colors and ant design component
-2. Export to scss to be use for the main theme and custom components
-3. Use css module and scss per components
+1. Use .less to customize colors and ant design components
+2. Export to scss for the main theme and custom components
+3. Use css module and scss per component
 4. Use scss exported variable for props and inline styling (should be avoid when possible)
 
-Naming convention for colors variable should follow ant design theme implementation
+Naming convention for colors variables should follow ant design theme implementation
 
 ### Motivation
 
@@ -26,13 +26,14 @@ Naming convention for colors variable should follow ant design theme implementat
       |-- themes
         |-- default/        :> default theme, to load in code
           |-- antd.css      :> load in main app, rewrite ant design default
-          '-- _colors.scss   :> generated colors from ant design theme in colors.less
+          '-- _colors.scss   :> dynamically generated colors from ant design theme in colors.less
     |-- themes/
       |-- default           :> default theme (default could for example point to v1 or v2 etc.)
         |-- antd/           :> not use directly in the code
         | |-- antd.less
         | '-- colors.less
-        |-- _colors.scss     :> Ant design colors and site theme colors
+        |-- _colors.scss        :> Ant design colors to import from other scss files or Javascript
+        |-- colors.modules.scss :> Colors classes and variable to be uses inside jsx (className)
         '-- main.scss      :> General style for the site outside ant design component
 ```
 
