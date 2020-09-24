@@ -18,9 +18,10 @@ import DownloadButton from '../../ParticipantsTableView/DownloadButton';
 import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
 import { isPartOfGroup } from 'common/profile';
 import { Sqon } from 'store/sqon';
-import './Toolbar.css';
 import { LoggedInUser } from 'store/userTypes';
-import colors from 'style/themes/default/colors.module.scss';
+
+import './Toolbar.scss';
+import colors from 'style/themes/default/_colors.scss';
 
 enum ToolbarLabels {
   participant,
@@ -32,7 +33,7 @@ const LABELS = {
   [ToolbarLabels.participant]: {
     singular: 'participant',
     plural: 'participants',
-    icon: <DemographicIcon width="19px" height="18px" fill="#2b388f" />,
+    icon: <DemographicIcon width="19px" height="18px" fill={colors.headingColor} />,
   },
   [ToolbarLabels.family]: {
     singular: 'family',
