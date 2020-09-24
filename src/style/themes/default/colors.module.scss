@@ -1,0 +1,17 @@
+@import 'colors';
+
+.btnDefaultColor {
+  color: $btn-default-color;
+}
+
+:export {
+  btnprimarybg: $btn-primary-bg;
+  btnprimarycolor: $btn-primary-color;
+  btndefaultcolor: $btn-default-color;
+  btndangerbg: $btn-danger-bg;
+  btndangerborder: $btn-danger-border;
+
+  //Heading - Title
+  headingcolor: $heading-color;
+  headingcolorlight: $heading-color-light;
+}
