@@ -7,7 +7,6 @@ import Spinner from 'react-spinkit';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
 
 import Tooltip from 'uikit/Tooltip';
-import { H3 } from 'uikit/Headings';
 import { WhiteButton } from 'uikit/Button';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiRoot } from 'common/injectGlobals';
@@ -21,6 +20,8 @@ import './LoadShareSaveDeleteQuery.css';
 
 export default injectState(
   class extends React.Component {
+    displayName = 'SaveQuery';
+
     constructor(props) {
       super(props);
       this.state = {
@@ -53,7 +54,7 @@ export default injectState(
         api,
         sharedPublicly: false,
       })
-        .then(data => {
+        .then((data) => {
           this.setState({
             loading: false,
             link: urlJoin(arrangerApiRoot, 's', data.id),
@@ -66,7 +67,7 @@ export default injectState(
           };
           trackUserInteraction(savedQueryInteraction);
         })
-        .catch(error => {
+        .catch(() => {
           this.setState({ error: true, loading: false });
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.fileRepo.dataTable,
@@ -127,7 +128,7 @@ export default injectState(
                               <button className={niceWhiteButton}>View in My Saved Queries</button>
                             </div>
                           </div>
-                          <H3 className="saveQuery-heading">
+                          <h3 className="saveQuery-heading">
                             Save Query
                             {this.state.loading && (
                               <Spinner
@@ -142,7 +143,7 @@ export default injectState(
                                 }}
                               />
                             )}
-                          </H3>
+                          </h3>
                           <div className="someText1">Save the current configuration of filters</div>
                           <div className="someText2">Enter a name for your saved query:</div>
                           <div style={{ marginBottom: '85px' }}>
@@ -150,10 +151,10 @@ export default injectState(
                               className="someText3"
                               type="text"
                               value={this.state.queryName}
-                              ref={input => {
+                              ref={(input) => {
                                 this.input = input;
                               }}
-                              onChange={e => this.setState({ queryName: e.target.value })}
+                              onChange={(e) => this.setState({ queryName: e.target.value })}
                             />
                           </div>
                           <ModalFooter
