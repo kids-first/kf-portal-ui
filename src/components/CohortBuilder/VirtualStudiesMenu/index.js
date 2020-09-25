@@ -6,7 +6,6 @@ import urlJoin from 'url-join';
 import { injectState } from 'freactal';
 
 import Row from 'uikit/Row';
-import { H1 } from 'uikit/Headings';
 
 import {
   fetchVirtualStudiesCollection,
@@ -198,7 +197,7 @@ class VirtualStudiesMenu extends React.Component {
       <Row className="virtual-studies-menu container">
         <Row className="virtual-studies-heading">
           <header>
-            <H1>{title}</H1>
+            <h1>{title}</h1>
 
             {activeVirtualStudyId ? (
               <Tooltip

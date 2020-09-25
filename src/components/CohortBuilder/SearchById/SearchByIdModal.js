@@ -8,7 +8,6 @@ import CloseIcon from 'react-icons/lib/md/close';
 
 import { searchByIds } from 'services/arranger/searchByIds';
 import Row from 'uikit/Column';
-import { H3 } from 'uikit/Headings';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
 import { ModalTitle } from 'components/Modal/ui';
@@ -192,7 +191,7 @@ class SearchByIdModal extends React.Component {
         {results ? (
           <section className="sbi-results">
             <hr />
-            <H3>Matching Participants</H3>
+            <h3>Matching Participants</h3>
             <SearchResults query={inputIds} results={results.participants} loading={loading} />
           </section>
         ) : null}
