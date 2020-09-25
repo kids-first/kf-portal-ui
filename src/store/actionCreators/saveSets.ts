@@ -30,7 +30,7 @@ import {
 import { RootState } from '../rootState';
 import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 import { AddRemoveSetParams } from 'components/CohortBuilder/ParticipantsTableView/AddRemoveSaveSetModal';
-import { selectUserSets } from '../selectors/saveSetsSelectors';
+import { selectSets } from '../selectors/saveSetsSelectors';
 
 export const createSet = (
   payload: SaveSetParams,
@@ -55,7 +55,7 @@ export const createSet = (
     }
 
     const createdSet: UserSet = response.data.saveSet;
-    dispatch(displayUserSets([...selectUserSets(getState()), createdSet]));
+    dispatch(displayUserSets([...selectSets(getState()), createdSet]));
 
     if (onSuccess) {
       onSuccess();
@@ -150,6 +150,15 @@ export const getUserSets = (
   dispatch(isLoadingSets(false));
 };
 
+export const fetchSetsIfNeeded = (
+  userId: string,
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch, getState) => {
+  const setsInStore = selectSets(getState());
+  if (setsInStore.length === 0) {
+    dispatch(getUserSets(userId));
+  }
+};
+
 export const addRemoveSetIds = (
   payload: AddRemoveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
@@ -175,7 +184,7 @@ export const addRemoveSetIds = (
     );
 
     if (updatedResults && updatedResults > 0) {
-      const sets: UserSet[] = selectUserSets(getState());
+      const sets: UserSet[] = selectSets(getState());
       const setsWithUpdatedCount = sets.map((s) => {
         if (s.setId === setId) {
           return { setId: s.setId, size: setSize, tag: s.tag };

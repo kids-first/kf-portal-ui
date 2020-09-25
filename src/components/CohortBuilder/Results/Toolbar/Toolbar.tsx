@@ -197,7 +197,9 @@ const Toolbar = ({
           )}
         </div>
       )}
-      {isPartOfGroup('kf-investigator', egoGroups) && <ParticipantSetDropdown sqon={sqon} />}
+      {isPartOfGroup('kf-investigator', egoGroups) && (
+        <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
+      )}
       <DownloadButton sqon={sqon} />
     </div>
   );

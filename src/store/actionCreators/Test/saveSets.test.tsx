@@ -6,6 +6,7 @@ import {
   deleteUserSets,
   editSetTag,
   failureCreate,
+  fetchSetsIfNeeded,
   getUserSets,
   isLoadingCreateSet,
   reInitializeSetsState,
@@ -332,6 +333,64 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(addRemoveSetIds(payload));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should not fetch sets if sets already in store ', async () => {
+    const expectedActions: any[] = [];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          sets: [
+            { setId: 'set1', size: 5, tag: 'set1' },
+            { setId: 'set2', size: 5, tag: 'set2' },
+          ],
+          isLoading: false,
+          error: false,
+          isDeleting: false,
+          isEditing: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(fetchSetsIfNeeded('user1'));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should fetch sets if not sets in store', async () => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve([]),
+    );
+    const expectedActions = [
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
+      { type: USER_SAVE_SETS, payload: [] },
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
+    ];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          sets: [],
+          isLoading: false,
+          error: false,
+          isDeleting: false,
+          isEditing: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(fetchSetsIfNeeded('user1'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
