@@ -22,27 +22,30 @@
   border-left: 1px solid #d7d8db;
   margin-right: 16px;
   height: 24px;
-}
 
-.cb-toolbar-info .ant-btn.ant-btn-link {
-  padding: 0;
-  height: auto;
-}
+  .cb-toolbar-item {
+    align-items: center;
+    display: flex;
+    margin: 0 10px 0 10px;
+    font-weight: 600;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    margin-left: 16px;
+    color: $heading-color;
+  }
 
-.cb-toolbar-item {
-  align-items: center;
-  display: flex;
-  margin: 0 10px 0 10px;
-  font-weight: 600;
-  font-family: Montserrat, sans-serif;
-  font-size: 16px;
-  margin: 0;
-  margin-left: 16px;
-  color: $heading-color;
-}
+  .ant-btn.ant-btn-link {
+    padding: 0;
+    height: auto;
+    display: flex;
+    margin-left: 16px;
+  }
 
-.cb-toolbar-item-files {
-  color: inherit;
+  .cb-toolbar-item-files {
+    color: inherit;
+    margin: 0;
+  }
 }
 
 .cb-toolbar-container:first-child {
@@ -70,7 +73,6 @@
 
 .cb-toolbar-item-files div span span svg {
   border-bottom: thin solid $link-color;
-  margin-bottom: -1px;
 }
 
 .ant-btn-link:hover .cb-toolbar-item-files div span span svg {
