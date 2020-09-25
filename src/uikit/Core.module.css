@@ -30,8 +30,6 @@
   color: rgb(52, 52, 52);
 }
 
-.heading1,
-.heading3,
 .tableHeader {
   color: #2b388f;
   margin: 0;
@@ -41,16 +39,6 @@
   letter-spacing: 0.4px;
   font-family: Montserrat, sans-serif;
   text-decoration: none;
-}
-
-.heading1 {
-  font-size: 28px;
-}
-
-.heading3 {
-  font-size: 16px;
-  line-height: 1;
-  letter-spacing: 0.3px;
 }
 
 .tableHeader {
