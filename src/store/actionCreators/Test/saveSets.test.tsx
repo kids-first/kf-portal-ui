@@ -7,6 +7,7 @@ import {
   deleteUserSets,
   editSetTag,
   failureCreate,
+  fetchSetsIfNeeded,
   getUserSets,
   isLoadingCreateSet,
   reInitializeSetsState,
