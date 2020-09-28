@@ -102,7 +102,14 @@ class SQONProvider extends React.Component {
   }
 
   render() {
-    const { sqons, activeIndex, children, setActiveSqonIndex, setSqons } = this.props;
+    const {
+      sqons,
+      activeIndex,
+      children,
+      setActiveSqonIndex,
+      setSqons,
+      sqonDictionary,
+    } = this.props;
 
     // TODO redux - let the children call the actions?
     return children({
@@ -112,17 +119,27 @@ class SQONProvider extends React.Component {
       setActiveSqonIndex,
       getActiveExecutableSqon: this.getActiveExecutableSqon,
       mergeSqonToActiveIndex: this.mergeSqonToActiveIndex,
+      sqonDictionary,
     });
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { sqons, activeIndex, uid, virtualStudyId } = state.currentVirtualStudy;
+  const { sets } = state.saveSets.userSets;
+
+  let sqonDisctionary = [];
+
+  if (sets) {
+    sets.forEach((s) => sqonDisctionary.push({ setId: s.setId, tag: s.tag }));
+  }
+
   return {
     sqons,
     activeIndex,
     uid,
     virtualStudyId,
+    sqonDictionary: sqonDisctionary,
   };
 };
 

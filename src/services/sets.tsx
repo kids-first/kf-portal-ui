@@ -11,7 +11,7 @@ type CreateSetParams = {
   tag?: string;
 };
 
-const getIdsFromSaveSetId = async (rawId: string) => {
+const getIdsFromSetId = async (rawId: string) => {
   const response = await graphql(initializeApi())({
     query: `
      query ($sqon: JSON) {
@@ -189,7 +189,7 @@ export const updateSet = async (
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
-  (await Promise.all(setIds.map((id) => getIdsFromSaveSetId(id)))).flat();
+  (await Promise.all(setIds.map((id) => getIdsFromSetId(id)))).flat();
 
 export const saveNewSet = async (setName: string, userId: string) =>
   setCountForTag(setName, userId);

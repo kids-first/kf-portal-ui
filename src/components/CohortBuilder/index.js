@@ -28,6 +28,7 @@ const CohortBuilder = () => {
         setSqons,
         getActiveExecutableSqon,
         mergeSqonToActiveIndex,
+        sqonDictionary,
       }) => {
         const executableSqon = getActiveExecutableSqon();
         const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
@@ -73,6 +74,7 @@ const CohortBuilder = () => {
                     fill: '#a9adc0',
                   }}
                   actionsProvider={arrangerActions(dispatch)}
+                  sqonDictionary={sqonDictionary}
                 />
               </div>
 

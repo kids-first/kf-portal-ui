@@ -13,6 +13,8 @@ export const TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS';
 export const TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET';
 export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
 export const EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG';
+export const CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST';
+export const DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST';
 
 interface TogglePendingCreate {
   type: typeof TOGGLE_PENDING_CREATE;
@@ -63,6 +65,13 @@ interface EditSetTag {
   set: SetInfo;
 }
 
+interface CreateQueryInCohortBuilder {
+  type: typeof CREATE_SET_QUERY_REQUEST;
+  setInfo: SetInfo;
+}
+
+export type DispatchSaveSets = ThunkDispatch<RootState, null, SetsActionTypes>;
+
 export type SetsActionTypes =
   | TogglePendingCreate
   | FailureCreate
@@ -73,9 +82,8 @@ export type SetsActionTypes =
   | RemoveUserSets
   | EditSetTag
   | isAddingOrRemovingToSet
-  | FailureLoadSaveSets;
-
-export type DispatchSaveSets = ThunkDispatch<RootState, null, SetsActionTypes>;
+  | FailureLoadSaveSets
+  | CreateQueryInCohortBuilder;
 
 export type UserSet = {
   setId: string;
