@@ -234,11 +234,7 @@ export const deleteUserSets = (
 export const createQueryInCohortBuilder = (
   setInfo: SetInfo,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  try {
-    dispatch(requestCreateQueryInCohort(setInfo));
-  } catch (e) {
-    console.error(e.message);
-  }
+  dispatch(requestCreateQueryInCohort(setInfo));
 };
 
 export const isLoadingCreateSet = (isPending: boolean): SetsActionTypes => ({

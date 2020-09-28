@@ -77,11 +77,11 @@ const addSetSqonToSqons = (setInfo, sqons) => {
     return { newSqons: [{ op: 'and', content: [] }], activeIndex: 0 };
   }
 
-  const sqonExists = sqons.some((s) =>
+  const sqonExistsInCB = sqons.some((s) =>
     s.content.some((t) => t.content.value === `set_id:${setInfo.key}`),
   );
 
-  if (sqonExists) {
+  if (sqonExistsInCB) {
     return {
       newSqons: sqons,
       activeIndex: sqons.length - 1,

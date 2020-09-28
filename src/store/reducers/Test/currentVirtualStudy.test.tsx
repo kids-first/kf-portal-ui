@@ -1,7 +1,7 @@
 import reducer from '../currentVirtualStudy';
 import { Action } from 'redux';
 import { requestCreateQueryInCohort } from '../../actionCreators/saveSets';
-import { SetInfo } from '../../../components/UserDashboard/ParticipantSets';
+import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 

@@ -128,18 +128,14 @@ const mapStateToProps = (state) => {
   const { sqons, activeIndex, uid, virtualStudyId } = state.currentVirtualStudy;
   const { sets } = state.saveSets.userSets;
 
-  let sqonDisctionary = [];
-
-  if (sets) {
-    sets.forEach((s) => sqonDisctionary.push({ setId: s.setId, tag: s.tag }));
-  }
+  const sqonDictionary = (sets || []).map((s) => ({ setId: s.setId, tag: s.tag }));
 
   return {
     sqons,
     activeIndex,
     uid,
     virtualStudyId,
-    sqonDictionary: sqonDisctionary,
+    sqonDictionary: sqonDictionary,
   };
 };
 
