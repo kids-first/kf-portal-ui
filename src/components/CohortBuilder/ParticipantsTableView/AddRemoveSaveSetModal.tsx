@@ -4,7 +4,7 @@ import { FunctionComponent, useState } from 'react';
 import { Button, Col, Form, Modal, notification, Row, Select } from 'antd';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
-import { selectIsEditingSets, selectUserSets } from 'store/selectors/saveSetsSelectors';
+import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { DispatchSaveSets, SaveSetState, SetSubActionTypes } from 'store/saveSetTypes';
 import { connect, ConnectedProps } from 'react-redux';
@@ -39,7 +39,7 @@ const mapState = (state: RootState): SaveSetState => ({
     error: null,
   },
   userSets: {
-    sets: selectUserSets(state),
+    sets: selectSets(state),
     isLoading: false,
     error: null,
     isDeleting: false,

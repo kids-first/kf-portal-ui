@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { Fragment, FunctionComponent, useState } from 'react';
+import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
@@ -10,13 +10,8 @@ import {
   SaveSetActionsTypes,
   SaveSetState,
 } from 'store/saveSetTypes';
-import {
-  selectErrorUserSets,
-  selectIsDeletingSets,
-  selectIsLoadingSets,
-  selectUserSets,
-} from 'store/selectors/saveSetsSelectors';
-import { deleteUserSets } from 'store/actionCreators/saveSets';
+import { selectUserSets } from 'store/selectors/saveSetsSelectors';
+import { deleteUserSets, fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
@@ -41,17 +36,12 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: false,
     error: null,
   },
-  userSets: {
-    isLoading: selectIsLoadingSets(state),
-    sets: selectUserSets(state),
-    error: selectErrorUserSets(state),
-    isDeleting: selectIsDeletingSets(state),
-    isEditing: false,
-  },
+  userSets: selectUserSets(state),
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
+  fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -71,7 +61,7 @@ const onDeleteFail = () => {
 };
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
-  const { user, userSets, deleteSaveSet } = props;
+  const { user, userSets, deleteSaveSet, fetchUserSetsIfNeeded } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
     key: '',
@@ -79,6 +69,10 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     count: 0,
     currentUser: '',
   } as SetInfo);
+
+  useEffect(() => {
+    fetchUserSetsIfNeeded(user.egoId);
+  }, [user, fetchUserSetsIfNeeded]);
 
   const confirm = (setId: string) => {
     deleteSaveSet({ setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);

@@ -20,7 +20,7 @@ import {
   editSetTag,
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
-import { selectError, selectIsLoading, selectUserSets } from 'store/selectors/saveSetsSelectors';
+import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
 import { SetInfo } from '../../UserDashboard/ParticipantSets';
@@ -49,7 +49,7 @@ const mapState = (state: RootState): SaveSetState => ({
     error: selectError(state),
   },
   userSets: {
-    sets: selectUserSets(state),
+    sets: selectSets(state),
     isLoading: false,
     error: null,
     isDeleting: false,

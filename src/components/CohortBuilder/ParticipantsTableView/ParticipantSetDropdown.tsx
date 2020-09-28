@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { selectUserSets } from 'store/selectors/saveSetsSelectors';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import { SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
+import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
 
 import { Button, Dropdown, Menu } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
@@ -19,17 +19,23 @@ import { Sqon } from 'store/sqon';
 import './ParticipantSetDropdown.css';
 import SaveSetModal from './SaveSetModal';
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
+import { fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
+import { LoggedInUser } from 'store/userTypes';
 
 type ParticipantSetDropdownProps = {
+  user: LoggedInUser;
   sqon: Sqon;
 };
 
 const mapStateToProps = (state: RootState) => ({
-  loggedInUser: state.user.loggedInUser,
-  userSets: selectUserSets(state),
+  userSets: selectSets(state),
 });
 
-const connector = connect(mapStateToProps, () => ({}));
+const mapDispatch = (dispatch: DispatchSaveSets) => ({
+  fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
+});
+
+const connector = connect(mapStateToProps, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -67,12 +73,21 @@ const modals = {
   },
 };
 
-const ParticipantSetDropdown = ({ sqon, userSets, loggedInUser }: Props): JSX.Element => {
+const ParticipantSetDropdown = ({
+  sqon,
+  userSets,
+  user,
+  fetchUserSetsIfNeeded,
+}: Props): JSX.Element => {
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [modal, setModal] = useState<ModalState>(modals.hideAll);
   const api = useContext(ApiContext);
 
   const onClick: MenuClickEventHandler = (e) => setModal(modals[e.key as ActionType]);
+
+  useEffect(() => {
+    fetchUserSetsIfNeeded(user.egoId);
+  }, [user, fetchUserSetsIfNeeded]);
 
   useEffect(() => {
     if (userSets && sqon) {
@@ -105,7 +120,7 @@ const ParticipantSetDropdown = ({ sqon, userSets, loggedInUser }: Props): JSX.El
           title={'Save Participant Set'}
           api={api}
           sqon={sqon}
-          user={loggedInUser}
+          user={user}
           hideModalCb={() => setModal(modals.hideAll)}
           saveSetActionType={SaveSetActionsTypes.CREATE}
         />
@@ -114,7 +129,7 @@ const ParticipantSetDropdown = ({ sqon, userSets, loggedInUser }: Props): JSX.El
         <AddRemoveSaveSetModal
           api={api}
           sqon={sqon}
-          user={loggedInUser}
+          user={user}
           subActionType={modal.actionType}
           hideModalCb={() => setModal(modals.hideAll)}
           saveSetActionType={SaveSetActionsTypes.EDIT}
