@@ -16,13 +16,12 @@
 
 .save-sets-participants-count {
   padding-left: 7px;
-  /*color: #b5469e;*/ /*todo: replace color task 2614 completion*/
-  color: #7d84a6;
+  color: #b5469e;
 }
 
-/*.save-sets-participants-count:hover {*/
-/*  text-decoration: underline; todo: activate on task 2614 completion*/
-/*}*/
+.save-sets-participants-count:hover {
+  text-decoration: underline;
+}
 
 .count-button {
   justify-content: flex-end;

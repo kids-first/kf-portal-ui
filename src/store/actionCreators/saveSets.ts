@@ -1,5 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import {
+  CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
   EditSetTagParams,
@@ -230,6 +231,12 @@ export const deleteUserSets = (
   }
 };
 
+export const createQueryInCohortBuilder = (
+  setInfo: SetInfo,
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
+  dispatch(requestCreateQueryInCohort(setInfo));
+};
+
 export const isLoadingCreateSet = (isPending: boolean): SetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
   isPending,
@@ -277,4 +284,9 @@ export const removeUserSets = (sets: string[]): SetsActionTypes => ({
 export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
   type: EDIT_SAVE_SET_TAG,
   set: set,
+});
+
+export const requestCreateQueryInCohort = (setInfo: SetInfo): SetsActionTypes => ({
+  type: CREATE_SET_QUERY_REQUEST,
+  setInfo: setInfo,
 });

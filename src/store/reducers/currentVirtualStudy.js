@@ -2,22 +2,23 @@ import cloneDeep from 'lodash/cloneDeep';
 import { getDefaultSqon, isDefaultSqon } from 'common/sqonUtils';
 
 import {
-  VIRTUAL_STUDY_LOAD_REQUESTED,
-  VIRTUAL_STUDY_LOAD_SUCCESS,
-  VIRTUAL_STUDY_LOAD_FAILURE,
-  VIRTUAL_STUDY_SAVE_REQUESTED,
-  VIRTUAL_STUDY_SAVE_SUCCESS,
-  VIRTUAL_STUDY_SAVE_FAILURE,
-  VIRTUAL_STUDY_DELETE_REQUESTED,
-  VIRTUAL_STUDY_DELETE_SUCCESS,
-  VIRTUAL_STUDY_DELETE_FAILURE,
-  VIRTUAL_STUDY_RESET,
+  LOGOUT,
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
-  LOGOUT,
   VIRTUAL_STUDY_CLEAN_ERROR,
+  VIRTUAL_STUDY_DELETE_FAILURE,
+  VIRTUAL_STUDY_DELETE_REQUESTED,
+  VIRTUAL_STUDY_DELETE_SUCCESS,
+  VIRTUAL_STUDY_LOAD_FAILURE,
+  VIRTUAL_STUDY_LOAD_REQUESTED,
+  VIRTUAL_STUDY_LOAD_SUCCESS,
+  VIRTUAL_STUDY_RESET,
+  VIRTUAL_STUDY_SAVE_FAILURE,
+  VIRTUAL_STUDY_SAVE_REQUESTED,
+  VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
+import { CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -45,6 +46,53 @@ const resetState = (diff = {}) => {
   };
   newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
   return newState;
+};
+
+const constructSetSqon = (setInfo) => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {
+        field: 'kf_id',
+        value: `set_id:${setInfo.key}`,
+      },
+    },
+  ],
+});
+
+const addSqon = (setInfo, sqons) => {
+  const newSqon = constructSetSqon(setInfo);
+  const sqonsRemovedEmpty = sqons.filter((s) => s.content.length > 0);
+
+  return [...sqonsRemovedEmpty, newSqon];
+};
+
+const addSetSqonToSqons = (setInfo, sqons) => {
+  if (!setInfo) {
+    return { newSqons: sqons, activeIndex: 0 };
+  }
+
+  if (!sqons) {
+    return { newSqons: [{ op: 'and', content: [] }], activeIndex: 0 };
+  }
+
+  const sqonExistsInCB = sqons.some((s) =>
+    s.content.some((t) => t.content.value === `set_id:${setInfo.key}`),
+  );
+
+  if (sqonExistsInCB) {
+    return {
+      newSqons: sqons,
+      activeIndex: sqons.length - 1,
+    };
+  } else {
+    const newSqon = addSqon(setInfo, sqons);
+    return {
+      newSqons: newSqon,
+      activeIndex: newSqon.length - 1,
+    };
+  }
 };
 
 export default (state = initialState, action) => {
@@ -111,6 +159,13 @@ export default (state = initialState, action) => {
         virtualStudyId: action.payload,
       });
 
+    case CREATE_SET_QUERY_REQUEST: {
+      const { newSqons, activeIndex } = addSetSqonToSqons(action.setInfo, state.sqons);
+      return setState({
+        sqons: newSqons,
+        activeIndex: activeIndex,
+      });
+    }
     case LOGOUT:
       return cloneDeep(initialState);
 

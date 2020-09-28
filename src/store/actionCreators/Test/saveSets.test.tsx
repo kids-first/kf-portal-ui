@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
   addRemoveSetIds,
+  createQueryInCohortBuilder,
   createSetIfUnique,
   deleteUserSets,
   editSetTag,
@@ -12,6 +13,7 @@ import {
   reInitializeSetsState,
 } from '../saveSets';
 import {
+  CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
   EditSetTagParams,
@@ -391,6 +393,37 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(fetchSetsIfNeeded('user1'));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow when request to create query in cohort ', async () => {
+    const setInfo: SetInfo = {
+      key: '1234',
+      name: 'name',
+      currentUser: 'someUser',
+    };
+    const expectedActions = [{ type: CREATE_SET_QUERY_REQUEST, setInfo: setInfo }];
+
+    const store = mockStore({
+      sqons: [
+        {
+          op: 'and',
+          content: [{ op: 'in', content: { field: 'kf_id', value: 'set_id:id12345' } }],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+
+    // @ts-ignore
+    await store.dispatch(createQueryInCohortBuilder(setInfo));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

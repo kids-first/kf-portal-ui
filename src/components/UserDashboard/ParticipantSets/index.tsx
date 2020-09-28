@@ -11,7 +11,7 @@ import {
   SaveSetState,
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
-import { deleteUserSets, fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
+import { createQueryInCohortBuilder, deleteUserSets, fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
@@ -19,6 +19,7 @@ import './ParticipantSets.css';
 import { LoggedInUser } from 'store/userTypes';
 import participantMagenta from 'assets/icon-participants-magenta.svg';
 import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
+import { Link } from 'react-router-dom';
 
 type OwnProps = {
   user: LoggedInUser;
@@ -40,6 +41,7 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
+  onClickParticipantsLink: (setInfo: SetInfo) => dispatch(createQueryInCohortBuilder(setInfo)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
   fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
 });
@@ -61,7 +63,7 @@ const onDeleteFail = () => {
 };
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
-  const { user, userSets, deleteSaveSet, fetchUserSetsIfNeeded } = props;
+  const { user, userSets, deleteSaveSet, onClickParticipantsLink, fetchUserSetsIfNeeded } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
     key: '',
@@ -107,13 +109,23 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       width: 80,
       align: align,
       // eslint-disable-next-line react/display-name
-      render: (count: number) => (
-        // <Button className={'count-button'} type="text"> todo reactivate button and delete div on task 2614 completion
-        <div className={'count-button'}>
-          <img src={participantMagenta} alt="Participants" />
-          <div className={'save-sets-participants-count'}>{count}</div>
-        </div>
-        // </Button>
+      render: (count: number, record: SetInfo) => (
+        <Link
+          className={'classNames'}
+          to={'/explore'}
+          href={'#top'}
+          onClick={() => {
+            onClickParticipantsLink(record);
+            const toTop = document.getElementById('main-page-container');
+            toTop?.scrollTo(0, 0);
+          }}
+        >
+          <Button className={'count-button'} type="text">
+            {' '}
+            <img src={participantMagenta} alt="Participants" />
+            <div className={'save-sets-participants-count'}>{count}</div>
+          </Button>
+        </Link>
       ),
     },
     {

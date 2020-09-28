@@ -1,3 +1,5 @@
+import { Sqon } from './sqon';
+
 export type VirtualStudy = {
   activeIndex: number;
   creationDate: string;
@@ -5,7 +7,7 @@ export type VirtualStudy = {
   dirty: boolean;
   name: string;
   sharedPublicly: boolean;
-  sqons: Function;
+  sqons: Sqon[];
   uid: string;
   virtualStudyId: string;
 };
