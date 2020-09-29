@@ -210,17 +210,17 @@ class SavedQueries extends React.Component {
             <Spinner size={'large'} />
           ) : (
             <>
-              <CardHeader title="Saved Queries" className={cardHeader} />
+              <CardHeader title="My Saved Queries" className={cardHeader} />
               <Column className={savedQueriesContainer}>
                 <Tabs
                   initialSelectedTab="PARTICIPANTS"
                   options={[
                     {
-                      display: 'Participants',
+                      display: 'Cohort Queries',
                       total: virtualStudies.length ? virtualStudies.length : [0],
                     },
                     {
-                      display: 'Files',
+                      display: 'File Queries',
                       total: fileQueries.length ? fileQueries.length : [0],
                     },
                   ]}
