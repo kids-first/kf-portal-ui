@@ -1,17 +1,24 @@
-.ant-table-tbody > tr > td {
-  padding: 8px 8px;
-}
+@import '../../../theme/vars';
 
-.ant-table-body {
-  overflow-y: auto !important;
-}
+.user-sets-table {
+  .ant-btn-text {
+    color: $greyScale11;
+  }
+  .ant-btn-text:hover {
+    color: $greyScale11;
+  }
+  .ant-table-tbody > tr > td {
+    padding: 8px 8px;
+  }
+  .ant-table-body {
+    overflow-y: auto !important;
+  }
 
-.ant-btn-text {
-  color: #a9adc0;
-}
-
-.ant-btn-text:hover {
-  color: #a9adc0;
+  .ant-table-thead > tr > th {
+    font-family: 'Open Sans';
+    padding: 8px 8px;
+    font-weight: 600;
+  }
 }
 
 .save-sets-participants-count {
@@ -34,17 +41,6 @@
 .name-columns {
   display: inline-flex;
   align-items: center;
-}
-
-.ant-table-thead > tr > th {
-  font-family: 'Open Sans';
-  padding: 8px 8px;
-  font-weight: 600;
-}
-
-.ant-popover-message {
-  font-family: 'Open Sans';
-  color: #515885;
 }
 
 .participant-set-spinner-container {

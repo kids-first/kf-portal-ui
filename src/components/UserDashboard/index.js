@@ -19,7 +19,7 @@ import {
 } from 'components/Charts';
 
 import './UserDashboard.module.css';
-import './UserDashboard.css';
+import './UserDashboard.scss';
 
 import {
   dashboardCard,
@@ -94,7 +94,7 @@ export default compose(
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
             <Card
               title={<Title level={3}>My Participant Sets</Title>}
-              className={`${dashboardCard} ${dashboardCardWrapper}`}
+              className={`participant-sets-container ${dashboardCard} ${dashboardCardWrapper}`}
             >
               <ParticipantSets user={loggedInUser} />
             </Card>
