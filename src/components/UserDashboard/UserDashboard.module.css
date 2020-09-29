@@ -1,3 +1,8 @@
+.dashboadRowContainer {
+  margin: 0 !important;
+  padding-bottom: 15px;
+}
+
 .userDashboardContainer {
   min-height: calc(100% - 56px);
   display: flex;
