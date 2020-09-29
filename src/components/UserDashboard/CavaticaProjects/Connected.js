@@ -5,21 +5,30 @@ import { Box } from 'uikit/Core';
 import ProjectList from './ProjectList';
 import NoProjects from './NoProjects';
 import { Spinner } from 'uikit/Spinner';
+import { projectsListWrapper, projectsListSpinner } from '../UserDashboard.module.css';
 
-const Connected = ({ loading, projects, tabToCreate }) =>
-  loading ? (
-    <Spinner size={'large'} />
-  ) : (
-    <Column>
-      {projects && projects.length > 0 ? (
+const Connected = ({ loading, projects, tabToCreate }) => {
+  if (loading) {
+    return <Spinner className={projectsListSpinner} size={'large'} />;
+  }
+
+  const hasProjects = projects && projects.length > 0;
+  if (hasProjects) {
+    return (
+      <Column className={projectsListWrapper} scrollY>
         <ProjectList projects={projects} />
-      ) : (
-        <Box mt={20}>
-          <NoProjects tabToCreate={tabToCreate} />
-        </Box>
-      )}
+      </Column>
+    );
+  }
+
+  return (
+    <Column>
+      <Box mt={20}>
+        <NoProjects tabToCreate={tabToCreate} />
+      </Box>
     </Column>
   );
+};
 
 Connected.propTypes = {
   loading: PropTypes.bool,
