@@ -92,3 +92,14 @@
 .wrapperMostParticipantsStudiesChart {
   height: 300px;
 }
+
+.studiesList, .projectsListWrapper {
+  max-height: 300px;
+}
+
+.projectsListSpinner {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  margin-top: 75px;
+}
