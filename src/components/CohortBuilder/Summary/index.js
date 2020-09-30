@@ -8,7 +8,7 @@ import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
 import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
-import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
+import StudiesChart from './Cards/StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './Cards/AgeDiagChart';
 import SurvivalChart from './Cards/SurvivalChart';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
@@ -34,7 +34,6 @@ const Summary = ({
       experimentalStrategyQuery(sqon),
       demographicQuery(sqon),
       ageDiagQuery(sqon),
-      studiesQuery(sqon),
       diagnosesQuery(sqon),
     ]}
   >
@@ -44,7 +43,6 @@ const Summary = ({
         experimentalStrategyData = [],
         demographicData = [],
         ageDiagData = [],
-        studiesData = [],
         topDiagnosesData = [],
       ] = data;
 
@@ -62,7 +60,7 @@ const Summary = ({
               <OntologySunburst sqon={sqon} />
             </Card>
           )}
-          <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
+          <StudiesChart sqon={sqon} isLoading={isLoading} />
           <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
           <DemographicChart data={demographicData} isLoading={isLoading} />
           <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
