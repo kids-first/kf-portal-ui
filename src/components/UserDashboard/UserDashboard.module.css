@@ -6,9 +6,6 @@
   min-height: calc(100% - 56px);
   display: flex;
 }
-.ant-card-head-title {
-  padding: 0 !important;
-}
 
 .userDashboardContent {
   padding-left: 15px;
@@ -58,6 +55,10 @@
   border: solid 1px #e0e1e6;
   box-shadow: 0 0 9.5px 0.5px rgba(160, 160, 163, 0.25);
   padding: 20px 30px;
+}
+
+.dashboardCardWrapper > .ant-card-head {
+  padding: 0;
 }
 
 .noteList {

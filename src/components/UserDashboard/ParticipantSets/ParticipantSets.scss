@@ -1,17 +1,25 @@
-.ant-table-tbody > tr > td {
-  padding: 8px 8px;
-}
+@import '../../../style/themes/default/colors';
+@import '../../../style/themes/default/global';
 
-.ant-table-body {
-  overflow-y: auto !important;
-}
+.user-sets-table {
+  .ant-btn-text {
+    color: $greyScale11;
+  }
+  .ant-btn-text:hover {
+    color: $greyScale11;
+  }
+  .ant-table-tbody > tr > td {
+    padding: 8px 8px;
+  }
+  .ant-table-body {
+    overflow-y: auto !important;
+  }
 
-.ant-btn-text {
-  color: #a9adc0;
-}
-
-.ant-btn-text:hover {
-  color: #a9adc0;
+  .ant-table-thead > tr > th {
+    font-family: $defaultFont;
+    padding: 8px 8px;
+    font-weight: 600;
+  }
 }
 
 .save-sets-participants-count {
@@ -36,17 +44,6 @@
   align-items: center;
 }
 
-.ant-table-thead > tr > th {
-  font-family: 'Open Sans';
-  padding: 8px 8px;
-  font-weight: 600;
-}
-
-.ant-popover-message {
-  font-family: 'Open Sans';
-  color: #515885;
-}
-
 .participant-set-spinner-container {
   width: 100%;
   height: 100%;
@@ -56,7 +53,7 @@
 }
 
 .save-set-table-name {
-  font-family: 'Open Sans';
+  font-family: $defaultFont;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;

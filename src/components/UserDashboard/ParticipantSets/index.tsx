@@ -11,11 +11,15 @@ import {
   SaveSetState,
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
-import { createQueryInCohortBuilder, deleteUserSets, fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
+import {
+  createQueryInCohortBuilder,
+  deleteUserSets,
+  fetchSetsIfNeeded,
+} from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
-import './ParticipantSets.css';
+import './ParticipantSets.scss';
 import { LoggedInUser } from 'store/userTypes';
 import participantMagenta from 'assets/icon-participants-magenta.svg';
 import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
@@ -176,7 +180,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           <Spin size={'large'} />
         </div>
       ) : !userSets.error ? (
-        <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+        <Table
+          className="user-sets-table"
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          scroll={{ y: 240 }}
+        />
       ) : (
         <Result status="error" title="Failed to load user SaveSets" />
       )}
