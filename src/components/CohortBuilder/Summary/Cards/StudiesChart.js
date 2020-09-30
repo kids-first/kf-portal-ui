@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import get from 'lodash/get';
-import size from 'lodash/size';
 import gql from 'graphql-tag';
 import { Badge } from 'antd';
 
@@ -15,6 +13,8 @@ import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
 import Card from './SummaryCard';
 import { antCardHeader } from './StudiesChart.module.css';
+import { toKebabCase } from 'utils';
+import PropTypes from 'prop-types';
 
 const studiesToolTip = (data) => {
   const { familyMembers, probands, name } = data;
@@ -37,64 +37,88 @@ const sortDescParticipant = (a, b) => {
   return aTotal - bTotal;
 };
 
-const toSingleStudyQueries = ({ studies, sqon }) =>
-  studies.map((studyShortName) => ({
-    query: gql`
-      query($sqon: JSON, $studyShortName: String) {
-        participant {
-          familyMembers: aggregations(
-            aggregations_filter_themselves: true
-            filters: {
-              op: "and"
-              content: [
-                $sqon
-                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
-                { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
-              ]
-            }
-          ) {
-            kf_id {
-              buckets {
-                key
-              }
+const studiesQuery = (sqon) => ({
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        probands: aggregations(
+          filters: {
+            content: [$sqon, { content: { field: "is_proband", value: ["true"] }, op: "in" }]
+            op: "and"
+          }
+        ) {
+          study__short_name {
+            buckets {
+              key
+              doc_count
             }
           }
-          proband: aggregations(
-            aggregations_filter_themselves: true
-            filters: {
-              op: "and"
-              content: [
-                $sqon
-                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
-                { op: "in", content: { field: "is_proband", value: ["true"] } }
-              ]
-            }
-          ) {
-            kf_id {
-              buckets {
-                key
-              }
+        }
+        familyMembers: aggregations(
+          filters: {
+            content: [
+              $sqon
+              { content: { field: "is_proband", value: ["false", "__missing__"] }, op: "in" }
+            ]
+            op: "and"
+          }
+        ) {
+          study__short_name {
+            buckets {
+              key
+              doc_count
             }
           }
         }
       }
-    `,
-    variables: { sqon, studyShortName },
-    transform: (data) => ({
-      label: studyShortName,
-      familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
-      probands: size(get(data, 'data.participant.proband.kf_id.buckets')),
-    }),
-  }));
+    }
+  `,
+  variables: { sqon },
+  transform: (response) => {
+    const participants = response.data.participant;
+
+    const studyLabelToCounts = {};
+
+    const probandsBuckets = participants.probands.study__short_name.buckets;
+    probandsBuckets.forEach(
+      (pB) => (studyLabelToCounts[pB.key] = { probands: pB.doc_count, familyMembers: 0 }),
+    );
+
+    const familyMembersBuckets = participants.familyMembers.study__short_name.buckets;
+    familyMembersBuckets.forEach((fmB) => {
+      const label = fmB.key;
+      const labelAlreadyExists = !!studyLabelToCounts[label];
+      const probandsCount = labelAlreadyExists ? studyLabelToCounts[label].probands : 0;
+
+      studyLabelToCounts[label] = {
+        familyMembers: fmB.doc_count,
+        probands: probandsCount,
+      };
+    });
+
+    return Object.entries(studyLabelToCounts).reduce((accumulator, [label, counts]) => {
+      const { familyMembers, probands } = counts;
+      return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
+    }, []);
+  },
+});
 
 class StudiesChart extends React.Component {
-  addSqon = (field, value) => {
+  static propTypes = {
+    api: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    sqon: PropTypes.object.isRequired,
+    setSqons: PropTypes.func.isRequired,
+    virtualStudy: PropTypes.object.isRequired,
+  };
+
+  addSqon = (value) => {
     const { virtualStudy, setSqons } = this.props;
 
     const newSqon = {
       op: 'in',
       content: {
-        field: field,
+        field: 'study.short_name',
         value: [value],
       },
     };
@@ -109,15 +133,13 @@ class StudiesChart extends React.Component {
   };
 
   render() {
-    const { studies, sqon, api, isLoading: isParentLoading } = this.props;
+    const { sqon, api, isLoading: isParentLoading } = this.props;
 
     return (
-      <QueriesResolver
-        name="GQL_STUDIES_CHART"
-        api={api}
-        queries={toSingleStudyQueries({ studies, sqon })}
-      >
-        {({ isLoading, data }) => {
+      <QueriesResolver name="GQL_STUDIES_CHART" api={api} queries={[studiesQuery(sqon)]}>
+        {({ isLoading, data: rawData }) => {
+          const data = rawData.flat();
+
           const Header = !(data && !isParentLoading) ? (
             <span>Studies</span>
           ) : (
@@ -133,7 +155,7 @@ class StudiesChart extends React.Component {
               ) : (
                 <HorizontalBar
                   showCursor={true}
-                  data={data.map((d, i) => ({ ...d, id: i }))}
+                  data={data}
                   indexBy="label"
                   keys={['probands', 'familyMembers']}
                   tooltipFormatter={studiesToolTip}
@@ -147,7 +169,7 @@ class StudiesChart extends React.Component {
                   ]}
                   padding={0.5}
                   onClick={({ data }) => {
-                    this.addSqon('study.short_name', data.label);
+                    this.addSqon(data.label);
                   }}
                 />
               )}
@@ -158,27 +180,6 @@ class StudiesChart extends React.Component {
     );
   }
 }
-
-export const studiesQuery = (sqon) => ({
-  query: gql`
-    query($sqon: JSON) {
-      participant {
-        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          study__short_name {
-            buckets {
-              key
-            }
-          }
-        }
-      }
-    }
-  `,
-  variables: { sqon },
-  transform: (data) =>
-    get(data, 'data.participant.aggregations.study__short_name.buckets', []).map(
-      (study) => study.key,
-    ),
-});
 
 const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
