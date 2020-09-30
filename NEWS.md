@@ -7,6 +7,21 @@
 
 ### Technical / Other changes
 -->
+## 2020-09-30 kf-portal-ui
+
+### Features
+- [2614](https://github.com/kids-first/kf-portal-ui/issues/2614) Feature (Cohort Builder, Participants Sets): From the card listing the saved sets on the dashboard, it is now possible to click on the number representing the number of participants in a set to be redirected to the cohort builder and view its content.
+- [2715](https://github.com/kids-first/kf-portal-ui/issues/2715) Perf (Studies Chart): Make 1 call vs many ones in order to fetch the needed data for the Studies Chart.
+
+### Technical / Other changes
+- [2632](https://github.com/kids-first/kf-portal-ui/issues/2632) Refactor (Dashboard, Cards): Updated the title of the "My Saved Queries" card.
+- [2719](https://github.com/kids-first/kf-portal-ui/issues/2719) Fix (Cohort Builder, Participants sets): Make sure sets card show correct data. 
+- [2722](https://github.com/kids-first/kf-portal-ui/issues/2722) Refactor (Variant Workbench, Fences): Return a 404 error instead of an error 500 when users try to launch a cluster with their fences disconnected.
+- [2730](https://github.com/kids-first/kf-portal-ui/issues/2730) Fix (Cohort Builder, Summary/Table view toolbar): Fixed an issue where a loading spinner did not appear at the right place when trying to go from the Cohort Builder to the File Repository.
+- [2735](https://github.com/kids-first/kf-portal-ui/issues/2735) Refactor (Portal, Styling): Modifications to unify the styling across the project.
+- [2742](https://github.com/kids-first/kf-portal-ui/issues/2742) Fix (Dashboard, Cards): Fixed an issue where some cards in the Dashboard were not scrollable anymore.
+- [2750](https://github.com/kids-first/kf-portal-ui/issues/2750) Fix: Avoid showing a vertical bar in the dashboard page.
+
 ## 2020-09-23 kf-portal-ui 2.24.0
 
 ### Features
