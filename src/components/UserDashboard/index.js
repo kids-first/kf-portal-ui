@@ -23,6 +23,7 @@ import './UserDashboard.css';
 
 import {
   dashboardCard,
+  dashboadRowContainer,
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
@@ -49,7 +50,7 @@ export default compose(
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
-      <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
+      <Row className={dashboadRowContainer} gutter={[30, 30]} align={'top'}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <div className={wrapperVerticalBarChart}>
             <SavedQueries {...{ api, loggedInUser }} />
