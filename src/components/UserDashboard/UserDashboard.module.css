@@ -1,5 +1,4 @@
 .dashboadRowContainer {
-  margin: 0 !important;
   padding-bottom: 15px;
 }
 
@@ -12,6 +11,8 @@
 }
 
 .userDashboardContent {
+  padding-left: 15px;
+  padding-right: 15px;
   width: 100%;
   min-height: 600px;
   background-color: #f4f5f8;
