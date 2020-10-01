@@ -22,19 +22,18 @@ import './UserDashboard.module.css';
 import './UserDashboard.scss';
 
 import {
-  dashboardCard,
   dashboadRowContainer,
+  dashboardCard,
+  dashboardCardWrapper,
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
   wrapperMemberResearchInterests,
   wrapperMostParticipantsStudiesChart,
   wrapperVerticalBarChart,
-  dashboardCardWrapper,
 } from './UserDashboard.module.css';
 
 import ParticipantSets from './ParticipantSets';
-import { isPartOfGroup } from '../../common/profile';
 
 const { Title } = Typography;
 
@@ -45,7 +44,7 @@ export default compose(
     ({ state: { loggedInUser } }) => !loggedInUser,
     renderComponent(() => <div />),
   ),
-)(({ state: { loggedInUser, egoGroups }, api }) => (
+)(({ state: { loggedInUser }, api }) => (
   <div className={userDashboardContainer}>
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
@@ -90,16 +89,14 @@ export default compose(
             </div>
           </DashboardCard>
         </Col>
-        {isPartOfGroup('kf-investigator', egoGroups) && (
-          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-            <Card
-              title={<Title level={3}>My Participant Sets</Title>}
-              className={`participant-sets-container ${dashboardCard} ${dashboardCardWrapper}`}
-            >
-              <ParticipantSets user={loggedInUser} />
-            </Card>
-          </Col>
-        )}
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <Card
+            title={<Title level={3}>My Participant Sets</Title>}
+            className={`participant-sets-container ${dashboardCard} ${dashboardCardWrapper}`}
+          >
+            <ParticipantSets user={loggedInUser} />
+          </Card>
+        </Col>
       </Row>
     </div>
   </div>
