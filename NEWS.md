@@ -7,7 +7,7 @@
 
 ### Technical / Other changes
 -->
-## 2020-09-30 kf-portal-ui
+## 2020-10-01 kf-portal-ui
 
 ### Features
 - [2614](https://github.com/kids-first/kf-portal-ui/issues/2614) Feature (Cohort Builder, Participants Sets): From the card listing the saved sets on the dashboard, it is now possible to click on the number representing the number of participants in a set to be redirected to the cohort builder and view its content.
