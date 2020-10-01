@@ -4,7 +4,7 @@ import Footer from 'components/Footer';
 import Column from 'uikit/Column';
 import { Layout } from 'antd';
 
-import { pageContainer, layoutContainer } from './Page.module.css';
+import { layoutContainer, pageContainer } from './Page.module.css';
 
 const { Content, Footer: Ft } = Layout;
 
@@ -12,6 +12,7 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Column className={pageContainer}>
     <Head />
     <div
+      id="main-page-container"
       style={{
         height: '100%',
         overflowY: 'auto',

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -36,9 +36,6 @@ import TermsConditions from 'components/Login/TermsConditions';
 import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
 import 'index.css';
-import { selectUserSets } from './store/selectors/saveSetsSelectors';
-import { getUserSets } from './store/actionCreators/saveSets';
-import { connect } from 'react-redux';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -46,21 +43,10 @@ const userIsRequiredToLogIn = (loggedInUser) =>
     (isPlainObject(loggedInUser) && isEmpty(loggedInUser))) &&
   requireLogin;
 
-const mapStateToProps = (state) => ({
-  userSets: selectUserSets(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchUserSets: (userId) => dispatch(getUserSets(userId)),
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
 const App = compose(
   injectState,
   withApi,
-  connector,
-)(({ state, api, fetchUserSets }) => {
+)(({ state, api }) => {
   const { loggedInUser, isLoadingUser, isJoining } = state;
 
   if (isLoadingUser) {
@@ -86,12 +72,6 @@ const App = compose(
     }
     return <WrapperPage {...props} />;
   };
-
-  useEffect(() => {
-    if (!isLoadingUser && loggedInUser) {
-      fetchUserSets(loggedInUser.egoId);
-    }
-  }, [loggedInUser, fetchUserSets, isLoadingUser]);
 
   return (
     <div className="appContainer">

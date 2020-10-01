@@ -1,12 +1,15 @@
+.dashboadRowContainer {
+  padding-bottom: 15px;
+}
+
 .userDashboardContainer {
   min-height: calc(100% - 56px);
   display: flex;
 }
-.ant-card-head-title {
-  padding: 0 !important;
-}
 
 .userDashboardContent {
+  padding-left: 15px;
+  padding-right: 15px;
   width: 100%;
   min-height: 600px;
   background-color: #f4f5f8;
@@ -54,6 +57,10 @@
   padding: 20px 30px;
 }
 
+.dashboardCardWrapper > .ant-card-head {
+  padding: 0;
+}
+
 .noteList {
   padding-left: 18px;
 }
@@ -91,4 +98,15 @@
 
 .wrapperMostParticipantsStudiesChart {
   height: 300px;
+}
+
+.studiesList, .projectsListWrapper {
+  max-height: 300px;
+}
+
+.projectsListSpinner {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  margin-top: 75px;
 }

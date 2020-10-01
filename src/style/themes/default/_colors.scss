@@ -1,0 +1,15 @@
+@import '../../dist/themes/default/colors';
+
+$greyScale11: #a9adc0;
+
+:export {
+  btnPrimaryBg: $btn-primary-bg;
+  btnPrimaryColor: $btn-primary-color;
+  btndefaultColor: $btn-default-color;
+  btnDangerBg: $btn-danger-bg;
+  btnDangerBorder: $btn-danger-border;
+
+  //Heading - Title
+  headingColor: $heading-color;
+  headingColorlight: $heading-color-light;
+}

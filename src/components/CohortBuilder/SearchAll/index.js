@@ -35,7 +35,7 @@ const trackCohortBuilderAction = ({ action, label, category }) => {
   });
 };
 
-const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
+const toGqlFieldPath = (fieldPath) => fieldPath.replace(/\./g, '__');
 
 const OP_TO_USE = 'in';
 
@@ -53,9 +53,9 @@ const initializeSelection = (fields, sqon) => {
   }, {});
 };
 
-const filterFields = (query, detailedFields) => {
-  return detailedFields
-    .map(field => {
+const filterFields = (query, detailedFields) =>
+  detailedFields
+    .map((field) => {
       const matchByDisplayName = field.displayName.toLowerCase().indexOf(query.toLowerCase()) > -1;
       const filteredBuckets = field.buckets.filter(
         ({ key }) => key.toLowerCase().indexOf(query.toLowerCase()) > -1,
@@ -66,11 +66,10 @@ const filterFields = (query, detailedFields) => {
         buckets: filteredBuckets,
       };
     })
-    .filter(field => field.matchByDisplayName || field.buckets.length > 0);
-};
+    .filter((field) => field.matchByDisplayName || field.buckets.length > 0);
 
 const orderFields = memoizeOne((fields, aggFieldsValues) =>
-  fields.map(fieldName => aggFieldsValues[toGqlFieldPath(fieldName)]),
+  fields.map((fieldName) => aggFieldsValues[toGqlFieldPath(fieldName)]),
 );
 
 const getFilteredFields = memoizeOne((query, fields, aggFieldsValues) => {
@@ -106,6 +105,7 @@ class SearchAll extends React.Component {
     onSqonUpdate: PropTypes.func.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     color: PropTypes.string,
+    api: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -206,7 +206,7 @@ class SearchAll extends React.Component {
       <div className="results-container open">
         <Filter
           initialSqon={sqon}
-          onSubmit={sqon => {
+          onSubmit={(sqon) => {
             onSqonUpdate(fieldName, sqon);
             this.close();
           }}
@@ -261,7 +261,7 @@ class SearchAll extends React.Component {
       },
     });
 
-    let keyedBuckets = mapKeys(field.buckets, (v, k) => v.value);
+    let keyedBuckets = mapKeys(field.buckets, (v) => v.value);
     let bucket = field.buckets[Object.keys(keyedBuckets).indexOf(value)];
     const { displayName, name } = field;
 
@@ -285,7 +285,7 @@ class SearchAll extends React.Component {
     const { selections, fieldName } = this.state;
 
     const newSqonPerField = fields
-      .filter(field => selections[field].length > 0)
+      .filter((field) => selections[field].length > 0)
       .reduce(
         (acc, field) =>
           acc.concat({
@@ -301,7 +301,7 @@ class SearchAll extends React.Component {
     const newSqon = {
       op: sqon.op,
       content: sqon.content
-        .filter(op => op.op !== OP_TO_USE || !selections[op.content.field])
+        .filter((op) => op.op !== OP_TO_USE || !selections[op.content.field])
         .concat(newSqonPerField),
     };
 
@@ -342,71 +342,69 @@ class SearchAll extends React.Component {
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >
-        {({ loading: extendedMappingIsLoading, extendedMapping = [] }) => {
-          return (
-            <QueriesResolver
-              name="GQL_PARTICIPANTS_TABLE"
-              api={api}
-              sqon={sqon}
-              queries={searchAllQueries(sqon, fields, extendedMapping || [])}
-            >
-              {({ isLoading, data, error }) => {
-                if (error) {
-                  console.error('[SearchAll] HTTP error encountered', error);
-                  return null;
-                }
+        {({ loading: extendedMappingIsLoading, extendedMapping = [] }) => (
+          <QueriesResolver
+            name="GQL_SEARCH_ALL_FACETS"
+            api={api}
+            sqon={sqon}
+            queries={searchAllQueries(sqon, fields, extendedMapping || [])}
+          >
+            {({ isLoading, data, error }) => {
+              if (error) {
+                console.error('[SearchAll] HTTP error encountered', error);
+                return null;
+              }
 
-                if (data && data[0] && data[0].errors) {
-                  console.error('[SearchAll] server-side error encountered', data[0].errors);
-                  return null;
-                }
+              if (data && data[0] && data[0].errors) {
+                console.error('[SearchAll] server-side error encountered', data[0].errors);
+                return null;
+              }
 
-                if (extendedMappingIsLoading || isLoading) {
-                  return <LoadingSpinner color="#a9adc0" size="30px" />;
-                }
+              if (extendedMappingIsLoading || isLoading) {
+                return <LoadingSpinner color="#a9adc0" size="30px" />;
+              }
 
-                return (
-                  <Downshift
-                    isOpen={displayMode !== DISPLAY_MODE.CLOSED}
-                    onOuterClick={() => this.close()}
-                  >
-                    {({ getRootProps }) => (
-                      <div
-                        className="search-all-filter"
-                        // TODO : REMOVE ref stuff?
-                        {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
+              return (
+                <Downshift
+                  isOpen={displayMode !== DISPLAY_MODE.CLOSED}
+                  onOuterClick={() => this.close()}
+                >
+                  {({ getRootProps }) => (
+                    <div
+                      className="search-all-filter"
+                      // TODO : REMOVE ref stuff?
+                      {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
+                    >
+                      <Column
+                        className="query-container"
+                        style={{ borderTop: `4px solid ${color}` }}
                       >
-                        <Column
-                          className="query-container"
-                          style={{ borderTop: `4px solid ${color}` }}
-                        >
-                          <div className="query-content">
-                            <span className={'input-icon icon-left'}>
-                              <SearchIcon />
+                        <div className="query-content">
+                          <span className={'input-icon icon-left'}>
+                            <SearchIcon />
+                          </span>
+                          <input
+                            type="text"
+                            value={query}
+                            onChange={this.handleQueryChange}
+                            aria-label={title}
+                            placeholder={title}
+                          />
+                          {query && (
+                            <span className={'input-icon icon-right'}>
+                              <FaTimesCircleO onClick={this.handleClearQuery} />
                             </span>
-                            <input
-                              type="text"
-                              value={query}
-                              onChange={this.handleQueryChange}
-                              aria-label={title}
-                              placeholder={title}
-                            />
-                            {query && (
-                              <span className={'input-icon icon-right'}>
-                                <FaTimesCircleO onClick={this.handleClearQuery} />
-                              </span>
-                            )}
-                          </div>
-                        </Column>
-                        {this.renderOverlay(isLoading, data)}
-                      </div>
-                    )}
-                  </Downshift>
-                );
-              }}
-            </QueriesResolver>
-          );
-        }}
+                          )}
+                        </div>
+                      </Column>
+                      {this.renderOverlay(isLoading, data)}
+                    </div>
+                  )}
+                </Downshift>
+              );
+            }}
+          </QueriesResolver>
+        )}
       </ExtendedMappingProvider>
     );
   }

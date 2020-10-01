@@ -1,8 +1,10 @@
+@import 'colors';
+
 h1,
 h2,
 h3,
 h4 {
-  color: #2b388f;
+  color: $heading-color;
   margin: 0;
   padding: 0;
   font-weight: 500;
@@ -11,20 +13,27 @@ h4 {
   font-family: Montserrat, sans-serif;
   text-decoration: none;
 }
+
+.h1 {
+  font-size: 28px;
+}
+
 h2 {
   font-size: 22px;
 }
+
 h3 {
   font-size: 16px;
   line-height: 1;
   letter-spacing: 0.3px;
 }
+
 h4 {
   font-size: 13px;
   font-style: italic;
   line-height: 1.85;
   text-align: left;
-  color: #74757d;
+  color: $heading-color-light;
   margin: 0;
   padding: 0;
   font-weight: normal;

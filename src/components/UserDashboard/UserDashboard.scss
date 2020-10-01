@@ -1,0 +1,22 @@
+@import "../../style/themes/default/global";
+
+.participant-sets-container {
+  .ant-card-head-title {
+    padding: 0;
+  }
+
+  .ant-card-head {
+    padding: 0;
+  }
+
+  .ant-card-head-title > h3 {
+    font-family: $defaultFont;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .ant-card-body {
+    padding: 24px 0;
+  }
+}

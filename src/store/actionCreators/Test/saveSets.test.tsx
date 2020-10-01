@@ -2,15 +2,18 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
   addRemoveSetIds,
+  createQueryInCohortBuilder,
   createSetIfUnique,
   deleteUserSets,
   editSetTag,
   failureCreate,
+  fetchSetsIfNeeded,
   getUserSets,
   isLoadingCreateSet,
   reInitializeSetsState,
 } from '../saveSets';
 import {
+  CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
   EditSetTagParams,
@@ -332,6 +335,95 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(addRemoveSetIds(payload));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should not fetch sets if sets already in store ', async () => {
+    const expectedActions: any[] = [];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          sets: [
+            { setId: 'set1', size: 5, tag: 'set1' },
+            { setId: 'set2', size: 5, tag: 'set2' },
+          ],
+          isLoading: false,
+          error: false,
+          isDeleting: false,
+          isEditing: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(fetchSetsIfNeeded('user1'));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should fetch sets if not sets in store', async () => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve([]),
+    );
+    const expectedActions = [
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
+      { type: USER_SAVE_SETS, payload: [] },
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
+    ];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          sets: [],
+          isLoading: false,
+          error: false,
+          isDeleting: false,
+          isEditing: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(fetchSetsIfNeeded('user1'));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow when request to create query in cohort ', async () => {
+    const setInfo: SetInfo = {
+      key: '1234',
+      name: 'name',
+      currentUser: 'someUser',
+    };
+    const expectedActions = [{ type: CREATE_SET_QUERY_REQUEST, setInfo: setInfo }];
+
+    const store = mockStore({
+      sqons: [
+        {
+          op: 'and',
+          content: [{ op: 'in', content: { field: 'kf_id', value: 'set_id:id12345' } }],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+
+    // @ts-ignore
+    await store.dispatch(createQueryInCohortBuilder(setInfo));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

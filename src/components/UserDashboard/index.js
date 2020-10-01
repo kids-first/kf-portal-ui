@@ -19,10 +19,11 @@ import {
 } from 'components/Charts';
 
 import './UserDashboard.module.css';
-import './UserDashboard.css';
+import './UserDashboard.scss';
 
 import {
   dashboardCard,
+  dashboadRowContainer,
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
@@ -49,7 +50,7 @@ export default compose(
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
-      <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
+      <Row className={dashboadRowContainer} gutter={[30, 30]} align={'top'}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <div className={wrapperVerticalBarChart}>
             <SavedQueries {...{ api, loggedInUser }} />
@@ -93,7 +94,7 @@ export default compose(
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
             <Card
               title={<Title level={3}>My Participant Sets</Title>}
-              className={`${dashboardCard} ${dashboardCardWrapper}`}
+              className={`participant-sets-container ${dashboardCard} ${dashboardCardWrapper}`}
             >
               <ParticipantSets user={loggedInUser} />
             </Card>

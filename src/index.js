@@ -1,6 +1,6 @@
 import 'babel-polyfill';
-import 'style/dist/antd-kf-theme.css';
-import 'style/dist/kf-theme.css';
+import 'style/dist/themes/default/antd.css';
+import 'style/themes/default/main.scss';
 import 'index.css';
 // [NEXT] This css sheet should be brought back locally instead, in the long run
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';

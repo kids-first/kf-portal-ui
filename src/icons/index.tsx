@@ -8,6 +8,7 @@ export type IconProps = {
   height?: string;
   style?: object;
   width?: string;
+  svgClass?: string;
 };
 
 export type BaseSvgProps = {

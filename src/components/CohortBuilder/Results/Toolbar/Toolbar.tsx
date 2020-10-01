@@ -18,8 +18,10 @@ import DownloadButton from '../../ParticipantsTableView/DownloadButton';
 import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
 import { isPartOfGroup } from 'common/profile';
 import { Sqon } from 'store/sqon';
-import './Toolbar.css';
 import { LoggedInUser } from 'store/userTypes';
+
+import './Toolbar.scss';
+import colors from 'style/themes/default/_colors.scss';
 
 enum ToolbarLabels {
   participant,
@@ -31,12 +33,12 @@ const LABELS = {
   [ToolbarLabels.participant]: {
     singular: 'participant',
     plural: 'participants',
-    icon: <DemographicIcon width="19px" height="18px" fill="#2b388f" />,
+    icon: <DemographicIcon width="19px" height="18px" fill={colors.headingColor} />,
   },
   [ToolbarLabels.family]: {
     singular: 'family',
     plural: 'families',
-    icon: <FamilyMembersIcon width="18px" height="16px" fill="#2b388f" />,
+    icon: <FamilyMembersIcon width="18px" height="16px" fill={colors.headingColor} />,
   },
   [ToolbarLabels.file]: {
     singular: 'file',
@@ -195,7 +197,9 @@ const Toolbar = ({
           )}
         </div>
       )}
-      {isPartOfGroup('kf-investigator', egoGroups) && <ParticipantSetDropdown sqon={sqon} />}
+      {isPartOfGroup('kf-investigator', egoGroups) && (
+        <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
+      )}
       <DownloadButton sqon={sqon} />
     </div>
   );
