@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import capitalize from 'lodash/capitalize';
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
 import { roundIntToChosenPowerOfTen } from 'utils';
-import { Spin, notification } from 'antd';
+import { notification, Spin } from 'antd';
 import DemographicIcon from 'icons/DemographicIcon';
 import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 
@@ -16,7 +16,6 @@ import graphql from 'services/arranger';
 import { createFileRepoLink } from '../../util';
 import DownloadButton from '../../ParticipantsTableView/DownloadButton';
 import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
-import { isPartOfGroup } from 'common/profile';
 import { Sqon } from 'store/sqon';
 import { LoggedInUser } from 'store/userTypes';
 
@@ -166,7 +165,6 @@ const Toolbar = ({
   loggedInUser,
   api,
   sqon,
-  egoGroups,
 }: ToolbarProps) => {
   const familiesCount = get(data, 'familiesCountCardinality', null);
   const filesCount = get(data, 'filesCardinality', 0) as number;
@@ -197,9 +195,7 @@ const Toolbar = ({
           )}
         </div>
       )}
-      {isPartOfGroup('kf-investigator', egoGroups) && (
-        <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
-      )}
+      <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
       <DownloadButton sqon={sqon} />
     </div>
   );

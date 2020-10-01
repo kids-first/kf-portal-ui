@@ -20,6 +20,8 @@ import {
 } from '../actionTypes';
 import { CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
 
+const setSqonRegex = new RegExp('^set_id:(.+)');
+
 export const initialState = {
   sqons: getDefaultSqon(),
   activeIndex: 0,
@@ -77,14 +79,16 @@ const addSetSqonToSqons = (setInfo, sqons) => {
     return { newSqons: [{ op: 'and', content: [] }], activeIndex: 0 };
   }
 
-  const sqonExistsInCB = sqons.some((s) =>
-    s.content.some((t) => t.content.value === `set_id:${setInfo.key}`),
+  const setSqonIndex = sqons.findIndex((s) =>
+    s.content.some((t) => setSqonRegex.test(t.content.value)),
   );
 
-  if (sqonExistsInCB) {
+  if (~setSqonIndex) {
+    const sqonsCopy = [...sqons];
+    sqonsCopy[setSqonIndex] = constructSetSqon(setInfo);
     return {
-      newSqons: sqons,
-      activeIndex: sqons.length - 1,
+      newSqons: sqonsCopy,
+      activeIndex: setSqonIndex,
     };
   } else {
     const newSqon = addSqon(setInfo, sqons);
