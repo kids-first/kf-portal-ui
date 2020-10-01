@@ -8,7 +8,6 @@ import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
 import OrcidLogin from 'components/loginButtons/OrcidLogin';
 import OrcidRedirect from 'components/Login/OrcidRedirect';
-import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
@@ -27,12 +26,18 @@ import { handleJWT, fetchIntegrationTokens } from './utils';
 
 import './Login.module.css';
 import { loginContainer, loginError } from './Login.module.css';
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 class Component extends React.Component {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
     api: PropTypes.func,
+    onFinish: PropTypes.func,
+    location: PropTypes.object.isRequired,
+    shouldNotRedirect: PropTypes.bool,
   };
 
   state = {
@@ -50,7 +55,7 @@ class Component extends React.Component {
       effects: { setToken, setUser, setIntegrationToken },
     } = this.props;
 
-    const response = await handler(token).catch(error => {
+    const response = await handler(token).catch((error) => {
       if (error.message === 'Network Error') {
         this.handleSecurityError();
       }
@@ -58,7 +63,7 @@ class Component extends React.Component {
 
     if ((response || {}).status === 200) {
       return handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })
-        .then(async success => {
+        .then(async (success) => {
           if (success) {
             this.trackUserSignIn(provider);
             fetchIntegrationTokens({ setIntegrationToken, api });
@@ -67,14 +72,14 @@ class Component extends React.Component {
             this.setState({ authorizationError: true });
           }
         })
-        .catch(async error => {
+        .catch(async () => {
           await logoutAll();
           this.setState({ authorizationError: true });
         });
     }
   };
 
-  trackUserSignIn = label => {
+  trackUserSignIn = (label) => {
     let {
       location: { pathname },
     } = this.props;
@@ -89,7 +94,7 @@ class Component extends React.Component {
 
   handleSecurityError = () => this.setState({ securityError: true });
 
-  handleError = errorField => this.setState({ [errorField]: true });
+  handleError = (errorField) => this.setState({ [errorField]: true });
 
   getErrorMessage = () => {
     const { thirdPartyDataError, unknownError } = this.state;
@@ -120,7 +125,7 @@ class Component extends React.Component {
       <Box style={{ maxWidth: '600px' }}>
         Connection to ego failed, you may need to visit
         <a target="_blank" rel="noopener noreferrer" href={egoApiRoot}>
-          { egoApiRoot }
+          {egoApiRoot}
         </a>
         in a new tab and accept the warning
       </Box>
@@ -133,7 +138,7 @@ class Component extends React.Component {
         location={this.props.location}
         loggedInUserToken={this.props.state.loggedInUserToken}
         loginProvider={this.props.state.loginProvider}
-        onLogin={token =>
+        onLogin={(token) =>
           this.handleToken({
             provider: ORCID,
             handler: () => Promise.resolve({ data: token, status: 200 }), // clean
@@ -171,7 +176,7 @@ class Component extends React.Component {
 
         <GoogleLogin
           onError={this.handleError}
-          onLogin={id_token =>
+          onLogin={(id_token) =>
             this.handleToken({
               provider: GOOGLE,
               handler: googleLogin,
@@ -182,7 +187,7 @@ class Component extends React.Component {
 
         <FacebookLogin
           onError={this.handleError}
-          onLogin={r =>
+          onLogin={(r) =>
             this.handleToken({
               provider: FACEBOOK,
               handler: facebookLogin,
@@ -209,7 +214,7 @@ class Component extends React.Component {
     const { thirdPartyDataError, facebookError, unknownError } = this.state;
     const disabled = thirdPartyDataError || facebookError || unknownError;
 
-    let content = null;
+    let content;
     if (this.state.securityError) {
       content = this.renderSecurityError();
     } else if (renderOrcidRedirect) {
@@ -217,7 +222,9 @@ class Component extends React.Component {
     } else if (renderSocialLoginButtons) {
       content = this.renderSocialLoginButtons(disabled);
     } else {
-      content = <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />;
+      content = (
+        <Text>An error occurred. Please refresh and try again or contact our support.</Text>
+      );
     }
 
     return (
