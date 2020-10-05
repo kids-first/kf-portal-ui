@@ -7,6 +7,18 @@
 
 ### Technical / Other changes
 -->
+## 2020-10-05 kf-portal-ui 2.27.0
+
+### Features
+- [2755](https://github.com/kids-first/kf-portal-ui/issues/2755) Feature (Cohort Builder, Participants Sets): The participants set feature is now visible to everyone. Adding a set to the Cohort Builder from the Dashboard page now replace any existing set instead of adding a new one.
+
+
+### Technical / Other changes
+- [2770](https://github.com/kids-first/kf-portal-ui/issues/2770) Fix (SqonBuilder): Make sure case range does not generate a type error (ex, age at diagnosis).
+- [2693](https://github.com/kids-first/kf-portal-ui/issues/2693) Refactor (Portal, Login): Removal of duplicate code in LoginUtils.
+- [2754](https://github.com/kids-first/kf-portal-ui/issues/2754) Refactor (Dashboard, Public-stats-api): Removal of duplicate code.
+- [2775](https://github.com/kids-first/kf-portal-ui/issues/2775) Refactor (CohortBuilder, File repo): Share query modal. 
+
 ## 2020-10-01 kf-portal-ui
 
 ### Features
