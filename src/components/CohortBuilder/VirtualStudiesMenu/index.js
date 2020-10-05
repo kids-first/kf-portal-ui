@@ -237,17 +237,13 @@ class VirtualStudiesMenu extends React.Component {
               className="button-group"
             />
 
-            <Tooltip title={<div>Open a saved virtual study</div>} className="button-group tooltip">
-              <div>
-                <LoadQuery
-                  studies={virtualStudies}
-                  selection={selectedStudy}
-                  disabled={cantOpen}
-                  classNameBtn="button-group"
-                  loadSavedVirtualStudy={loadSavedVirtualStudy}
-                />
-              </div>
-            </Tooltip>
+            <LoadQuery
+              studies={virtualStudies}
+              selection={selectedStudy}
+              disabled={cantOpen}
+              classNameBtn="button-group"
+              loadSavedVirtualStudy={loadSavedVirtualStudy}
+            />
 
             <VirtualStudiesMenuButton
               label={'Save'}
@@ -276,16 +272,25 @@ class VirtualStudiesMenu extends React.Component {
               className="button-group"
             />
 
-            <Tooltip title={<div>Share this virtual study</div>} className="button-group">
-              <div>
-                <ShareQuery
-                  disabled={cantShare}
-                  getSharableUrl={this.getSharableUrl}
-                  handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
-                  loggedInUser={loggedInUser}
-                />
-              </div>
-            </Tooltip>
+            {cantShare ? (
+              <ShareQuery
+                disabled
+                getSharableUrl={this.getSharableUrl}
+                handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
+                loggedInUser={loggedInUser}
+              />
+            ) : (
+              <Tooltip title={<div>Share this virtual study</div>} className="button-group">
+                <div>
+                  <ShareQuery
+                    disabled={false}
+                    getSharableUrl={this.getSharableUrl}
+                    handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
+                    loggedInUser={loggedInUser}
+                  />
+                </div>
+              </Tooltip>
+            )}
           </Row>
         </Row>
       </>
