@@ -41,7 +41,11 @@ everything in legacy `src/theme/` should go in `src/style/theme/default/main.scs
 
 ## Configuration
 
-### Main use
+### Reference
+
+[Ant Design available theme variable](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less)
+
+### Main/Global use
 
 First import ant design overide in the main application file
 
