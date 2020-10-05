@@ -3,10 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import urlJoin from 'url-join';
-import { injectState } from 'freactal';
-
 import Row from 'uikit/Row';
-
 import {
   fetchVirtualStudiesCollection,
   resetVirtualStudy,
@@ -14,57 +11,27 @@ import {
   saveVirtualStudy,
 } from 'store/actionCreators/virtualStudies';
 import { createVirtualStudy } from 'services/virtualStudies';
-
-import Tooltip from 'uikit/Tooltip';
-import { WhiteButton } from 'uikit/Button.js';
-
+import { Tooltip } from 'antd';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
-import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
-import OpenMenuIcon from 'react-icons/lib/fa/folder';
-import SaveAsIcon from 'react-icons/lib/fa/file';
-import SaveIcon from 'react-icons/lib/fa/floppy-o';
-import EditIcon from 'react-icons/lib/fa/edit';
-import DeleteIcon from 'react-icons/lib/fa/trash';
-
-import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
+import LoadQuery from './LoadQuery';
+import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
-
 import './index.scss';
-
-const VirtualStudiesMenuButton = ({
-  tooltipText,
-  onClick,
-  label,
-  icon: Icon,
-  iconProps = {},
-  disabled = false,
-  className = '',
-}) => (
-  <Tooltip html={<div>{tooltipText}</div>} className={`button-group tooltip ${className}`}>
-    <WhiteButton disabled={disabled} onClick={onClick}>
-      <span>
-        <Icon height={10} width={10} className="button-icon" {...iconProps} />
-      </span>
-      <span className="button-text">{label}</span>
-    </WhiteButton>
-  </Tooltip>
-);
+import { openModal, closeModal } from 'store/actions/modal';
+import PropTypes from 'prop-types';
+import { VirtualStudiesMenuButton } from './VirtualStudiesMenuButton';
+import {
+  FolderOpenFilled,
+  SaveOutlined,
+  FileOutlined,
+  DeleteOutlined,
+  EditTwoTone,
+} from '@ant-design/icons';
 
 const generateDescription = (content) => {
   const descriptionLines = content.trim().split(/\n/);
   const jsx = descriptionLines.slice(0, 3).map((line, i) => (
-    <p
-      style={{
-        overflow: 'hidden',
-        wordBreak: 'break-word',
-        margin: 0,
-        fontFamily: '"Open Sans", "sans-serif"',
-        fontSize: '16px',
-        paddingBottom: '8px',
-        paddingTop: '8px',
-      }}
-      key={i}
-    >
+    <p className={'virtual-study-description'} key={i}>
       {line}&nbsp;
     </p>
   ));
@@ -72,7 +39,48 @@ const generateDescription = (content) => {
   return descriptionLines.length > 3 ? <Tooltip html={<span>{content}</span>}>{jsx}</Tooltip> : jsx;
 };
 
+const VS_SAVE_MODAL_ID = 'VS_SAVE_MODAL_ID';
+const VS_EDIT_MODAL_ID = 'VS_EDIT_MODAL_ID';
+
+const MODAL_PARAMS = {
+  [VS_SAVE_MODAL_ID]: {
+    title: 'Edit Virtual Study Name and Description',
+    saveAs: false,
+  },
+  [VS_EDIT_MODAL_ID]: {
+    title: 'Save as Virtual Study',
+    saveAs: true,
+  },
+};
+
 class VirtualStudiesMenu extends React.Component {
+  static propTypes = {
+    uid: PropTypes.string,
+    fetchVirtualStudiesCollection: PropTypes.func.isRequired,
+    resetVirtualStudy: PropTypes.func.isRequired,
+    loggedInUser: PropTypes.object,
+    saveVirtualStudy: PropTypes.func.isRequired,
+    sqons: PropTypes.array,
+    activeIndex: PropTypes.number,
+    description: PropTypes.string,
+    virtualStudyName: PropTypes.string,
+    activeVirtualStudyId: PropTypes.string,
+    openModal: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    virtualStudies: PropTypes.array.isRequired,
+    loadSavedVirtualStudy: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    setVirtualStudyToDeleteCB: PropTypes.func.isRequired,
+    setShowDelVSModalCB: PropTypes.func.isRequired,
+    virtualStudyIsLoading: PropTypes.bool.isRequired,
+    openModalId: PropTypes.string,
+    error: PropTypes.object,
+    isDirty: PropTypes.bool,
+    isOwner: PropTypes.bool,
+    virtualStudiesAreLoading: PropTypes.bool,
+    areSqonsEmpty: PropTypes.bool,
+  };
+
   componentDidMount() {
     const { uid, fetchVirtualStudiesCollection } = this.props;
     if (uid !== null) {
@@ -87,11 +95,9 @@ class VirtualStudiesMenu extends React.Component {
     }
   }
 
-  onNewClick = () => {
-    this.props.resetVirtualStudy();
-  };
+  onNewClick = () => this.props.resetVirtualStudy();
 
-  onSaveClick = () => {
+  onSaveClick = async () => {
     const {
       loggedInUser,
       sqons,
@@ -109,30 +115,16 @@ class VirtualStudiesMenu extends React.Component {
 
     const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
 
-    return saveVirtualStudy(loggedInUser, study).catch((err) => {
+    try {
+      await saveVirtualStudy(loggedInUser, study);
+    } catch (err) {
       console.error('Error while saving the virtual study', err);
-    });
+    }
   };
 
-  onEditClick = () => {
-    this.props.effects.setModal({
-      title: 'Edit Virtual Study Name and Description',
-      classNames: {
-        modal: 'virtual-study-modal',
-      },
-      component: <SaveVirtualStudiesModalContent saveAs={false} />,
-    });
-  };
+  onEditClick = () => this.props.openModal(VS_EDIT_MODAL_ID);
 
-  onSaveAsClick = () => {
-    this.props.effects.setModal({
-      title: 'Save as Virtual Study',
-      classNames: {
-        modal: 'virtual-study-modal',
-      },
-      component: <SaveVirtualStudiesModalContent saveAs={true} />,
-    });
-  };
+  onSaveAsClick = () => this.props.openModal(VS_SAVE_MODAL_ID);
 
   onDeleteClick = () => {
     const { setVirtualStudyToDeleteCB, setShowDelVSModalCB } = this.props;
@@ -154,9 +146,7 @@ class VirtualStudiesMenu extends React.Component {
     return virtualStudies.filter((study) => study.virtualStudyId === activeVirtualStudyId)[0];
   };
 
-  handleOpen = (virtualStudyId) => {
-    this.props.loadSavedVirtualStudy(virtualStudyId);
-  };
+  handleOpen = (virtualStudyId) => this.props.loadSavedVirtualStudy(virtualStudyId);
 
   render() {
     const {
@@ -170,6 +160,11 @@ class VirtualStudiesMenu extends React.Component {
       isDirty,
       areSqonsEmpty,
       error,
+      openModalId,
+      closeModal,
+      loggedInUser,
+      uid,
+      loadSavedVirtualStudy,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
 
@@ -177,7 +172,7 @@ class VirtualStudiesMenu extends React.Component {
     const newDisabled = selectedStudy !== undefined ? false : loading || areSqonsEmpty;
     const cantOpen =
       loading ||
-      (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
+      (virtualStudies.length === 1 && selectedStudy && !!selectedStudy.virtualStudyId) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
     const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
@@ -192,107 +187,114 @@ class VirtualStudiesMenu extends React.Component {
     if (error) {
       return <GenericErrorDisplay error={error} />;
     }
-
+    const showModal = [VS_SAVE_MODAL_ID, VS_EDIT_MODAL_ID].includes(openModalId);
     return (
-      <Row className="virtual-studies-menu container">
-        <Row className="virtual-studies-heading">
-          <header>
-            <h1>{title}</h1>
-
-            {activeVirtualStudyId ? (
-              <Tooltip
-                html={<div>{'Edit name and description'}</div>}
-                className="tooltip virtual-studies-edit"
-              >
-                {!isOwner ? null : (
-                  <EditIcon
-                    disabled={cantEdit}
-                    height={16}
-                    width={16}
-                    className="floating-button-icon"
-                    onClick={this.onEditClick}
-                  />
-                )}
-              </Tooltip>
-            ) : null}
-          </header>
-
-          {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
-
-          <div className={`${description.trim().length ? '' : 'empty'}`}>
-            {generateDescription(description)}
-          </div>
-        </Row>
-
-        <Row className="virtual-studies-action-bar">
-          <VirtualStudiesMenuButton
-            label={'New'}
-            tooltipText={'Create a new virtual study'}
-            icon={OpenMenuIcon}
-            iconProps={{ height: 11, width: 11 }}
-            disabled={newDisabled}
-            onClick={this.onNewClick}
-            className="virtual-studies-new"
+      <>
+        {showModal && (
+          <SaveVirtualStudiesModal
+            saveAs={MODAL_PARAMS[openModalId].saveAs}
+            title={MODAL_PARAMS[openModalId].title}
+            onCloseCB={() => closeModal(openModalId)}
+            uid={uid}
+            loggedInUser={loggedInUser}
           />
+        )}
+        <Row className="virtual-studies-menu container">
+          <Row className="virtual-studies-heading">
+            <header>
+              <h1>{title}</h1>
 
-          <Tooltip
-            html={<div>Open a saved virtual study</div>}
-            className="virtual-studies-open button-group"
-          >
-            <LoadQuery
-              studies={virtualStudies}
-              selection={selectedStudy}
-              handleOpen={this.handleOpen}
-              disabled={cantOpen}
+              {activeVirtualStudyId && (
+                <Tooltip
+                  title={<div>{'Edit name and description'}</div>}
+                  className="tooltip virtual-studies-edit"
+                >
+                  {isOwner && (
+                    <EditTwoTone
+                      disabled={cantEdit}
+                      className="floating-button-icon"
+                      onClick={this.onEditClick}
+                    />
+                  )}
+                </Tooltip>
+              )}
+            </header>
+
+            {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
+
+            <div className={`${description.trim().length ? '' : 'empty'}`}>
+              {generateDescription(description)}
+            </div>
+          </Row>
+
+          <Row className="virtual-studies-action-bar">
+            <VirtualStudiesMenuButton
+              label={'New'}
+              tooltipText={'Create a new virtual study'}
+              icon={<FolderOpenFilled />}
+              disabled={newDisabled}
+              onClick={this.onNewClick}
+              className="button-group"
             />
-          </Tooltip>
 
-          <VirtualStudiesMenuButton
-            label={'Save'}
-            tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
-            icon={SaveIcon}
-            iconProps={{ height: 12, width: 12 }}
-            disabled={!isDirty}
-            onClick={this.onSaveClick}
-            className="virtual-studies-save"
-          />
+            <Tooltip title={<div>Open a saved virtual study</div>} className="button-group tooltip">
+              <div>
+                <LoadQuery
+                  studies={virtualStudies}
+                  selection={selectedStudy}
+                  disabled={cantOpen}
+                  classNameBtn="button-group"
+                  loadSavedVirtualStudy={loadSavedVirtualStudy}
+                />
+              </div>
+            </Tooltip>
 
-          <VirtualStudiesMenuButton
-            label={'Save as'}
-            tooltipText={'Saves the current virtual study as a new one'}
-            icon={SaveAsIcon}
-            disabled={cantSaveAs}
-            onClick={this.onSaveAsClick}
-            className="virtual-studies-save-as"
-          />
-
-          <VirtualStudiesMenuButton
-            label={'delete'}
-            tooltipText={'Delete this virtual study'}
-            icon={DeleteIcon}
-            disabled={cantDelete}
-            onClick={this.onDeleteClick}
-            className="virtual-studies-delete"
-          />
-
-          <Tooltip
-            html={<div>Share this virtual study</div>}
-            className="virtual-studies-share button-group"
-          >
-            <ShareQuery
-              disabled={cantShare}
-              getSharableUrl={this.getSharableUrl}
-              handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
+            <VirtualStudiesMenuButton
+              label={'Save'}
+              tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
+              icon={<SaveOutlined />}
+              disabled={!isDirty}
+              onClick={this.onSaveClick}
+              className="button-group"
             />
-          </Tooltip>
+
+            <VirtualStudiesMenuButton
+              label={'Save as'}
+              tooltipText={'Saves the current virtual study as a new one'}
+              icon={<FileOutlined />}
+              disabled={cantSaveAs}
+              onClick={this.onSaveAsClick}
+              className="button-group"
+            />
+
+            <VirtualStudiesMenuButton
+              label={'delete'}
+              tooltipText={'Delete this virtual study'}
+              icon={<DeleteOutlined />}
+              disabled={cantDelete}
+              onClick={this.onDeleteClick}
+              className="button-group"
+            />
+
+            <Tooltip title={<div>Share this virtual study</div>} className="button-group">
+              <div>
+                <ShareQuery
+                  disabled={cantShare}
+                  getSharableUrl={this.getSharableUrl}
+                  handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
+                  loggedInUser={loggedInUser}
+                />
+              </div>
+            </Tooltip>
+          </Row>
         </Row>
-      </Row>
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { user, currentVirtualStudy, virtualStudies } = state;
+  const { user, currentVirtualStudy, virtualStudies, modal } = state;
   return {
     uid: user.uid,
     loggedInUser: user.loggedInUser,
@@ -308,6 +310,7 @@ const mapStateToProps = (state) => {
     isDirty: currentVirtualStudy.dirty,
     areSqonsEmpty: currentVirtualStudy.areSqonsEmpty,
     error: currentVirtualStudy.error,
+    openModalId: modal.id,
   };
 };
 
@@ -316,10 +319,11 @@ const mapDispatchToProps = {
   resetVirtualStudy,
   loadSavedVirtualStudy,
   saveVirtualStudy,
+  openModal: (id) => (dispatch) => dispatch(openModal(id)),
+  closeModal: (id) => (dispatch) => dispatch(closeModal(id)),
 };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withRouter,
-  injectState,
 )(VirtualStudiesMenu);
