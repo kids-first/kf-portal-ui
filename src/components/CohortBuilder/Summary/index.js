@@ -56,7 +56,7 @@ const Summary = ({
             experimentalStrategyData={experimentalStrategyData}
           />
           {isFeatureEnabled('FT_SUNBURST') && (
-            <Card title="Observed Phenotypes">
+            <Card title="Observed Phenotypes" gridPosition="item-row1-col2-item1">
               <OntologySunburst sqon={sqon} />
             </Card>
           )}

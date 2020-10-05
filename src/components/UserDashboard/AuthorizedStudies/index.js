@@ -2,15 +2,14 @@ import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import isEmpty from 'lodash/isEmpty';
-import CardHeader from 'uikit/Card/CardHeader';
 import DownloadController from 'icons/DownloadController';
 import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import AccessGate from '../../AccessGate';
-import { DashboardCard } from '../styles';
 import Info from '../Info';
-import { Button } from 'antd';
-import { Spinner } from 'uikit/Spinner';
+import { Button, Card, Typography } from 'antd';
+
+const { Title } = Typography;
 
 const AuthorizedStudies = compose(
   injectState,
@@ -19,16 +18,17 @@ const AuthorizedStudies = compose(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
   }) => {
-    const Header = (
-      <CardHeader title="Authorized Studies" badge={fenceAuthStudies.length || null} />
-    );
-
     const inactive = !fenceConnectionsInitialized;
     return (
-      <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
-        {inactive ? (
-          <Spinner size={'large'} />
-        ) : isEmpty(fenceConnections) ? (
+      <Card
+        title={
+          <Title level={3}>{`Authorized Studies ${
+            fenceAuthStudies.length ? '(' + fenceAuthStudies.length + ')' : ''
+          }`}</Title>
+        }
+        loading={inactive}
+      >
+        {isEmpty(fenceConnections) ? (
           <Fragment>
             <AccessGate
               mt={'40px'}
@@ -56,7 +56,7 @@ const AuthorizedStudies = compose(
         ) : (
           <StudiesConnected />
         )}
-      </DashboardCard>
+      </Card>
     );
   },
 );

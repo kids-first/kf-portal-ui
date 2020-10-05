@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 import { injectState } from 'freactal';
-import Row from 'uikit/Row';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 
 import { Tabs } from 'antd';
@@ -23,6 +22,7 @@ import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
 import Toolbar from './Results/Toolbar/Toolbar';
 
 import './Results.css';
+import GridContainer from '../GridContainer';
 
 const { TabPane } = Tabs;
 const SUMMARY = 'summary';
@@ -108,9 +108,11 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                   </span>
                 }
                 key={SUMMARY}
-                className="cb-tab-content cb-tab-content-summary"
+                style={{ background: '#fff' }}
               >
-                <Summary sqon={sqon} />
+                <GridContainer>
+                  <Summary sqon={sqon} />
+                </GridContainer>
               </TabPane>
               <TabPane
                 tab={
@@ -127,8 +129,6 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
               </TabPane>
             </Tabs>
           </div>
-          <Row className="cb-detail"></Row>
-          {}
         </Fragment>
       );
     }}
