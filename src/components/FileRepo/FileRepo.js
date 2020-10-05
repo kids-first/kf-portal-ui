@@ -163,10 +163,22 @@ const FileRepo = ({
                             render={({ data: stats, loading: disabled }) => (
                               <Row className="querySharing-container">
                                 <SaveShareButtonContainer>
-                                  <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                  <ShareQuery
+                                    api={props.api}
+                                    {...url}
+                                    {...{ stats, disabled }}
+                                    loggedInUser={state.loggedInUser}
+                                    sqon={url.sqon}
+                                  />
                                 </SaveShareButtonContainer>
                                 <SaveShareButtonContainer>
-                                  <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                  <SaveQuery
+                                    api={props.api}
+                                    {...url}
+                                    {...{ stats, disabled }}
+                                    loggedInUser={state.loggedInUser}
+                                    sqon={url.sqon}
+                                  />
                                 </SaveShareButtonContainer>
                               </Row>
                             )}
