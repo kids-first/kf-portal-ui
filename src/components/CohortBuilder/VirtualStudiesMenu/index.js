@@ -164,6 +164,7 @@ class VirtualStudiesMenu extends React.Component {
       closeModal,
       loggedInUser,
       uid,
+      loadSavedVirtualStudy,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
 
@@ -241,9 +242,9 @@ class VirtualStudiesMenu extends React.Component {
                 <LoadQuery
                   studies={virtualStudies}
                   selection={selectedStudy}
-                  handleOpen={this.handleOpen}
                   disabled={cantOpen}
                   classNameBtn="button-group"
+                  loadSavedVirtualStudy={loadSavedVirtualStudy}
                 />
               </div>
             </Tooltip>

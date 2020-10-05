@@ -16,6 +16,8 @@ import { Button } from 'antd';
 import './LoadShareSaveDeleteQuery.css';
 import { ShareAltOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
+import { withApi } from 'services/api';
+import { compose } from 'recompose';
 
 const trackQueryShare = async (channel) => {
   await trackUserInteraction({
@@ -28,7 +30,7 @@ const trackQueryShare = async (channel) => {
 const Bubble = styleComponent('span', 'query-bubble');
 const ItemRow = styleComponent('div', 'query-item-row');
 
-export default class ShareQuery extends React.Component {
+class ShareQuery extends React.Component {
   static propTypes = {
     stats: PropTypes.object,
     sqon: PropTypes.object,
@@ -170,3 +172,5 @@ export default class ShareQuery extends React.Component {
     );
   }
 }
+
+export default compose(withApi)(ShareQuery)
