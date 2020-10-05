@@ -35,8 +35,13 @@ const LoadQuery: FunctionComponent<OwnProps> = (props) => {
   };
 
   return (
-    <Dropdown disabled={disabled} overlay={generateMenu()} trigger={['click']}>
-      <Button className={classNameBtn} icon={<FolderOpenOutlined />}>
+    <Dropdown
+      disabled={disabled}
+      overlay={generateMenu()}
+      trigger={['click']}
+      getPopupContainer={() => document.getElementById('anchor-open-vs-btn') as HTMLElement}
+    >
+      <Button id={'anchor-open-vs-btn'} className={classNameBtn} icon={<FolderOpenOutlined />}>
         Open
       </Button>
     </Dropdown>
