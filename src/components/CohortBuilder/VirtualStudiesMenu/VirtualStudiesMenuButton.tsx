@@ -19,7 +19,7 @@ export const VirtualStudiesMenuButton: FunctionComponent<OwnProps> = ({
   disabled = false,
   className = '',
 }) => (
-  <Tooltip title={<div>{tooltipText}</div>} className={`button-group tooltip ${className}`}>
+  <Tooltip title={<div>{tooltipText}</div>} className={`tooltip ${className}`}>
     <Button icon={Icon} disabled={disabled} onClick={onClick}>
       {label}
     </Button>
