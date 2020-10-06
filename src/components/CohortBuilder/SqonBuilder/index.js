@@ -7,7 +7,6 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { FieldFilterContainer } from '../FieldFilterContainer';
 import { SQONdiff } from '../../Utils';
-import './SqonBuilder.css';
 import { Button, Modal, Typography } from 'antd';
 import { selectModalId } from 'store/selectors/modal';
 import { closeModal, openModal } from 'store/actions/modal';
@@ -16,6 +15,7 @@ import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
+import './SqonBuilder.css';
 
 const { Paragraph } = Typography;
 
