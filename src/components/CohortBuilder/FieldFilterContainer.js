@@ -11,20 +11,20 @@ const FilterContainer = (props) => (
 );
 
 FilterContainer.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
   className: PropTypes.string,
 };
 
 const Header = (props) => <div className={header}>{props.children}</div>;
 
 Header.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
 };
 
 const Footer = (props) => <Row className={footer}>{props.children}</Row>;
 
 Footer.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
 };
 
 const findAllCheckedBoxes = (el) => el?.querySelectorAll('input[type="checkbox"]:checked');
@@ -99,10 +99,10 @@ export const FieldFilterContainer = ({
 };
 
 FieldFilterContainer.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
   onCancel: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   className: PropTypes.string,
   applyEnabled: PropTypes.bool,
   showHeader: PropTypes.bool,
