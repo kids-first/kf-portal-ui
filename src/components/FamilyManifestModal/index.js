@@ -1,2 +1,2 @@
-export { default } from './FamilyManifestModal';
+export { default } from './FamilyManifestModalContent';
 export { familyMemberAndParticipantIds, generateFamilyManifestModalProps } from './queries';
