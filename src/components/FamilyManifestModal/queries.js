@@ -133,7 +133,7 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     { familyMemberIds, participantIds, familyMembersWithoutParticipantIds },
     { participantFilesCount, participantFilesSize },
   ] = await Promise.all([
-    familyMemberAndParticipantIds({ api, sqon }),
+    familyMemberAndParticipantIds({ api, sqon, isFileRepo: true }),
     participantsFilesCountAndSize({
       api,
       sqon,

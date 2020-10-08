@@ -165,8 +165,9 @@ const FileRepo = ({
                                 <SaveShareButtonContainer>
                                   <ShareQuery
                                     api={props.api}
-                                    {...url}
-                                    {...{ stats, disabled }}
+                                    url={url}
+                                    stats={stats}
+                                    disabled={!!disabled}
                                     loggedInUser={state.loggedInUser}
                                     sqon={url.sqon}
                                   />
@@ -174,8 +175,9 @@ const FileRepo = ({
                                 <SaveShareButtonContainer>
                                   <SaveQuery
                                     api={props.api}
-                                    {...url}
-                                    {...{ stats, disabled }}
+                                    url={url}
+                                    stats={stats}
+                                    disabled={!!disabled}
                                     loggedInUser={state.loggedInUser}
                                     sqon={url.sqon}
                                   />

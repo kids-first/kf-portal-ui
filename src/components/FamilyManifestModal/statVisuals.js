@@ -114,3 +114,9 @@ export const familyMemberStatsHeader = [
   fileStatVisual,
   fileSizeStatVisual,
 ].map(generateHeader);
+
+export const participantStatsHeaderTotal = [
+  participantsStatVisual,
+  fileStatVisual,
+  fileSizeStatVisual,
+].map(generateHeader);
