@@ -22,7 +22,6 @@ import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
 import Toolbar from './Results/Toolbar/Toolbar';
 
 import './Results.css';
-import GridContainer from '../GridContainer';
 
 const { TabPane } = Tabs;
 const SUMMARY = 'summary';
@@ -110,9 +109,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                 key={SUMMARY}
                 style={{ background: '#fff' }}
               >
-                <GridContainer>
-                  <Summary sqon={sqon} />
-                </GridContainer>
+                <Summary sqon={sqon} />
               </TabPane>
               <TabPane
                 tab={

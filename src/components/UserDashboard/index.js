@@ -8,7 +8,8 @@ import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 import ParticipantSets from './ParticipantSets';
 
-import { Card } from 'antd';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import Grid from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
 import {
   MemberResearchInterestsChart,
   MostFrequentDiagnosesChart,
@@ -19,16 +20,10 @@ import './UserDashboard.module.css';
 import './UserDashboard.scss';
 
 import {
-  dashboardCard,
-  dashboardCardWrapper,
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
-  wrapperMemberResearchInterests,
-  wrapperMostParticipantsStudiesChart,
-  wrapperVerticalBarChart,
 } from './UserDashboard.module.css';
-import GridContainer from '../GridContainer';
 import Typography from 'antd/es/typography';
 
 const { Title } = Typography;
@@ -44,32 +39,21 @@ export default compose(
   <div className={userDashboardContainer}>
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
-      <GridContainer>
+      <Grid>
         <SavedQueries {...{ api, loggedInUser }} />
         <AuthorizedStudies />
         <CavaticaProjects />
-        <Card>
-          <div className={wrapperMostParticipantsStudiesChart}>
-            <MostParticipantsStudiesChart />
-          </div>
+        <MostParticipantsStudiesChart />
+        <Card title={<Title level={3}>Member Research Interests</Title>}>
+          <MemberResearchInterestsChart />
         </Card>
-        <Card title="Member Research Interests">
-          <div className={wrapperMemberResearchInterests}>
-            <MemberResearchInterestsChart />
-          </div>
+        <Card title={<Title level={3}>Most Frequent Diagnoses</Title>}>
+          <MostFrequentDiagnosesChart />
         </Card>
-        <Card title="Most Frequent Diagnoses">
-          <div className={wrapperVerticalBarChart}>
-            <MostFrequentDiagnosesChart />
-          </div>
-        </Card>
-        <Card
-          title={<Title level={3}>My Participant Sets</Title>}
-          className={`participant-sets-container ${dashboardCard} ${dashboardCardWrapper}`}
-        >
+        <Card title={<Title level={3}>My Participant Sets</Title>}>
           <ParticipantSets user={loggedInUser} />
         </Card>
-      </GridContainer>
+      </Grid>
     </div>
   </div>
 ));

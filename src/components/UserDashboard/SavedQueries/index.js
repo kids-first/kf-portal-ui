@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { distanceInWords } from 'date-fns';
 import { Box, Flex, Link } from 'uikit/Core';
-import { Card, Typography } from 'antd';
+import { Badge, Typography } from 'antd';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
@@ -29,6 +29,7 @@ import {
 } from './SavedQueries.module.css';
 import './SavedQueries.scss';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 const { Title } = Typography;
 
@@ -197,11 +198,23 @@ class SavedQueries extends React.Component {
     const tabList = [
       {
         key: 'participantTab',
-        tab: `Cohort Queries (${virtualStudies.length ? virtualStudies.length : 0})`,
+        tab: (
+          <Badge
+            count={virtualStudies.length ? virtualStudies.length : 0}
+            offset={[8, -5]}
+            showZero
+          >
+            Cohort Queries
+          </Badge>
+        ),
       },
       {
         key: 'fileTab',
-        tab: `File Queries (${fileQueries.length ? fileQueries.length : 0})`,
+        tab: (
+          <Badge count={fileQueries.length ? fileQueries.length : 0} offset={[8, -5]} showZero>
+            File Queries
+          </Badge>
+        ),
       },
     ];
 

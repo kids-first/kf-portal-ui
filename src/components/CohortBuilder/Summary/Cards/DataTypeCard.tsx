@@ -1,6 +1,6 @@
 import React from 'react';
-import Card from './SummaryCard';
 import DataTypeChart from './DataTypeChart';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 type DataTypeCardProps = {
   isLoading: boolean;

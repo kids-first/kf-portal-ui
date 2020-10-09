@@ -2,10 +2,6 @@
 @import '../../../style/themes/default/global';
 
 .saved-queries-container {
-  .ant-card-contain-tabs {
-    display: grid;
-  }
-
   .ant-card-body {
     overflow: auto;
   }
