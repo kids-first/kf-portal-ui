@@ -44,10 +44,10 @@ const generateTabsContent = ({
   activeTab,
 }) => {
   const NotConnectedComp = () => <NotConnected />;
-  const ConnectedComp = () => (cardProps) => (
+  const ConnectedComp = (cardProps) => (
     <Connected tabToCreate={tabToCreate(cardProps)} projects={projects} loading={loading} />
   );
-  const CreateComp = () => (cardProps) => (
+  const CreateComp = (cardProps) => (
     <Create
       onProjectCreated={onProjectCreated({ cardProps, refresh })}
       onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
