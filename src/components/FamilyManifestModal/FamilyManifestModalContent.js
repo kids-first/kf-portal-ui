@@ -12,7 +12,7 @@ import { participantStatsHeaderTotal, familyMemberStatsHeader } from './statVisu
 import Footer from './Footer';
 import ParticipantsSection from './ParticipantsSection';
 import { Typography, Spin, Table } from 'antd';
-import { toKebabCase } from '../../utils';
+import { toKebabCase } from 'utils';
 
 const { Paragraph } = Typography;
 

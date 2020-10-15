@@ -37,7 +37,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon, isFileRepo }) =
       ? `
         query familyMemberAndParticipantData($sqon: JSON) {
           file {
-            aggregations(filters: $sqon) {
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
               participants__kf_id {
                 buckets {
                   doc_count
