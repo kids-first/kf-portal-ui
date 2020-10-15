@@ -25,7 +25,7 @@ class SaveQuery extends React.Component {
     disabled: PropTypes.bool,
     sqon: PropTypes.object,
     api: PropTypes.func.isRequired,
-    history: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   componentDidUpdate(prevProps) {

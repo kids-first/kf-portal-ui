@@ -37,7 +37,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon, isFileRepo }) =
       ? `
         query familyMemberAndParticipantData($sqon: JSON) {
           file {
-            aggregations(filters: $sqon) {
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
               participants__kf_id {
                 buckets {
                   doc_count
@@ -133,7 +133,7 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     { familyMemberIds, participantIds, familyMembersWithoutParticipantIds },
     { participantFilesCount, participantFilesSize },
   ] = await Promise.all([
-    familyMemberAndParticipantIds({ api, sqon }),
+    familyMemberAndParticipantIds({ api, sqon, isFileRepo: true }),
     participantsFilesCountAndSize({
       api,
       sqon,

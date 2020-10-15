@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
-import { Button, Menu, Dropdown } from 'antd';
+import { Button, Menu, Dropdown, Tooltip } from 'antd';
 import '../../LoadShareSaveDeleteQuery/LoadShareSaveDeleteQuery.css';
 import { FolderOpenOutlined } from '@ant-design/icons';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
@@ -35,16 +35,18 @@ const LoadQuery: FunctionComponent<OwnProps> = (props) => {
   };
 
   return (
-    <Dropdown
-      disabled={disabled}
-      overlay={generateMenu()}
-      trigger={['click']}
-      getPopupContainer={() => document.getElementById('anchor-open-vs-btn') as HTMLElement}
-    >
-      <Button id={'anchor-open-vs-btn'} className={classNameBtn} icon={<FolderOpenOutlined />}>
-        Open
-      </Button>
-    </Dropdown>
+    <Tooltip title={<div>Open a saved virtual study</div>} className="button-group tooltip">
+      <Dropdown
+        disabled={disabled}
+        overlay={generateMenu()}
+        trigger={['click']}
+        getPopupContainer={() => document.getElementById('anchor-open-vs-btn') as HTMLElement}
+      >
+        <Button id={'anchor-open-vs-btn'} className={classNameBtn} icon={<FolderOpenOutlined />}>
+          Open
+        </Button>
+      </Dropdown>
+    </Tooltip>
   );
 };
 
