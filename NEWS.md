@@ -7,7 +7,13 @@
 
 ### Technical / Other changes
 -->
-## 2020-10-05 kf-portal-ui 2.27.0
+## 2020-10-15 kf-portal-ui 2.26.1
+
+### Technical / Other changes
+- [2784](https://github.com/kids-first/kf-portal-ui/issues/2784) Fix (FileRepo, File Manifest Modal): Fix participant counts when one navigates from the cohort builder to the file repository and opens up the file manifest modal. Refactor of the modal UI with Antd components.
+- [2780](https://github.com/kids-first/kf-portal-ui/issues/2780) Refactor (Clear all queries modal): remove freactal dependency and migrate UI with Antd components.
+ 
+## 2020-10-05 kf-portal-ui 2.26.0
 
 ### Features
 - [2755](https://github.com/kids-first/kf-portal-ui/issues/2755) Feature (Cohort Builder, Participants Sets): The participants set feature is now visible to everyone. Adding a set to the Cohort Builder from the Dashboard page now replace any existing set instead of adding a new one.
