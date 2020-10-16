@@ -38,7 +38,7 @@ describe('Current Virtual Study Reducer', () => {
       sqons: [
         {
           op: 'and',
-          content: [{ op: 'in', content: { field: 'kf_id', value: 'set_id:id12345' } }],
+          content: [{ op: 'in', content: { field: 'kf_id', value: ['set_id:id12345'] } }],
         },
       ],
       activeIndex: 0,
@@ -109,7 +109,7 @@ describe('Current Virtual Study Reducer', () => {
               op: 'in',
               content: {
                 field: 'kf_id',
-                value: 'set_id:id12345',
+                value: ['set_id:id12345'],
               },
             },
           ],

@@ -15,8 +15,8 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
 import './SqonBuilder.css';
-import { selectLoggedInUser } from '../../../store/selectors/users';
-import { queryBodySets } from '../../../services/sets';
+import { selectLoggedInUser } from 'store/selectors/users';
+import { queryBodySets } from 'services/sets';
 
 const { Paragraph } = Typography;
 
