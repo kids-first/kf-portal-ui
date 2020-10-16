@@ -180,13 +180,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           <Spin size={'large'} />
         </div>
       ) : !userSets.error ? (
-        <Table
-          className="user-sets-table"
-          columns={columns}
-          dataSource={data}
-          pagination={false}
-          scroll={{ y: 240 }}
-        />
+        <Table className="user-sets-table" columns={columns} dataSource={data} pagination={false} />
       ) : (
         <Result status="error" title="Failed to load user SaveSets" />
       )}

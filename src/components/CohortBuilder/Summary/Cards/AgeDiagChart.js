@@ -10,7 +10,7 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 
 import PropTypes from 'prop-types';
 
-import Card from './SummaryCard';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 const ageAtDiagnosisTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;

@@ -16,7 +16,7 @@ import {
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
-import Card from './SummaryCard';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 const mostFrequentDiagnosisTooltip = (data) => {
   const participants = data.familyMembers + data.probands;

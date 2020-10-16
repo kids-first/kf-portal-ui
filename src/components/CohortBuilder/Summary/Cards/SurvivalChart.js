@@ -13,7 +13,7 @@ import Tooltip from 'uikit/Tooltip';
 import { SizeProvider, styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import SurvivalPlot from './SurvivalPlot';
-import Card from './SummaryCard';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 import './SurvivalChart.css';
 

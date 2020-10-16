@@ -13,7 +13,7 @@ import {
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
 import { styleComponent } from 'components/Utils';
-import Card from './SummaryCard';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 const PieChartContainer = styleComponent('div', 'pieChartContainer');
 
