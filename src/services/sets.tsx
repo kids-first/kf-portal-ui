@@ -11,26 +11,21 @@ type CreateSetParams = {
   tag?: string;
 };
 
+export const queryBodySets = (nodes: string) => `query($sqon: JSON) {
+              sets {
+                hits(filters: $sqon, first: 100, sort: [{field: "tag.keyword", order: asc}]) {
+                  edges {
+                    node {
+                      ${nodes}
+                    }
+                  }
+                }
+              }
+            }`;
+
 const getIdsFromSetId = async (rawId: string) => {
   const response = await graphql(initializeApi())({
-    query: `
-     query ($sqon: JSON) {
-        sets {
-          hits(filters: $sqon) {
-            total
-            edges {
-              node {
-                id
-                ids
-                tag
-                setId
-                path
-              }
-            }
-          }
-        }
-      }
-      `,
+    query: queryBodySets('id ids tag setId path'),
     variables: {
       sqon: {
         op: 'and',
@@ -83,19 +78,7 @@ export const setCountForTag = async (tag: string, userId: string) => {
 
 export const getSetAndParticipantsCountByUser = async (userId: string) => {
   const response = await graphql(initializeApi())({
-    query: `query($sqon: JSON) {
-              sets {
-                hits(filters: $sqon, first: 100, sort: [{field: "tag.keyword", order: asc}]) {
-                  edges {
-                    node {
-                      tag
-                      setId
-                      size
-                    }
-                  }
-                }
-              }
-            }`,
+    query: queryBodySets('tag setId size'),
     variables: {
       sqon: {
         op: 'and',

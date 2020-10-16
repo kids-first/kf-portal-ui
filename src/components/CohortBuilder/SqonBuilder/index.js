@@ -7,15 +7,16 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { FieldFilterContainer } from '../FieldFilterContainer';
 import { SQONdiff } from '../../Utils';
-import { Button, Modal, Typography } from 'antd';
+import { Button, Modal, Spin, Typography } from 'antd';
 import { selectModalId } from 'store/selectors/modal';
 import { closeModal, openModal } from 'store/actions/modal';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
 import './SqonBuilder.css';
+import { selectLoggedInUser } from 'store/selectors/users';
+import { queryBodySets } from 'services/sets';
 
 const { Paragraph } = Typography;
 
@@ -48,8 +49,27 @@ const ACTION_CLEAR_ALL = {
   ],
 };
 
+const setQueryVariables = (userId) => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: { field: 'userId', value: [userId] },
+    },
+    {
+      op: 'not-in',
+      content: { field: 'tag.keyword', value: [''] },
+    },
+    {
+      op: 'in',
+      content: { field: 'tag.keyword', value: ['__missing_not_wrapped__'] },
+    },
+  ],
+});
+
 const mapStateToProps = (state) => ({
   openModalId: selectModalId(state),
+  loggedInUser: selectLoggedInUser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -77,6 +97,7 @@ const SqonBuilder = ({
   actionsProvider,
   ResultCountIcon,
   activeSqonIndex,
+  loggedInUser,
 }) => {
   const handleAction = async (action) => {
     await trackSQONaction({
@@ -150,6 +171,15 @@ const SqonBuilder = ({
               actionsProvider={actionsProvider}
               ResultCountIcon={ResultCountIcon}
               activeSqonIndex={activeSqonIndex}
+              customQuery={{
+                body: queryBodySets('tag setId size'),
+                variables: setQueryVariables(loggedInUser.egoId),
+                mapResultData: (rawData) =>
+                  rawData.sets.hits.edges.map(({ node }) => ({
+                    key: `set_id:${node.setId}`,
+                    doc_count: node.size,
+                  })),
+              }}
             />
           )
         }
@@ -172,6 +202,7 @@ SqonBuilder.propTypes = {
   actionsProvider: PropTypes.object,
   ResultCountIcon: PropTypes.any.isRequired,
   activeSqonIndex: PropTypes.number.isRequired,
+  loggedInUser: PropTypes.object,
 };
 
 const enhanced = compose(withApi, connector);
