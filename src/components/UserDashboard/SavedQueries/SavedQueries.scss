@@ -2,6 +2,9 @@
 @import '../../../style/themes/default/global';
 
 .saved-queries-container {
+  display: contents;
+}
+.saved-queries-container {
   .ant-card-body {
     overflow: auto;
   }

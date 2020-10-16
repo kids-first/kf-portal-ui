@@ -224,7 +224,7 @@ class SavedQueries extends React.Component {
     };
 
     return (
-      <div className={'saved-queries-container'} style={{ display: 'contents' }}>
+      <div className={'saved-queries-container'}>
         {this.state.showDeleteModal && (
           <ConfirmDelVirtualStudy
             virtualStudy={this.state.virtualStudyToDelete}

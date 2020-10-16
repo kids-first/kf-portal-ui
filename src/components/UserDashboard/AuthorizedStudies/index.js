@@ -24,7 +24,7 @@ const AuthorizedStudies = compose(
       <Card
         title={
           <Badge
-            count={fenceAuthStudies.length ? fenceAuthStudies.length : 0}
+            count={fenceAuthStudies.length || 0}
             offset={[8, 2]}
             showZero={!isEmpty(fenceConnections)}
           >

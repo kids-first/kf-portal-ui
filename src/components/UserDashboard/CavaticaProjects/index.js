@@ -53,12 +53,16 @@ const generateTabsContent = ({
       onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
     />
   );
-  const ResultComp = () => () => (
-    <Result style={{ width: '100%' }} status="error" title={getMsgFromErrorOrElse(projectsError)} />
-  );
+
   if (projectsError) {
     return {
-      component: ResultComp,
+      component: (
+        <Result
+          style={{ width: '100%' }}
+          status="error"
+          title={getMsgFromErrorOrElse(projectsError)}
+        />
+      ),
     };
   }
 

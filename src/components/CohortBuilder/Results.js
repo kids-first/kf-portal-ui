@@ -107,7 +107,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                   </span>
                 }
                 key={SUMMARY}
-                style={{ background: '#fff' }}
+                className="cb-view-summary-view"
               >
                 <Summary sqon={sqon} />
               </TabPane>
