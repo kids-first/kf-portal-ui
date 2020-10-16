@@ -73,7 +73,7 @@ export const FieldFilterContainer = ({
 
   return (
     <FilterContainer className={className}>
-      {showHeader && (
+      {showHeader && onBack && (
         <Header>
           <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
@@ -101,7 +101,7 @@ export const FieldFilterContainer = ({
 FieldFilterContainer.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
   onCancel: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
+  onBack: PropTypes.func,
   onSubmit: PropTypes.func,
   className: PropTypes.string,
   applyEnabled: PropTypes.bool,

@@ -177,12 +177,13 @@ export const addRemoveSetIds = (
   };
 
   try {
-    const { setSize, updatedResults } = await updateSet(
-      SetSourceType.QUERY,
-      data,
-      subActionType,
-      setId,
-    );
+    const response = await updateSet(SetSourceType.QUERY, data, subActionType, setId);
+
+    if (!response) {
+      return onFail();
+    }
+
+    const { setSize, updatedResults } = response;
 
     if (updatedResults && updatedResults > 0) {
       const sets: UserSet[] = selectSets(getState());

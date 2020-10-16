@@ -57,7 +57,7 @@ const constructSetSqon = (setInfo) => ({
       op: 'in',
       content: {
         field: 'kf_id',
-        value: `set_id:${setInfo.key}`,
+        value: [`set_id:${setInfo.key}`],
       },
     },
   ],
