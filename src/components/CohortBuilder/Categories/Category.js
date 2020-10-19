@@ -76,7 +76,9 @@ class Category extends React.Component {
   };
 
   renderFilter = (field, title = field) => {
-    if (!field) return null;
+    if (!field) {
+      return null;
+    }
 
     const { sqon, onSqonUpdate } = this.props;
     return (

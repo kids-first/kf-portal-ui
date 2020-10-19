@@ -7,8 +7,8 @@ import {
   isLoadingSets,
   isDeletingSets,
   isEditingTag,
-} from '../../actionCreators/saveSets';
-import { SetInfo } from 'components/UserDashboard/ParticipantSets';
+} from 'store/actionCreators/saveSets';
+import { SetInfo } from 'store/saveSetTypes';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
