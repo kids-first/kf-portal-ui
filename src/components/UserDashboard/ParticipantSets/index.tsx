@@ -9,6 +9,7 @@ import {
   DispatchSaveSets,
   SaveSetActionsTypes,
   SaveSetState,
+  SetInfo,
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
 import {
@@ -29,13 +30,6 @@ type OwnProps = {
   user: LoggedInUser;
 };
 
-export type SetInfo = {
-  key: string;
-  name: string;
-  count?: number;
-  currentUser: string;
-};
-
 const mapState = (state: RootState): SaveSetState => ({
   create: {
     isLoading: false,
@@ -45,7 +39,7 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onClickParticipantsLink: (setInfo: SetInfo) => dispatch(createQueryInCohortBuilder(setInfo)),
+  onClickParticipantsLink: (setId: string) => dispatch(createQueryInCohortBuilder(setId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
   fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
 });
@@ -119,7 +113,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           to={'/explore'}
           href={'#top'}
           onClick={() => {
-            onClickParticipantsLink(record);
+            onClickParticipantsLink(record.key);
             const toTop = document.getElementById('main-page-container');
             toTop?.scrollTo(0, 0);
           }}

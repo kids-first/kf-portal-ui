@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { getDefaultSqon, isDefaultSqon } from 'common/sqonUtils';
+import { isEmptySqon } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 
 import {
   LOGOUT,
@@ -18,9 +19,7 @@ import {
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
-import { CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
-
-const setSqonRegex = new RegExp('^set_id:(.+)');
+import { CREATE_SET_QUERY_REQUEST, ADD_SET_TO_CURRENT_QUERY } from '../saveSetTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -50,53 +49,65 @@ const resetState = (diff = {}) => {
   return newState;
 };
 
-const constructSetSqon = (setInfo) => ({
+const fromSetIdToSetSqon = (setId) => ({
   op: 'and',
   content: [
     {
       op: 'in',
       content: {
         field: 'kf_id',
-        value: [`set_id:${setInfo.key}`],
+        value: [`set_id:${setId}`],
       },
     },
   ],
 });
 
-const addSqon = (setInfo, sqons) => {
-  const newSqon = constructSetSqon(setInfo);
-  const sqonsRemovedEmpty = sqons.filter((s) => s.content.length > 0);
+const isEmptyQuery = (querySqons) => querySqons.length === 1 && isEmptySqon(querySqons[0]);
 
-  return [...sqonsRemovedEmpty, newSqon];
+const createNewQueryFromSetId = (setId, querySqons) => {
+  const setSqon = fromSetIdToSetSqon(setId);
+  if (isEmptyQuery(querySqons)) {
+    return { newSqons: [setSqon], activeIndex: 0 };
+  }
+  return { newSqons: [...querySqons, setSqon], activeIndex: querySqons.length };
 };
 
-const addSetSqonToSqons = (setInfo, sqons) => {
-  if (!setInfo) {
-    return { newSqons: sqons, activeIndex: 0 };
+const addSetToCurrentQuery = ({ setId, querySqons, currentIndex }) => {
+  if (isEmptyQuery(querySqons)) {
+    const setSqon = fromSetIdToSetSqon(setId);
+    return { newSqons: [setSqon], activeIndex: 0 };
   }
 
-  if (!sqons) {
-    return { newSqons: [{ op: 'and', content: [] }], activeIndex: 0 };
+  const activeSqon = querySqons[currentIndex];
+  const activeContent = activeSqon.content;
+
+  const isSetAlreadyInContent = activeContent.some((partialQuerySqon) => {
+    const value = partialQuerySqon?.content?.value || '';
+    if (Array.isArray(value)) {
+      return value.some((pqs) => pqs.includes(setId));
+    }
+    return value.includes(setId);
+  });
+
+  if (isSetAlreadyInContent) {
+    return { newSqons: querySqons, activeIndex: currentIndex };
   }
 
-  const setSqonIndex = sqons.findIndex((s) =>
-    s.content.some((t) => setSqonRegex.test(t.content.value)),
-  );
+  const updatedContent = [
+    ...activeContent,
+    {
+      op: 'in',
+      content: {
+        field: 'kf_id',
+        value: [`set_id:${setId}`],
+      },
+    },
+  ];
+  const copyActiveSqon = { ...activeSqon };
+  copyActiveSqon.content = updatedContent;
 
-  if (~setSqonIndex) {
-    const sqonsCopy = [...sqons];
-    sqonsCopy[setSqonIndex] = constructSetSqon(setInfo);
-    return {
-      newSqons: sqonsCopy,
-      activeIndex: setSqonIndex,
-    };
-  } else {
-    const newSqon = addSqon(setInfo, sqons);
-    return {
-      newSqons: newSqon,
-      activeIndex: newSqon.length - 1,
-    };
-  }
+  const newSqons = Object.assign([], querySqons, { [currentIndex]: copyActiveSqon });
+  return { newSqons, activeIndex: currentIndex };
 };
 
 export default (state = initialState, action) => {
@@ -164,7 +175,7 @@ export default (state = initialState, action) => {
       });
 
     case CREATE_SET_QUERY_REQUEST: {
-      const { newSqons, activeIndex } = addSetSqonToSqons(action.setInfo, state.sqons);
+      const { newSqons, activeIndex } = createNewQueryFromSetId(action.setId, state.sqons);
       return setState({
         sqons: newSqons,
         activeIndex: activeIndex,
@@ -178,6 +189,15 @@ export default (state = initialState, action) => {
         error: null,
       });
 
+    case ADD_SET_TO_CURRENT_QUERY: {
+      const { activeIndex: currentIndex, sqons } = state;
+      const { newSqons, activeIndex } = addSetToCurrentQuery({
+        setId: action.setId,
+        querySqons: sqons,
+        currentIndex,
+      });
+      return setState({ sqons: newSqons, activeIndex });
+    }
     default:
       return state;
   }

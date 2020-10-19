@@ -1,7 +1,7 @@
 import reducer from '../currentVirtualStudy';
 import { Action } from 'redux';
 import { requestCreateQueryInCohort } from '../../actionCreators/saveSets';
-import { SetInfo } from 'components/UserDashboard/ParticipantSets';
+import { SetInfo } from '../../saveSetTypes';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -34,7 +34,7 @@ describe('Current Virtual Study Reducer', () => {
       name: 'thisSets',
       currentUser: 'SomeUser',
     };
-    expect(reducer(initialState, requestCreateQueryInCohort(setInfo))).toEqual({
+    expect(reducer(initialState, requestCreateQueryInCohort(setInfo.key))).toEqual({
       sqons: [
         {
           op: 'and',
@@ -88,7 +88,7 @@ describe('Current Virtual Study Reducer', () => {
 
     const initialStateWithSqons = { ...initialState, sqons: existingSqons };
 
-    expect(reducer(initialStateWithSqons, requestCreateQueryInCohort(setInfo))).toEqual({
+    expect(reducer(initialStateWithSqons, requestCreateQueryInCohort(setInfo.key))).toEqual({
       sqons: [
         {
           op: 'and',
