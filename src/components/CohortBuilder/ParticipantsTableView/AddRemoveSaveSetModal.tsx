@@ -1,17 +1,22 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useState } from 'react';
-import { Button, Col, Form, Modal, notification, Row, Select } from 'antd';
+import { Button, Form, Modal, notification } from 'antd';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetState, SetSubActionTypes } from 'store/saveSetTypes';
+import {
+  AddRemoveSetParams,
+  DispatchSaveSets,
+  SaveSetState,
+  SetSubActionTypes,
+} from 'store/saveSetTypes';
 import { connect, ConnectedProps } from 'react-redux';
 import { addRemoveSetIds } from 'store/actionCreators/saveSets';
-import participantIcon from '../../../assets/icon-participants.svg';
 import './AddRemoveSaveSetModal.css';
 import { LoggedInUser } from 'store/userTypes';
+import UserSetsFrom from './../UserSetsForm';
 
 const FORM_NAME = 'add-remove-set';
 
@@ -20,17 +25,6 @@ type OwnProps = {
   user: LoggedInUser;
   sqon: Sqon;
   subActionType: SetSubActionTypes;
-};
-
-export type AddRemoveSetParams = {
-  userId: string;
-  setId: string;
-  onSuccess: Function;
-  onFail: Function;
-  subActionType: SetSubActionTypes;
-  sqon: Sqon;
-  type: string;
-  path: string;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -80,8 +74,6 @@ const formTitle = (type: string) => {
 };
 
 const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
-  const [form] = Form.useForm();
-
   const { hideModalCb, subActionType, userSets, user, onAddRemoveSetIds, sqon } = props;
   const [isVisible, setIsVisible] = useState(true);
 
@@ -179,25 +171,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      <Form form={form} name={FORM_NAME} onFinish={onFinish} layout="vertical">
-        <Form.Item label="Participant Set" name="setId" hasFeedback>
-          <Select placeholder="Choose a set">
-            {userSets.sets.map((s) => (
-              <Select.Option key={s.setId} value={s.setId}>
-                <Row>
-                  <Col style={{ paddingRight: 15 }}>{s.tag}</Col>
-                  <Col style={{ paddingRight: 2 }}>
-                    <img style={{ width: 11 }} src={participantIcon} alt="Participants" />
-                  </Col>
-                  <Col>
-                    <div className={'secondary-text-color'}>{s.size}</div>
-                  </Col>
-                </Row>
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-      </Form>
+      <UserSetsFrom formName={FORM_NAME} onFinish={onFinish} />
     </Modal>
   );
 };

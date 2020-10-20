@@ -1,7 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { Sqon } from './sqon';
 import { RootState } from './rootState';
-import { SetInfo } from '../components/UserDashboard/ParticipantSets';
 
 export const TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET';
 export const FAILURE_CREATE = 'FAILURE_CREATE_SAVE_SETS';
@@ -15,6 +14,25 @@ export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
 export const EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG';
 export const CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST';
 export const DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST';
+export const ADD_SET_TO_CURRENT_QUERY = 'ADD_SET_TO_CURRENT_QUERY';
+
+export type SetInfo = {
+  key: string;
+  name: string;
+  count?: number;
+  currentUser: string;
+};
+
+export type AddRemoveSetParams = {
+  userId: string;
+  setId: string;
+  onSuccess: Function;
+  onFail: Function;
+  subActionType: SetSubActionTypes;
+  sqon: Sqon;
+  type: string;
+  path: string;
+};
 
 interface TogglePendingCreate {
   type: typeof TOGGLE_PENDING_CREATE;
@@ -67,7 +85,12 @@ interface EditSetTag {
 
 interface CreateQueryInCohortBuilder {
   type: typeof CREATE_SET_QUERY_REQUEST;
-  setInfo: SetInfo;
+  setId: string;
+}
+
+interface AddSetToCurrentQuery {
+  type: typeof ADD_SET_TO_CURRENT_QUERY;
+  setId: string;
 }
 
 export type DispatchSaveSets = ThunkDispatch<RootState, null, SetsActionTypes>;
@@ -83,7 +106,8 @@ export type SetsActionTypes =
   | EditSetTag
   | isAddingOrRemovingToSet
   | FailureLoadSaveSets
-  | CreateQueryInCohortBuilder;
+  | CreateQueryInCohortBuilder
+  | AddSetToCurrentQuery;
 
 export type UserSet = {
   setId: string;
@@ -91,18 +115,20 @@ export type UserSet = {
   tag: string;
 };
 
+export interface UserSetsState {
+  isLoading: boolean;
+  error?: Error | null;
+  sets: UserSet[];
+  isDeleting: boolean;
+  isEditing: boolean;
+}
+
 export interface SaveSetState {
   create: {
     isLoading: boolean;
     error?: Error | null;
   };
-  userSets: {
-    isLoading: boolean;
-    error?: Error | null;
-    sets: UserSet[];
-    isDeleting: boolean;
-    isEditing: boolean;
-  };
+  userSets: UserSetsState;
 }
 
 export type SaveSetParams = {

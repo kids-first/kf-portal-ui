@@ -1,11 +1,8 @@
 import React from 'react';
-import autobind from 'auto-bind-es5';
-
 import SearchAll from '../SearchAll';
 import Category from './Category';
 import ActionCategory from './ActionCategory';
 import Row from 'uikit/Row';
-import QuickFilterIcon from 'icons/QuickFilterIcon';
 import StudyIcon from 'icons/StudyIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
@@ -13,11 +10,7 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { SQONdiff } from 'components/Utils';
-import { registerModal } from 'components/Modal/modalFactory';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
-import { openModal } from 'store/actionCreators/ui/modalComponent';
-import { store } from 'store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
 import theme from 'theme/defaultTheme';
 import { isFeatureEnabled } from 'common/featuresToggles';
@@ -25,23 +18,39 @@ import { isFeatureEnabled } from 'common/featuresToggles';
 import { CATEGORY_FIELDS } from './categories';
 
 import '../CohortBuilder.css';
+import { FolderOpenFilled } from '@ant-design/icons';
+import { selectModalId } from 'store/selectors/modal';
+import { openModal } from 'store/actions/modal';
+import { connect } from 'react-redux';
+import ModalSetsToQuery from './ModalSetsToQuery';
+import PropTypes from 'prop-types';
+
+const ADD_SET_TO_QUERY_MODAL_ID = 'ADD_SET_TO_QUERY_MODAL_ID';
+const SEARCH_MODAL_ID = 'SEARCH_MODAL_ID';
 
 const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
   ? ['diagnoses.mondo.name', 'observed_phenotype.name']
   : ['observed_phenotype.name'];
 
-export default class Categories extends React.Component {
+const mapStateToProps = (state) => ({
+  openModalId: selectModalId(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openModal: (id) => dispatch(openModal(id)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.initialSqon = props.sqon;
-    registerModal('SearchByIdModal', SearchByIdModal);
-    autobind(this);
   }
 
-  trackCategoryAction(title) {
+  trackCategoryAction = (title) => {
     const { sqon } = this.props;
     const addedSQON = SQONdiff(sqon, this.initialSqon);
-
     const { categories, actions } = TRACKING_EVENTS;
     trackUserInteraction({
       category: `${categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
@@ -50,22 +59,24 @@ export default class Categories extends React.Component {
     });
 
     this.initialSqon = sqon;
-  }
+  };
 
-  handleSqonUpdate(title, ...args) {
+  handleSqonUpdate = (title, ...args) => {
     this.trackCategoryAction(title);
     this.props.onSqonUpdate(...args);
-  }
+  };
 
-  handleUploadIdsClick() {
-    store.dispatch(openModal('SearchByIdModal', {}, 'search-by-id-modal'));
-  }
+  handleUploadIdsClick = () => this.props.openModal(SEARCH_MODAL_ID);
+
+  onOpenAddSetToQuery = () => this.props.openModal(ADD_SET_TO_QUERY_MODAL_ID);
 
   render() {
     const { sqon } = this.props;
 
     return (
       <Row className="cb-categories-content">
+        <ModalSetsToQuery sqon={sqon} />
+        <SearchByIdModal />
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
@@ -73,16 +84,9 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.searchAll}
           color={theme.filterViolet}
         />
-        <Category
-          title="Quick Filters"
-          sqon={sqon}
-          onSqonUpdate={this.handleSqonUpdate}
-          fields={CATEGORY_FIELDS.quickSearch}
-          color={theme.filterPurple}
-          anchorId={'anchor-quick-filters'}
-        >
-          <QuickFilterIcon fill={theme.filterPurple} />
-        </Category>
+        <ActionCategory title="My sets" color={theme.primary} onClick={this.onOpenAddSetToQuery}>
+          <FolderOpenFilled style={{ fontSize: 18, color: theme.primary }} />
+        </ActionCategory>
         <Category
           title="Study"
           sqon={sqon}
@@ -145,3 +149,11 @@ export default class Categories extends React.Component {
     );
   }
 }
+
+Categories.propTypes = {
+  sqon: PropTypes.object,
+  onSqonUpdate: PropTypes.func,
+  openModal: PropTypes.func,
+};
+
+export default connector(Categories);

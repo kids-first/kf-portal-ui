@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import autobind from 'auto-bind-es5';
 import { Dropdown } from 'antd';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
@@ -15,6 +14,7 @@ import { openModal } from 'store/actions/modal';
 
 import '../CohortBuilder.css';
 import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
+
 class Category extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +23,6 @@ class Category extends React.Component {
       selectedField: null,
     };
     this.initialSqon = props.sqon;
-    autobind(this);
   }
 
   static propTypes = {
@@ -38,11 +37,11 @@ class Category extends React.Component {
     onOpenModal: PropTypes.func,
   };
 
-  handleDropdownVisibleChange(visible) {
+  handleDropdownVisibleChange = (visible) => {
     this.setState({ visible });
-  }
+  };
 
-  handleMenuItemSelected(selectedField) {
+  handleMenuItemSelected = (selectedField) => {
     if (selectedField === 'observed_phenotype.name') {
       this.props.onOpenModal(selectedField);
       this.setState({
@@ -55,16 +54,16 @@ class Category extends React.Component {
         visible: true,
       });
     }
-  }
+  };
 
-  handleCloseFilter(keepCategoryOpen = false) {
+  handleCloseFilter = (keepCategoryOpen = false) => {
     this.setState({
       selectedField: null,
       visible: keepCategoryOpen,
     });
-  }
+  };
 
-  renderMenu(extendedMapping) {
+  renderMenu = (extendedMapping) => {
     const { fields, sqon } = this.props;
     return (
       <CategoryMenu
@@ -74,10 +73,12 @@ class Category extends React.Component {
         onMenuItemSelected={this.handleMenuItemSelected}
       />
     );
-  }
+  };
 
-  renderFilter(field, title = field) {
-    if (!field) return null;
+  renderFilter = (field, title = field) => {
+    if (!field) {
+      return null;
+    }
 
     const { sqon, onSqonUpdate } = this.props;
     return (
@@ -98,7 +99,7 @@ class Category extends React.Component {
         arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       />
     );
-  }
+  };
 
   render() {
     const { children, title, color, anchorId } = this.props;
@@ -112,9 +113,7 @@ class Category extends React.Component {
           graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         >
           {({ extendedMapping = [] }) => {
-            let overlay = <div />;
-
-            overlay =
+            const overlay =
               selectedField && !showOntologyBrowser
                 ? this.renderFilter(selectedField, title)
                 : this.renderMenu(extendedMapping);

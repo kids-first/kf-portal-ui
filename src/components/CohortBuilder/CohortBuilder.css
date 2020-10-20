@@ -138,3 +138,13 @@
   top: -2px;
   position: relative;
 }
+
+.check-mark-icon {
+  margin: 0 5px 4px 0;
+}
+
+.menu-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

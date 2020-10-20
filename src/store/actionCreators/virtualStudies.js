@@ -23,8 +23,8 @@ import {
   createNewVirtualStudy,
   updateVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
-} from '../../services/virtualStudies';
-import { apiInitialized } from '../../services/api';
+} from 'services/virtualStudies';
+import { apiInitialized } from 'services/api';
 
 const api = apiInitialized;
 

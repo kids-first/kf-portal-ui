@@ -1,7 +1,7 @@
 import reducer from '../currentVirtualStudy';
 import { Action } from 'redux';
-import { requestCreateQueryInCohort } from '../../actionCreators/saveSets';
-import { SetInfo } from 'components/UserDashboard/ParticipantSets';
+import { requestCreateQueryInCohort, addSetToCurrentQuery } from 'store/actionCreators/saveSets';
+import { SetInfo } from 'store/saveSetTypes';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -34,7 +34,7 @@ describe('Current Virtual Study Reducer', () => {
       name: 'thisSets',
       currentUser: 'SomeUser',
     };
-    expect(reducer(initialState, requestCreateQueryInCohort(setInfo))).toEqual({
+    expect(reducer(initialState, requestCreateQueryInCohort(setInfo.key))).toEqual({
       sqons: [
         {
           op: 'and',
@@ -53,69 +53,204 @@ describe('Current Virtual Study Reducer', () => {
     });
   });
 
-  it('should override existing set sqon', () => {
-    const setInfo: SetInfo = {
-      key: 'id12345',
-      name: 'thisSets',
-      currentUser: 'SomeUser',
+  it('should handle add set to current query correctly when query is empty', () => {
+    const setId = '1234';
+    const initialState = {
+      sqons: [
+        {
+          op: 'and',
+          content: [],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: true,
+      isLoading: false,
+      error: null,
     };
-    const existingSqons = [
-      {
-        op: 'and',
-        content: [
+    expect(reducer(initialState, addSetToCurrentQuery(setId))).toEqual({
+      sqons: [
+        {
+          op: 'and',
+          content: [{ op: 'in', content: { field: 'kf_id', value: ['set_id:1234'] } }],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+  });
+
+  it(
+    'should handle add set to current query correctly when query is not empty' +
+      ' and current sqon does not contain the set to add',
+    () => {
+      const setId = 'ed821267-8ff9-4f4d-a811-950f0ad8d5b6';
+      const initialState = {
+        sqons: [
           {
-            op: 'in',
-            content: {
-              field: 'some_field',
-              value: 'value',
-            },
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'biospecimens.consent_type', value: ['DS-OBD-MDS'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+            ],
           },
         ],
-      },
-      {
-        op: 'and',
-        content: [
+        activeIndex: 1,
+        uid: null,
+        virtualStudyId: null,
+        name: '',
+        description: '',
+        dirty: false,
+        areSqonsEmpty: true,
+        isLoading: false,
+        error: null,
+      };
+      expect(reducer(initialState, addSetToCurrentQuery(setId))).toEqual({
+        sqons: [
           {
-            op: 'in',
-            content: {
-              field: 'kf_id',
-              value: 'set_id:old_set_id_123',
-            },
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'biospecimens.consent_type', value: ['DS-OBD-MDS'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6'] },
+              },
+            ],
           },
         ],
-      },
-    ];
+        activeIndex: 1,
+        uid: null,
+        virtualStudyId: null,
+        name: '',
+        description: '',
+        dirty: false,
+        areSqonsEmpty: false,
+        isLoading: false,
+        error: null,
+      });
+    },
+  );
 
-    const initialStateWithSqons = { ...initialState, sqons: existingSqons };
-
-    expect(reducer(initialStateWithSqons, requestCreateQueryInCohort(setInfo))).toEqual({
+  it('should handle add set to current query correctly when it already contains the set', () => {
+    const setId = 'ed821267-8ff9-4f4d-a811-950f0ad8d5b6';
+    const initialState = {
       sqons: [
         {
           op: 'and',
           content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
             {
               op: 'in',
-              content: {
-                field: 'some_field',
-                value: 'value',
-              },
-            },
-          ],
-        },
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'kf_id',
-                value: ['set_id:id12345'],
-              },
+              content: { field: 'kf_id', value: ['set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6'] },
             },
           ],
         },
       ],
-      activeIndex: 1,
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: true,
+      isLoading: false,
+      error: null,
+    };
+    expect(reducer(initialState, addSetToCurrentQuery(setId))).toEqual({
+      sqons: [
+        {
+          op: 'and',
+          content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+            {
+              op: 'in',
+              content: { field: 'kf_id', value: ['set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6'] },
+            },
+          ],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+  });
+
+  it('should handle add set to current query correctly when it contains another set', () => {
+    const setId = 'ed821267-8ff9-4f4d-a811-950f0ad8d5b6';
+    const initialState = {
+      sqons: [
+        {
+          op: 'and',
+          content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            {
+              op: 'in',
+              content: { field: 'kf_id', value: ['set_id:123'] },
+            },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+          ],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: true,
+      isLoading: false,
+      error: null,
+    };
+    expect(reducer(initialState, addSetToCurrentQuery(setId))).toEqual({
+      sqons: [
+        {
+          op: 'and',
+          content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            {
+              op: 'in',
+              content: {
+                field: 'kf_id',
+                value: ['set_id:123', 'set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6'],
+              },
+            },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+          ],
+        },
+      ],
+      activeIndex: 0,
       uid: null,
       virtualStudyId: null,
       name: '',
