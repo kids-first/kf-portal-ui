@@ -206,4 +206,59 @@ describe('Current Virtual Study Reducer', () => {
       error: null,
     });
   });
+
+  it('should handle add set to current query correctly when it contains another set', () => {
+    const setId = 'ed821267-8ff9-4f4d-a811-950f0ad8d5b6';
+    const initialState = {
+      sqons: [
+        {
+          op: 'and',
+          content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            {
+              op: 'in',
+              content: { field: 'kf_id', value: ['set_id:123'] },
+            },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+          ],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: true,
+      isLoading: false,
+      error: null,
+    };
+    expect(reducer(initialState, addSetToCurrentQuery(setId))).toEqual({
+      sqons: [
+        {
+          op: 'and',
+          content: [
+            { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+            {
+              op: 'in',
+              content: {
+                field: 'kf_id',
+                value: ['set_id:123', 'set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6'],
+              },
+            },
+            { op: 'in', content: { field: 'biospecimens.consent_type', value: ['__missing__'] } },
+          ],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+  });
 });

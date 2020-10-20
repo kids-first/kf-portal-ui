@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import merge from 'lodash/merge';
 import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
-
+import { isEmptySqon as arrangerIsEmptySqon } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 import { BOOLEAN_OPS, isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 
 /**
@@ -16,7 +16,7 @@ export const getDefaultSqon = () => cloneDeep([{ op: 'and', content: [] }]);
  * @param {Object[]} sqons - an array of sqon object.
  * @returns {boolean} `true` if it is a default sqon; `false` otherwise.
  */
-export const isDefaultSqon = sqons => isEqual(sqons, getDefaultSqon());
+export const isDefaultSqon = (sqons) => isEqual(sqons, getDefaultSqon());
 
 /**
  * Sets the value in the given `newSqon` to the `sourceSqons` at the given `sourceIndex`.
@@ -48,9 +48,8 @@ export const setSqonValueAtIndex = (sourceSqons, sourceIndex, newSqon, opts) => 
   if (!found) {
     if (!newSqon.op) {
       throw new Error(
-        `Cannot add the field "${
-          newSqon.content.field
-        }" to the sqons: no operator provided and no matching field found in sqons`,
+        `Cannot add the field "${newSqon.content.field}" to the sqons:` +
+          ` no operator provided and no matching field found in sqons`,
       );
     }
     clonedSqons[sourceIndex].content.push(newSqon);
@@ -72,7 +71,7 @@ export const setSqonValueAtIndex = (sourceSqons, sourceIndex, newSqon, opts) => 
 const deeplySetSqonValue = (sourceSqon, newSqon, opts) => {
   let found = false;
 
-  sourceSqon.content.forEach(sqon => {
+  sourceSqon.content.forEach((sqon) => {
     // dont follow references
     if (isReference(sqon)) return;
 
@@ -140,4 +139,85 @@ export const MERGE_OPERATOR_STRATEGIES = {
    * The one provided will be used if the field is not found.
    */
   KEEP_OPERATOR: 'KEEP_OPERATOR',
+};
+
+const isEmptySqon = (sqon) => arrangerIsEmptySqon(sqon);
+
+const isEmptyQuery = (querySqons) => querySqons.length === 1 && isEmptySqon(querySqons[0]);
+
+const fromSetIdToSetSqon = (setId) => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {
+        field: 'kf_id',
+        value: [`set_id:${setId}`],
+      },
+    },
+  ],
+});
+
+export const createNewQueryFromSetId = (setId, querySqons) => {
+  const setSqon = fromSetIdToSetSqon(setId);
+  if (isEmptyQuery(querySqons)) {
+    return [setSqon];
+  }
+  return [...querySqons, setSqon];
+};
+
+export const addSetToActiveQuery = ({ setId, querySqons, activeIndex }) => {
+  if (isEmptyQuery(querySqons)) {
+    const setSqon = fromSetIdToSetSqon(setId);
+    return [setSqon];
+  }
+
+  const newSqons = querySqons.slice(0);
+  const activeSqon = { ...querySqons[activeIndex] };
+  const activeContent = activeSqon.content.slice(0);
+
+  //  Assumes that content can contain at most 1 element with a set.
+  const contentIndexOfSet = activeContent.findIndex((currentSqon) => {
+    const currentContent = currentSqon.content;
+    const currentValue = currentContent.value || [];
+    if (Array.isArray(currentValue)) {
+      return currentValue.some((strValue) => strValue.startsWith('set_id:'));
+    }
+    return currentValue.startsWith('set_id:');
+  });
+
+  let updatedContent;
+  const setIdNotDetected = contentIndexOfSet === -1;
+  if (setIdNotDetected) {
+    updatedContent = [
+      ...activeContent,
+      {
+        op: 'in',
+        content: {
+          field: 'kf_id',
+          value: [`set_id:${setId}`],
+        },
+      },
+    ];
+  } else {
+    const sqonWithOtherSet = activeContent[contentIndexOfSet];
+    const contentWithOtherSet = sqonWithOtherSet.content;
+    const valueWithOtherSet = contentWithOtherSet.value;
+    const updatedValue = Array.isArray(valueWithOtherSet)
+      ? [...valueWithOtherSet, `set_id:${setId}`]
+      : [valueWithOtherSet, `set_id:${setId}`];
+    const updatedValueWithNoDuplicate = [...new Set(updatedValue)];
+    activeContent[contentIndexOfSet] = {
+      ...sqonWithOtherSet,
+      content: {
+        ...contentWithOtherSet,
+        value: updatedValueWithNoDuplicate,
+      },
+    };
+    updatedContent = activeContent;
+  }
+
+  activeSqon.content = updatedContent;
+  newSqons[activeIndex] = activeSqon;
+  return newSqons;
 };

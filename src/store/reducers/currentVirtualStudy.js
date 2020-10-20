@@ -1,6 +1,10 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { getDefaultSqon, isDefaultSqon } from 'common/sqonUtils';
-import { isEmptySqon } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+import {
+  getDefaultSqon,
+  isDefaultSqon,
+  addSetToActiveQuery,
+  createNewQueryFromSetId,
+} from 'common/sqonUtils';
 
 import {
   LOGOUT,
@@ -47,67 +51,6 @@ const resetState = (diff = {}) => {
   };
   newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
   return newState;
-};
-
-const fromSetIdToSetSqon = (setId) => ({
-  op: 'and',
-  content: [
-    {
-      op: 'in',
-      content: {
-        field: 'kf_id',
-        value: [`set_id:${setId}`],
-      },
-    },
-  ],
-});
-
-const isEmptyQuery = (querySqons) => querySqons.length === 1 && isEmptySqon(querySqons[0]);
-
-const createNewQueryFromSetId = (setId, querySqons) => {
-  const setSqon = fromSetIdToSetSqon(setId);
-  if (isEmptyQuery(querySqons)) {
-    return { newSqons: [setSqon], activeIndex: 0 };
-  }
-  return { newSqons: [...querySqons, setSqon], activeIndex: querySqons.length };
-};
-
-const addSetToCurrentQuery = ({ setId, querySqons, currentIndex }) => {
-  if (isEmptyQuery(querySqons)) {
-    const setSqon = fromSetIdToSetSqon(setId);
-    return { newSqons: [setSqon], activeIndex: 0 };
-  }
-
-  const activeSqon = querySqons[currentIndex];
-  const activeContent = activeSqon.content;
-
-  const isSetAlreadyInContent = activeContent.some((partialQuerySqon) => {
-    const value = partialQuerySqon?.content?.value || '';
-    if (Array.isArray(value)) {
-      return value.some((pqs) => pqs.includes(setId));
-    }
-    return value.includes(setId);
-  });
-
-  if (isSetAlreadyInContent) {
-    return { newSqons: querySqons, activeIndex: currentIndex };
-  }
-
-  const updatedContent = [
-    ...activeContent,
-    {
-      op: 'in',
-      content: {
-        field: 'kf_id',
-        value: [`set_id:${setId}`],
-      },
-    },
-  ];
-  const copyActiveSqon = { ...activeSqon };
-  copyActiveSqon.content = updatedContent;
-
-  const newSqons = Object.assign([], querySqons, { [currentIndex]: copyActiveSqon });
-  return { newSqons, activeIndex: currentIndex };
 };
 
 export default (state = initialState, action) => {
@@ -175,10 +118,10 @@ export default (state = initialState, action) => {
       });
 
     case CREATE_SET_QUERY_REQUEST: {
-      const { newSqons, activeIndex } = createNewQueryFromSetId(action.setId, state.sqons);
+      const newSqons = createNewQueryFromSetId(action.setId, state.sqons);
       return setState({
         sqons: newSqons,
-        activeIndex: activeIndex,
+        activeIndex: newSqons.length - 1,
       });
     }
     case LOGOUT:
@@ -190,11 +133,11 @@ export default (state = initialState, action) => {
       });
 
     case ADD_SET_TO_CURRENT_QUERY: {
-      const { activeIndex: currentIndex, sqons } = state;
-      const { newSqons, activeIndex } = addSetToCurrentQuery({
+      const { activeIndex, sqons } = state;
+      const newSqons = addSetToActiveQuery({
         setId: action.setId,
         querySqons: sqons,
-        currentIndex,
+        activeIndex,
       });
       return setState({ sqons: newSqons, activeIndex });
     }

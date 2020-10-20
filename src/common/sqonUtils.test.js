@@ -6,6 +6,8 @@ import {
   getDefaultSqon,
   isDefaultSqon,
   setSqonValueAtIndex,
+  createNewQueryFromSetId,
+  addSetToActiveQuery,
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from './sqonUtils';
@@ -85,7 +87,8 @@ describe(cyan.bold('sqonUtils'), () => {
             content: { field: 'friends', value: ['snap', 'crackle', 'pop'] },
           });
         }).to.throw(
-          'Cannot add the field "friends" to the sqons: no operator provided and no matching field found in sqons',
+          'Cannot add the field "friends" to the sqons:' +
+            ' no operator provided and no matching field found in sqons',
         );
       });
     });
@@ -356,8 +359,259 @@ describe(cyan.bold('sqonUtils'), () => {
         ]);
       });
     });
+
+    describe('given query sqons and a set id', () => {
+      it('should create an empty sqon (createNewQueryFromSetId)', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
+              },
+            ],
+          },
+        ];
+        const sqons = createNewQueryFromSetId('086e54f6-1f6c-42e4-a1ac-436a50b57d22', initialQuery);
+
+        expect(sqons).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:086e54f6-1f6c-42e4-a1ac-436a50b57d22'] },
+              },
+            ],
+          },
+        ]);
+      });
+
+      it('should add a set to another set (addSetToActiveQuery)', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
+              },
+            ],
+          },
+        ];
+        const sqons = addSetToActiveQuery({
+          setId: 'ed821267-8ff9-4f4d-a811-950f0ad8d5b6',
+          querySqons: initialQuery,
+          activeIndex: 2,
+        });
+
+        expect(sqons).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: {
+                  field: 'kf_id',
+                  value: [
+                    'set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73',
+                    'set_id:ed821267-8ff9-4f4d-a811-950f0ad8d5b6',
+                  ],
+                },
+              },
+            ],
+          },
+        ]);
+      });
+
+      it('should let intact the query if set is already present (addSetToActiveQuery)', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
+              },
+            ],
+          },
+        ];
+        const sqons = addSetToActiveQuery({
+          setId: 'ef338f7e-048a-4fab-8b0a-a6e06253ef73',
+          querySqons: initialQuery,
+          activeIndex: 2,
+        });
+
+        expect(sqons).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: {
+                  field: 'kf_id',
+                  value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'],
+                },
+              },
+            ],
+          },
+        ]);
+      });
+
+      it('should add the set to the query (addSetToActiveQuery)', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+            ],
+          },
+        ];
+        const sqons = addSetToActiveQuery({
+          setId: 'ef338f7e-048a-4fab-8b0a-a6e06253ef73',
+          querySqons: initialQuery,
+          activeIndex: 1,
+        });
+
+        expect(sqons).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              { op: 'in', content: { field: 'study.data_access_authority', value: ['PNOC DAC'] } },
+              { op: 'in', content: { field: 'ethnicity', value: ['Hispanic or Latino'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'diagnoses.mondo.name', value: ['skin disease (MONDO:0005093)'] },
+              },
+              {
+                op: 'in',
+                content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
+              },
+            ],
+          },
+        ]);
+      });
+    });
   });
 });
-
-// what about newSqon containing multiple field/values?
-// - i.e. root-level sqon `newSQON` is a boolean operator
