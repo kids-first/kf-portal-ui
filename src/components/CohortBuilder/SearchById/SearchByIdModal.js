@@ -4,26 +4,26 @@ import autobind from 'auto-bind-es5';
 import uniq from 'lodash/uniq';
 import flatMap from 'lodash/flatMap';
 import debounce from 'lodash/debounce';
-import CloseIcon from 'react-icons/lib/md/close';
-
 import { searchByIds } from 'services/arranger/searchByIds';
 import Row from 'uikit/Column';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
-import { ModalTitle } from 'components/Modal/ui';
-import { closeModal } from 'store/actionCreators/ui/modalComponent';
+import { closeModal } from 'store/actions/modal';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import SearchResults from './SearchResults';
-
-import './styles.scss';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import LoadingOnClick from '../../LoadingOnClick';
+import { selectModalId } from 'store/selectors/modal';
+import PropTypes from 'prop-types';
+import './styles.scss';
+
+const SEARCH_MODAL_ID = 'SEARCH_MODAL_ID';
 
 //  Fixme: this modal is kind of a duplicated refactored of UploadIdsModal.
 const parseInput = (inputText) => uniq(inputText.split(/,|\s|\t(,|\s|\t)*/).filter((id) => !!id));
 
 function handleViewResults() {
-  if (this.state.loading || !this.opened) return;
+  if (this.state.loading) return;
   this.setState({ loading: true });
   return searchByIds(this.state.inputIds)
     .then((results) => {
@@ -34,29 +34,33 @@ function handleViewResults() {
     });
 }
 
+const initialState = {
+  loading: false,
+  inputIdsText: '',
+  inputIds: [],
+  results: null,
+};
+
 class SearchByIdModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      inputIdsText: '',
-      inputIds: [],
-      results: null,
+      ...initialState,
     };
-    this.opened = true;
     this.fileInpuRef = React.createRef();
     this.handleViewResults = debounce(handleViewResults, 500);
     autobind(this);
   }
 
-  componentDidMount() {
-    this.opened = true;
-  }
+  static propTypes = {
+    setSqons: PropTypes.func,
+    closeModal: PropTypes.func,
+    virtualStudy: PropTypes.object,
+    openModalId: PropTypes.string,
+    loading: PropTypes.bool,
+  };
 
-  componentWillUnmount() {
-    this.setState({ loading: false });
-    this.opened = false;
-  }
+  resetState = () => this.setState({ ...initialState });
 
   handleFilesUpload(evt) {
     parseInputFiles(evt.currentTarget.files)
@@ -75,8 +79,9 @@ class SearchByIdModal extends React.Component {
   }
 
   handleApplyFilterClick() {
-    if (this.state.loading || !this.opened) return;
-    if (!(this.state.results && this.state.results.participants)) return;
+    if (!(this.state.results && this.state.results.participants)) {
+      return;
+    }
 
     const { virtualStudy, setSqons, closeModal } = this.props;
 
@@ -98,8 +103,8 @@ class SearchByIdModal extends React.Component {
     );
 
     setSqons(modifiedSqons);
-    closeModal();
-    this.setState({ loading: false });
+    closeModal(SEARCH_MODAL_ID);
+    this.resetState();
   }
 
   setInputText(inputIdsText) {
@@ -115,34 +120,20 @@ class SearchByIdModal extends React.Component {
   }
 
   handleClose() {
-    this.opened = false;
-    this.setState({ loading: false });
-    this.props.closeModal();
+    this.resetState();
+    this.props.closeModal(SEARCH_MODAL_ID);
   }
 
   handleClear() {
     this.setInputText('');
   }
 
-  renderHeader() {
-    return (
-      <React.Fragment>
-        <ModalTitle>Upload a List of Identifiers</ModalTitle>
-        <CloseIcon
-          style={{ cursor: 'pointer', width: '22px', height: '22px' }}
-          fill="black"
-          onClick={this.handleClose}
-        />
-      </React.Fragment>
-    );
-  }
-
   renderBody() {
     const { inputIdsText, inputIds, results, loading } = this.state;
 
     return (
-      <React.Fragment>
-        <section className="sbi-description">
+      <>
+        <div style={{ display: 'flex' }}>
           <p>
             Type or copy-and-paste a list of comma delimited identifiers (participant, biospecimen,
             file, family)
@@ -150,16 +141,14 @@ class SearchByIdModal extends React.Component {
           <Button key="clear" type={'secondary'} onClick={this.handleClear}>
             Clear
           </Button>
-        </section>
-        <section className="sbi-id-input">
-          <textarea
-            placeholder="e.g. PT_X25FNZ4D, CDH1363, BS_E28336C7, 4-28F, GF_9R86WD1Z"
-            rows="4"
-            value={inputIdsText}
-            onChange={this.handleInputIdsChange}
-          />
-        </section>
-        <section className="sbi-description">
+        </div>
+        <textarea
+          placeholder="e.g. PT_X25FNZ4D, CDH1363, BS_E28336C7, 4-28F, GF_9R86WD1Z"
+          rows="4"
+          value={inputIdsText}
+          onChange={this.handleInputIdsChange}
+        />
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
           <span>Or choose file to upload</span>
           <input
             type="file"
@@ -187,7 +176,7 @@ class SearchByIdModal extends React.Component {
               </Button>
             )}
           />
-        </section>
+        </div>
         {results ? (
           <section className="sbi-results">
             <hr />
@@ -195,52 +184,54 @@ class SearchByIdModal extends React.Component {
             <SearchResults query={inputIds} results={results.participants} loading={loading} />
           </section>
         ) : null}
-      </React.Fragment>
-    );
-  }
-
-  renderFooter() {
-    const { inputIds, results } = this.state;
-    return (
-      <React.Fragment>
-        <Button key="cancel" onClick={this.handleClose}>
-          Cancel
-        </Button>
-        <LoadingOnClick
-          key="applyLoader"
-          onClick={this.handleApplyFilterClick}
-          render={({ onClick, loadingOnClick }) => (
-            <Button
-              loading={loadingOnClick}
-              disabled={loadingOnClick || inputIds.length === 0 || results === null}
-              key="apply"
-              type="primary"
-              onClick={onClick}
-              className={'view-results-btn'}
-            >
-              View Results
-            </Button>
-          )}
-        />
-      </React.Fragment>
+      </>
     );
   }
 
   render() {
+    const { openModalId, loading } = this.props;
+    const { inputIds, results } = this.state;
     return (
-      <div>
-        <Row className="header">{this.renderHeader()}</Row>
+      <Modal
+        title="Upload a List of Identifiers"
+        visible={openModalId === SEARCH_MODAL_ID}
+        footer={[
+          <Button key="cancel" onClick={this.handleClose}>
+            Cancel
+          </Button>,
+          <LoadingOnClick
+            key="applyLoader"
+            onClick={this.handleApplyFilterClick}
+            render={({ onClick, loadingOnClick }) => (
+              <Button
+                loading={loading || loadingOnClick}
+                disabled={loadingOnClick || inputIds.length === 0 || results === null || loading}
+                key="apply"
+                type="primary"
+                onClick={onClick}
+                className={'view-results-btn'}
+              >
+                View Results
+              </Button>
+            )}
+          />,
+        ]}
+        onCancel={this.handleClose}
+      >
         <Row className="body">{this.renderBody()}</Row>
-        <Row className="footer fix-footer">{this.renderFooter()}</Row>
-      </div>
+      </Modal>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
+  openModalId: selectModalId(state),
 });
 
-const mapDispatchToProps = { closeModal, setSqons };
+const mapDispatchToProps = (dispatch) => ({
+  closeModal: (id) => dispatch(closeModal(id)),
+  setSqons: (sqons) => dispatch(setSqons(sqons)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchByIdModal);

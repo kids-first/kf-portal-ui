@@ -10,10 +10,7 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { SQONdiff } from 'components/Utils';
-import { registerModal } from 'components/Modal/modalFactory';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
-import { openModal as openGlobalModal } from 'store/actionCreators/ui/modalComponent';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
 import theme from 'theme/defaultTheme';
 import { isFeatureEnabled } from 'common/featuresToggles';
@@ -29,6 +26,7 @@ import ModalSetsToQuery from './ModalSetsToQuery';
 import PropTypes from 'prop-types';
 
 const ADD_SET_TO_QUERY_MODAL_ID = 'ADD_SET_TO_QUERY_MODAL_ID';
+const SEARCH_MODAL_ID = 'SEARCH_MODAL_ID';
 
 const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
   ? ['diagnoses.mondo.name', 'observed_phenotype.name']
@@ -40,7 +38,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   openModal: (id) => dispatch(openModal(id)),
-  openGlobalModal: () => dispatch(openGlobalModal('SearchByIdModal', {}, 'search-by-id-modal')),
 });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -49,7 +46,6 @@ class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.initialSqon = props.sqon;
-    registerModal('SearchByIdModal', SearchByIdModal);
   }
 
   trackCategoryAction = (title) => {
@@ -70,9 +66,7 @@ class Categories extends React.Component {
     this.props.onSqonUpdate(...args);
   };
 
-  handleUploadIdsClick = () => {
-    this.props.openGlobalModal();
-  };
+  handleUploadIdsClick = () => this.props.openModal(SEARCH_MODAL_ID);
 
   onOpenAddSetToQuery = () => this.props.openModal(ADD_SET_TO_QUERY_MODAL_ID);
 
@@ -82,6 +76,7 @@ class Categories extends React.Component {
     return (
       <Row className="cb-categories-content">
         <ModalSetsToQuery sqon={sqon} />
+        <SearchByIdModal />
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
@@ -158,7 +153,6 @@ class Categories extends React.Component {
 Categories.propTypes = {
   sqon: PropTypes.object,
   onSqonUpdate: PropTypes.func,
-  openGlobalModal: PropTypes.func,
   openModal: PropTypes.func,
 };
 
