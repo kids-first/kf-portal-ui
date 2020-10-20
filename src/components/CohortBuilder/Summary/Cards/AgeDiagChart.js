@@ -11,6 +11,9 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 import PropTypes from 'prop-types';
 
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 const ageAtDiagnosisTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -79,7 +82,7 @@ class AgeDiagChart extends React.Component {
   render() {
     const { data, isLoading: isParentLoading, height = 225 } = this.props;
     return (
-      <Card title="Age at Diagnosis" loading={isParentLoading}>
+      <Card title={<Title level={3}>Age at Diagnosis</Title>} loading={isParentLoading}>
         <VerticalBar
           showCursor={true}
           data={data}

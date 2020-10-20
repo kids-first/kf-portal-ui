@@ -15,10 +15,13 @@ import DataTypeCard from './Cards/DataTypeCard';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import GridContainer from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
+import { Typography } from 'antd';
 
 import { isFeatureEnabled } from 'common/featuresToggles';
 
 import './Summary.css';
+
+const { Title } = Typography;
 
 const Summary = ({
   sqon = {
@@ -59,7 +62,7 @@ const Summary = ({
             />
             {isFeatureEnabled('FT_SUNBURST') && (
               <Card
-                title="Observed Phenotypes"
+                title={<Title level={3}>Observed Phenotypes</Title>}
                 classNameCardItem={'grid-container-item item-span-2-end item-row-1'}
               >
                 <OntologySunburst sqon={sqon} />

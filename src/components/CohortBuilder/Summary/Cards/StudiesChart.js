@@ -145,7 +145,7 @@ class StudiesChart extends React.Component {
           ) : (
             <div className={antCardHeader}>
               <span>Studies&nbsp;</span>
-              <Badge style={{ backgroundColor: '#2b388f' }} count={data.length} />
+              <Badge count={data.length} />
             </div>
           );
           return (

@@ -16,6 +16,7 @@ import {
 import { Badge, Result, Typography } from 'antd';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { getMsgFromErrorOrElse } from 'utils';
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const { Title } = Typography;
 
@@ -127,13 +128,15 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
         return (
           <Card
             title={
-              <Badge
-                count={isConnected && projects ? projects.length : 0}
-                offset={[8, 2]}
-                showZero={isConnected}
-              >
-                <Title level={3}>Cavatica Projects</Title>
-              </Badge>
+              <div className={antCardHeader}>
+                <span>
+                  <Title level={3}>Cavatica Projects&nbsp;</Title>
+                </span>
+                <Badge
+                  count={isConnected && projects ? projects.length : 0}
+                  showZero={isConnected}
+                />
+              </div>
             }
             tabList={isConnected ? tabList : []}
             onTabChange={(key) => {

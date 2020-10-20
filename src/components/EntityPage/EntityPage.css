@@ -69,7 +69,6 @@
 
 .entityPage-container .entityTitle {
   display: flex;
-  font-family: Montserrat, sans-serif;
   font-size: 28px;
   font-weight: 500;
   text-align: left;
@@ -84,7 +83,6 @@
 
 .entityPage-container .entityContentSection-title {
   display: inline-block;
-  font-family: Montserrat, sans-serif;
   font-size: 20px;
   font-weight: 500;
   text-align: left;

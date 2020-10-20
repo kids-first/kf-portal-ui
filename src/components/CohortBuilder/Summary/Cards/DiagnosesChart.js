@@ -17,6 +17,9 @@ import {
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 const mostFrequentDiagnosisTooltip = (data) => {
   const participants = data.familyMembers + data.probands;
@@ -123,7 +126,10 @@ class DiagnosesChart extends React.Component {
         queries={toSingleDiagQueries({ topDiagnoses, sqon })}
       >
         {({ isLoading, data }) => (
-          <Card title="Most Frequent Diagnoses (Mondo)" loading={isLoading || isParentLoading}>
+          <Card
+            title={<Title level={3}>Most Frequent Diagnoses (Mondo)</Title>}
+            loading={isLoading || isParentLoading}
+          >
             {!data ? (
               <div>No data</div>
             ) : (

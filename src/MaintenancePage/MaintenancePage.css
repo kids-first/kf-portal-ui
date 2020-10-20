@@ -1,7 +1,6 @@
 .maintenancePageContainer {
   background-color: #e3f6fd;
   font-size: 18px;
-  font-family: Open Sans, sans-serif;
   line-height: 36px;
   height: 100%;
   position: absolute;
@@ -27,7 +26,6 @@
 }
 .maintenancePageContainer h1,
 .maintenancePageContainer h2 {
-  font-family: Montserrat, sans-serif;
   font-weight: 500;
   color: #2b388f;
   font-size: 28px;

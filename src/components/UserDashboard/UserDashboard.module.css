@@ -16,7 +16,6 @@
 }
 
 .dashboardTitle {
-  font-family: Montserrat, sans-serif;
   font-size: 28px;
   font-weight: 500;
   text-align: left;
@@ -31,7 +30,6 @@
 /*******************************************************/
 .infoLink {
   font-size: 14px;
-  font-family: Open Sans, sans-serif;
   margin-bottom: 0;
   text-decoration: underline;
 }
@@ -39,7 +37,6 @@
 .infoMessage {
   font-size: 14px;
   color: #343434;
-  font-family: Open Sans, sans-serif;
   margin-bottom: 0;
 }
 
@@ -69,7 +66,6 @@
 .promptMessageContainer {
 }
 .promptMessageContent {
-  font-family: Open Sans, sans-serif;
   font-size: 14px;
   line-height: normal;
 }
@@ -80,7 +76,6 @@
   margin-top: 5px;
 }
 .promptMessageHeading {
-  font-family: Montserrat, sans-serif;
   font-weight: 500;
   font-size: 16px;
 }
@@ -97,7 +92,8 @@
   height: 300px;
 }
 
-.studiesList, .projectsListWrapper {
+.studiesList,
+.projectsListWrapper {
   max-height: 300px;
 }
 

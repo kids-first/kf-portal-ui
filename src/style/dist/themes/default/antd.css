@@ -24514,14 +24514,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-tabs-tab {
   color: #515885;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 22px;
 }
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #a6278f;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 22px;
 }

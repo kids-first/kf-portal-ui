@@ -98,11 +98,6 @@ export const chartColors = {
   axisLegend: colors.secondary,
 };
 
-export const fonts = {
-  default: 'Montserrat, sans-serif',
-  details: 'Open Sans, sans-serif',
-};
-
 const components = {
   baseStyles: {
     bold: {
@@ -138,7 +133,6 @@ export default {
   chartColors,
   ...colors,
   ...components,
-  fonts,
   variables: {
     colors: colors,
   },
