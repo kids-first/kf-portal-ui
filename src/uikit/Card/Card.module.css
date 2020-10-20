@@ -7,7 +7,6 @@
 
 .cardHeading {
   display: inline-block;
-  font-family: Montserrat, sans-serif;
   font-size: 100%;
   font-weight: 500;
   text-align: left;
@@ -24,7 +23,6 @@
   color: white;
   font-weight: 600;
   font-size: 60%;
-  font-family: Open Sans, sans-serif;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;

@@ -30,6 +30,7 @@ import {
 import './SavedQueries.scss';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const { Title } = Typography;
 
@@ -199,21 +200,19 @@ class SavedQueries extends React.Component {
       {
         key: 'participantTab',
         tab: (
-          <Badge
-            count={virtualStudies.length ? virtualStudies.length : 0}
-            offset={[8, -5]}
-            showZero
-          >
-            Cohort Queries
-          </Badge>
+          <div className={antCardHeader}>
+            <span>Cohort Queries&nbsp;</span>
+            <Badge count={virtualStudies.length ? virtualStudies.length : 0} showZero />
+          </div>
         ),
       },
       {
         key: 'fileTab',
         tab: (
-          <Badge count={fileQueries.length ? fileQueries.length : 0} offset={[8, -5]} showZero>
-            File Queries
-          </Badge>
+          <div className={antCardHeader}>
+            <span>File Queries&nbsp;</span>
+            <Badge count={fileQueries.length ? fileQueries.length : 0} showZero />
+          </div>
         ),
       },
     ];
@@ -232,8 +231,10 @@ class SavedQueries extends React.Component {
           />
         )}
         <Card
+          size="small"
           title={<Title level={3}>My Saved Queries</Title>}
           tabList={tabList}
+          tabProps={{ size: 'small' }}
           onTabChange={(key) => {
             this.onTabChange(key);
           }}

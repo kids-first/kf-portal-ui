@@ -42,7 +42,6 @@
   width: 100%;
   min-width: 0;
   padding: 6px 12px;
-  font-family: Open Sans, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   background-color: #fff;
@@ -59,11 +58,6 @@
 /* components.flex */
 .flex {
   display: flex;
-}
-
-/* components.textarea */
-.textarea {
-  font-family: Open Sans, sans-serif;
 }
 
 /* components.select */

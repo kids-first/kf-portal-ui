@@ -1,4 +1,4 @@
-@import "../../style/themes/default/global";
+@import '../../style/themes/default/global';
 
 .participant-sets-container {
   .ant-card-head-title {
@@ -10,7 +10,6 @@
   }
 
   .ant-card-head-title > h3 {
-    font-family: $defaultFont;
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
@@ -18,5 +17,13 @@
 
   .ant-card-body {
     padding: 24px 0;
+  }
+
+}
+
+.core-layout-grid--content {
+  .ant-badge > sup {
+    background: #eeeff6;
+    color: inherit;
   }
 }

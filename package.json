@@ -3,9 +3,9 @@
   "version": "2.26.1",
   "private": true,
   "dependencies": {
-    "@ferlab-ui/core-react": "0.0.6",
-    "@ferlab-ui/core-style": "0.0.7",
-    "@kfarranger/components": "1.18.0",
+    "@ferlab-ui/core-react": "0.0.7",
+    "@ferlab-ui/core-style": "0.0.8",
+    "@kfarranger/components": "1.19.0",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

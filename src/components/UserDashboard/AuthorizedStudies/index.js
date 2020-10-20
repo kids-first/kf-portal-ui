@@ -9,6 +9,7 @@ import AccessGate from '../../AccessGate';
 import Info from '../Info';
 import { Badge, Button, Typography } from 'antd';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const { Title } = Typography;
 
@@ -23,13 +24,12 @@ const AuthorizedStudies = compose(
     return (
       <Card
         title={
-          <Badge
-            count={fenceAuthStudies.length || 0}
-            offset={[8, 2]}
-            showZero={!isEmpty(fenceConnections)}
-          >
-            <Title level={3}>Authorized Studies</Title>
-          </Badge>
+          <div className={antCardHeader}>
+            <span>
+              <Title level={3}>Authorized Studies&nbsp;</Title>
+            </span>
+            <Badge count={fenceAuthStudies.length || 0} showZero={!isEmpty(fenceConnections)} />
+          </div>
         }
         loading={inactive}
       >

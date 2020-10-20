@@ -60,7 +60,6 @@
   outline: none;
 
   color: #757575;
-  font-family: Montserrat, sans-serif, sans-serif;
   font-size: 14px;
 
   overflow: hidden;
@@ -114,7 +113,6 @@
 }
 
 .loginH3 {
-  font-family: Montserrat, sans-serif;
   color: #2b388f;
   font-weight: 500;
   font-size: 16px;

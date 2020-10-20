@@ -51,7 +51,6 @@
   padding: 0;
 }
 .search-all-filter .results-container .results-content .results-header {
-  font-family: Open Sans, sans-serif;
   font-style: italic;
   font-size: 12px;
   color: rgb(52, 52, 52);
@@ -102,7 +101,6 @@
 }
 
 .query-content input {
-  font-family: Open Sans, sans-serif;
   font-weight: bold;
   font-size: 14px;
   color: rgb(52, 52, 52);
@@ -169,7 +167,6 @@
 }
 
 .results-section.results-body .category-name {
-  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -184,7 +181,6 @@
 }
 
 .results-section.results-body .result-item {
-  font-family: OpenSans;
   font-size: 11px;
   display: block;
   position: relative;
@@ -206,7 +202,6 @@
   right: -26px;
   top: 0px;
 
-  font-family: OpenSans;
   font-size: 11px;
   letter-spacing: 0.2px;
   line-height: 1.2em;

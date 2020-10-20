@@ -22,10 +22,8 @@ import ChartError from './ChartError';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 import theme from 'theme/defaultTheme';
-import { Badge, Row, Col } from 'antd';
-import Typography from 'antd/es/typography';
-
-const { Title } = Typography;
+import { Badge, Col, Row } from 'antd';
+import { antCardHeader } from '../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const studiesChartCategory = TRACKING_EVENTS.categories.charts.bar.studies;
 
@@ -97,14 +95,16 @@ const StudiesChart = compose(
       title={
         <Row gutter={70}>
           <Col>
-            <Badge offset={[15, 0]} count={studies}>
-              <Title level={3}>Studies</Title>
-            </Badge>
+            <div className={antCardHeader}>
+              <span>Studies&nbsp;</span>
+              <Badge count={studies} />
+            </div>
           </Col>
           <Col>
-            <Badge offset={[25, 0]} overflowCount={99999} count={participants}>
-              <Title level={3}>Participants</Title>
-            </Badge>
+            <div className={antCardHeader}>
+              <span>Participants&nbsp;</span>
+              <Badge count={participants} overflowCount={99999} />
+            </div>
           </Col>
         </Row>
       }

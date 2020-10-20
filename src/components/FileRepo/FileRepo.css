@@ -47,13 +47,11 @@
 }
 
 .arranger-container .aggregation-card .title-wrapper .title {
-  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #2b388f;
 }
 .arranger-container .aggregation-card .bucket-link {
-  font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   color: rgb(52, 52, 52);
 }
@@ -72,11 +70,9 @@
 }
 
 .arranger-container .ReactTable .rt-thead .rt-tr .rt-th {
-  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
 }
 .arranger-container .ReactTable .rt-tbody .rt-tl .rt-td {
-  font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   color: rgb(52, 52, 52);
 }
