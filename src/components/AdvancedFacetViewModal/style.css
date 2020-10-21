@@ -1,83 +1,8 @@
+.facetViewWrapper {
+  font-size: 13px;
+  max-height: 500px;
+}
+
 .advancedFacetViewWrapper {
-  padding: 0px;
-}
-.advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
-  border-bottom: none;
-}
-.afvModalContent {
-  position: absolute;
-  width: 95%;
-}
-
-.afvStatContainer .statContainer {
-  background: none;
-  padding: none;
-  border: none;
-}
-
-.afvStatContainer .statContainer .stat {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.afv-container {
-  flex: 1;
-  display: flex;
   position: relative;
-}
-
-.afv-container .advancedFacetViewWrapper {
-  padding: 0px;
-}
-
-.afv-container .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
-  border-bottom: none;
-}
-
-.afv-container .advancedFacetViewWrapper .facetViewWrapper .facetsPanel {
-  flex: 3;
-}
-
-.afv-container .advancedFacetViewWrapper .facetViewWrapper .facetsPanel .bucket-count {
-  display: none;
-}
-
-.afv-container .advancedFacetViewWrapper .facetViewWrapper .facetsPanel .filterInput {
-  flex: 1 1 0%;
-}
-
-.afv-container .afvStatContainer .statContainer {
-  background: none;
-  padding: none;
-  border: none;
-}
-
-.afv-container .afvStatContainer .statContainer .stat {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.afv-container .input-range__slider {
-  background-color: #ffffff;
-  box-shadow: 0 0 5.9px 0.1px #bbbbbb;
-  border: solid 1px #c3c3c3;
-}
-.afv-container .input-range__track.input-range__track--active {
-  background-color: #009bb8;
-}
-.afv-container .input-range__label--max .input-range__label-container {
-  left: 0px;
-}
-.afv-container .input-range__label--min .input-range__label-container {
-  left: 0px;
-}
-
-.afv-container .input-range__label.input-range__label--value .input-range__label-container {
-  left: 0px;
-}
-
-.afv-container
-  .input-range__slider-container:nth-child(3)
-  .input-range__label.input-range__label--value {
-  right: 100%;
 }
