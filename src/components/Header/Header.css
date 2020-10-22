@@ -98,26 +98,34 @@
 }
 
 .navLink {
-  display: block;
-  color: rgb(144, 39, 142);
+  color: #a6278f;
   padding: 6px 10px;
   margin: 0 4px;
-  text-decoration: none;
-  border: solid 2px transparent;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
 }
 .navLink:hover {
-  border-radius: 19px;
-  background-color: #404c9a; /* ${colors.primaryHover}; */
-  border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
-  color: #ffffff;
+  display: block;
+  color: #a6278f;
+  padding: 6px 10px;
+  margin: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f5e5f1;
+  border: 1px solid #f5e5f1;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 .navLink.active {
-  border-radius: 19px;
-  background-color: #404c9a; /* ${colors.primaryHover}; */
-  border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
-  color: #ffffff;
+  display: block;
+  color: #a6278f;
+  padding: 6px 10px;
+  margin: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f5e5f1;
+  border: 1px solid #f5e5f1;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 
 .linkAsButton {
@@ -145,6 +153,7 @@
 .logo {
   width: 211px;
   height: 65px;
+  margin-right: 8px;
 }
 
 .menu {

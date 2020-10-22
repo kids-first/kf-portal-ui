@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Alert, Badge, Layout, Menu, Button } from 'antd';
+import { Alert, Badge, Layout } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
@@ -10,10 +10,9 @@ import {
   TeamOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
-
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Row from 'uikit/Row';
-import { LinkAsButton, NavBarList } from './ui';
+import { LinkAsButton, NavBarList, NavLink } from './ui';
 import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
@@ -25,7 +24,7 @@ import './Header.css';
 import { isPartOfGroup } from 'common/profile';
 import { injectState } from 'freactal';
 
-const { Header: AntHeader } = Layout;
+const { Header } = Layout;
 
 const showPublicProfileInvite = (user = {}) =>
   Boolean(user) && !user.isPublic && !localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN);
@@ -35,64 +34,33 @@ const onClosePublicProfileInviteAlert = () =>
 
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
-const renderAlertIfAny = (loggedInUser) => {
-  if (showPublicProfileInvite(loggedInUser)) {
-    return (
-      <Alert
-        message={
-          <>
-            <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
-            {' so that other members can view it!'}
-          </>
-        }
-        type="info"
-        banner
-        closable
-        onClose={onClosePublicProfileInviteAlert}
-      />
-    );
-  }
-  return null;
-};
-
-const routeNames = [
-  ROUTES.dashboard,
-  ROUTES.cohortBuilder,
-  ROUTES.variantDb,
-  `${ROUTES.search}/file`,
-  ROUTES.searchMember,
-];
-
-const menuItemStyle = { borderBottom: 'none', margin: '0 8px' };
-
-const Header = (props) => {
+const NavigationToolBar = (props) => {
   const {
     history,
     match: { path },
     state: { loggedInUser, egoGroups },
   } = props;
 
-  const handleClick = (e) => {
-    history.push(e.key);
-  };
-
   const currentPathName = history.location.pathname;
 
-  const generateActiveStyle = (route) =>
-    currentPathName === route
-      ? {
-          background: '#F5E5F1',
-          color: '#A6278F',
-          border: '1px solid #F5E5F1',
-        }
-      : null;
-
   const canSeeProtectedRoutes = path !== '/join';
-  const currentProtectedMenuItem =
-    routeNames.find((routeName) => currentPathName.startsWith(routeName)) || '';
+
   return (
-    <AntHeader className="headerContainer">
-      {renderAlertIfAny(loggedInUser)}
+    <Header className="headerContainer">
+      {showPublicProfileInvite(loggedInUser) && (
+        <Alert
+          message={
+            <>
+              <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
+              {' so that other members can view it!'}
+            </>
+          }
+          type="info"
+          banner
+          closable
+          onClose={onClosePublicProfileInviteAlert}
+        />
+      )}
       <div className="gradientAccent" />
       <Row className="headerContent">
         <Row>
@@ -100,71 +68,42 @@ const Header = (props) => {
             <img src={logoPath} alt="Kids First Logo" className={'logo'} />
           </Link>
           {canSeeProtectedRoutes && (
-            <Menu
-              mode="horizontal"
-              onClick={handleClick}
-              selectedKeys={[currentProtectedMenuItem]}
-              className={'menu'}
-            >
-              <Menu.Item key={ROUTES.dashboard} style={menuItemStyle}>
-                <Button
-                  className={`button-common`}
-                  type="ghost"
-                  style={generateActiveStyle(ROUTES.dashboard)}
-                  icon={<HomeOutlined fill={'#A6278F'} />}
-                >
-                  Dashboard
-                </Button>
-              </Menu.Item>
-              <Menu.Item key={ROUTES.cohortBuilder} style={menuItemStyle}>
-                <Button
-                  className={`button-common`}
-                  type="ghost"
-                  style={generateActiveStyle(ROUTES.cohortBuilder)}
-                  icon={<TeamOutlined fill={'#A6278F'} />}
-                >
-                  Explore Data
-                </Button>
-              </Menu.Item>
+            <NavBarList ml={40}>
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
+                  <HomeOutlined /> Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
+                  <TeamOutlined /> Explore Data
+                </NavLink>
+              </li>
               {isPartOfGroup('kf-investigator', egoGroups) && (
-                <Menu.Item
-                  key={ROUTES.variantDb}
-                  /* different style since the badge overlaps neighbour icon */
-                  style={{ borderBottom: 'none', margin: '0 15px' }}
-                >
-                  <Badge count={'New'} style={{ backgroundColor: '#52c41a' }}>
-                    <Button
-                      className={`button-common`}
-                      type="ghost"
-                      style={generateActiveStyle(ROUTES.variantDb)}
-                      icon={<DatabaseOutlined fill={'#A6278F'} />}
-                    >
-                      Variant Workbench
-                    </Button>
-                  </Badge>
-                </Menu.Item>
+                <li>
+                  <NavLink
+                    currentPathName={currentPathName}
+                    to={ROUTES.variantDb}
+                    style={{ marginRight: '10px' }}
+                  >
+                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[5, -15]}>
+                      <DatabaseOutlined />{' '}
+                      <span style={{ fontSize: '16px' }}> Variant Workbench</span>
+                    </Badge>
+                  </NavLink>
+                </li>
               )}
-              <Menu.Item key={`${ROUTES.search}/file`} style={menuItemStyle}>
-                <Button
-                  className={`button-common`}
-                  type="ghost"
-                  style={generateActiveStyle(`${ROUTES.search}/file`)}
-                  icon={<FolderOutlined fill={'#A6278F'} />}
-                >
-                  File Repository
-                </Button>
-              </Menu.Item>
-              <Menu.Item key={ROUTES.searchMember} style={menuItemStyle}>
-                <Button
-                  className={`button-common`}
-                  type="ghost"
-                  style={generateActiveStyle(ROUTES.searchMember)}
-                  icon={<UserOutlined fill={'#A6278F'} />}
-                >
-                  Members
-                </Button>
-              </Menu.Item>
-            </Menu>
+              <li>
+                <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
+                  <FolderOutlined /> File Repository
+                </NavLink>
+              </li>
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
+                  <UserOutlined /> Members
+                </NavLink>
+              </li>
+            </NavBarList>
           )}
         </Row>
         <NavBarList style={{ justifyContent: 'flex-end' }}>
@@ -182,11 +121,11 @@ const Header = (props) => {
           {canSeeProtectedRoutes ? <UserMenu /> : null}
         </NavBarList>
       </Row>
-    </AntHeader>
+    </Header>
   );
 };
 
-Header.propTypes = {
+NavigationToolBar.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
     location: PropTypes.shape({
@@ -203,4 +142,4 @@ Header.propTypes = {
   }).isRequired,
 };
 
-export default compose(injectState, withRouter)(Header);
+export default compose(injectState, withRouter)(NavigationToolBar);
