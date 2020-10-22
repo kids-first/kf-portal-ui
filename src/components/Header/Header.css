@@ -17,6 +17,8 @@
 
 .headerContent {
   padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   justify-content: space-between;
 }
 
@@ -97,25 +99,34 @@
 
 .navLink {
   display: block;
-  color: rgb(144, 39, 142);
+  color: #a6278f;
   padding: 6px 10px;
-  margin: 0px 4px;
-  text-decoration: none;
-  border: solid 2px transparent;
-  font-size: 14px;
-  font-weight: 500;
+  margin: 0 5px;
+  font-size: 16px;
 }
 .navLink:hover {
-  border-radius: 19px;
-  background-color: #404c9a; /* ${colors.primaryHover}; */
-  border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
-  color: #ffffff;
+  display: block;
+  color: #a6278f;
+  padding: 6px 10px;
+  margin: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f5e5f1;
+  border: 1px solid #f5e5f1;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 .navLink.active {
-  border-radius: 19px;
-  background-color: #404c9a; /* ${colors.primaryHover}; */
-  border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
-  color: #ffffff;
+  display: block;
+  color: #a6278f;
+  padding: 6px 10px;
+  margin: 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #f5e5f1;
+  border: 1px solid #f5e5f1;
+  box-sizing: border-box;
+  border-radius: 2px;
 }
 
 .linkAsButton {
@@ -123,22 +134,25 @@
   line-height: 2.17;
   letter-spacing: 0.2px;
   text-align: left;
-  color: #ffffff;
   display: block;
   padding: 6px 16px;
-  margin: 0px 4px;
+  margin: 0 4px;
   text-decoration: none;
   text-transform: uppercase;
   border: solid 2px transparent;
   background-color: #90278e;
   color: #fff;
-  letter-spacing: 0.2px;
   border-radius: 19px;
-  border: solid 2px transparent;
 }
 .linkAsButton:hover {
   border-radius: 19px;
   background-color: #404c9a; /* ${colors.primaryHover}; */
   border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
   color: #ffffff;
+}
+
+.logo {
+  width: 211px;
+  height: 65px;
+  margin-right: 8px;
 }
