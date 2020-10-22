@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Alert, Badge, Layout } from 'antd';
+import { Alert, Badge, Layout, Menu, Button } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
@@ -14,8 +13,7 @@ import {
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Row from 'uikit/Row';
-import { withApi } from 'services/api';
-import { LinkAsButton, NavBarList, NavLink } from './ui';
+import { LinkAsButton, NavBarList } from './ui';
 import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
@@ -24,7 +22,6 @@ import UserMenu from './UserMenu';
 
 import './Header.css';
 
-import { dismissError } from 'store/actionCreators/errors';
 import { isPartOfGroup } from 'common/profile';
 import { injectState } from 'freactal';
 
@@ -38,32 +35,15 @@ const onClosePublicProfileInviteAlert = () =>
 
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
-const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
-  if (currentError) {
-    return (
-      <Alert
-        message={
-          <Fragment>
-            <span style={{ fontWeight: 'bold' }}>Error: </span>
-            <span>{currentError.message}</span>
-          </Fragment>
-        }
-        type="error"
-        banner
-        closable
-        onClose={() => dismissError(currentError.uuid)}
-      />
-    );
-  }
-
+const renderAlertIfAny = (loggedInUser) => {
   if (showPublicProfileInvite(loggedInUser)) {
     return (
       <Alert
         message={
-          <Fragment>
+          <>
             <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
             {' so that other members can view it!'}
-          </Fragment>
+          </>
         }
         type="info"
         banner
@@ -72,64 +52,119 @@ const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
       />
     );
   }
-
   return null;
 };
 
+const routeNames = [
+  ROUTES.dashboard,
+  ROUTES.cohortBuilder,
+  ROUTES.variantDb,
+  `${ROUTES.search}/file`,
+  ROUTES.searchMember,
+];
+
+const menuItemStyle = { borderBottom: 'none', margin: '0 8px' };
+
 const Header = (props) => {
   const {
-    currentError,
-    dismissError,
     history,
     match: { path },
     state: { loggedInUser, egoGroups },
   } = props;
 
-  const canSeeProtectedRoutes = path !== '/join';
+  const handleClick = (e) => {
+    history.push(e.key);
+  };
 
   const currentPathName = history.location.pathname;
 
+  const generateActiveStyle = (route) =>
+    currentPathName === route
+      ? {
+          background: '#F5E5F1',
+          color: '#A6278F',
+          border: '1px solid #F5E5F1',
+        }
+      : null;
+
+  const canSeeProtectedRoutes = path !== '/join';
+  const currentProtectedMenuItem =
+    routeNames.find((routeName) => currentPathName.startsWith(routeName)) || '';
   return (
     <AntHeader className="headerContainer">
-      {renderAlertIfAny(loggedInUser, currentError, dismissError)}
+      {renderAlertIfAny(loggedInUser)}
       <div className="gradientAccent" />
       <Row className="headerContent">
         <Row>
           <Link to={ROUTES.dashboard}>
-            <img src={logoPath} alt="Kids First Logo" style={{ width: '211px', height: '65px' }} />
+            <img src={logoPath} alt="Kids First Logo" className={'logo'} />
           </Link>
           {canSeeProtectedRoutes && (
-            <NavBarList ml={40}>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
-                  <HomeOutlined /> Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
-                  <TeamOutlined /> Explore Data
-                </NavLink>
-              </li>
+            <Menu
+              mode="horizontal"
+              onClick={handleClick}
+              selectedKeys={[currentProtectedMenuItem]}
+              className={'menu'}
+            >
+              <Menu.Item key={ROUTES.dashboard} style={menuItemStyle}>
+                <Button
+                  className={`button-common`}
+                  type="ghost"
+                  style={generateActiveStyle(ROUTES.dashboard)}
+                  icon={<HomeOutlined fill={'#A6278F'} />}
+                >
+                  Dashboard
+                </Button>
+              </Menu.Item>
+              <Menu.Item key={ROUTES.cohortBuilder} style={menuItemStyle}>
+                <Button
+                  className={`button-common`}
+                  type="ghost"
+                  style={generateActiveStyle(ROUTES.cohortBuilder)}
+                  icon={<TeamOutlined fill={'#A6278F'} />}
+                >
+                  Explore Data
+                </Button>
+              </Menu.Item>
               {isPartOfGroup('kf-investigator', egoGroups) && (
-                <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
-                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
-                      <DatabaseOutlined /> Variant Workbench
-                    </Badge>
-                  </NavLink>
-                </li>
+                <Menu.Item
+                  key={ROUTES.variantDb}
+                  /* different style since the badge overlaps neighbour icon */
+                  style={{ borderBottom: 'none', margin: '0 15px' }}
+                >
+                  <Badge count={'New'} style={{ backgroundColor: '#52c41a' }}>
+                    <Button
+                      className={`button-common`}
+                      type="ghost"
+                      style={generateActiveStyle(ROUTES.variantDb)}
+                      icon={<DatabaseOutlined fill={'#A6278F'} />}
+                    >
+                      Variant Workbench
+                    </Button>
+                  </Badge>
+                </Menu.Item>
               )}
-              <li>
-                <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
-                  <FolderOutlined /> File Repository
-                </NavLink>
-              </li>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                  <UserOutlined /> Members
-                </NavLink>
-              </li>
-            </NavBarList>
+              <Menu.Item key={`${ROUTES.search}/file`} style={menuItemStyle}>
+                <Button
+                  className={`button-common`}
+                  type="ghost"
+                  style={generateActiveStyle(`${ROUTES.search}/file`)}
+                  icon={<FolderOutlined fill={'#A6278F'} />}
+                >
+                  File Repository
+                </Button>
+              </Menu.Item>
+              <Menu.Item key={ROUTES.searchMember} style={menuItemStyle}>
+                <Button
+                  className={`button-common`}
+                  type="ghost"
+                  style={generateActiveStyle(ROUTES.searchMember)}
+                  icon={<UserOutlined fill={'#A6278F'} />}
+                >
+                  Members
+                </Button>
+              </Menu.Item>
+            </Menu>
           )}
         </Row>
         <NavBarList style={{ justifyContent: 'flex-end' }}>
@@ -152,14 +187,8 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  // redux
-  currentError: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired,
-  }),
-  dismissError: PropTypes.func.isRequired,
-  // react-router-dom
   history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
@@ -170,20 +199,8 @@ Header.propTypes = {
   enabledFeatures: PropTypes.object,
   state: PropTypes.shape({
     loggedInUser: PropTypes.object.isRequired,
+    egoGroups: PropTypes.array,
   }).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  currentError: state.errors.currentError,
-});
-
-const mapDispatchToProps = {
-  dismissError,
-};
-
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-  connect(mapStateToProps, mapDispatchToProps),
-)(Header);
+export default compose(injectState, withRouter)(Header);

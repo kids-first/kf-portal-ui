@@ -17,6 +17,8 @@
 
 .headerContent {
   padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   justify-content: space-between;
 }
 
@@ -99,7 +101,7 @@
   display: block;
   color: rgb(144, 39, 142);
   padding: 6px 10px;
-  margin: 0px 4px;
+  margin: 0 4px;
   text-decoration: none;
   border: solid 2px transparent;
   font-size: 14px;
@@ -123,22 +125,42 @@
   line-height: 2.17;
   letter-spacing: 0.2px;
   text-align: left;
-  color: #ffffff;
   display: block;
   padding: 6px 16px;
-  margin: 0px 4px;
+  margin: 0 4px;
   text-decoration: none;
   text-transform: uppercase;
   border: solid 2px transparent;
   background-color: #90278e;
   color: #fff;
-  letter-spacing: 0.2px;
   border-radius: 19px;
-  border: solid 2px transparent;
 }
 .linkAsButton:hover {
   border-radius: 19px;
   background-color: #404c9a; /* ${colors.primaryHover}; */
   border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
   color: #ffffff;
+}
+
+.logo {
+  width: 211px;
+  height: 65px;
+}
+
+.menu {
+  border-bottom: none;
+}
+
+.button-common {
+  height: 40px;
+  font-size: 16px;
+  color: #a6278f;
+  border: none;
+}
+
+.button-active {
+  background: #f5e5f1;
+  color: #a6278f;
+  border: 1px solid #f5e5f1;
+  border-radius: 2px;
 }
