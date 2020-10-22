@@ -98,9 +98,10 @@
 }
 
 .navLink {
+  display: block;
   color: #a6278f;
   padding: 6px 10px;
-  margin: 0 4px;
+  margin: 0 5px;
   font-size: 16px;
 }
 .navLink:hover {
@@ -154,22 +155,4 @@
   width: 211px;
   height: 65px;
   margin-right: 8px;
-}
-
-.menu {
-  border-bottom: none;
-}
-
-.button-common {
-  height: 40px;
-  font-size: 16px;
-  color: #a6278f;
-  border: none;
-}
-
-.button-active {
-  background: #f5e5f1;
-  color: #a6278f;
-  border: 1px solid #f5e5f1;
-  border-radius: 2px;
 }

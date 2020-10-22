@@ -84,9 +84,8 @@ const NavigationToolBar = (props) => {
                   <NavLink
                     currentPathName={currentPathName}
                     to={ROUTES.variantDb}
-                    style={{ marginRight: '10px' }}
                   >
-                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[5, -15]}>
+                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[4, -15]}>
                       <DatabaseOutlined />{' '}
                       <span style={{ fontSize: '16px' }}> Variant Workbench</span>
                     </Badge>
