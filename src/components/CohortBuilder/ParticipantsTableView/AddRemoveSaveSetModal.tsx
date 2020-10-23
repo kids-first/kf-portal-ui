@@ -148,6 +148,8 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
     hideModalCb();
   };
 
+  const [form] = Form.useForm();
+
   return (
     <Modal
       title={formTitle(subActionType)}
@@ -171,7 +173,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      <UserSetsFrom formName={FORM_NAME} onFinish={onFinish} />
+      <UserSetsFrom form={form} formName={FORM_NAME} onFinish={onFinish} />
     </Modal>
   );
 };

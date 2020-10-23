@@ -7,6 +7,7 @@ import { UserSet, UserSetsState } from 'store/saveSetTypes';
 import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
 import { connect, ConnectedProps } from 'react-redux';
 import { Store } from 'antd/lib/form/interface';
+import { FormInstance } from 'antd/lib/form';
 
 type SubState = {
   userSets: UserSetsState;
@@ -29,35 +30,39 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type OwnProps = {
   formName: string;
   onFinish: (values: Store) => void;
+  form: FormInstance;
+  onSelectChangeCb: (value: any, option: any) => void;
 };
 
 type Props = OwnProps & PropsFromRedux;
 
-const UserSetsForm: FunctionComponent<Props> = ({ formName, userSets, onFinish }) => {
-  const [form] = Form.useForm();
-
-  return (
-    <Form form={form} name={formName} onFinish={onFinish} layout="vertical">
-      <Form.Item label="Participant Set" name="setId" hasFeedback>
-        <Select placeholder="Choose a set">
-          {userSets.sets.map((s: UserSet) => (
-            <Select.Option key={s.setId} value={s.setId}>
-              <Row>
-                <Col style={{ paddingRight: 15 }}>{s.tag}</Col>
-                <Col style={{ paddingRight: 2 }}>
-                  <img style={{ width: 11 }} src={participantIcon} alt="Participants" />
-                </Col>
-                <Col>
-                  <div className={'secondary-text-color'}>{s.size}</div>
-                </Col>
-              </Row>
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-    </Form>
-  );
-};
+const UserSetsForm: FunctionComponent<Props> = ({
+  form,
+  formName,
+  userSets,
+  onFinish,
+  onSelectChangeCb,
+}) => (
+  <Form form={form} name={formName} onFinish={onFinish} layout="vertical">
+    <Form.Item label="Participant Set" name="setId" hasFeedback>
+      <Select placeholder="Choose a set" onChange={onSelectChangeCb}>
+        {userSets.sets.map((s: UserSet) => (
+          <Select.Option key={s.setId} value={s.setId}>
+            <Row>
+              <Col style={{ paddingRight: 15 }}>{s.tag}</Col>
+              <Col style={{ paddingRight: 2 }}>
+                <img style={{ width: 11 }} src={participantIcon} alt="Participants" />
+              </Col>
+              <Col>
+                <div className={'secondary-text-color'}>{s.size}</div>
+              </Col>
+            </Row>
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+  </Form>
+);
 
 const Connected = connector(UserSetsForm);
 

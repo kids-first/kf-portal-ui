@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Button, Form, Modal } from 'antd';
 import UserSetsFrom from '../UserSetsForm';
 import { Store } from 'antd/lib/form/interface';
@@ -39,14 +39,25 @@ const ModalSetsToQuery: FunctionComponent<Props> = ({
   closeModal,
   addSetToCurrentQuery,
 }) => {
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const [form] = Form.useForm();
+
   const onCancel = () => closeModal(ADD_SET_TO_QUERY_MODAL_ID);
+
   const onFinish = async (values: Store) => {
     const { setId } = values;
     if (!setId) {
-      return closeModal(ADD_SET_TO_QUERY_MODAL_ID);
+      return onCancel();
     }
     addSetToCurrentQuery(setId);
     onCancel();
+  };
+
+  const onChangeSelect = (value: any) => {
+    if (value) {
+      setIsSubmitDisabled(false);
+    }
   };
 
   return (
@@ -54,7 +65,6 @@ const ModalSetsToQuery: FunctionComponent<Props> = ({
       title={'Add a saved set to your query'}
       visible={openModalId === ADD_SET_TO_QUERY_MODAL_ID}
       onCancel={onCancel}
-      destroyOnClose
       footer={[
         <Button key="cancel" onClick={onCancel}>
           Cancel
@@ -66,13 +76,19 @@ const ModalSetsToQuery: FunctionComponent<Props> = ({
             htmlType="submit"
             key="add_set_to_query"
             type="primary"
+            disabled={isSubmitDisabled}
           >
-            Add To Query
+            Add to query
           </Button>
         </Form.Item>,
       ]}
     >
-      <UserSetsFrom formName={FORM_NAME} onFinish={onFinish} />
+      <UserSetsFrom
+        onSelectChangeCb={onChangeSelect}
+        form={form}
+        formName={FORM_NAME}
+        onFinish={onFinish}
+      />
     </Modal>
   );
 };
