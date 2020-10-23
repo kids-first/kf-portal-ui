@@ -2190,7 +2190,7 @@ html {
   padding: 4px 15px;
   font-size: 14px;
   border-radius: 2px;
-  color: #008199;
+  color: #009BBA;
   background: #fff;
   border-color: #d9d9d9;
 }
@@ -2241,9 +2241,9 @@ html {
 }
 .ant-btn:hover,
 .ant-btn:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: #fff;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn:hover > a:only-child,
 .ant-btn:focus > a:only-child {
@@ -2260,9 +2260,9 @@ html {
   content: '';
 }
 .ant-btn:active {
-  color: #005e73;
+  color: #007694;
   background: #fff;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn:active > a:only-child {
   color: currentColor;
@@ -2315,8 +2315,8 @@ html {
 }
 .ant-btn-primary {
   color: #ffffff;
-  background: #008199;
-  border-color: #008199;
+  background: #009BBA;
+  border-color: #009BBA;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
@@ -2335,8 +2335,8 @@ html {
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
   color: #ffffff;
-  background: #1b96a6;
-  border-color: #1b96a6;
+  background: #20b1c7;
+  border-color: #20b1c7;
 }
 .ant-btn-primary:hover > a:only-child,
 .ant-btn-primary:focus > a:only-child {
@@ -2354,8 +2354,8 @@ html {
 }
 .ant-btn-primary:active {
   color: #ffffff;
-  background: #005e73;
-  border-color: #005e73;
+  background: #007694;
+  border-color: #007694;
 }
 .ant-btn-primary:active > a:only-child {
   color: currentColor;
@@ -2437,9 +2437,9 @@ html {
 }
 .ant-btn-ghost:hover,
 .ant-btn-ghost:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-ghost:hover > a:only-child,
 .ant-btn-ghost:focus > a:only-child {
@@ -2456,9 +2456,9 @@ html {
   content: '';
 }
 .ant-btn-ghost:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-ghost:active > a:only-child {
   color: currentColor;
@@ -2501,7 +2501,7 @@ html {
   content: '';
 }
 .ant-btn-dashed {
-  color: #008199;
+  color: #009BBA;
   background: #fff;
   border-color: #d9d9d9;
   border-style: dashed;
@@ -2520,9 +2520,9 @@ html {
 }
 .ant-btn-dashed:hover,
 .ant-btn-dashed:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: #fff;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-dashed:hover > a:only-child,
 .ant-btn-dashed:focus > a:only-child {
@@ -2539,9 +2539,9 @@ html {
   content: '';
 }
 .ant-btn-dashed:active {
-  color: #005e73;
+  color: #007694;
   background: #fff;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-dashed:active > a:only-child {
   color: currentColor;
@@ -2687,9 +2687,9 @@ html {
 }
 .ant-btn-link:hover,
 .ant-btn-link:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-link:hover > a:only-child,
 .ant-btn-link:focus > a:only-child {
@@ -2706,9 +2706,9 @@ html {
   content: '';
 }
 .ant-btn-link:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-link:active > a:only-child {
   color: currentColor;
@@ -2806,9 +2806,9 @@ html {
 }
 .ant-btn-text:hover,
 .ant-btn-text:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-text:hover > a:only-child,
 .ant-btn-text:focus > a:only-child {
@@ -2825,9 +2825,9 @@ html {
   content: '';
 }
 .ant-btn-text:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-text:active > a:only-child {
   color: currentColor;
@@ -3094,9 +3094,9 @@ html {
 }
 .ant-btn-dangerous.ant-btn-link:hover,
 .ant-btn-dangerous.ant-btn-link:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-dangerous.ant-btn-link:hover > a:only-child,
 .ant-btn-dangerous.ant-btn-link:focus > a:only-child {
@@ -3113,9 +3113,9 @@ html {
   content: '';
 }
 .ant-btn-dangerous.ant-btn-link:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-dangerous.ant-btn-link:active > a:only-child {
   color: currentColor;
@@ -3242,9 +3242,9 @@ html {
 }
 .ant-btn-dangerous.ant-btn-text:hover,
 .ant-btn-dangerous.ant-btn-text:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-dangerous.ant-btn-text:hover > a:only-child,
 .ant-btn-dangerous.ant-btn-text:focus > a:only-child {
@@ -3261,9 +3261,9 @@ html {
   content: '';
 }
 .ant-btn-dangerous.ant-btn-text:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-dangerous.ant-btn-text:active > a:only-child {
   color: currentColor;
@@ -3662,9 +3662,9 @@ html {
   border-color: #fff;
 }
 .ant-btn-background-ghost.ant-btn-primary {
-  color: #008199;
+  color: #009BBA;
   background: transparent;
-  border-color: #008199;
+  border-color: #009BBA;
   text-shadow: none;
 }
 .ant-btn-background-ghost.ant-btn-primary > a:only-child {
@@ -3681,9 +3681,9 @@ html {
 }
 .ant-btn-background-ghost.ant-btn-primary:hover,
 .ant-btn-background-ghost.ant-btn-primary:focus {
-  color: #1b96a6;
+  color: #20b1c7;
   background: transparent;
-  border-color: #1b96a6;
+  border-color: #20b1c7;
 }
 .ant-btn-background-ghost.ant-btn-primary:hover > a:only-child,
 .ant-btn-background-ghost.ant-btn-primary:focus > a:only-child {
@@ -3700,9 +3700,9 @@ html {
   content: '';
 }
 .ant-btn-background-ghost.ant-btn-primary:active {
-  color: #005e73;
+  color: #007694;
   background: transparent;
-  border-color: #005e73;
+  border-color: #007694;
 }
 .ant-btn-background-ghost.ant-btn-primary:active > a:only-child {
   color: currentColor;
@@ -17797,7 +17797,7 @@ span.ant-radio + * {
   height: 32px;
   margin: 0;
   padding: 0 15px;
-  color: #008199;
+  color: #009BBA;
   font-size: 14px;
   line-height: 30px;
   background: #fff;
@@ -17808,7 +17808,7 @@ span.ant-radio + * {
   transition: color 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 .ant-radio-button-wrapper a {
-  color: #008199;
+  color: #009BBA;
 }
 .ant-radio-button-wrapper > .ant-radio-button {
   position: absolute;
