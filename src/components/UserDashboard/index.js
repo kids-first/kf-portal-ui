@@ -50,7 +50,7 @@ export default compose(
         <Card title={<Title level={3}>Most Frequent Diagnoses</Title>}>
           <MostFrequentDiagnosesChart />
         </Card>
-        <Card title={<Title level={3}>My Participant Sets</Title>}>
+        <Card classNameCardItem={'withScroll'} title={<Title level={3}>My Participant Sets</Title>}>
           <ParticipantSets user={loggedInUser} />
         </Card>
       </Grid>
