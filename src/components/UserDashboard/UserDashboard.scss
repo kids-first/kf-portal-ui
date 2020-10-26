@@ -27,3 +27,6 @@
     color: inherit;
   }
 }
+.withScroll > .ant-card-body {
+  overflow: auto;
+}
