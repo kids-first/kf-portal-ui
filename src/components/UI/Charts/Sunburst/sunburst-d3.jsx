@@ -84,7 +84,6 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
       })
       .attr('x', (d) => d.x0)
       .attr('y', (d) => d.y0)
-      .attr('fill', 'black')
       .attr('text-anchor', 'middle')
       .style('cursor', 'pointer')
       .call(wrap);
@@ -112,8 +111,10 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
         .attr('dy', dy + 'em');
 
       while ((word = words.pop())) {
-        line.push(word);
-        tspan.text(line.join(' ')).style('font', '12px sans-serif');
+        if (!/^[(]HP:\d+\)$/.test(word)) {
+          line.push(word);
+        }
+        tspan.text(line.join(' ')).style('font', '13px sans-serif');
         if (!isNaN(word)) {
           tspan.text(line.join(' ')).style('font', '24px sans-serif');
           line.pop();
@@ -121,29 +122,49 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
             .append('tspan')
             .text(word)
             .attr('x', 0)
-            .attr('y', -14)
-            .style('font', '24px sans-serif');
-        } else if (tspan.node().getComputedTextLength() > width) {
+            .attr('y', -35)
+            .attr('fill', '#2b388f')
+            .style('font-size', '20px')
+            .style('font-weight', '600');
+          tspan.text(line.join(' ')).style('font', '24px sans-serif');
+          line.pop();
+          centerText
+            .append('tspan')
+            .text('participants with')
+            .attr('x', 0)
+            .attr('y', -20)
+            .attr('fill', '#7D84A6')
+            .style('font-size', '12px')
+            .style('font-weight', '400');
+        }
+
+        //** - 20 ** with compensation for font size
+        if (tspan.node().getComputedTextLength() > width - 20) {
           line.pop();
           tspan.text(line.join(' '));
           centerText
             .append('tspan')
-            .style('font', '12px sans-serif')
+            .style('font-size', '14px')
+            .style('font-weight', '600')
             .text(line.join(' '))
+            .attr('fill', '#2b388f')
             .attr('x', 0)
             .attr('y', y)
             .attr('dy', ++lineNumber * lineHeight + dy + 'em');
 
           line = [word];
         }
+
         if (words.length === 0 && line.length >= 1) {
           const newTSpan = centerText.append('tspan');
           newTSpan
             .attr('x', 0)
             .attr('y', y)
             .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-            .style('font', '12px sans-serif')
-            .text(line.join(' '));
+            .style('font-size', '14px')
+            .style('font-weight', '600')
+            .text(line.join(' '))
+            .attr('fill', '#2b388f');
         }
         tspan.text(''); // cleanup remaining parent text before quiting
       }
@@ -181,6 +202,12 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
       centerText.call(() => updateCenterText(p));
       getSelectedPhenotype(p.data);
     }
+
+    if (p.parent) {
+      addBackArrow();
+    } else {
+      g.selectAll('#back-arrow').remove();
+    }
   }
 
   function arcVisible(d) {
@@ -199,6 +226,33 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
     if (!centerTextFormatter) return;
     const textData = p || selectedPhenotype;
     centerText.text(() => centerTextFormatter(textData.data)).call(wrap);
+  };
+
+  const addBackArrow = () => {
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 6)
+      .attr('y2', 60)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 0)
+      .attr('y2', 66)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 0)
+      .attr('y2', 54)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
   };
 };
 
