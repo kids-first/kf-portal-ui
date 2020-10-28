@@ -1,5 +1,9 @@
 import * as d3 from 'd3';
 
+const WITH_FONT_COMPENSATION = 20;
+
+const regexTermNumber = /^[(]HP:\d+\)$/;
+
 const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
   const { tooltipFormatter, centerTextFormatter } = formatters;
   const width = config.width || 300;
@@ -8,6 +12,33 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
   const radius = Math.min(width, height) / 6;
   const colorScheme = config.colorScheme || 'schemeSet1';
   let selectedPhenotype = null;
+
+  const addBackArrow = () => {
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 6)
+      .attr('y2', 60)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 0)
+      .attr('y2', 66)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
+    g.append('line')
+      .attr('id', 'back-arrow')
+      .attr('x1', -6)
+      .attr('y1', 60)
+      .attr('x2', 0)
+      .attr('y2', 54)
+      .attr('stroke-width', 1)
+      .attr('stroke', '#2b388f');
+  };
 
   const arc = d3
     .arc()
@@ -111,7 +142,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
         .attr('dy', dy + 'em');
 
       while ((word = words.pop())) {
-        if (!/^[(]HP:\d+\)$/.test(word)) {
+        if (!regexTermNumber.test(word)) {
           line.push(word);
         }
         tspan.text(line.join(' ')).style('font', '13px sans-serif');
@@ -139,7 +170,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
         }
 
         //** - 20 ** with compensation for font size
-        if (tspan.node().getComputedTextLength() > width - 20) {
+        if (tspan.node().getComputedTextLength() > width - WITH_FONT_COMPENSATION) {
           line.pop();
           tspan.text(line.join(' '));
           centerText
@@ -226,33 +257,6 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
     if (!centerTextFormatter) return;
     const textData = p || selectedPhenotype;
     centerText.text(() => centerTextFormatter(textData.data)).call(wrap);
-  };
-
-  const addBackArrow = () => {
-    g.append('line')
-      .attr('id', 'back-arrow')
-      .attr('x1', -6)
-      .attr('y1', 60)
-      .attr('x2', 6)
-      .attr('y2', 60)
-      .attr('stroke-width', 1)
-      .attr('stroke', '#2b388f');
-    g.append('line')
-      .attr('id', 'back-arrow')
-      .attr('x1', -6)
-      .attr('y1', 60)
-      .attr('x2', 0)
-      .attr('y2', 66)
-      .attr('stroke-width', 1)
-      .attr('stroke', '#2b388f');
-    g.append('line')
-      .attr('id', 'back-arrow')
-      .attr('x1', -6)
-      .attr('y1', 60)
-      .attr('x2', 0)
-      .attr('y2', 54)
-      .attr('stroke-width', 1)
-      .attr('stroke', '#2b388f');
   };
 };
 

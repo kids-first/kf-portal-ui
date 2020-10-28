@@ -12,6 +12,8 @@
 ### Features
 - [2668](https://github.com/kids-first/kf-portal-ui/issues/2668) Feature (Cohort Builder, Participants Saved Sets): A new menu filter called “My sets” was added beside the “Search all filters” bar allowing users to use their Participants Saved Sets in their queries.
 - [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
+- [2639](https://github.com/kids-first/kf-portal-ui/issues/2639) Feature (Summary View, Sunburst): Refactor information at middle of sunburst as per design mockup.
+- [2640](https://github.com/kids-first/kf-portal-ui/issues/2640) Feature (Summary View, Sunburst): Add details regarding the selected HPO term on the right side of the Sunburst's card.
 
 ### Technical / Other changes
 - [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implement updated grid system in dashboard allowing for 2 columns wide cards.
