@@ -7,6 +7,18 @@
 
 ### Technical / Other changes
 -->
+## 2020-10-28 kf-portal-ui 2.27.0
+
+### Features
+- [2668](https://github.com/kids-first/kf-portal-ui/issues/2668) Feature (Cohort Builder, Participants Saved Sets): A new menu filter called “My sets” was added beside the “Search all filters” bar allowing users to use their Participants Saved Sets in their queries.
+- [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
+
+### Technical / Other changes
+- [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implement updated grid system in dashboard allowing for 2 columns wide cards.
+- [2768](https://github.com/kids-first/kf-portal-ui/issues/2768) Refactor (Dashboard, Grid system): Convert cards to new antd design.
+- [2797](https://github.com/kids-first/kf-portal-ui/issues/2797) Refactor (File Repository, Freactal): Removing Freactal code from the Browse All facets modal.
+- [2800](https://github.com/kids-first/kf-portal-ui/issues/2800) Refactor (Portal, Main navigation): Update navigation buttons to better match new layout.
+
 ## 2020-10-15 kf-portal-ui 2.26.1
 
 ### Technical / Other changes
