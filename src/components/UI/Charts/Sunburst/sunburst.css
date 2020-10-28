@@ -1,0 +1,66 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-gap: 40px;
+  padding: 24px;
+}
+
+.info-panel-grid-container {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 0.45fr;
+}
+
+.term-grid {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.term-grid-item {
+  text-align: left;
+}
+
+.tree-grid {
+  display: grid;
+  grid-gap: 4px;
+  grid-template-rows: 0.15fr;
+}
+
+.tree-title {
+  text-align: left;
+  font-size: 14px;
+  line-height: 22px;
+  color: #7d84a6;
+}
+
+.tree {
+  background: #f3f4f6;
+  padding-left: 8px;
+  padding-right: 8px;
+  text-align: center;
+}
+
+.main-term-title {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #2b388f;
+}
+
+.hp {
+  font-size: 12px;
+  line-height: 20px;
+  color: #7d84a6;
+}
+
+.count-text {
+  font-size: 14px;
+  line-height: 22px;
+  color: #515885;
+}
+
+.add-to-query {
+  text-decoration-line: underline;
+  color: #a6278f;
+}

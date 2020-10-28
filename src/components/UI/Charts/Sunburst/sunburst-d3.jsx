@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-const sunburstD3 = (ref, data, config, formatters) => {
+const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
   const { tooltipFormatter, centerTextFormatter } = formatters;
   const width = config.width || 300;
   const height = config.height || 300;
@@ -179,6 +179,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
     selectedPhenotype = p;
     if (centerText) {
       centerText.call(() => updateCenterText(p));
+      getSelectedPhenotype(p.data);
     }
   }
 
