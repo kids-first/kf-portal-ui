@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import isEqual from 'lodash/isEqual';
 import { Spinner } from 'uikit/Spinner';
 import { PhenotypeStore } from '../../OntologyBrowser/store';
@@ -6,6 +6,7 @@ import { TreeNode } from '../../OntologyBrowser/Model';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
 import { Sqon } from 'store/sqon';
 import './Ontology.css';
+import { generateEmptyPhenotype } from 'store/sunburstTypes';
 
 type OntologySunburstProps = {
   sqon: Sqon;
@@ -69,7 +70,7 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     const { data, loading } = this.state;
     const { height, width } = this.props;
     return (
-      <Fragment>
+      <>
         {loading ? (
           <Spinner size={'large'} />
         ) : (
@@ -84,7 +85,8 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
               />
             ) : (
               <Sunburst
-                data={{ title: 'No Data', children: [] }}
+                isEmpty
+                data={generateEmptyPhenotype()}
                 height={height}
                 width={width}
                 centerTextFormatter={centerNoDataTextFormatter}
@@ -92,7 +94,7 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
             )}
           </div>
         )}
-      </Fragment>
+      </>
     );
   }
 }
