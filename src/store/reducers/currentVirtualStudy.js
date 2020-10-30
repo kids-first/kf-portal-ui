@@ -7,6 +7,7 @@ import {
 } from 'common/sqonUtils';
 
 import {
+  ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
   LOGOUT,
   SET_ACTIVE_INDEX,
   SET_SQONS,
@@ -24,6 +25,7 @@ import {
   VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
 import { CREATE_SET_QUERY_REQUEST, ADD_SET_TO_CURRENT_QUERY } from '../saveSetTypes';
+import { addFieldToActiveQuery } from '../../common/sqonUtils';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -140,6 +142,16 @@ export default (state = initialState, action) => {
         activeIndex,
       });
       return setState({ sqons: newSqons, activeIndex });
+    }
+
+    case ADD_TERM_TO_CURRENT_VIRTUAL_STUDY: {
+      const { activeIndex, sqons } = state;
+      const newSqons = addFieldToActiveQuery({
+        term: action.payload.term,
+        querySqons: sqons,
+        activeIndex: activeIndex,
+      });
+      return setState({ sqons: newSqons });
     }
     default:
       return state;

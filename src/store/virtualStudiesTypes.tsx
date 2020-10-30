@@ -1,4 +1,5 @@
 import { Sqon } from './sqon';
+import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './actionTypes';
 
 export type VirtualStudy = {
   activeIndex: number;
@@ -17,3 +18,15 @@ export interface VirtualStudiesState {
   isLoading: boolean;
   error: Error | null;
 }
+
+export interface AddTermToActiveIndex {
+  type: typeof ADD_TERM_TO_CURRENT_VIRTUAL_STUDY;
+  payload: {
+    term: Term;
+  };
+}
+
+export type Term = {
+  field: string;
+  value: string;
+};

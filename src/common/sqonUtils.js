@@ -158,6 +158,14 @@ const fromSetIdToSetSqon = (setId) => ({
   ],
 });
 
+const termToSqon = (field, value) => ({
+  op: 'in',
+  content: {
+    field: field,
+    value: [value],
+  },
+});
+
 export const createNewQueryFromSetId = (setId, querySqons) => {
   const setSqon = fromSetIdToSetSqon(setId);
   if (isEmptyQuery(querySqons)) {
@@ -219,5 +227,19 @@ export const addSetToActiveQuery = ({ setId, querySqons, activeIndex }) => {
 
   activeSqon.content = updatedContent;
   newSqons[activeIndex] = activeSqon;
+  return newSqons;
+};
+
+export const addFieldToActiveQuery = ({ term, querySqons, activeIndex }) => {
+  if (!term) {
+    return querySqons;
+  }
+
+  const newSqons = querySqons;
+
+  const activeSqon = querySqons[activeIndex];
+
+  newSqons[activeIndex].content = [...activeSqon.content, termToSqon(term.field, term.value)];
+
   return newSqons;
 };

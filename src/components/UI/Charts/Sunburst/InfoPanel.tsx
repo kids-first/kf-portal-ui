@@ -2,10 +2,25 @@
 import React, { FunctionComponent } from 'react';
 import './sunburst.css';
 import { Phenotype } from 'store/sunburstTypes';
+import { RootState } from 'store/rootState';
+import { connect, ConnectedProps } from 'react-redux';
+import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
+import { ThunkDispatch } from 'redux-thunk';
+import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'results' | 'exactTagCount'>;
 };
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = OwnProps & PropsFromRedux;
+
+const mapDispatch = (dispatch: ThunkDispatch<RootState, null, AddTermToActiveIndex>) => ({
+  onClickAddTermToActiveIndex: (term: Term) => dispatch(addTermToActiveIndex(term)),
+});
+
+const connector = connect(null, mapDispatch);
 
 const splitTitle = (title: string) => {
   const [rawTitle, rawCode] = title.split('(HP:');
@@ -15,7 +30,7 @@ const splitTitle = (title: string) => {
   };
 };
 
-const InfoPanel: FunctionComponent<OwnProps> = ({ data }) => {
+const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex }) => {
   const { title, results, exactTagCount } = data;
 
   const titleCode = splitTitle(title);
@@ -33,7 +48,15 @@ const InfoPanel: FunctionComponent<OwnProps> = ({ data }) => {
         <div className={'term-grid-item count-text'}>
           {`${exactTagCount} participants with this exact term`}
         </div>
-        <div className={'term-grid-item add-to-query'}>Add term to active query</div>
+        <a
+          onClick={() =>
+            onClickAddTermToActiveIndex({ field: 'observed_phenotype.name', value: title })
+          }
+          type="text"
+          className={'add-to-query'}
+        >
+          Add term to active query
+        </a>
       </div>
       <div className={'tree-grid'}>
         <div className={'tree-title'}>Current Path</div>
@@ -42,5 +65,6 @@ const InfoPanel: FunctionComponent<OwnProps> = ({ data }) => {
     </div>
   );
 };
+const Connected = connector(InfoPanel);
 
-export default InfoPanel;
+export default Connected;
