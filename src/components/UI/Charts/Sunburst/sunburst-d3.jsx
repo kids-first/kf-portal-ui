@@ -100,6 +100,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
     .attr('fill', 'none')
     .attr('pointer-events', 'all')
     .attr('text-anchor', 'middle')
+    .style('cursor', 'pointer')
     .on('click', clicked);
 
   // center text
@@ -119,6 +120,13 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
       .style('cursor', 'pointer')
       .call(wrap);
   }
+  g.append('circle')
+    .raise()
+    .datum(root)
+    .lower()
+    .attr('r', radius * 1.5)
+    .attr('fill', '#F9F9FB')
+    .attr('text-anchor', 'middle');
 
   // ACTIONS
   function wrap(selection) {
@@ -234,10 +242,9 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
       getSelectedPhenotype(p.data);
     }
 
+    g.selectAll('#back-arrow').remove();
     if (p.parent) {
       addBackArrow();
-    } else {
-      g.selectAll('#back-arrow').remove();
     }
   }
 

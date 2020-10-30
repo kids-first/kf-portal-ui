@@ -18,8 +18,8 @@ type OntologySunburstState = {
   loading: boolean;
 };
 
-const tooltipFormatter = (data: TreeNode) => `${data.valueText}\n\n${data.title}`;
-const centerTextFormatter = (data: TreeNode) => `${data.valueText} ${data.title}`;
+const tooltipFormatter = (data: TreeNode) => `${data.results}\n\n${data.title}`;
+const centerTextFormatter = (data: TreeNode) => `${data.results} ${data.title}`;
 const centerNoDataTextFormatter = (data: TreeNode) => `${data.title}`;
 
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
