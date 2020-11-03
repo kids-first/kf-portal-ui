@@ -44,6 +44,13 @@ const AdvancedFacetViewModalContent = (props) => {
       InputComponent={CustomFilterInput}
       sqon={sqon}
       onSqonChange={onSqonChange}
+      pathValidator={(path) =>
+        path &&
+        ![
+          'participants.diagnoses.mondo.is_tagged',
+          'participants.diagnoses.mondo.is_leaf',
+        ].includes(path)
+      }
       onFacetNavigation={(path) => {
         trackFileRepoInteraction({
           category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
