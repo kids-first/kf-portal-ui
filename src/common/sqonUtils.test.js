@@ -10,6 +10,7 @@ import {
   addSetToActiveQuery,
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
+  addFieldToActiveQuery,
 } from './sqonUtils';
 
 const numberOfSqonsDidntChanged = (sourceSqons, sqonIndex, newSqons) => {
@@ -609,6 +610,94 @@ describe(cyan.bold('sqonUtils'), () => {
                 content: { field: 'kf_id', value: ['set_id:ef338f7e-048a-4fab-8b0a-a6e06253ef73'] },
               },
             ],
+          },
+        ]);
+      });
+    });
+    describe('addFieldToActiveQuery', () => {
+      it('should add the field to the active sqon query', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'family.family_compositions.composition', value: ['trio'] },
+              },
+              { op: 'in', content: { field: 'gender', value: ['Male'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [{ op: 'in', content: { field: 'outcome.disease_related', value: ['Yes'] } }],
+          },
+        ];
+
+        const testSqon = addFieldToActiveQuery({
+          term: { field: 'new_field', value: 'new_value' },
+          querySqons: initialQuery,
+          activeIndex: 0,
+        });
+
+        expect(testSqon).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'family.family_compositions.composition', value: ['trio'] },
+              },
+              { op: 'in', content: { field: 'gender', value: ['Male'] } },
+              { op: 'in', content: { field: 'new_field', value: ['new_value'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [{ op: 'in', content: { field: 'outcome.disease_related', value: ['Yes'] } }],
+          },
+        ]);
+      });
+
+      it('should add the field to existing same fields if exists', () => {
+        const initialQuery = [
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'family.family_compositions.composition', value: ['trio'] },
+              },
+              { op: 'in', content: { field: 'gender', value: ['Male'] } },
+              { op: 'in', content: { field: 'new_field', value: ['existing_value'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [{ op: 'in', content: { field: 'outcome.disease_related', value: ['Yes'] } }],
+          },
+        ];
+
+        const testSqon = addFieldToActiveQuery({
+          term: { field: 'new_field', value: 'new_value' },
+          querySqons: initialQuery,
+          activeIndex: 0,
+        });
+
+        expect(testSqon).to.be.deep.equal([
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'family.family_compositions.composition', value: ['trio'] },
+              },
+              { op: 'in', content: { field: 'gender', value: ['Male'] } },
+              { op: 'in', content: { field: 'new_field', value: ['existing_value', 'new_value'] } },
+            ],
+          },
+          {
+            op: 'and',
+            content: [{ op: 'in', content: { field: 'outcome.disease_related', value: ['Yes'] } }],
           },
         ]);
       });

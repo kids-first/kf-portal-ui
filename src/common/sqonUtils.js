@@ -2,8 +2,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import merge from 'lodash/merge';
 import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
-import { isEmptySqon as arrangerIsEmptySqon } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
-import { BOOLEAN_OPS, isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+import {
+  BOOLEAN_OPS,
+  isEmptySqon as arrangerIsEmptySqon,
+  isReference,
+} from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 
 /**
  * Returns a default, empty sqon.
@@ -158,7 +161,7 @@ const fromSetIdToSetSqon = (setId) => ({
   ],
 });
 
-const termToSqon = (field, value) => ({
+const termToSqon = ({ field, value }) => ({
   op: 'in',
   content: {
     field: field,
@@ -231,15 +234,28 @@ export const addSetToActiveQuery = ({ setId, querySqons, activeIndex }) => {
 };
 
 export const addFieldToActiveQuery = ({ term, querySqons, activeIndex }) => {
-  if (!term) {
-    return querySqons;
+  const newActiveSqon = addFieldToActiveSqon(term, querySqons[activeIndex].content);
+
+  const newQuerySqon = [...querySqons];
+
+  newQuerySqon[activeIndex] = { op: newQuerySqon[activeIndex].op, content: newActiveSqon };
+  return newQuerySqon;
+};
+
+const addFieldToActiveSqon = (term, activeSqon) => {
+  const sameTermIndex = activeSqon.findIndex((s) => s.content.field === term.field);
+  if (sameTermIndex >= 0) {
+    const valuesAsSet = new Set();
+    activeSqon[sameTermIndex].content.value.forEach((v) => valuesAsSet.add(v));
+    valuesAsSet.add(term.value);
+    return activeSqon.map((s) => {
+      if (s.content.field === term.field) {
+        return { ...s, content: { field: term.field, value: [...valuesAsSet] } };
+      } else {
+        return { ...s };
+      }
+    });
+  } else {
+    return [...activeSqon, termToSqon(term)];
   }
-
-  const newSqons = querySqons;
-
-  const activeSqon = querySqons[activeIndex];
-
-  newSqons[activeIndex].content = [...activeSqon.content, termToSqon(term.field, term.value)];
-
-  return newSqons;
 };

@@ -7,6 +7,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
 import { ThunkDispatch } from 'redux-thunk';
 import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
+import { Button } from 'antd';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'results' | 'exactTagCount'>;
@@ -48,15 +49,17 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
         <div className={'term-grid-item count-text'}>
           {`${exactTagCount} participants with this exact term`}
         </div>
-        <a
-          onClick={() =>
-            onClickAddTermToActiveIndex({ field: 'observed_phenotype.name', value: title })
-          }
-          type="text"
-          className={'add-to-query'}
-        >
-          Add term to active query
-        </a>
+        <div>
+          <Button
+            onClick={() =>
+              onClickAddTermToActiveIndex({ field: 'observed_phenotype.name', value: title })
+            }
+            type="text"
+            className={'add-to-query'}
+          >
+            Add term to active query
+          </Button>
+        </div>
       </div>
       <div className={'tree-grid'}>
         <div className={'tree-title'}>Current Path</div>

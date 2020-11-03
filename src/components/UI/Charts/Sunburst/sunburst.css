@@ -64,4 +64,11 @@
   display: flex;
   padding-bottom: 24px;
   text-decoration-line: underline;
+  background: none;
+  color: #b5469e;
+}
+
+.add-to-query:hover {
+  color: #b5469e;
+  background: none;
 }
