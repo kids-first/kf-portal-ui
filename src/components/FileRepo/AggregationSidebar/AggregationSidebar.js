@@ -68,7 +68,7 @@ const AggregationSidebar = ({
     <>
       <Modal
         title={'All Filters'}
-        width={'80%'}
+        width={'85%'}
         onCancel={onCancel}
         visible={openModalId === ADVANCED_FACETS_MODAL_ID}
         footer={[
