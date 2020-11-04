@@ -1,28 +1,29 @@
 import {
-  VIRTUAL_STUDY_LOAD_REQUESTED,
-  VIRTUAL_STUDY_LOAD_SUCCESS,
-  VIRTUAL_STUDY_LOAD_FAILURE,
+  ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
+  FETCH_VIRTUAL_STUDIES_FAILURE,
   FETCH_VIRTUAL_STUDIES_REQUESTED,
   FETCH_VIRTUAL_STUDIES_SUCCESS,
-  FETCH_VIRTUAL_STUDIES_FAILURE,
-  VIRTUAL_STUDY_SAVE_REQUESTED,
-  VIRTUAL_STUDY_SAVE_SUCCESS,
-  VIRTUAL_STUDY_SAVE_FAILURE,
-  VIRTUAL_STUDY_DELETE_REQUESTED,
-  VIRTUAL_STUDY_DELETE_SUCCESS,
-  VIRTUAL_STUDY_DELETE_FAILURE,
-  VIRTUAL_STUDY_RESET,
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   VIRTUAL_STUDY_CLEAN_ERROR,
+  VIRTUAL_STUDY_DELETE_FAILURE,
+  VIRTUAL_STUDY_DELETE_REQUESTED,
+  VIRTUAL_STUDY_DELETE_SUCCESS,
+  VIRTUAL_STUDY_LOAD_FAILURE,
+  VIRTUAL_STUDY_LOAD_REQUESTED,
+  VIRTUAL_STUDY_LOAD_SUCCESS,
+  VIRTUAL_STUDY_RESET,
+  VIRTUAL_STUDY_SAVE_FAILURE,
+  VIRTUAL_STUDY_SAVE_REQUESTED,
+  VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
 import {
-  getVirtualStudy,
-  getVirtualStudies,
   createNewVirtualStudy,
-  updateVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
+  getVirtualStudies,
+  getVirtualStudy,
+  updateVirtualStudy,
 } from 'services/virtualStudies';
 import { apiInitialized } from 'services/api';
 
@@ -181,3 +182,12 @@ export const setVirtualStudyId = (virtualStudyId) => ({
 export const cleanError = () => ({
   type: VIRTUAL_STUDY_CLEAN_ERROR,
 });
+
+export const addTermToActiveIndex = (term) => (dispatch) => {
+  dispatch({
+    type: ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
+    payload: {
+      term: term,
+    },
+  });
+};
