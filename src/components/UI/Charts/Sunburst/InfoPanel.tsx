@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
-import './sunburst.css';
 import { Phenotype } from 'store/sunburstTypes';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
 import { ThunkDispatch } from 'redux-thunk';
 import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
-import { Button } from 'antd';
-import InfoPanelNavTree from './InfoPanelNavTree';
-import { TreeNode } from '../../../OntologyBrowser/Model';
+import { Button, Tree } from 'antd';
+import { TreeNode } from 'components/OntologyBrowser/Model';
+import './sunburst.css';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
@@ -65,7 +64,12 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
       </div>
       <div className={'tree-grid'}>
         <div className={'tree-title'}>Current Path</div>
-        <InfoPanelNavTree treeData={treeData} expandedKeys={key.split('-')} />
+        <Tree
+          treeData={treeData}
+          expandedKeys={key.split('-')}
+          switcherIcon={<div />}
+          className={'sunburst-phenotypes-tree'}
+        />
       </div>
     </div>
   );

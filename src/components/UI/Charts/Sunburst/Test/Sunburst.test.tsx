@@ -6,8 +6,6 @@ import { treeData } from 'components/OntologyBrowser/Test/mockData';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import { generateInfoTree } from '../Sunburst';
-import { expect } from 'chai';
 
 configure({ adapter: new Adapter() });
 
@@ -49,47 +47,5 @@ describe('Sunburst', () => {
     expect(wrapper.find('svg').prop('width')).toEqual(400);
     expect(wrapper.find('svg').prop('height')).toEqual(450);
     expect(wrapper.find('svg').prop('viewBox')).toEqual('0 0 400 450');
-  });
-});
-
-describe('Sunburst generateInfoTree method', () => {
-  it('should render tree data', () => {
-    const inputPhenotype = 'Aaa (HP:0001)-Bbb (HP:0002)-Ccc (HP:0003)';
-    const phenotypes = inputPhenotype.split('-').reverse();
-    const result = generateInfoTree(phenotypes);
-
-    const expectedResult = [
-      {
-        key: 'Aaa',
-        title: (
-          <div>
-            Aaa<span style={{ color: 'red' }}>HP:0001</span>
-          </div>
-        ),
-        children: [
-          {
-            key: 'Bbb',
-            title: (
-              <div>
-                Bbb<span style={{ color: 'red' }}>HP:0002</span>
-              </div>
-            ),
-            children: [
-              {
-                key: 'Ccc',
-                title: (
-                  <div>
-                    Ccc<span style={{ color: 'red' }}>HP:0003</span>
-                  </div>
-                ),
-                children: [],
-              },
-            ],
-          },
-        ],
-      },
-    ];
-
-    expect(result).to.be.deep.equal(expectedResult);
   });
 });

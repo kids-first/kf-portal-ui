@@ -1,4 +1,6 @@
-import { PhenotypeSource } from './store';
+import { PhenotypeSource, splitHPOTerm } from './store';
+import React from 'react';
+import { hpoTreeTitleFormat } from '../UI/Charts/Sunburst/Sunburst';
 
 export type TreeNode = {
   title: React.ReactElement | string;
@@ -15,6 +17,34 @@ export type TreeNode = {
   value?: number; // for d3
   valueText: number; // required by d3 for displaying the value
   name?: string;
+};
+
+export const lightTreeNodeConstructorOld = (
+  key: string,
+  title: React.ReactElement | string,
+  children: TreeNode[] = [],
+): TreeNode => ({
+  title: title,
+  text: '',
+  key: key,
+  children,
+  valueText: 0,
+});
+
+export const lightTreeNodeConstructor = (
+  phenotype: string,
+  selectedPhenotypeInfoTitle: string,
+  children: TreeNode[] = [],
+): TreeNode => {
+  const splitPheno = splitHPOTerm(phenotype);
+
+  return {
+    title: hpoTreeTitleFormat(splitPheno, selectedPhenotypeInfoTitle),
+    text: '',
+    key: phenotype,
+    children,
+    valueText: 0,
+  };
 };
 
 export default class OntologyTree {

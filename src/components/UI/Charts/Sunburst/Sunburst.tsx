@@ -4,15 +4,12 @@ import sunburstD3 from './sunburst-d3';
 import InfoPanel from './InfoPanel';
 import { Phenotype } from 'store/sunburstTypes';
 import './sunburst.css';
-
-const RegexHPO = /^.+(\(HP:\d+\)$)/;
-const RegexExtractPhenotype = new RegExp(/([A-Z].+?\(HP:\d+\))/, 'g');
-
-type TreeNode = {
-  key: string;
-  title: React.ReactElement | string;
-  children: TreeNode[];
-};
+import {
+  generateNavTreeFormKey,
+  RegexExtractPhenotype,
+  splitHPOTerm,
+} from 'components/OntologyBrowser/store';
+import { lightTreeNodeConstructor, TreeNode } from 'components/OntologyBrowser/Model';
 
 type PhenotypeSplit = {
   name: string;
@@ -42,53 +39,14 @@ const pickPhenotypeInfo = (p: Phenotype) => ({
   exactTagCount: p.exactTagCount,
 });
 
-export const hpoTreeTitleFormat = (splitPheno: PhenotypeSplit) => (
-  <div style={{ color: '#515885', fontSize: 14, fontWeight: 400 }}>
-    {splitPheno.name}
-    <span style={{ color: '#7D84A6', fontSize: 12, fontWeight: 400 }}>{splitPheno.code}</span>
-  </div>
-);
-
-const splitHPOTerm = (term: string | undefined) => {
-  let match;
-  if (term) {
-    match = RegexHPO.exec(term);
-    return {
-      name: term.replace(match ? match[1] : '', ' '),
-      code: match ? match[1] : '',
-    };
-  } else {
-    return { name: '', code: '' };
-  }
-};
-
-export const generateInfoTree = (phenotypes: string[]): TreeNode[] => {
-  if (!phenotypes.length) {
-    return [];
-  }
-
-  if (phenotypes.length == 1) {
-    const leafPheno = phenotypes.pop();
-    const splitPheno = splitHPOTerm(leafPheno);
-
-    return [
-      {
-        key: leafPheno,
-        title: hpoTreeTitleFormat(splitPheno),
-        children: [],
-      } as TreeNode,
-    ];
-  }
-  const rootPheno = phenotypes.pop();
-  const splitPheno = splitHPOTerm(rootPheno);
-
-  return [
-    {
-      key: rootPheno,
-      title: hpoTreeTitleFormat(splitPheno),
-      children: generateInfoTree(phenotypes),
-    } as TreeNode,
-  ];
+export const hpoTreeTitleFormat = (splitPheno: PhenotypeSplit, currentTerm: string) => {
+  const currentPhenoCode = splitHPOTerm(currentTerm).code;
+  return (
+    <div className={`hpo-tree-name ${currentPhenoCode === splitPheno.code ? 'hpo-tree-bold' : ''}`}>
+      {splitPheno.name}
+      <span className={'hpo-tree-code'}>{` ${splitPheno.code}`}</span>
+    </div>
+  );
 };
 
 class Sunburst extends Component<SunburstProps, State> {
@@ -112,7 +70,7 @@ class Sunburst extends Component<SunburstProps, State> {
   getSelectedPhenotype = (phenotype: Phenotype) => {
     const phenotypes = phenotype.key.match(RegexExtractPhenotype);
     const phenoReversed = (phenotypes || []).reverse();
-    const treeData: TreeNode[] = generateInfoTree(phenoReversed);
+    const treeData: TreeNode[] = generateNavTreeFormKey(phenoReversed, phenotype.title);
     this.setState({
       selectedPhenotypeInfo: pickPhenotypeInfo(phenotype),
       phenotypeTree: treeData,
@@ -130,12 +88,8 @@ class Sunburst extends Component<SunburstProps, State> {
       tooltipFormatter,
       centerTextFormatter,
     });
-    const splitPheno = splitHPOTerm(data.key);
-    const rootTreeNode: TreeNode = {
-      key: data.key,
-      title: hpoTreeTitleFormat(splitPheno),
-      children: [],
-    };
+    const rootTreeNode: TreeNode = lightTreeNodeConstructor(data.key, data.key);
+
     this.setState({ phenotypeTree: [rootTreeNode] });
   }
 
