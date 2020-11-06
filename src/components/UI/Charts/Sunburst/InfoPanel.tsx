@@ -8,9 +8,12 @@ import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
 import { ThunkDispatch } from 'redux-thunk';
 import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
 import { Button } from 'antd';
+import InfoPanelNavTree from './InfoPanelNavTree';
+import { TreeNode } from '../../../OntologyBrowser/Model';
 
 type OwnProps = {
-  data: Pick<Phenotype, 'title' | 'results' | 'exactTagCount'>;
+  data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
+  treeData: TreeNode[];
 };
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -31,9 +34,8 @@ const splitTitle = (title: string) => {
   };
 };
 
-const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex }) => {
-  const { title, results, exactTagCount } = data;
-
+const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex, treeData }) => {
+  const { title, key, results, exactTagCount } = data;
   const titleCode = splitTitle(title);
 
   return (
@@ -63,7 +65,7 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
       </div>
       <div className={'tree-grid'}>
         <div className={'tree-title'}>Current Path</div>
-        <div className={'tree'}>tree to come</div>
+        <InfoPanelNavTree treeData={treeData} expandedKeys={key.split('-')} />
       </div>
     </div>
   );
