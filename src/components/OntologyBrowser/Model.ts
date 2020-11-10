@@ -19,18 +19,6 @@ export type TreeNode = {
   name?: string;
 };
 
-export const lightTreeNodeConstructorOld = (
-  key: string,
-  title: React.ReactElement | string,
-  children: TreeNode[] = [],
-): TreeNode => ({
-  title: title,
-  text: '',
-  key: key,
-  children,
-  valueText: 0,
-});
-
 export const lightTreeNodeConstructor = (
   phenotype: string,
   selectedPhenotypeInfoTitle: string,
