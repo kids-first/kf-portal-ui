@@ -1,6 +1,13 @@
-import { PhenotypeSource, PhenotypeStore, removeSameTerms, selectSameTerms } from '../store';
+import {
+  generateNavTreeFormKey,
+  PhenotypeSource,
+  PhenotypeStore,
+  removeSameTerms,
+  selectSameTerms,
+} from '../store';
 import { TreeNode } from '../Model';
 import { flatMockData, treeData } from './mockData';
+import { hpoTreeTitleFormat } from 'components/UI/Charts/Sunburst/Sunburst';
 
 describe('Phenotype Store', () => {
   let newStore: PhenotypeStore;
@@ -196,6 +203,43 @@ describe('Phenotype Store', () => {
       );
       expect(firstLevel.valueText).toEqual(200);
       expect(firstLevel.value).toEqual(66);
+    });
+  });
+
+  describe('Sunburst generateInfoTree method', () => {
+    it('should render tree data', () => {
+      const inputPhenotype = 'Aaa (HP:0001)-Bbb (HP:0002)-Ccc (HP:0003)';
+      const phenotypes = inputPhenotype.match(new RegExp(/([A-Z].+?\(HP:\d+\))/, 'g'));
+
+      const result = generateNavTreeFormKey((phenotypes || []).reverse(), 'Ccc (HP:0003)');
+
+      const expectedResult = [
+        {
+          key: 'Aaa (HP:0001)',
+          text: '',
+          valueText: 0,
+          title: hpoTreeTitleFormat({ name: 'Aaa', code: 'HP:0001' }, 'Ccc (HP:0003)'),
+          children: [
+            {
+              key: 'Bbb (HP:0002)',
+              title: hpoTreeTitleFormat({ name: 'Bbb', code: 'HP:0002' }, 'Ccc (HP:0003)'),
+              text: '',
+              valueText: 0,
+              children: [
+                {
+                  key: 'Ccc (HP:0003)',
+                  title: hpoTreeTitleFormat({ name: 'Ccc', code: 'HP:0003' }, 'Ccc (HP:0003)'),
+                  text: '',
+                  valueText: 0,
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      expect(result).toEqual(expectedResult);
     });
   });
 });

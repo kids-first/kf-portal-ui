@@ -1,16 +1,18 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
-import './sunburst.css';
 import { Phenotype } from 'store/sunburstTypes';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
 import { ThunkDispatch } from 'redux-thunk';
 import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
-import { Button } from 'antd';
+import { Button, Tree } from 'antd';
+import { TreeNode } from 'components/OntologyBrowser/Model';
+import './sunburst.css';
 
 type OwnProps = {
-  data: Pick<Phenotype, 'title' | 'results' | 'exactTagCount'>;
+  data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
+  treeData: TreeNode[];
 };
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -31,9 +33,8 @@ const splitTitle = (title: string) => {
   };
 };
 
-const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex }) => {
-  const { title, results, exactTagCount } = data;
-
+const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex, treeData }) => {
+  const { title, key, results, exactTagCount } = data;
   const titleCode = splitTitle(title);
 
   return (
@@ -63,7 +64,12 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
       </div>
       <div className={'tree-grid'}>
         <div className={'tree-title'}>Current Path</div>
-        <div className={'tree'}>tree to come</div>
+        <Tree
+          treeData={treeData}
+          expandedKeys={key.split('-')}
+          switcherIcon={<div />}
+          className={'sunburst-phenotypes-tree'}
+        />
       </div>
     </div>
   );

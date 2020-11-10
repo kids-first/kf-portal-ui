@@ -32,13 +32,16 @@
   font-size: 14px;
   line-height: 22px;
   color: #7d84a6;
+  padding-top: 12px;
 }
 
-.tree {
+.sunburst-phenotypes-tree {
   background: #f3f4f6;
   padding-left: 8px;
   padding-right: 8px;
   text-align: center;
+  height: 160px;
+  overflow-y: auto;
 }
 
 .main-term-title {
@@ -62,7 +65,7 @@
 
 .add-to-query {
   display: flex;
-  padding-bottom: 24px;
+  padding: 0;
   text-decoration-line: underline;
   background: none;
   color: #b5469e;
@@ -71,4 +74,24 @@
 .add-to-query:hover {
   color: #b5469e;
   background: none;
+}
+
+.sunburst-phenotypes-tree .ant-tree-switcher {
+  width: 0;
+}
+
+.hpo-tree-name {
+  color: #515885;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.hpo-tree-bold {
+  font-weight: bold;
+}
+
+.hpo-tree-code {
+  color: #7d84a6;
+  font-size: 12px;
+  font-weight: 400;
 }

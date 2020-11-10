@@ -4,9 +4,21 @@ import sunburstD3 from './sunburst-d3';
 import InfoPanel from './InfoPanel';
 import { Phenotype } from 'store/sunburstTypes';
 import './sunburst.css';
+import {
+  generateNavTreeFormKey,
+  RegexExtractPhenotype,
+  splitHPOTerm,
+} from 'components/OntologyBrowser/store';
+import { lightTreeNodeConstructor, TreeNode } from 'components/OntologyBrowser/Model';
+
+type PhenotypeSplit = {
+  name: string;
+  code: string;
+};
 
 type State = {
-  selectedPhenotypeInfo: Pick<Phenotype, 'title' | 'results' | 'exactTagCount'>;
+  selectedPhenotypeInfo: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
+  phenotypeTree: TreeNode[];
 };
 
 type SunburstProps = {
@@ -22,9 +34,20 @@ type SunburstProps = {
 
 const pickPhenotypeInfo = (p: Phenotype) => ({
   title: p.title,
+  key: p.key,
   results: p.results,
   exactTagCount: p.exactTagCount,
 });
+
+export const hpoTreeTitleFormat = (splitPheno: PhenotypeSplit, currentTerm: string) => {
+  const currentPhenoCode = splitHPOTerm(currentTerm).code;
+  return (
+    <div className={`hpo-tree-name ${currentPhenoCode === splitPheno.code ? 'hpo-tree-bold' : ''}`}>
+      {splitPheno.name}
+      <span className={'hpo-tree-code'}>{` ${splitPheno.code}`}</span>
+    </div>
+  );
+};
 
 class Sunburst extends Component<SunburstProps, State> {
   private readonly ref: React.RefObject<SVGSVGElement>;
@@ -41,12 +64,18 @@ class Sunburst extends Component<SunburstProps, State> {
 
   state = {
     selectedPhenotypeInfo: pickPhenotypeInfo(this.props.data),
+    phenotypeTree: [],
   };
 
-  getSelectedPhenotype = (phenotype: Phenotype) =>
+  getSelectedPhenotype = (phenotype: Phenotype) => {
+    const phenotypes = phenotype.key.match(RegexExtractPhenotype);
+    const phenoReversed = (phenotypes || []).reverse();
+    const treeData: TreeNode[] = generateNavTreeFormKey(phenoReversed, phenotype.title);
     this.setState({
       selectedPhenotypeInfo: pickPhenotypeInfo(phenotype),
+      phenotypeTree: treeData,
     });
+  };
 
   componentDidMount() {
     const { depth, width, height, tooltipFormatter, centerTextFormatter, data } = this.props;
@@ -59,6 +88,9 @@ class Sunburst extends Component<SunburstProps, State> {
       tooltipFormatter,
       centerTextFormatter,
     });
+    const rootTreeNode: TreeNode = lightTreeNodeConstructor(data.key, data.key);
+
+    this.setState({ phenotypeTree: [rootTreeNode] });
   }
 
   render() {
@@ -76,7 +108,7 @@ class Sunburst extends Component<SunburstProps, State> {
       );
     }
 
-    const { selectedPhenotypeInfo } = this.state;
+    const { selectedPhenotypeInfo, phenotypeTree } = this.state;
 
     return (
       <div className={'grid-container'}>
@@ -88,7 +120,7 @@ class Sunburst extends Component<SunburstProps, State> {
           ref={this.ref}
         />
         <div className={'grid-item'}>
-          <InfoPanel data={{ ...selectedPhenotypeInfo }} />
+          <InfoPanel data={{ ...selectedPhenotypeInfo }} treeData={phenotypeTree} />
         </div>
       </div>
     );

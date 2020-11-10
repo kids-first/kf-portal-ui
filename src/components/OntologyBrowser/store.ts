@@ -1,5 +1,5 @@
 import { graphql } from '../../services/arranger';
-import OntologyTree, { TreeNode } from './Model';
+import OntologyTree, { lightTreeNodeConstructor, TreeNode } from './Model';
 
 export type PhenotypeSource = {
   key: string;
@@ -9,6 +9,9 @@ export type PhenotypeSource = {
   };
   filter_by_term: any;
 };
+
+const RegexHPOCode = /^.+(\(HP:\d+\)$)/;
+export const RegexExtractPhenotype = new RegExp(/([A-Z].+?\(HP:\d+\))/, 'g');
 
 const dotToUnderscore = (str: string) => str.replace('.', '__');
 
@@ -59,6 +62,45 @@ const findAllSameTerms = (
     treeNode.children.forEach((t) => findAllSameTerms(termKey, searchKey, t, sameTermKeys));
   }
   return sameTermKeys;
+};
+
+export const generateNavTreeFormKey = (
+  phenotypes: string[],
+  selectedPhenotypeInfoTitle: string,
+): TreeNode[] => {
+  if (!phenotypes.length) {
+    return [];
+  }
+
+  if (phenotypes.length === 1) {
+    const leafPheno = phenotypes.pop();
+
+    if (!leafPheno) {
+      return [];
+    }
+
+    return [lightTreeNodeConstructor(leafPheno, selectedPhenotypeInfoTitle)];
+  }
+
+  const rootPheno = phenotypes.pop();
+
+  return rootPheno
+    ? [
+        lightTreeNodeConstructor(
+          rootPheno,
+          selectedPhenotypeInfoTitle,
+          generateNavTreeFormKey(phenotypes, selectedPhenotypeInfoTitle),
+        ),
+      ]
+    : [];
+};
+
+export const splitHPOTerm = (term: string) => {
+  const match = RegexHPOCode.exec(term);
+  return {
+    name: term.replace(match ? match[1] : '', '').trim(),
+    code: match ? match[1].replace('(', '').replace(')', '') : '',
+  };
 };
 
 export class PhenotypeStore {
