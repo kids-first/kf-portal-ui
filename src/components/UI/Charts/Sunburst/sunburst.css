@@ -55,6 +55,7 @@
   font-size: 12px;
   line-height: 20px;
   color: #7d84a6;
+  padding-left: 10px;
 }
 
 .count-text {
@@ -94,4 +95,5 @@
   color: #7d84a6;
   font-size: 12px;
   font-weight: 400;
+  padding-left: 10px;
 }

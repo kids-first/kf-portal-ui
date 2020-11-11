@@ -29,7 +29,7 @@ const splitTitle = (title: string) => {
   const [rawTitle, rawCode] = title.split('(HP:');
   return {
     title: rawTitle.trim(),
-    hpCode: `HP:${rawCode.replace(')', '').trim()}`,
+    hpCode: `HP ${rawCode.replace(')', '').trim()}`,
   };
 };
 
