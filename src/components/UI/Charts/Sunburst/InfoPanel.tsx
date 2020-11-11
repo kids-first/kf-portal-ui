@@ -29,7 +29,7 @@ const splitTitle = (title: string) => {
   const [rawTitle, rawCode] = title.split('(HP:');
   return {
     title: rawTitle.trim(),
-    hpCode: `HP:${rawCode.replace(')', '').trim()}`,
+    hpCode: `HP ${rawCode.replace(')', '').trim()}`,
   };
 };
 
@@ -42,7 +42,7 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
       <div className={'term-grid'}>
         <div className={'term-grid-item'}>
           <span className={'main-term-title'}>{titleCode.title}</span>
-          <span className={'hp'}>{` ${titleCode.hpCode.replace('HP:', 'HP ')}`}</span>
+          <span className={'hp'}>{` ${titleCode.hpCode}`}</span>
         </div>
         <div className={'term-grid-item count-text'}>
           {`${results} participants (including descendant terms on this path)`}
