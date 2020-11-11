@@ -42,7 +42,7 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
       <div className={'term-grid'}>
         <div className={'term-grid-item'}>
           <span className={'main-term-title'}>{titleCode.title}</span>
-          <span className={'hp'}>{` ${titleCode.hpCode}`}</span>
+          <span className={'hp'}>{` ${titleCode.hpCode.replace('HP:', 'HP ')}`}</span>
         </div>
         <div className={'term-grid-item count-text'}>
           {`${results} participants (including descendant terms on this path)`}

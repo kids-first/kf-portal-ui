@@ -44,7 +44,7 @@ export const hpoTreeTitleFormat = (splitPheno: PhenotypeSplit, currentTerm: stri
   return (
     <div className={`hpo-tree-name ${currentPhenoCode === splitPheno.code ? 'hpo-tree-bold' : ''}`}>
       {splitPheno.name}
-      <span className={'hpo-tree-code'}>{` ${splitPheno.code}`}</span>
+      <span className={'hpo-tree-code'}>{`${splitPheno.code.replace('HP:', 'HP ')}`}</span>
     </div>
   );
 };
