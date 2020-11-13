@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.27.0",
+  "version": "2.28.0",
   "private": true,
   "dependencies": {
     "@ferlab-ui/core-react": "0.0.7",
