@@ -69,7 +69,6 @@
 
 /*TO BE DELETED*/
 .ant-tree-custom-TO-DELETE div {
-  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -88,7 +87,6 @@
 
 /*TO BE DELETED*/
 .custom-input {
-  font-family: 'Open Sans';
   color: #a9adc0;
 }
 
@@ -99,7 +97,6 @@
 
 /*TO BE DELETED*/
 .ant-transfer-list-content-item-text {
-  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -122,7 +119,6 @@
 
 /*TO BE DELETED*/
 .ant-transfer-list-header {
-  font-family: 'Open Sans';
   font-size: 14px;
   line-height: 22px;
   color: #55565d;
@@ -130,7 +126,6 @@
 
 /*TO BE DELETED*/
 .ant-tag .label-document-count {
-  font-family: 'Open Sans';
   font-size: 12px;
   line-height: 20px;
   color: #515885;

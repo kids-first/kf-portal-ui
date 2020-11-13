@@ -367,7 +367,6 @@
 
 .dataTable .ReactTable .rt-thead {
   background-color: #edeef1;
-  font-family: Montserrat, sans-serif;
   color: #2b388f;
   border-color: #e0e1e6;
   font-weight: 600;
@@ -386,12 +385,7 @@
   text-align: left;
 }
 
-.dataTable .ReactTable .rt-td div {
-  font-family: Open Sans, sans-serif;
-}
-
 .dataTable .ReactTable .rt-tbody .rt-td {
-  font-family: Open Sans, sans-serif;
   color: rgb(52, 52, 52);
   border-right: 1px solid #e0e1e6;
   padding: 10px 10px;

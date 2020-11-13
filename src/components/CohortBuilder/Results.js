@@ -6,7 +6,6 @@ import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
 
 import { injectState } from 'freactal';
-import Row from 'uikit/Row';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 
 import { Tabs } from 'antd';
@@ -108,7 +107,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                   </span>
                 }
                 key={SUMMARY}
-                className="cb-tab-content cb-tab-content-summary"
+                className="cb-view-summary-view"
               >
                 <Summary sqon={sqon} />
               </TabPane>
@@ -127,8 +126,6 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
               </TabPane>
             </Tabs>
           </div>
-          <Row className="cb-detail"></Row>
-          {}
         </Fragment>
       );
     }}

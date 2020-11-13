@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Modal from 'components/Modal';
-import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
@@ -274,7 +273,6 @@ const App = compose(
         <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
       <Modal />
-      <GlobalModal />
     </div>
   );
 });

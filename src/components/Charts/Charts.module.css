@@ -1,7 +1,6 @@
 .promptMessageContainer {
 }
 .promptMessageContent {
-  font-family: Open Sans, sans-serif;
   font-size: 14px;
   line-height: normal;
 }
@@ -12,7 +11,6 @@
   margin-top: 5px;
 }
 .promptMessageHeading {
-  font-family: Montserrat, sans-serif;
   font-weight: 500;
   font-size: 16px;
 }

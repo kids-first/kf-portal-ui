@@ -23,7 +23,7 @@ import {
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
-import { SetInfo } from '../../UserDashboard/ParticipantSets';
+import { SetInfo } from 'store/saveSetTypes';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_ ]*$/;

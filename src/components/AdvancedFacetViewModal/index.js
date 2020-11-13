@@ -1,10 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
-import { ModalFooter } from '../Modal';
 import { FilterInput } from 'uikit/Input';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
-import './style.css';
 import PropTypes from 'prop-types';
+import './style.css';
 
 const CustomFilterInput = ({ children, style = {}, ...props }) => (
   <FilterInput style={{ width: 'auto', ...style }} {...props}>
@@ -13,16 +12,13 @@ const CustomFilterInput = ({ children, style = {}, ...props }) => (
 );
 
 CustomFilterInput.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
   style: PropTypes.object,
 };
 
 const AdvancedFacetViewModalContent = (props) => {
   const {
-    closeModal,
-    onSqonSubmit,
     trackFileRepoInteraction,
-    sqon,
     index,
     graphqlField,
     projectId,
@@ -33,82 +29,76 @@ const AdvancedFacetViewModalContent = (props) => {
     onTermSelected,
     onFilterChange,
     onFacetNavigation,
+    onSqonChange,
+    sqon,
   } = props;
 
-  const [modalSqon, setModalSqon] = useState(sqon);
-
   return (
-    <Fragment>
-      <div className="afv-container">
-        <AdvancedFacetView
-          projectId={projectId}
-          fetchData={fetchData}
-          graphqlField={graphqlField}
-          index={index}
-          statsConfig={statsConfig}
-          translateSQONValue={translateSQONValue}
-          InputComponent={CustomFilterInput}
-          sqon={modalSqon}
-          onSqonChange={({ sqon }) => {
-            setModalSqon(sqon);
-          }}
-          onFacetNavigation={(path) => {
-            trackFileRepoInteraction({
-              category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
-              action: `${TRACKING_EVENTS.actions.click} side navigation`,
-              label: path,
-            });
-            if (onFacetNavigation) {
-              onFacetNavigation(path);
-            }
-          }}
-          onFilterChange={(val) => {
-            if (val !== '') {
-              trackFileRepoInteraction({
-                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                action: `${TRACKING_EVENTS.actions.filter} - Search`,
-                ...(val && { label: val }),
-              });
-              if (onFilterChange) {
-                onFilterChange(val);
-              }
-            }
-          }}
-          onTermSelected={({ field, value, active, ...rest }) => {
-            if (active) {
-              trackFileRepoInteraction({
-                category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
-                action: `${TRACKING_EVENTS.actions.filter} Selected`,
-                label: {
-                  type: 'filter',
-                  value,
-                  field,
-                },
-              });
-            }
-            if (onTermSelected) {
-              onTermSelected({ field, value, active, ...rest });
-            }
-          }}
-          onClear={() => {
-            trackFileRepoInteraction({
-              category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
-              action: TRACKING_EVENTS.actions.query.clear,
-            });
-            if (onClear) {
-              onClear();
-            }
-          }}
-        />
-      </div>
-      <ModalFooter
-        {...{
-          unsetModal: closeModal,
-          handleSubmit: () => onSqonSubmit({ sqon: modalSqon }),
-          submitText: 'View Results',
-        }}
-      />
-    </Fragment>
+    <AdvancedFacetView
+      projectId={projectId}
+      fetchData={fetchData}
+      graphqlField={graphqlField}
+      index={index}
+      statsConfig={statsConfig}
+      translateSQONValue={translateSQONValue}
+      InputComponent={CustomFilterInput}
+      sqon={sqon}
+      onSqonChange={onSqonChange}
+      pathValidator={(path) =>
+        path &&
+        ![
+          'participants.diagnoses.mondo.is_tagged',
+          'participants.diagnoses.mondo.is_leaf',
+        ].includes(path)
+      }
+      onFacetNavigation={(path) => {
+        trackFileRepoInteraction({
+          category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+          action: `${TRACKING_EVENTS.actions.click} side navigation`,
+          label: path,
+        });
+        if (onFacetNavigation) {
+          onFacetNavigation(path);
+        }
+      }}
+      onFilterChange={(val) => {
+        if (val !== '') {
+          trackFileRepoInteraction({
+            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+            action: `${TRACKING_EVENTS.actions.filter} - Search`,
+            ...(val && { label: val }),
+          });
+          if (onFilterChange) {
+            onFilterChange(val);
+          }
+        }
+      }}
+      onTermSelected={({ field, value, active, ...rest }) => {
+        if (active) {
+          trackFileRepoInteraction({
+            category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+            action: `${TRACKING_EVENTS.actions.filter} Selected`,
+            label: {
+              type: 'filter',
+              value,
+              field,
+            },
+          });
+        }
+        if (onTermSelected) {
+          onTermSelected({ field, value, active, ...rest });
+        }
+      }}
+      onClear={() => {
+        trackFileRepoInteraction({
+          category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+          action: TRACKING_EVENTS.actions.query.clear,
+        });
+        if (onClear) {
+          onClear();
+        }
+      }}
+    />
   );
 };
 
@@ -136,6 +126,7 @@ AdvancedFacetViewModalContent.propTypes = {
   onTermSelected: PropTypes.func,
   onFilterChange: PropTypes.func,
   onFacetNavigation: PropTypes.func,
+  onSqonChange: PropTypes.func,
 };
 
 export default AdvancedFacetViewModalContent;

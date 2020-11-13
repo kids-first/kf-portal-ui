@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { Row } from 'antd';
-import Card from './Cards/SummaryCard';
 
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
@@ -14,10 +13,15 @@ import SurvivalChart from './Cards/SurvivalChart';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DataTypeCard from './Cards/DataTypeCard';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import GridContainer from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
+import { Typography } from 'antd';
 
 import { isFeatureEnabled } from 'common/featuresToggles';
 
 import './Summary.css';
+
+const { Title } = Typography;
 
 const Summary = ({
   sqon = {
@@ -50,21 +54,26 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <>
-          <DataTypeCard
-            isLoading={isLoading}
-            dataTypesData={dataTypesData}
-            experimentalStrategyData={experimentalStrategyData}
-          />
-          {isFeatureEnabled('FT_SUNBURST') && (
-            <Card title="Observed Phenotypes">
-              <OntologySunburst sqon={sqon} />
-            </Card>
-          )}
-          <StudiesChart sqon={sqon} isLoading={isLoading} />
-          <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
-          <DemographicChart data={demographicData} isLoading={isLoading} />
-          <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
-          <SurvivalChart sqon={sqon} />
+          <GridContainer>
+            <DataTypeCard
+              isLoading={isLoading}
+              dataTypesData={dataTypesData}
+              experimentalStrategyData={experimentalStrategyData}
+            />
+            {isFeatureEnabled('FT_SUNBURST') && (
+              <Card
+                title={<Title level={3}>Observed Phenotypes</Title>}
+                classNameCardItem={'grid-container-item item-span-2-end item-row-1'}
+              >
+                <OntologySunburst sqon={sqon} />
+              </Card>
+            )}
+            <StudiesChart sqon={sqon} isLoading={isLoading} />
+            <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
+            <DemographicChart data={demographicData} isLoading={isLoading} />
+            <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
+            <SurvivalChart sqon={sqon} />
+          </GridContainer>
         </>
       );
     }}

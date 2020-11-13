@@ -6,23 +6,24 @@ import startCase from 'lodash/startCase';
 
 import {
   getDefaultSqon,
-  setSqonValueAtIndex,
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
 } from 'common/sqonUtils';
-import { publicStatsApiRoot, arrangerProjectId } from 'common/injectGlobals';
+import { arrangerProjectId, publicStatsApiRoot } from 'common/injectGlobals';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { resetVirtualStudy, setSqons } from 'store/actionCreators/virtualStudies';
 
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
-import Col from 'uikit/Column';
 import ChartError from './ChartError';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 import theme from 'theme/defaultTheme';
+import { Badge, Col, Row } from 'antd';
+import { antCardHeader } from '../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const studiesChartCategory = TRACKING_EVENTS.categories.charts.bar.studies;
 
@@ -90,17 +91,24 @@ const StudiesChart = compose(
   };
 
   return (
-    <Col style={{ height: '100%' }}>
-      <MultiHeader
-        style={{
-          borderBottom: '1px solid #e0e1e6',
-          paddingBottom: '20px',
-        }}
-        headings={[
-          { title: 'Studies', badge: studies },
-          { title: 'Participants', badge: participants },
-        ]}
-      />
+    <Card
+      title={
+        <Row gutter={70}>
+          <Col>
+            <div className={antCardHeader}>
+              <span>Studies&nbsp;</span>
+              <Badge count={studies} />
+            </div>
+          </Col>
+          <Col>
+            <div className={antCardHeader}>
+              <span>Participants&nbsp;</span>
+              <Badge count={participants} overflowCount={99999} />
+            </div>
+          </Col>
+        </Row>
+      }
+    >
       <HorizontalBar
         data={data}
         indexBy="label"
@@ -118,7 +126,7 @@ const StudiesChart = compose(
         ]}
         padding={0.4}
       />
-    </Col>
+    </Card>
   );
 });
 

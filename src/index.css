@@ -39,7 +39,6 @@ a.primary {
 }
 .appContainer * {
   box-sizing: border-box;
-  font-family: Montserrat, sans-serif;
 }
 h4.filter-title {
   font-weight: 700;

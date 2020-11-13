@@ -43,13 +43,11 @@
 .summaryTable-container .table-content .title {
   color: #2b388f;
   font-weight: 600;
-  font-family: Montserrat, sans-serif;
   padding-right: 0;
 }
 
 .summaryTable-container .table-content .content {
   color: rgb(52, 52, 52);
-  font-family: Open Sans, sans-serif;
   min-width: 100px;
   overflow-wrap: break-word;
   word-wrap: break-word;

@@ -1,7 +1,13 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { getDefaultSqon, isDefaultSqon } from 'common/sqonUtils';
+import {
+  getDefaultSqon,
+  isDefaultSqon,
+  addSetToActiveQuery,
+  createNewQueryFromSetId,
+} from 'common/sqonUtils';
 
 import {
+  ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
   LOGOUT,
   SET_ACTIVE_INDEX,
   SET_SQONS,
@@ -18,9 +24,8 @@ import {
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
-import { CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
-
-const setSqonRegex = new RegExp('^set_id:(.+)');
+import { CREATE_SET_QUERY_REQUEST, ADD_SET_TO_CURRENT_QUERY } from '../saveSetTypes';
+import { addFieldToActiveQuery } from '../../common/sqonUtils';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -48,55 +53,6 @@ const resetState = (diff = {}) => {
   };
   newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
   return newState;
-};
-
-const constructSetSqon = (setInfo) => ({
-  op: 'and',
-  content: [
-    {
-      op: 'in',
-      content: {
-        field: 'kf_id',
-        value: `set_id:${setInfo.key}`,
-      },
-    },
-  ],
-});
-
-const addSqon = (setInfo, sqons) => {
-  const newSqon = constructSetSqon(setInfo);
-  const sqonsRemovedEmpty = sqons.filter((s) => s.content.length > 0);
-
-  return [...sqonsRemovedEmpty, newSqon];
-};
-
-const addSetSqonToSqons = (setInfo, sqons) => {
-  if (!setInfo) {
-    return { newSqons: sqons, activeIndex: 0 };
-  }
-
-  if (!sqons) {
-    return { newSqons: [{ op: 'and', content: [] }], activeIndex: 0 };
-  }
-
-  const setSqonIndex = sqons.findIndex((s) =>
-    s.content.some((t) => setSqonRegex.test(t.content.value)),
-  );
-
-  if (~setSqonIndex) {
-    const sqonsCopy = [...sqons];
-    sqonsCopy[setSqonIndex] = constructSetSqon(setInfo);
-    return {
-      newSqons: sqonsCopy,
-      activeIndex: setSqonIndex,
-    };
-  } else {
-    const newSqon = addSqon(setInfo, sqons);
-    return {
-      newSqons: newSqon,
-      activeIndex: newSqon.length - 1,
-    };
-  }
 };
 
 export default (state = initialState, action) => {
@@ -164,10 +120,10 @@ export default (state = initialState, action) => {
       });
 
     case CREATE_SET_QUERY_REQUEST: {
-      const { newSqons, activeIndex } = addSetSqonToSqons(action.setInfo, state.sqons);
+      const newSqons = createNewQueryFromSetId(action.setId, state.sqons);
       return setState({
         sqons: newSqons,
-        activeIndex: activeIndex,
+        activeIndex: newSqons.length - 1,
       });
     }
     case LOGOUT:
@@ -178,6 +134,25 @@ export default (state = initialState, action) => {
         error: null,
       });
 
+    case ADD_SET_TO_CURRENT_QUERY: {
+      const { activeIndex, sqons } = state;
+      const newSqons = addSetToActiveQuery({
+        setId: action.setId,
+        querySqons: sqons,
+        activeIndex,
+      });
+      return setState({ sqons: newSqons, activeIndex });
+    }
+
+    case ADD_TERM_TO_CURRENT_VIRTUAL_STUDY: {
+      const { activeIndex, sqons } = state;
+      const newSqons = addFieldToActiveQuery({
+        term: action.payload.term,
+        querySqons: sqons,
+        activeIndex: activeIndex,
+      });
+      return setState({ sqons: newSqons });
+    }
     default:
       return state;
   }

@@ -11,7 +11,7 @@ import QueriesResolver from '../../QueriesResolver';
 import { getCohortBarColors } from '../ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
-import Card from './SummaryCard';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { antCardHeader } from './StudiesChart.module.css';
 import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
@@ -145,7 +145,7 @@ class StudiesChart extends React.Component {
           ) : (
             <div className={antCardHeader}>
               <span>Studies&nbsp;</span>
-              <Badge style={{ backgroundColor: '#2b388f' }} count={data.length} />
+              <Badge count={data.length} />
             </div>
           );
           return (

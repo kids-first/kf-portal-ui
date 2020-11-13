@@ -10,21 +10,15 @@
 }
 
 .section {
-  font-family: Open Sans, sans-serif;
   color: rgb(52, 52, 52);
   font-size: 14px;
   line-height: 2.57;
   letter-spacing: 0.2px;
 }
 
-.span,
-.div {
-  font-family: Open Sans, sans-serif;
-}
 
 .paragraph {
   margin: 0;
-  font-family: Open Sans, sans-serif;
   line-height: 28px;
   font-size: 15px;
   color: rgb(52, 52, 52);
@@ -37,7 +31,6 @@
   font-weight: 500;
   line-height: 0.71;
   letter-spacing: 0.4px;
-  font-family: Montserrat, sans-serif;
   text-decoration: none;
 }
 

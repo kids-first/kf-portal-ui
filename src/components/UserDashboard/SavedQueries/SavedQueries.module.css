@@ -13,10 +13,8 @@
 
 .detail {
   color: rgb(52, 52, 52);
-  font-family: Open Sans, sans-serif;
 }
 .queryLink {
-  font-family: Open Sans, sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #90278e;
@@ -25,7 +23,6 @@
   font-size: 12px;
   margin: 2px 0;
   color: rgb(52, 52, 52);
-  font-family: Open Sans, sans-serif;
 }
 .detailHeading {
   color: #74757d;
@@ -46,14 +43,12 @@
 }
 
 .studyLink {
-  font-family: Open Sans, sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #90278e;
 }
 
 .studyDeleteWrapper {
-  font-family: Open Sans, sans-serif;
   color: #90278e;
 }
 .studyDeleteWrapper:hover {
@@ -73,7 +68,6 @@
 
 .studyDescription {
   font-size: 12px;
-  font-family: Open Sans, sans-serif;
   word-break: break-word;
 }
 

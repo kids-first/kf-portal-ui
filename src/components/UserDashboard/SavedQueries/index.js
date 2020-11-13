@@ -5,37 +5,36 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { distanceInWords } from 'date-fns';
-import { Box, Link, Flex } from 'uikit/Core';
-import CardHeader from 'uikit/Card/CardHeader';
+import { Box, Flex, Link } from 'uikit/Core';
+import { Badge, Typography } from 'antd';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
-import Tabs from 'components/Tabs';
 import { styleComponent } from 'components/Utils';
-import { PromptMessageContainer, PromptMessageContent, DashboardCard } from '../styles';
+import { PromptMessageContainer, PromptMessageContent } from '../styles';
 import QueryBlock from './QueryBlock';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import {
-  fetchVirtualStudiesCollection,
   deleteVirtualStudy,
+  fetchVirtualStudiesCollection,
   setVirtualStudyId,
 } from 'store/actionCreators/virtualStudies';
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import {
-  savedQueriesContainer,
   study,
-  studyLink,
   studyDeleteWrapper,
-  scrollY,
   studyDescription,
+  studyLink,
   studySavedTime,
-  cardHeader,
 } from './SavedQueries.module.css';
+import './SavedQueries.scss';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
-import { Spinner } from 'uikit/Spinner';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
+
+const { Title } = Typography;
 
 const FileRepositoryLink = styleComponent(Link, 'color-primary');
-const Scroll = styleComponent('div', scrollY);
 
 class SavedQueries extends React.Component {
   static propTypes = {
@@ -61,6 +60,7 @@ class SavedQueries extends React.Component {
   state = {
     showDeleteModal: false,
     virtualStudyToDelete: null,
+    activeTab: 'participantTab',
   };
 
   componentDidMount() {
@@ -95,48 +95,46 @@ class SavedQueries extends React.Component {
       </Box>
     ) : (
       <Box key="virtual-studies" mt={2} mb={2}>
-        <Scroll>
-          {virtualStudies
-            .map((vs) => (
-              <Flex
-                className={study}
-                key={vs.virtualStudyId}
-                date={Number(new Date(vs.creationDate))}
-              >
-                <Column width="100%">
-                  <Row justifyContent="space-between" width="100%">
-                    <Link className={studyLink} to={`/explore?id=${vs.virtualStudyId}`}>
-                      {vs.name}
-                    </Link>
-                    <Box pr={2} pl={2}>
-                      <span
-                        className={studyDeleteWrapper}
-                        onClick={() => {
-                          this.setState({ showDeleteModal: true, virtualStudyToDelete: { ...vs } });
-                        }}
-                      >
-                        <TrashIcon />
-                      </span>
-                    </Box>
-                  </Row>
-                  <Row justifyContent="space-between" width="100%">
-                    <Tooltip html={<div className={studyDescription}>{vs.description}</div>}>
-                      <div className={studyDescription} style={{ marginRight: '32px' }}>
-                        {vs.description.length >= 140
-                          ? `${vs.description.slice(0, 140)}...`
-                          : vs.description}
-                      </div>
-                    </Tooltip>
-                  </Row>
-                  <div className={studySavedTime} style={{ fontFamily: 'Open Sans,sans-serif' }}>
-                    Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
-                  </div>
-                </Column>
-              </Flex>
-            ))
-            .slice()
-            .sort((a, b) => b.props.date - a.props.date)}
-        </Scroll>
+        {virtualStudies
+          .map((vs) => (
+            <Flex
+              className={study}
+              key={vs.virtualStudyId}
+              date={Number(new Date(vs.creationDate))}
+            >
+              <Column width="100%">
+                <Row justifyContent="space-between" width="100%">
+                  <Link className={studyLink} to={`/explore?id=${vs.virtualStudyId}`}>
+                    {vs.name}
+                  </Link>
+                  <Box pr={2} pl={2}>
+                    <span
+                      className={studyDeleteWrapper}
+                      onClick={() => {
+                        this.setState({ showDeleteModal: true, virtualStudyToDelete: { ...vs } });
+                      }}
+                    >
+                      <TrashIcon />
+                    </span>
+                  </Box>
+                </Row>
+                <Row justifyContent="space-between" width="100%">
+                  <Tooltip html={<div className={studyDescription}>{vs.description}</div>}>
+                    <div className={studyDescription} style={{ marginRight: '32px' }}>
+                      {vs.description.length >= 140
+                        ? `${vs.description.slice(0, 140)}...`
+                        : vs.description}
+                    </div>
+                  </Tooltip>
+                </Row>
+                <div className={studySavedTime} style={{ fontFamily: 'Open Sans,sans-serif' }}>
+                  Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
+                </div>
+              </Column>
+            </Flex>
+          ))
+          .slice()
+          .sort((a, b) => b.props.date - a.props.date)}
       </Box>
     );
   };
@@ -147,7 +145,7 @@ class SavedQueries extends React.Component {
     } = this.props;
 
     return !fileQueries.length ? (
-      <Scroll key="files-queries">
+      <>
         <Box mt={2}>
           <PromptMessageContainer info mb={'8px'}>
             <PromptMessageContent>
@@ -169,25 +167,27 @@ class SavedQueries extends React.Component {
             );
           })}
         </Box>
-      </Scroll>
+      </>
     ) : (
-      <Scroll key="files-queries">
-        <Box mt={2} mb={2}>
-          {fileQueries
-            .filter((q) => q.alias && q.content.Files)
-            .map((q) => ({
-              ...q,
-              date: Number(new Date(q.creationDate)),
-              link: `/search${q.content.longUrl.split('/search')[1]}`,
-            }))
-            .slice()
-            .sort((a, b) => b.date - a.date)
-            .map((q) => (
-              <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
-            ))}
-        </Box>
-      </Scroll>
+      <Box mt={2} mb={2}>
+        {fileQueries
+          .filter((q) => q.alias && q.content.Files)
+          .map((q) => ({
+            ...q,
+            date: Number(new Date(q.creationDate)),
+            link: `/search${q.content.longUrl.split('/search')[1]}`,
+          }))
+          .slice()
+          .sort((a, b) => b.date - a.date)
+          .map((q) => (
+            <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+          ))}
+      </Box>
     );
+  };
+
+  onTabChange = (key) => {
+    this.setState({ activeTab: key });
   };
 
   render() {
@@ -196,43 +196,54 @@ class SavedQueries extends React.Component {
       virtualStudies,
     } = this.props;
 
+    const tabList = [
+      {
+        key: 'participantTab',
+        tab: (
+          <div className={antCardHeader}>
+            <span>Cohort Queries&nbsp;</span>
+            <Badge count={virtualStudies.length ? virtualStudies.length : 0} showZero />
+          </div>
+        ),
+      },
+      {
+        key: 'fileTab',
+        tab: (
+          <div className={antCardHeader}>
+            <span>File Queries&nbsp;</span>
+            <Badge count={fileQueries.length ? fileQueries.length : 0} showZero />
+          </div>
+        ),
+      },
+    ];
+
+    const contentList = {
+      participantTab: this.renderParticipantQueries(),
+      fileTab: this.renderFileQueries(),
+    };
+
     return (
-      // TODO EXTRACT DashboardCard to UserDashboard/index.js
-      <>
+      <div className={'saved-queries-container'}>
         {this.state.showDeleteModal && (
           <ConfirmDelVirtualStudy
             virtualStudy={this.state.virtualStudyToDelete}
             onCloseCb={() => this.setState({ showDeleteModal: false })}
           />
         )}
-        <DashboardCard scrollable={true} showHeader={false} showScrollFullHeight={true}>
-          {loadingQueries ? (
-            <Spinner size={'large'} />
-          ) : (
-            <>
-              <CardHeader title="My Saved Queries" className={cardHeader} />
-              <Column className={savedQueriesContainer}>
-                <Tabs
-                  initialSelectedTab="PARTICIPANTS"
-                  options={[
-                    {
-                      display: 'Cohort Queries',
-                      total: virtualStudies.length ? virtualStudies.length : [0],
-                    },
-                    {
-                      display: 'File Queries',
-                      total: fileQueries.length ? fileQueries.length : [0],
-                    },
-                  ]}
-                >
-                  {this.renderParticipantQueries()}
-                  {this.renderFileQueries()}
-                </Tabs>
-              </Column>
-            </>
-          )}
-        </DashboardCard>
-      </>
+        <Card
+          size="small"
+          title={<Title level={3}>My Saved Queries</Title>}
+          tabList={tabList}
+          tabProps={{ size: 'small' }}
+          onTabChange={(key) => {
+            this.onTabChange(key);
+          }}
+          activeTabKey={this.state.key}
+          loading={loadingQueries}
+        >
+          {contentList[this.state.activeTab]}
+        </Card>
+      </div>
     );
   }
 }

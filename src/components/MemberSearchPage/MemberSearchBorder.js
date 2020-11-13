@@ -7,8 +7,8 @@ import { DownloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
-const MemberSearchBorder = props => (
-  <div className={'grid-container'}>
+const MemberSearchBorder = (props) => (
+  <div className={'grid-container-members'}>
     <Row className={'flex'}>
       <Col span={12}>
         <Title level={2}>Kids First Membership</Title>

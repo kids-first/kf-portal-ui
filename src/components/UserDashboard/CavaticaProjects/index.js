@@ -1,26 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
 import { CAVATICA } from 'common/constants';
 import Create from './Create';
 import NotConnected from './NotConnected';
-import { DashboardMulticard } from '../styles';
 import CavaticaProvider from './CavaticaProvider';
 import Connected from './Connected';
-import CardHeader from 'uikit/Card/CardHeader';
 import {
   trackUserInteraction,
   setUserDimension,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
 
-import { Result } from 'antd';
+import { Badge, Result, Typography } from 'antd';
+import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { getMsgFromErrorOrElse } from 'utils';
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
-const isValidKey = key => {
-  return key && key.length > 0;
-};
+const { Title } = Typography;
+
+const isValidKey = (key) => key && key.length > 0;
+
+const tabList = [
+  {
+    key: 'Projects',
+    tab: 'Projects',
+  },
+  {
+    key: 'Create',
+    tab: 'Create',
+  },
+];
 
 const generateTabsContent = ({
   isConnected,
@@ -31,54 +42,53 @@ const generateTabsContent = ({
   onProjectCreated,
   onProjectCreationCanceled,
   refresh,
+  activeTab,
 }) => {
+  const NotConnectedComp = () => <NotConnected />;
+  const ConnectedComp = (cardProps) => (
+    <Connected tabToCreate={tabToCreate(cardProps)} projects={projects} loading={loading} />
+  );
+  const CreateComp = (cardProps) => (
+    <Create
+      onProjectCreated={onProjectCreated({ cardProps, refresh })}
+      onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+    />
+  );
+
   if (projectsError) {
-    return [
-      {
-        headerComponent: cardProps => <CardHeader title="Cavatica Projects" badge={null} />,
-        title: 'Cavatica Projects',
-        component: cardProps => (
-          <Result
-            style={{ width: '100%' }}
-            status="error"
-            title={getMsgFromErrorOrElse(projectsError)}
-          />
-        ),
-      },
-    ];
+    return {
+      component: (
+        <Result
+          style={{ width: '100%' }}
+          status="error"
+          title={getMsgFromErrorOrElse(projectsError)}
+        />
+      ),
+    };
   }
 
-  return isConnected
-    ? [
-        {
-          nav: 'Projects',
-          headerComponent: cardProps => (
-            <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
-          ),
-          component: cardProps => (
-            <Connected tabToCreate={tabToCreate(cardProps)} projects={projects} loading={loading} />
-          ),
-        },
-        {
-          nav: 'Create',
-          headerComponent: cardProps => (
-            <CardHeader title="Create a Cavatica Project" badge={null} />
-          ),
-          component: cardProps => (
-            <Create
-              onProjectCreated={onProjectCreated({ cardProps, refresh })}
-              onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
-            />
-          ),
-        },
-      ]
-    : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }];
+  if (isConnected) {
+    if (activeTab === 'Projects') {
+      return {
+        component: ConnectedComp,
+      };
+    } else if (activeTab === 'Create') {
+      return {
+        component: CreateComp,
+      };
+    }
+  }
+  return {
+    component: NotConnectedComp,
+  };
 };
 
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-  const onProjectCreated = ({ cardProps, refresh }) => data => {
+  const [activeTab, setActiveTab] = useState('Projects');
+
+  const onProjectCreated = ({ cardProps, refresh }) => (data) => {
     cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
@@ -92,7 +102,11 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
     return refresh();
   };
 
-  const onProjectCreationCanceled = cardProps => data => {
+  const onTabChange = (key) => {
+    setActiveTab(key);
+  };
+
+  const onProjectCreationCanceled = (cardProps) => (data) => {
     cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
@@ -103,7 +117,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
     });
   };
 
-  const tabToCreate = cardProps => d => {
+  const tabToCreate = (cardProps) => () => {
     cardProps.setIndex(1);
   };
 
@@ -112,20 +126,37 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       {({ projects, loading, refresh, projectsError }) => {
         setUserDimension('dimension6', JSON.stringify(projects));
         return (
-          <DashboardMulticard
-            inactive={!isConnected}
-            scrollable={isConnected}
-            tabs={generateTabsContent({
-              isConnected,
-              projectsError,
-              tabToCreate,
-              projects,
-              loading,
-              onProjectCreated,
-              onProjectCreationCanceled,
-              refresh,
-            })}
-          />
+          <Card
+            title={
+              <div className={antCardHeader}>
+                <span>
+                  <Title level={3}>Cavatica Projects&nbsp;</Title>
+                </span>
+                <Badge
+                  count={isConnected && projects ? projects.length : 0}
+                  showZero={isConnected}
+                />
+              </div>
+            }
+            tabList={isConnected ? tabList : []}
+            onTabChange={(key) => {
+              onTabChange(key);
+            }}
+          >
+            {
+              generateTabsContent({
+                isConnected,
+                projectsError,
+                tabToCreate,
+                projects,
+                loading,
+                onProjectCreated,
+                onProjectCreationCanceled,
+                refresh,
+                activeTab,
+              }).component
+            }
+          </Card>
         );
       }}
     </CavaticaProvider>

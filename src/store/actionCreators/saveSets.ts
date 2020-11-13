@@ -1,5 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import {
+  ADD_SET_TO_CURRENT_QUERY,
+  AddRemoveSetParams,
   CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
@@ -9,6 +11,7 @@ import {
   RE_INITIALIZE_STATE,
   REMOVE_USER_SAVE_SETS,
   SaveSetParams,
+  SetInfo,
   SetNameConflictError,
   SetsActionTypes,
   SetSourceType,
@@ -29,8 +32,6 @@ import {
   updateSet,
 } from 'services/sets';
 import { RootState } from '../rootState';
-import { SetInfo } from 'components/UserDashboard/ParticipantSets';
-import { AddRemoveSetParams } from 'components/CohortBuilder/ParticipantsTableView/AddRemoveSaveSetModal';
 import { selectSets } from '../selectors/saveSetsSelectors';
 
 export const createSet = (
@@ -177,12 +178,13 @@ export const addRemoveSetIds = (
   };
 
   try {
-    const { setSize, updatedResults } = await updateSet(
-      SetSourceType.QUERY,
-      data,
-      subActionType,
-      setId,
-    );
+    const response = await updateSet(SetSourceType.QUERY, data, subActionType, setId);
+
+    if (!response) {
+      return onFail();
+    }
+
+    const { setSize, updatedResults } = response;
 
     if (updatedResults && updatedResults > 0) {
       const sets: UserSet[] = selectSets(getState());
@@ -232,9 +234,9 @@ export const deleteUserSets = (
 };
 
 export const createQueryInCohortBuilder = (
-  setInfo: SetInfo,
+  setId: string,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  dispatch(requestCreateQueryInCohort(setInfo));
+  dispatch(requestCreateQueryInCohort(setId));
 };
 
 export const isLoadingCreateSet = (isPending: boolean): SetsActionTypes => ({
@@ -286,7 +288,12 @@ export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
   set: set,
 });
 
-export const requestCreateQueryInCohort = (setInfo: SetInfo): SetsActionTypes => ({
+export const requestCreateQueryInCohort = (setId: string): SetsActionTypes => ({
   type: CREATE_SET_QUERY_REQUEST,
-  setInfo: setInfo,
+  setId,
+});
+
+export const addSetToCurrentQuery = (setId: string): SetsActionTypes => ({
+  type: ADD_SET_TO_CURRENT_QUERY,
+  setId,
 });

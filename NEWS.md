@@ -7,6 +7,41 @@
 
 ### Technical / Other changes
 -->
+## 2020-11-13 kf-portal-ui 2.28.0
+
+### Features
+- [2639](https://github.com/kids-first/kf-portal-ui/issues/2639) Feature (Cohort Builder, HPO Sunburst): Update the presentation of the information present in the center of the Sunburst.
+- [2640](https://github.com/kids-first/kf-portal-ui/issues/2640) Feature (Cohort Builder, HPO Sunburst): Added extra details regarding the selected HPO term beside the Sunburst.
+- [2641](https://github.com/kids-first/kf-portal-ui/issues/2641) Feature (Cohort Builder, HPO Sunburst): Added a minimalistic version of the HPO tree beside the Sunburst showing the path of the selected term.
+- [2642](https://github.com/kids-first/kf-portal-ui/issues/2642) Feature (Cohort Builder, HPO Sunburst): Added a link to the right of the Sunburst to add the selected HPO term to the active query.
+- [2668](https://github.com/kids-first/kf-portal-ui/issues/2668) Feature (Cohort Builder, Participants Saved Sets): A new menu filter called “My sets” was added beside the “Search all filters” bar allowing users to use their Participants Saved Sets in their queries.
+- [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
+
+### Technical / Other changes
+- [2754](https://github.com/kids-first/kf-portal-ui/issues/2754) Refactor (Public-Stats-API): Removed duplicated code.
+- [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implemented updated grid system in dashboard allowing for 2 columns wide cards.
+- [2768](https://github.com/kids-first/kf-portal-ui/issues/2768) Refactor (Dashboard, Grid system): Converted cards to new antd design.
+- [2797](https://github.com/kids-first/kf-portal-ui/issues/2797) Refactor (File Repository, Freactal): Removed Freactal code from the Browse All facets modal.
+- [2800](https://github.com/kids-first/kf-portal-ui/issues/2800) Refactor (Portal, Main navigation): Updated navigation buttons to better match new layout.
+- [2803](https://github.com/kids-first/kf-portal-ui/issues/2803) Refactor (Cohort Builder, Query Operators): Fixed an issue where it was impossible to modify the query operator in Firefox only.
+- [2804](https://github.com/kids-first/kf-portal-ui/issues/2804) Refactor (Cohort Builder, Query Operators): Fixed an issue where moving the cursor out of the box would disable the “Apply” button.
+- [2805](https://github.com/kids-first/kf-portal-ui/issues/2805) Refactor (Portal, File Repository): Fixed an issue where checking the “show only fields with value" checkbox in the “Browse All” modal would redirect the user to an error page. 
+- [2816](https://github.com/kids-first/kf-portal-ui/issues/2816) Refactor (Cohort Builder, Participants Saved Sets): Fixed an issue where combining sets in a query using the “not” operator would give incorrect results.
+
+## 2020-10-28 kf-portal-ui 2.27.0
+
+### Features
+- [2668](https://github.com/kids-first/kf-portal-ui/issues/2668) Feature (Cohort Builder, Participants Saved Sets): A new menu filter called “My sets” was added beside the “Search all filters” bar allowing users to use their Participants Saved Sets in their queries.
+- [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
+- [2639](https://github.com/kids-first/kf-portal-ui/issues/2639) Feature (Summary View, Sunburst): Refactor information at middle of sunburst as per design mockup.
+- [2640](https://github.com/kids-first/kf-portal-ui/issues/2640) Feature (Summary View, Sunburst): Add details regarding the selected HPO term on the right side of the Sunburst's card.
+
+### Technical / Other changes
+- [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implement updated grid system in dashboard allowing for 2 columns wide cards.
+- [2768](https://github.com/kids-first/kf-portal-ui/issues/2768) Refactor (Dashboard, Grid system): Convert cards to new antd design.
+- [2797](https://github.com/kids-first/kf-portal-ui/issues/2797) Refactor (File Repository, Freactal): Removing Freactal code from the Browse All facets modal.
+- [2800](https://github.com/kids-first/kf-portal-ui/issues/2800) Refactor (Portal, Main navigation): Update navigation buttons to better match new layout.
+
 ## 2020-10-15 kf-portal-ui 2.26.1
 
 ### Technical / Other changes

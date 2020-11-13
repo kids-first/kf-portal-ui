@@ -11,6 +11,7 @@ import {
   getUserSets,
   isLoadingCreateSet,
   reInitializeSetsState,
+  addSetToCurrentQuery,
 } from '../saveSets';
 import {
   CREATE_SET_QUERY_REQUEST,
@@ -27,6 +28,7 @@ import {
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
+  ADD_SET_TO_CURRENT_QUERY,
 } from 'store/saveSetTypes';
 import {
   createSet,
@@ -35,9 +37,7 @@ import {
   setCountForTag,
   updateSet,
 } from 'services/sets';
-// @ts-ignore
-import { SetInfo } from 'components/UserDashboard/ParticipantSets';
-import { AddRemoveSetParams } from 'components/CohortBuilder/ParticipantsTableView/AddRemoveSaveSetModal';
+import { SetInfo, AddRemoveSetParams } from 'store/saveSetTypes';
 
 console.error = jest.fn();
 
@@ -397,13 +397,8 @@ describe('createSaveSet', () => {
   });
 
   it('should generate the correct flow when request to create query in cohort ', async () => {
-    const setInfo: SetInfo = {
-      key: '1234',
-      name: 'name',
-      currentUser: 'someUser',
-    };
-    const expectedActions = [{ type: CREATE_SET_QUERY_REQUEST, setInfo: setInfo }];
-
+    const setId = '1234';
+    const expectedActions = [{ type: CREATE_SET_QUERY_REQUEST, setId }];
     const store = mockStore({
       sqons: [
         {
@@ -423,7 +418,33 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createQueryInCohortBuilder(setInfo));
+    await store.dispatch(createQueryInCohortBuilder(setId));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow when request to add set sqon query in cohort ', async () => {
+    const setId = '1234';
+    const expectedActions = [{ type: ADD_SET_TO_CURRENT_QUERY, setId }];
+    const store = mockStore({
+      sqons: [
+        {
+          op: 'and',
+          content: [{ op: 'in', content: { field: 'kf_id', value: 'set_id:id12345' } }],
+        },
+      ],
+      activeIndex: 0,
+      uid: null,
+      virtualStudyId: null,
+      name: '',
+      description: '',
+      dirty: false,
+      areSqonsEmpty: false,
+      isLoading: false,
+      error: null,
+    });
+
+    // @ts-ignore
+    await store.dispatch(addSetToCurrentQuery(setId));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
