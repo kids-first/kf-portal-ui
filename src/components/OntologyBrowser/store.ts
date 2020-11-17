@@ -109,14 +109,16 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (field: string, sqon?: any, filterThemselves?: boolean) => {
+  fetch = (field: string, sqon?: any, filterThemselves?: boolean, noGlobalAggs?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
-    return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
-      const ontologyTree = new OntologyTree(this.remoteSingleRootNode(data), field);
-      this.phenotypes = ontologyTree.phenotypes;
-      this.tree = ontologyTree.tree;
-    });
+    return this.getPhenotypes(field, sqon, filterThemselves, noGlobalAggs).then(
+      (data: PhenotypeSource[]) => {
+        const ontologyTree = new OntologyTree(this.remoteSingleRootNode(data), field);
+        this.phenotypes = ontologyTree.phenotypes;
+        this.tree = ontologyTree.tree;
+      },
+    );
   };
 
   getTree = () => {
@@ -127,9 +129,14 @@ export class PhenotypeStore {
   buildPhenotypeQuery = (
     field: string,
     filterThemselves: boolean,
+    noGlobalAggs?: boolean,
   ) => `query($sqon: JSON, $term_filters: JSON) {
     participant {
-      aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
+      aggregations(
+      filters: $sqon, 
+      aggregations_filter_themselves: ${filterThemselves}
+      ${noGlobalAggs ? `no_global_aggregation: ${noGlobalAggs}` : ''}
+      ) {
         ${dotToUnderscore(field)}__name {
           buckets{
             key,
@@ -143,9 +150,14 @@ export class PhenotypeStore {
   }
   `;
 
-  getPhenotypes = async (field: string, sqon?: any, filterThemselves = false) => {
+  getPhenotypes = async (
+    field: string,
+    sqon?: any,
+    filterThemselves = false,
+    noGlobalAggs?: boolean,
+  ) => {
     const body = {
-      query: this.buildPhenotypeQuery(field, filterThemselves),
+      query: this.buildPhenotypeQuery(field, filterThemselves, noGlobalAggs),
       variables: JSON.stringify({
         sqon: sqon,
         term_filters: [
