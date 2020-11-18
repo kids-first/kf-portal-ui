@@ -68,26 +68,10 @@
   color: #cc3399;
 }
 
-/* EmptyCohortOverlay */
-.cb-empty-overlay {
-  background-color: rgba(255, 255, 255, 0.75);
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  justify-content: center;
+.empty-container {
+  padding: 24px 0
 }
 
-.cb-empty-overlay-message {
-  margin-top: 100px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 15px 35px;
-  font-weight: 600;
-  background-color: #fff;
-  max-height: fit-content;
-  font-size: 14px;
-  height: 50px;
+.empty-description {
+  font-size: 16px;
 }

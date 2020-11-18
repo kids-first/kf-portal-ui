@@ -8,14 +8,13 @@ import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 
-import { Tabs } from 'antd';
+import { Tabs, Empty } from 'antd';
 
 import { withApi } from 'services/api';
 
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import ParticipantsTableView from './ParticipantsTableView';
 import QueriesResolver from './QueriesResolver';
-import EmptyCohortOverlay from './EmptyCohortOverlay';
 import Summary from './Summary';
 
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
@@ -145,8 +144,18 @@ const Results = ({
                 key={TABLE}
                 className="cb-tab-content"
               >
-                {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
-                <ParticipantsTableView sqon={sqon} />
+                {cohortIsEmpty ? (
+                  <Empty
+                    className={'empty-container'}
+                    description={
+                      <span className={'empty-description'}>
+                        {'There are no participants for this cohort.'}
+                      </span>
+                    }
+                  />
+                ) : (
+                  <ParticipantsTableView sqon={sqon} />
+                )}
               </TabPane>
             </Tabs>
           </div>
