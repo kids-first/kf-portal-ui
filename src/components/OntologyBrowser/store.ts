@@ -1,5 +1,6 @@
 import { graphql } from '../../services/arranger';
 import OntologyTree, { lightTreeNodeConstructor, TreeNode } from './Model';
+import { Sqon } from 'store/sqon';
 
 export type PhenotypeSource = {
   key: string;
@@ -109,7 +110,7 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (field: string, sqon?: any, filterThemselves?: boolean, noGlobalAggs?: boolean) => {
+  fetch = (field: string, sqon?: Sqon, filterThemselves?: boolean, noGlobalAggs?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
     return this.getPhenotypes(field, sqon, filterThemselves, noGlobalAggs).then(
@@ -152,7 +153,7 @@ export class PhenotypeStore {
 
   getPhenotypes = async (
     field: string,
-    sqon?: any,
+    sqon?: Sqon,
     filterThemselves = false,
     noGlobalAggs?: boolean,
   ) => {
