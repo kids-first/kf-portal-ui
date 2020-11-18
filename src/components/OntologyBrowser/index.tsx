@@ -44,13 +44,15 @@ const desactivateAllSameTerms = (allSameTerms: string[], transferItems: Transfer
   });
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
-  if (initialSqon.content as SqonFilters[]) {
-    const content = initialSqon.content as SqonFilters[];
+  const updatedSqon = JSON.parse(JSON.stringify(initialSqon));
+
+  if (updatedSqon.content as SqonFilters[]) {
+    const content = updatedSqon.content as SqonFilters[];
     const index = findIndex(content, (c) => c.content.field === selectedField);
     if (index >= 0 && value.length === 0) {
-      initialSqon.content.splice(index, 1);
+      updatedSqon.content.splice(index, 1);
     } else if (index >= 0) {
-      const valueContent = initialSqon.content[index] as SqonFilters;
+      const valueContent = updatedSqon.content[index] as SqonFilters;
       valueContent.content.value = value;
     } else if (value.length > 0) {
       content.push({
@@ -63,7 +65,7 @@ const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) 
     }
   }
 
-  return initialSqon;
+  return updatedSqon;
 };
 
 class OntologyModal extends React.Component<ModalProps, ModalState> {
