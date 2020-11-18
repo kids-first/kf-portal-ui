@@ -32,7 +32,7 @@ EntityContentSection.propTypes = {
   tabs: PropTypes.arrayOf(PropTypes.object),
   defaultTab: PropTypes.string,
   setActiveTab: PropTypes.func,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.any.isRequired,
   size: PropTypes.string,
 };
 
