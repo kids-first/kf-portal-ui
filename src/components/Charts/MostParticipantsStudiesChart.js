@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import startCase from 'lodash/startCase';
 
 import {
   getDefaultSqon,
@@ -134,9 +133,7 @@ export default compose(withApi)(({ api }) => (
   <DataProvider
     url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
     api={api}
-    transform={(data) =>
-      (data.studies || []).map((study) => ({ ...study, label: startCase(study.name) }))
-    }
+    transform={(data) => (data.studies || []).map((study) => ({ ...study, label: study.name }))}
   >
     {(fetchedState) => (
       <ChartLoadGate Error={ChartError} fetchedState={fetchedState} Chart={StudiesChart} />
