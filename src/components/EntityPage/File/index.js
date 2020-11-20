@@ -173,7 +173,6 @@ const fileQuery = `query ($sqon: JSON) {
                                 edges {
                                   node {
                                     affected_status
-                                    diagnosis_category
                                     ethnicity
                                     external_id
                                     gender
