@@ -27,7 +27,6 @@ export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => (
               outcome {
                 vital_status
               }
-              diagnosis_category
               diagnoses {
                 hits {
                   edges {
@@ -85,7 +84,6 @@ export const participantQueryExport = (sqon, pageSize) => ({
               outcome {
                 vital_status
               }
-              diagnosis_category
               diagnoses {
                 hits {
                   edges {
