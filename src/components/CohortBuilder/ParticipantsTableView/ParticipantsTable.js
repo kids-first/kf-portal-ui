@@ -138,26 +138,24 @@ const CellParticipantIdLink = (value) => <ParticipantIdLink value={value} />;
 const getIt = (participant, accessor) => get(participant, accessor, null);
 
 const CellPedcBioLink = (props) => {
-  if (STUDIES_WITH_PEDCBIO.includes((props.object || {}).studyId)) {
+  if (STUDIES_WITH_PEDCBIO.includes((props.original || {}).studyId)) {
     return (
       <ExternalLink
         href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${getIt(
-          props.object,
+          props.original,
           props.accessor,
         )}`}
         onClick={() => {
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.entityPage.file,
             action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-            label: `${props.object.studyName} (${props.object.studyId})`,
+            label: `${props.original.studyName} (${props.original.studyId})`,
           });
         }}
       >
-        {getIt(props.object, 'participantId')}
+        {getIt(props.original, 'participantId')}
       </ExternalLink>
     );
-  } else {
-    return '';
   }
 };
 
@@ -188,6 +186,7 @@ const participantsTableViewColumns = (
     minWidth: 140,
   },
   { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
+  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   { Header: 'Vital Status', accessor: 'vitalStatus', minWidth: 70 },
   {
     Header: 'Diagnosis Category',
@@ -204,7 +203,6 @@ const participantsTableViewColumns = (
     minWidth: 175,
     sortable: false,
   },
-  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   {
     Header: 'Family ID',
     accessor: 'familyId',
@@ -236,7 +234,7 @@ const participantsTableViewColumns = (
     accessor: 'participantId',
     Cell: (props) =>
       CellPedcBioLink({
-        object: props.original,
+        original: props.original,
         accessor: 'participantId',
       }),
     minWidth: 140,
