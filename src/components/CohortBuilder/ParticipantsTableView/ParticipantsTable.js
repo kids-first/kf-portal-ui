@@ -10,7 +10,7 @@ import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/Ta
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
@@ -21,6 +21,9 @@ import { Tooltip } from 'antd';
 import { externalLink } from 'uikit/ExternalLink.module.css';
 import './ParticipantTableView.css';
 import style from 'style/themes/default/colors.module.scss';
+import ExternalLink from 'uikit/ExternalLink';
+import get from 'lodash/get';
+import { STUDIES_WITH_PEDCBIO } from 'common/constants';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -50,7 +53,6 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const displayedRowCount = collapsed ? 1 : sizeOfCleanData;
   const displayMoreButton = sizeOfCleanData > 1;
   const hasManyValues = sizeOfCleanData > 1;
-
   return (
     <div className="rowCss">
       <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
@@ -133,6 +135,32 @@ const CellNbFilesCell = (value, row) => <NbFilesCell value={value} row={row} />;
 
 const CellParticipantIdLink = (value) => <ParticipantIdLink value={value} />;
 
+const getIt = (participant, accessor) => get(participant, accessor, null);
+
+const CellPedcBioLink = (props) => {
+  if (STUDIES_WITH_PEDCBIO.includes((props.object || {}).studyId)) {
+    return (
+      <ExternalLink
+        href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${getIt(
+          props.object,
+          props.accessor,
+        )}`}
+        onClick={() => {
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.entityPage.file,
+            action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
+            label: `${props.object.studyName} (${props.object.studyId})`,
+          });
+        }}
+      >
+        {getIt(props.object, 'participantId')}
+      </ExternalLink>
+    );
+  } else {
+    return '';
+  }
+};
+
 const participantsTableViewColumns = (
   onRowSelected,
   onAllRowsSelected,
@@ -176,13 +204,6 @@ const participantsTableViewColumns = (
     minWidth: 175,
     sortable: false,
   },
-  {
-    Header: 'Age at Diagnosis (days)',
-    accessor: 'ageAtDiagnosis',
-    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
-    field: 'diagnoses.age_at_event_days',
-    sortable: false,
-  },
   { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   {
     Header: 'Family ID',
@@ -209,6 +230,16 @@ const participantsTableViewColumns = (
     Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'family.family_compositions',
     sortable: false,
+  },
+  {
+    Header: 'PedcBioPortal',
+    accessor: 'participantId',
+    Cell: (props) =>
+      CellPedcBioLink({
+        object: props.original,
+        accessor: 'participantId',
+      }),
+    minWidth: 140,
   },
   {
     Header: 'Files',
