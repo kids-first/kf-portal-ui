@@ -12,7 +12,6 @@ import {
   getAccessToken,
 } from 'services/fence';
 import {
-  analyticsTrigger,
   setUserDimension,
   TRACKING_EVENTS,
   trackUserInteraction,
@@ -73,13 +72,6 @@ const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
 };
 
 const connect = async ({ fence, api, setConnecting, effects, setError }) => {
-  analyticsTrigger({
-    property: 'portal',
-    type: 'recording',
-    uiArea: TRACKING_EVENTS.categories.user.profile,
-    action: TRACKING_EVENTS.actions.integration.init,
-    label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
-  });
   setConnecting(true);
   try {
     await fenceConnect(api, fence);
