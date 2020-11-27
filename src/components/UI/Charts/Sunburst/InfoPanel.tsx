@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
-import { Phenotype } from 'store/sunburstTypes';
+import React, { FunctionComponent, ReactText } from 'react';
+import { generatePhenotypeByTitle, Phenotype } from 'store/sunburstTypes';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
@@ -13,6 +13,7 @@ import './sunburst.css';
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
   treeData: TreeNode[];
+  getSelectedPhenotype: Function;
 };
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -33,7 +34,32 @@ const splitTitle = (title: string) => {
   };
 };
 
-const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex, treeData }) => {
+const getPath = (node: string, treeNodes: TreeNode[], path: string[]) => {
+  const currentNodeText = treeNodes[0].key;
+  path.push(currentNodeText);
+  if (node !== currentNodeText) {
+    getPath(node, treeNodes[0].children, path);
+  }
+  return path;
+};
+
+const generateNodeIdClicked = (
+  nodeName: ReactText[],
+  treeData: TreeNode[],
+  getSelectedPhenotype: Function,
+) => {
+  const path = getPath(nodeName[0] as string, treeData, []);
+  const phenotype = generatePhenotypeByTitle(nodeName[0] as string, path.join('-'));
+  getSelectedPhenotype(phenotype);
+  return path.join('-');
+};
+
+const InfoPanel: FunctionComponent<Props> = ({
+  data,
+  onClickAddTermToActiveIndex,
+  treeData,
+  getSelectedPhenotype,
+}) => {
   const { title, key, results, exactTagCount } = data;
   const titleCode = splitTitle(title);
 
@@ -69,6 +95,9 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
           expandedKeys={key.split('-')}
           switcherIcon={<div />}
           className={'sunburst-phenotypes-tree'}
+          onSelect={(node) =>
+            node.length ? generateNodeIdClicked(node, treeData, getSelectedPhenotype) : {}
+          }
         />
       </div>
     </div>

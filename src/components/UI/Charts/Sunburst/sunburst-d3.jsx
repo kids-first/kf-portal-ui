@@ -265,6 +265,25 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
     const textData = p || selectedPhenotype;
     centerText.text(() => centerTextFormatter(textData.data)).call(wrap);
   };
+
+  const findNodeByKey = (key, node, returnNode) => {
+    if (returnNode) return returnNode;
+    node.children.forEach((n) => {
+      if (key.includes(n.data.name)) {
+        if (key === n.data.key) {
+          returnNode = n;
+        } else {
+          returnNode = findNodeByKey(key, n, returnNode);
+        }
+      }
+    });
+    return returnNode;
+  };
+
+  return (phenotypeKey) => {
+    const targetNode = findNodeByKey(phenotypeKey, root);
+    clicked(targetNode || root);
+  };
 };
 
 export default sunburstD3;
