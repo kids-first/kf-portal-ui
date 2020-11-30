@@ -9,6 +9,7 @@ import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
 import { Button, Tree } from 'antd';
 import { TreeNode } from 'components/OntologyBrowser/Model';
 import './sunburst.css';
+import { RegexExtractPhenotype } from '../../../OntologyBrowser/store';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
@@ -92,7 +93,7 @@ const InfoPanel: FunctionComponent<Props> = ({
         <div className={'tree-title'}>Current Path</div>
         <Tree
           treeData={treeData}
-          expandedKeys={key.split('-')}
+          expandedKeys={key.match(RegexExtractPhenotype) || []}
           switcherIcon={<div />}
           className={'sunburst-phenotypes-tree'}
           onSelect={(node) =>
