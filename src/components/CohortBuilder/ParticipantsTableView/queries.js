@@ -20,6 +20,7 @@ export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => (
             node {
               kf_id
               study {
+                kf_id
                 name
                 short_name
               }
@@ -64,7 +65,7 @@ export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => (
     }
   `,
   variables: { sqon, pageSize, offset: pageSize * pageIndex, sort },
-  transform: data => transformData(data),
+  transform: (data) => transformData(data),
 });
 
 export const participantQueryExport = (sqon, pageSize) => ({
@@ -77,6 +78,7 @@ export const participantQueryExport = (sqon, pageSize) => ({
             node {
               kf_id
               study {
+                kf_id
                 name
                 short_name
               }
@@ -121,36 +123,39 @@ export const participantQueryExport = (sqon, pageSize) => ({
     }
   `,
   variables: { sqon, pageSize },
-  transform: data => transformData(data),
+  transform: (data) => transformData(data),
 });
 
-const transformData = data => {
+const transformData = (data) => {
   const participants = get(data, 'data.participant.hits.edges');
   const total = get(data, 'data.participant.hits.total');
-  const nodes = participants.map(p => p.node);
+  const nodes = participants.map((p) => p.node);
 
   return {
     total,
-    nodes: nodes.map(node => {
-      const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map(edge =>
+    nodes: nodes.map((node) => {
+      const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map((edge) =>
         get(edge, 'node.diagnosis_category'),
       );
-      const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+      const diagnosis = get(node, 'diagnoses.hits.edges', []).map((edge) =>
         get(edge, 'node.diagnosis'),
       );
-      const diagnosisMondo = get(node, 'diagnoses.hits.edges', []).map(edge =>
+      const diagnosisMondo = get(node, 'diagnoses.hits.edges', []).map((edge) =>
         get(edge, 'node.mondo_id_diagnosis'),
       );
-      const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+      const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map((edge) =>
         get(edge, 'node.age_at_event_days'),
       );
-      const familyCompositions = get(node, 'family.family_compositions.hits.edges', []).map(edge =>
-        get(edge, 'node.composition'),
-      );
+      const familyCompositions = get(
+        node,
+        'family.family_compositions.hits.edges',
+        [],
+      ).map((edge) => get(edge, 'node.composition'));
 
       return {
         participantId: get(node, 'kf_id'),
         studyName: get(node, 'study.short_name'),
+        studyId: get(node, 'study.kf_id'),
         isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
         vitalStatus: get(node, 'outcome.vital_status'),
         diagnosisCategories,

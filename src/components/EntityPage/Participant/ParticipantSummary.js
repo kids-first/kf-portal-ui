@@ -16,7 +16,7 @@ import prettifyAge from './Utils/prettifyAge';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import Tooltip from 'uikit/Tooltip';
 import theme from 'theme/defaultTheme';
-//https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
+import { STUDIES_WITH_PEDCBIO } from 'common/constants';
 
 /**
  * Sometimes, intermediate nested fields are missing.
@@ -60,7 +60,7 @@ function summaryTableData(participant) {
           summary: (
             <ExternalLink
               href={`${kfWebRoot}/support/studies-and-access`}
-              onClick={e => {
+              onClick={() => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
@@ -93,7 +93,7 @@ function summaryTableData(participant) {
         { title: 'Disease Related', summary: getIt('outcome.disease_related') },
       ];
 
-      if (['SD_BHJXBDQK', 'SD_M3DBXD12'].includes(getIt('study.kf_id'))) {
+      if (STUDIES_WITH_PEDCBIO.includes(getIt('study.kf_id'))) {
         summaryList.push({
           title: 'PedcBioPortal',
           summary: (
@@ -141,29 +141,21 @@ function specimenSummaryTableData(specimen) {
   ]);
 }
 
-const buildSpecimenDxSection = ({ specimenId, sanitizedNodes }) => {
-  return (
-    <EntityContentSection
-      key={`entityContentSection`}
-      title="Histological Diagnoses"
-      size={'small'}
-    >
-      {sanitizedNodes.map((sanitizedNode, index) => {
-        return (
-          <HistologicalDiagnosisTable
-            key={`histological_dx_table_specimen_id_${specimenId}_node_index_${index}`}
-            data={[sanitizedNode]}
-          />
-        );
-      })}
-    </EntityContentSection>
-  );
-};
+const buildSpecimenDxSection = ({ specimenId, sanitizedNodes }) => (
+  <EntityContentSection key={`entityContentSection`} title="Histological Diagnoses" size={'small'}>
+    {sanitizedNodes.map((sanitizedNode, index) => (
+      <HistologicalDiagnosisTable
+        key={`histological_dx_table_specimen_id_${specimenId}_node_index_${index}`}
+        data={[sanitizedNode]}
+      />
+    ))}
+  </EntityContentSection>
+);
 
-const getSanitizedSpecimenDxsData = specimen =>
+const getSanitizedSpecimenDxsData = (specimen) =>
   get(specimen, 'diagnoses.hits.edges', [])
-    .filter(edge => edge && Object.keys(edge).length > 0)
-    .map(edge =>
+    .filter((edge) => edge && Object.keys(edge).length > 0)
+    .map((edge) =>
       sanitize({
         ...edge.node,
         age_at_event_days: prettifyAge(get(edge.node, 'age_at_event_days')),
@@ -183,8 +175,8 @@ const ParticipantSummary = ({ participant }) => {
     }
   }
 
-  const biospecimenIdToTargetProps = (specimens = []) => {
-    return specimens.reduce((acc, specimen) => {
+  const biospecimenIdToTargetProps = (specimens = []) =>
+    specimens.reduce((acc, specimen) => {
       const currentNode = specimen.node;
       if (!currentNode.kf_id) {
         return acc;
@@ -202,7 +194,6 @@ const ParticipantSummary = ({ participant }) => {
         },
       };
     }, {});
-  };
 
   return (
     <React.Fragment>
@@ -216,7 +207,7 @@ const ParticipantSummary = ({ participant }) => {
           <EntityContentDivider />
           <EntityContentSection title="Biospecimens">
             <Holder biospecimenIdToData={biospecimenIdToTargetProps(specimens)}>
-              {specimens.map(specimenNode => {
+              {specimens.map((specimenNode) => {
                 const specimen = specimenNode.node;
                 const specimenDxsData = getSanitizedSpecimenDxsData(specimen);
                 return (
