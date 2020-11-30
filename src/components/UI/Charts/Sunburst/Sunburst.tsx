@@ -129,7 +129,7 @@ class Sunburst extends Component<SunburstProps, State> {
         />
         <div className={'grid-item'}>
           <InfoPanel
-            data={{ ...selectedPhenotypeInfo }}
+            data={selectedPhenotypeInfo}
             treeData={phenotypeTree}
             getSelectedPhenotype={this.getSelectedPhenotypeFromTree}
           />

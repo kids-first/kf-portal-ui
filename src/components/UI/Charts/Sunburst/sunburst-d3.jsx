@@ -267,16 +267,19 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
   };
 
   const findNodeByKey = (key, node, returnNode) => {
-    if (returnNode) return returnNode;
-    node.children.forEach((n) => {
-      if (key.includes(n.data.name)) {
-        if (key === n.data.key) {
-          returnNode = n;
-        } else {
-          returnNode = findNodeByKey(key, n, returnNode);
-        }
-      }
-    });
+    if (returnNode) {
+      return returnNode;
+    }
+    const findNode = node.children.find((n) => key.includes(n.data.name));
+    if (!findNode) {
+      return returnNode;
+    }
+
+    if (findNode && key === findNode.data.key) {
+      returnNode = findNode;
+    } else {
+      returnNode = findNodeByKey(key, findNode, returnNode);
+    }
     return returnNode;
   };
 

@@ -9,7 +9,7 @@ import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
 import { Button, Tree } from 'antd';
 import { TreeNode } from 'components/OntologyBrowser/Model';
 import './sunburst.css';
-import { RegexExtractPhenotype } from '../../../OntologyBrowser/store';
+import { RegexExtractPhenotype } from 'components/OntologyBrowser/store';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
@@ -35,13 +35,14 @@ const splitTitle = (title: string) => {
   };
 };
 
-export const getPath = (node: string, treeNodes: TreeNode[], path: string[] = []) => {
+export const getPath = (node: string, treeNodes: TreeNode[], path: string[] = []): string[] => {
+  const updatePath = [...path];
   const currentNodeText = treeNodes[0].key;
-  path.push(currentNodeText);
+  updatePath.push(currentNodeText);
   if (node !== currentNodeText) {
-    getPath(node, treeNodes[0].children, path);
+    return getPath(node, treeNodes[0].children, updatePath);
   }
-  return path;
+  return updatePath;
 };
 
 const generateNodeIdClicked = (
