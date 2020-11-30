@@ -31,11 +31,11 @@ const splitTitle = (title: string) => {
   const [rawTitle, rawCode] = title.split('(HP:');
   return {
     title: rawTitle.trim(),
-    hpCode: `HP ${rawCode.replace(')', '').trim()}`,
+    hpCode: rawCode ? `HP ${rawCode.replace(')', '').trim()}` : '',
   };
 };
 
-const getPath = (node: string, treeNodes: TreeNode[], path: string[]) => {
+export const getPath = (node: string, treeNodes: TreeNode[], path: string[] = []) => {
   const currentNodeText = treeNodes[0].key;
   path.push(currentNodeText);
   if (node !== currentNodeText) {
@@ -49,7 +49,7 @@ const generateNodeIdClicked = (
   treeData: TreeNode[],
   getSelectedPhenotype: Function,
 ) => {
-  const path = getPath(nodeName[0] as string, treeData, []);
+  const path = getPath(nodeName[0] as string, treeData);
   const phenotype = generatePhenotypeByTitle(nodeName[0] as string, path.join('-'));
   getSelectedPhenotype(phenotype);
   return path.join('-');
