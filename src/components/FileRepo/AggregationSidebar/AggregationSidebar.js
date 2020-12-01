@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { config as statsConfig } from 'components/Stats';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
-import { Button, Layout, Modal } from 'antd';
+import { Button, Layout } from 'antd';
 import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 import {
   collapsibleAggregationWrapper,
@@ -17,6 +16,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { openModal, closeModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
+import BrowseAllModal from './BrowseAllModal';
 
 const { Sider } = Layout;
 
@@ -48,54 +48,26 @@ const AggregationSidebar = ({
   openModal,
   closeModal,
 }) => {
-  const onCancel = () => {
-    closeModal(ADVANCED_FACETS_MODAL_ID);
-  };
   const [expanded, setExpanded] = useState(true);
-  const [modalSqon, setModalSqon] = useState(sqon);
-
-  const onSqonSubmit = () => {
-    trackFileRepoInteraction({
-      category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
-      action: 'View Results',
-      label: modalSqon,
-    });
-    setSQON(modalSqon);
-    closeModal(ADVANCED_FACETS_MODAL_ID);
-  };
-
+  const showBrowseAllModal = openModalId === ADVANCED_FACETS_MODAL_ID;
   return (
     <>
-      <Modal
-        title={'All Filters'}
-        width={'85%'}
-        onCancel={onCancel}
-        visible={openModalId === ADVANCED_FACETS_MODAL_ID}
-        footer={[
-          <Button key="cancel" onClick={onCancel}>
-            Cancel
-          </Button>,
-          <Button key="view-results" type="primary" onClick={onSqonSubmit}>
-            View Results
-          </Button>,
-        ]}
-      >
-        <AdvancedFacetViewModalContent
-          {...{
-            fetchData,
-            graphqlField,
-            index,
-            projectId,
-            translateSQONValue,
-            trackFileRepoInteraction,
-          }}
+      {showBrowseAllModal && (
+        <BrowseAllModal
+          index={index}
+          translateSQONValue={translateSQONValue}
+          trackFileRepoInteraction={trackFileRepoInteraction}
+          projectId={projectId}
+          graphqlField={graphqlField}
+          fetchData={fetchData}
           {...{ statsConfig }}
-          onSqonChange={({ sqon }) => {
-            setModalSqon(sqon);
-          }}
-          sqon={modalSqon}
+          openModalId={openModalId}
+          sqon={sqon}
+          closeModal={closeModal}
+          setSQON={setSQON}
+          modalName={ADVANCED_FACETS_MODAL_ID}
         />
-      </Modal>
+      )}
       <Sider
         className={collapsibleAggregationWrapper}
         width="300px"

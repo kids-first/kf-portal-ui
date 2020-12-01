@@ -30,7 +30,7 @@ const AdvancedFacetViewModalContent = (props) => {
     onFilterChange,
     onFacetNavigation,
     onSqonChange,
-    sqon,
+    modalSqon,
   } = props;
 
   return (
@@ -42,7 +42,7 @@ const AdvancedFacetViewModalContent = (props) => {
       statsConfig={statsConfig}
       translateSQONValue={translateSQONValue}
       InputComponent={CustomFilterInput}
-      sqon={sqon}
+      sqon={modalSqon}
       onSqonChange={onSqonChange}
       pathValidator={(path) =>
         path &&
@@ -116,7 +116,7 @@ AdvancedFacetViewModalContent.propTypes = {
   closeModal: PropTypes.func,
   onSqonSubmit: PropTypes.func,
   trackFileRepoInteraction: PropTypes.func,
-  sqon: PropTypes.object,
+  modalSqon: PropTypes.object,
   index: PropTypes.string.isRequired,
   graphqlField: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,

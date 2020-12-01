@@ -127,12 +127,9 @@ const ToolbarFile = ({ count }: { count: number }) => {
     >
       {LABELS[ToolbarLabels.file].icon}{' '}
       <div>
-        {prefix}{' '}
-        <span>
-          {label}
-          <ArrowRightOutlined />
-          &nbsp;
-        </span>
+        {prefix} <span>{label}</span>
+        <ArrowRightOutlined />
+        &nbsp;
       </div>
     </div>
   );
