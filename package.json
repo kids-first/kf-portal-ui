@@ -5,7 +5,7 @@
   "dependencies": {
     "@ferlab-ui/core-react": "0.0.7",
     "@ferlab-ui/core-style": "0.0.8",
-    "@kfarranger/components": "1.22.0",
+    "@kfarranger/components": "1.22.1",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
