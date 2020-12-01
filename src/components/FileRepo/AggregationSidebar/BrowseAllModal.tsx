@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { config as statsConfig } from 'components/Stats';
