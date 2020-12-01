@@ -105,3 +105,7 @@
   font-weight: 400;
   padding-left: 10px;
 }
+
+.sunburst-phenotypes-tree .ant-tree-node-selected {
+  background-color: transparent !important;
+}

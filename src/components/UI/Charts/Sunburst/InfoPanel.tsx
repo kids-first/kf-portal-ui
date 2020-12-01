@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
-import { Phenotype } from 'store/sunburstTypes';
+import React, { FunctionComponent, ReactText } from 'react';
+import { generatePhenotypeByTitle, Phenotype } from 'store/sunburstTypes';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
@@ -9,10 +9,12 @@ import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
 import { Button, Tree } from 'antd';
 import { TreeNode } from 'components/OntologyBrowser/Model';
 import './sunburst.css';
+import { RegexExtractPhenotype } from 'components/OntologyBrowser/store';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
   treeData: TreeNode[];
+  getSelectedPhenotype: Function;
 };
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -29,11 +31,37 @@ const splitTitle = (title: string) => {
   const [rawTitle, rawCode] = title.split('(HP:');
   return {
     title: rawTitle.trim(),
-    hpCode: `HP ${rawCode.replace(')', '').trim()}`,
+    hpCode: rawCode ? `HP ${rawCode.replace(')', '').trim()}` : '',
   };
 };
 
-const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex, treeData }) => {
+export const getPath = (node: string, treeNodes: TreeNode[], path: string[] = []): string[] => {
+  const updatePath = [...path];
+  const currentNodeText = treeNodes[0].key;
+  updatePath.push(currentNodeText);
+  if (node !== currentNodeText) {
+    return getPath(node, treeNodes[0].children, updatePath);
+  }
+  return updatePath;
+};
+
+const generateNodeIdClicked = (
+  nodeName: ReactText[],
+  treeData: TreeNode[],
+  getSelectedPhenotype: Function,
+) => {
+  const path = getPath(nodeName[0] as string, treeData);
+  const phenotype = generatePhenotypeByTitle(nodeName[0] as string, path.join('-'));
+  getSelectedPhenotype(phenotype);
+  return path.join('-');
+};
+
+const InfoPanel: FunctionComponent<Props> = ({
+  data,
+  onClickAddTermToActiveIndex,
+  treeData,
+  getSelectedPhenotype,
+}) => {
   const { title, key, results, exactTagCount } = data;
   const titleCode = splitTitle(title);
 
@@ -66,9 +94,12 @@ const InfoPanel: FunctionComponent<Props> = ({ data, onClickAddTermToActiveIndex
         <div className={'tree-title'}>Current Path</div>
         <Tree
           treeData={treeData}
-          expandedKeys={key.split('-')}
+          expandedKeys={key.match(RegexExtractPhenotype) || []}
           switcherIcon={<div />}
           className={'sunburst-phenotypes-tree'}
+          onSelect={(node) =>
+            node.length ? generateNodeIdClicked(node, treeData, getSelectedPhenotype) : {}
+          }
         />
       </div>
     </div>
