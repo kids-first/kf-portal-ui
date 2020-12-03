@@ -11,7 +11,7 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
   addFieldToActiveQuery,
-} from './sqonUtils';
+} from '../sqonUtils';
 
 const numberOfSqonsDidntChanged = (sourceSqons, sqonIndex, newSqons) => {
   expect(newSqons[sqonIndex].content.length).to.equal(sourceSqons[sqonIndex].content.length);
