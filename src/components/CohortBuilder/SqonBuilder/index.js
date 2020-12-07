@@ -1,5 +1,6 @@
 import React from 'react';
 import memoize from 'lodash/memoize';
+import isEmpty from 'lodash/isEmpty';
 import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
@@ -99,6 +100,9 @@ const SqonBuilder = ({
   activeSqonIndex,
   loggedInUser,
 }) => {
+  if (isEmpty(loggedInUser)) {
+    return null;
+  }
   const handleAction = async (action) => {
     await trackSQONaction({
       category: TRACKING_EVENTS.categories.cohortBuilder.sqonBuilder,
