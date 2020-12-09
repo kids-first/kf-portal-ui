@@ -8,6 +8,7 @@ type TGetValues = (filters: Object, sets: Object) => string;
 //   sets: Object,
 //   length?: number,
 // }) => string;
+export const SET_DEFAULT_NAME = 'input set';
 
 const getValues: TGetValues = (filters, sets) => {
   const content: Array<Object> | undefined = filters.content;
@@ -19,9 +20,9 @@ const getValues: TGetValues = (filters, sets) => {
     return [
       []
         .concat(content.value || [])
-        .map(v =>
+        .map((v) =>
           typeof v === 'string' && v.includes('set_id:')
-            ? sets[v.replace('set_id:', '')] || 'input set'
+            ? sets[v.replace('set_id:', '')] || SET_DEFAULT_NAME
             : v,
         ),
     ];
