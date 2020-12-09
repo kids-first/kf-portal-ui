@@ -23,7 +23,7 @@ import {
 } from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import filtersToName from 'common/sqonToName';
+import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
 
 export const MAX_LENGTH_NAME = 50;
 const FORM_NAME = 'save-set';
@@ -196,7 +196,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   useEffect(() => {
     const defaultName = filtersToName({ filters: sqon });
     setLoadingDefaultTagName(true);
-    setDefaultTagName(defaultName);
+    setDefaultTagName(defaultName !== SET_DEFAULT_NAME ? defaultName : '');
     setLoadingDefaultTagName(false);
   }, [sqon]);
 
