@@ -16,6 +16,7 @@ import { getFieldDisplayName } from '../../utils';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
 import './index.css';
+import { cloneDeep } from 'lodash';
 
 type ModalProps = {
   isVisible: boolean;
@@ -43,27 +44,35 @@ const desactivateAllSameTerms = (allSameTerms: string[], transferItems: Transfer
     } else return t;
   });
 
-const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
-  if (initialSqon.content as SqonFilters[]) {
-    const content = initialSqon.content as SqonFilters[];
-    const index = findIndex(content, (c) => c.content.field === selectedField);
+export const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string): Sqon => {
+  const updatedSqon = cloneDeep(initialSqon);
+  const updatedContent = updatedSqon.content as SqonFilters[];
+
+  if (updatedSqon.content as SqonFilters[]) {
+    const index = findIndex(updatedContent, (c) => c.content.field === selectedField);
     if (index >= 0 && value.length === 0) {
-      initialSqon.content.splice(index, 1);
+      updatedSqon.content.splice(index, 1);
     } else if (index >= 0) {
-      const valueContent = initialSqon.content[index] as SqonFilters;
-      valueContent.content.value = value;
+      const valueContent = { ...updatedContent[index] } as SqonFilters;
+      const newValueSet = new Set(
+        Array.isArray(valueContent.content.value)
+          ? [...valueContent.content.value, ...value]
+          : [...value, valueContent.content.value],
+      );
+      updatedContent[index].content = { field: selectedField, value: [...Array.from(newValueSet)] };
     } else if (value.length > 0) {
-      content.push({
+      updatedContent.push({
         op: 'in',
         content: {
           field: selectedField,
           value,
         },
       });
+      updatedSqon.content = updatedContent;
     }
   }
 
-  return initialSqon;
+  return updatedSqon;
 };
 
 class OntologyModal extends React.Component<ModalProps, ModalState> {

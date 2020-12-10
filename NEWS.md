@@ -7,6 +7,23 @@
 
 ### Technical / Other changes
 -->
+## 2020-12-10 kf-portal-ui 2.29.0
+
+### Features
+- [2643](https://github.com/kids-first/kf-portal-ui/issues/2643) Feature (Cohort Builder, HPO Sunburst): The small HPO Tree beside the sunburst is now dynamic allowing the user to click on the terms to navigate in the Sunburst.
+- [2829](https://github.com/kids-first/kf-portal-ui/issues/2829) Feature (Cohort Builder, Family ID): Made the Family ID in the Family ID column clickable to be able to add it to the active query to facilitate the process for a user to restrict his search to a specific family only.
+- [2830](https://github.com/kids-first/kf-portal-ui/issues/2830) Feature (Cohort Builder, Age_at_diagnosis): Removed the age_at_diagnosis column and added the Pedcbio one that is now also a hyperlink.
+
+### Technical / Other changes
+- [2819](https://github.com/kids-first/kf-portal-ui/issues/2819) Refactor (Portal, Hotjar): Replaced the User Feedback add-on Hotjar for Usersnap.
+- [2831](https://github.com/kids-first/kf-portal-ui/issues/2831) Fix (Cohort Builder, Table view): Fixed an issue where when a user visiting a Participants page would go back to the Cohort Builder using the browser back button, the view of the results would be reset to Summary view automatically.
+- [2832](https://github.com/kids-first/kf-portal-ui/issues/2832) Refactor (Cohort Builder, HPO Sunburst): Adjusted the Sunburst to also be filtered when selecting a HPO term in the HPO Browser.
+- [2838](https://github.com/kids-first/kf-portal-ui/issues/2838) Fix (Dashboard, Charts): Fixed an issue where the studies/participants figure on the dashboard was stripping colons from study names
+- [2840](https://github.com/kids-first/kf-portal-ui/issues/2840) Refactor (Cohort Builder, HPO Sunburst): Adjusted indentation and vertical space of the information block beside the Sunburst.
+- [2849](https://github.com/kids-first/kf-portal-ui/issues/2849) Fix (Cohort Builder, age_at_diagnosis): Fixed an issue where the Portal would cause an error and crash when selecting a large range for the age_at_diagnosis filter.
+- [2850](https://github.com/kids-first/kf-portal-ui/issues/2850) Fix (File Repository, Filters): Fixed an issue where the results in the “All filters” modal were not filtered properly.
+- [2851](https://github.com/kids-first/kf-portal-ui/issues/2851) Refactor (Cohort Builder, Saved Sets): Improved the default naming for the saved sets that are now based on the values included in the queries.
+
 ## 2020-11-13 kf-portal-ui 2.28.0
 
 ### Features

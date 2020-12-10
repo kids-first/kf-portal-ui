@@ -1,11 +1,11 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.28.0",
+  "version": "2.29.0",
   "private": true,
   "dependencies": {
     "@ferlab-ui/core-react": "0.0.7",
     "@ferlab-ui/core-style": "0.0.8",
-    "@kfarranger/components": "1.21.2",
+    "@kfarranger/components": "1.23.0",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

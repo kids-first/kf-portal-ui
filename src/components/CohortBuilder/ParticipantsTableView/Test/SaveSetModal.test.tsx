@@ -1,9 +1,5 @@
 import React from 'react';
-import SaveSetModal, {
-  extractTagNumbers,
-  MAX_LENGTH_NAME,
-  validateNameSetInput,
-} from '../SaveSetModal';
+import SaveSetModal, { extractTagNumbers, validateNameSetInput } from '../SaveSetModal';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { jestPatchMatchMedia } from 'utils';
@@ -110,9 +106,6 @@ describe('Save Set Modal', () => {
 });
 
 describe('validateNameSetInput', () => {
-  it('should not allow special character %', () => {
-    expect(validateNameSetInput('mySave%Set')).toHaveProperty('err', true);
-  });
   it('should not allow empty input', () => {
     expect(validateNameSetInput('')).toHaveProperty('err', true);
   });
@@ -121,9 +114,6 @@ describe('validateNameSetInput', () => {
   });
   it('should allow blank or empty space(s)', () => {
     expect(validateNameSetInput('mySave Set')).toHaveProperty('err', false);
-  });
-  it(`should not allow more than ${MAX_LENGTH_NAME} characters`, () => {
-    expect(validateNameSetInput('a'.repeat(MAX_LENGTH_NAME + 1))).toHaveProperty('err', true);
   });
   it(`should allow "-"`, () => {
     expect(validateNameSetInput('my-set')).toHaveProperty('err', false);

@@ -4,19 +4,26 @@ import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
 import autobind from 'auto-bind-es5';
-
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+
+import { connect } from 'react-redux';
+import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
+import { Tooltip } from 'antd';
+import { externalLink } from 'uikit/ExternalLink.module.css';
 import './ParticipantTableView.css';
 import style from 'style/themes/default/colors.module.scss';
+import ExternalLink from 'uikit/ExternalLink';
+import get from 'lodash/get';
+import { STUDIES_WITH_PEDCBIO } from 'common/constants';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -46,7 +53,6 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const displayedRowCount = collapsed ? 1 : sizeOfCleanData;
   const displayMoreButton = sizeOfCleanData > 1;
   const hasManyValues = sizeOfCleanData > 1;
-
   return (
     <div className="rowCss">
       <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
@@ -81,7 +87,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   );
 });
 
-const NbFilesCell = compose(({ value: nbFiles, row }) => {
+const NbFilesCell = ({ value: nbFiles, row }) => {
   const encodedSqon = encodeURI(
     JSON.stringify(
       {
@@ -107,11 +113,11 @@ const NbFilesCell = compose(({ value: nbFiles, row }) => {
       {`${nbFiles} Files`}
     </Link>
   );
-});
+};
 
-const ParticipantIdLink = compose(({ value: idParticipant }) => (
+const ParticipantIdLink = ({ value: idParticipant }) => (
   <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>
-));
+);
 
 const CellSelectionCell = (value, row, onCellSelected) => (
   <SelectionCell value={value} row={row} onCellSelected={onCellSelected} />
@@ -129,7 +135,36 @@ const CellNbFilesCell = (value, row) => <NbFilesCell value={value} row={row} />;
 
 const CellParticipantIdLink = (value) => <ParticipantIdLink value={value} />;
 
-const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
+const getIt = (participant, accessor) => get(participant, accessor, null);
+
+const CellPedcBioLink = (props) => {
+  if (STUDIES_WITH_PEDCBIO.includes((props.original || {}).studyId)) {
+    return (
+      <ExternalLink
+        href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${getIt(
+          props.original,
+          props.accessor,
+        )}`}
+        onClick={() => {
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.entityPage.file,
+            action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
+            label: `${props.original.studyName} (${props.original.studyId})`,
+          });
+        }}
+      >
+        {getIt(props.original, 'participantId')}
+      </ExternalLink>
+    );
+  }
+};
+
+const participantsTableViewColumns = (
+  onRowSelected,
+  onAllRowsSelected,
+  dirtyHack,
+  addSqonTermToActiveIndex,
+) => [
   {
     Header: (props) => HeaderSelectionCell(props, dirtyHack.allRowsSelected, onAllRowsSelected),
     Cell: (props) => CellSelectionCell(props.value, props.row, onRowSelected),
@@ -151,6 +186,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     minWidth: 140,
   },
   { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
+  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   { Header: 'Vital Status', accessor: 'vitalStatus', minWidth: 70 },
   {
     Header: 'Diagnosis Category',
@@ -168,20 +204,40 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     sortable: false,
   },
   {
-    Header: 'Age at Diagnosis (days)',
-    accessor: 'ageAtDiagnosis',
-    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
-    field: 'diagnoses.age_at_event_days',
-    sortable: false,
+    Header: 'Family ID',
+    accessor: 'familyId',
+    // eslint-disable-next-line react/display-name,react/prop-types
+    Cell: ({ value: familyId }) =>
+      familyId ? (
+        <Tooltip title="Add to query">
+          <span
+            onClick={() => addSqonTermToActiveIndex({ value: familyId, field: 'family_id' })}
+            className={externalLink}
+          >
+            {familyId}
+          </span>
+        </Tooltip>
+      ) : (
+        ''
+      ),
+    field: 'family_id',
   },
-  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
-  { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
     Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'family.family_compositions',
     sortable: false,
+  },
+  {
+    Header: 'PedcBioPortal',
+    accessor: 'participantId',
+    Cell: (props) =>
+      CellPedcBioLink({
+        original: props.original,
+        accessor: 'participantId',
+      }),
+    minWidth: 140,
   },
   {
     Header: 'Files',
@@ -206,7 +262,12 @@ class ParticipantsTable extends Component {
     this.dirtyHack = { allRowsSelected: props.allRowsSelected };
     this.state = {
       columns: configureCols(
-        participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected, this.dirtyHack),
+        participantsTableViewColumns(
+          props.onRowSelected,
+          props.onAllRowsSelected,
+          this.dirtyHack,
+          props.addSqonTermToActiveIndex,
+        ),
       ).map((field) =>
         field.sortable !== false && SORTABLE_FIELDS_MAPPING.has(field.accessor)
           ? { ...field, sortable: true }
@@ -297,6 +358,10 @@ class ParticipantsTable extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  addSqonTermToActiveIndex: (term) => dispatch(addTermToActiveIndex(term)),
+});
+
 ParticipantsTable.propTypes = {
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
@@ -313,6 +378,9 @@ ParticipantsTable.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
+  addSqonTermToActiveIndex: PropTypes.func,
+  sort: PropTypes.func,
+  sqon: PropTypes.any,
 };
 
-export default ParticipantsTable;
+export default connect(null, mapDispatchToProps)(ParticipantsTable);

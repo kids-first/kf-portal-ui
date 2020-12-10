@@ -2,7 +2,6 @@
 import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
-import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
 import PropTypes from 'prop-types';
 import { deleteSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
@@ -25,13 +24,6 @@ const disconnect = async ({ effects, setConnecting, setError }) => {
 };
 const connect = ({ setConnecting, openModal }) => {
   setConnecting(true);
-  analyticsTrigger({
-    property: 'portal',
-    type: 'recording',
-    uiArea: TRACKING_EVENTS.categories.user.profile,
-    action: TRACKING_EVENTS.actions.integration.init,
-    label: TRACKING_EVENTS.labels.cavatica,
-  });
   openModal(CAVATICA_INTEGRATION_MODAL_ID);
   setConnecting(false);
 };

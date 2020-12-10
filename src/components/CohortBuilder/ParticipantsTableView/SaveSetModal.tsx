@@ -13,6 +13,7 @@ import {
   SaveSetActionsTypes,
   SaveSetParams,
   SaveSetState,
+  SetInfo,
   UserSet,
 } from 'store/saveSetTypes';
 import {
@@ -22,11 +23,9 @@ import {
 } from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import { getSetAndParticipantsCountByUser } from 'services/sets';
-import { SetInfo } from 'store/saveSetTypes';
+import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
 
 export const MAX_LENGTH_NAME = 50;
-const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_ ]*$/;
 const FORM_NAME = 'save-set';
 
 type OwnProps = {
@@ -85,10 +84,6 @@ export const validateNameSetInput = (rawValue: string): NameSetValidator => {
   const value = (rawValue || '').trim();
   if (!value) {
     return { msg: 'Please input the name of your set', err: true };
-  } else if (value.length > MAX_LENGTH_NAME) {
-    return { msg: `Name is too long (max ${MAX_LENGTH_NAME} characters)`, err: true };
-  } else if (!REGEX_FOR_INPUT.test(value)) {
-    return { msg: 'Invalid character(s) were detected', err: true };
   }
   return { msg: '', err: false };
 };
@@ -98,7 +93,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [hasErrorMessage, setHasErrorMessage] = useState('');
-  const [defaultTagName, setDefaultTagName] = useState('Saved_Set_1');
+  const [defaultTagName, setDefaultTagName] = useState('');
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
   const {
@@ -199,24 +194,11 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   }, [error]);
 
   useEffect(() => {
-    const generateSetDefaultName = async () => {
-      try {
-        setLoadingDefaultTagName(true);
-
-        const userSets = await getSetAndParticipantsCountByUser(user.egoId);
-        const tagNameSuffixes = extractTagNumbers(userSets);
-
-        if (tagNameSuffixes.length > 0) {
-          setDefaultTagName(`Saved_Set_${Math.max(...tagNameSuffixes) + 1}`);
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoadingDefaultTagName(false);
-      }
-    };
-    generateSetDefaultName().then();
-  }, [user.egoId]);
+    const defaultName = filtersToName({ filters: sqon });
+    setLoadingDefaultTagName(true);
+    setDefaultTagName(defaultName !== SET_DEFAULT_NAME ? defaultName : '');
+    setLoadingDefaultTagName(false);
+  }, [sqon]);
 
   const displayHelp = () => {
     if (error) {

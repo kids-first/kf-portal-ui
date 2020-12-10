@@ -1,5 +1,5 @@
 import React from 'react';
-import OntologyModal from '../index';
+import OntologyModal, { updateSqons } from '../index';
 import { configure, mount, ReactWrapper, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Spinner } from 'uikit/Spinner';
@@ -148,5 +148,116 @@ describe('Ontology Modal', () => {
 
     expect(wrapperInstance.instance().getKeysFromSqon().sort()).toEqual(expectedResult.sort());
     expect(wrapperInstanceCombine.instance().getKeysFromSqon().sort()).toEqual([]);
+  });
+});
+
+describe('updateSqons method render updateSqon and', () => {
+  it('not alter initial input Sqon', () => {
+    const initialSqon = {
+      op: 'and',
+      content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
+    };
+
+    const values = ['Abnormality of the mouth (HP:0000153)'];
+    const selectedField = 'observed_phenotype.name';
+    updateSqons(initialSqon, values, selectedField);
+
+    expect({
+      op: 'and',
+      content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
+    }).toEqual(initialSqon);
+  });
+
+  it('include field if not in initialSqon', () => {
+    const initialSqon = {
+      op: 'and',
+      content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
+    };
+
+    const expectedUpdateSqon = {
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        {
+          op: 'in',
+          content: {
+            field: 'observed_phenotype.name',
+            value: ['Abnormality of the mouth (HP:0000153)'],
+          },
+        },
+      ],
+    };
+
+    const values = ['Abnormality of the mouth (HP:0000153)'];
+    const selectedField = 'observed_phenotype.name';
+
+    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect({
+      op: 'and',
+      content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
+    }).toEqual(initialSqon);
+  });
+
+  it("update field if it's in initialSqon", () => {
+    const initialSqon = {
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        { op: 'in', content: { field: 'observed_phenotype.name', value: ['Some value'] } },
+      ],
+    };
+
+    const expectedUpdateSqon = {
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        {
+          op: 'in',
+          content: {
+            field: 'observed_phenotype.name',
+            value: ['Some value', 'Abnormality of the mouth (HP:0000153)'],
+          },
+        },
+      ],
+    };
+
+    const values = ['Abnormality of the mouth (HP:0000153)'];
+    const selectedField = 'observed_phenotype.name';
+
+    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect({
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        { op: 'in', content: { field: 'observed_phenotype.name', value: ['Some value'] } },
+      ],
+    }).toEqual(initialSqon);
+  });
+
+  it('remove field if field value is empty', () => {
+    const initialSqon = {
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        { op: 'in', content: { field: 'observed_phenotype.name', value: ['Some value'] } },
+      ],
+    };
+
+    const expectedUpdateSqon = {
+      op: 'and',
+      content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
+    };
+
+    const values: string[] = [];
+    const selectedField = 'observed_phenotype.name';
+
+    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect({
+      op: 'and',
+      content: [
+        { op: 'in', content: { field: 'gender', value: ['Male'] } },
+        { op: 'in', content: { field: 'observed_phenotype.name', value: ['Some value'] } },
+      ],
+    }).toEqual(initialSqon);
   });
 });

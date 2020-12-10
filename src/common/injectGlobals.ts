@@ -50,9 +50,6 @@ export const orcidAuthApiBaseUri = getApplicationEnvVar('ORCID_AUTH_API_URI');
 export const orcidAuthScope = getApplicationEnvVar('ORCID_AUTH_API_SCOPE');
 export const orcidAuthRedirectUri = getApplicationEnvVar('ORCID_AUTH_REDIRECT_URI');
 
-export const hotjarHost = getApplicationEnvVar('HOTJAR_HOST');
-export const hotjarId = getApplicationEnvVar('HOTJAR_ID');
-
 export const gaTrackingID: string = getApplicationEnvVar('GA_TRACKING_ID');
 
 export const defaultRedirectUri = getApplicationEnvVar('DEFAULT_REDIRECT_URI') || '';
@@ -102,3 +99,5 @@ export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') 
 
 // Reports API
 export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';
+
+export const userSnapApiKey = getApplicationEnvVar('USER_SNAP_API_KEY') || '';

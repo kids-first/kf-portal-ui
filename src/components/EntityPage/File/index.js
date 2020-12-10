@@ -173,7 +173,6 @@ const fileQuery = `query ($sqon: JSON) {
                                 edges {
                                   node {
                                     affected_status
-                                    diagnosis_category
                                     ethnicity
                                     external_id
                                     gender
@@ -273,11 +272,11 @@ const fileQuery = `query ($sqon: JSON) {
   }
 }`;
 
-const getTags = data => {
+const getTags = (data) => {
   const dataType = data.data_type;
   const experimentalStrategies = Array.from(new Set(get(data, 'experiment_strategies', [])));
 
-  return [dataType, experimentalStrategies].filter(item => !(isNull(item) || isUndefined(item)));
+  return [dataType, experimentalStrategies].filter((item) => !(isNull(item) || isUndefined(item)));
 };
 
 const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
@@ -285,9 +284,9 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
     api={api}
     query={fileQuery}
     sqon={buildSqonForIds([fileId])}
-    transform={data => get(data, 'data.file')}
+    transform={(data) => get(data, 'data.file')}
   >
-    {file => {
+    {(file) => {
       if (file.isLoading || isPageLoading) {
         return (
           <div className={fillCenter} style={{ marginTop: '31px' }}>
@@ -329,14 +328,14 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
               sourceLocation={FILE_VIEW}
             />
             <Download
-              onSuccess={url => {
+              onSuccess={(url) => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action: 'Download File',
                   label: url,
                 });
               }}
-              onError={err => {
+              onError={(err) => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action: 'Download File FAILED',
@@ -369,10 +368,11 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
                     loading={file.isLoading}
                     data={toParticpantBiospecimenData(data)}
                     transforms={{
-                      study_name: studyShortName => (
+                      // eslint-disable-next-line react/display-name
+                      study_name: (studyShortName) => (
                         <ExternalLink
                           href={`${kfWebRoot}/support/studies-and-access`}
-                          onClick={e => {
+                          onClick={() => {
                             trackUserInteraction({
                               category: TRACKING_EVENTS.categories.entityPage.file,
                               action:
@@ -386,7 +386,8 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
                         </ExternalLink>
                       ),
 
-                      participant_id: participantId => (
+                      // eslint-disable-next-line react/display-name
+                      participant_id: (participantId) => (
                         <Link to={`/participant/${participantId}#summary`}>{participantId}</Link>
                       ),
                     }}
@@ -438,11 +439,11 @@ const enhance = compose(
     async componentDidMount() {
       const { api, fileId, setPageLoading, setUserFilePermission } = this.props;
       // Need to check all fences
-      const hasUserPermissionPromises = FENCES.map(fence =>
+      const hasUserPermissionPromises = FENCES.map((fence) =>
         checkUserFilePermission(api)({ fileId, fence }),
       );
       // A user has access if at least one fence grants us access
-      const userHasFilePermission = await Promise.all(hasUserPermissionPromises).then(accesses =>
+      const userHasFilePermission = await Promise.all(hasUserPermissionPromises).then((accesses) =>
         accesses.reduce((hasAccess, permission) => hasAccess || permission, false),
       );
       setUserFilePermission(userHasFilePermission);

@@ -23,3 +23,16 @@ export const generateEmptyPhenotype = () => ({
   disabled: true,
   valueText: '',
 });
+
+export const generatePhenotypeByTitle = (title: string, key: string) => ({
+  title: title,
+  children: [],
+  results: 0,
+  exactTagCount: 0,
+  key: key,
+  text: '',
+  name: '',
+  depth: 0,
+  disabled: true,
+  valueText: '',
+});

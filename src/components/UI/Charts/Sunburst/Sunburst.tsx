@@ -51,6 +51,7 @@ export const hpoTreeTitleFormat = (splitPheno: PhenotypeSplit, currentTerm: stri
 
 class Sunburst extends Component<SunburstProps, State> {
   private readonly ref: React.RefObject<SVGSVGElement>;
+  private sunburstUpdate: (id: string) => void;
   static defaultProps = {
     depth: 2,
     width: 300,
@@ -60,6 +61,7 @@ class Sunburst extends Component<SunburstProps, State> {
   constructor(props: SunburstProps) {
     super(props);
     this.ref = React.createRef();
+    this.sunburstUpdate = () => {};
   }
 
   state = {
@@ -77,6 +79,11 @@ class Sunburst extends Component<SunburstProps, State> {
     });
   };
 
+  getSelectedPhenotypeFromTree = (phenotype: Phenotype) => {
+    this.getSelectedPhenotype(phenotype);
+    this.sunburstUpdate(phenotype.key);
+  };
+
   componentDidMount() {
     const { depth, width, height, tooltipFormatter, centerTextFormatter, data } = this.props;
     const config = {
@@ -84,7 +91,8 @@ class Sunburst extends Component<SunburstProps, State> {
       width,
       height,
     };
-    sunburstD3(this.ref, data, config, this.getSelectedPhenotype, {
+
+    this.sunburstUpdate = sunburstD3(this.ref, data, config, this.getSelectedPhenotype, {
       tooltipFormatter,
       centerTextFormatter,
     });
@@ -120,7 +128,11 @@ class Sunburst extends Component<SunburstProps, State> {
           ref={this.ref}
         />
         <div className={'grid-item'}>
-          <InfoPanel data={{ ...selectedPhenotypeInfo }} treeData={phenotypeTree} />
+          <InfoPanel
+            data={selectedPhenotypeInfo}
+            treeData={phenotypeTree}
+            getSelectedPhenotype={this.getSelectedPhenotypeFromTree}
+          />
         </div>
       </div>
     );

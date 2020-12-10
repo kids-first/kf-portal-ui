@@ -4,28 +4,29 @@ import gql from 'graphql-tag';
 import { compose } from 'recompose';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
-
+import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 
-import { Tabs } from 'antd';
+import { Tabs, Empty } from 'antd';
 
 import { withApi } from 'services/api';
 
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import ParticipantsTableView from './ParticipantsTableView';
 import QueriesResolver from './QueriesResolver';
-import EmptyCohortOverlay from './EmptyCohortOverlay';
 import Summary from './Summary';
 
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
 import Toolbar from './Results/Toolbar/Toolbar';
-
 import './Results.css';
+import { parse, stringify } from 'query-string';
 
 const { TabPane } = Tabs;
+
 const SUMMARY = 'summary';
 const TABLE = 'table';
+const URL_HASH_VIEW_KEY = 'view';
 
 const cohortResultsQuery = (sqon) => ({
   query: gql`
@@ -61,13 +62,21 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => (
+const isUrlHashValidForView = (parsedSearchParam) => [SUMMARY, TABLE].includes(parsedSearchParam);
+
+const Results = ({
+  activeSqonIndex,
+  sqon = { op: 'and', content: [] },
+  api,
+  state,
+  location,
+  history,
+}) => (
   <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       if (error) {
         return <TableErrorView error={error} />;
       }
-
       const resultsData = data[0];
       const isFiltered = !isEmpty(sqon.content);
 
@@ -90,6 +99,10 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
         />
       );
 
+      const parsedUrlHash = parse(location.hash);
+      const viewHashValue = parsedUrlHash[URL_HASH_VIEW_KEY];
+      const defaultActiveViewKey = isUrlHashValidForView(viewHashValue) ? viewHashValue : SUMMARY;
+
       return (
         <Fragment>
           <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
@@ -98,6 +111,16 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
               type="card"
               style={{ marginBottom: '0px' }}
               tabBarStyle={{ marginBottom: '0px' }}
+              defaultActiveKey={defaultActiveViewKey}
+              onChange={(key) => {
+                const mustUpdateSearchParams = key !== viewHashValue;
+                if (mustUpdateSearchParams) {
+                  history.push({
+                    ...location,
+                    hash: stringify({ ...parsedUrlHash, [URL_HASH_VIEW_KEY]: key }),
+                  });
+                }
+              }}
             >
               <TabPane
                 tab={
@@ -121,8 +144,18 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                 key={TABLE}
                 className="cb-tab-content"
               >
-                {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
-                <ParticipantsTableView sqon={sqon} />
+                {cohortIsEmpty ? (
+                  <Empty
+                    className={'empty-container'}
+                    description={
+                      <span className={'empty-description'}>
+                        {'There are no participants for this cohort.'}
+                      </span>
+                    }
+                  />
+                ) : (
+                  <ParticipantsTableView sqon={sqon} />
+                )}
               </TabPane>
             </Tabs>
           </div>
@@ -137,6 +170,19 @@ Results.propTypes = {
   sqon: PropTypes.object,
   api: PropTypes.func.isRequired,
   state: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired,
+      hash: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+    hash: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default compose(withApi, injectState)(Results);
+export default compose(withApi, injectState, withRouter)(Results);

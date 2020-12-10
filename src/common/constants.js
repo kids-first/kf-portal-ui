@@ -194,3 +194,5 @@ export const FILE_VIEW = 'FILE_VIEW';
 export const KEY_PUBLIC_PROFILE_INVITE_IS_SEEN = 'public_profile_invite_is_seen';
 
 export const CARDINALITY_PRECISION_THRESHOLD = 10000;
+
+export const STUDIES_WITH_PEDCBIO = ['SD_BHJXBDQK', 'SD_M3DBXD12'];
