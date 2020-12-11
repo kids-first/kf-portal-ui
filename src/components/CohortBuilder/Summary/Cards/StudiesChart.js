@@ -42,6 +42,7 @@ const studiesQuery = (sqon) => ({
     query($sqon: JSON) {
       participant {
         probands: aggregations(
+          aggregations_filter_themselves: true
           filters: {
             content: [$sqon, { content: { field: "is_proband", value: ["true"] }, op: "in" }]
             op: "and"
@@ -55,6 +56,7 @@ const studiesQuery = (sqon) => ({
           }
         }
         familyMembers: aggregations(
+          aggregations_filter_themselves: true
           filters: {
             content: [
               $sqon
