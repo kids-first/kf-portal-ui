@@ -54,7 +54,7 @@ function summaryTableData(participant) {
       const summaryList = [
         { title: 'Kids First/Participant ID', summary: getIt('kf_id') },
 
-        { title: 'External ID', summary: getIt('external_id') },
+        { title: 'Participant - External ID', summary: getIt('external_id') },
         {
           title: 'Study',
           summary: (
