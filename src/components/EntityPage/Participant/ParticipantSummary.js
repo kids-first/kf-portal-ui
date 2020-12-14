@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Fragment } from 'react';
 import get from 'lodash/get';
 
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable';
@@ -16,7 +16,8 @@ import prettifyAge from './Utils/prettifyAge';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import Tooltip from 'uikit/Tooltip';
 import theme from 'theme/defaultTheme';
-import { STUDIES_WITH_PEDCBIO } from 'common/constants';
+import { STUDIES_WITH_PEDCBIO, DB_GA_P, generateUrlForDbGap } from 'common/constants';
+import PropTypes from 'prop-types';
 
 /**
  * Sometimes, intermediate nested fields are missing.
@@ -29,106 +30,111 @@ import { STUDIES_WITH_PEDCBIO } from 'common/constants';
  * @param obj
  * @param accessor
  */
-function getter(obj, accessor) {
-  return get(obj, accessor, null);
-}
+const getter = (obj, accessor) => get(obj, accessor, null);
 
-/**
- * Builds the data for the main SummaryTable.
- *
- * @param participant
- * @returns {*}
- */
-function summaryTableData(participant) {
-  /**
-   * Syntaxic sugar for getter
-   *
-   * @param accessor
-   * @returns {string|*}
-   */
-  function getIt(accessor) {
-    return getter(participant, accessor);
+const summaryTableData = (participant) => {
+  const getIt = (accessor) => getter(participant, accessor);
+
+  const participantId = getIt('kf_id');
+  const studyId = getIt('study.kf_id');
+
+  let rows = [
+    { title: 'Kids First/Participant ID', summary: participantId },
+
+    { title: 'Participant - External ID', summary: getIt('external_id') },
+    {
+      title: 'Study',
+      summary: (
+        <ExternalLink
+          href={`${kfWebRoot}/support/studies-and-access`}
+          onClick={async () => {
+            await trackUserInteraction({
+              category: TRACKING_EVENTS.categories.entityPage.file,
+              action: `${TRACKING_EVENTS.actions.click}: File Property: Study`,
+              label: `${participant.study.short_name} (${studyId})`,
+            });
+          }}
+          style={{ whiteSpace: 'auto' }}
+        >
+          {`${getIt('study.short_name')} (${studyId})`}
+        </ExternalLink>
+      ),
+    },
+  ];
+
+  const studyDbGaP = getIt('study.data_access_authority');
+  if (DB_GA_P === studyDbGaP) {
+    const studyExternalId = getIt('study.external_id');
+    rows = [
+      ...rows,
+      {
+        title: 'dbGaP Accession Number',
+        summary: (
+          <ExternalLink
+            href={generateUrlForDbGap(studyExternalId)}
+            onClick={async () => {
+              await trackUserInteraction({
+                category: TRACKING_EVENTS.categories.entityPage.file,
+                action: `${TRACKING_EVENTS.actions.click}: DbGaP link`,
+                label: `${participant.study.data_access_authority} (${studyDbGaP})`,
+              });
+            }}
+          >
+            {studyExternalId}
+          </ExternalLink>
+        ),
+      },
+    ];
   }
-  return sanitize(
-    (() => {
-      const summaryList = [
-        { title: 'Kids First/Participant ID', summary: getIt('kf_id') },
 
-        { title: 'Participant - External ID', summary: getIt('external_id') },
-        {
-          title: 'Study',
-          summary: (
-            <ExternalLink
-              href={`${kfWebRoot}/support/studies-and-access`}
-              onClick={() => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.entityPage.file,
-                  action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-                  label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
-                });
-              }}
-              style={{ whiteSpace: 'auto' }}
-            >
-              {`${getIt('study.short_name')} (${getIt('study.kf_id')})`}
-            </ExternalLink>
-          ),
-        },
-        {
-          title: 'Diagnosis category',
-          summary: getIt('diagnoses.hits.edges.0.node.diagnosis_category'),
-        },
-        { title: 'Proband', summary: participant.is_proband },
-        {
-          title: 'Family ID',
-          summary: getIt('family_id'),
-        },
-        {
-          title: 'Family Composition',
-          summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
-        },
-        { title: 'Gender', summary: participant.gender },
-        { title: 'Ethnicity', summary: participant.ethnicity },
-        { title: 'Race', summary: participant.race },
-        { title: 'Vital Status', summary: getIt('outcome.vital_status') },
-        { title: 'Disease Related', summary: getIt('outcome.disease_related') },
-      ];
+  if (STUDIES_WITH_PEDCBIO.includes(studyId)) {
+    rows = [
+      ...rows,
+      {
+        title: 'PedcBioPortal',
+        summary: (
+          <ExternalLink
+            href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${participantId}`}
+            onClick={async () => {
+              await trackUserInteraction({
+                category: TRACKING_EVENTS.categories.entityPage.file,
+                action: `${TRACKING_EVENTS.actions.click}: File Property: Study`,
+                label: `${participant.study.short_name} (${studyId})`,
+              });
+            }}
+          >
+            {participantId}
+          </ExternalLink>
+        ),
+      },
+    ];
+  }
+  rows = [
+    ...rows,
+    {
+      title: 'Diagnosis category',
+      summary: getIt('diagnoses.hits.edges.0.node.diagnosis_category'),
+    },
+    { title: 'Proband', summary: participant.is_proband },
+    {
+      title: 'Family ID',
+      summary: getIt('family_id'),
+    },
+    {
+      title: 'Family Composition',
+      summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
+    },
+    { title: 'Gender', summary: participant.gender },
+    { title: 'Ethnicity', summary: participant.ethnicity },
+    { title: 'Race', summary: participant.race },
+    { title: 'Vital Status', summary: getIt('outcome.vital_status') },
+    { title: 'Disease Related', summary: getIt('outcome.disease_related') },
+  ];
+  return sanitize(rows);
+};
 
-      if (STUDIES_WITH_PEDCBIO.includes(getIt('study.kf_id'))) {
-        summaryList.push({
-          title: 'PedcBioPortal',
-          summary: (
-            <ExternalLink
-              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${getIt(
-                'kf_id',
-              )}`}
-              onClick={() => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.entityPage.file,
-                  action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-                  label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
-                });
-              }}
-            >
-              {getIt('kf_id')}
-            </ExternalLink>
-          ),
-        });
-        return summaryList;
-      } else {
-        return summaryList;
-      }
-    })(),
-  );
-}
-
-/**
- * Builds the data for the SummaryTable of the given specimen
- *
- * @param specimen
- * @returns {*}
- */
-function specimenSummaryTableData(specimen) {
-  return sanitize([
+const specimenSummaryTableData = (specimen) =>
+  sanitize([
     { title: 'Specimen ID', summary: specimen.kf_id },
     { title: 'Age at Sample Acquisition', summary: prettifyAge(specimen.age_at_event_days) },
     { title: 'Analyte Type', summary: specimen.analyte_type },
@@ -139,18 +145,6 @@ function specimenSummaryTableData(specimen) {
     { title: 'Tumor Description (Source Text)', summary: specimen.source_text_tumor_descriptor },
     { title: 'Consent Code (dbGaP)', summary: specimen.consent_type },
   ]);
-}
-
-const buildSpecimenDxSection = ({ specimenId, sanitizedNodes }) => (
-  <EntityContentSection key={`entityContentSection`} title="Histological Diagnoses" size={'small'}>
-    {sanitizedNodes.map((sanitizedNode, index) => (
-      <HistologicalDiagnosisTable
-        key={`histological_dx_table_specimen_id_${specimenId}_node_index_${index}`}
-        data={[sanitizedNode]}
-      />
-    ))}
-  </EntityContentSection>
-);
 
 const getSanitizedSpecimenDxsData = (specimen) =>
   get(specimen, 'diagnoses.hits.edges', [])
@@ -162,47 +156,42 @@ const getSanitizedSpecimenDxsData = (specimen) =>
       }),
     );
 
+const WRONG_TYPES = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
+
+const biospecimenIdToTargetProps = (specimens = []) =>
+  specimens.reduce((acc, specimen) => {
+    const currentNode = specimen.node;
+    if (!currentNode.kf_id) {
+      return acc;
+    }
+
+    const hasRelatedBioSpecimenDx = get(currentNode, 'diagnoses.hits.edges', []).length > 0;
+    return {
+      ...acc,
+      [currentNode.kf_id]: {
+        rightIcon: hasRelatedBioSpecimenDx ? (
+          <Tooltip html={'Histological Diagnosis'}>
+            <BiospecimenIcon width="25px" height="15px" fill={theme.biospecimenOrange} />
+          </Tooltip>
+        ) : null,
+      },
+    };
+  }, {});
+
 const ParticipantSummary = ({ participant }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
   const hasFile = get(participant, 'files.hits.edges', []).length > 0;
-  let wrongTypes = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
 
-  let hasSequencingData = false;
-  for (const i in get(participant, 'files.hits.edges', [])) {
-    if (wrongTypes.includes(get(participant, 'files.hits.edges', [])[i].node.data_type)) {
-      hasSequencingData = true;
-      break;
-    }
-  }
-
-  const biospecimenIdToTargetProps = (specimens = []) =>
-    specimens.reduce((acc, specimen) => {
-      const currentNode = specimen.node;
-      if (!currentNode.kf_id) {
-        return acc;
-      }
-
-      const hasRelatedBioSpecimenDx = get(currentNode, 'diagnoses.hits.edges', []).length > 0;
-      return {
-        ...acc,
-        [currentNode.kf_id]: {
-          rightIcon: hasRelatedBioSpecimenDx ? (
-            <Tooltip html={'Histological Diagnosis'}>
-              <BiospecimenIcon width="25px" height="15px" fill={theme.biospecimenOrange} />
-            </Tooltip>
-          ) : null,
-        },
-      };
-    }, {});
+  const hasSequencingData = get(participant, 'files.hits.edges', []).some((edge) =>
+    WRONG_TYPES.includes(edge?.node?.data_type),
+  );
 
   return (
-    <React.Fragment>
+    <>
       <EntityContentSection title="Summary">
         <VariableSummaryTable rows={summaryTableData(participant)} nbOfTables={2} />
       </EntityContentSection>
-      {specimens.length === 0 ? (
-        ''
-      ) : (
+      {specimens.length > 0 && (
         <div>
           <EntityContentDivider />
           <EntityContentSection title="Biospecimens">
@@ -211,19 +200,28 @@ const ParticipantSummary = ({ participant }) => {
                 const specimen = specimenNode.node;
                 const specimenDxsData = getSanitizedSpecimenDxsData(specimen);
                 return (
-                  <React.Fragment key={specimen.kf_id}>
+                  <Fragment key={specimen.kf_id}>
                     <VariableSummaryTable
                       key={specimen.kf_id}
                       label={specimen.kf_id}
                       rows={specimenSummaryTableData(specimen)}
                       nbOfTables={2}
                     />
-                    {specimenDxsData.length > 0 &&
-                      buildSpecimenDxSection({
-                        specimenId: specimen.kf_id,
-                        sanitizedNodes: specimenDxsData,
-                      })}
-                  </React.Fragment>
+                    {specimenDxsData.length > 0 && (
+                      <EntityContentSection
+                        key={`entityContentSection`}
+                        title="Histological Diagnoses"
+                        size={'small'}
+                      >
+                        {specimenDxsData.map((sanitizedNode, index) => (
+                          <HistologicalDiagnosisTable
+                            key={`histological_dx_table_specimen_id_${specimen.kf_id}_node_index_${index}`}
+                            data={[sanitizedNode]}
+                          />
+                        ))}
+                      </EntityContentSection>
+                    )}
+                  </Fragment>
                 );
               })}
             </Holder>
@@ -231,19 +229,17 @@ const ParticipantSummary = ({ participant }) => {
         </div>
       )}
 
-      {hasFile ? (
+      {hasFile && (
         <div>
           <EntityContentDivider />
           <EntityContentSection title="Available Data Files" size={'big'}>
-            {hasSequencingData ? (
+            {hasSequencingData && (
               <EntityContentSection title="Sequencing Data" size={'small'}>
                 <SequencingDataTable
                   files={get(participant, 'files.hits.edges', [])}
                   participantID={participant.kf_id}
                 />
               </EntityContentSection>
-            ) : (
-              ''
             )}
             <OtherDataTypesSummaryTable
               files={get(participant, 'files.hits.edges', [])}
@@ -252,11 +248,13 @@ const ParticipantSummary = ({ participant }) => {
             />
           </EntityContentSection>
         </div>
-      ) : (
-        ''
       )}
-    </React.Fragment>
+    </>
   );
+};
+
+ParticipantSummary.propTypes = {
+  participant: PropTypes.object,
 };
 
 export default ParticipantSummary;
