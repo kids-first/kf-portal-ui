@@ -76,7 +76,7 @@ const summaryTableData = (participant) => {
               await trackUserInteraction({
                 category: TRACKING_EVENTS.categories.entityPage.file,
                 action: `${TRACKING_EVENTS.actions.click}: DbGaP link`,
-                label: `${participant.study.data_access_authority} (${studyDbGaP})`,
+                label: `${studyDbGaP} (${studyExternalId})`,
               });
             }}
           >
