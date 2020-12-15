@@ -34,7 +34,7 @@ export default ({ fenceAcls }) => [
       accessor: 'participants.hits.edges[0].node.study.external_id',
       Header: Header('dbGap'),
       Cell: CustomDbGapExternalIdColumn,
-      width: 100,
+      width: 120,
     },
   },
   {
