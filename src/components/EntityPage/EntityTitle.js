@@ -10,7 +10,7 @@ import participantSvg from 'icons/ParticipantIcon';
 
 import './EntityPage.css';
 
-const entityIcon = type => {
+const entityIcon = (type) => {
   switch (type) {
     case 'file':
       return <CircleIcon color="#009cbb" size={60} Icon={FileIcon} iconSize="22px" />;

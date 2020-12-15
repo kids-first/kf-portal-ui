@@ -18,7 +18,7 @@ CircleIcon.propTypes = {
   color: PropTypes.string.isRequired,
   fill: PropTypes.string,
   size: PropTypes.number.isRequired,
-  iconSize: PropTypes.number,
+  iconSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   Icon: PropTypes.elementType.isRequired,
 };
 
