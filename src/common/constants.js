@@ -196,3 +196,8 @@ export const KEY_PUBLIC_PROFILE_INVITE_IS_SEEN = 'public_profile_invite_is_seen'
 export const CARDINALITY_PRECISION_THRESHOLD = 10000;
 
 export const STUDIES_WITH_PEDCBIO = ['SD_BHJXBDQK', 'SD_M3DBXD12'];
+
+export const DB_GA_P = 'dbGaP';
+
+export const generateUrlForDbGap = (dbGaPStudyId) =>
+  `https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${dbGaPStudyId}.v1.p1`;
