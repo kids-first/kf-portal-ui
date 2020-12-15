@@ -156,8 +156,6 @@ const getSanitizedSpecimenDxsData = (specimen) =>
       }),
     );
 
-const WRONG_TYPES = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
-
 const biospecimenIdToTargetProps = (specimens = []) =>
   specimens.reduce((acc, specimen) => {
     const currentNode = specimen.node;
@@ -183,7 +181,7 @@ const ParticipantSummary = ({ participant }) => {
   const hasFile = get(participant, 'files.hits.edges', []).length > 0;
 
   const hasSequencingData = get(participant, 'files.hits.edges', []).some((edge) =>
-    WRONG_TYPES.includes(edge?.node?.data_type),
+    ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'].includes(edge?.node?.data_type),
   );
 
   return (
