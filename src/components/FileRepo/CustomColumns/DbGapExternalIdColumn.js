@@ -17,6 +17,7 @@ export default ({ original }) => {
           label: `${data_access_authority} (${external_id})`,
         });
       }}
+      hasExternalIcon={false}
     >
       {external_id}
     </ExternalLink>
