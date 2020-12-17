@@ -4,13 +4,6 @@ import isEqual from 'lodash/isEqual';
 import { renderPlot } from '@oncojs/survivalplot';
 import defaults from 'lodash/defaults';
 
-const isElementFullScreen = (element) =>
-  [
-    document.fullscreenElement,
-    document.webkitFullscreenElement,
-    document.mozFullscreenElement,
-  ].indexOf(element) >= 0;
-
 export default class SurvivalPlot extends React.Component {
   state = {
     xDomain: undefined,
@@ -47,7 +40,6 @@ export default class SurvivalPlot extends React.Component {
     onClickDonors: () => {},
     xAxisLabel: 'Survival Rate',
     yAxisLabel: 'Duration (days)',
-    height: 205,
   };
 
   stateStack = [];
@@ -86,7 +78,7 @@ export default class SurvivalPlot extends React.Component {
           xDomain: xDomain,
           yAxisLabel: 'Survival Rate',
           xAxisLabel: 'Duration (days)',
-          height: isElementFullScreen(container) ? window.innerHeight - 100 : 330,
+          height: this.props.height,
           getSetSymbol: this.props.getSetSymbol,
           onMouseEnterDonor: this.props.onMouseEnterDonor,
           onMouseLeaveDonor: this.props.onMouseLeaveDonor,
