@@ -86,7 +86,7 @@ export default class SurvivalPlot extends React.Component {
           xDomain: xDomain,
           yAxisLabel: 'Survival Rate',
           xAxisLabel: 'Duration (days)',
-          height: isElementFullScreen(container) ? window.innerHeight - 100 : this.props.height,
+          height: isElementFullScreen(container) ? window.innerHeight - 100 : 330,
           getSetSymbol: this.props.getSetSymbol,
           onMouseEnterDonor: this.props.onMouseEnterDonor,
           onMouseLeaveDonor: this.props.onMouseLeaveDonor,
