@@ -10,7 +10,7 @@ import { fetchSurvivalData } from 'services/arranger';
 import { withApi } from 'services/api';
 import CardContent from 'uikit/Card/CardContent';
 import Tooltip from 'uikit/Tooltip';
-import { SizeProvider, styleComponent } from 'components/Utils';
+import { styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import SurvivalPlot from './SurvivalPlot';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
@@ -213,15 +213,9 @@ export class SurvivalChart extends React.Component {
     );
 
     return (
-      <SizeProvider>
-        {({ size }) => (
-          <Card title={Header} loading={this.state.isLoading}>
-            {({ height }) => (
-              <SurvivalCardContent>{renderGraphContent(size, height)}</SurvivalCardContent>
-            )}
-          </Card>
-        )}
-      </SizeProvider>
+      <Card title={Header} loading={this.state.isLoading}>
+        <SurvivalCardContent>{renderGraphContent(330, 325)}</SurvivalCardContent>
+      </Card>
     );
   }
 }

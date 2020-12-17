@@ -1,13 +1,7 @@
 import React from 'react';
-import { SizeMe } from 'react-sizeme';
 import isObject from 'lodash/isObject';
 import transform from 'lodash/transform';
 import isEqual from 'lodash/isEqual';
-
-export const SizeProvider = props => <SizeMe refreshRate={100} {...props} />;
-export const withSize = Wrapped => props => (
-  <SizeProvider>{({ size }) => <Wrapped size={size} {...props} />}</SizeProvider>
-);
 
 /**
  * Deep diff between two object, using lodash
@@ -17,7 +11,7 @@ export const withSize = Wrapped => props => (
  */
 export const SQONdiff = (object, base) => {
   function changes(object, base) {
-    return transform(object, function(result, value, key) {
+    return transform(object, function (result, value, key) {
       if (!isEqual(value, base[key])) {
         result[key] = isObject(value) && isObject(base[key]) ? changes(value, base[key]) : value;
       }
@@ -40,7 +34,7 @@ const shorthandSpacers = {
   mb: 'marginBottom',
   ml: 'marginLeft',
 };
-const splitStylesFromAttributes = props => {
+const splitStylesFromAttributes = (props) => {
   if (typeof props !== 'object') {
     return { styles: {}, attributes: {} };
   }
