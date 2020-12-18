@@ -7,6 +7,21 @@
 
 ### Technical / Other changes
 -->
+## 2020-12-18 kf-portal-ui
+
+### Features
+- [2860](https://github.com/kids-first/kf-portal-ui/issues/2860) Feature (File Repository, Search): Added a new Facet in the sidebar allowing users to search using the External Study ID.
+- [2861](https://github.com/kids-first/kf-portal-ui/issues/2861) Feature (File Repository, Table columns): Added a new column called “dbGaP” that displays the dbGaP accession number when there is one.
+- [2862](https://github.com/kids-first/kf-portal-ui/issues/2862) Feature (Participant Entity Page, dbGaP): Added a line in the table to display the dbGaP accession number when the study is a dbGaP study.
+- [2863](https://github.com/kids-first/kf-portal-ui/issues/2863) Feature (File Entity Page, dbGaP): Added a line in the table to display the dbGaP accession number when the study is a dbGaP study.
+
+### Technical / Other changes
+- [2853](https://github.com/kids-first/kf-portal-ui/issues/2853) Fix (Cohort Builder, Survival Plot): Fixed an issue where refreshing the page would shrink the size of the plot in half until moving the mouse over it.
+- [2857](https://github.com/kids-first/kf-portal-ui/issues/2857) Refactor (Dashboard, Charts): Adjusted the Studies Graph so that it also gets filtered when clicking on a study in the chart or when searching for a specific study.
+- [2858](https://github.com/kids-first/kf-portal-ui/issues/2858) Refactor (Patient Entity Page, External ID): Renamed the “External ID” label to “Participant - External ID” so the field is easier to recognize for users coming from dbGaP.
+- [2866](https://github.com/kids-first/kf-portal-ui/issues/2866) Fix (Portal, Logout): Fixed an issue where logging out of the portal was causing the Portal to crash for some users.
+- [2883](https://github.com/kids-first/kf-portal-ui/issues/2883) Fix (Dashboard, Charts): Fixed an issue in the Most Frequent Diagnoses chart where the value “Missing” was considered the most frequent diagnoses.
+
 ## 2020-12-10 kf-portal-ui 2.29.0
 
 ### Features
