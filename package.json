@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.29.0",
+  "version": "2.30.0",
   "private": true,
   "dependencies": {
     "@ferlab-ui/core-react": "0.0.7",
@@ -35,7 +35,6 @@
     "react-redux": "^7.2.0",
     "react-scripts": "^3.4.1",
     "react-share": "^3.0.1",
-    "react-sizeme": "^2.6.12",
     "react-slick": "^0.23.2",
     "react-social-icons": "^4.1.0",
     "redux": "^4.0.5",

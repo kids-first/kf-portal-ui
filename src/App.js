@@ -68,6 +68,9 @@ const App = compose(
       );
     } else if (isJoinFormNeeded(loggedInUser)) {
       return <Redirect to="/join" />;
+      // eslint-disable-next-line react/prop-types
+    } else if (!loggedInUser.acceptedTerms) {
+      return <Redirect to={ROUTES.termsConditions} />;
     }
     return <WrapperPage {...props} />;
   };
