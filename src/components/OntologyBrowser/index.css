@@ -45,3 +45,17 @@ h3.ant-typography {
 .text-color-TO-DELETE {
   color: #515885;
 }
+
+.transfer-container .ant-empty {
+  margin: auto 0;
+}
+
+.transfer-container .ant-transfer-list-body-customize-wrapper {
+  height: 100%;
+}
+
+.empty-container{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}

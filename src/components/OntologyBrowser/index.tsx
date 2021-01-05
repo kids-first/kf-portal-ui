@@ -245,6 +245,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
               />
             ) : (
               <Transfer
+                className={'transfer-container'}
                 dataSource={disabledSameTerms}
                 targetKeys={targetKeys}
                 onChange={this.onChange}
@@ -265,7 +266,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                   }
                   if (direction === 'left' && treeSource) {
                     const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
-                    return (
+                    return treeSource.length ? (
                       <SelectionTree
                         dataSource={treeSource || []}
                         onItemSelect={onItemSelect}
@@ -274,6 +275,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                         onItemSelectAll={onItemSelectAll}
                         selectedField={this.props.selectedField}
                       />
+                    ) : (
+                      <div className={'empty-container'}>
+                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                      </div>
                     );
                   }
                 }}
