@@ -30,3 +30,14 @@
 .withScroll > .ant-card-body {
   overflow: auto;
 }
+
+.ant-card.core-grid-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 325px;
+  height: 400px;
+}
+
+.core-grid-card .ant-card-head {
+  margin: 2px 20px;
+}

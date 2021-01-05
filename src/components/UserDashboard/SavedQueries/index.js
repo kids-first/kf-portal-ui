@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { distanceInWords } from 'date-fns';
 import { Box, Flex, Link } from 'uikit/Core';
-import { Badge, Typography } from 'antd';
+import { Badge } from 'antd';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
@@ -31,8 +31,6 @@ import './SavedQueries.scss';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
-
-const { Title } = Typography;
 
 const FileRepositoryLink = styleComponent(Link, 'color-primary');
 
@@ -232,7 +230,7 @@ class SavedQueries extends React.Component {
         )}
         <Card
           size="small"
-          title={<Title level={3}>My Saved Queries</Title>}
+          title={<span className={'title-dashboard-card'}>My Saved Queries</span>}
           tabList={tabList}
           tabProps={{ size: 'small' }}
           onTabChange={(key) => {

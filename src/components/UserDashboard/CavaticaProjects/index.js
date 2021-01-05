@@ -13,12 +13,10 @@ import {
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
 
-import { Badge, Result, Typography } from 'antd';
+import { Badge, Result } from 'antd';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { getMsgFromErrorOrElse } from 'utils';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
-
-const { Title } = Typography;
 
 const isValidKey = (key) => key && key.length > 0;
 
@@ -129,9 +127,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
           <Card
             title={
               <div className={antCardHeader}>
-                <span>
-                  <Title level={3}>Cavatica Projects&nbsp;</Title>
-                </span>
+                <span className={'title-dashboard-card'}>Cavatica Projects&nbsp;</span>
                 <Badge
                   count={isConnected && projects ? projects.length : 0}
                   showZero={isConnected}

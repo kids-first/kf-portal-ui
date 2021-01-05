@@ -1,15 +1,12 @@
 import React from 'react';
-import { compose } from 'recompose';
 import gql from 'graphql-tag';
 import get from 'lodash/get';
-import startCase from 'lodash/startCase';
 import { connect } from 'react-redux';
 
 import theme from 'theme/defaultTheme';
 import { getCohortBarColors } from '../ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import QueriesResolver from '../../QueriesResolver';
-import { withApi } from 'services/api';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import {
   setSqonValueAtIndex,
@@ -17,14 +14,8 @@ import {
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import { Typography } from 'antd';
-
-const { Title } = Typography;
-
-const mostFrequentDiagnosisTooltip = (data) => {
-  const participants = data.familyMembers + data.probands;
-  return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
-};
+import PropTypes from 'prop-types';
+import { mostFrequentDiagnosisTooltip, removeMondo } from 'components/Charts';
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map((diagnosis) => ({
@@ -79,7 +70,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     variables: { sqon, diagnosis },
     transform: (data) => ({
       diagnosisValue: diagnosis,
-      label: startCase(diagnosis),
+      label: diagnosis,
       familyMembers: get(
         data,
         'data.participant.familyMembers.diagnoses__mondo_id_diagnosis.buckets[0].doc_count',
@@ -93,7 +84,50 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
+/**
+ * Get the top 10 diagnoses overall
+ * Then get the proband/family member breakdown
+ */
+export const diagnosesQuery = (sqon) => ({
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+          diagnoses__mondo_id_diagnosis {
+            buckets {
+              doc_count
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { sqon },
+  transform: (data) => {
+    const buckets = get(
+      data,
+      'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
+    );
+
+    return buckets
+      .filter((bucket) => !['No Match', '__missing__'].includes(bucket.key))
+      .sort((a, b) => b.doc_count - a.doc_count)
+      .slice(0, 10)
+      .map((bucket) => bucket.key);
+  },
+});
+
 class DiagnosesChart extends React.Component {
+  static propTypes = {
+    setSqons: PropTypes.func,
+    virtualStudy: PropTypes.object,
+    sqon: PropTypes.object,
+    api: PropTypes.func,
+    isLoading: PropTypes.bool,
+    topDiagnoses: PropTypes.array,
+  };
+
   addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
 
@@ -127,7 +161,7 @@ class DiagnosesChart extends React.Component {
       >
         {({ isLoading, data }) => (
           <Card
-            title={<Title level={3}>Most Frequent Diagnoses (Mondo)</Title>}
+            title={<span className={'title-summary-card'}>Most Frequent Diagnoses (Mondo)</span>}
             loading={isLoading || isParentLoading}
           >
             {!data ? (
@@ -151,9 +185,7 @@ class DiagnosesChart extends React.Component {
                 onClick={(data) => {
                   this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
                 }}
-                axisLeftFormat={(value) =>
-                  value.indexOf('MONDO') > -1 ? value.substr(0, value.indexOf('MONDO')) : value
-                }
+                axisLeftFormat={removeMondo}
               />
             )}
           </Card>
@@ -163,40 +195,6 @@ class DiagnosesChart extends React.Component {
   }
 }
 
-/**
- * Get the top 10 diagnoses overall
- * Then get the proband/family member breakdown
- */
-export const diagnosesQuery = (sqon) => ({
-  query: gql`
-    query($sqon: JSON) {
-      participant {
-        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          diagnoses__mondo_id_diagnosis {
-            buckets {
-              doc_count
-              key
-            }
-          }
-        }
-      }
-    }
-  `,
-  variables: { sqon },
-  transform: (data) => {
-    const buckets = get(
-      data,
-      'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
-    );
-
-    return buckets
-      .filter((bucket) => !['No Match', '__missing__'].includes(bucket.key))
-      .sort((a, b) => b.doc_count - a.doc_count)
-      .map((bucket) => bucket.key)
-      .slice(0, 10);
-  },
-});
-
 const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
@@ -205,4 +203,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(withApi, connect(mapStateToProps, mapDispatchToProps))(DiagnosesChart);
+export default connect(mapStateToProps, mapDispatchToProps)(DiagnosesChart);

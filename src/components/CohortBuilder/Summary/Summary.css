@@ -24,3 +24,37 @@
 .wrapperDataTypeChart {
   width: 50%;
 }
+
+.ontology-sunburst-card {
+  grid-column: span 2;
+}
+
+.ant-card-head-title {
+  padding: 0;
+}
+
+.ant-card-head {
+  padding: 0;
+}
+
+.ant-card-head-title > h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.ant-card-body {
+  padding: 24px 0;
+}
+
+.ant-card.core-grid-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 325px;
+  height: 400px;
+}
+
+.core-grid-card .ant-card-head {
+  margin: 2px 20px;
+}
+

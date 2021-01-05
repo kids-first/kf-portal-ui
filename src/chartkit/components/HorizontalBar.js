@@ -5,12 +5,10 @@ import autobind from 'auto-bind-es5';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
-import Tooltip from './Tooltip';
 import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
-import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { Tooltip as AntdTooltip } from 'antd';
+import { Tooltip } from 'antd';
 import './HorizontalBar.css';
 
 class HorizontalBar extends Component {
@@ -68,7 +66,6 @@ class HorizontalBar extends Component {
 
     const text = truncateText(value, xTickTextLength);
 
-    //const valueLength = value.toString().length;
     const xOffset = 160;
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
@@ -81,7 +78,7 @@ class HorizontalBar extends Component {
     };
 
     return (
-      <AntdTooltip key={key} title={value}>
+      <Tooltip key={key} title={value}>
         <g
           key={key}
           transform={`translate(${x - xOffset},${y})`}
@@ -99,7 +96,7 @@ class HorizontalBar extends Component {
             {text}
           </text>
         </g>
-      </AntdTooltip>
+      </Tooltip>
     );
   }
 
@@ -129,8 +126,14 @@ class HorizontalBar extends Component {
   }
 
   defaultAxisBottomFormat = (v) => (Number.isInteger(Number(v)) ? v.toLocaleString() : '');
+
   defaultLeftFormat = (v) => v.toLocaleString();
 
+  tooltip = ({ id, value, data, children }) => (
+    <Tooltip key={id} title={value} className={'tool-tip'}>
+      {children ? children : this.props.tooltipFormatter(data)}
+    </Tooltip>
+  );
   render() {
     const {
       data = [],
@@ -139,7 +142,6 @@ class HorizontalBar extends Component {
       legends,
       indexBy = 'id',
       height,
-      tooltipFormatter,
       axisBottomFormat = this.defaultAxisBottomFormat,
       axisLeftFormat = this.defaultLeftFormat,
     } = this.props;
@@ -153,8 +155,8 @@ class HorizontalBar extends Component {
       onClick: this.onClick,
       margin: {
         top: 0,
-        right: 10,
-        bottom: 60,
+        right: 5,
+        bottom: 70,
         left: 160,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
@@ -166,7 +168,7 @@ class HorizontalBar extends Component {
           background: 'inherit',
           color: '#ffffff54',
           rotation: -45,
-          lineWidth: 4,
+          lineWidth: 3,
           spacing: 10,
         },
       ],
@@ -210,7 +212,7 @@ class HorizontalBar extends Component {
       motionDamping: 15,
       isInteractive: true,
       theme: defaultTheme,
-      tooltip: (props) => <Tooltip {...props} formatter={tooltipFormatter} />,
+      tooltip: this.tooltip,
     };
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
@@ -219,17 +221,16 @@ class HorizontalBar extends Component {
         style={{
           height: '100%',
           width: '100%',
+          marginTop: '5px',
         }}
       >
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
         <TextBugWrapper>
-          <ChartDisplayContainer>
-            {height ? (
-              <ResponsiveBar {...chartData} height={height} />
-            ) : (
-              <ResponsiveBar {...chartData} />
-            )}
-          </ChartDisplayContainer>
+          {height ? (
+            <ResponsiveBar {...chartData} height={height} />
+          ) : (
+            <ResponsiveBar {...chartData} />
+          )}
         </TextBugWrapper>
       </div>
     );
@@ -237,6 +238,15 @@ class HorizontalBar extends Component {
 }
 
 HorizontalBar.propTypes = {
+  tickInterval: PropTypes.number,
+  onClick: PropTypes.func,
+  xTickTextLength: PropTypes.number,
+  showCursor: PropTypes.bool,
+  tooltipFormatter: PropTypes.func,
+  indexBy: PropTypes.string,
+  height: PropTypes.number,
+  legends: PropTypes.array,
+  padding: PropTypes.number,
   maxValue: PropTypes.number,
   tickValues: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.array,

@@ -24,9 +24,6 @@ import {
   userDashboardContainer,
   userDashboardContent,
 } from './UserDashboard.module.css';
-import Typography from 'antd/es/typography';
-
-const { Title } = Typography;
 
 export default compose(
   injectState,
@@ -39,18 +36,21 @@ export default compose(
   <div className={userDashboardContainer}>
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
-      <Grid>
+      <Grid className={'dashboard-grid'}>
         <SavedQueries {...{ api, loggedInUser }} />
         <AuthorizedStudies />
         <CavaticaProjects />
         <MostParticipantsStudiesChart />
-        <Card title={<Title level={3}>Member Research Interests</Title>}>
+        <Card title={<span className={'title-dashboard-card'}>Member Research Interests</span>}>
           <MemberResearchInterestsChart />
         </Card>
-        <Card title={<Title level={3}>Most Frequent Diagnoses</Title>}>
+        <Card title={<span className={'title-dashboard-card'}>Most Frequent Diagnoses</span>}>
           <MostFrequentDiagnosesChart />
         </Card>
-        <Card classNameCardItem={'withScroll'} title={<Title level={3}>My Participant Sets</Title>}>
+        <Card
+          classNameCardItem={'withScroll'}
+          title={<span className={'title-dashboard-card'}>My Participant Sets</span>}
+        >
           <ParticipantSets user={loggedInUser} />
         </Card>
       </Grid>

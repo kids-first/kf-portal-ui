@@ -12,90 +12,8 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
-import { styleComponent } from 'components/Utils';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-
-const PieChartContainer = styleComponent('div', 'pieChartContainer');
-
-class DemographicChart extends React.Component {
-  addSqon = (field, value) => {
-    const { virtualStudy, setSqons } = this.props;
-
-    const newSqon = {
-      op: 'in',
-      content: {
-        field: field,
-        value: [value],
-      },
-    };
-
-    const modifiedSqons = setSqonValueAtIndex(
-      virtualStudy.sqons,
-      virtualStudy.activeIndex,
-      newSqon,
-      {
-        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
-        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
-      },
-    );
-    setSqons(modifiedSqons);
-  };
-
-  render() {
-    const { data, isLoading: isParentLoading } = this.props;
-    return (
-      <Card loading={isParentLoading}>
-        <PieChartContainer>
-          <Pie
-            style={{
-              height: '42%',
-              width: '50%',
-              marginBottom: '10px',
-              marginTop: '5px',
-            }}
-            title={'Gender'}
-            data={data.gender}
-            colors={[theme.chartColors.orange, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label;
-              this.addSqon('gender', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-            title={'Ethnicity'}
-            data={data.ethnicity}
-            colors={[theme.chartColors.darkblue, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.replace(' Or ', ' or ');
-              this.addSqon('ethnicity', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%' }}
-            title={'Race'}
-            data={data.race}
-            colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.replace(' Or ', ' or ');
-              this.addSqon('race', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%' }}
-            title={'Family Composition'}
-            data={data.familyComposition}
-            colors={[theme.chartColors.lightblue, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.toLowerCase().replace('proband only', 'proband-only');
-              this.addSqon('family.family_compositions.composition', value);
-            }}
-          />
-        </PieChartContainer>
-      </Card>
-    );
-  }
-}
+import PropTypes from 'prop-types';
 
 export const demographicQuery = (sqon) => ({
   query: gql`
@@ -155,6 +73,96 @@ export const demographicQuery = (sqon) => ({
 
 const keyToDisplay = (key) =>
   key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
+
+class DemographicChart extends React.Component {
+  static propTypes = {
+    virtualStudy: PropTypes.object,
+    setSqons: PropTypes.func,
+    data: PropTypes.object,
+    isLoading: PropTypes.bool,
+  };
+
+  addSqon = (field, value) => {
+    const { virtualStudy, setSqons } = this.props;
+
+    const newSqon = {
+      op: 'in',
+      content: {
+        field: field,
+        value: [value],
+      },
+    };
+
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+      },
+    );
+    setSqons(modifiedSqons);
+  };
+
+  render() {
+    const { data, isLoading: isParentLoading } = this.props;
+    return (
+      <Card
+        title={<span className={'title-summary-card'}>Demographics</span>}
+        loading={isParentLoading}
+      >
+        <div className={'pieChartContainer'}>
+          <Pie
+            style={{
+              height: '42%',
+              width: '50%',
+              marginBottom: '10px',
+              marginTop: '5px',
+            }}
+            title={'Gender'}
+            data={data.gender}
+            colors={[theme.chartColors.orange, '#FFFFFF']}
+            onClick={(data) => {
+              const value = data.label;
+              this.addSqon('gender', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+            title={'Ethnicity'}
+            data={data.ethnicity}
+            colors={[theme.chartColors.darkblue, '#FFFFFF']}
+            onClick={(data) => {
+              const value = data.label.replace(' Or ', ' or ');
+              this.addSqon('ethnicity', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%' }}
+            title={'Race'}
+            data={data.race}
+            colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+            onClick={(data) => {
+              const value = data.label.replace(' Or ', ' or ');
+              this.addSqon('race', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%' }}
+            title={'Family Composition'}
+            data={data.familyComposition}
+            colors={[theme.chartColors.lightblue, '#FFFFFF']}
+            onClick={(data) => {
+              const value = data.label.toLowerCase().replace('proband only', 'proband-only');
+              this.addSqon('family.family_compositions.composition', value);
+            }}
+          />
+        </div>
+      </Card>
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
