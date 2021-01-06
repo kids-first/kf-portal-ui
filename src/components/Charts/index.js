@@ -1,4 +1,5 @@
 import React from 'react';
+import 'ui/Tooltips/tooltips.scss';
 
 export { default as MostFrequentDiagnosesChart } from './MostFrequentDiagnosesChart';
 export { default as MemberResearchInterestsChart } from './MemberResearchInterestsChart';
@@ -13,8 +14,8 @@ export const mostFrequentDiagnosisTooltip = (data) => {
   const { familyMembers, probands, label } = data;
   const participants = familyMembers + probands;
   return (
-    <div className={'tooltip-dx-chart-container'}>
-      <div className={'tooltip-dx-chart-label'}>{removeMondo(label)}</div>
+    <div className={'tp-diagnosis-container'}>
+      <div className={'tp-label'}>{removeMondo(label)}</div>
       <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
     </div>
   );
@@ -24,8 +25,8 @@ export const studiesToolTip = (data) => {
   const { familyMembers, probands, label } = data;
   const participants = familyMembers + probands;
   return (
-    <div className={'tooltip-studies-chart-container'}>
-      <div className={'tooltip-studies-chart-label'}>{label}</div>
+    <div className={'tp-studies-container'}>
+      <div className={'tp-label'}>{label}</div>
       <div>{`${probands.toLocaleString()} Proband${probands !== 1 ? 's' : ''}`}</div>
       <div>{`${familyMembers.toLocaleString()} Other Participant${
         familyMembers > 1 ? 's' : ''

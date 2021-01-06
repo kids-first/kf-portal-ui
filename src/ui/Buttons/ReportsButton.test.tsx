@@ -1,7 +1,7 @@
 import React from 'react';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import ReportsButton from '../ReportsButton';
+import ReportsButton from './ReportsButton';
 import { Sqon } from '../../store/sqon';
 import { Button as AntdButton, Menu } from 'antd';
 import { Provider } from 'react-redux';

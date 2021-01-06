@@ -41,3 +41,12 @@
 .core-grid-card .ant-card-head {
   margin: 2px 20px;
 }
+
+.title-dashboard-card {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.dashboard-grid {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}

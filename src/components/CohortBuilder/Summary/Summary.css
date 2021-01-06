@@ -58,3 +58,11 @@
   margin: 2px 20px;
 }
 
+.title-summary-card {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.summary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}

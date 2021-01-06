@@ -9,7 +9,7 @@ import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 
 import { ArrowRightOutlined, FileFilled } from '@ant-design/icons';
 
-import ButtonWithRouter from 'ui/ButtonWithRouter';
+import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';

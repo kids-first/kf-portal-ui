@@ -38,24 +38,3 @@ h4 {
   padding: 0;
   font-weight: normal;
 }
-
-.title-dashboard-card, .title-summary-card {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.tooltip-studies-chart-container {
-  min-width: 175px;
-}
-
-.tooltip-dx-chart-container {
-  min-width: 50px;
-}
-
-.tooltip-dx-chart-label, .tooltip-studies-chart-label {
-  text-decoration: underline;
-}
-
-.summary-grid, .dashboard-grid {
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-}
