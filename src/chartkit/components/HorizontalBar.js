@@ -9,7 +9,7 @@ import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Tooltip } from 'antd';
-import './HorizontalBar.css';
+import 'ui/Tooltips/tooltips.scss';
 
 class HorizontalBar extends Component {
   constructor(props) {
@@ -130,7 +130,7 @@ class HorizontalBar extends Component {
   defaultLeftFormat = (v) => v.toLocaleString();
 
   tooltip = ({ id, value, data, children }) => (
-    <Tooltip key={id} title={value} className={'tool-tip'}>
+    <Tooltip key={id} title={value} className={'tp-content'}>
       {children ? children : this.props.tooltipFormatter(data)}
     </Tooltip>
   );

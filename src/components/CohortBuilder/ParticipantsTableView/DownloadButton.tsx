@@ -2,7 +2,7 @@
 import React, { FunctionComponent } from 'react';
 import { Sqon } from 'store/sqon';
 import { Menu } from 'antd';
-import ReportsButton from 'ui/ReportsButton';
+import ReportsButton from 'ui/Buttons/ReportsButton';
 import {
   RP_BIOSPECIMEN_DATA_KEY,
   RP_CLINICAL_DATA_KEY,

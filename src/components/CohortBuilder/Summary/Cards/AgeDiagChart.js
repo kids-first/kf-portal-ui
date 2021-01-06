@@ -115,6 +115,46 @@ export const ageDiagQuery = (sqon) => ({
   ],
 });
 
+const buildSqonFromRange = (field, rangeValue) => {
+  switch (rangeValue) {
+    case 'aggNewborn':
+      return {
+        op: '<=',
+        content: { field, value: [364] },
+      };
+
+    case 'agg1to5':
+      return {
+        op: 'between',
+        content: { field, value: [365, 1824] },
+      };
+    case 'agg5to10':
+      return {
+        op: 'between',
+        content: { field, value: [1825, 3649] },
+      };
+
+    case 'agg10to15':
+      return {
+        op: 'between',
+        content: { field, value: [3650, 5474] },
+      };
+    case 'agg15to18':
+      return {
+        op: 'between',
+        content: { field, value: [5475, 6569] },
+      };
+
+    case 'aggAdult':
+      return {
+        op: '>=',
+        content: { field, value: [6570] },
+      };
+    default:
+      return {};
+  }
+};
+
 class AgeDiagChart extends React.Component {
   static propTypes = {
     setSqons: PropTypes.func.isRequired,
@@ -125,48 +165,7 @@ class AgeDiagChart extends React.Component {
 
   addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
-
-    let newSqon = {};
-    switch (value) {
-      case 'aggNewborn':
-        newSqon = {
-          op: '<=',
-          content: { field, value: [364] },
-        };
-        break;
-      case 'agg1to5':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [365, 1824] },
-        };
-        break;
-      case 'agg5to10':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [1825, 3649] },
-        };
-        break;
-      case 'agg10to15':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [3650, 5474] },
-        };
-        break;
-      case 'agg15to18':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [5475, 6569] },
-        };
-        break;
-      case 'aggAdult':
-        newSqon = {
-          op: '>=',
-          content: { field, value: [6570] },
-        };
-        break;
-      default:
-    }
-
+    const newSqon = buildSqonFromRange(field, value);
     const modifiedSqons = setSqonValueAtIndex(
       virtualStudy.sqons,
       virtualStudy.activeIndex,
