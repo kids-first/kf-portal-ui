@@ -37,7 +37,7 @@ type ModalState = {
 
 const desactivateAllSameTerms = (allSameTerms: string[], transferItems: TransferItem[]) =>
   transferItems.map((t) => {
-    if (allSameTerms.includes(t.key)) {
+    if (allSameTerms.includes(t.key as string)) {
       return Object.assign(t, { disabled: true });
     } else if (t.disabled) {
       return Object.assign(t, { disabled: !t.disabled });
@@ -249,7 +249,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 dataSource={disabledSameTerms}
                 targetKeys={targetKeys}
                 onChange={this.onChange}
-                render={(item: TransferItem): RenderResult => item.title || item.key}
+                render={(item: TransferItem): RenderResult => (item.title || item.key) as string}
                 disabled={false}
                 showSelectAll={false}
                 locale={{
