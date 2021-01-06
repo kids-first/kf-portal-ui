@@ -156,3 +156,8 @@
   height: 65px;
   margin-right: 8px;
 }
+
+.newBadgeContent {
+  color: #a6278f;
+  font-size: 16px;
+}

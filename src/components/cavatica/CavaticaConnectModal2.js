@@ -56,7 +56,7 @@ const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFa
 const NumberBullet = ({ children }) => <span className="numberBullet">{children}</span>;
 
 NumberBullet.propTypes = {
-  children: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 const CavaticaConnectModal2 = ({
