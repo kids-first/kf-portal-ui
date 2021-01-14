@@ -14,6 +14,7 @@ import theme from 'theme/defaultTheme';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
+import { mostFrequentDiagnosisTooltip } from 'components/Charts';
 import {
   getDefaultSqon,
   setSqonValueAtIndex,
@@ -48,11 +49,6 @@ const trackBarClick = (trackingEventCategory, barData) => {
     action: `Chart Bar: ${TRACKING_EVENTS.actions.click}`,
     label: `${barData.indexValue}: ${barData.id}`,
   });
-};
-
-const participantTooltipFormatter = (data) => {
-  const participants = data.familyMembers + data.probands;
-  return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
 };
 
 const sortDescParticipant = (a, b) => {
@@ -102,7 +98,7 @@ const TopDiagnosesChart = connect(
         indexBy="label"
         keys={['probands', 'familyMembers']}
         onClick={onClick}
-        tooltipFormatter={participantTooltipFormatter}
+        tooltipFormatter={mostFrequentDiagnosisTooltip}
         sortBy={sortDescParticipant}
         analyticsTracking={{
           category: TRACKING_EVENTS.categories.charts.bar.diagnosesChartCategory,

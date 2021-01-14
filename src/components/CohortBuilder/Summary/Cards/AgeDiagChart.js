@@ -11,95 +11,11 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 import PropTypes from 'prop-types';
 
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import { Typography } from 'antd';
 
-const { Title } = Typography;
+const CHART_HEIGHT_PX = 350;
 
 const ageAtDiagnosisTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
-
-class AgeDiagChart extends React.Component {
-  static propTypes = {
-    setSqons: PropTypes.func.isRequired,
-    virtualStudy: PropTypes.object,
-    height: PropTypes.number,
-    isLoading: PropTypes.bool,
-    data: PropTypes.arrayOf(PropTypes.object),
-  };
-
-  addSqon = (field, value) => {
-    const { virtualStudy, setSqons } = this.props;
-
-    let newSqon = {};
-    switch (value) {
-      case 'aggNewborn':
-        newSqon = {
-          op: '<=',
-          content: { field, value: [364] },
-        };
-        break;
-      case 'agg1to5':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [365, 1824] },
-        };
-        break;
-      case 'agg5to10':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [1825, 3649] },
-        };
-        break;
-      case 'agg10to15':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [3650, 5474] },
-        };
-        break;
-      case 'agg15to18':
-        newSqon = {
-          op: 'between',
-          content: { field, value: [5475, 6569] },
-        };
-        break;
-      case 'aggAdult':
-        newSqon = {
-          op: '>=',
-          content: { field, value: [6570] },
-        };
-        break;
-      default:
-    }
-
-    const modifiedSqons = setSqonValueAtIndex(
-      virtualStudy.sqons,
-      virtualStudy.activeIndex,
-      newSqon,
-    );
-    setSqons(modifiedSqons);
-  };
-
-  render() {
-    const { data, isLoading: isParentLoading, height = 225 } = this.props;
-    return (
-      <Card title={<Title level={3}>Age at Diagnosis</Title>} loading={isParentLoading}>
-        <VerticalBar
-          showCursor={true}
-          data={data}
-          sortBy={false}
-          indexBy="label"
-          axisBottomLegend="Age at Diagnosis (years)"
-          tooltipFormatter={ageAtDiagnosisTooltip}
-          height={height}
-          colors={[theme.chartColors.lightblue]}
-          onClick={(data) => {
-            this.addSqon('diagnoses.age_at_event_days', data.data.id);
-          }}
-        />
-      </Card>
-    );
-  }
-}
 
 export const ageDiagQuery = (sqon) => ({
   variables: { sqon },
@@ -198,6 +114,90 @@ export const ageDiagQuery = (sqon) => ({
     { id: 'aggAdult', label: 'Adult', value: get(data, 'participant._18plus.total', 0) },
   ],
 });
+
+const buildSqonFromRange = (field, rangeValue) => {
+  switch (rangeValue) {
+    case 'aggNewborn':
+      return {
+        op: '<=',
+        content: { field, value: [364] },
+      };
+
+    case 'agg1to5':
+      return {
+        op: 'between',
+        content: { field, value: [365, 1824] },
+      };
+    case 'agg5to10':
+      return {
+        op: 'between',
+        content: { field, value: [1825, 3649] },
+      };
+
+    case 'agg10to15':
+      return {
+        op: 'between',
+        content: { field, value: [3650, 5474] },
+      };
+    case 'agg15to18':
+      return {
+        op: 'between',
+        content: { field, value: [5475, 6569] },
+      };
+
+    case 'aggAdult':
+      return {
+        op: '>=',
+        content: { field, value: [6570] },
+      };
+    default:
+      return {};
+  }
+};
+
+class AgeDiagChart extends React.Component {
+  static propTypes = {
+    setSqons: PropTypes.func.isRequired,
+    virtualStudy: PropTypes.object,
+    isLoading: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.object),
+  };
+
+  addSqon = (field, value) => {
+    const { virtualStudy, setSqons } = this.props;
+    const newSqon = buildSqonFromRange(field, value);
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+    );
+    setSqons(modifiedSqons);
+  };
+
+  render() {
+    const { data, isLoading: isParentLoading } = this.props;
+    return (
+      <Card
+        title={<span className={'title-summary-card'}>Age at Diagnosis</span>}
+        loading={isParentLoading}
+      >
+        <VerticalBar
+          showCursor={true}
+          data={data}
+          sortBy={false}
+          indexBy="label"
+          axisBottomLegend="Age at Diagnosis (years)"
+          tooltipFormatter={ageAtDiagnosisTooltip}
+          height={CHART_HEIGHT_PX}
+          colors={[theme.chartColors.lightblue]}
+          onClick={(data) => {
+            this.addSqon('diagnoses.age_at_event_days', data.data.id);
+          }}
+        />
+      </Card>
+    );
+  }
+}
 
 const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,

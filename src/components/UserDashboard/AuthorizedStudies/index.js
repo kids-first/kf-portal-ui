@@ -7,11 +7,9 @@ import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import AccessGate from '../../AccessGate';
 import Info from '../Info';
-import { Badge, Button, Typography } from 'antd';
+import { Badge, Button } from 'antd';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
-
-const { Title } = Typography;
 
 const AuthorizedStudies = compose(
   injectState,
@@ -25,9 +23,8 @@ const AuthorizedStudies = compose(
       <Card
         title={
           <div className={antCardHeader}>
-            <span>
-              <Title level={3}>Authorized Studies&nbsp;</Title>
-            </span>
+            <span className={'title-dashboard-card'}>Authorized Studies&nbsp;</span>
+
             <Badge count={fenceAuthStudies.length || 0} showZero={!isEmpty(fenceConnections)} />
           </div>
         }

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { Row, Typography } from 'antd';
+import { Row } from 'antd';
 
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
 import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
-import StudiesChart from './Cards/StudiesChart';
+import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './Cards/AgeDiagChart';
 import SurvivalChart from './Cards/SurvivalChart';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
@@ -17,8 +17,6 @@ import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import GridContainer from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
 
 import './Summary.css';
-
-const { Title } = Typography;
 
 const Summary = ({
   sqon = {
@@ -36,37 +34,44 @@ const Summary = ({
       demographicQuery(sqon),
       ageDiagQuery(sqon),
       diagnosesQuery(sqon),
+      studiesQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
       const [
         dataTypesData = [],
         experimentalStrategyData = [],
-        demographicData = [],
+        demographicData = {},
         ageDiagData = [],
         topDiagnosesData = [],
+        studiesData = [],
       ] = data;
 
       return !data ? (
         <Row nogutter> no data</Row>
       ) : (
         <>
-          <GridContainer>
+          <GridContainer className={'summary-grid'}>
             <DataTypeCard
               isLoading={isLoading}
               dataTypesData={dataTypesData}
               experimentalStrategyData={experimentalStrategyData}
             />
+            <StudiesChart isLoading={isLoading} data={studiesData} />
             <Card
-              title={<Title level={3}>Observed Phenotypes</Title>}
-              classNameCardItem={'grid-container-item item-span-2-end item-row-1'}
+              title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
+              classNameCardItem={'ontology-sunburst-card'}
             >
               <OntologySunburst sqon={sqon} />
             </Card>
-            <StudiesChart sqon={sqon} isLoading={isLoading} />
-            <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
+            <DiagnosesChart
+              api={api}
+              sqon={sqon}
+              topDiagnoses={topDiagnosesData}
+              isLoading={isLoading}
+            />
             <DemographicChart data={demographicData} isLoading={isLoading} />
-            <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
+            <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
             <SurvivalChart sqon={sqon} />
           </GridContainer>
         </>

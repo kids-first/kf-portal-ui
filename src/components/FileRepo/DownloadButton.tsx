@@ -9,7 +9,7 @@ import {
   RP_PARTICIPANT_FILE_REPO_KEY,
   RP_FAM_CLINICAL_DATA_FILE_REPO_KEY,
 } from 'services/report';
-import ReportsButton from 'ui/ReportsButton';
+import ReportsButton from 'ui/Buttons/ReportsButton';
 
 type Props = {
   sqon: Sqon;

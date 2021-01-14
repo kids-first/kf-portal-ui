@@ -3,7 +3,7 @@ import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Router } from 'react-router';
 import history from '../../services/history';
-import ButtonWithRouter from '../ButtonWithRouter';
+import ButtonWithRouter from './ButtonWithRouter';
 
 configure({ adapter: new Adapter() });
 

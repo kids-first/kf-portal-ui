@@ -7,7 +7,7 @@ import SplashPage from 'components/SplashPage';
 import { RightOutlined } from '@ant-design/icons';
 
 import './index.css';
-import ButtonWithRouter from 'ui/ButtonWithRouter';
+import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 import { LoggedInUser } from 'store/userTypes';
 import ROUTES from 'common/routes';
 import { hasUserRole } from 'utils';

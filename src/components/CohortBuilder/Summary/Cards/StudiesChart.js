@@ -1,35 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
 import { Badge } from 'antd';
 
 import theme from 'theme/defaultTheme';
-import { withApi } from 'services/api';
-import QueriesResolver from '../../QueriesResolver';
 import { getCohortBarColors } from '../ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import { antCardHeader } from './StudiesChart.module.css';
 import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
-
-const studiesToolTip = (data) => {
-  const { familyMembers, probands, name } = data;
-  const participants = familyMembers + probands;
-  return (
-    <div>
-      <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Proband${probands !== 1 ? 's' : ''}`}</div>
-      <div>{`${familyMembers.toLocaleString()} Other Participant${
-        familyMembers > 1 ? 's' : ''
-      }`}</div>
-      <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
-    </div>
-  );
-};
+import { studiesToolTip } from 'components/Charts';
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
@@ -37,7 +19,7 @@ const sortDescParticipant = (a, b) => {
   return aTotal - bTotal;
 };
 
-const studiesQuery = (sqon) => ({
+export const studiesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
       participant {
@@ -107,11 +89,11 @@ const studiesQuery = (sqon) => ({
 
 class StudiesChart extends React.Component {
   static propTypes = {
-    api: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    sqon: PropTypes.object.isRequired,
+    sqon: PropTypes.object,
     setSqons: PropTypes.func.isRequired,
     virtualStudy: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
   };
 
   addSqon = (value) => {
@@ -135,50 +117,42 @@ class StudiesChart extends React.Component {
   };
 
   render() {
-    const { sqon, api, isLoading: isParentLoading } = this.props;
-
+    const { data: rawData, isLoading } = this.props;
+    const data = rawData.flat();
+    const hasNoData = data.length === 0;
     return (
-      <QueriesResolver name="GQL_STUDIES_CHART" api={api} queries={[studiesQuery(sqon)]}>
-        {({ isLoading, data: rawData }) => {
-          const data = rawData.flat();
-
-          const Header = !(data && !isParentLoading) ? (
-            <span>Studies</span>
-          ) : (
-            <div className={antCardHeader}>
-              <span>Studies&nbsp;</span>
-              <Badge count={data.length} />
-            </div>
-          );
-          return (
-            <Card title={Header} loading={isLoading}>
-              {!data ? (
-                <div>No data</div>
-              ) : (
-                <HorizontalBar
-                  showCursor={true}
-                  data={data}
-                  indexBy="label"
-                  keys={['probands', 'familyMembers']}
-                  tooltipFormatter={studiesToolTip}
-                  sortBy={sortDescParticipant}
-                  tickInterval={4}
-                  colors={getCohortBarColors(data, theme)}
-                  xTickTextLength={28}
-                  legends={[
-                    { title: 'Probands', color: theme.chartColors.blue },
-                    { title: 'Other Participants', color: theme.chartColors.purple },
-                  ]}
-                  padding={0.5}
-                  onClick={({ data }) => {
-                    this.addSqon(data.label);
-                  }}
-                />
-              )}
-            </Card>
-          );
-        }}
-      </QueriesResolver>
+      <Card
+        title={
+          <span className={'title-summary-card'}>
+            {'Studies '} {hasNoData > 0 ? <Badge count={data.length} /> : ''}
+          </span>
+        }
+        loading={isLoading}
+      >
+        {hasNoData ? (
+          <div>No data</div>
+        ) : (
+          <HorizontalBar
+            showCursor={true}
+            data={data}
+            indexBy="label"
+            keys={['probands', 'familyMembers']}
+            tooltipFormatter={studiesToolTip}
+            sortBy={sortDescParticipant}
+            tickInterval={4}
+            colors={getCohortBarColors(data, theme)}
+            xTickTextLength={28}
+            legends={[
+              { title: 'Probands', color: theme.chartColors.blue },
+              { title: 'Other Participants', color: theme.chartColors.purple },
+            ]}
+            padding={0.5}
+            onClick={({ data }) => {
+              this.addSqon(data.label);
+            }}
+          />
+        )}
+      </Card>
     );
   }
 }
@@ -191,4 +165,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(withApi, connect(mapStateToProps, mapDispatchToProps))(StudiesChart);
+export default connect(mapStateToProps, mapDispatchToProps)(StudiesChart);

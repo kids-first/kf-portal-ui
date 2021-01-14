@@ -16,9 +16,6 @@ import SurvivalPlot from './SurvivalPlot';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 import './SurvivalChart.css';
-import { Typography } from 'antd';
-
-const { Title } = Typography;
 
 const formatDataset = (data) => [
   {
@@ -205,9 +202,7 @@ export class SurvivalChart extends React.Component {
 
     const Header = (
       <div className="survival-chart-header">
-        <span>
-          <Title level={3}>Overall Survival</Title>
-        </span>
+        <span className={'title-summary-card'}>Overall Survival</span>
         <span>{resetZoomIcon}</span>
       </div>
     );

@@ -37,7 +37,7 @@ type ModalState = {
 
 const desactivateAllSameTerms = (allSameTerms: string[], transferItems: TransferItem[]) =>
   transferItems.map((t) => {
-    if (allSameTerms.includes(t.key)) {
+    if (allSameTerms.includes(t.key as string)) {
       return Object.assign(t, { disabled: true });
     } else if (t.disabled) {
       return Object.assign(t, { disabled: !t.disabled });
@@ -245,10 +245,11 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
               />
             ) : (
               <Transfer
+                className={'transfer-container'}
                 dataSource={disabledSameTerms}
                 targetKeys={targetKeys}
                 onChange={this.onChange}
-                render={(item: TransferItem): RenderResult => item.title || item.key}
+                render={(item: TransferItem): RenderResult => (item.title || item.key) as string}
                 disabled={false}
                 showSelectAll={false}
                 locale={{
@@ -265,7 +266,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                   }
                   if (direction === 'left' && treeSource) {
                     const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
-                    return (
+                    return treeSource.length ? (
                       <SelectionTree
                         dataSource={treeSource || []}
                         onItemSelect={onItemSelect}
@@ -274,6 +275,13 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                         onItemSelectAll={onItemSelectAll}
                         selectedField={this.props.selectedField}
                       />
+                    ) : (
+                      <div className={'empty-container'}>
+                        <Empty
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
+                          description={'There is no observed HPO phenotypes for these participants'}
+                        />
+                      </div>
                     );
                   }
                 }}

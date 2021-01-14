@@ -23,6 +23,7 @@ import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import theme from 'theme/defaultTheme';
 import { Badge, Col, Row } from 'antd';
 import { antCardHeader } from '../CohortBuilder/Summary/Cards/StudiesChart.module.css';
+import { studiesToolTip } from 'components/Charts';
 
 const studiesChartCategory = TRACKING_EVENTS.categories.charts.bar.studies;
 
@@ -30,19 +31,6 @@ const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
   const bTotal = b.probands + b.familyMembers;
   return aTotal <= bTotal ? -1 : 1;
-};
-
-const studiesToolTip = (data) => {
-  const { familyMembers, probands, name } = data;
-  const participants = familyMembers + probands;
-  return (
-    <div>
-      <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Probands`}</div>
-      <div>{`${familyMembers.toLocaleString()} Other Participants`}</div>
-      <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
-    </div>
-  );
 };
 
 const trackBarClick = (trackingEventCategory, barData) => {
@@ -92,16 +80,16 @@ const StudiesChart = compose(
   return (
     <Card
       title={
-        <Row gutter={70}>
+        <Row gutter={15}>
           <Col>
             <div className={antCardHeader}>
-              <span>Studies&nbsp;</span>
+              <span className={'title-dashboard-card'}>Studies&nbsp;</span>
               <Badge count={studies} />
             </div>
           </Col>
           <Col>
             <div className={antCardHeader}>
-              <span>Participants&nbsp;</span>
+              <span className={'title-dashboard-card'}>Participants&nbsp;</span>
               <Badge count={participants} overflowCount={99999} />
             </div>
           </Col>

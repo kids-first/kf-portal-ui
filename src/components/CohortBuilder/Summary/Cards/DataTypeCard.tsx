@@ -1,9 +1,6 @@
 import React from 'react';
 import DataTypeChart from './DataTypeChart';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import { Typography } from 'antd';
-
-const { Title } = Typography;
 
 type DataTypeCardProps = {
   isLoading: boolean;
@@ -11,12 +8,14 @@ type DataTypeCardProps = {
   experimentalStrategyData: any[];
 };
 
+const CHART_HEIGHT_PX = 350;
+
 const DataTypeCard = ({
   isLoading,
   dataTypesData,
   experimentalStrategyData,
 }: DataTypeCardProps) => (
-  <Card title={<Title level={3}>Available Data</Title>} loading={isLoading}>
+  <Card title={<span className={'title-summary-card'}>Available Data</span>} loading={isLoading}>
     <div className={'cardBodyDataChartType'}>
       <div className={'wrapperDataTypeChart'}>
         <DataTypeChart
@@ -24,7 +23,7 @@ const DataTypeCard = ({
           axisLeftLegend={'# Participants'}
           axisBottomLegend={'Data Type'}
           isLoading={isLoading}
-          height={350}
+          height={CHART_HEIGHT_PX}
         />
       </div>
       <div className={'wrapperDataTypeChart'}>
@@ -33,7 +32,7 @@ const DataTypeCard = ({
           axisLeftLegend={'# Participants'}
           axisBottomLegend={'Experimental Strategy'}
           isLoading={isLoading}
-          height={350}
+          height={CHART_HEIGHT_PX}
         />
       </div>
     </div>

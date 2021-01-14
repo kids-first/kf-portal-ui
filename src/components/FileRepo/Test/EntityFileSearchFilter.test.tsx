@@ -76,8 +76,11 @@ describe('File Search Filter Button', () => {
         },
       },
     });
+
     wrapper = mountWithProvider(store);
-    const Button = wrapper.find(AntdButton);
-    expect(Button.text()).toEqual('Reset');
+
+    const Buttons = wrapper.find(AntdButton); //button from input + reset button
+    const INDEX_OF_RESET_BTN = 1;
+    expect(Buttons.at(INDEX_OF_RESET_BTN).text()).toEqual('Reset');
   });
 });

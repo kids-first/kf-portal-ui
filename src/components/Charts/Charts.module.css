@@ -5,7 +5,7 @@
   line-height: normal;
 }
 .promptMessageContent ul {
-  padding-left: '18px';
+  padding-left: 18px;
 }
 .promptMessageContent li {
   margin-top: 5px;
@@ -34,4 +34,16 @@
   justify-content: center;
   align-items: center;
   opacity: 0.5;
+}
+
+.tooltip-studies-chart-container {
+  min-width: 175px;
+}
+
+.tooltip-dx-chart-container {
+  min-width: 50px;
+}
+
+.tooltip-dx-chart-label, .tooltip-studies-chart-label {
+  text-decoration: underline;
 }
