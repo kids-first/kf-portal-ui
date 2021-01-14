@@ -278,6 +278,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                     ) : (
                       <div className={'empty-container'}>
                         <Empty
+                          image={Empty.PRESENTED_IMAGE_SIMPLE}
                           description={'There is no observed HPO phenotypes for these participants'}
                         />
                       </div>
