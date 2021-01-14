@@ -7,6 +7,11 @@
 
 ### Technical / Other changes
 -->
+## 2021-01-14 kf-portal-ui 2.32.0
+### Technical / Other changes
+- [2586](https://github.com/kids-first/kf-portal-ui/issues/2586) Fix (Ontology Browser):  Better display when no phenotypes for returned participants.
+- [2852](https://github.com/kids-first/kf-portal-ui/issues/2852) Refactor (Dashboard, Charts, Cohort Builder): Reduce size of pie and bar charts in the KF portal.
+
 ## 2020-12-18 kf-portal-ui
 
 ### Features
