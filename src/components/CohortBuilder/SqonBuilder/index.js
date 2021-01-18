@@ -184,6 +184,7 @@ const SqonBuilder = ({
                     doc_count: node.size,
                   })),
               }}
+              nestedArrayFields={['observed_phenotype.name']}
             />
           )
         }
