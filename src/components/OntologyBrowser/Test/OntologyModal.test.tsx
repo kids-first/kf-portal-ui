@@ -160,7 +160,7 @@ describe('updateSqons method render updateSqon and', () => {
 
     const values = ['Abnormality of the mouth (HP:0000153)'];
     const selectedField = 'observed_phenotype.name';
-    updateSqons(initialSqon, values, selectedField);
+    updateSqons(initialSqon, values, selectedField, 'in');
 
     expect({
       op: 'and',
@@ -191,7 +191,7 @@ describe('updateSqons method render updateSqon and', () => {
     const values = ['Abnormality of the mouth (HP:0000153)'];
     const selectedField = 'observed_phenotype.name';
 
-    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect(updateSqons(initialSqon, values, selectedField, 'in')).toEqual(expectedUpdateSqon);
     expect({
       op: 'and',
       content: [{ op: 'in', content: { field: 'gender', value: ['Male'] } }],
@@ -224,7 +224,7 @@ describe('updateSqons method render updateSqon and', () => {
     const values = ['Abnormality of the mouth (HP:0000153)'];
     const selectedField = 'observed_phenotype.name';
 
-    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect(updateSqons(initialSqon, values, selectedField, 'in')).toEqual(expectedUpdateSqon);
     expect({
       op: 'and',
       content: [
@@ -251,7 +251,7 @@ describe('updateSqons method render updateSqon and', () => {
     const values: string[] = [];
     const selectedField = 'observed_phenotype.name';
 
-    expect(updateSqons(initialSqon, values, selectedField)).toEqual(expectedUpdateSqon);
+    expect(updateSqons(initialSqon, values, selectedField, 'in')).toEqual(expectedUpdateSqon);
     expect({
       op: 'and',
       content: [
