@@ -49,36 +49,31 @@ const desactivateAllSameTerms = (allSameTerms: string[], transferItems: Transfer
     } else return t;
   });
 
-const opComponent = (fill: string, operation: string) => {
-  switch (operation) {
-    case 'all':
-      return <IntersectionIcon fill={fill} />;
-    case 'some-not-in':
-      return <NotEqualIcon fill={fill} />;
-    default:
-      return <UnionIcon fill={fill} />;
-  }
-};
-
 const OPERATIONS = [
   {
     name: 'Any of',
-    component: (fill: string) => opComponent(fill, IN_OP),
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <UnionIcon fill={fill} />,
     operation: IN_OP,
   },
   {
     name: 'All of',
-    component: (fill: string) => opComponent(fill, ALL_OP),
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <IntersectionIcon fill={fill} />,
     operation: ALL_OP,
   },
   {
     name: 'Not',
-    component: (fill: string) => opComponent(fill, SOME_NOT_IN_OP),
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <NotEqualIcon fill={fill} />,
     operation: SOME_NOT_IN_OP,
   },
 ];
 
-const getOperations = (name: string) =>
+const getOperation = (name: string) =>
+  OPERATIONS.find((s) => s.operation.toLowerCase() === name.toLowerCase());
+
+const getOperationByName = (name: string) =>
   OPERATIONS.find((s) => s.name.toLowerCase() === name.toLowerCase());
 
 export const updateSqons = (
@@ -102,6 +97,7 @@ export const updateSqons = (
           : [...value, valueContent.content.value],
       );
       updatedContent[index].content = { field: selectedField, value: [...Array.from(newValueSet)] };
+      updatedContent[index].op = operator;
     } else if (value.length > 0) {
       updatedContent.push({
         op: operator,
@@ -125,7 +121,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   state: ModalState = {
     selectedKeys: [],
-    selectedOperator: 'Any of',
+    selectedOperator: 'in',
     targetKeys: [],
     isLoading: false,
     error: null,
@@ -137,6 +133,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   componentDidMount(): void {
     this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
+    const content = this.props.initialSqon.content as SqonFilters[];
+    if (content.length > 0) {
+      this.setState({ selectedOperator: content[0].op });
+    }
   }
 
   getKeyFromTreeId = (treeId: string) => {
@@ -257,7 +257,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   menu = () => (
     <Menu
       onClick={(e) => {
-        this.setState({ selectedOperator: e.key as string });
+        this.setState({ selectedOperator: getOperationByName(e.key as string)!.operation });
       }}
     >
       {OPERATIONS.map((s) => (
@@ -276,7 +276,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const allSameTerms = selectSameTerms(targetKeys, treeSource);
     const dataSource = this.transfertDataSource;
     const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
-    const operation = getOperations(selectedOperator)!.operation;
+    const operation = getOperation(selectedOperator)?.operation || IN_OP;
 
     return (
       <ExtendedMappingProvider
@@ -301,7 +301,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 overlay={this.menu}
                 type="primary"
                 placement="bottomRight"
-                icon={getOperations(this.state.selectedOperator)!.component('#ffffff')}
+                icon={getOperation(this.state.selectedOperator)!.component('#ffffff')}
               >
                 Apply
               </Dropdown.Button>,
