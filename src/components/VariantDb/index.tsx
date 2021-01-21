@@ -229,7 +229,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
                         color: '#7D84A6',
                       }}
                     >
-                      May 21  , 2021
+                      January 21  , 2021
                     </div>
                   </Row>
                 }
