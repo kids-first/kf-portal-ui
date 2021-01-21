@@ -7,6 +7,10 @@
 
 ### Technical / Other changes
 -->
+## 2021-01-21 kf-portal-ui 2.33.0
+### Technical / Other changes
+- [2914](https://github.com/kids-first/kf-portal-ui/issues/2914) Fix (VariantDB):  Update numbers.
+
 ## 2021-01-14 kf-portal-ui 2.32.0
 ### Technical / Other changes
 - [2586](https://github.com/kids-first/kf-portal-ui/issues/2586) Fix (Ontology Browser):  Better display when no phenotypes for returned participants.
