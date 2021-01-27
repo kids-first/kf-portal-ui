@@ -16,6 +16,7 @@ import {
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import PropTypes from 'prop-types';
 import { mostFrequentDiagnosisTooltip, removeMondo } from 'components/Charts';
+import { Empty } from 'antd';
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map((diagnosis) => ({
@@ -164,8 +165,10 @@ class DiagnosesChart extends React.Component {
             title={<span className={'title-summary-card'}>Most Frequent Diagnoses (Mondo)</span>}
             loading={isLoading || isParentLoading}
           >
-            {!data ? (
-              <div>No data</div>
+            {!data || data.length === 0 ? (
+              <div className={'empty-graph'}>
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              </div>
             ) : (
               <HorizontalBar
                 showCursor={true}
