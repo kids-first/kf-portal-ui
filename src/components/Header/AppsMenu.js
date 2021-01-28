@@ -8,8 +8,9 @@ import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
 import { kfWebRoot, notionWebRoot } from 'common/injectGlobals';
 import { MessageOutlined } from '@ant-design/icons';
-
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 import HeaderMenu from './HeaderMenu';
+import { messageFontSize, messageMarginRight, messageBadgeFontSize } from './AppsMenu.module.scss';
 
 const AppsMenu = () => {
   const menuItems = [
@@ -35,12 +36,15 @@ const AppsMenu = () => {
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
-        <MessageOutlined style={{ fontSize: '15px', marginRight: 0 }} />
+        <MessageOutlined style={{ fontSize: messageFontSize, marginRight: messageMarginRight }} />
         Kids First Forum&nbsp;
         <Badge
           count={'New'}
           className={'forum-link-badge'}
-          style={{ backgroundColor: '#52c41a', fontSize: '9px' }}
+          style={{
+            backgroundColor: styleThemeColors.badgeNewColor,
+            fontSize: messageBadgeFontSize,
+          }}
         />
       </a>
     </Menu.Item>,
@@ -68,7 +72,7 @@ const AppsMenu = () => {
       <Badge
         count={'New'}
         className={'resourcesBadge'}
-        style={{ backgroundColor: '#52c41a' }}
+        style={{ backgroundColor: styleThemeColors.badgeNewColor }}
         offset={[4, -15]}
       >
         Resources
