@@ -36,7 +36,7 @@ const AppsMenu = () => {
         rel={'noopener noreferrer'}
       >
         <MessageOutlined style={{ fontSize: '15px', marginRight: 0 }} />
-        Kids First Forum{' '}
+        Kids First Forum&nbsp;
         <Badge
           count={'New'}
           className={'forum-link-badge'}

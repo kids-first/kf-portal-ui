@@ -1,14 +1,14 @@
-.message-container {
+.messageContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.forum-link {
+.forumLink {
   text-decoration: underline;
 }
 
-.new-badge {
+.newBadge {
   margin-right: 8px;
   margin-left: 12px;
 }
