@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Badge, Menu } from 'antd';
 
 import AllAppsContactIcon from 'icons/AllAppsContactIcon';
 import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
@@ -7,6 +7,7 @@ import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
 import { kfWebRoot, notionWebRoot } from 'common/injectGlobals';
+import { MessageOutlined } from '@ant-design/icons';
 
 import HeaderMenu from './HeaderMenu';
 
@@ -26,6 +27,17 @@ const AppsMenu = () => {
       >
         <AllAppsStudiesIcon size="15px" />
         Studies and Access
+      </a>
+    </Menu.Item>,
+    <Menu.Item key="kf-forum">
+      <a href={`${'todo'}/todo`} target={'_blank'} rel={'noopener noreferrer'}>
+        <MessageOutlined style={{ fontSize: '15px', marginRight: 0 }} />
+        Kids First Forum{' '}
+        <Badge
+          count={'New'}
+          className={'forum-link-badge'}
+          style={{ backgroundColor: '#52c41a', fontSize: '9px' }}
+        />
       </a>
     </Menu.Item>,
     <Menu.Item key="Support">
@@ -49,7 +61,14 @@ const AppsMenu = () => {
   return (
     <HeaderMenu menuItems={menuItems}>
       <AllAppsMenuIcon size="14px" />
-      Resources
+      <Badge
+        count={'New'}
+        className={'resourcesBadge'}
+        style={{ backgroundColor: '#52c41a' }}
+        offset={[4, -15]}
+      >
+        Resources
+      </Badge>
     </HeaderMenu>
   );
 };

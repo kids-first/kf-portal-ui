@@ -20,6 +20,7 @@ import { CheckOutlined } from '@ant-design/icons';
 import './termsConditions.css';
 import { updateProfile } from 'services/profiles';
 import ROUTES from 'common/routes';
+import { setForumBannerForDisplay } from 'ForumBanner';
 
 const { Paragraph } = Typography;
 
@@ -91,9 +92,11 @@ const TermsConditionsAcceptButton: FunctionComponent<Props> = ({
         label: `Join Completion: egoId ${loggedInUser._id}`,
       });
       await setUser({ ...updatedUser, api, isJoining: false });
+      setForumBannerForDisplay();
       history.push(`${ROUTES.user}/${loggedInUser._id}`);
     } else {
       await setUser({ ...updatedUser, api, isJoining: false });
+      setForumBannerForDisplay();
       history.push(ROUTES.dashboard);
     }
   };

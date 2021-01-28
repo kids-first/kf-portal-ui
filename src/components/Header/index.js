@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Alert, Badge, Layout } from 'antd';
+import { Alert, Layout } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
@@ -82,14 +82,7 @@ const NavigationToolBar = (props) => {
               {isPartOfGroup('kf-investigator', egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
-                    <Badge
-                      count={'New'}
-                      style={{ backgroundColor: '#52c41a' }}
-                      className={'newBadgeContent'}
-                      offset={[4, -15]}
-                    >
-                      <DatabaseOutlined /> Variant Workbench
-                    </Badge>
+                    <DatabaseOutlined /> Variant Workbench
                   </NavLink>
                 </li>
               )}
