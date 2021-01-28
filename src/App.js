@@ -35,6 +35,7 @@ import TermsConditions from 'components/Login/TermsConditions';
 import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
 import 'index.css';
+import ForumBanner, { showForumBanner } from './ForumBanner';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -77,6 +78,7 @@ const App = compose(
 
   return (
     <div className="appContainer">
+      {showForumBanner() && <ForumBanner />}
       <Switch>
         <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
         <Route
