@@ -11,6 +11,7 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 import PropTypes from 'prop-types';
 
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import { Empty } from 'antd';
 
 const CHART_HEIGHT_PX = 350;
 
@@ -176,24 +177,31 @@ class AgeDiagChart extends React.Component {
 
   render() {
     const { data, isLoading: isParentLoading } = this.props;
+    const hasNoData = !data || data.length === 0 || data.every((datum) => datum.value === 0);
     return (
       <Card
         title={<span className={'title-summary-card'}>Age at Diagnosis</span>}
         loading={isParentLoading}
       >
-        <VerticalBar
-          showCursor={true}
-          data={data}
-          sortBy={false}
-          indexBy="label"
-          axisBottomLegend="Age at Diagnosis (years)"
-          tooltipFormatter={ageAtDiagnosisTooltip}
-          height={CHART_HEIGHT_PX}
-          colors={[theme.chartColors.lightblue]}
-          onClick={(data) => {
-            this.addSqon('diagnoses.age_at_event_days', data.data.id);
-          }}
-        />
+        {hasNoData ? (
+          <div className={'empty-graph'}>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
+        ) : (
+          <VerticalBar
+            showCursor={true}
+            data={data}
+            sortBy={false}
+            indexBy="label"
+            axisBottomLegend="Age at Diagnosis (years)"
+            tooltipFormatter={ageAtDiagnosisTooltip}
+            height={CHART_HEIGHT_PX}
+            colors={[theme.chartColors.lightblue]}
+            onClick={(data) => {
+              this.addSqon('diagnoses.age_at_event_days', data.data.id);
+            }}
+          />
+        )}
       </Card>
     );
   }

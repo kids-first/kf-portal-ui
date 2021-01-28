@@ -16,6 +16,7 @@ import SurvivalPlot from './SurvivalPlot';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 
 import './SurvivalChart.css';
+import { Empty } from 'antd';
 
 const formatDataset = (data) => [
   {
@@ -135,6 +136,19 @@ export class SurvivalChart extends React.Component {
 
   render() {
     const { tooltip, data = [], resetZoom, zoomDisabled } = this.state;
+
+    if (data.length === 0) {
+      return (
+        <Card
+          title={<span className={'title-summary-card'}>Overall Survival</span>}
+          loading={this.state.isLoading}
+        >
+          <div className={'empty-graph'}>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
+        </Card>
+      );
+    }
 
     const donor = tooltip.donor;
 

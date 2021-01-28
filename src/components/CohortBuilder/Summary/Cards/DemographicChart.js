@@ -14,6 +14,7 @@ import {
 } from 'common/sqonUtils';
 import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
 import PropTypes from 'prop-types';
+import { Empty } from 'antd';
 
 export const demographicQuery = (sqon) => ({
   query: gql`
@@ -106,59 +107,68 @@ class DemographicChart extends React.Component {
   };
 
   render() {
-    const { data, isLoading: isParentLoading } = this.props;
+    const { data = {}, isLoading: isParentLoading } = this.props;
+    const dataEntries = Object.entries(data);
+    const hasNoData =
+      dataEntries.length === 0 || dataEntries.every(([, value]) => !value || value.length === 0);
     return (
       <Card
         title={<span className={'title-summary-card'}>Demographics</span>}
         loading={isParentLoading}
       >
-        <div className={'pieChartContainer'}>
-          <Pie
-            style={{
-              height: '42%',
-              width: '50%',
-              marginBottom: '10px',
-              marginTop: '5px',
-            }}
-            title={'Gender'}
-            data={data.gender}
-            colors={[theme.chartColors.orange, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label;
-              this.addSqon('gender', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-            title={'Ethnicity'}
-            data={data.ethnicity}
-            colors={[theme.chartColors.darkblue, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.replace(' Or ', ' or ');
-              this.addSqon('ethnicity', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%' }}
-            title={'Race'}
-            data={data.race}
-            colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.replace(' Or ', ' or ');
-              this.addSqon('race', value);
-            }}
-          />
-          <Pie
-            style={{ height: '42%', width: '50%' }}
-            title={'Family Composition'}
-            data={data.familyComposition}
-            colors={[theme.chartColors.lightblue, '#FFFFFF']}
-            onClick={(data) => {
-              const value = data.label.toLowerCase().replace('proband only', 'proband-only');
-              this.addSqon('family.family_compositions.composition', value);
-            }}
-          />
-        </div>
+        {hasNoData ? (
+          <div className={'empty-graph'}>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
+        ) : (
+          <div className={'pieChartContainer'}>
+            <Pie
+              style={{
+                height: '42%',
+                width: '50%',
+                marginBottom: '10px',
+                marginTop: '5px',
+              }}
+              title={'Gender'}
+              data={data.gender}
+              colors={[theme.chartColors.orange, '#FFFFFF']}
+              onClick={(data) => {
+                const value = data.label;
+                this.addSqon('gender', value);
+              }}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+              title={'Ethnicity'}
+              data={data.ethnicity}
+              colors={[theme.chartColors.darkblue, '#FFFFFF']}
+              onClick={(data) => {
+                const value = data.label.replace(' Or ', ' or ');
+                this.addSqon('ethnicity', value);
+              }}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Race'}
+              data={data.race}
+              colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+              onClick={(data) => {
+                const value = data.label.replace(' Or ', ' or ');
+                this.addSqon('race', value);
+              }}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Family Composition'}
+              data={data.familyComposition}
+              colors={[theme.chartColors.lightblue, '#FFFFFF']}
+              onClick={(data) => {
+                const value = data.label.toLowerCase().replace('proband only', 'proband-only');
+                this.addSqon('family.family_compositions.composition', value);
+              }}
+            />
+          </div>
+        )}
       </Card>
     );
   }
