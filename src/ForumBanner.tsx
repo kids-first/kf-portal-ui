@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Alert, Badge } from 'antd';
 import style from './ForumBanner.module.css';
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 
 const SHOW_FORUM_BANNER = 'SHOW_FORUM_BANNER';
 
@@ -12,7 +13,11 @@ const ForumBanner: FunctionComponent = () => (
   <Alert
     message={
       <div className={style.messageContainer}>
-        <Badge count={'New'} className={style.newBadge} style={{ backgroundColor: '#52c41a' }} />
+        <Badge
+          count={'New'}
+          className={style.newBadge}
+          style={{ backgroundColor: styleThemeColors.badgeNewColor }}
+        />
         Discuss the Kids First Portal and datasets with members of the Data Resource Center and
         other users.
         <a
