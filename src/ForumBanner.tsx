@@ -15,7 +15,12 @@ const ForumBanner: FunctionComponent = () => (
         <Badge count={'New'} className={'new-badge'} style={{ backgroundColor: '#52c41a' }} />
         Discuss the Kids First Portal and datasets with members of the Data Resource Center and
         other users.
-        <a className={'forum-link'} href={'href'} target="_blank" rel="noopener noreferrer">
+        <a
+          className={'forum-link'}
+          href={'https://forum.kidsfirstdrc.org/login'}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Visit the Kids First forum.
         </a>
       </div>

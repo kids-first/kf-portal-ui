@@ -30,7 +30,11 @@ const AppsMenu = () => {
       </a>
     </Menu.Item>,
     <Menu.Item key="kf-forum">
-      <a href={`${'todo'}/todo`} target={'_blank'} rel={'noopener noreferrer'}>
+      <a
+        href={`https://forum.kidsfirstdrc.org/login`}
+        target={'_blank'}
+        rel={'noopener noreferrer'}
+      >
         <MessageOutlined style={{ fontSize: '15px', marginRight: 0 }} />
         Kids First Forum{' '}
         <Badge
