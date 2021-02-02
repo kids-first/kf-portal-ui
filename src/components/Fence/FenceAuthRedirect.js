@@ -25,12 +25,13 @@ export default compose(withApi)(({ api, fence }) => (
             Authorization: `Bearer ${egoJwt}`,
           },
         })
-          .then(result => {
+          .then(() => {
             window.close();
           })
-          .catch(err => {
+          .catch((err) => {
+            console.error(err);
             window.alert('Something went wrong, please refresh your window and try again.');
-            window.close();
+            // window.close();
           });
       } else {
         window.close();
