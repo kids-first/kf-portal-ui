@@ -25,7 +25,7 @@ export default compose(withApi)(({ api, fence }) => (
             Authorization: `Bearer ${egoJwt}`,
           },
         })
-          .then((result) => {
+          .then(() => {
             window.close();
           })
           .catch((err) => {
