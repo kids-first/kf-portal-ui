@@ -52,9 +52,6 @@ export const CATEGORY_FIELDS = {
     'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-    'biospecimens.volume_ul',
-    'biospecimens.shipment_origin',
-    'biospecimens.concentration_mg_per_ml',
 
     // Available Data
     'available_data_types',
@@ -106,9 +103,6 @@ export const CATEGORY_FIELDS = {
     'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-    'biospecimens.volume_ul',
-    'biospecimens.shipment_origin',
-    'biospecimens.concentration_mg_per_ml',
   ],
   availableData: [
     'available_data_types',
