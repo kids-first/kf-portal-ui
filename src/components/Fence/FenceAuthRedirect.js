@@ -25,14 +25,24 @@ export default compose(withApi)(({ api, fence }) => (
             Authorization: `Bearer ${egoJwt}`,
           },
         })
-          .then(result => {
+          .then(() => {
             window.close();
           })
-          .catch(err => {
+          .catch((err) => {
+            console.error(err);
             window.alert('Something went wrong, please refresh your window and try again.');
             window.close();
           });
       } else {
+        if (!code) {
+          window.alert(
+            'Something went wrong (no code in the response), please refresh your window and try again.',
+          );
+        } else {
+          window.alert(
+            'Something went wrong (no ego token), please refresh your window and try again.',
+          );
+        }
         window.close();
       }
     }}

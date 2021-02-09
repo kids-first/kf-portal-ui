@@ -1,6 +1,7 @@
 import { logoutAll } from 'services/login';
 import { updateProfile, getUserLoggedInProfile } from 'services/profiles';
 import isEmpty from 'lodash/isEmpty';
+import { removeForumBanner } from 'ForumBanner';
 
 export const uiLogout = async ({
   loggedInUser,
@@ -33,6 +34,7 @@ export const uiLogout = async ({
       return new Promise((r) => setTimeout(r, 100));
     })
     .then(() => {
+      removeForumBanner();
       history.push('/');
     });
 };

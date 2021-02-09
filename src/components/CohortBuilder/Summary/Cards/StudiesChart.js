@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
-import { Badge } from 'antd';
+import { Badge, Empty } from 'antd';
 
 import theme from 'theme/defaultTheme';
 import { getCohortBarColors } from '../ui';
@@ -130,7 +130,9 @@ class StudiesChart extends React.Component {
         loading={isLoading}
       >
         {hasNoData ? (
-          <div>No data</div>
+          <div className={'empty-graph'}>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </div>
         ) : (
           <HorizontalBar
             showCursor={true}

@@ -1,0 +1,8 @@
+$message-font-size: 15px;
+$message-margin-right: 0px;
+$message-badge-font-size: 9px;
+:export {
+  messageFontSize: $message-font-size;
+  messageMarginRight: $message-margin-right;
+  messageBadgeFontSize: $message-badge-font-size;
+}

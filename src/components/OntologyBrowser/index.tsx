@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Empty, Modal, Result, Transfer } from 'antd';
+import { Button, Dropdown, Empty, Menu, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
@@ -12,11 +12,15 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
 import { getFieldDisplayName } from '../../utils';
 
+// @ts-ignore
+import { IN_OP, SOME_NOT_IN_OP, ALL_OP } from '@kfarranger/middleware/dist/constants';
 //@ts-ignore
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-
 import './index.css';
 import { cloneDeep } from 'lodash';
+import { IntersectionIcon } from 'icons/IntersectionIcon';
+import { UnionIcon } from 'icons/UnionIcon';
+import { NotEqualIcon } from 'icons/NotEqualIcon';
 
 type ModalProps = {
   isVisible: boolean;
@@ -29,6 +33,7 @@ type ModalProps = {
 
 type ModalState = {
   selectedKeys: string[];
+  selectedOperator: string;
   treeSource?: TreeNode[];
   targetKeys: string[];
   isLoading: boolean;
@@ -44,7 +49,39 @@ const desactivateAllSameTerms = (allSameTerms: string[], transferItems: Transfer
     } else return t;
   });
 
-export const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string): Sqon => {
+const OPERATIONS = [
+  {
+    name: 'Any of',
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <UnionIcon fill={fill} />,
+    operation: IN_OP,
+  },
+  {
+    name: 'All of',
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <IntersectionIcon fill={fill} />,
+    operation: ALL_OP,
+  },
+  {
+    name: 'Not',
+    // eslint-disable-next-line react/display-name
+    component: (fill: string) => <NotEqualIcon fill={fill} />,
+    operation: SOME_NOT_IN_OP,
+  },
+];
+
+const getOperation = (name: string) =>
+  OPERATIONS.find((s) => s.operation.toLowerCase() === name.toLowerCase());
+
+const getOperationByName = (name: string) =>
+  OPERATIONS.find((s) => s.name.toLowerCase() === name.toLowerCase());
+
+export const updateSqons = (
+  initialSqon: Sqon,
+  value: string[],
+  selectedField: string,
+  operator: string,
+): Sqon => {
   const updatedSqon = cloneDeep(initialSqon);
   const updatedContent = updatedSqon.content as SqonFilters[];
 
@@ -60,9 +97,10 @@ export const updateSqons = (initialSqon: Sqon, value: string[], selectedField: s
           : [...value, valueContent.content.value],
       );
       updatedContent[index].content = { field: selectedField, value: [...Array.from(newValueSet)] };
+      updatedContent[index].op = operator;
     } else if (value.length > 0) {
       updatedContent.push({
-        op: 'in',
+        op: operator,
         content: {
           field: selectedField,
           value,
@@ -83,6 +121,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   state: ModalState = {
     selectedKeys: [],
+    selectedOperator: 'in',
     targetKeys: [],
     isLoading: false,
     error: null,
@@ -94,6 +133,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   componentDidMount(): void {
     this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
+    const content = this.props.initialSqon.content as SqonFilters[];
+    if (content.length > 0) {
+      this.setState({ selectedOperator: content[0].op });
+    }
   }
 
   getKeyFromTreeId = (treeId: string) => {
@@ -133,10 +176,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     this.props.onCloseModal();
   };
 
-  onApply = (keys: string[]) => {
+  onApply = (keys: string[], operator: string) => {
     const { initialSqon, onSqonUpdate, selectedField } = this.props;
     const valuesId = keys.map(this.getKeyFromTreeId);
-    const updatedSqons = updateSqons(initialSqon, valuesId, selectedField);
+    const updatedSqons = updateSqons(initialSqon, valuesId, selectedField, operator);
     onSqonUpdate(updatedSqons);
     this.closeAndCleanModal();
   };
@@ -211,14 +254,29 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   isLoadingOrEmpty = (): boolean => this.state.isLoading || this.transfertDataSource.length === 0;
 
+  menu = () => (
+    <Menu
+      onClick={(e) => {
+        this.setState({ selectedOperator: getOperationByName(e.key as string)!.operation });
+      }}
+    >
+      {OPERATIONS.map((s) => (
+        <Menu.Item key={s.name.toLowerCase()} icon={s.component('#515885')}>
+          {` ${s.name}`}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+
   render() {
     const { isVisible, title } = this.props;
-    const { error, targetKeys, isLoading, treeSource } = this.state;
+    const { error, targetKeys, isLoading, treeSource, selectedOperator } = this.state;
     const hasError = error != null;
 
     const allSameTerms = selectSameTerms(targetKeys, treeSource);
     const dataSource = this.transfertDataSource;
     const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
+    const operation = getOperation(selectedOperator)?.operation || IN_OP;
 
     return (
       <ExtendedMappingProvider
@@ -230,12 +288,24 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             className="ontology-modal"
             title={`${getFieldDisplayName(title, extendedMapping)} Browser`}
             visible={isVisible}
-            onOk={() => this.onApply(targetKeys)}
-            okText={'Apply'}
-            okButtonProps={{ disabled: hasError }}
-            onCancel={this.onCancel}
-            cancelText="Cancel"
             width="90%"
+            onCancel={() => this.onCancel()}
+            footer={[
+              <Button key="cancel" onClick={() => this.onCancel()} style={{ marginRight: 10 }}>
+                Cancel
+              </Button>,
+              <Dropdown.Button
+                key="apply"
+                disabled={hasError}
+                onClick={() => this.onApply(targetKeys, operation)}
+                overlay={this.menu}
+                type="primary"
+                placement="bottomRight"
+                icon={getOperation(this.state.selectedOperator)!.component('#ffffff')}
+              >
+                Apply
+              </Dropdown.Button>,
+            ]}
           >
             {hasError ? (
               <Result
