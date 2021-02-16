@@ -3,8 +3,8 @@
   "version": "2.35.0",
   "private": true,
   "dependencies": {
-    "@ferlab-ui/core-react": "0.0.7",
-    "@ferlab-ui/core-style": "0.0.8",
+    "@ferlab/style": "0.1.0",
+    "@ferlab/ui": "^0.1.1",
     "@kfarranger/components": "1.24.0",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",

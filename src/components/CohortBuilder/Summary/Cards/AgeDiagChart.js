@@ -10,7 +10,7 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 
 import PropTypes from 'prop-types';
 
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import Card from '@ferlab/ui/core/cards/GridCard';
 import { Empty } from 'antd';
 
 const CHART_HEIGHT_PX = 350;

@@ -12,7 +12,7 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import Card from '@ferlab/ui/core/cards/GridCard';
 import PropTypes from 'prop-types';
 import { Empty } from 'antd';
 
