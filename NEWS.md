@@ -7,6 +7,11 @@
 
 ### Technical / Other changes
 -->
+## 2020-02-16 kf-portal-ui 2.35.0
+
+### Features
+- [2926](https://github.com/kids-first/kf-portal-ui/issues/2926) Missing Biospecimen attributes from the Cohort Builder filtering
+
 ## 2021-02-09 kf-portal-ui 2.34.0
 ### Features
 - [2437](https://github.com/kids-first/kf-portal-ui/issues/2437) Feature (Ontology browser): Add Any Of / All Of / Not in the modal
