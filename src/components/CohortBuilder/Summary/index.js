@@ -13,8 +13,8 @@ import SurvivalChart from './Cards/SurvivalChart';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DataTypeCard from './Cards/DataTypeCard';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import GridContainer from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
+import Card from '@ferlab/ui/core/cards/GridCard';
+import GridContainer from '@ferlab/ui/core/layout/Grid';
 
 import './Summary.css';
 

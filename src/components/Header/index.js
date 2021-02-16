@@ -11,11 +11,11 @@ import {
   HomeOutlined,
 } from '@ant-design/icons';
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
-import Row from 'uikit/Row';
 import { LinkAsButton, NavBarList, NavLink } from './ui';
 import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 import UserMenu from './UserMenu';
 
@@ -62,8 +62,8 @@ const NavigationToolBar = (props) => {
         />
       )}
       <div className="gradientAccent" />
-      <Row className="headerContent">
-        <Row>
+      <StackLayout className="headerContent">
+        <StackLayout>
           <Link to={ROUTES.dashboard}>
             <img src={logoPath} alt="Kids First Logo" className={'logo'} />
           </Link>
@@ -77,6 +77,11 @@ const NavigationToolBar = (props) => {
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
                   <TeamOutlined /> Explore Data
+                </NavLink>
+              </li>
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.asyncContent}>
+                  <TeamOutlined /> Async Content
                 </NavLink>
               </li>
               {isPartOfGroup('kf-investigator', egoGroups) && (
@@ -98,7 +103,7 @@ const NavigationToolBar = (props) => {
               </li>
             </NavBarList>
           )}
-        </Row>
+        </StackLayout>
         <NavBarList style={{ justifyContent: 'flex-end' }}>
           {!loggedInUser && (
             <li>
@@ -113,7 +118,7 @@ const NavigationToolBar = (props) => {
           <AppsMenu />
           {canSeeProtectedRoutes ? <UserMenu /> : null}
         </NavBarList>
-      </Row>
+      </StackLayout>
     </Header>
   );
 };
