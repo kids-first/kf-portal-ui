@@ -1,7 +1,7 @@
 import React from 'react';
 import DataTypeChart from './DataTypeChart';
 import Card from '@ferlab/ui/core/cards/GridCard';
-import { Empty } from 'antd';
+import Empty, { SIZE } from '../../../UI/Empty';
 
 type DataTypeCardProps = {
   isLoading: boolean;
@@ -73,7 +73,7 @@ const DataTypeCard = ({
   return (
     <Card title={<span className={'title-summary-card'}>Available Data</span>} loading={isLoading}>
       <div className={'empty-graph'}>
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        <Empty size={SIZE.SMALL} />
       </div>
     </Card>
   );

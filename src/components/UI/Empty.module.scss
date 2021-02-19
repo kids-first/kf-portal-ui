@@ -1,0 +1,16 @@
+$description-font-size-small: 14px;
+$description-font-size-default: 16px;
+$description-font-weight: 600;
+$description-color: #A9ADC0;
+
+.descriptionDefault {
+  font-size: $description-font-size-default;
+  font-weight: $description-font-weight;
+  color: $description-color;
+}
+
+.descriptionSmall {
+  font-size: $description-font-size-small;
+  font-weight: $description-font-weight;
+  color: $description-color;
+}

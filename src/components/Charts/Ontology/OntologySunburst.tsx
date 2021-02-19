@@ -6,7 +6,7 @@ import { TreeNode } from '../../OntologyBrowser/Model';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
 import { Sqon } from 'store/sqon';
 import './Ontology.css';
-import { generateEmptyPhenotype } from 'store/sunburstTypes';
+import Empty, { Direction, SIZE } from '../../UI/Empty';
 
 type OntologySunburstProps = {
   sqon: Sqon;
@@ -20,7 +20,6 @@ type OntologySunburstState = {
 
 const tooltipFormatter = (data: TreeNode) => `${data.results}\n\n${data.title}`;
 const centerTextFormatter = (data: TreeNode) => `${data.results} ${data.title}`;
-const centerNoDataTextFormatter = (data: TreeNode) => `${data.title}`;
 
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
   state = {
@@ -76,25 +75,19 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
       <>
         {loading ? (
           <Spinner size={'large'} />
-        ) : (
+        ) : data !== null ? (
           <div className="card-content-center">
-            {data !== null ? (
-              <Sunburst
-                data={data!}
-                height={height}
-                width={width}
-                tooltipFormatter={tooltipFormatter}
-                centerTextFormatter={centerTextFormatter}
-              />
-            ) : (
-              <Sunburst
-                isEmpty
-                data={generateEmptyPhenotype()}
-                height={height}
-                width={width}
-                centerTextFormatter={centerNoDataTextFormatter}
-              />
-            )}
+            <Sunburst
+              data={data!}
+              height={height}
+              width={width}
+              tooltipFormatter={tooltipFormatter}
+              centerTextFormatter={centerTextFormatter}
+            />
+          </div>
+        ) : (
+          <div className={'empty-graph'}>
+            <Empty direction={Direction.HORIZONTAL} size={SIZE.DEFAULT} />
           </div>
         )}
       </>

@@ -16,7 +16,7 @@ import SurvivalPlot from './SurvivalPlot';
 import Card from '@ferlab/ui/core/cards/GridCard';
 
 import './SurvivalChart.css';
-import { Empty } from 'antd';
+import Empty, { SIZE } from '../../../UI/Empty';
 
 const formatDataset = (data) => [
   {
@@ -144,7 +144,7 @@ export class SurvivalChart extends React.Component {
           loading={this.state.isLoading}
         >
           <div className={'empty-graph'}>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty size={SIZE.SMALL} />
           </div>
         </Card>
       );
