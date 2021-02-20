@@ -194,6 +194,37 @@ const App = compose(
           }
         />
         <Route
+          path={ROUTES.dashboard}
+          exact
+          render={(props) =>
+            protectRoute({
+              api,
+              isLoadingUser,
+              Component: UserDashboard,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+
+        <Route
+          path={ROUTES.studies}
+          exact
+          render={(props) =>
+            protectRoute({
+              api,
+              isLoadingUser,
+              Component: () => {
+                import('pages/studies')
+                  .then(({ StudiesPage }) => StudiesPage)
+                  .catch(() => {});
+              },
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+        <Route
           path={ROUTES.join}
           exact
           render={() => {
