@@ -1,6 +1,7 @@
 const ROUTES = {
   admin: '/admin',
   adminLegacy: '/admin_legacy',
+  studies: '/studies',
   authRedirect: '/auth-redirect',
   cohortBuilder: '/explore',
   dcfRedirect: '/dcf_redirect',

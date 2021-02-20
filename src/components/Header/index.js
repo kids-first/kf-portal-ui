@@ -16,6 +16,7 @@ import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 import UserMenu from './UserMenu';
 
@@ -79,11 +80,13 @@ const NavigationToolBar = (props) => {
                   <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.asyncContent}>
-                  <TeamOutlined /> Async Content
-                </NavLink>
-              </li>
+              {isFeatureEnabled('studiesPage') && (
+                <li>
+                  <NavLink currentPathName={currentPathName} to={ROUTES.asyncContent}>
+                    <TeamOutlined /> Async Content
+                  </NavLink>
+                </li>
+              )}
               {isPartOfGroup('kf-investigator', egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
