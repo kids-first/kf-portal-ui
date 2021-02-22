@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Col, List, Row } from 'antd';
-import Title from 'antd/es/typography/Title';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Col, List, Row, Typography } from 'antd';
 import { fetchVariantDBStats } from './fetchVariantStats';
+
+import './StatsTable.scss';
 
 type VariantDbStats = {
   distinctVariantsCount: number;
@@ -9,6 +10,8 @@ type VariantDbStats = {
   participantsCount: number;
   studiesCount: number;
 };
+
+const { Title } = Typography;
 
 const initialVariantStatsState = [
   {
@@ -29,37 +32,37 @@ const initialVariantStatsState = [
   },
 ];
 
-const StatsTable = (): JSX.Element => {
+const StatsTable: FunctionComponent = () => {
   const [statsData, setStatsData] = useState(initialVariantStatsState);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const stats = await fetchVariantDBStats();
-        const sourceDoc: VariantDbStats = stats._source;
+        const stats: VariantDbStats = await fetchVariantDBStats();
 
         const data = [
           {
             name: 'Studies',
-            value: sourceDoc.studiesCount,
+            value: stats.studiesCount,
           },
           {
             name: 'Participants',
-            value: <div>{sourceDoc.participantsCount}</div>,
+            value: <div>{stats.participantsCount}</div>,
           },
           {
             name: 'Distinct Variants',
-            value: sourceDoc.distinctVariantsCount,
+            value: stats.distinctVariantsCount,
           },
           {
             name: 'Occurrences',
-            value: sourceDoc.occurrencesCount,
+            value: stats.occurrencesCount,
           },
         ];
 
         setStatsData(data);
       } catch (e) {
         console.error('Cannot fetch variant stats');
+        setStatsData([]);
       }
     }
     fetchStats();
@@ -69,50 +72,18 @@ const StatsTable = (): JSX.Element => {
     <List
       header={
         <Row justify={'space-between'} className={'data-header-row'}>
-          <Title
-            level={4}
-            style={{
-              fontFamily: 'Open Sans',
-              fontWeight: 600,
-              fontSize: 16,
-              lineHeight: '24px',
-            }}
-          >
+          <Title level={4} className={'data-header-title'}>
             Data Release 1
           </Title>
-          <div
-            style={{
-              fontFamily: 'Open Sans',
-              fontWeight: 600,
-              fontSize: 14,
-              lineHeight: '22px',
-              color: '#7D84A6',
-            }}
-          >
-            January 21 , 2021
-          </div>
+          <div className={'data-header-value'}>January 21 , 2021</div>
         </Row>
       }
       dataSource={statsData}
       renderItem={(item) => (
         <List.Item>
           <Row className={'data-item-row'}>
-            <Col
-              style={{
-                fontFamily: 'Open Sans',
-                color: '#515885',
-              }}
-            >
-              {item.name}
-            </Col>
-            <Col
-              style={{
-                fontFamily: 'Open Sans',
-                color: '#515885',
-              }}
-            >
-              {item.value}
-            </Col>
+            <Col>{item.name}</Col>
+            <Col>{item.value}</Col>
           </Row>
         </List.Item>
       )}

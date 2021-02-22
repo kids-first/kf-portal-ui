@@ -1,10 +1,12 @@
 import { apiInitialized } from '../../services/api';
-import { arrangerUpdateApiRoot } from 'common/injectGlobals';
+import { kfArrangerApiRoot } from 'common/injectGlobals';
 
-export const fetchVariantDBStats = async () =>
+export const fetchVariantDBStats = async () => {
   // @ts-ignore
-  await apiInitialized({
+  const result = await apiInitialized({
     method: 'GET',
-    arrangerRoot: arrangerUpdateApiRoot,
+    arrangerRoot: kfArrangerApiRoot,
     endpoint: 'variantDbStats',
   });
+  return result._source;
+};

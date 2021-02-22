@@ -27,7 +27,7 @@ export const shortUrlApi = getApplicationEnvVar('SHORTURL_API');
 export const shortUrlResolveRoot = getApplicationEnvVar('SHORTURL_RESOLVE_ROOT');
 
 export const arrangerApiRoot = getApplicationEnvVar('ARRANGER_API');
-export const arrangerUpdateApiRoot = getApplicationEnvVar('ARRANGER_UPDATE_API');
+export const kfArrangerApiRoot = getApplicationEnvVar('KF_ARRANGER_API');
 
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 
