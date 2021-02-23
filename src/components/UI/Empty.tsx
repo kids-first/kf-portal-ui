@@ -23,7 +23,7 @@ type OwnProps = {
   image?: string;
 };
 
-const mapping = {
+export const mapping = {
   [SIZE.SMALL + '.' + Direction.VERTICAL]: emptyVerticalSmall,
   [SIZE.DEFAULT + '.' + Direction.VERTICAL]: emptyVerticalDefault,
   [SIZE.DEFAULT + '.' + Direction.HORIZONTAL]: emptyHorizontalDefault,

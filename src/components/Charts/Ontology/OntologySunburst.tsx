@@ -6,7 +6,7 @@ import { TreeNode } from '../../OntologyBrowser/Model';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
 import { Sqon } from 'store/sqon';
 import './Ontology.css';
-import Empty, { Direction, SIZE } from '../../UI/Empty';
+import Empty, { Direction, SIZE } from 'components/UI/Empty';
 
 type OntologySunburstProps = {
   sqon: Sqon;

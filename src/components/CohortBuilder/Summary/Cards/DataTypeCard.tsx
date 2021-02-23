@@ -1,7 +1,7 @@
 import React from 'react';
 import DataTypeChart from './DataTypeChart';
 import Card from '@ferlab/ui/core/cards/GridCard';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 type DataTypeCardProps = {
   isLoading: boolean;

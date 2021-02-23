@@ -16,7 +16,7 @@ import {
 import Card from '@ferlab/ui/core/cards/GridCard';
 import PropTypes from 'prop-types';
 import { mostFrequentDiagnosisTooltip, removeMondo } from 'components/Charts';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map((diagnosis) => ({

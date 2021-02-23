@@ -12,7 +12,7 @@ import Card from '@ferlab/ui/core/cards/GridCard';
 import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
 import { studiesToolTip } from 'components/Charts';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;

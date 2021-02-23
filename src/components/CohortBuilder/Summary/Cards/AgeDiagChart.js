@@ -11,7 +11,7 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 import PropTypes from 'prop-types';
 
 import Card from '@ferlab/ui/core/cards/GridCard';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const CHART_HEIGHT_PX = 350;
 

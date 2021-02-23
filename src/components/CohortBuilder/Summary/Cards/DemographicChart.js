@@ -14,7 +14,7 @@ import {
 } from 'common/sqonUtils';
 import Card from '@ferlab/ui/core/cards/GridCard';
 import PropTypes from 'prop-types';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 export const demographicQuery = (sqon) => ({
   query: gql`
     fragment bucketsAgg on Aggregations {

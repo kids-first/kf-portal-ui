@@ -16,7 +16,7 @@ import SurvivalPlot from './SurvivalPlot';
 import Card from '@ferlab/ui/core/cards/GridCard';
 
 import './SurvivalChart.css';
-import Empty, { SIZE } from '../../../UI/Empty';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const formatDataset = (data) => [
   {
