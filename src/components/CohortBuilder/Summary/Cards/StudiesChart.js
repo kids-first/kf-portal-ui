@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
-import { Badge, Empty } from 'antd';
+import { Badge } from 'antd';
 
 import theme from 'theme/defaultTheme';
 import { getCohortBarColors } from '../ui';
@@ -12,6 +12,7 @@ import Card from '@ferlab/ui/core/cards/GridCard';
 import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
 import { studiesToolTip } from 'components/Charts';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
@@ -131,7 +132,7 @@ class StudiesChart extends React.Component {
       >
         {hasNoData ? (
           <div className={'empty-graph'}>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty size={SIZE.SMALL} />
           </div>
         ) : (
           <HorizontalBar

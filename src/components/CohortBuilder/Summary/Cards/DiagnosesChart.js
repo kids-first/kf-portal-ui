@@ -16,7 +16,7 @@ import {
 import Card from '@ferlab/ui/core/cards/GridCard';
 import PropTypes from 'prop-types';
 import { mostFrequentDiagnosisTooltip, removeMondo } from 'components/Charts';
-import { Empty } from 'antd';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map((diagnosis) => ({
@@ -167,7 +167,7 @@ class DiagnosesChart extends React.Component {
           >
             {!data || data.length === 0 ? (
               <div className={'empty-graph'}>
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                <Empty size={SIZE.SMALL} />
               </div>
             ) : (
               <HorizontalBar
