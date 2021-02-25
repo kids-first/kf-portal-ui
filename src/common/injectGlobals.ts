@@ -102,3 +102,6 @@ export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') 
 export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';
 
 export const userSnapApiKey = getApplicationEnvVar('USER_SNAP_API_KEY') || '';
+
+// Idp (ras || fence)
+export const idp = getApplicationEnvVar('IDP');
