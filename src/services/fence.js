@@ -8,13 +8,15 @@ import {
   fenceTokensUri,
   gen3ApiRoot,
   dcfApiRoot,
+  idp,
 } from 'common/injectGlobals';
 
 const RESPONSE_TYPE = 'code';
 
 const GEN3_SCOPE = 'openid+data+user';
 const DCF_SCOPE = 'openid+user';
-const getScope = fence => {
+
+const getScope = (fence) => {
   switch (fence) {
     case GEN3:
       return GEN3_SCOPE;
@@ -32,10 +34,10 @@ const PROVIDERS = {
   gen3: { fenceUri: gen3ApiRoot },
   dcf: { fenceUri: dcfApiRoot },
 };
-FENCES.forEach(fence => {
+FENCES.forEach((fence) => {
   const authCliUri = `${fenceAuthClientUri}?fence=${fence}`;
   fetch(authCliUri)
-    .then(res => res.json())
+    .then((res) => res.json())
     .then(({ client_id, redirect_uri }) => {
       PROVIDERS[fence].clientId = client_id;
       PROVIDERS[fence].redirectUri = redirect_uri;
@@ -51,19 +53,20 @@ FENCES.forEach(fence => {
 export const fenceConnect = (api, fence) => {
   const { clientId, redirectUri, fenceUri } = PROVIDERS[fence];
   const scope = getScope(fence);
-  const url = `${fenceUri}user/oauth2/authorize?client_id=${clientId}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${redirectUri}`;
+  // eslint-disable-next-line max-len
+  const url = `${fenceUri}user/oauth2/authorize?client_id=${clientId}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${redirectUri}&idp=${idp}`;
   const authWindow = window.open(url);
   return new Promise((resolve, reject) => {
     const interval = setInterval(() => {
       if (authWindow.closed) {
         getAccessToken(api, fence)
-          .then(access_token => {
+          .then((access_token) => {
             if (access_token) {
               clearInterval(interval);
               resolve(access_token);
             }
           })
-          .catch(err => {
+          .catch(() => {
             clearInterval(interval);
             reject({ msg: 'Error occurred while fetching Fence Access Token.' });
           });
@@ -85,7 +88,7 @@ const getRefreshedToken = async (api, fence) =>
     method: 'POST',
     url: `${fenceRefreshUri}?fence=${fence}`,
   })
-    .then(data => {
+    .then((data) => {
       if (data.access_token) {
         return data;
       } else {
@@ -103,7 +106,7 @@ export const getAccessToken = async (api, fence) => {
   return exp * 1000 > Date.now() ? currentToken : await getRefreshedToken(api, fence);
 };
 
-export const convertTokenToUser = accessToken => {
+export const convertTokenToUser = (accessToken) => {
   const {
     context: { user },
   } = jwtDecode(accessToken);
@@ -154,7 +157,7 @@ export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
     : {};
   const { url } = await fetch(`${fenceUri}user/data/download/${fileUuid}`, {
     headers,
-  }).then(res => res.json());
+  }).then((res) => res.json());
   if (!url) {
     return null;
   }
@@ -164,5 +167,5 @@ export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
 /*
  * Get list of authorized studies for a user
  */
-const toStudyId = consentCode => consentCode.split('.')[0];
-export const getStudyIds = fenceUser => uniq(Object.keys(fenceUser.projects).map(toStudyId));
+const toStudyId = (consentCode) => consentCode.split('.')[0];
+export const getStudyIds = (fenceUser) => uniq(Object.keys(fenceUser.projects).map(toStudyId));
