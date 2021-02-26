@@ -82,8 +82,8 @@ const NavigationToolBar = (props) => {
               </li>
               {isFeatureEnabled('studiesPage') && (
                 <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.asyncContent}>
-                    <TeamOutlined /> Async Content
+                  <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
+                    <TeamOutlined /> Studies
                   </NavLink>
                 </li>
               )}
