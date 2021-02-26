@@ -3,7 +3,6 @@ import React, { FunctionComponent } from 'react';
 import './DownloadButton.css';
 import { Button, Modal } from 'antd';
 import { Sqon } from 'store/sqon';
-import { ModalStateEffects } from 'store/freactalModalState';
 import { DownloadOutlined } from '@ant-design/icons';
 import FamilyManifestModalContent from '../FamilyManifestModal/FamilyManifestModalContent';
 import { RootState } from '../../store/rootState';
@@ -14,7 +13,6 @@ import { connect, ConnectedProps } from 'react-redux';
 type OwnProps = {
   sqon: Sqon;
   projectId: string;
-  effects: ModalStateEffects;
 };
 
 const mapStateToProps = (state: RootState) => ({
