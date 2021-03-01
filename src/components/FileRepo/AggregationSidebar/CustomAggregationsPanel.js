@@ -1,22 +1,16 @@
 import React, { Fragment, useState } from 'react';
 import { compose } from 'recompose';
-
 import Query from '@kfarranger/components/dist/Query';
-
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
-
 import { aggsConfig } from './aggsConfig';
-
 import Tabs from 'components/Tabs';
 import Tab from './Tab';
-
 import styles from './AggregationSidebar.module.css';
+import PropTypes from 'prop-types';
 
 const FilterTabs = ({
   typesAggsConfig,
-  data,
-  type,
   setSQON,
   api,
   sqon,
@@ -86,16 +80,26 @@ const FilterTabs = ({
   );
 };
 
+FilterTabs.propTypes = {
+  typesAggsConfig: PropTypes.object,
+  setSQON: PropTypes.func,
+  api: PropTypes.func,
+  sqon: PropTypes.object,
+  onValueChange: PropTypes.func,
+  projectId: PropTypes.string,
+  containerRef: PropTypes.any,
+  graphqlField: PropTypes.string,
+  translateSQONValue: PropTypes.func,
+};
+
 const FiltersPanel = ({
   api,
   sqon,
-  containerRef,
   setSQON = () => {},
   onValueChange = () => {},
   projectId,
   graphqlField,
   translateSQONValue,
-  effects,
   ...props
 }) => (
   <Query
@@ -119,7 +123,7 @@ const FiltersPanel = ({
         }
       }
     `}
-    render={({ loading, data }) => {
+    render={({ data }) => {
       if (!data) return null;
       const containerRef = React.createRef();
       const typesAggsConfig = aggsConfig(data, graphqlField);
@@ -144,5 +148,15 @@ const FiltersPanel = ({
     }}
   />
 );
+
+FiltersPanel.propTypes = {
+  api: PropTypes.func,
+  sqon: PropTypes.object,
+  setSQON: PropTypes.func,
+  onValueChange: PropTypes.func,
+  projectId: PropTypes.string,
+  graphqlField: PropTypes.string,
+  translateSQONValue: PropTypes.func,
+};
 
 export default compose(withApi)(FiltersPanel);
