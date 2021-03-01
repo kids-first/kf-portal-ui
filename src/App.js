@@ -44,6 +44,7 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
+const VariantPage = lazy(() => import('pages/variant'));
 
 const App = compose(
   injectState,
@@ -128,6 +129,21 @@ const App = compose(
             }
           />
           <Route
+            /* temporary: this will be the new variant db page*/
+            path={ROUTES.devVariantDb}
+            exact
+            render={(props) =>
+              protectRoute({
+                api,
+                isLoadingUser,
+                Component: VariantPage,
+                WrapperPage: FixedFooterPage,
+                loggedInUser,
+                ...props,
+              })
+            }
+          />
+          <Route
             path={ROUTES.variantDb}
             exact
             render={(props) =>
@@ -196,20 +212,6 @@ const App = compose(
               })
             }
           />
-          <Route
-            path={ROUTES.dashboard}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: UserDashboard,
-                loggedInUser,
-                ...props,
-              })
-            }
-          />
-
           <Route
             path={ROUTES.studies}
             exact

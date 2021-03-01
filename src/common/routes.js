@@ -20,6 +20,8 @@ const ROUTES = {
   variantDb: '/variantDb',
   profile: '/profile',
   termsConditions: '/termsConditions',
+  /* temporary while constructing the new variant page*/
+  devVariantDb: '/devVariantDb',
 };
 
 export default ROUTES;
