@@ -58,7 +58,6 @@ const RoleForm: FunctionComponent<Props> = ({
         lastName: values.lastName,
         roles: [activeRole],
         acceptedKfOptIn: subscribing.some((s) => s === 'acceptedKfOptIn'),
-        acceptedNihOptIn: subscribing.some((s) => s === 'acceptedNihOptIn'),
         acceptedDatasetSubscriptionKfOptIn: subscribing.some(
           (s) => s === 'acceptedDatasetSubscriptionKfOptIn',
         ),
@@ -169,17 +168,6 @@ const RoleForm: FunctionComponent<Props> = ({
                 I would like to receive the Kids First Data Resource Center quarterly newsletter to
                 get the latest DRC news including recent study updates, new investigators and
                 partners added to the effort.
-              </Paragraph>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={2}>
-              <Checkbox value="acceptedNihOptIn" />
-            </Col>
-            <Col span={22}>
-              <Paragraph>
-                I would like to receive updates from the NIH Kids First program including funding
-                updates and news about the program.
               </Paragraph>
             </Col>
           </Row>
