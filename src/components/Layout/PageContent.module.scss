@@ -1,0 +1,11 @@
+.pageContentContainer {
+  min-height: calc(100% - 56px);
+  display: flex;
+}
+
+.pageContent {
+  margin: 25px 35px;
+  width: 100%;
+  min-height: 600px;
+  background-color: #f4f5f8;
+}

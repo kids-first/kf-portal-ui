@@ -3,6 +3,7 @@
   "version": "2.35.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.11",
     "@ferlab/style": "0.1.0",
     "@ferlab/ui": "^0.1.1",
     "@kfarranger/components": "1.24.0",
@@ -16,7 +17,7 @@
     "d3": "^5.16.0",
     "file-saver": "^2.0.2",
     "freactal": "^2.0.3",
-    "graphql": "^14.6.0",
+    "graphql": "^14.7.0",
     "graphql-tag": "^2.10.3",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",

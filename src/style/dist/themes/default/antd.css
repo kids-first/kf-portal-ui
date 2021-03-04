@@ -2193,7 +2193,7 @@ html {
   padding: 4px 15px;
   font-size: 14px;
   border-radius: 2px;
-  color: #009BBA;
+  color: #009bba;
   background: #fff;
   border-color: #d9d9d9;
 }
@@ -2318,8 +2318,8 @@ html {
 }
 .ant-btn-primary {
   color: #ffffff;
-  background: #009BBA;
-  border-color: #009BBA;
+  background: #009bba;
+  border-color: #009bba;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
@@ -2504,7 +2504,7 @@ html {
   content: '';
 }
 .ant-btn-dashed {
-  color: #009BBA;
+  color: #009bba;
   background: #fff;
   border-color: #d9d9d9;
   border-style: dashed;
@@ -3666,9 +3666,9 @@ html {
   border-color: #fff;
 }
 .ant-btn-background-ghost.ant-btn-primary {
-  color: #009BBA;
+  color: #009bba;
   background: transparent;
-  border-color: #009BBA;
+  border-color: #009bba;
   text-shadow: none;
 }
 .ant-btn-background-ghost.ant-btn-primary > a:only-child {
@@ -18066,7 +18066,7 @@ span.ant-radio + * {
   height: 32px;
   margin: 0;
   padding: 0 15px;
-  color: #009BBA;
+  color: #009bba;
   font-size: 14px;
   line-height: 30px;
   background: #fff;
@@ -18077,7 +18077,7 @@ span.ant-radio + * {
   transition: color 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 .ant-radio-button-wrapper a {
-  color: #009BBA;
+  color: #009bba;
 }
 .ant-radio-button-wrapper > .ant-radio-button {
   position: absolute;
