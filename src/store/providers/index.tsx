@@ -1,8 +1,6 @@
 import React from 'react';
 
 import ApolloProvider from './apollo';
-// import FilterProvider from './Filter';
-
 export interface IProvider {
   children: React.ReactNode;
   userToken: string;

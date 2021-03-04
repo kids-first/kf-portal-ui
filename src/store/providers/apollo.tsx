@@ -17,20 +17,15 @@ const httpLink = createHttpLink({
 });
 
 const getAuthLink = (userToken: string) =>
-  setContext((_, { headers }) =>
-    // return the headers to the context so httpLink can read them
-    ({
-      headers: {
-        ...headers,
-        authorization: userToken ? `Bearer ${userToken}` : '',
-      },
-    }),
-  );
+  setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      authorization: userToken ? `Bearer ${userToken}` : '',
+    },
+  }));
 
-const Provider2 = ({ children, userToken }: IProvider): ReactElement => {
+export default ({ children, userToken }: IProvider): ReactElement => {
   const header = getAuthLink(userToken);
-
-  console.log('header : ', header);
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     cache: new InMemoryCache(),
@@ -38,5 +33,3 @@ const Provider2 = ({ children, userToken }: IProvider): ReactElement => {
   });
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
-
-export default Provider2;

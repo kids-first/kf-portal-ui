@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const STUDIES_PAGE_DATA = gql`
+export const STUDIES_QUERY = gql`
   {
     study {
       hits {

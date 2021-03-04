@@ -7,7 +7,7 @@ import PageContent from 'components/Layout/PageContent';
 import { studiesColumns } from 'store/graphql/studies/models';
 import { getStudiesPageData } from 'store/graphql/studies/actions';
 
-const StudiesPage: FC = () => {
+const Studies: FC = () => {
   const { loading: loadingData, results: data } = getStudiesPageData()();
 
   if (loadingData) {
@@ -21,4 +21,4 @@ const StudiesPage: FC = () => {
   );
 };
 
-export default StudiesPage;
+export default Studies;

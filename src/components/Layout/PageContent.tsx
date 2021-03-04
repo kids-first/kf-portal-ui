@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import PageTitle from 'components/Text/PageTitle';
+import { Typography } from 'antd';
 
 import style from './PageContent.module.scss';
+const { Title } = Typography;
 
 type PageContentProps = {
   title: string | void;
@@ -10,7 +11,7 @@ type PageContentProps = {
 const PageContent: FC<PageContentProps> = ({ children, title }) => (
   <div className={style.pageContentContainer}>
     <div className={style.pageContent}>
-      {title && <PageTitle>{title}</PageTitle>}
+      {title && <Title level={1}>{title}</Title>}
       {children}
     </div>
   </div>
