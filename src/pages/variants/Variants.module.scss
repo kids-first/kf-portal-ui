@@ -1,0 +1,16 @@
+@import 'src/style/themes/default/colors.module.scss';
+
+.mainContainer {
+  margin: 24px;
+  height: 100%;
+}
+
+.titleContainer {
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.statsAndZepplinContainer {
+  width: 100%;
+  margin-bottom: 24px;
+}

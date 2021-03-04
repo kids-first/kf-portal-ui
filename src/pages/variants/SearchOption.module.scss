@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+}
+
+.leftSquare {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  width: 42px;
+  height: 42px;
+  left: 0;
+  top: 0;
+  border-radius: 2px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: #2b388f; //TODO var
+}
+
+.leftSquareBgColorVariant {
+  background: #e6bddc;
+}
+
+.leftSquareBgColorGene {
+  background: #c5cbe8;
+}
+
+.detailsContainer {
+  margin: 0 12px;
+}
+
+.symbol {
+  padding-right: 8px;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: #383F72; //TODO var
+}
+
+.locus {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  color: #383F72; //TODO var
+}
