@@ -1,0 +1,32 @@
+@import 'src/style/themes/default/colors.module.scss';
+
+.autoCompleteContainer {
+  margin-bottom: 24px;
+}
+
+.searchViewContainer {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  background-color: $pageBackground;
+}
+
+.initialSearchContainer {
+  justify-content: center;
+  align-items: center;
+  background: #f9f9fb; //TODO var
+  width: 100%;
+  height: 100%;
+}
+
+.inputVariant {
+  padding: 8px;
+  background: #F4F5F8; // TODO var
+  border-radius: 2px;
+}
+
+$autocomplete-width: 750px;
+
+:export {
+  autoCompleteWidth: $autocomplete-width;
+}

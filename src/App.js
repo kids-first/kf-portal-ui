@@ -44,7 +44,7 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
-const VariantPage = lazy(() => import('pages/variant'));
+const VariantsPage = lazy(() => import('pages/variants'));
 
 const App = compose(
   injectState,
@@ -136,7 +136,7 @@ const App = compose(
               protectRoute({
                 api,
                 isLoadingUser,
-                Component: VariantPage,
+                Component: VariantsPage,
                 WrapperPage: FixedFooterPage,
                 loggedInUser,
                 ...props,
