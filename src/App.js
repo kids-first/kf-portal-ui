@@ -222,6 +222,7 @@ const App = compose(
                 Component: StudiesPage,
                 WrapperPage: FixedFooterPage,
                 loggedInUser,
+                userToken: state.loggedInUserToken,
                 ...props,
               })
             }

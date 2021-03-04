@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { default as ApolloProvider } from 'store/providers';
+import Studies from './studies';
 
-type DataPageProps = {
-  title: string;
+type StudiesPageProps = {
+  userToken: string;
 };
-
-const DataPage = (props: DataPageProps) => (
-  <div>
-    <h1>{props.title || 'Building'}</h1>
-  </div>
+const StudiesPage: FC<StudiesPageProps> = ({ userToken }) => (
+  <ApolloProvider userToken={userToken}>
+    <Studies />
+  </ApolloProvider>
 );
 
-export default DataPage;
+export default StudiesPage;
