@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import style from './SearchOption.module.scss';
 import { toKebabCase } from 'utils';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 export enum Criteria {
   Variant = 'variant',
@@ -35,11 +36,11 @@ const SearchOption: FunctionComponent<OwnProps> = (props) => {
   const { criteria, searchParams } = props;
   const { symbols, locus } = searchParams;
   return (
-    <div className={style.container}>
+    <StackLayout>
       <div className={`${style.leftSquare} ${generateSquareColorCss(criteria)}`}>
         {SQUARE_ABBREVIATION[criteria].label}
       </div>
-      <div className={style.detailsContainer}>
+      <StackLayout vertical className={style.detailsContainer}>
         <div className={style.locus}>{locus}</div>
         <div>
           {symbols.map((symbol: string) => (
@@ -48,8 +49,8 @@ const SearchOption: FunctionComponent<OwnProps> = (props) => {
             </span>
           ))}
         </div>
-      </div>
-    </div>
+      </StackLayout>
+    </StackLayout>
   );
 };
 

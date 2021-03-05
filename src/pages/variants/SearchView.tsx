@@ -4,7 +4,6 @@ import { AutoComplete, Form, Input } from 'antd';
 import Empty, { SIZE } from 'components/UI/Empty';
 import VariantTable from './VariantTable';
 import { SearchOutlined } from '@ant-design/icons';
-
 import style from './SearchView.module.scss';
 
 const DEBUG_SHOW_INIT_VIEW = true; // To be removed
