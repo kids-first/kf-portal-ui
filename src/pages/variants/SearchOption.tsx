@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import style from './SearchOption.module.scss';
 import { toKebabCase } from 'utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import Symbol from './Symbol';
 
 export enum Criteria {
   Variant = 'variant',
@@ -44,9 +45,7 @@ const SearchOption: FunctionComponent<OwnProps> = (props) => {
         <div className={style.locus}>{locus}</div>
         <div>
           {symbols.map((symbol: string) => (
-            <span key={toKebabCase(symbol)} className={style.symbol}>
-              {symbol}
-            </span>
+            <Symbol key={toKebabCase(symbol)} symbol={symbol} />
           ))}
         </div>
       </StackLayout>

@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { AutoComplete, Form, Input } from 'antd';
-import Empty, { SIZE } from 'components/UI/Empty';
-import VariantTable from './VariantTable';
-import { SearchOutlined } from '@ant-design/icons';
 import style from './SearchView.module.scss';
+import VariantTable from './VariantTable';
+import Empty, { SIZE } from '../../components/UI/Empty';
+import { SearchOutlined } from '@ant-design/icons';
 
-const DEBUG_SHOW_INIT_VIEW = true; // To be removed
+const DEBUG_SHOW_INIT_VIEW = false; // To be removed
 
 const SearchView: FunctionComponent = () => (
   <StackLayout vertical className={style.searchViewContainer} center>
@@ -32,7 +32,7 @@ const SearchView: FunctionComponent = () => (
         <Empty size={SIZE.DEFAULT} description={'Use the search variant tool above'} />
       </StackLayout>
     ) : (
-      <VariantTable isLoading={false} dataSource={[]} />
+      <VariantTable />
     )}
   </StackLayout>
 );
