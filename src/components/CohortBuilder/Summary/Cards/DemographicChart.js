@@ -12,7 +12,7 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import PropTypes from 'prop-types';
 import Empty, { SIZE } from 'components/UI/Empty';
 export const demographicQuery = (sqon) => ({
