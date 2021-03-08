@@ -1,0 +1,40 @@
+.consequenceUl {
+  list-style: none;
+  padding: 0;
+}
+
+.highImpact {
+  //TODO var
+  background-color: red;
+}
+
+.lowImpact {
+  //TODO var
+  background-color: green;
+}
+
+.moderateImpact {
+  //TODO var
+  background-color: orange;
+}
+
+.modifierImpact {
+  //TODO var
+  background-color: grey;
+}
+
+.detail {
+  padding-right: 12px;
+}
+
+.bullet {
+  width: 8px;
+  border-radius: 50%;
+  height: 8px;
+  margin-right: 8px;
+}
+
+.symbolLink {
+  text-decoration-line: underline;
+  color: #383f72; // TODO var
+}
