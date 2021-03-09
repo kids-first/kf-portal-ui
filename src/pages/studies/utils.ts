@@ -136,3 +136,26 @@ const getFilterWithNoSelection = (filters: ISqonGroupFilter, field: string): ISq
     content: filtered,
   };
 };
+
+export const getFilterType = (fieldType: string): VisualType => {
+  if (['long', 'float', 'integer', 'date'].includes(fieldType)) {
+    return VisualType.Range;
+  } else if (['boolean'].includes(fieldType)) {
+    return VisualType.Toggle;
+  }
+  return VisualType.Checkbox;
+};
+
+// export const enhanceFilters = (aggregations: IAggregations, key: string): IFilter[] => {
+//   const aggregation = aggregations[key.split('.').join('__')];
+//   return aggregation
+//     ? aggregation.buckets.map((f) => ({
+//       data: {
+//         count: f.doc_count,
+//         key: booleanValues.includes(f.key) ? `${f.key === '1' ? true : false}` : f.key,
+//       },
+//       id: f.key.trim().toLowerCase().split(' ').join('.'),
+//       name: t(`aggregation.${f.key.trim().toLowerCase().split(' ').join('.')}`, {}, f.key),
+//     }))
+//     : [{ data: {}, id: key, name: key }];
+// };

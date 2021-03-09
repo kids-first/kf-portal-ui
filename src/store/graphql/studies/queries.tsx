@@ -19,3 +19,32 @@ export const STUDIES_QUERY = gql`
     }
   }
 `;
+
+export const STUDIES_BUCKETS = gql`
+  {
+    study {
+      aggregations {
+        domain {
+          buckets {
+            key
+            doc_count
+          }
+        }
+        program {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const INDEX_EXTENDED_MAPPING = (index: string) => gql`
+  {
+    ${index} {
+      extended
+    }
+  }
+`;

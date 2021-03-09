@@ -28,7 +28,7 @@ export default ({ children, userToken }: IProvider): ReactElement => {
   const header = getAuthLink(userToken);
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename: false }),
     link: header.concat(httpLink),
   });
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
