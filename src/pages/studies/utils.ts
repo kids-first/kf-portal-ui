@@ -62,7 +62,7 @@ const createRangeFilter = (field: string, filters: IFilter<IFilterRange>[]) => {
   return selectedFilters;
 };
 
-const createInlineFilters = (
+export const createInlineFilters = (
   field: string,
   filters: IFilter<IFilterCount>[],
 ): TSqonGroupContent => {
@@ -146,16 +146,58 @@ export const getFilterType = (fieldType: string): VisualType => {
   return VisualType.Checkbox;
 };
 
-// export const enhanceFilters = (aggregations: IAggregations, key: string): IFilter[] => {
-//   const aggregation = aggregations[key.split('.').join('__')];
-//   return aggregation
-//     ? aggregation.buckets.map((f) => ({
-//       data: {
-//         count: f.doc_count,
-//         key: booleanValues.includes(f.key) ? `${f.key === '1' ? true : false}` : f.key,
-//       },
-//       id: f.key.trim().toLowerCase().split(' ').join('.'),
-//       name: t(`aggregation.${f.key.trim().toLowerCase().split(' ').join('.')}`, {}, f.key),
-//     }))
-//     : [{ data: {}, id: key, name: key }];
-// };
+export const getSelectedFilters = (filters: IFilter[], filterGroup: IFilterGroup): IFilter[] => {
+  const selectedFilters = getFiltersQuery();
+  if (isEmpty(selectedFilters)) {
+    return [];
+  }
+
+  switch (filterGroup.type) {
+    case VisualType.Range:
+      // eslint-disable-next-line no-case-declarations
+      const rangeData = getRangeSelection(selectedFilters, filterGroup);
+      // eslint-disable-next-line no-case-declarations
+      const currentFilter = filters[0] as IFilter<IFilterRange>;
+      return [{ ...currentFilter, data: rangeData }];
+    default:
+      // eslint-disable-next-line no-case-declarations
+      const currentFilters = filters as IFilter<IFilterCount>[];
+      return currentFilters.reduce<IFilter<IFilterCount>[]>((acc, filter) => {
+        const isSelected = isFilterSelected(selectedFilters, filterGroup, filter.data.key);
+        if (isSelected) {
+          acc.push(filter);
+        }
+        return acc;
+      }, []);
+  }
+};
+
+const getRangeSelection = (filters: ISqonGroupFilter, filterGroup: IFilterGroup) => {
+  let rangeSelection: IFilterRange = { max: undefined, min: undefined, rangeType: undefined };
+  for (const filter of filters.content) {
+    if (filter.content.field === filterGroup.field) {
+      if (filter.op === 'between') {
+        rangeSelection = {
+          ...rangeSelection,
+          max: filter.content.value[1] as number,
+          min: filter.content.value[0] as number,
+        };
+      } else {
+        const op = filter.op === '>=' ? 'min' : 'max';
+        rangeSelection = { ...rangeSelection, [op]: filter.content.value[0] };
+      }
+    }
+  }
+
+  return rangeSelection;
+};
+
+const isFilterSelected = (filters: ISqonGroupFilter, filterGroup: IFilterGroup, key: string) => {
+  for (const filter of filters.content) {
+    if (filter.content.value.includes(key) && filter.content.field === filterGroup.field) {
+      return true;
+    }
+  }
+
+  return false;
+};
