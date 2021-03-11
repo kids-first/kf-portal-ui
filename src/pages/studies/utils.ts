@@ -208,11 +208,6 @@ interface IMapFilters {
   [key: string]: ISqonGroupFilter | null;
 }
 
-interface IFilters {
-  filters: ISqonGroupFilter;
-  mappedFilters: IMapFilters;
-}
-
 type TFilterType = (filters: ISqonGroupFilter) => ISqonGroupFilter | null;
 
 interface IFilterTypes {
@@ -222,16 +217,15 @@ interface IFilterTypes {
 
 export const FilterContext = React.createContext<IFilterTypes[]>([]);
 
-export const useFilters = (): IFilters => {
+export const useFilters = () => {
   let searchParams = new URLSearchParams(window.location.search);
-  const search = searchParams.get('filters');
-  console.log(search, 'TEMP');
-  const filterTypes = useContext(FilterContext);
-  const filters = getFiltersQuery(search);
+  // @ts-ignore
+  const paramsValues = [...searchParams.values()];
+  // @ts-ignore
+  const filters = paramsValues.length > 0 ? JSON.parse(paramsValues) : [];
+
+  // @ts-ignore
   const mappedFilters: IMapFilters = {};
-  filterTypes.forEach((filter) => {
-    mappedFilters[filter.type] = filter.remapValues(filters);
-  });
   return { filters, mappedFilters };
 };
 
@@ -243,7 +237,6 @@ export const getQueryBuilderCache = (type: string): any => {
   }
 
   try {
-    console.log(JSON.parse(items!), 'GET!');
     return JSON.parse(items!);
   } catch (e) {
     return {};
@@ -251,6 +244,5 @@ export const getQueryBuilderCache = (type: string): any => {
 };
 
 export const setQueryBuilderCache = (type: string, items: any): void => {
-  console.log(JSON.stringify(items), 'SET ITEMS');
   localStorage.setItem(`query-builder-cache-${type}`, JSON.stringify(items));
 };

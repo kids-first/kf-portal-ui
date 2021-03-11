@@ -41,7 +41,7 @@ const StudiesFiltersSider: FC = () => {
   const { loading: loadingBuckets, results: aggs } = getStudiesFilterBuckets()();
   const { loading: mappingLoading, results: studyMapping } = getExtendedMappings()('study');
 
-  if (loadingBuckets || mappingLoading) {
+  if (loadingBuckets || mappingLoading || !aggs) {
     return null;
   }
 
