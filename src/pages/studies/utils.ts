@@ -9,6 +9,7 @@ import { ISqonGroupFilter, TSqonGroupContent } from '@ferlab/ui/core/components/
 import { isEmpty } from 'lodash';
 import get from 'lodash/get';
 import qs from 'query-string';
+import React, { useContext } from 'react';
 
 export const updateFilters = (
   history: any,
@@ -108,6 +109,7 @@ export const getFiltersQuery = (search: any = null): ISqonGroupFilter => {
 
 export const updateQueryParam = (history: any, key: string, value: any): void => {
   const query = getQueryParams();
+
   if (isEmpty(value) && !query[key]) {
     return;
   }
@@ -200,4 +202,55 @@ const isFilterSelected = (filters: ISqonGroupFilter, filterGroup: IFilterGroup, 
   }
 
   return false;
+};
+
+interface IMapFilters {
+  [key: string]: ISqonGroupFilter | null;
+}
+
+interface IFilters {
+  filters: ISqonGroupFilter;
+  mappedFilters: IMapFilters;
+}
+
+type TFilterType = (filters: ISqonGroupFilter) => ISqonGroupFilter | null;
+
+interface IFilterTypes {
+  type: string;
+  remapValues: TFilterType;
+}
+
+export const FilterContext = React.createContext<IFilterTypes[]>([]);
+
+export const useFilters = (): IFilters => {
+  let searchParams = new URLSearchParams(window.location.search);
+  const search = searchParams.get('filters');
+  console.log(search, 'TEMP');
+  const filterTypes = useContext(FilterContext);
+  const filters = getFiltersQuery(search);
+  const mappedFilters: IMapFilters = {};
+  filterTypes.forEach((filter) => {
+    mappedFilters[filter.type] = filter.remapValues(filters);
+  });
+  return { filters, mappedFilters };
+};
+
+export const getQueryBuilderCache = (type: string): any => {
+  const items = localStorage.getItem(`query-builder-cache-${type}`);
+
+  if (isEmpty(items)) {
+    return {};
+  }
+
+  try {
+    console.log(JSON.parse(items!), 'GET!');
+    return JSON.parse(items!);
+  } catch (e) {
+    return {};
+  }
+};
+
+export const setQueryBuilderCache = (type: string, items: any): void => {
+  console.log(JSON.stringify(items), 'SET ITEMS');
+  localStorage.setItem(`query-builder-cache-${type}`, JSON.stringify(items));
 };
