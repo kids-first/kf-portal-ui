@@ -98,6 +98,7 @@ export const updateQueryFilters = (
     }
   }
 
+  console.log('updateQueryFilters');
   updateQueryParam(history, 'filters', newFilters);
 };
 
@@ -108,6 +109,10 @@ export const getFiltersQuery = (search: any = null): ISqonGroupFilter => {
 };
 
 export const updateQueryParam = (history: any, key: string, value: any): void => {
+  console.log(history, 'history');
+  console.log(key, 'key');
+  console.log(value, 'value');
+  console.log('update !!!!!!!!');
   const query = getQueryParams();
 
   if (isEmpty(value) && !query[key]) {
