@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import history from 'services/history';
 
 import { Input, Layout, Tooltip } from 'antd';
-import { getExtendedMappings, getStudiesFilterBuckets } from 'store/graphql/studies/actions';
+import { useGetExtendedMappings, useGetStudiesFilterBuckets } from 'store/graphql/studies/actions';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import GridCard from '@ferlab/ui/core/view/GridCard';
 import { IFilter, IFilterGroup, VisualType } from '@ferlab/ui/core/components/filters/types';
@@ -38,8 +38,8 @@ const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
 };
 
 const StudiesFiltersSider: FC = () => {
-  const { loading: loadingBuckets, results: aggs } = getStudiesFilterBuckets()();
-  const { loading: mappingLoading, results: studyMapping } = getExtendedMappings()('study');
+  const { loading: loadingBuckets, results: aggs } = useGetStudiesFilterBuckets();
+  const { loading: mappingLoading, results: studyMapping } = useGetExtendedMappings('study');
 
   if (loadingBuckets || mappingLoading || !aggs) {
     return null;

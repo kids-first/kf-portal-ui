@@ -1,9 +1,5 @@
-/* eslint-disable react/display-name */
 import React, { FC } from 'react';
-import { getStudiesPageData } from 'store/graphql/studies/actions';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Table } from 'antd';
-import { studiesColumns } from '../../store/graphql/studies/models';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import {
   getQueryBuilderCache,

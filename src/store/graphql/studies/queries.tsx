@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { fields } from './models';
 
 export const STUDIES_QUERY = gql`
   {
@@ -24,18 +25,11 @@ export const STUDIES_BUCKETS = gql`
   {
     study {
       aggregations {
-        domain {
-          buckets {
-            key
-            doc_count
-          }
-        }
-        program {
-          buckets {
-            key
-            doc_count
-          }
-        }
+      ${fields.map(
+        (f) =>
+          f +
+          ' {\n          buckets {\n            key\n            doc_count\n          }\n        }',
+      )}
       }
     }
   }
