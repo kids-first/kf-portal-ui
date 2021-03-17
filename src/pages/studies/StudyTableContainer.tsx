@@ -10,9 +10,14 @@ const StudyTableContainer: FC = () => {
     return null;
   }
 
+  const keyedData = data.map((d: any) => {
+    d.key = d.kf_id;
+    return d;
+  });
+
   return (
     <div>
-      <Table columns={studiesColumns} dataSource={data} />
+      <Table columns={studiesColumns} dataSource={keyedData} />
     </div>
   );
 };
