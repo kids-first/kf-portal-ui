@@ -1,4 +1,21 @@
-$layout-sider-background: #f4f5f8;
+// COLOR BY ANTD NAME
+$geekblue-7: #2b388f;
+$body-1: #383f72;
+$gray-1: #ffffff;
+$gray-3: #f4f5f8;
+$gray-5: #eaeaec;
+
+$layout-sider-background: $gray-3;
+$card-background: $gray-1;
+
+// BODY
+$layout-body-background: $gray-3;
+
+// COLOR CATEGORY
+$primary-color: #383f72;
+
+// BORDER
+$border-color-base: $gray-5;
 
 //Buttons
 $btn-primary-bg: #009bba;
@@ -8,7 +25,7 @@ $btn-danger-bg: #d82030;
 $btn-danger-border: #d82030;
 
 //Heading - Title
-$heading-color: #2b388f;
+$heading-color: $geekblue-7;
 $heading-color-light: #74757d;
 
 // LINK
@@ -26,7 +43,7 @@ $tabs-color: #515885;
 $popover-color: #515885;
 
 //Table
-$table-header-bg: #f9f9fb; //$background-color-light
+// $table-header-bg: #f9f9fb; //$background-color-light
 
 $badge-color: #515885;
 

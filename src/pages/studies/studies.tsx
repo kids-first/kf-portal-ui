@@ -1,17 +1,23 @@
 /* eslint-disable react/display-name */
 import React, { FC } from 'react';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import PageContent from '../../components/Layout/PageContent';
+import ScrollView from '@ferlab/ui/core/layout/ScrollView';
+
+import PageContent from 'components/Layout/PageContent';
 import StudiesFiltersSider from './StudiesFiltersSider';
 import StudyPageContainer from './StudyPageContainer';
+import { Layout } from 'antd';
+
+import styles from './studies.module.scss';
 
 const Studies: FC = () => (
-  <StackLayout horizontal>
+  <Layout className={styles.layout}>
     <StudiesFiltersSider />
-    <PageContent title="Studies">
-      <StudyPageContainer />
-    </PageContent>
-  </StackLayout>
+    <ScrollView className={styles.scrollContent}>
+      <PageContent title="Studies">
+        <StudyPageContainer />
+      </PageContent>
+    </ScrollView>
+  </Layout>
 );
 
 export default Studies;

@@ -1,6 +1,8 @@
 @import 'colors';
 @import '~@ferlab/style/index';
-
+html {
+  font-size: 62.5%; /*Do not set to pixel otherwise it prevents user to use his personal browser settings*/
+}
 h1,
 h2,
 h3,

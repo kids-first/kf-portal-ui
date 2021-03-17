@@ -10,6 +10,7 @@ import {
 } from './utils';
 import history from 'services/history';
 import StudyTableContainer from './StudyTableContainer';
+import styles from './StudiesPageContainer.module.scss';
 
 interface IBucket {
   doc_count: number;
@@ -34,7 +35,9 @@ const StudyPageContainer: FC = () => {
         onUpdate={(state) => setQueryBuilderCache('study-repo', state)}
         total={totalStudies}
       />
-      <StudyTableContainer />
+      <StackLayout vertical className={styles.tableContainer}>
+        <StudyTableContainer />
+      </StackLayout>
     </StackLayout>
   );
 };
