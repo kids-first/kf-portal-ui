@@ -35,7 +35,7 @@ const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
   updateQueryFilters(history, filterGroup.field, sqon);
 };
 
-const StudiesFiltersSider: FC = () => {
+const SidebarFilters: FC = () => {
   const { loading: loadingBuckets, data, previousData } = useQuery<any>(STUDIES_BUCKETS, {
     variables: [],
   });
@@ -111,4 +111,4 @@ const StudiesFiltersSider: FC = () => {
   );
 };
 
-export default StudiesFiltersSider;
+export default SidebarFilters;

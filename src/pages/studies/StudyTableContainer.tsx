@@ -1,25 +1,20 @@
 import React, { FC } from 'react';
-import { useGetStudiesPageData } from 'store/graphql/studies/actions';
 import { Table } from 'antd';
 import { studiesColumns, StudiesResult } from '../../store/graphql/studies/models';
 
-const StudyTableContainer = ({ data, loading }: any): React.ReactElement => {
+const StudyTableContainer: FC = ({ data, loading }: any) => {
   const tableData = data?.hits.edges.map((edge: { node: StudiesResult }) => ({
     ...edge.node,
+    key: edge.node.kf_id,
   }));
 
-  if (loadingData) {
+  if (loading) {
     return null;
   }
 
-  const keyedData = data.map((d: any) => {
-    d.key = d.kf_id;
-    return d;
-  });
-
   return (
     <div>
-      <Table columns={studiesColumns} dataSource={keyedData} />
+      <Table columns={studiesColumns} dataSource={tableData} />
     </div>
   );
 };
