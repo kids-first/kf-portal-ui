@@ -1,28 +1,14 @@
-import { INDEX_EXTENDED_MAPPING, STUDIES_BUCKETS, STUDIES_QUERY } from './queries';
+import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY } from './queries';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
-import { StudiesResult } from 'store/graphql/studies/models';
 
-export const useGetStudiesPageData = () => {
+export const useGetStudiesPageData = (variables: any) => {
   const { loading, result } = useLazyResultQuery<any>(STUDIES_QUERY, {
-    variables: [],
+    variables: variables,
   });
 
   return {
     loading,
-    results: result?.study.hits.edges.map((edge: { node: StudiesResult }) => ({
-      ...edge.node,
-    })),
-  };
-};
-
-export const useGetStudiesFilterBuckets = () => {
-  const { loading, result } = useLazyResultQuery<any>(STUDIES_BUCKETS, {
-    variables: [],
-  });
-
-  return {
-    loading,
-    results: result?.study.aggregations,
+    results: result?.study,
   };
 };
 

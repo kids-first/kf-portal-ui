@@ -9,7 +9,6 @@ import { ISqonGroupFilter, TSqonGroupContent } from '@ferlab/ui/core/components/
 import { isEmpty } from 'lodash';
 import get from 'lodash/get';
 import qs from 'query-string';
-import React, { useContext } from 'react';
 
 export const updateFilters = (
   history: any,
@@ -98,7 +97,6 @@ export const updateQueryFilters = (
     }
   }
 
-  console.log('updateQueryFilters');
   updateQueryParam(history, 'filters', newFilters);
 };
 
@@ -109,10 +107,6 @@ export const getFiltersQuery = (search: any = null): ISqonGroupFilter => {
 };
 
 export const updateQueryParam = (history: any, key: string, value: any): void => {
-  console.log(history, 'history');
-  console.log(key, 'key');
-  console.log(value, 'value');
-  console.log('update !!!!!!!!');
   const query = getQueryParams();
 
   if (isEmpty(value) && !query[key]) {
@@ -220,18 +214,16 @@ interface IFilterTypes {
   remapValues: TFilterType;
 }
 
-export const FilterContext = React.createContext<IFilterTypes[]>([]);
+const emptySqon = { content: [], op: 'and' };
 
 export const useFilters = () => {
   let searchParams = new URLSearchParams(window.location.search);
   // @ts-ignore
   const paramsValues = [...searchParams.values()];
   // @ts-ignore
-  const filters = paramsValues.length > 0 ? JSON.parse(paramsValues) : [];
+  const filters = paramsValues.length > 0 ? JSON.parse(paramsValues) : emptySqon;
 
-  // @ts-ignore
-  const mappedFilters: IMapFilters = {};
-  return { filters, mappedFilters };
+  return { filters };
 };
 
 export const getQueryBuilderCache = (type: string): any => {

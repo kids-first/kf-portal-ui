@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
 import { useGetStudiesPageData } from 'store/graphql/studies/actions';
 import { Table } from 'antd';
-import { studiesColumns } from '../../store/graphql/studies/models';
+import { studiesColumns, StudiesResult } from '../../store/graphql/studies/models';
 
-const StudyTableContainer: FC = () => {
-  const { loading: loadingData, results: data } = useGetStudiesPageData();
+const StudyTableContainer = ({ data, loading }: any): React.ReactElement => {
+  const tableData = data?.hits.edges.map((edge: { node: StudiesResult }) => ({
+    ...edge.node,
+  }));
 
   if (loadingData) {
     return null;
