@@ -1,0 +1,11 @@
+.inputVariant {
+  padding: 8px;
+  background: #F4F5F8; // TODO var
+  border-radius: 2px;
+}
+
+$autocomplete-width: 750px;
+
+:export {
+  autoCompleteWidth: $autocomplete-width;
+}

@@ -6,7 +6,7 @@
 
 .searchViewContainer {
   width: 100%;
- /* height: 100%;*/
+  min-height: 450px;
   padding: 24px;
   background-color: $pageBackground;
 }
@@ -17,16 +17,4 @@
   background: #f9f9fb; //TODO var
   width: 100%;
   height: 100%;
-}
-
-.inputVariant {
-  padding: 8px;
-  background: #F4F5F8; // TODO var
-  border-radius: 2px;
-}
-
-$autocomplete-width: 750px;
-
-:export {
-  autoCompleteWidth: $autocomplete-width;
 }

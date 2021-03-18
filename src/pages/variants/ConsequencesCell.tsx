@@ -3,21 +3,7 @@ import style from './ConsequencesCell.module.scss';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import Symbol from './Symbol';
 import { toKebabCase } from 'utils';
-
-enum Impact {
-  High = 'HIGH',
-  Moderate = 'MODERATE',
-  Low = 'LOW',
-  Modifier = 'MODIFIER',
-}
-
-type Consequence = {
-  symbols: string[];
-  consequences: string[];
-  impact: Impact;
-  canonical: boolean;
-  [key: string]: any;
-};
+import { Consequence, Impact } from 'store/graphql/variants/models';
 
 type OwnProps = {
   consequences: Consequence[];
