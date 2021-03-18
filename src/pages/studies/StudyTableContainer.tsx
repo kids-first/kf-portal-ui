@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import { Table } from 'antd';
-import { studiesColumns, StudiesResult } from '../../store/graphql/studies/models';
+import { studiesColumns } from 'store/graphql/studies/models';
+import { StudiesResults } from 'store/graphql/studies/actions';
 
-const StudyTableContainer: FC = ({ data, loading }: any) => {
-  const tableData = data?.hits.edges.map((edge: { node: StudiesResult }) => ({
+const StudyTable: FC<StudiesResults> = ({ data, loading }) => {
+  const tableData = data?.hits.edges.map((edge) => ({
     ...edge.node,
     key: edge.node.kf_id,
   }));
@@ -19,4 +20,4 @@ const StudyTableContainer: FC = ({ data, loading }: any) => {
   );
 };
 
-export default StudyTableContainer;
+export default StudyTable;

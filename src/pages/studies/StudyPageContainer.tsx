@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import {
@@ -11,7 +11,7 @@ import history from 'services/history';
 import StudyTableContainer from './StudyTableContainer';
 import styles from './StudiesPageContainer.module.scss';
 
-const StudyPageContainer = ({ data, loading, filters }: any): React.ReactElement => {
+const StudyPageContainer: FC = ({ data, loading, filters }: any) => {
   const totalStudies = 10; // data.length || 0;
 
   return (
