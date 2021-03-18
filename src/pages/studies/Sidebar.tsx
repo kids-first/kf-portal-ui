@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React, { FC, useState } from 'react';
 
 import { Layout } from 'antd';
@@ -8,10 +7,11 @@ import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import SidebarFilters from './SidebarFilters';
 
 import styles from './SidebarFilters.module.scss';
+import { SidebarData } from 'store/graphql/studies/actions';
 
 const { Sider } = Layout;
 
-const StudiesFiltersSider: FC = () => {
+const StudiesFiltersSider: FC<SidebarData> = ({ studiesResults, studiesMappingResults }) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   return (
     <Sider
@@ -29,7 +29,14 @@ const StudiesFiltersSider: FC = () => {
           <MenuFoldOutlined onClick={() => setCollapsed(!collapsed)} />
         )}
 
-        <ScrollView className={styles.scrollView}>{!collapsed && <SidebarFilters />}</ScrollView>
+        <ScrollView className={styles.scrollView}>
+          {!collapsed && (
+            <SidebarFilters
+              studiesResults={studiesResults}
+              studiesMappingResults={studiesMappingResults}
+            />
+          )}
+        </ScrollView>
       </StackLayout>
     </Sider>
   );

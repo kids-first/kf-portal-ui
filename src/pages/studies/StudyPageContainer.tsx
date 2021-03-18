@@ -10,8 +10,9 @@ import {
 import history from 'services/history';
 import StudyTableContainer from './StudyTableContainer';
 import styles from './StudiesPageContainer.module.scss';
+import { StudiesPageContainerData } from '../../store/graphql/studies/actions';
 
-const StudyPageContainer: FC = ({ data, loading, filters }: any) => {
+const StudyPageContainer: FC<StudiesPageContainerData> = ({ studiesResults, filters }) => {
   const totalStudies = 10; // data.length || 0;
 
   return (
@@ -28,7 +29,7 @@ const StudyPageContainer: FC = ({ data, loading, filters }: any) => {
         total={totalStudies}
       />
       <StackLayout vertical className={styles.tableContainer}>
-        <StudyTableContainer data={data} loading={loading} />
+        <StudyTableContainer data={studiesResults.data} loading={studiesResults.loading} />
       </StackLayout>
     </StackLayout>
   );

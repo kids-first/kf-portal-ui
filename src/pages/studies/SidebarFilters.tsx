@@ -1,8 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { FC } from 'react';
 import history from 'services/history';
-import { INDEX_EXTENDED_MAPPING, STUDIES_BUCKETS } from 'store/graphql/studies/queries';
-import { useQuery } from '@apollo/client';
 
 import { Input, Tooltip } from 'antd';
 import GridCard from '@ferlab/ui/core/view/GridCard';
@@ -11,6 +9,7 @@ import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer'
 import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { TSqonGroupContent } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { SidebarData } from '../../store/graphql/studies/actions';
 
 // @ts-ignore
 const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -35,37 +34,9 @@ const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
   updateQueryFilters(history, filterGroup.field, sqon);
 };
 
-const SidebarFilters: FC = () => {
-  const { loading: loadingBuckets, data, previousData } = useQuery<any>(STUDIES_BUCKETS, {
-    variables: [],
-  });
-  // const aggs = data?.study.aggregations;
-
-  const {
-    loading: mappingLoading,
-    data: dataMapping,
-    previousData: previousDataMapping,
-  } = useQuery<any>(INDEX_EXTENDED_MAPPING('study'), {
-    variables: [],
-  });
-  // const studyMapping = results2?.study.extended;
-
-  let result = previousData;
-
-  let resultMapping = previousDataMapping;
-
-  if ((!previousData && loadingBuckets) || (!previousDataMapping && mappingLoading)) {
+const SidebarFilters: FC<SidebarData> = (sidebarData) => {
+  if (sidebarData.studiesMappingResults.loadingMapping || sidebarData.studiesResults.loading) {
     return null;
-  }
-
-  if (data) {
-    result = data;
-  }
-  if (dataMapping) {
-    resultMapping = dataMapping;
-  }
-  if (dataMapping) {
-    resultMapping = dataMapping;
   }
 
   return (
@@ -81,21 +52,26 @@ const SidebarFilters: FC = () => {
           onPressEnter={searchStoryNameCode}
         />
       </GridCard>
-      {Object.keys(result?.study.aggregations).map((key) => {
-        const found = resultMapping?.study.extended?.find((f: any) => f.field === key); //TODO rename
+      {Object.keys(sidebarData.studiesResults.data.aggregations).map((key) => {
+        const found = sidebarData.studiesMappingResults.extendedMapping.find(
+          (f: any) => f.field === key,
+        );
         const filterGroup = {
           field: found.field,
           title: found.displayName,
           type: getFilterType(found.type),
         };
-        const filters: IFilter[] = result?.study.aggregations[key].buckets.map((f: any) => ({
-          data: {
-            count: f.doc_count,
-            key: f.key,
-          },
-          name: f.key === '__missing__' ? 'No Data' : f.key,
-          id: f.key,
-        }));
+        // @ts-ignore
+        const filters: IFilter[] = sidebarData.studiesResults.data.aggregations[key!].buckets.map(
+          (f: any) => ({
+            data: {
+              count: f.doc_count,
+              key: f.key,
+            },
+            name: f.key === '__missing__' ? 'No Data' : f.key,
+            id: f.key,
+          }),
+        );
         const selectedFilters = getSelectedFilters(filters, filterGroup);
         return (
           <FilterContainer
