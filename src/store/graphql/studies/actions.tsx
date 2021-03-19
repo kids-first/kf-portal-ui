@@ -33,14 +33,21 @@ type StudiesPageData = {
   hits: HitsResults;
 };
 
+type ExtendedMapping = {
+  displayName: string;
+  field: string;
+  isArray: boolean;
+  type: string;
+};
+
 export type StudiesResults = {
-  data: StudiesPageData;
+  data: StudiesPageData | null;
   loading: boolean;
 };
 
 export type StudiesMappingResults = {
   loadingMapping: boolean;
-  extendedMapping: any; //FIXME
+  extendedMapping: ExtendedMapping[];
 };
 
 export type SidebarData = {
@@ -64,7 +71,7 @@ export const useGetStudiesPageData = (variables: any): StudiesResults => {
 
   return {
     loading,
-    data: result?.study,
+    data: result?.study || null,
   };
 };
 
