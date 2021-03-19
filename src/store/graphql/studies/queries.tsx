@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { fields } from './models';
 
 export const STUDIES_QUERY = gql`
-  query($sqon: JSON){
+  query StudiesInformation ($sqon: JSON){
     study {
       hits(filters: $sqon) {
         edges {
@@ -29,7 +29,7 @@ export const STUDIES_QUERY = gql`
 `;
 
 export const INDEX_EXTENDED_MAPPING = (index: string) => gql`
-  {
+  query ExtendedMapping {
     ${index} {
       extended
     }

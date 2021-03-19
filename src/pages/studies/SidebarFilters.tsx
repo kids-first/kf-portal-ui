@@ -35,7 +35,10 @@ const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
 };
 
 const SidebarFilters: FC<SidebarData> = (sidebarData) => {
-  if (sidebarData.studiesMappingResults.loadingMapping || sidebarData.studiesResults.loading) {
+  const mappingData = sidebarData.studiesMappingResults;
+  const data = sidebarData.studiesResults;
+
+  if ((mappingData.loadingMapping || !mappingData.extendedMapping ) || (data.loading || !data.data)) {
     return null;
   }
 
