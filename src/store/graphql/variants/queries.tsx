@@ -14,22 +14,35 @@ export const VARIANT_TABLE_QUERY = gql`
             }
             rsnumber
             participant_number
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GENE_TABLE_QUERY = gql`
-  {
-    variant {
-      hits {
-        edges {
-          node {
-            id
-            hash
-            locus
+            consequences {
+              hits {
+                edges {
+                  node {
+                    vep_impact
+                    consequences
+                    symbol
+                  }
+                }
+              }
+            }
+            frequencies {
+              internal {
+                combined {
+                  homozygotes
+                  af
+                  an
+                  ac
+                }
+              }
+            }
+            studies {
+              hits {
+                total
+              }
+            }
+            genes {
+              symbol
+            }
           }
         }
       }

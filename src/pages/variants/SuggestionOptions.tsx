@@ -1,16 +1,10 @@
-import { Suggestion } from 'store/genomicSuggesterTypes';
 import SuggestionOption from './SuggestionOption';
 import React from 'react';
-import { GenomicFeatureType } from 'store/genomicSuggesterTypes';
+import { GenomicFeatureType, Suggestion } from 'store/graphql/variants/models';
 
-const generateDisplayName = (suggestion: Suggestion): string => {
+const generateDisplayName = (suggestion: Suggestion): string | undefined => {
   const type = suggestion.type;
-  if (type === GenomicFeatureType.Variant) {
-    return suggestion.locus || '';
-  } else if (type === GenomicFeatureType.GENE) {
-    return suggestion.suggestion_id; // gene symbol.
-  }
-  return '';
+  return type === GenomicFeatureType.GENE ? suggestion.geneSymbol : suggestion.locus;
 };
 
 const generateSuggestionOptions = (searchText: string | undefined, suggestions: Suggestion[]) => {
@@ -18,7 +12,7 @@ const generateSuggestionOptions = (searchText: string | undefined, suggestions: 
     return [];
   }
 
-  return suggestions.map((suggestion: Suggestion) => {
+  return suggestions.map((suggestion: Suggestion): any => {
     const displayName = generateDisplayName(suggestion);
     return {
       label: (
@@ -26,14 +20,15 @@ const generateSuggestionOptions = (searchText: string | undefined, suggestions: 
           type={suggestion.type}
           key={suggestion.suggestion_id}
           matchedText={suggestion.matchedText}
-          displayName={displayName}
+          displayName={displayName || 'unknown'}
         />
       ),
       value: displayName,
-      info: {
+      meta: {
         searchText,
         suggestionId: suggestion.suggestion_id,
         featureType: suggestion.type,
+        geneSymbol: suggestion.geneSymbol,
       },
     };
   });

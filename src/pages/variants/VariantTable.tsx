@@ -1,12 +1,10 @@
 /* eslint-disable react/display-name */
 import React, { FunctionComponent } from 'react';
-import { Table, Tooltip, Spin } from 'antd';
+import { Table, Tooltip } from 'antd';
 import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
 import { useVariantTableData } from 'store/graphql/variants/actions';
-import { SelectedSuggestion } from 'store/genomicSuggesterTypes';
-
-//TODO remove hardcoded values, typing - make it global.
+import { SelectedSuggestion } from 'store/graphql/variants/models';
 
 const columns = [
   {
@@ -117,11 +115,9 @@ const VariantTable: FunctionComponent<Props> = (props) => {
   const { selectedSuggestion } = props;
   const { loading: loadingData, results: data } = useVariantTableData(selectedSuggestion);
 
-  if (loadingData) {
-    return <Spin className={style.spinner} />;
-  }
   return (
     <Table
+      loading={loadingData}
       bordered
       dataSource={data}
       columns={columns}

@@ -10,11 +10,7 @@ import {
   selectSuggestions,
   selectSearchTextSuggestion,
 } from 'store/selectors/genomicSuggester';
-import {
-  DispatchGenomicSuggester,
-  SearchText,
-  SelectedSuggestion,
-} from 'store/genomicSuggesterTypes';
+import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
 import {
   clearSuggestions,
   fetchSuggestions,
@@ -23,6 +19,7 @@ import {
 } from 'store/actionCreators/genomicSuggester';
 import debounce from 'lodash/debounce';
 import generateSuggestionOptions from './SuggestionOptions';
+import { SearchText, SelectedSuggestion } from 'store/graphql/variants/models';
 
 const WAIT_IN_MS = 100;
 
@@ -49,8 +46,6 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux;
-
-//FIXME: prevent unwanted characters?
 
 const Suggester: FunctionComponent<Props> = (props) => {
   const {
@@ -96,12 +91,13 @@ const Suggester: FunctionComponent<Props> = (props) => {
           notFoundContent={isLoading ? <Spin /> : 'No results found'}
           filterOption={(inputValue, option) =>
             //  make sure we show suggestions for corresponding search only.
-            (inputValue || '').trim() === option?.info?.searchText
+            (inputValue || '').trim() === option?.meta?.searchText
           }
           onSelect={(value, option) => {
             onSelectSuggestion({
-              suggestionId: option.info.suggestionId,
-              featureType: option.info.featureType,
+              suggestionId: option.meta.suggestionId,
+              featureType: option.meta.featureType,
+              geneSymbol: option.meta.geneSymbol,
             });
           }}
           disabled={!!error}

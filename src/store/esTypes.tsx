@@ -4,3 +4,9 @@ export enum EsIndex {
 }
 
 export type ProjectId = string;
+
+export type Edge = {
+  node: {
+    [index: string]: any;
+  };
+};

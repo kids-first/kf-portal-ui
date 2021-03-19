@@ -4,15 +4,13 @@ import {
   FAILURE,
   GenomicSuggesterTypes,
   RE_INITIALIZE_STATE,
-  SearchText,
   SELECT_SUGGESTION,
-  SelectedSuggestion,
-  Suggestion,
   TOGGLE_LOADING,
 } from '../genomicSuggesterTypes';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootState';
 import { getGenomicSuggestions } from 'services/genomicSuggestions';
+import { SearchText, SelectedSuggestion, Suggestion } from '../graphql/variants/models';
 
 export const toggleLoading = (isLoading: boolean): GenomicSuggesterTypes => ({
   type: TOGGLE_LOADING,
@@ -22,11 +20,13 @@ export const toggleLoading = (isLoading: boolean): GenomicSuggesterTypes => ({
 export const selectChosenSuggestion = ({
   suggestionId,
   featureType,
+  geneSymbol,
 }: SelectedSuggestion): GenomicSuggesterTypes => ({
   type: SELECT_SUGGESTION,
   selectedSuggestion: {
     featureType,
     suggestionId,
+    geneSymbol,
   },
 });
 
