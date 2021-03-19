@@ -10,6 +10,10 @@
   position: relative;
 }
 
+.participantTable {
+  font-size: 1.2rem;
+}
+
 .participantTable div.rt-noData {
   display: none !important;
 }
@@ -19,7 +23,9 @@
   margin-left: 8px;
 }
 
-.cols-picker-btn, .download-btn, .save-set-btn {
+.cols-picker-btn,
+.download-btn,
+.save-set-btn {
   margin-right: 8px;
   margin-left: 8px;
 }

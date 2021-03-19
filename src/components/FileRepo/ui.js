@@ -1,9 +1,6 @@
 import * as React from 'react';
 import Spinner from 'react-spinkit';
 
-// [NEXT] beagle import moved to ./index.css
-import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
-
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 

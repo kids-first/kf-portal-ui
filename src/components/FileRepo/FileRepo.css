@@ -95,6 +95,10 @@
   min-height: 1px;
 }
 
+.arranger-container .arranger-table-wrapper .ReactTable {
+  font-size: 1.2rem;
+}
+
 .arranger-container .querySharing-container {
   border-style: solid;
   border-color: #cacbcf;
