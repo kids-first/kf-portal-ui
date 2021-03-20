@@ -6,7 +6,7 @@ import QueriesResolver, {
 } from '../CohortBuilder/QueriesResolver';
 import { Tags } from './statsConstants';
 import { WarningTwoTone } from '@ant-design/icons';
-import './FileRepo.css';
+import './FileRepo.scss';
 
 interface Props {
   api: Function;

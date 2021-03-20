@@ -42,6 +42,23 @@
   flex-grow: 1;
 }
 
+$font-ajustment: 1.3rem;
+
+.arranger-container .aggregation-card {
+  .toggle-button,
+  .bucket-item {
+    font-size: $font-ajustment;
+
+    .bucket-count {
+      font-size: $font-ajustment;
+    }
+  }
+
+  .showMore-wrapper {
+    font-size: $font-ajustment;
+  }
+}
+
 .arranger-container .aggregation-card:last-child {
   margin-bottom: 120px;
 }
@@ -96,7 +113,7 @@
 }
 
 .arranger-container .arranger-table-wrapper .ReactTable {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .arranger-container .querySharing-container {

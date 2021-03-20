@@ -5,7 +5,7 @@ import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 
 import { flexCenter } from 'theme/tempTheme.module.css';
-import './FileRepo.css';
+import './FileRepo.scss';
 
 export const ControlledIcon = ({ className = '', ...props }) => (
   <ControlledAccessIcon {...props} className={`controlledAccessIcon ${className}`} />
