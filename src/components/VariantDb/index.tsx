@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Button, Col, notification, Row, Typography } from 'antd';
+import { Button, Col, List, notification, Row, Typography } from 'antd';
 import { deleteCluster, getStatus, launchCluster } from './fetchVariantCluster';
-import { clusterStatus, INCREMENT, isInterimState, MAX_MINUTES_TRY } from './store';
+import { MAX_MINUTES_TRY, INCREMENT, clusterStatus, isInterimState } from './store';
 
 import './index.css';
 import LaunchClusterCard from './LaunchClusterCard';
-import StatsTable from './StatsTable';
 
 const { Title } = Typography;
 
@@ -17,6 +16,25 @@ type VariantDbState = {
   status: string;
   modalVisible: boolean;
 };
+
+const data = [
+  {
+    name: 'Studies',
+    value: 6,
+  },
+  {
+    name: 'Participants',
+    value: <div>5,053</div>,
+  },
+  {
+    name: 'Distinct Variants',
+    value: '200,569,156',
+  },
+  {
+    name: 'Occurrences',
+    value: '21,295,117,739',
+  },
+];
 
 class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   state = {
@@ -165,7 +183,6 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
 
   render() {
     const { status, modalVisible } = this.state;
-
     return (
       <div className="variant-db-container">
         <Row className={'main-title-row'}>
@@ -189,7 +206,57 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
           </Col>
           <Col span={8}>
             <div className={'white-background stats-container'}>
-              <StatsTable />
+              <List
+                header={
+                  <Row justify={'space-between'} className={'data-header-row'}>
+                    <Title
+                      level={4}
+                      style={{
+                        fontFamily: 'Open Sans',
+                        fontWeight: 600,
+                        fontSize: 16,
+                        lineHeight: '24px',
+                      }}
+                    >
+                      Data Release 1
+                    </Title>
+                    <div
+                      style={{
+                        fontFamily: 'Open Sans',
+                        fontWeight: 600,
+                        fontSize: 14,
+                        lineHeight: '22px',
+                        color: '#7D84A6',
+                      }}
+                    >
+                      January 21 , 2021
+                    </div>
+                  </Row>
+                }
+                dataSource={data}
+                renderItem={(item) => (
+                  <List.Item>
+                    <Row className={'data-item-row'}>
+                      <Col
+                        style={{
+                          fontFamily: 'Open Sans',
+                          color: '#515885',
+                        }}
+                      >
+                        {item.name}
+                      </Col>
+                      <Col
+                        style={{
+                          fontFamily: 'Open Sans',
+                          color: '#515885',
+                        }}
+                      >
+                        {item.value}
+                      </Col>
+                    </Row>
+                  </List.Item>
+                )}
+              />
             </div>
           </Col>
         </Row>
