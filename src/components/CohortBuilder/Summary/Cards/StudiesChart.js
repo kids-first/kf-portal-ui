@@ -8,7 +8,7 @@ import theme from 'theme/defaultTheme';
 import { getCohortBarColors } from '../ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
 import { studiesToolTip } from 'components/Charts';

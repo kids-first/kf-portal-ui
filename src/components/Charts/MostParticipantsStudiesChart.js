@@ -18,7 +18,7 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import ChartError from './ChartError';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 
 import theme from 'theme/defaultTheme';
 import { Badge, Col, Row } from 'antd';

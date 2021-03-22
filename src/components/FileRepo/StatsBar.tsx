@@ -8,7 +8,7 @@ import {
 } from './statsQueries';
 
 import { Tags } from './statsConstants';
-import './FileRepo.css';
+import './FileRepo.scss';
 
 interface Props {
   api: Function;

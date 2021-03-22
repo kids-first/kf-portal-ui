@@ -31,11 +31,13 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import { ControlledIcon, OpenIcon, TableSpinner, SaveShareButtonContainer } from './ui';
 import customTableColumns from './customTableColumns';
-import { fillCenter } from 'theme/tempTheme.module.css';
-import './FileRepo.css';
 import StatsBar from './StatsBar';
 import DownloadButton from './DownloadButton';
 import FileManifestButton from './FileManifestButton';
+
+import { fillCenter } from 'theme/tempTheme.module.css';
+import './FileRepo.scss';
+
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
     category: 'File Repo',

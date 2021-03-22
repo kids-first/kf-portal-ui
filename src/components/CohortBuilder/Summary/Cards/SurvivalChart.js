@@ -13,7 +13,7 @@ import Tooltip from 'uikit/Tooltip';
 import { styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import SurvivalPlot from './SurvivalPlot';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 
 import './SurvivalChart.css';
 import Empty, { SIZE } from 'components/UI/Empty';

@@ -9,7 +9,7 @@ import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
-import './index.css';
+import './index.scss';
 
 const ParticipantsTableView = ({
   sqon,

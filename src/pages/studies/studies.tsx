@@ -1,23 +1,29 @@
-/* eslint-disable react/display-name */
 import React, { FC } from 'react';
-
-import { Table } from 'antd';
+import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 
 import PageContent from 'components/Layout/PageContent';
-import { studiesColumns } from 'store/graphql/studies/models';
-import { getStudiesPageData } from 'store/graphql/studies/actions';
+import Sidebar from './Sidebar';
+import StudyPageContainer from './StudyPageContainer';
+import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useFilters } from './utils';
+import { Layout } from 'antd';
+
+import styles from './studies.module.scss';
 
 const Studies: FC = () => {
-  const { loading: loadingData, results: data } = getStudiesPageData()();
-
-  if (loadingData) {
-    return null;
-  }
+  const { filters } = useFilters();
+  const studiesResults = useGetStudiesPageData({ sqon: filters });
+  const studiesMappingResults = useGetExtendedMappings('study');
 
   return (
-    <PageContent title="Studies">
-      <Table columns={studiesColumns} dataSource={data} />
-    </PageContent>
+    <Layout className={styles.layout}>
+      <Sidebar studiesMappingResults={studiesMappingResults} studiesResults={studiesResults} />
+      <ScrollView className={styles.scrollContent}>
+        <PageContent title="Studies">
+          <StudyPageContainer studiesResults={studiesResults} filters={filters} />
+        </PageContent>
+      </ScrollView>
+    </Layout>
   );
 };
 

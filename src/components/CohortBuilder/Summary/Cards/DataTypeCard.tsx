@@ -1,6 +1,6 @@
 import React from 'react';
 import DataTypeChart from './DataTypeChart';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import Empty, { SIZE } from 'components/UI/Empty';
 
 type DataTypeCardProps = {

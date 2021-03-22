@@ -7,13 +7,13 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { kfArrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+import { kfArrangerApiRoot, arrangerApiProjectId } from 'common/injectGlobals';
 import { IProvider } from 'store/providers';
 
 import { InMemoryCache } from '@apollo/client';
 
 const httpLink = createHttpLink({
-  uri: `${kfArrangerApiRoot}${arrangerProjectId}/graphql`,
+  uri: `${kfArrangerApiRoot}${arrangerApiProjectId}/graphql`,
 });
 
 const getAuthLink = (userToken: string) =>
@@ -28,7 +28,7 @@ export default ({ children, userToken }: IProvider): ReactElement => {
   const header = getAuthLink(userToken);
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename: false }),
     link: header.concat(httpLink),
   });
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
