@@ -27,6 +27,7 @@ export const shortUrlApi = getApplicationEnvVar('SHORTURL_API');
 export const shortUrlResolveRoot = getApplicationEnvVar('SHORTURL_RESOLVE_ROOT');
 
 export const arrangerApiRoot = getApplicationEnvVar('ARRANGER_API');
+export const kfArrangerApiRoot = getApplicationEnvVar('KF_ARRANGER_API');
 
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 
@@ -101,3 +102,6 @@ export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') 
 export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';
 
 export const userSnapApiKey = getApplicationEnvVar('USER_SNAP_API_KEY') || '';
+
+// Idp (ras || fence)
+export const idp = getApplicationEnvVar('IDP');

@@ -1,6 +1,7 @@
 const ROUTES = {
   admin: '/admin',
   adminLegacy: '/admin_legacy',
+  studies: '/studies',
   authRedirect: '/auth-redirect',
   cohortBuilder: '/explore',
   dcfRedirect: '/dcf_redirect',
@@ -19,6 +20,8 @@ const ROUTES = {
   variantDb: '/variantDb',
   profile: '/profile',
   termsConditions: '/termsConditions',
+  /* temporary while constructing the new variant page*/
+  devVariantDb: '/devVariantDb',
 };
 
 export default ROUTES;

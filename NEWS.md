@@ -7,6 +7,13 @@
 
 ### Technical / Other changes
 -->
+## 2021-03-22 kf-portal-ui  2.36.0
+
+### Features
+- [2929](https://github.com/kids-first/kf-portal-ui/issues/2929) Feature (Portal, Arranger): Integrated a new separate and up-to-date Arranger microservice for future development.
+- [2952](https://github.com/kids-first/kf-portal-ui/issues/2952) Feature (Portal, Apollo): Integrated Apollo to the portal libraries for future development.
+- [2965](https://github.com/kids-first/kf-portal-ui/issues/2965) Feature (Data Repository Integrations, RAS): The Data Repository Integration now uses RAS (Research Auth Service) instead of the Fences.
+
 ## 2020-02-16 kf-portal-ui 2.35.0
 
 ### Features

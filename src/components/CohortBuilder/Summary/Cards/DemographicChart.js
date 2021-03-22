@@ -12,10 +12,9 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
+import Card from '@ferlab/ui/core/cards/GridCard';
 import PropTypes from 'prop-types';
-import { Empty } from 'antd';
-
+import Empty, { SIZE } from 'components/UI/Empty';
 export const demographicQuery = (sqon) => ({
   query: gql`
     fragment bucketsAgg on Aggregations {
@@ -118,7 +117,7 @@ class DemographicChart extends React.Component {
       >
         {hasNoData ? (
           <div className={'empty-graph'}>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty size={SIZE.SMALL} />
           </div>
         ) : (
           <div className={'pieChartContainer'}>

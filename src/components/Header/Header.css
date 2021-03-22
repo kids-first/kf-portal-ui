@@ -15,7 +15,7 @@
   background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
 }
 
-.headerContent {
+.headerContainer .headerContent {
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -159,4 +159,5 @@
 
 .resourcesBadge {
   color: #a6278f;
+  font-size: 16px;
 }

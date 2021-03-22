@@ -4,11 +4,18 @@ import urlJoin from 'url-join';
 import ajax from './ajax';
 
 export const initializeApi = ({
-  onError = err => Promise.reject(err),
+  onError = (err) => Promise.reject(err),
   onUnauthorized = () => {},
   defaultHeaders,
-} = {}) => ({ method = 'post', endpoint = '', body, headers = {}, url }) => {
-  const uri = url || urlJoin(arrangerApiRoot, endpoint);
+} = {}) => ({
+  method = 'post',
+  endpoint = '',
+  body,
+  headers = {},
+  url,
+  arrangerRoot = arrangerApiRoot,
+}) => {
+  const uri = url || urlJoin(arrangerRoot, endpoint);
   return ajax[method.toLowerCase()](uri, body, {
     headers: {
       'Content-Type': 'application/json',
@@ -16,10 +23,10 @@ export const initializeApi = ({
       ...headers,
     },
   })
-    .then(response => {
+    .then((response) => {
       return response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       const { response } = err;
       if ((response || {}).status === 401) {
         return onUnauthorized(response);
@@ -30,13 +37,13 @@ export const initializeApi = ({
 
 export const ApiContext = React.createContext(null);
 
-export const withApi = WrappedComponent => props => (
-  <ApiContext.Consumer>{api => <WrappedComponent {...{ api, ...props }} />}</ApiContext.Consumer>
+export const withApi = (WrappedComponent) => (props) => (
+  <ApiContext.Consumer>{(api) => <WrappedComponent {...{ api, ...props }} />}</ApiContext.Consumer>
 );
 
 export const apiInitialized = initializeApi({
   onError: console.err,
-  onUnauthorized: response => {
+  onUnauthorized: (response) => {
     console.warn('Unauthorized', response);
   },
 });

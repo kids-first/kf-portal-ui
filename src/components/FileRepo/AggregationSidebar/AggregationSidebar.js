@@ -34,7 +34,6 @@ const mapDispatchToProps = (dispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const AggregationSidebar = ({
-  effects,
   setSQON,
   translateSQONValue,
   trackFileRepoInteraction,
@@ -99,7 +98,6 @@ const AggregationSidebar = ({
                 graphqlField,
                 index,
                 projectId,
-                effects,
                 setSQON,
                 containerRef: aggregationsWrapperRef,
                 translateSQONValue,
@@ -136,10 +134,6 @@ const AggregationSidebar = ({
 };
 
 AggregationSidebar.propTypes = {
-  effects: PropTypes.shape({
-    unsetModal: PropTypes.func.isRequired,
-    setModal: PropTypes.func.isRequired,
-  }).isRequired,
   setSQON: PropTypes.func.isRequired,
   translateSQONValue: PropTypes.func.isRequired,
   trackFileRepoInteraction: PropTypes.func,

@@ -17,30 +17,30 @@ type VariantDbState = {
   modalVisible: boolean;
 };
 
+const data = [
+  {
+    name: 'Studies',
+    value: 6,
+  },
+  {
+    name: 'Participants',
+    value: <div>5,053</div>,
+  },
+  {
+    name: 'Distinct Variants',
+    value: '200,569,156',
+  },
+  {
+    name: 'Occurrences',
+    value: '21,295,117,739',
+  },
+];
+
 class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   state = {
     status: '',
     modalVisible: false,
   };
-
-  data = [
-    {
-      name: 'Studies',
-      value: 6,
-    },
-    {
-      name: 'Participants',
-      value: <div>5,053</div>,
-    },
-    {
-      name: 'Distinct Variants',
-      value: '200,569,156',
-    },
-    {
-      name: 'Occurrences',
-      value: '21,295,117,739',
-    },
-  ];
 
   errorNotification = (message: string, decription: string) => {
     notification.error({
@@ -229,11 +229,11 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
                         color: '#7D84A6',
                       }}
                     >
-                      January 21  , 2021
+                      January 21 , 2021
                     </div>
                   </Row>
                 }
-                dataSource={this.data}
+                dataSource={data}
                 renderItem={(item) => (
                   <List.Item>
                     <Row className={'data-item-row'}>

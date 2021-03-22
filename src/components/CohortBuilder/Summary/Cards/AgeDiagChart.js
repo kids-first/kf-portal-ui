@@ -10,8 +10,8 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 
 import PropTypes from 'prop-types';
 
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import { Empty } from 'antd';
+import Card from '@ferlab/ui/core/cards/GridCard';
+import Empty, { SIZE } from 'components/UI/Empty';
 
 const CHART_HEIGHT_PX = 350;
 
@@ -185,7 +185,7 @@ class AgeDiagChart extends React.Component {
       >
         {hasNoData ? (
           <div className={'empty-graph'}>
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty size={SIZE.SMALL} />
           </div>
         ) : (
           <VerticalBar

@@ -8,8 +8,8 @@ import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 import ParticipantSets from './ParticipantSets';
 
-import Card from '@ferlab-ui/core-react/lib/esnext/cards/GridCard';
-import Grid from '@ferlab-ui/core-react/lib/esnext/layout/Grid';
+import Card from '@ferlab/ui/core/cards/GridCard';
+import Grid from '@ferlab/ui/core/layout/Grid';
 import {
   MemberResearchInterestsChart,
   MostFrequentDiagnosesChart,
