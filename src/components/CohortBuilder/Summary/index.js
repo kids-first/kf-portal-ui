@@ -63,7 +63,7 @@ const Summary = ({
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
               classNameCardItem={'ontology-sunburst-card'}
             >
-              <OntologySunburst sqon={sqon} />
+              <OntologySunburst sqon={sqon} height={260} width={260} />
             </Card>
             <DiagnosesChart
               api={api}

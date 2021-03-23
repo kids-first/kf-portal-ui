@@ -223,7 +223,7 @@ export class SurvivalChart extends React.Component {
 
     return (
       <Card title={Header} loading={this.state.isLoading}>
-        <SurvivalCardContent>{renderGraphContent(330, 325)}</SurvivalCardContent>
+        <SurvivalCardContent>{renderGraphContent(300, 295)}</SurvivalCardContent>
       </Card>
     );
   }
