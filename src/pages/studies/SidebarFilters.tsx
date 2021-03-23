@@ -93,7 +93,7 @@ const SidebarFilters: FC<SidebarData> = (sidebarData) => {
           (f: any) => ({
             data: {
               count: f.doc_count,
-              key: keyEnhanceBooleanOnly(f.key).toLowerCase(),
+              key: keyEnhanceBooleanOnly(f.key),
             },
             name: keyEnhance(f.key),
             id: f.key,

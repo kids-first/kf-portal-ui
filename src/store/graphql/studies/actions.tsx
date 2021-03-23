@@ -71,7 +71,7 @@ export const useGetStudiesPageData = (variables: any): StudiesResults => {
 
   return {
     loading,
-    data: result?.study || null,
+    data: result?.Studies || null,
   };
 };
 
@@ -82,6 +82,6 @@ export const useGetExtendedMappings = (index: string): StudiesMappingResults => 
 
   return {
     loadingMapping: loading,
-    extendedMapping: result?.study.extended,
+    extendedMapping: result?.Studies.extended,
   };
 };
