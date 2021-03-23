@@ -62,7 +62,7 @@ const SidebarFilters: FC<SidebarData> = (sidebarData) => {
   const mappingData = sidebarData.studiesMappingResults;
   const data = sidebarData.studiesResults;
 
-  if (mappingData.loadingMapping || !mappingData.extendedMapping || data.loading || !data.data) {
+  if (mappingData?.loadingMapping || !mappingData?.extendedMapping || data.loading || !data.data) {
     return null;
   }
 

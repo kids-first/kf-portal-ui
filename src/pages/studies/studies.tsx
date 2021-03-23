@@ -10,10 +10,30 @@ import { Layout } from 'antd';
 
 import styles from './studies.module.scss';
 
+let previousData: any | null = null;
+let previousMappingData: any | null = null;
+
 const Studies: FC = () => {
   const { filters } = useFilters();
-  const studiesResults = useGetStudiesPageData({ sqon: filters });
-  const studiesMappingResults = useGetExtendedMappings('study');
+  let studiesResults = useGetStudiesPageData({ sqon: filters });
+  let studiesMappingResults = useGetExtendedMappings('study');
+
+  if (studiesResults.loading || studiesMappingResults.loadingMapping) {
+    if (!studiesResults.data && previousData) {
+      studiesResults = previousData;
+    }
+
+    if (!studiesMappingResults.extendedMapping && previousMappingData) {
+      studiesMappingResults = previousMappingData;
+    }
+  }
+
+  if (studiesResults.data) {
+    previousData = studiesResults;
+  }
+  if (studiesMappingResults) {
+    previousMappingData = studiesMappingResults;
+  }
 
   return (
     <Layout className={styles.layout}>
