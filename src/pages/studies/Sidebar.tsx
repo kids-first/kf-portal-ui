@@ -5,9 +5,9 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import SidebarFilters from './SidebarFilters';
-
-import styles from './SidebarFilters.module.scss';
 import { SidebarData } from 'store/graphql/studies/actions';
+
+import styles from './Sidebar.module.scss';
 
 const { Sider } = Layout;
 
