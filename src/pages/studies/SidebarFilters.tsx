@@ -3,13 +3,17 @@ import React, { FC } from 'react';
 import history from 'services/history';
 
 import { Input, Tooltip } from 'antd';
-import GridCard from '@ferlab/ui/core/view/GridCard';
+import { SearchOutlined } from '@ant-design/icons';
+
 import { IFilter, IFilterGroup, VisualType } from '@ferlab/ui/core/components/filters/types';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { TSqonGroupContent } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { SidebarData } from '../../store/graphql/studies/actions';
+
+import styles from './SidebarFilters.module.scss';
+
 
 const keyEnhance = (key: string) => {
   switch (key) {
@@ -68,9 +72,14 @@ const SidebarFilters: FC<SidebarData> = (sidebarData) => {
 
   return (
     <>
-      <GridCard title="Search">
+      <div className={styles.searchContainer}>
+        <h3>Search</h3>
         <Input
+          className={styles.searchInput}
           placeholder="Search..."
+          prefix={
+            <SearchOutlined />
+          }
           suffix={
             <Tooltip title="Search by Study Code or Name ">
               <InfoCircleOutlined />
@@ -78,7 +87,7 @@ const SidebarFilters: FC<SidebarData> = (sidebarData) => {
           }
           onPressEnter={searchStoryNameCode}
         />
-      </GridCard>
+      </div>
       {Object.keys(data.data.aggregations).map((key) => {
         const found = sidebarData.studiesMappingResults.extendedMapping.find(
           (f: any) => f.field === key,
