@@ -1,26 +1,30 @@
 /* eslint-disable react/display-name */
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Table, Tooltip } from 'antd';
 import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
 import { useVariantTableData } from 'store/graphql/variants/actions';
-import { SelectedSuggestion } from 'store/graphql/variants/models';
+import {
+  ClinVar,
+  Consequence,
+  Frequencies,
+  SelectedSuggestion,
+} from 'store/graphql/variants/models';
+
+const DEFAULT_PAGE_NUM = 1;
 
 const columns = [
   {
     title: 'Variant',
     dataIndex: 'hgvsg',
-    key: 'hgvsg',
     sorter: true,
     ellipsis: true,
     width: '10%',
-    render: (
-      variant: string, //TODO href
-    ) =>
-      variant ? (
-        <Tooltip placement="topLeft" title={variant} color={'#2b388f'}>
-          <a href="test" target="_blank" rel="noopener noreferrer">
-            {variant}
+    render: (hgvsg: string) =>
+      hgvsg ? (
+        <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
+          <a target="_blank" rel="noopener noreferrer">
+            {hgvsg}
           </a>
         </Tooltip>
       ) : (
@@ -30,12 +34,10 @@ const columns = [
   {
     title: 'Type',
     dataIndex: 'variant_class',
-    key: 'variant_class',
   },
   {
     title: 'dbSnp',
     dataIndex: 'rsnumber',
-    key: 'rsnumber',
     render: (rsNumber: string) =>
       rsNumber ? (
         <a href={`https://www.ncbi.nlm.nih.gov/snp/${rsNumber}`} target="_blank" rel="noreferrer">
@@ -48,18 +50,19 @@ const columns = [
   {
     title: 'Consequences',
     dataIndex: 'consequences',
-    key: 'consequences',
     width: '20%',
-    render: (consequences: any[]) => <ConsequencesCell consequences={consequences} />,
+    render: (consequences: { hits: { edges: Consequence[] } }) => (
+      <ConsequencesCell consequences={consequences?.hits?.edges || []} />
+    ),
   },
+
   {
     title: 'CLINVAR',
     dataIndex: 'clinvar',
-    key: 'clinvar',
-    render: (clinVar: { [key: string]: any }) =>
-      clinVar?.clin_sig ? (
+    render: (clinVar: ClinVar) =>
+      clinVar?.clin_sig && clinVar.clinvar_id ? (
         <a
-          href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clin_sig}`}
+          href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}
           target="_blank"
           rel="noreferrer"
         >
@@ -73,53 +76,65 @@ const columns = [
   {
     title: '# Studies',
     dataIndex: 'studies',
-    key: 'studies',
-    render: (studies: { [key: string]: any }) => (studies || []).length,
+    render: (studies: { hits: { total: number } }) => studies?.hits?.total || 0,
   },
   {
     title: 'Participant',
     dataIndex: 'participant_number',
-    key: 'participant_number',
   },
   {
     title: 'ALT Allele',
     dataIndex: 'frequencies',
-    key: 'alt',
-    render: (frequencies: { [key: string]: any }) => frequencies?.internal?.combined?.ac,
+    render: (frequencies: Frequencies) => frequencies?.internal?.combined?.ac,
   },
   {
     title: 'Total Allele',
     dataIndex: 'frequencies',
-    key: 'total_allele',
-    render: (frequencies: { [key: string]: any }) => frequencies?.internal?.combined?.an,
+    render: (frequencies: Frequencies) => frequencies?.internal?.combined?.an,
   },
   {
     title: 'Allele Freq.',
     dataIndex: 'frequencies',
-    key: 'freq_allele',
-    render: (frequencies: { [key: string]: any }) => frequencies?.internal?.combined?.af,
+    render: (frequencies: Frequencies) => frequencies?.internal?.combined?.af,
   },
   {
     title: 'Homozygote',
     dataIndex: 'frequencies',
-    key: 'homozygote',
-    render: (frequencies: { [key: string]: any }) => frequencies?.internal?.combined?.homozygotes,
+    render: (frequencies: Frequencies) => frequencies?.internal?.combined?.homozygotes,
   },
-];
+].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
 
 const isEven = (n: number) => n % 2 === 0;
 
 type Props = { selectedSuggestion: SelectedSuggestion };
 
 const VariantTable: FunctionComponent<Props> = (props) => {
+  const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
   const { selectedSuggestion } = props;
-  const { loading: loadingData, results: data } = useVariantTableData(selectedSuggestion);
+  const { loading: loadingData, results: data } = useVariantTableData(
+    selectedSuggestion,
+    currentPageNum,
+  );
+
+  useEffect(() => {
+    //make sure page number is reset when another selection is selected
+    setCurrentPageNum(DEFAULT_PAGE_NUM);
+  }, [selectedSuggestion.suggestionId]);
 
   return (
     <Table
+      pagination={{
+        current: currentPageNum,
+        total: data.total,
+        onChange: (page) => {
+          if (currentPageNum !== page) {
+            setCurrentPageNum(page);
+          }
+        },
+      }}
       loading={loadingData}
       bordered
-      dataSource={data}
+      dataSource={data.nodes}
       columns={columns}
       className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}

@@ -1,15 +1,17 @@
 import { gql } from '@apollo/client';
 
 export const VARIANT_TABLE_QUERY = gql`
-  query($sqon: JSON) {
-    variant {
-      hits(filters: $sqon) {
+  query($sqon: JSON, $pageSize: Int, $offset: Int) {
+    variants {
+      hits(filters: $sqon, first: $pageSize, offset: $offset) {
+        total
         edges {
           node {
-            id
+            hgvsg
             hash
             locus
             clinvar {
+              clinvar_id
               clin_sig
             }
             rsnumber
@@ -18,9 +20,11 @@ export const VARIANT_TABLE_QUERY = gql`
               hits {
                 edges {
                   node {
-                    vep_impact
-                    consequences
                     symbol
+                    vep_impact
+                    symbol
+                    consequences
+                    aa_change
                   }
                 }
               }
@@ -41,7 +45,13 @@ export const VARIANT_TABLE_QUERY = gql`
               }
             }
             genes {
-              symbol
+              hits {
+                edges {
+                  node {
+                    symbol
+                  }
+                }
+              }
             }
           }
         }

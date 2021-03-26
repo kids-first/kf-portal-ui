@@ -6,10 +6,31 @@ export enum Impact {
 }
 
 export type Consequence = {
-  symbols: string[];
-  consequences: string[];
-  impact: Impact;
-  canonical: boolean;
+  node: {
+    symbol: string[];
+    consequences: string[];
+    vep_impact: Impact;
+    canonical?: boolean;
+    aa_change: string | undefined;
+    [key: string]: any;
+  };
+  [key: string]: any;
+};
+
+export type ClinVar = {
+  clinvar_id: string | undefined;
+  clin_sig: string | undefined;
+};
+
+export type Frequencies = {
+  internal: {
+    combined: {
+      homozygotes: number;
+      af: number;
+      an: number;
+      ac: number;
+    };
+  };
   [key: string]: any;
 };
 

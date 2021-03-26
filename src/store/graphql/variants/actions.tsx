@@ -13,8 +13,8 @@ const buildSqon = (selectedSuggestion: SelectedSuggestion) => {
           {
             op: 'in',
             content: {
-              field: 'gene.symbol',
-              value: geneSymbol,
+              field: 'genes.symbol',
+              value: [geneSymbol],
             },
           },
         ],
@@ -33,17 +33,30 @@ const buildSqon = (selectedSuggestion: SelectedSuggestion) => {
         ],
       };
 };
+const PAGE_SIZE = 10;
 
-export const useVariantTableData = (selectedSuggestion: SelectedSuggestion) => {
+const computeOffSet = (pageNum: number) => PAGE_SIZE * (pageNum - 1);
+
+export const useVariantTableData = (selectedSuggestion: SelectedSuggestion, pageNum: number) => {
   const { loading, result } = useLazyResultQuery<any>(VARIANT_TABLE_QUERY, {
-    variables: [
-      {
-        sqon: buildSqon(selectedSuggestion),
-      },
-    ],
+    variables: {
+      sqon: buildSqon(selectedSuggestion),
+      pageSize: PAGE_SIZE,
+      offset: computeOffSet(pageNum),
+    },
   });
+
+  const nodes = (result?.variants?.hits?.edges || []).map((edge: Edge, index: number) => ({
+    ...edge.node,
+    key: `${index + 1}`,
+  }));
+
+  const total = result?.variants?.hits?.total || 0;
   return {
     loading,
-    results: (result?.variant?.hits?.edges || []).map((edge: Edge) => ({ ...edge.node })),
+    results: {
+      nodes,
+      total,
+    },
   };
 };

@@ -94,6 +94,7 @@ const Suggester: FunctionComponent<Props> = (props) => {
             (inputValue || '').trim() === option?.meta?.searchText
           }
           onSelect={(value, option) => {
+            onClearSuggestions();
             onSelectSuggestion({
               suggestionId: option.meta.suggestionId,
               featureType: option.meta.featureType,
@@ -108,6 +109,13 @@ const Suggester: FunctionComponent<Props> = (props) => {
             allowClear
             size="large"
             placeholder="Search..."
+            onPressEnter={(e: any) => {
+              e.preventDefault();
+              const value = e.target.value;
+              if (!value || !value.trim()) {
+                reInitializeState();
+              }
+            }}
           />
         </AutoComplete>
       </Form.Item>

@@ -11,7 +11,7 @@ type OwnProps = {
 
 // canonical = true is at the top.
 const sortConsequencesByCanonical = (originalConsequences: Consequence[]) =>
-  (originalConsequences || []).sort((consequence) => (consequence.canonical ? -1 : 1));
+  (originalConsequences || []).slice().sort((consequence) => (consequence.node.canonical ? -1 : 1));
 
 const impactToColorClassName = Object.freeze({
   [Impact.High]: style.highImpact,
@@ -30,32 +30,36 @@ const ConsequencesCell: FunctionComponent<OwnProps> = ({ consequences }) => {
   const sortedConsequences = sortConsequencesByCanonical(consequences);
   return (
     <>
-      {sortedConsequences.map((consequence: Consequence, index: number) => (
+      {sortedConsequences.map((consequence: Consequence, index: number) => {
         /* Note: index can be used as key since the list is readonly */
-        <StackLayout center key={index}>
-          <Bullet colorClassName={pickImpactColorClassName(consequence.impact)} />
-          {(consequence.consequences || []).map((c: string, index: number) => (
-            <span key={index} className={style.detail}>
-              {c}
-            </span>
-          ))}
-          {(consequence.symbols || []).map((symbol: string) => (
-            <Symbol
-              key={toKebabCase(symbol)}
-              symbol={
-                <a
-                  className={style.symbolLink}
-                  href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${symbol}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {symbol}
-                </a>
-              }
-            />
-          ))}
-        </StackLayout>
-      ))}
+        const node = consequence.node;
+        return (
+          <StackLayout center key={index}>
+            <Bullet colorClassName={pickImpactColorClassName(node.vep_impact)} />
+            {(node.consequences || []).map((c: string, index: number) => (
+              <span key={index} className={style.detail}>
+                {c}
+              </span>
+            ))}
+            {node.symbol && (
+              <Symbol
+                key={toKebabCase(node.symbol)}
+                symbol={
+                  <a
+                    className={style.symbolLink}
+                    href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${node.symbol}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {node.symbol}
+                  </a>
+                }
+              />
+            )}
+            {node.aa_change && <span>{node.aa_change}</span>}
+          </StackLayout>
+        );
+      })}
     </>
   );
 };
