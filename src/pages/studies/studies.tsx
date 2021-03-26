@@ -16,7 +16,7 @@ let previousMappingData: any | null = null;
 const Studies: FC = () => {
   const { filters } = useFilters();
   let studiesResults = useGetStudiesPageData({ sqon: filters });
-  let studiesMappingResults = useGetExtendedMappings('Studies');
+  let studiesMappingResults = useGetExtendedMappings('studies');
 
   if (studiesResults.loading || studiesMappingResults.loadingMapping) {
     if (!studiesResults.data && previousData) {

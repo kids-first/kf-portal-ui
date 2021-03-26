@@ -1,6 +1,6 @@
 import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY } from './queries';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
-import { StudiesResult } from 'store/graphql/studies/models';
+import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 
 type AggregationBuckets = {
@@ -13,7 +13,6 @@ type AggregationBuckets = {
 };
 
 type AggregationResults = {
-  available_data_types: AggregationBuckets;
   domain: AggregationBuckets;
   experimental_strategy: AggregationBuckets;
   family_data: AggregationBuckets;
@@ -26,6 +25,16 @@ type HitsResults = {
       node: StudiesResult;
     },
   ];
+};
+
+export type HitsResultsDataCategory = {
+  hits: {
+    edges: [
+      {
+        node: DataCategory;
+      },
+    ];
+  };
 };
 
 type StudiesPageData = {
@@ -71,7 +80,7 @@ export const useGetStudiesPageData = (variables: any): StudiesResults => {
 
   return {
     loading,
-    data: result?.Studies || null,
+    data: result?.studies || null,
   };
 };
 
@@ -82,6 +91,6 @@ export const useGetExtendedMappings = (index: string): StudiesMappingResults => 
 
   return {
     loadingMapping: loading,
-    extendedMapping: result?.Studies.extended,
+    extendedMapping: result?.studies.extended,
   };
 };

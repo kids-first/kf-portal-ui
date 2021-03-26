@@ -3,7 +3,7 @@ import { fields } from './models';
 
 export const STUDIES_QUERY = gql`
   query StudiesInformation ($sqon: JSON){
-    Studies {
+    studies {
       hits(filters: $sqon) {
         edges {
           node {
@@ -15,8 +15,17 @@ export const STUDIES_QUERY = gql`
             family_count
             file_count
             participant_count
-            data_access_authority
-            program  
+            data_category_count {
+              hits {
+                edges {
+                  node {
+                    data_category
+                    count
+                  }
+                }
+              }
+            }
+            program
           }
         }
       }
