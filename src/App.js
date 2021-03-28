@@ -46,7 +46,7 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
-const VariantPage = lazy(() => import('pages/variant'));
+const VariantPage = lazy(() => import('pages/variants'));
 
 const App = compose(
   injectState,

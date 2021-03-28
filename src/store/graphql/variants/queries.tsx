@@ -25,6 +25,7 @@ export const VARIANT_TABLE_QUERY = gql`
                     symbol
                     consequences
                     aa_change
+                    impact_score
                   }
                 }
               }

@@ -9,9 +9,17 @@ type OwnProps = {
   consequences: Consequence[];
 };
 
-// canonical = true is at the top.
-const sortConsequencesByCanonical = (originalConsequences: Consequence[]) =>
-  (originalConsequences || []).slice().sort((consequence) => (consequence.node.canonical ? -1 : 1));
+export const generateConsequencesDataLines = (rawConsequences: Consequence[]): Consequence[] => {
+  // hypothesis: for a given symbol in consequences there MUST be one and only one canonical consequence.
+  if (!rawConsequences || rawConsequences.length === 0) {
+    return [];
+  }
+  return rawConsequences.filter((consequence: Consequence) => {
+    const isInterGenic = !consequence.node.symbol;
+    const isCanonical = consequence.node.canonical;
+    return isInterGenic || isCanonical;
+  });
+};
 
 const impactToColorClassName = Object.freeze({
   [Impact.High]: style.highImpact,
@@ -27,10 +35,10 @@ const Bullet = ({ colorClassName = '' }) => (
 );
 
 const ConsequencesCell: FunctionComponent<OwnProps> = ({ consequences }) => {
-  const sortedConsequences = sortConsequencesByCanonical(consequences);
+  const lines = generateConsequencesDataLines(consequences);
   return (
     <>
-      {sortedConsequences.map((consequence: Consequence, index: number) => {
+      {lines.map((consequence: Consequence, index: number) => {
         /* Note: index can be used as key since the list is readonly */
         const node = consequence.node;
         return (

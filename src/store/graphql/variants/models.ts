@@ -7,7 +7,7 @@ export enum Impact {
 
 export type Consequence = {
   node: {
-    symbol: string[];
+    symbol: string;
     consequences: string[];
     vep_impact: Impact;
     canonical?: boolean;
