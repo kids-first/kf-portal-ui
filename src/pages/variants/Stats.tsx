@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 
-const Stats: FunctionComponent = () => <div />;
+const Stats: FC = () => <div />;
 
 export default Stats;

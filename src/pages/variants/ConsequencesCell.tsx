@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import style from './ConsequencesCell.module.scss';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import Symbol from './Symbol';
@@ -34,7 +34,7 @@ const Bullet = ({ colorClassName = '' }) => (
   <span className={`${style.bullet} ${colorClassName}`} />
 );
 
-const ConsequencesCell: FunctionComponent<OwnProps> = ({ consequences }) => {
+const ConsequencesCell: FC<OwnProps> = ({ consequences }) => {
   const lines = generateConsequencesDataLines(consequences);
   return (
     <>
