@@ -1,6 +1,8 @@
+@import 'src/style/themes/default/colors';
+
 .inputVariant {
   padding: 8px;
-  background: #F4F5F8; // TODO var
+  background: $layout-bg-base;
   border-radius: 2px;
 }
 

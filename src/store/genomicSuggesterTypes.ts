@@ -14,37 +14,37 @@ export type SelectedSuggestionAction = {
   selectedSuggestion: SelectedSuggestion;
 };
 
-interface AddSuggestions {
+type AddSuggestions = {
   type: typeof ADD_SUGGESTIONS;
   suggestions: Suggestion[];
   searchText: SearchText;
-}
+};
 
-interface Failure {
+type Failure = {
   type: typeof FAILURE;
   error: Error | null;
-}
+};
 
-interface ReInitializeState {
+type ReInitializeState = {
   type: typeof RE_INITIALIZE_STATE;
-}
+};
 
-interface ClearSuggestions {
+type ClearSuggestions = {
   type: typeof CLEAR_SUGGESTIONS;
-}
+};
 
-interface ToggleLoading {
+type ToggleLoading = {
   type: typeof TOGGLE_LOADING;
   isLoading: boolean;
-}
+};
 
-export interface GenomicSuggesterState {
+export type GenomicSuggesterState = {
   searchText: string | undefined;
   isLoading: boolean;
   error: Error | null | undefined;
   suggestions: Suggestion[];
   selectedSuggestion: SelectedSuggestion | null | undefined;
-}
+};
 
 export type GenomicSuggesterTypes =
   | Failure

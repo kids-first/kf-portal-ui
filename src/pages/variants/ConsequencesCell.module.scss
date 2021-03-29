@@ -1,26 +1,24 @@
+@import 'src/style/themes/default/colors';
+
 .consequenceUl {
   list-style: none;
   padding: 0;
 }
 
 .highImpact {
-  //TODO var
-  background-color: red;
+  background-color: $red-5;
 }
 
 .lowImpact {
-  //TODO var
-  background-color: green;
+  background-color: $green-6;
 }
 
 .moderateImpact {
-  //TODO var
-  background-color: orange;
+  background-color: $orange-5;
 }
 
 .modifierImpact {
-  //TODO var
-  background-color: grey;
+  background-color: $body-3;
 }
 
 .detail {
@@ -36,5 +34,5 @@
 
 .symbolLink {
   text-decoration-line: underline;
-  color: #383f72; // TODO var
+  color: $geekblue-7;
 }

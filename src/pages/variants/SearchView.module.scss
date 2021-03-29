@@ -8,13 +8,13 @@
   width: 100%;
   min-height: 450px;
   padding: 24px;
-  background-color: $pageBackground;
+  background-color: $gray-1;
 }
 
 .initialSearchContainer {
   justify-content: center;
   align-items: center;
-  background: #f9f9fb; //TODO var
+  background:  $layout-bg-base;
   width: 100%;
   min-height: 450px;
 }

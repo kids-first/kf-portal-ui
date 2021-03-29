@@ -1,12 +1,13 @@
+@import 'src/style/themes/default/colors';
 .table {
   width: 100%;
 }
 
 .link {
   text-decoration-line: underline;
-  color: #383f72;
+  color: $body-1;
 }
 
 .rowOdd {
-  background-color: #f9f9fb; //TODO var
+  background-color: $gray-2;
 }

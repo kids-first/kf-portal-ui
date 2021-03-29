@@ -1,7 +1,8 @@
 import { apiInitialized } from './api';
+import { kfArrangerApiRoot } from 'common/injectGlobals';
 
 export const getGenomicSuggestions = async (searchText) =>
   await apiInitialized({
-    url: `https://kf-api-arranger-qa.kf-strides.org/genomicFeature/suggestions/${searchText}`, //TODO
+    url: `${kfArrangerApiRoot}genomicFeature/suggestions/${searchText}`,
     method: 'GET',
   });
