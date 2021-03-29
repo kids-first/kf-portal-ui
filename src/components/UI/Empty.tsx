@@ -17,7 +17,7 @@ export enum SIZE {
 }
 
 type OwnProps = {
-  description?: React.ReactNode;
+  description?: string;
   direction?: Direction;
   size?: SIZE;
   image?: string;
@@ -34,8 +34,12 @@ const computeImage = (size: SIZE, direction: Direction) => mapping[size + '.' + 
 const computeDefaultDescriptionStyle = (size: SIZE) =>
   size === SIZE.DEFAULT ? style.descriptionDefault : style.descriptionSmall;
 
-const generateDefaultDescription = (size: SIZE) => (
-  <span className={computeDefaultDescriptionStyle(size)}>No available data</span>
+const DEFAULT_DESCRIPTION = 'No available data';
+
+const generateDescriptionNode = (rawDescription: string | undefined, size: SIZE) => (
+  <span className={computeDefaultDescriptionStyle(size)}>
+    {rawDescription || DEFAULT_DESCRIPTION}
+  </span>
 );
 
 const Empty: FunctionComponent<OwnProps> = ({
@@ -45,7 +49,7 @@ const Empty: FunctionComponent<OwnProps> = ({
   image = null,
 }) => (
   <AntdEmpty
-    description={description || generateDefaultDescription(size)}
+    description={generateDescriptionNode(description, size)}
     image={image || computeImage(size, direction)}
   />
 );

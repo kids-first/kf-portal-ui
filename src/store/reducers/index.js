@@ -8,6 +8,7 @@ import modal from './modal';
 import report from './report';
 import fileSearchFilters from './fileSearchFilters';
 import saveSets from './saveSets';
+import genomicSuggester from './genomicSuggester';
 
 export default combineReducers({
   virtualStudies,
@@ -19,4 +20,5 @@ export default combineReducers({
   fileSearchFilters,
   saveSets,
   modal,
+  genomicSuggester,
 });

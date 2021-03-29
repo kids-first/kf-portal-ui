@@ -1,0 +1,37 @@
+@import 'src/style/themes/default/colors';
+
+.leftSquare {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  width: 42px;
+  height: 42px;
+  left: 0;
+  top: 0;
+  border-radius: 2px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: $geekblue-7;
+}
+
+.leftSquareBgColorVariant {
+  background: $purple-2;
+}
+
+.leftSquareBgColorGene {
+  background: $geekblue-2;
+}
+
+.detailsContainer {
+  margin: 0 12px;
+}
+
+.displayName {
+  font-weight: 600;
+  font-size: 14px;
+  color: $body-1;
+}
