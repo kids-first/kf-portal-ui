@@ -1,5 +1,5 @@
 import { Consequence } from 'store/graphql/variants/models';
-import { generateConsequencesDataLines } from '../ConsequencesCell';
+import { generateConsequencesDataLines } from '../consequences';
 
 const mockConsequencesTranscript: Consequence[] = [
   {

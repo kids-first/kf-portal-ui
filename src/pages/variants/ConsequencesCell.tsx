@@ -4,21 +4,10 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import Symbol from './Symbol';
 import { toKebabCase } from 'utils';
 import { Consequence, Impact } from 'store/graphql/variants/models';
+import { generateConsequencesDataLines } from './consequences';
 
 type OwnProps = {
   consequences: Consequence[];
-};
-
-export const generateConsequencesDataLines = (rawConsequences: Consequence[]): Consequence[] => {
-  // hypothesis: for a given symbol in consequences there MUST be one and only one canonical consequence.
-  if (!rawConsequences || rawConsequences.length === 0) {
-    return [];
-  }
-  return rawConsequences.filter((consequence: Consequence) => {
-    const isInterGenic = !consequence.node.symbol;
-    const isCanonical = consequence.node.canonical;
-    return isInterGenic || isCanonical;
-  });
 };
 
 const impactToColorClassName = Object.freeze({
