@@ -1,12 +1,7 @@
 import {
-  ADD_SUGGESTIONS,
-  CLEAR_SUGGESTIONS,
-  FAILURE,
   GenomicSuggesterState,
   GenomicSuggesterTypes,
-  RE_INITIALIZE_STATE,
-  SELECT_SUGGESTION,
-  TOGGLE_LOADING,
+  GenomicActionTypes,
 } from '../genomicSuggesterTypes';
 
 const initialState: GenomicSuggesterState = {
@@ -19,22 +14,22 @@ const initialState: GenomicSuggesterState = {
 
 export default (state = initialState, action: GenomicSuggesterTypes): GenomicSuggesterState => {
   switch (action.type) {
-    case TOGGLE_LOADING: {
+    case GenomicActionTypes.TOGGLE_LOADING: {
       return { ...state, isLoading: action.isLoading };
     }
-    case ADD_SUGGESTIONS: {
+    case GenomicActionTypes.ADD_SUGGESTIONS: {
       return { ...state, suggestions: action.suggestions, searchText: action.searchText };
     }
-    case SELECT_SUGGESTION: {
+    case GenomicActionTypes.SELECT_SUGGESTION: {
       return { ...state, selectedSuggestion: action.selectedSuggestion };
     }
-    case FAILURE: {
+    case GenomicActionTypes.FAILURE: {
       return { ...initialState, error: action.error };
     }
-    case CLEAR_SUGGESTIONS: {
+    case GenomicActionTypes.CLEAR_SUGGESTIONS: {
       return { ...state, suggestions: [], searchText: '' };
     }
-    case RE_INITIALIZE_STATE: {
+    case GenomicActionTypes.RE_INITIALIZE_STATE: {
       return { ...initialState };
     }
     default:

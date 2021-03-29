@@ -1,19 +1,11 @@
-import {
-  ADD_SUGGESTIONS,
-  CLEAR_SUGGESTIONS,
-  FAILURE,
-  GenomicSuggesterTypes,
-  RE_INITIALIZE_STATE,
-  SELECT_SUGGESTION,
-  TOGGLE_LOADING,
-} from '../genomicSuggesterTypes';
+import { GenomicActionTypes, GenomicSuggesterTypes } from '../genomicSuggesterTypes';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootState';
 import { getGenomicSuggestions } from 'services/genomicSuggestions';
 import { SearchText, SelectedSuggestion, Suggestion } from '../graphql/variants/models';
 
 export const toggleLoading = (isLoading: boolean): GenomicSuggesterTypes => ({
-  type: TOGGLE_LOADING,
+  type: GenomicActionTypes.TOGGLE_LOADING,
   isLoading,
 });
 
@@ -22,7 +14,7 @@ export const selectChosenSuggestion = ({
   featureType,
   geneSymbol,
 }: SelectedSuggestion): GenomicSuggesterTypes => ({
-  type: SELECT_SUGGESTION,
+  type: GenomicActionTypes.SELECT_SUGGESTION,
   selectedSuggestion: {
     featureType,
     suggestionId,
@@ -31,7 +23,7 @@ export const selectChosenSuggestion = ({
 });
 
 export const failure = (error: Error): GenomicSuggesterTypes => ({
-  type: FAILURE,
+  type: GenomicActionTypes.FAILURE,
   error,
 });
 
@@ -39,17 +31,17 @@ export const addSuggestions = (
   searchText: SearchText,
   suggestions: Suggestion[],
 ): GenomicSuggesterTypes => ({
-  type: ADD_SUGGESTIONS,
+  type: GenomicActionTypes.ADD_SUGGESTIONS,
   suggestions,
   searchText,
 });
 
 export const clearSuggestions = (): GenomicSuggesterTypes => ({
-  type: CLEAR_SUGGESTIONS,
+  type: GenomicActionTypes.CLEAR_SUGGESTIONS,
 });
 
 export const reInitializeState = (): GenomicSuggesterTypes => ({
-  type: RE_INITIALIZE_STATE,
+  type: GenomicActionTypes.RE_INITIALIZE_STATE,
 });
 
 export const fetchSuggestions = (

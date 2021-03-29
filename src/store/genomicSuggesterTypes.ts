@@ -2,39 +2,41 @@ import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from './rootState';
 import { SearchText, SelectedSuggestion, Suggestion } from './graphql/variants/models';
 
-export const TOGGLE_LOADING = 'TOGGLE_LOADING_GENOMIC_SUGGESTER';
-export const FAILURE = 'FAILURE_GENOMIC_SUGGESTER';
-export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_GENOMIC_SUGGESTER';
-export const CLEAR_SUGGESTIONS = 'CLEAR_MESSAGE_GENOMIC_SUGGESTER';
-export const ADD_SUGGESTIONS = 'ADD_SUGGESTIONS_GENOMIC_SUGGESTER';
-export const SELECT_SUGGESTION = 'SELECT_SUGGESTION_GENOMIC_SUGGESTER';
+export enum GenomicActionTypes {
+  TOGGLE_LOADING = 'TOGGLE_LOADING_GENOMIC_SUGGESTER',
+  FAILURE = 'FAILURE_GENOMIC_SUGGESTER',
+  RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_GENOMIC_SUGGESTER',
+  CLEAR_SUGGESTIONS = 'CLEAR_MESSAGE_GENOMIC_SUGGESTER',
+  ADD_SUGGESTIONS = 'ADD_SUGGESTIONS_GENOMIC_SUGGESTER',
+  SELECT_SUGGESTION = 'SELECT_SUGGESTION_GENOMIC_SUGGESTER',
+}
 
 export type SelectedSuggestionAction = {
-  type: typeof SELECT_SUGGESTION;
+  type: GenomicActionTypes.SELECT_SUGGESTION;
   selectedSuggestion: SelectedSuggestion;
 };
 
 type AddSuggestions = {
-  type: typeof ADD_SUGGESTIONS;
+  type: GenomicActionTypes.ADD_SUGGESTIONS;
   suggestions: Suggestion[];
   searchText: SearchText;
 };
 
 type Failure = {
-  type: typeof FAILURE;
+  type: GenomicActionTypes.FAILURE;
   error: Error | null;
 };
 
 type ReInitializeState = {
-  type: typeof RE_INITIALIZE_STATE;
+  type: GenomicActionTypes.RE_INITIALIZE_STATE;
 };
 
 type ClearSuggestions = {
-  type: typeof CLEAR_SUGGESTIONS;
+  type: GenomicActionTypes.CLEAR_SUGGESTIONS;
 };
 
 type ToggleLoading = {
-  type: typeof TOGGLE_LOADING;
+  type: GenomicActionTypes.TOGGLE_LOADING;
   isLoading: boolean;
 };
 
