@@ -23,9 +23,7 @@ const columns = [
     render: (hgvsg: string) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
-          <a target="_blank" rel="noopener noreferrer">
-            {hgvsg}
-          </a>
+          {hgvsg}
         </Tooltip>
       ) : (
         ''
@@ -40,7 +38,7 @@ const columns = [
     dataIndex: 'rsnumber',
     render: (rsNumber: string) =>
       rsNumber ? (
-        <a href={`https://www.ncbi.nlm.nih.gov/snp/${rsNumber}`} target="_blank" rel="noreferrer">
+        <a target="_blank" rel="noopener noreferrer" href={`https://www.ncbi.nlm.nih.gov/snp/${rsNumber}`}>
           {rsNumber}
         </a>
       ) : (
@@ -64,7 +62,7 @@ const columns = [
         <a
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           {clinVar.clin_sig}
         </a>

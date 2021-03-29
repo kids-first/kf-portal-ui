@@ -46,7 +46,7 @@ const ConsequencesCell: FC<OwnProps> = ({ consequences }) => {
                     className={style.symbolLink}
                     href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${node.symbol}`}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                   >
                     {node.symbol}
                   </a>
