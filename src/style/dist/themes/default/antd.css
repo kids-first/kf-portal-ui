@@ -21984,7 +21984,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   font-size: 12px;
   line-height: 20px;
   white-space: nowrap;
-  background: #404c9a;
+  background: #eaeaec;
   border: 1px solid #eaeaec;
   border-radius: 2px;
   opacity: 1;
@@ -21996,7 +21996,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tag,
 .ant-tag a,
 .ant-tag a:hover {
-  color: #fff;
+  color: #383f72;
 }
 .ant-tag > a:first-child:last-child {
   display: inline-block;
