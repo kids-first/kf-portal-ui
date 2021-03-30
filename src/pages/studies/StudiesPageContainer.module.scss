@@ -9,3 +9,11 @@
 .tableContainer > * {
   margin: $default-padding;
 }
+
+.queryBuilderIcon {
+  height: 18px;
+  vertical-align: middle;
+  path {
+    fill: $body-1;
+  }
+}

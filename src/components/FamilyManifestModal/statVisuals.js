@@ -1,6 +1,6 @@
 import React from 'react';
-import participantsStatIconPath from 'assets/icon-participants.svg';
 import fileStatVisualPath from 'assets/icon-files.svg';
+import participantsStatIconPath from 'assets/icon-participants.svg';
 import fileSizeStatVisualPath from 'assets/icon-database.svg';
 import familyMembersStatVisualPath from 'assets/icon-families-grey.svg';
 import style from './statVisuals.module.css';

@@ -2,9 +2,9 @@ import { gql } from '@apollo/client';
 import { fields } from './models';
 
 export const STUDIES_QUERY = gql`
-  query StudiesInformation ($sqon: JSON){
+  query StudiesInformation ($sqon: JSON, $first: Int, $offset: Int){
     studies {
-      hits(filters: $sqon) {
+      hits(filters: $sqon, first: $first, offset: $offset) {
         edges {
           node {
             kf_id
@@ -28,6 +28,7 @@ export const STUDIES_QUERY = gql`
             program
           }
         }
+        total
       }
        aggregations (filters: $sqon){
         ${fields.map(

@@ -1,3 +1,27 @@
 @import '~@ferlab/style/themes/default/theme.template';
+@import 'colors';
 
+$query-builder-bg: $gray-1;
+$query-builder-border-color: $gray-4;
 $query-builder-padding: 2.4rem;
+
+$query-bar-bg: $gray-3;
+$query-bar-bg-active: #e1f1f4;
+$query-bar-border-color: $gray-4;
+$query-bar-border-color-active: #c3e3e9;
+$query-bar-height: 40px;
+$query-bar-padding: 0.7rem 1.2rem;
+
+$query-bar-identifier: $gray-7;
+$query-bar-identifier-active: $cyan-6;
+
+$query-pill-bg: $gray-5;
+$query-pill-bg-active: rgba($cyan-5, 0.25);
+
+$query-values-bg: $white;
+
+$query-icon-operator-color: $body-3;
+$query-icon-operator-color-hover: #26436e;
+$query-icon-label-operator-color: #26436e;
+
+$query-total-color: $body-1;

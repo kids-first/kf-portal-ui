@@ -1794,7 +1794,7 @@ html {
   background: #faad14;
 }
 .ant-badge-status-cyan {
-  background: #13c2c2;
+  background: #009bba;
 }
 .ant-badge-status-lime {
   background: #a0d911;
@@ -1980,8 +1980,8 @@ html {
   background: #faad14;
 }
 .ant-ribbon-color-cyan {
-  color: #13c2c2;
-  background: #13c2c2;
+  color: #009bba;
+  background: #009bba;
 }
 .ant-ribbon-color-lime {
   color: #a0d911;
@@ -22115,14 +22115,14 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #faad14;
 }
 .ant-tag-cyan {
-  color: #13c2c2;
-  background: #e6fffb;
-  border-color: #87e8de;
+  color: #009bba;
+  background: #e1fafa;
+  border-color: #6cd9e0;
 }
 .ant-tag-cyan-inverse {
   color: #fff;
-  background: #13c2c2;
-  border-color: #13c2c2;
+  background: #009bba;
+  border-color: #009bba;
 }
 .ant-tag-lime {
   color: #a0d911;
@@ -22646,10 +22646,10 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   background-color: #faad14;
 }
 .ant-tooltip-cyan .ant-tooltip-inner {
-  background-color: #13c2c2;
+  background-color: #009bba;
 }
 .ant-tooltip-cyan .ant-tooltip-arrow-content {
-  background-color: #13c2c2;
+  background-color: #009bba;
 }
 .ant-tooltip-lime .ant-tooltip-inner {
   background-color: #a0d911;
