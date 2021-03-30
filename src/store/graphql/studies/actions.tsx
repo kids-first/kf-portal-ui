@@ -25,6 +25,7 @@ type HitsResults = {
       node: StudiesResult;
     },
   ];
+  total: number;
 };
 
 export type HitsResultsDataCategory = {
@@ -73,7 +74,13 @@ export type SideBarData = {
   studiesMappingResults: StudiesMappingResults;
 };
 
-export const useGetStudiesPageData = (variables: any): StudiesResults => {
+export type QueryVariable = {
+  sqon: any;
+  first: number; // number of element to fetch
+  offset: number; // start from offset number of elements
+}
+
+export const useGetStudiesPageData = (variables: QueryVariable): StudiesResults => {
   const { loading, result } = useLazyResultQuery<any>(STUDIES_QUERY, {
     variables: variables,
   });

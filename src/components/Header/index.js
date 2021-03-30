@@ -9,6 +9,7 @@ import {
   UserOutlined,
   TeamOutlined,
   HomeOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import { LinkAsButton, NavBarList, NavLink } from './ui';
@@ -83,7 +84,7 @@ const NavigationToolBar = (props) => {
               {isFeatureEnabled('studiesPage') && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
-                    <TeamOutlined /> Studies
+                  <ReadOutlined /> Studies
                   </NavLink>
                 </li>
               )}
