@@ -5,6 +5,8 @@
 // Fields that will be displayed in the "Clinical Filters" section
 export const CLINICAL_FILTERS = [
   'participants__study__short_name',
+  // 'participants__study__domain',
+  // 'participants__study__program',
   'participants__diagnoses__diagnosis_category',
   'participants__diagnoses__source_text_diagnosis',
   'participants__phenotype__hpo_phenotype_observed_text',
@@ -23,6 +25,7 @@ export const FILE_FILTERS = [
   'data_type',
   'file_format',
   'participants__family__family_compositions__available_data_types',
+  // 'participants__data_category',
 ];
 
 export const aggsConfig = (data, graphqlField) => {
