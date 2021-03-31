@@ -9,6 +9,7 @@ import report from './report';
 import fileSearchFilters from './fileSearchFilters';
 import saveSets from './saveSets';
 import genomicSuggester from './genomicSuggester';
+import workBench from './workbench';
 
 export default combineReducers({
   virtualStudies,
@@ -21,4 +22,5 @@ export default combineReducers({
   saveSets,
   modal,
   genomicSuggester,
+  workBench,
 });
