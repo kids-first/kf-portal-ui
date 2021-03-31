@@ -38,6 +38,7 @@ import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
 import 'index.css';
 import ForumBanner, { showForumBanner } from './ForumBanner';
+import VariantEntity from './components/EntityPage/Variant';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -170,6 +171,19 @@ const App = compose(
                   Component: FileEntity,
                   loggedInUser,
                   fileId: props.match.params.fileId,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.variant}/:variantId`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: VariantEntity,
+                  loggedInUser,
+                  variantId: props.match.params.variantId,
                   ...props,
                 })
               }

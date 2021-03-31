@@ -60,3 +60,25 @@ export type SelectedSuggestion = {
   suggestionId: SuggestionId;
   geneSymbol: string | undefined;
 };
+
+export type VariantEntityResults = {
+  data: VariantPageData | null;
+  loading: boolean;
+};
+
+type VariantPageData = {
+  aggregations: AggregationResults;
+  hits: HitsResults;
+};
+
+type HitsResults = {
+  edges: [
+    {
+      node: any; //FIXME: to be expanded further when needed
+    },
+  ];
+};
+
+type AggregationResults = {
+  hgvsg: string;
+};
