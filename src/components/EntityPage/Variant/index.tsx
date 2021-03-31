@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { useGetVariantEntityPageData } from './actions';
-import { Layout, Tabs, Typography } from 'antd';
+import { Layout, Tabs, Tag, Typography } from 'antd';
 import styles from 'pages/variants/Variants.module.scss';
+import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
+import VariantSummaryContainer from './VariantSummaryContainer';
 
 type OwnProps = {
   variantId: string;
@@ -26,22 +28,47 @@ const VariantEntity = (props: OwnProps) => {
   };
 
   let variantResult = useGetVariantEntityPageData({ sqon: filters });
-  console.log(variantResult);
 
   return (
-    <Layout className={styles.layout}>
-      <Title level={3}>h3. Ant Design</Title>
+    <Layout className={styles.layout} style={{ padding: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Title level={3}>{variantResult.data?.hits.edges[0].node.hgvsg}</Title>
+        <Tag color="#D9F7BE" style={{ color: '#237804' }}>
+          Germline
+        </Tag>
+      </div>
       <Tabs defaultActiveKey="1">
-        <TabPane tab="Summary" key="1">
-          Summary content
+        <TabPane
+          tab={
+            <span>
+              <FileTextOutlined />
+              Summary
+            </span>
+          }
+          key="1"
+        >
+          <VariantSummaryContainer />
         </TabPane>
-        <TabPane tab="Frequencies" key="2">
+        <TabPane
+          tab={
+            <span>
+              <RiseOutlined />
+              Frequencies
+            </span>
+          }
+          key="2"
+        >
           Frequencies content
         </TabPane>
-        <TabPane tab="Clinical Associations" key="3">
-          Clinical Associations content
-        </TabPane>
-        <TabPane tab="Patients" key="4">
+        <TabPane
+          tab={
+            <span>
+              <MedicineBoxOutlined />
+              Clinical Associations
+            </span>
+          }
+          key="3"
+        >
           Clinical Associations content
         </TabPane>
       </Tabs>

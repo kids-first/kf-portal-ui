@@ -7,7 +7,19 @@ export const VARIANT_QUERY = gql`
         edges {
           node {
             acls
+            alternate
             chromosome
+            hash
+            hgvsg
+            locus
+
+            participant_number
+            reference
+            release_id
+            rsnumber
+            start
+            variant_class
+
             clinvar {
               clin_sig
               clinvar_id
@@ -118,6 +130,7 @@ export const VARIANT_QUERY = gql`
                 }
               }
             }
+
             genes {
               hits {
                 edges {

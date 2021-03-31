@@ -74,11 +74,20 @@ type VariantPageData = {
 type HitsResults = {
   edges: [
     {
-      node: any; //FIXME: to be expanded further when needed
+      node: VariantEntity;
     },
   ];
 };
 
 type AggregationResults = {
   hgvsg: string;
+};
+
+type VariantEntity = {
+  alternate: string;
+  hash: string;
+  chromosome: string;
+  hgvsg: string;
+  locus: string;
+  start: string;
 };
