@@ -8,6 +8,7 @@ const ROUTES = {
   dashboard: '/dashboard',
   error: '/error',
   file: '/file',
+  variant: '/variant',
   gen3Redirect: '/gen3_redirect',
   join: '/join',
   login: '/',
