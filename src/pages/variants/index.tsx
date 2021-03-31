@@ -3,13 +3,12 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import style from './Variants.module.scss';
 import SearchView from './SearchView';
 import PageContent from 'components/Layout/PageContent';
-import Stats from './Stats';
+import WorkBench from './WorkBench';
 
 const VariantPage: FunctionComponent = () => (
   <PageContent title={'The Kids First Variant Database'}>
     <StackLayout className={style.statsAndZepplinContainer} center flexContent fitContent>
-      <Stats />
-      {/* in construction */}
+      <WorkBench />
     </StackLayout>
     <SearchView />
   </PageContent>
