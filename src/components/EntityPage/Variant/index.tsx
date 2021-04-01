@@ -2,9 +2,10 @@ import React from 'react';
 
 import { useGetVariantEntityPageData } from './actions';
 import { Layout, Tabs, Tag, Typography } from 'antd';
-import styles from 'pages/variants/Variants.module.scss';
 import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
 import VariantSummaryContainer from './VariantSummaryContainer';
+
+import styles from './variant.module.scss';
 
 type OwnProps = {
   variantId: string;
@@ -28,14 +29,11 @@ const VariantEntity = (props: OwnProps) => {
   };
 
   let variantResult = useGetVariantEntityPageData({ sqon: filters });
-
   return (
-    <Layout className={styles.layout} style={{ padding: 24 }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <Layout className={styles.layout}>
+      <div className={styles.headerContainer}>
         <Title level={3}>{variantResult.data?.hits.edges[0].node.hgvsg}</Title>
-        <Tag color="#D9F7BE" style={{ color: '#237804' }}>
-          Germline
-        </Tag>
+        <Tag className={styles.variantTag}>Germline</Tag>
       </div>
       <Tabs defaultActiveKey="1">
         <TabPane
