@@ -24886,3 +24886,18 @@ h1.ant-typography {
   text-align: left;
   color: #2b388f;
 }
+.ant-typography {
+  color: #383f72;
+}
+.ant-switch-checked {
+  background-color: #009bba;
+}
+.ant-alert-message {
+  color: #910616;
+}
+.ant-alert-with-description .ant-alert-message {
+  color: #910616;
+}
+.ant-alert {
+  color: #910616;
+}
