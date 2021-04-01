@@ -1,0 +1,28 @@
+.content-container {
+  display: grid;
+  width: 100%;
+  text-align: center;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 750px 21px 550px;
+  margin: auto;
+}
+
+.block {
+  background-color: #fff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #eee;
+  height: 100px;
+}
+
+.divider {
+  content: '';
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-left: 1px solid black;
+}
