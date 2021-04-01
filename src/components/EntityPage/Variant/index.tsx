@@ -45,7 +45,7 @@ const VariantEntity = (props: OwnProps) => {
           }
           key="1"
         >
-          <VariantSummaryContainer />
+          <VariantSummaryContainer results={variantResult} />
         </TabPane>
         <TabPane
           tab={
