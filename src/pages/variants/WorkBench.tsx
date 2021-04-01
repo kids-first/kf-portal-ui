@@ -85,7 +85,7 @@ const WorkBench: FC<Props> = (props) => {
           <img alt="Appache-Zeppelin-Logo" src={azicon} className={style.zeppelinImg} />
         </div>
         <StackLayout vertical className={style.textAndBtnContainer}>
-          <Paragraph className={style.textContainer}>
+          <Paragraph>
             Launch your own <Text strong>high performance compute environment</Text> to access the
             Kids First variant database using Apache Zeppelin notebooks.
           </Paragraph>
