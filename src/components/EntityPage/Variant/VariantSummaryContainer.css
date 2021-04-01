@@ -1,0 +1,11 @@
+
+.grid-top-container {
+  display: grid;
+  grid-template-columns: 34% auto;
+}
+
+.grid-top-container-item {
+  text-align: left;
+}
+
+
