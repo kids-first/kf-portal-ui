@@ -181,9 +181,9 @@ const participantsTableViewColumns = (
     Cell: (props) => CellParticipantIdLink(props.value),
   },
   {
-    Header: 'Study Name',
-    accessor: 'studyName',
-    minWidth: 140,
+    Header: 'Study Code',
+    accessor: 'studyCode',
+    minWidth: 80,
   },
   { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
   { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
