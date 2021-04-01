@@ -16,6 +16,7 @@ export const VARIANT_TABLE_QUERY = gql`
             }
             rsnumber
             participant_number
+            participant_ids
             consequences {
               hits {
                 edges {
