@@ -1,0 +1,15 @@
+@import 'style/themes/default/_colors';
+
+.layout {
+  padding: 24px;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+}
+
+.variantTag {
+  color: $tag-color-lime-green-container;
+  background-color: $tag-color-lime-green-text;
+}
