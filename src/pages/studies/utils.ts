@@ -147,6 +147,30 @@ export const getFilterType = (fieldType: string): VisualType => {
   return VisualType.Checkbox;
 };
 
+const getSelectedFiltersForRange = (
+  filters: IFilter[],
+  filterGroup: IFilterGroup,
+  selectedFilters: ISqonGroupFilter,
+) => {
+  const rangeData = getRangeSelection(selectedFilters, filterGroup);
+  const currentFilter = filters[0] as IFilter<IFilterRange>;
+  return [{ ...currentFilter, data: rangeData }];
+};
+
+const getSelectedFiltersOther = (
+  filters: IFilter[],
+  filterGroup: IFilterGroup,
+  selectedFilters: ISqonGroupFilter,
+) => {
+  const currentFilters = filters as IFilter<IFilterCount>[];
+  return currentFilters.reduce<IFilter<IFilterCount>[]>((acc, filter) => {
+    if (isFilterSelected(selectedFilters, filterGroup, filter.data.key)) {
+      acc.push(filter);
+    }
+    return acc;
+  }, []);
+};
+
 export const getSelectedFilters = (filters: IFilter[], filterGroup: IFilterGroup): IFilter[] => {
   const selectedFilters = getFiltersQuery();
   if (isEmpty(selectedFilters)) {
@@ -155,21 +179,9 @@ export const getSelectedFilters = (filters: IFilter[], filterGroup: IFilterGroup
 
   switch (filterGroup.type) {
     case VisualType.Range:
-      // eslint-disable-next-line no-case-declarations
-      const rangeData = getRangeSelection(selectedFilters, filterGroup);
-      // eslint-disable-next-line no-case-declarations
-      const currentFilter = filters[0] as IFilter<IFilterRange>;
-      return [{ ...currentFilter, data: rangeData }];
+      return getSelectedFiltersForRange(filters, filterGroup, selectedFilters);
     default:
-      // eslint-disable-next-line no-case-declarations
-      const currentFilters = filters as IFilter<IFilterCount>[];
-      return currentFilters.reduce<IFilter<IFilterCount>[]>((acc, filter) => {
-        const isSelected = isFilterSelected(selectedFilters, filterGroup, filter.data.key);
-        if (isSelected) {
-          acc.push(filter);
-        }
-        return acc;
-      }, []);
+      return getSelectedFiltersOther(filters, filterGroup, selectedFilters);
   }
 };
 
@@ -199,7 +211,6 @@ const isFilterSelected = (filters: ISqonGroupFilter, filterGroup: IFilterGroup, 
       return true;
     }
   }
-
   return false;
 };
 
