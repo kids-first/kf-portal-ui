@@ -6,6 +6,7 @@ import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design
 import VariantSummaryContainer from './VariantSummaryContainer';
 
 import styles from './variant.module.scss';
+import { termToSqon, wrappedSqon } from 'common/sqonUtils';
 
 type OwnProps = {
   variantId: string;
@@ -15,6 +16,9 @@ const { TabPane } = Tabs;
 const { Title } = Typography;
 
 const VariantEntity = (props: OwnProps) => {
+  const termSqon = termToSqon({ field: 'hash', value: `${props.variantId}` });
+  const sqon = wrappedSqon([termSqon]);
+
   const filters = {
     op: 'and',
     content: [
@@ -28,7 +32,11 @@ const VariantEntity = (props: OwnProps) => {
     ],
   };
 
-  let variantResult = useGetVariantEntityPageData({ sqon: filters });
+  console.log(sqon);
+  console.log(filters);
+
+  const variantResult = useGetVariantEntityPageData({ sqon: sqon });
+
   return (
     <Layout className={styles.layout}>
       <div className={styles.headerContainer}>
