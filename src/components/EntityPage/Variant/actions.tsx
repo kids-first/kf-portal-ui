@@ -9,6 +9,6 @@ export const useGetVariantEntityPageData = (variables: any): VariantEntityResult
 
   return {
     loading,
-    data: result?.variants || null,
+    data: result?.variants,
   };
 };

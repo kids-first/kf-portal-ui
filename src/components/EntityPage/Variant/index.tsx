@@ -19,22 +19,6 @@ const VariantEntity = (props: OwnProps) => {
   const termSqon = termToSqon({ field: 'hash', value: `${props.variantId}` });
   const sqon = wrappedSqon([termSqon]);
 
-  const filters = {
-    op: 'and',
-    content: [
-      {
-        op: 'in',
-        content: {
-          field: 'hash',
-          value: [`${props.variantId}`],
-        },
-      },
-    ],
-  };
-
-  console.log(sqon);
-  console.log(filters);
-
   const variantResult = useGetVariantEntityPageData({ sqon: sqon });
 
   return (
