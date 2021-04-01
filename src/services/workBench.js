@@ -3,20 +3,20 @@ import { initializeApi } from 'services/api';
 
 const api = initializeApi();
 
-export const startCluster = async () =>
-  await api({
+export const startCluster = () =>
+  api({
     method: 'POST',
     url: kfVariantClusterUrl,
   });
 
-export const stopCluster = async () =>
-  await api({
+export const stopCluster = () =>
+  api({
     method: 'DELETE',
     url: kfVariantClusterUrl,
   });
 
-export const getClusterStatus = async () =>
-  await api({
+export const getClusterStatus = () =>
+  api({
     method: 'GET',
     url: kfVariantClusterUrl,
   });
