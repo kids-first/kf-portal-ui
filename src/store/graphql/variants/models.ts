@@ -93,3 +93,34 @@ type VariantEntity = {
   locus: string;
   start: string;
 };
+
+export type VariantEntityResults = {
+  data: VariantPageData | null;
+  loading: boolean;
+};
+
+type VariantPageData = {
+  aggregations: AggregationResults;
+  hits: HitsResults;
+};
+
+type HitsResults = {
+  edges: [
+    {
+      node: VariantEntity;
+    },
+  ];
+};
+
+type AggregationResults = {
+  hgvsg: string;
+};
+
+type VariantEntity = {
+  alternate: string;
+  hash: string;
+  chromosome: string;
+  hgvsg: string;
+  locus: string;
+  start: string;
+};
