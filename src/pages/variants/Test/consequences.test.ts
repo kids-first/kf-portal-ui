@@ -97,6 +97,64 @@ const mockConsequencesInterGenic: Consequence[] = [
   },
 ];
 
+const mockConsequences1InterGenicAnd1Symbol: Consequence[] = [
+  {
+    node: {
+      variant_class: 'insertion',
+      conservations: {},
+      consequences: ['intergenic_variant'],
+      // @ts-ignore
+      vep_impact: 'MODIFIER',
+      impact_score: 1,
+      canonical: false,
+      predictions: {},
+    },
+  },
+  {
+    node: {
+      symbol: 'TTTY1',
+      // @ts-ignore
+      vep_impact: 'MODIFIER',
+      consequences: ['intron_variant', 'non_coding_transcript_variant'],
+      aa_change: null,
+      impact_score: 1,
+    },
+  },
+];
+
+const mockConsequences1SymboleManyImpactsNoCanonical: Consequence[] = [
+  {
+    node: {
+      symbol: 'TTTY1',
+      // @ts-ignore
+      vep_impact: 'MODIFIER',
+      consequences: ['intron_variant', 'non_coding_transcript_variant'],
+      aa_change: null,
+      impact_score: null,
+    },
+  },
+  {
+    node: {
+      symbol: 'TTTY1',
+      // @ts-ignore
+      vep_impact: 'MODIFIER',
+      consequences: ['intron_variant', 'non_coding_transcript_variant'],
+      aa_change: null,
+      impact_score: 2,
+    },
+  },
+  {
+    node: {
+      symbol: 'TTTY1',
+      // @ts-ignore
+      vep_impact: 'MODIFIER',
+      consequences: ['intron_variant', 'non_coding_transcript_variant'],
+      aa_change: null,
+      impact_score: 1,
+    },
+  },
+];
+
 describe('Consequences', () => {
   it('should create, for a given symbol (gene), one line only for canonical transcript. ', () => {
     expect(generateConsequencesDataLines(mockConsequencesTranscript)).toEqual([
@@ -151,6 +209,47 @@ describe('Consequences', () => {
           impact_score: 1,
           canonical: false,
           predictions: {},
+        },
+      },
+    ]);
+  });
+
+  it('should generate one line of data for intergenic and one line for symbol', () => {
+    expect(generateConsequencesDataLines(mockConsequences1InterGenicAnd1Symbol)).toEqual([
+      {
+        node: {
+          variant_class: 'insertion',
+          conservations: {},
+          consequences: ['intergenic_variant'],
+          vep_impact: 'MODIFIER',
+          impact_score: 1,
+          canonical: false,
+          predictions: {},
+        },
+      },
+      {
+        node: {
+          symbol: 'TTTY1',
+          // @ts-ignore
+          vep_impact: 'MODIFIER',
+          consequences: ['intron_variant', 'non_coding_transcript_variant'],
+          aa_change: null,
+          impact_score: 1,
+        },
+      },
+    ]);
+  });
+
+  it('should generate one line of data for highest impact score (no canonical)', () => {
+    expect(generateConsequencesDataLines(mockConsequences1SymboleManyImpactsNoCanonical)).toEqual([
+      {
+        node: {
+          symbol: 'TTTY1',
+          // @ts-ignore
+          vep_impact: 'MODIFIER',
+          consequences: ['intron_variant', 'non_coding_transcript_variant'],
+          aa_change: null,
+          impact_score: 2,
         },
       },
     ]);

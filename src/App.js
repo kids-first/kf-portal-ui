@@ -52,7 +52,7 @@ const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, isLoadingUser, isJoining } = state;
+  const { loggedInUser, isLoadingUser, isJoining, egoGroups } = state;
 
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
@@ -142,6 +142,7 @@ const App = compose(
                   Component: VariantPage,
                   WrapperPage: FixedFooterPage,
                   loggedInUser,
+                  egoGroups,
                   ...props,
                 })
               }

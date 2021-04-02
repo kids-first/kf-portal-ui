@@ -23,7 +23,7 @@ import UserMenu from './UserMenu';
 
 import './Header.css';
 
-import { isPartOfGroup } from 'common/profile';
+import { isKfInvestigator } from 'common/profile';
 import { injectState } from 'freactal';
 
 const { Header } = Layout;
@@ -84,11 +84,11 @@ const NavigationToolBar = (props) => {
               {isFeatureEnabled('studiesPage') && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
-                  <ReadOutlined /> Studies
+                    <ReadOutlined /> Studies
                   </NavLink>
                 </li>
               )}
-              {isPartOfGroup('kf-investigator', egoGroups) && (
+              {isKfInvestigator(egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
                     <DatabaseOutlined /> Variant Workbench
