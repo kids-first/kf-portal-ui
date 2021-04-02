@@ -19,7 +19,7 @@ import { withHistory } from 'services/history';
 import { compose } from 'recompose';
 import { RouteComponentProps } from 'react-router-dom';
 import { generateKfIdsSqon } from 'store/sqonUtils';
-import ROUTES from '../../common/routes';
+import ROUTES from 'common/routes';
 
 const DEFAULT_PAGE_NUM = 1;
 

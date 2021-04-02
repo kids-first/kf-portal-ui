@@ -29,6 +29,7 @@ const generateSuggestionOptions = (searchText: string | undefined, suggestions: 
         suggestionId: suggestion.suggestion_id,
         featureType: suggestion.type,
         geneSymbol: suggestion.geneSymbol,
+        displayName,
       },
     };
   });

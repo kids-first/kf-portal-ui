@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Empty as AntdEmpty } from 'antd';
 import emptyVerticalSmall from 'assets/empty-vertical-small.svg';
 import emptyVerticalDefault from 'assets/empty-vertical-default.svg';
@@ -42,7 +42,7 @@ const generateDescriptionNode = (rawDescription: string | undefined, size: SIZE)
   </span>
 );
 
-const Empty: FunctionComponent<OwnProps> = ({
+const Empty: FC<OwnProps> = ({
   description,
   direction = Direction.VERTICAL,
   size = SIZE.DEFAULT,

@@ -22,6 +22,7 @@ import {
   stopCluster,
 } from 'store/actionCreators/workBench';
 import useInterval from 'hooks/useInterval';
+import IndeterminateProgress from 'components/UI/IndeterminateProgress';
 
 const POLLING_DELAY_IN_MS = 30000; //30[s]
 
@@ -73,7 +74,8 @@ const WorkBench: FC<Props> = (props) => {
   );
 
   useEffect(() => {
-    if (!error && status === ClusterUnverifiedStatus.unverified) {
+    const shouldCheckStatus = !error && status === ClusterUnverifiedStatus.unverified;
+    if (shouldCheckStatus) {
       onGetStatus();
     }
   }, [status, onGetStatus, error]);
@@ -95,14 +97,14 @@ const WorkBench: FC<Props> = (props) => {
                 checked={status === ClusterApiStatus.createComplete}
                 loading={isLoadingStatus}
                 size={'small'}
-                onChange={(switchIsOn: boolean) => {
-                  return switchIsOn ? onStartCluster() : onStopCluster();
-                }}
+                onChange={(switchIsOn: boolean) =>
+                  switchIsOn ? onStartCluster() : onStopCluster()
+                }
                 checkedChildren={isLoadingStatus ? '' : 'On'}
                 unCheckedChildren={isLoadingStatus ? '' : 'Off'}
               />
             )}
-            {showProgress(status) && <span>show progress todo</span>}
+            {showProgress(status) && <IndeterminateProgress />}
             {error && (
               <Alert
                 className={style.alert}
