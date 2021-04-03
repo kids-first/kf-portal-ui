@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const VARIANT_TABLE_QUERY = gql`
+export const SEARCH_VARIANT_TABLE_QUERY = gql`
   query($sqon: JSON, $pageSize: Int, $offset: Int) {
     variants {
       hits(filters: $sqon, first: $pageSize, offset: $offset) {
@@ -51,6 +51,85 @@ export const VARIANT_TABLE_QUERY = gql`
                 edges {
                   node {
                     symbol
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const TABLE_STUDIES_QUERY = gql`
+  query($sqon: JSON) {
+    variants {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            frequencies {
+              topmed {
+                ac
+                af
+                an
+                homozygotes
+                heterozygotes
+              }
+              one_thousand_genomes {
+                ac
+                af
+                an
+              }
+              gnomad_exomes_2_1 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              gnomad_genomes_2_1 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              gnomad_genomes_3_0 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              internal {
+                combined {
+                  homozygotes
+                  af
+                  an
+                  ac
+                }
+              }
+            }
+            studies {
+              hits {
+                edges {
+                  node {
+                    frequencies {
+                      gru {
+                        ac
+                        af
+                        an
+                        heterozygotes
+                        homozygotes
+                      }
+                      hmb {
+                        ac
+                        af
+                        an
+                        heterozygotes
+                        homozygotes
+                      }
+                    }
+                    participant_number
+                    study_id
                   }
                 }
               }

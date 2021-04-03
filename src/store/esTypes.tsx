@@ -10,3 +10,5 @@ export type Edge = {
     [index: string]: any;
   };
 };
+
+export type Edges = Edge[];

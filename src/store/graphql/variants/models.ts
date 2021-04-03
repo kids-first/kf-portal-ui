@@ -32,6 +32,11 @@ export type Frequencies = {
       ac: number;
     };
   };
+  topmed: { ac: number; af: number; an: number; homozygotes: number; heterozygotes: number };
+  one_thousand_genomes: { ac: number; af: number; an: number };
+  gnomad_exomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
+  gnomad_genomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
+  gnomad_genomes_3_0: { ac: number; af: number; an: number; homozygotes: number };
   [key: string]: any;
 };
 
@@ -61,37 +66,6 @@ export type SelectedSuggestion = {
   suggestionId: SuggestionId;
   geneSymbol: string | undefined;
   displayName: string;
-};
-
-export type VariantEntityResults = {
-  data: VariantPageData | null;
-  loading: boolean;
-};
-
-type VariantPageData = {
-  aggregations: AggregationResults;
-  hits: HitsResults;
-};
-
-type HitsResults = {
-  edges: [
-    {
-      node: VariantEntity;
-    },
-  ];
-};
-
-type AggregationResults = {
-  hgvsg: string;
-};
-
-type VariantEntity = {
-  alternate: string;
-  hash: string;
-  chromosome: string;
-  hgvsg: string;
-  locus: string;
-  start: string;
 };
 
 export type VariantEntityResults = {

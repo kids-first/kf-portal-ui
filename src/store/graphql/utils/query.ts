@@ -6,6 +6,7 @@ import {
   TypedDocumentNode,
   useQuery,
 } from '@apollo/client';
+import { Edge, Edges } from 'store/esTypes';
 
 export enum Hits {
   COLLECTION = 'hits.edges',
@@ -33,3 +34,9 @@ export const useLazyResultQuery = <TData = any, TVariables = OperationVariables>
 
   return { error, loading, result };
 };
+
+export const enhanceNodeWithIndexKey = (edges: Edges) =>
+  (edges || []).map((edge: Edge, index: number) => ({
+    ...edge.node,
+    key: `${index + 1}`,
+  }));

@@ -3,7 +3,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Button, Table, Tooltip } from 'antd';
 import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
-import { useVariantTableData } from 'store/graphql/variants/actions';
+import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import {
   ClinVar,
   Consequence,
@@ -153,7 +153,7 @@ const generateColumns = (props: Props) =>
 const VariantTable: FunctionComponent<Props> = (props) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
   const { selectedSuggestion } = props;
-  const { loading: loadingData, results: data } = useVariantTableData(
+  const { loading: loadingData, results: data } = useVariantSearchTableData(
     selectedSuggestion,
     currentPageNum,
   );
