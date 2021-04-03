@@ -1,9 +1,8 @@
-import { VARIANT_TABLE_QUERY } from './queries';
-import { useLazyResultQuery } from 'store/graphql/utils/query';
-import { Edge } from 'store/esTypes';
+import { SEARCH_VARIANT_TABLE_QUERY } from './queries';
+import { enhanceNodeWithIndexKey, useLazyResultQuery } from 'store/graphql/utils/query';
 import { GenomicFeatureType, SelectedSuggestion } from './models';
 
-const buildSqon = (selectedSuggestion: SelectedSuggestion) => {
+const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
   const { suggestionId, featureType, geneSymbol } = selectedSuggestion;
   const isGene = featureType === GenomicFeatureType.GENE;
   return isGene
@@ -33,23 +32,24 @@ const buildSqon = (selectedSuggestion: SelectedSuggestion) => {
         ],
       };
 };
+
 const PAGE_SIZE = 10;
 
 const computeOffSet = (pageNum: number) => PAGE_SIZE * (pageNum - 1);
 
-export const useVariantTableData = (selectedSuggestion: SelectedSuggestion, pageNum: number) => {
-  const { loading, result } = useLazyResultQuery<any>(VARIANT_TABLE_QUERY, {
+export const useVariantSearchTableData = (
+  selectedSuggestion: SelectedSuggestion,
+  pageNum: number,
+) => {
+  const { loading, result } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
     variables: {
-      sqon: buildSqon(selectedSuggestion),
+      sqon: buildSearchTableSqon(selectedSuggestion),
       pageSize: PAGE_SIZE,
       offset: computeOffSet(pageNum),
     },
   });
 
-  const nodes = (result?.variants?.hits?.edges || []).map((edge: Edge, index: number) => ({
-    ...edge.node,
-    key: `${index + 1}`,
-  }));
+  const nodes = enhanceNodeWithIndexKey(result?.variants?.hits?.edges);
 
   const total = result?.variants?.hits?.total || 0;
   return {

@@ -38,7 +38,6 @@ import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
 import 'index.css';
 import ForumBanner, { showForumBanner } from './ForumBanner';
-import VariantEntity from './components/EntityPage/Variant';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -47,7 +46,8 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
-const VariantPage = lazy(() => import('pages/variants'));
+const VariantSearchPage = lazy(() => import('pages/variantsSearchPage'));
+const VariantEntityPage = lazy(() => import('pages/variantEntity'));
 
 const App = compose(
   injectState,
@@ -140,7 +140,7 @@ const App = compose(
                 protectRoute({
                   api,
                   isLoadingUser,
-                  Component: VariantPage,
+                  Component: VariantSearchPage,
                   WrapperPage: FixedFooterPage,
                   loggedInUser,
                   egoGroups,
@@ -182,7 +182,7 @@ const App = compose(
               render={(props) =>
                 protectRoute({
                   isLoadingUser,
-                  Component: VariantEntity,
+                  Component: VariantEntityPage,
                   loggedInUser,
                   variantId: props.match.params.variantId,
                   ...props,

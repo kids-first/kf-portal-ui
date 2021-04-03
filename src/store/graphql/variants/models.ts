@@ -32,6 +32,11 @@ export type Frequencies = {
       ac: number;
     };
   };
+  topmed: { ac: number; af: number; an: number; homozygotes: number; heterozygotes: number };
+  one_thousand_genomes: { ac: number; af: number; an: number };
+  gnomad_exomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
+  gnomad_genomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
+  gnomad_genomes_3_0: { ac: number; af: number; an: number; homozygotes: number };
   [key: string]: any;
 };
 
