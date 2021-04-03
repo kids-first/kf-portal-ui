@@ -6,6 +6,7 @@ import { SaveSetState } from './saveSetTypes';
 import { UserState } from './userTypes';
 import { ModalStateType } from './reducers/modal';
 import { GenomicSuggesterState } from './genomicSuggesterTypes';
+import { WorkBenchState } from './WorkBenchTypes';
 
 // transition from js to tsx => When possible add correct state for each sub state.
 export interface RootState {
@@ -20,4 +21,5 @@ export interface RootState {
   saveSets: SaveSetState;
   modal: ModalStateType;
   genomicSuggester: GenomicSuggesterState;
+  workBench: WorkBenchState;
 }

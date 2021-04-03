@@ -5,6 +5,8 @@
 // Fields that will be displayed in the "Clinical Filters" section
 export const CLINICAL_FILTERS = [
   'participants__study__short_name',
+  'participants__study__domain',
+  'participants__study__program',
   'participants__diagnoses__diagnosis_category',
   'participants__diagnoses__source_text_diagnosis',
   'participants__phenotype__hpo_phenotype_observed_text',
@@ -20,6 +22,7 @@ export const CLINICAL_FILTERS = [
 export const FILE_FILTERS = [
   'sequencing_experiments__experiment_strategy',
   'is_harmonized',
+  'data_category',
   'data_type',
   'file_format',
   'participants__family__family_compositions__available_data_types',
@@ -33,11 +36,11 @@ export const aggsConfig = (data, graphqlField) => {
   const gqlAggregationFields = types.find(({ name }) => name === `${graphqlField}Aggregations`)
     .fields;
 
-  const typeAggsConfig = type =>
-    type.map(fieldName => ({
+  const typeAggsConfig = (types) =>
+    types.map((fieldName) => ({
       field: fieldName,
       show: true,
-      type: gqlAggregationFields.find(fileAggField => fieldName === fileAggField.name).type.name,
+      type: gqlAggregationFields.find((fileAggField) => fieldName === fileAggField.name).type.name,
     }));
 
   return {

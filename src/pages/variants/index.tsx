@@ -1,15 +1,20 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import style from './Variants.module.scss';
 import SearchView from './SearchView';
 import PageContent from 'components/Layout/PageContent';
-import Stats from './Stats';
+import WorkBench from './WorkBench';
+import { isKfInvestigator } from 'common/profile';
+import { EgoGroups } from 'store/userTypes';
 
-const VariantPage: FunctionComponent = () => (
+type OwnProps = {
+  egoGroups: EgoGroups;
+};
+
+const VariantPage: FC<OwnProps> = ({ egoGroups }) => (
   <PageContent title={'The Kids First Variant Database'}>
     <StackLayout className={style.statsAndZepplinContainer} center flexContent fitContent>
-      <Stats />
-      {/* in construction */}
+      {isKfInvestigator(egoGroups) && <WorkBench />}
     </StackLayout>
     <SearchView />
   </PageContent>

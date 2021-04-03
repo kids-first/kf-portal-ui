@@ -33,11 +33,9 @@ const ConsequencesCell: FC<OwnProps> = ({ consequences }) => {
         return (
           <StackLayout center key={index}>
             <Bullet colorClassName={pickImpactColorClassName(node.vep_impact)} />
-            {(node.consequences || []).map((c: string, index: number) => (
-              <span key={index} className={style.detail}>
-                {c}
-              </span>
-            ))}
+            <span key={index} className={style.detail}>
+              {node.consequences[0]}
+            </span>
             {node.symbol && (
               <Symbol
                 key={toKebabCase(node.symbol)}

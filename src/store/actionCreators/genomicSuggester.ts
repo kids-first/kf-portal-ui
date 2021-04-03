@@ -13,12 +13,14 @@ export const selectChosenSuggestion = ({
   suggestionId,
   featureType,
   geneSymbol,
+  displayName,
 }: SelectedSuggestion): GenomicSuggesterTypes => ({
   type: GenomicActionTypes.SELECT_SUGGESTION,
   selectedSuggestion: {
     featureType,
     suggestionId,
     geneSymbol,
+    displayName,
   },
 });
 

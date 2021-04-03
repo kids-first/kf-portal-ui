@@ -9,6 +9,7 @@ import {
   selectIsLoading,
   selectSuggestions,
   selectSearchTextSuggestion,
+  selectChosenSuggestion as selectorChosenSuggestion,
 } from 'store/selectors/genomicSuggester';
 import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
 import {
@@ -32,6 +33,7 @@ const mapState = (state: RootState) => ({
   suggestions: selectSuggestions(state),
   error: selectError(state),
   suggestionSearchText: selectSearchTextSuggestion(state),
+  selectedSuggestion: selectorChosenSuggestion(state),
 });
 
 const mapDispatch = (dispatch: DispatchGenomicSuggester) => ({
@@ -57,6 +59,7 @@ const Suggester: FunctionComponent<Props> = (props) => {
     onSelectSuggestion,
     onClearSuggestions,
     suggestionSearchText,
+    selectedSuggestion,
   } = props;
 
   const handleSearch = (userRawInput: string) => {
@@ -78,9 +81,12 @@ const Suggester: FunctionComponent<Props> = (props) => {
   }, [error, reInitializeState]);
 
   return (
-    <Form name={'genomicFeatureSuggester'}>
+    <Form
+      name={'genomicFeatureSuggester'}
+      initialValues={{ variantSearch: selectedSuggestion?.displayName || '' }}
+    >
       <Form.Item
-        name="variant_search"
+        name="variantSearch"
         help="Search examples: 11-2928377-A-G, rs282772, BRAF, BRAF V292G"
       >
         <AutoComplete
@@ -99,6 +105,7 @@ const Suggester: FunctionComponent<Props> = (props) => {
               suggestionId: option.meta.suggestionId,
               featureType: option.meta.featureType,
               geneSymbol: option.meta.geneSymbol,
+              displayName: option.meta.displayName,
             });
           }}
           disabled={!!error}

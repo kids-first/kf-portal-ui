@@ -54,4 +54,6 @@ export type UserState = {
   errorSubscribing: Error | null;
 };
 
+export type EgoGroups = string[] | undefined | null;
+
 export type DispatchUser = ThunkDispatch<RootState, null, any>;

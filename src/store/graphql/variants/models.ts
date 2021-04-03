@@ -11,7 +11,8 @@ export type Consequence = {
     consequences: string[];
     vep_impact: Impact;
     canonical?: boolean;
-    aa_change: string | undefined;
+    aa_change: string | undefined | null;
+    impact_score: number | null;
     [key: string]: any;
   };
   [key: string]: any;
@@ -59,4 +60,5 @@ export type SelectedSuggestion = {
   featureType: GenomicFeatureType;
   suggestionId: SuggestionId;
   geneSymbol: string | undefined;
+  displayName: string;
 };
