@@ -40,3 +40,16 @@ export const enhanceNodeWithIndexKey = (edges: Edges) =>
     ...edge.node,
     key: `${index + 1}`,
   }));
+
+export const buildVariantIdSqon = (id: string) => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {
+        field: 'hash',
+        value: id,
+      },
+    },
+  ],
+});

@@ -177,7 +177,7 @@ const App = compose(
               }
             />
             <Route
-              path={`${ROUTES.variant}/:variantId`}
+              path={`${ROUTES.variant}/:hgvsg/:variantId`}
               exact
               render={(props) =>
                 protectRoute({
@@ -185,6 +185,7 @@ const App = compose(
                   Component: VariantEntityPage,
                   loggedInUser,
                   variantId: props.match.params.variantId,
+                  hgvsg: props.match.params.hgvsg,
                   ...props,
                 })
               }
