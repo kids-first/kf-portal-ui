@@ -161,11 +161,6 @@ const fromSetIdToSetSqon = (setId) => ({
   ],
 });
 
-export const wrappedSqon = (sqons) => ({
-  op: 'and',
-  content: sqons,
-});
-
 export const termToSqon = ({ field, value }) => ({
   op: 'in',
   content: {
