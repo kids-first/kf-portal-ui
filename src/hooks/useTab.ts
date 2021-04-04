@@ -10,8 +10,8 @@ function useTab(tabKeys: string[], defaultTabKey: string): [string, (k: string) 
   const tabKey = tabKeys.includes(hashValue) ? hashValue : defaultTabKey;
 
   function setTabKey(key: string) {
-    const mustUpdateSearchParams = key !== hashValue;
-    if (mustUpdateSearchParams) {
+    const mustUpdateHashViewValue = key !== hashValue;
+    if (mustUpdateHashViewValue) {
       history.push({
         ...location,
         hash: stringify({ ...parsedUrlHash, [HASH_KEY]: key }),
