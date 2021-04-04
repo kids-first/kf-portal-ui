@@ -3,10 +3,12 @@ import { Tabs, Tag, Typography } from 'antd';
 import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
 
 import styles from './VariantEntity.module.scss';
-import SummaryTab from './SummaryTab';
+import TabSummary from './TabSummary';
 import PageContent from 'components/Layout/PageContent';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import FrequenciesTab from './FrequenciesTab';
+import TabFrequencies from './TabFrequencies';
+import TabClinical from './TabClinical';
+import useTab from 'hooks/useTab';
 
 const { TabPane } = Tabs;
 
@@ -14,24 +16,34 @@ const { Title } = Typography;
 
 type OwnProps = {
   variantId: string;
+  hgvsg: string;
 };
 
-//TODO query url
+const mTabKeys = {
+  clinical: 'clinical',
+  frequencies: 'frequencies',
+  summary: 'summary',
+};
+
+const tabKeyValues = Object.keys(mTabKeys);
 
 const VariantEntity = (props: OwnProps) => {
-  const { variantId } = props;
+  const { variantId, hgvsg } = props;
+
+  const [tabKey, setTabKey] = useTab(tabKeyValues, mTabKeys.summary);
+
   return (
     <PageContent
       title={
         <>
           <StackLayout horizontal>
-            <Title level={3}>{variantId}</Title>
+            <Title level={3}>{hgvsg}</Title>
             <Tag className={styles.variantTag}>Germline</Tag>
           </StackLayout>
         </>
       }
     >
-      <Tabs defaultActiveKey="2">
+      <Tabs activeKey={tabKey} onChange={setTabKey}>
         <TabPane
           tab={
             <span>
@@ -39,9 +51,9 @@ const VariantEntity = (props: OwnProps) => {
               Summary
             </span>
           }
-          key="1"
+          key={mTabKeys.summary}
         >
-          <SummaryTab />
+          <TabSummary variantId={variantId} />
         </TabPane>
         <TabPane
           tab={
@@ -50,9 +62,9 @@ const VariantEntity = (props: OwnProps) => {
               Frequencies
             </span>
           }
-          key="2"
+          key={mTabKeys.frequencies}
         >
-          <FrequenciesTab variantId={variantId} />
+          <TabFrequencies variantId={variantId} />
         </TabPane>
         <TabPane
           tab={
@@ -61,9 +73,9 @@ const VariantEntity = (props: OwnProps) => {
               Clinical Associations
             </span>
           }
-          key="3"
+          key={mTabKeys.clinical}
         >
-          Clinical Associations content
+          <TabClinical variantId={variantId} />
         </TabPane>
       </Tabs>
     </PageContent>

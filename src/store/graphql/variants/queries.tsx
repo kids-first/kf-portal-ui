@@ -62,7 +62,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
   }
 `;
 
-export const TABLE_STUDIES_QUERY = gql`
+export const TAB_FREQUENCIES_QUERY = gql`
   query($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
@@ -134,6 +134,34 @@ export const TABLE_STUDIES_QUERY = gql`
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const TAB_SUMMARY_QUERY = gql`
+  query($sqon: JSON) {
+    variants {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            hash
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const TAB_CLINICAL_QUERY = gql`
+  query($sqon: JSON) {
+    variants {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            hash
           }
         }
       }

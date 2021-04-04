@@ -1,5 +1,9 @@
 import { SEARCH_VARIANT_TABLE_QUERY } from './queries';
-import { enhanceNodeWithIndexKey, useLazyResultQuery } from 'store/graphql/utils/query';
+import {
+  buildVariantIdSqon,
+  enhanceNodeWithIndexKey,
+  useLazyResultQuery,
+} from 'store/graphql/utils/query';
 import { GenomicFeatureType, SelectedSuggestion } from './models';
 
 const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
@@ -18,19 +22,7 @@ const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
           },
         ],
       }
-    : {
-        //variant
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: 'hash',
-              value: suggestionId,
-            },
-          },
-        ],
-      };
+    : buildVariantIdSqon(suggestionId);
 };
 
 const PAGE_SIZE = 10;
