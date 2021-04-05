@@ -29,9 +29,9 @@ const keyEnhance = (key: string) => {
 const keyEnhanceBooleanOnly = (key: string) => {
   switch (key) {
     case '1':
-      return 'True';
+      return 'true';
     case '0':
-      return 'False';
+      return 'false';
     default:
       return key;
   }

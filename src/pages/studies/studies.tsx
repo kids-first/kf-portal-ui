@@ -15,7 +15,7 @@ let previousMappingData: any | null = null;
 
 const Studies: FC = () => {
   const { filters } = useFilters();
-  let studiesResults = useGetStudiesPageData({ sqon: filters, first: 10, offset: 0});
+  let studiesResults = useGetStudiesPageData({ sqon: filters, first: 10, offset: 0 });
   let studiesMappingResults = useGetExtendedMappings('studies');
 
   if (studiesResults.loading || studiesMappingResults.loadingMapping) {
