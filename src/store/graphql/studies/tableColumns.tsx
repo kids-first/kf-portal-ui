@@ -3,8 +3,8 @@ import { Button } from 'antd';
 import React from 'react';
 import { Sqon } from '../../sqon';
 import { addToSqons } from 'common/sqonUtils';
+import './tableColumn.scss';
 
-//FIXME fix class names
 export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => void) =>
   [
     {
@@ -23,8 +23,8 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
             toTop?.scrollTo(0, 0);
           }}
         >
-          <Button className={'count-button'} type="text">
-            <div className={'save-sets-participants-count'}>{code}</div>
+          <Button className={'story-code-button1'} type="link">
+            <div className={'story-table-code'}>{code}</div>
           </Button>
         </Link>
       ),
