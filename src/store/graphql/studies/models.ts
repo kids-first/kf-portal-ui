@@ -42,10 +42,12 @@ export const studiesColumns = [
   {
     title: 'Code',
     name: 'code',
+    width: 130,
   },
   {
     title: 'Name',
     name: 'name',
+    width: 400,
   },
   {
     title: 'Program',
