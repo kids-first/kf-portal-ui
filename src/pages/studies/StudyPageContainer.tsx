@@ -14,7 +14,7 @@ import StudyIcon from 'icons/StudyIconSvg';
 
 import styles from './StudiesPageContainer.module.scss';
 
-type StudyPageContainerProps = StudiesPageContainerData
+type StudyPageContainerProps = StudiesPageContainerData;
 
 const StudyPageContainer = ({ studiesResults, filters }: StudyPageContainerProps) => {
   const total = studiesResults?.data?.hits?.total || 0;
@@ -23,7 +23,7 @@ const StudyPageContainer = ({ studiesResults, filters }: StudyPageContainerProps
     <StackLayout vertical>
       <QueryBuilder
         className="file-repo__query-builder"
-        currentQuery={filters}
+        currentQuery={filters.content.length > 0 ? filters : {}}
         initialState={getQueryBuilderCache('study-repo')}
         loading={false}
         onChangeQuery={(_, query) => updateQueryParam(history, 'filters', query)}
