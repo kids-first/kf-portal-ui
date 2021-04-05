@@ -2,12 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import React from 'react';
 import { Sqon } from '../../sqon';
-import { termToSqon } from 'common/sqonUtils';
-
-const addToSqons = (value: string, sqons: Sqon[]): Sqon[] => [
-  ...sqons,
-  { content: [termToSqon({ field: 'study.code', value: value })], op: 'and' },
-];
+import { addToSqons } from 'common/sqonUtils';
 
 //FIXME fix class names
 export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => void) =>
@@ -23,8 +18,7 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
           to={'/explore'}
           href={'#top'}
           onClick={() => {
-            // console.log(record.code, 'RRR');
-            onLinkClick(addToSqons(code, sqons));
+            onLinkClick(addToSqons({ field: 'study.code', value: code, sqons }));
             const toTop = document.getElementById('main-page-container');
             toTop?.scrollTo(0, 0);
           }}

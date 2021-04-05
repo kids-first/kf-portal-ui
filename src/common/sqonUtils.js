@@ -161,13 +161,24 @@ const fromSetIdToSetSqon = (setId) => ({
   ],
 });
 
-export const termToSqon = ({ field, value }) => ({
+const termToSqon = ({ field, value }) => ({
   op: 'in',
   content: {
     field: field,
     value: [value],
   },
 });
+
+export const addToSqons = ({ field, value, sqons }) => {
+  const currentSqon = { content: [termToSqon({ field: field, value: value })], op: 'and' };
+  if (sqons.length > 0 && !isEmptySqon(sqons[sqons.length - 1])) {
+    return [...sqons, currentSqon];
+  } else {
+    const newSqons = [...sqons];
+    newSqons.pop();
+    return [...newSqons, currentSqon];
+  }
+};
 
 export const createNewQueryFromSetId = (setId, querySqons) => {
   const setSqon = fromSetIdToSetSqon(setId);
