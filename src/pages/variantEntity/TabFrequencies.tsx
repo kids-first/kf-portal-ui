@@ -26,19 +26,17 @@ const columns = [
     dataIndex: 'frequencies',
     render: () => 'todo',
   },
-].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
+];
 
 const TabFrequencies = ({ variantId }: OwnProps) => {
-  const { loading, data } = useTabFrequenciesData(variantId);
-
-  const { studies } = data;
+  const { loading } = useTabFrequenciesData(variantId);
 
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Table title={() => 'title'} bordered dataSource={studies} columns={columns} />
-          <Table title={() => 'title'} bordered dataSource={studies} columns={columns} />
+          <Table title={() => 'title'} bordered dataSource={[]} columns={columns} />
+          <Table title={() => 'title'} bordered dataSource={[]} columns={columns} />
         </Space>
       </StackLayout>
     </Spin>
