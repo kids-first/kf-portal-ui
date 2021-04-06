@@ -161,7 +161,7 @@ const fromSetIdToSetSqon = (setId) => ({
   ],
 });
 
-const termToSqon = ({ field, value }) => ({
+export const termToSqon = ({ field, value }) => ({
   op: 'in',
   content: {
     field: field,

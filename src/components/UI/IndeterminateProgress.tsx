@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { Progress } from 'antd';
 import useInterval from 'hooks/useInterval';
 
@@ -14,13 +14,10 @@ const INCREASE_UNIT = 10;
 const computePercentage = (count: number) => {
   const percent = (count * INCREASE_UNIT) % 100;
   const isBoundary = percent === 0 || percent >= MAX_PERCENTAGE_TO_DISPLAY;
-  if (isBoundary) {
-    return MIN_PERCENT;
-  }
-  return percent;
+  return isBoundary ? MIN_PERCENT : percent;
 };
 
-const IndeterminateProgress: FC<OwnProps> = ({ delay }) => {
+const IndeterminateProgress = ({ delay }: OwnProps) => {
   const [count, setCount] = useState(0);
   useInterval(
     () => {

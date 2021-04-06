@@ -46,7 +46,8 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
-const VariantPage = lazy(() => import('pages/variants'));
+const VariantSearchPage = lazy(() => import('pages/variantsSearchPage'));
+const VariantEntityPage = lazy(() => import('pages/variantEntity'));
 
 const App = compose(
   injectState,
@@ -139,7 +140,7 @@ const App = compose(
                 protectRoute({
                   api,
                   isLoadingUser,
-                  Component: VariantPage,
+                  Component: VariantSearchPage,
                   WrapperPage: FixedFooterPage,
                   loggedInUser,
                   egoGroups,
@@ -171,6 +172,20 @@ const App = compose(
                   Component: FileEntity,
                   loggedInUser,
                   fileId: props.match.params.fileId,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.variant}/:hgvsg/:variantId`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: VariantEntityPage,
+                  loggedInUser,
+                  variantId: props.match.params.variantId,
+                  hgvsg: props.match.params.hgvsg,
                   ...props,
                 })
               }
