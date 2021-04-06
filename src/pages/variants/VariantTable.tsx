@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Table, Tooltip } from 'antd';
 import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
@@ -10,7 +10,6 @@ import {
   Frequencies,
   SelectedSuggestion,
 } from 'store/graphql/variants/models';
-import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect, ConnectedProps } from 'react-redux';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
 import { Sqon } from 'store/sqon';
@@ -18,18 +17,27 @@ import { withHistory } from 'services/history';
 // @ts-ignore
 import { compose } from 'recompose';
 import { RouteComponentProps } from 'react-router-dom';
-import { generateKfIdsSqon } from 'store/sqonUtils';
 import ROUTES from 'common/routes';
+import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
+import { RootState } from 'store/rootState';
+import { addToSqons } from 'common/sqonUtils';
 
 const DEFAULT_PAGE_NUM = 1;
+type VariantTableState = {
+  currentSqons: Sqon[];
+};
 
 const isEven = (n: number) => n % 2 === 0;
 
 const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
-  setSqons: (sqons: Sqon | Sqon[]) => dispatch(setSqons(sqons)),
+  onClickParticipantLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
 });
 
-const connector = connect(null, mapDispatch);
+const mapState = (state: RootState): VariantTableState => ({
+  currentSqons: state.currentVirtualStudy.sqons,
+});
+
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -116,7 +124,13 @@ const generateColumns = (props: Props) =>
             onClick={
               size
                 ? () => {
-                    props.setSqons([generateKfIdsSqon(participantIds)]);
+                    props.onClickParticipantLink(
+                      addToSqons({
+                        field: 'kf_id',
+                        value: participantIds,
+                        sqons: props.currentSqons,
+                      }),
+                    );
                     props.history.push(ROUTES.cohortBuilder);
                   }
                 : undefined
