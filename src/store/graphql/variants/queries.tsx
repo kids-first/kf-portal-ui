@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_VARIANT_TABLE_QUERY = gql`
-  query($sqon: JSON, $pageSize: Int, $offset: Int) {
+  query GetSearchedVariant($sqon: JSON, $pageSize: Int, $offset: Int) {
     variants {
       hits(filters: $sqon, first: $pageSize, offset: $offset) {
         total
@@ -63,7 +63,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
 `;
 
 export const TAB_FREQUENCIES_QUERY = gql`
-  query($sqon: JSON) {
+  query GetFrequenciesTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
         edges {
@@ -142,7 +142,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
 `;
 
 export const TAB_SUMMARY_QUERY = gql`
-  query($sqon: JSON) {
+  query GetSummaryTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
         edges {
@@ -156,7 +156,7 @@ export const TAB_SUMMARY_QUERY = gql`
 `;
 
 export const TAB_CLINICAL_QUERY = gql`
-  query($sqon: JSON) {
+  query GetClinicalTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
         edges {

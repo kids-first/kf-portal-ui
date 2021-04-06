@@ -18,28 +18,30 @@ export type Consequence = {
   [key: string]: any;
 };
 
+type ClinVarData = string[] | undefined;
+
 export type ClinVar = {
   clinvar_id: string | undefined;
-  inheritance: string[] | undefined;
-  conditions: string[] | undefined;
-  clin_sig: string[] | undefined;
-  interpretations: string[] | undefined;
+  inheritance: ClinVarData;
+  conditions: ClinVarData;
+  clin_sig: ClinVarData;
+  interpretations: ClinVarData;
 };
+
+type FreqAll = { ac: number; af: number; an: number };
+type Freqgnomad = FreqAll & { homozygotes: number };
+type FreqCombined = FreqAll & { homozygotes: number };
+type FreqTopmed = FreqAll & { homozygotes: number };
 
 export type Frequencies = {
   internal: {
-    combined: {
-      homozygotes: number;
-      af: number;
-      an: number;
-      ac: number;
-    };
+    combined: FreqCombined;
   };
-  topmed: { ac: number; af: number; an: number; homozygotes: number; heterozygotes: number };
-  one_thousand_genomes: { ac: number; af: number; an: number };
-  gnomad_exomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
-  gnomad_genomes_2_1: { ac: number; af: number; an: number; homozygotes: number };
-  gnomad_genomes_3_0: { ac: number; af: number; an: number; homozygotes: number };
+  topmed: FreqTopmed;
+  one_thousand_genomes: FreqAll;
+  gnomad_exomes_2_1: Freqgnomad;
+  gnomad_genomes_2_1: Freqgnomad;
+  gnomad_genomes_3_0: Freqgnomad;
   [key: string]: any;
 };
 
