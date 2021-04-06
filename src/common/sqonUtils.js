@@ -171,13 +171,16 @@ const termToSqon = ({ field, value }) => ({
 
 export const addToSqons = ({ field, value, sqons }) => {
   const currentSqon = { content: [termToSqon({ field: field, value: value })], op: 'and' };
-  if (sqons.length > 0 && !isEmptySqon(sqons[sqons.length - 1])) {
-    return [...sqons, currentSqon];
-  } else {
-    const newSqons = [...sqons];
-    newSqons.pop();
-    return [...newSqons, currentSqon];
+
+  if (sqons.length === 0) {
+    return [currentSqon];
   }
+
+  if (isEmptySqon(sqons[sqons.length - 1])) {
+    return [...sqons.slice(0, sqons.length - 1), currentSqon];
+  }
+
+  return [...sqons, currentSqon];
 };
 
 export const createNewQueryFromSetId = (setId, querySqons) => {

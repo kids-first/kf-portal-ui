@@ -14,7 +14,6 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
       // eslint-disable-next-line react/display-name
       render: (code: string) => (
         <Link
-          className={'classNames'}
           to={'/explore'}
           href={'#top'}
           onClick={() => {
@@ -23,7 +22,7 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
             toTop?.scrollTo(0, 0);
           }}
         >
-          <Button className={'story-code-button1'} type="link">
+          <Button type="link">
             <div className={'story-table-code'}>{code}</div>
           </Button>
         </Link>
