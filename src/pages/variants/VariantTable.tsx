@@ -19,12 +19,12 @@ import { compose } from 'recompose';
 import { RouteComponentProps } from 'react-router-dom';
 import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
-import { RootState } from '../../store/rootState';
-import { addToSqons } from '../../common/sqonUtils';
+import { RootState } from 'store/rootState';
+import { addToSqons } from 'common/sqonUtils';
 
 const DEFAULT_PAGE_NUM = 1;
 type VariantTableState = {
-  currentVirtualStudy: Sqon[];
+  currentSqons: Sqon[];
 };
 
 const isEven = (n: number) => n % 2 === 0;
@@ -34,7 +34,7 @@ const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
 });
 
 const mapState = (state: RootState): VariantTableState => ({
-  currentVirtualStudy: state.currentVirtualStudy.sqons,
+  currentSqons: state.currentVirtualStudy.sqons,
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -128,7 +128,7 @@ const generateColumns = (props: Props) =>
                       addToSqons({
                         field: 'kf_id',
                         value: participantIds,
-                        sqons: props.currentVirtualStudy,
+                        sqons: props.currentSqons,
                       }),
                     );
                     props.history.push(ROUTES.cohortBuilder);

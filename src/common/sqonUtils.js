@@ -165,7 +165,7 @@ const termToSqon = ({ field, value }) => ({
   op: 'in',
   content: {
     field: field,
-    value: Array.isArray(value) ? value : [value],
+    value: [value].flat(),
   },
 });
 
