@@ -161,7 +161,72 @@ export const TAB_CLINICAL_QUERY = gql`
       hits(filters: $sqon) {
         edges {
           node {
-            hash
+            clinvar {
+              clin_sig
+              clinvar_id
+              conditions
+              inheritance
+            }
+            genes {
+              hits {
+                edges {
+                  node {
+                    symbol
+                    omim_gene_id
+                    omim {
+                      hits {
+                        edges {
+                          node {
+                            omim_id
+                            name
+                            inheritance
+                          }
+                        }
+                      }
+                    }
+                    orphanet {
+                      hits {
+                        edges {
+                          node {
+                            panel
+                            inheritance
+                            disorder_id
+                          }
+                        }
+                      }
+                    }
+                    cosmic {
+                      hits {
+                        edges {
+                          node {
+                            tumour_types_germline
+                          }
+                        }
+                      }
+                    }
+                    hpo {
+                      hits {
+                        edges {
+                          node {
+                            hpo_term_label
+                            hpo_term_id
+                          }
+                        }
+                      }
+                    }
+                    ddd {
+                      hits {
+                        edges {
+                          node {
+                            disease_name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
