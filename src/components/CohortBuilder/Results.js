@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { compose } from 'recompose';
@@ -60,12 +60,7 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({
-  activeSqonIndex,
-  sqon = { op: 'and', content: [] },
-  api,
-  state,
-}) => {
+const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => {
   const [tabKey, setTabKey] = useTab([SUMMARY, TABLE], SUMMARY);
   return (
     <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
@@ -96,7 +91,7 @@ const Results = ({
         );
 
         return (
-          <Fragment>
+          <>
             <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
               <Tabs
                 tabBarExtraContent={toolbar}
@@ -143,7 +138,7 @@ const Results = ({
                 </TabPane>
               </Tabs>
             </div>
-          </Fragment>
+          </>
         );
       }}
     </QueriesResolver>

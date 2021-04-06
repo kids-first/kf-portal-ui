@@ -1,3 +1,4 @@
+//FIXME: refactor not to rely on history.
 import history from 'services/history';
 import { parse, stringify } from 'query-string';
 

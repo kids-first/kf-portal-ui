@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Space, Table, Spin } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
@@ -28,7 +28,7 @@ const columns = [
   },
 ].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
 
-const TabFrequencies: FC<OwnProps> = ({ variantId }) => {
+const TabFrequencies = ({ variantId }: OwnProps) => {
   const { loading, data } = useTabFrequenciesData(variantId);
 
   const { studies } = data;

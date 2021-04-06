@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Empty as AntdEmpty } from 'antd';
 import emptyVerticalSmall from 'assets/empty-vertical-small.svg';
 import emptyVerticalDefault from 'assets/empty-vertical-default.svg';
@@ -20,7 +20,7 @@ type OwnProps = {
   description?: string;
   direction?: Direction;
   size?: SIZE;
-  image?: string;
+  image?: string | null;
 };
 
 export const mapping = {
@@ -42,12 +42,12 @@ const generateDescriptionNode = (rawDescription: string | undefined, size: SIZE)
   </span>
 );
 
-const Empty: FC<OwnProps> = ({
+const Empty = ({
   description,
   direction = Direction.VERTICAL,
   size = SIZE.DEFAULT,
   image = null,
-}) => (
+}: OwnProps) => (
   <AntdEmpty
     description={generateDescriptionNode(description, size)}
     image={image || computeImage(size, direction)}
