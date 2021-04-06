@@ -20,7 +20,10 @@ export type Consequence = {
 
 export type ClinVar = {
   clinvar_id: string | undefined;
-  clin_sig: string | undefined;
+  inheritance: string[] | undefined;
+  conditions: string[] | undefined;
+  clin_sig: string[] | undefined;
+  interpretations: string[] | undefined;
 };
 
 export type Frequencies = {
@@ -97,4 +100,78 @@ type VariantEntity = {
   hgvsg: string;
   locus: string;
   start: string;
+};
+
+export type Ddd = {
+  node: {
+    disease_name: string;
+  };
+};
+
+export type Orphanet = {
+  node: {
+    panel: string;
+    inheritance: string[] | null | undefined;
+    disorder_id: number;
+  };
+};
+
+export type Omim = {
+  node: {
+    omim_id: string;
+    name: string;
+    inheritance: string[] | undefined | null;
+  };
+};
+
+export type Hpo = {
+  node: {
+    hpo_term_label: string;
+    hpo_term_id: string;
+  };
+};
+
+export type Cosmic = {
+  node: {
+    tumour_types_germline: string[];
+  };
+};
+
+export type Gene = {
+  node: {
+    symbol: string;
+    omim_gene_id: string;
+    orphanet: {
+      hits: {
+        edges: Orphanet[] | undefined | null;
+      };
+    };
+    omim: {
+      hits: {
+        edges: Omim[] | undefined | null;
+      };
+    };
+    hpo: {
+      hits: {
+        edges: Hpo[] | undefined | null;
+      };
+    };
+    ddd: {
+      hits: {
+        edges: Ddd[] | undefined | null;
+      };
+    };
+    cosmic: {
+      hits: {
+        edges: Cosmic[];
+      };
+    };
+    [key: string]: any;
+  };
+};
+
+export type HitsEdges = {
+  hits: {
+    edges: any[] | null | undefined;
+  };
 };

@@ -36,5 +36,5 @@ export const useTabClinicalData = (variantId: string) => {
       sqon: buildVariantIdSqon(variantId),
     },
   });
-  return { loading, data: result, error };
+  return { loading, data: result?.variants?.hits?.edges[0]?.node || {}, error };
 };
