@@ -48,8 +48,3 @@ export const shapeFileTypeSqonFiltersForParticipantType = (fileCentricSqon: Sqon
     [],
   );
 };
-
-export const generateKfIdsSqon = (ids: string[]): Sqon => ({
-  op: 'and',
-  content: [{ op: 'in', content: { field: 'kf_id', value: [...ids] } }],
-});
