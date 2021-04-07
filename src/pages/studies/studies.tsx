@@ -12,12 +12,17 @@ import styles from './studies.module.scss';
 
 let previousData: any | null = null;
 let previousMappingData: any | null = null;
+const studiesPerPage = 10;
 
 const Studies = () => {
   const { filters } = useFilters();
-  const [currentPage, setCurrentPage ] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  let studiesResults = useGetStudiesPageData({ sqon: filters, first: 2, offset: currentPage });
+  let studiesResults = useGetStudiesPageData({
+    sqon: filters,
+    first: studiesPerPage,
+    offset: currentPage,
+  });
 
   let studiesMappingResults = useGetExtendedMappings('studies');
 
@@ -48,7 +53,7 @@ const Studies = () => {
             filters={filters}
             pagination={{
               current: currentPage,
-              pageSize: 2,
+              pageSize: studiesPerPage,
               total: studiesResults.data?.hits.total || 0,
               onChange: (page: number) => {
                 setCurrentPage(page);
