@@ -145,9 +145,62 @@ export const TAB_SUMMARY_QUERY = gql`
   query GetSummaryTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
+        total
         edges {
           node {
+            alternate
+            chromosome
+            hgvsg
             hash
+            locus
+            clinvar {
+              clinvar_id
+              clin_sig
+            }
+            rsnumber
+            reference
+            start
+            participant_number
+            participant_ids
+            variant_class
+            consequences {
+              hits {
+                edges {
+                  node {
+                    symbol
+                    vep_impact
+                    symbol
+                    consequences
+                    aa_change
+                    impact_score
+                  }
+                }
+              }
+            }
+            frequencies {
+              internal {
+                combined {
+                  homozygotes
+                  af
+                  an
+                  ac
+                }
+              }
+            }
+            studies {
+              hits {
+                total
+              }
+            }
+            genes {
+              hits {
+                edges {
+                  node {
+                    symbol
+                  }
+                }
+              }
+            }
           }
         }
       }

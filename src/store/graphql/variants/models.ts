@@ -96,13 +96,36 @@ type AggregationResults = {
   hgvsg: string;
 };
 
-type VariantEntity = {
+export type VariantEntity = {
   alternate: string;
   hash: string;
   chromosome: string;
+  clinvar?: {
+    clinvar_id: string;
+  };
   hgvsg: string;
   locus: string;
   start: string;
+  reference: string;
+  rsnumber?: string;
+  studies: {
+    hits: {
+      total: number;
+    };
+  };
+  participant_number: number;
+  variant_class: string;
+  frequencies: {
+    internal: {
+      combined: {
+        af: number;
+      };
+    };
+  };
+};
+
+export type StudiesEntity = {
+  study_id: string;
 };
 
 export type Ddd = {

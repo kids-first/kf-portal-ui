@@ -26,7 +26,7 @@ export const useTabSummaryData = (variantId: string) => {
       sqon: buildVariantIdSqon(variantId),
     },
   });
-  return { loading, data: result, error };
+  return { loading, data: result?.variants || {}, error };
 };
 
 export const useTabClinicalData = (variantId: string) => {
