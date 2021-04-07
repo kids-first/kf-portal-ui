@@ -5,7 +5,7 @@ import history from 'services/history';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
-import { SidebarData } from '../../store/graphql/studies/actions';
+import { SidebarData } from 'store/graphql/studies/actions';
 
 const keyEnhance = (key: string) => {
   switch (key) {
