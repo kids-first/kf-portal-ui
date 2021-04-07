@@ -1,17 +1,11 @@
 /* eslint-disable react/display-name */
-import React, { FC } from 'react';
+import React from 'react';
 import history from 'services/history';
 
-import { Input, Tooltip } from 'antd';
-import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
-
-import { IFilter, IFilterGroup, VisualType } from '@ferlab/ui/core/components/filters/types';
+import { IFilter } from '@ferlab/ui/core/components/filters/types';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
-import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
-import { TSqonGroupContent } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 import { SidebarData } from '../../store/graphql/studies/actions';
-
-import styles from './SidebarFilters.module.scss';
 
 const keyEnhance = (key: string) => {
   switch (key) {
@@ -37,30 +31,7 @@ const keyEnhanceBooleanOnly = (key: string) => {
   }
 };
 
-// @ts-ignore
-const searchStoryNameCode = (e: KeyboardEvent<HTMLInputElement>) => {
-  e.preventDefault();
-
-  const filterGroup: IFilterGroup = {
-    field: 'name',
-    title: 'Name',
-    type: VisualType.Toggle,
-  };
-
-  const sqon: TSqonGroupContent = [
-    {
-      content: {
-        field: 'name',
-        value: [e.target.value],
-      },
-      op: 'in',
-    },
-  ];
-
-  updateQueryFilters(history, filterGroup.field, sqon);
-};
-
-const SidebarFilters: FC<SidebarData> = (sidebarData) => {
+const SidebarFilters = (sidebarData: SidebarData) => {
   const mappingData = sidebarData.studiesMappingResults;
   const data = sidebarData.studiesResults;
 
@@ -70,20 +41,6 @@ const SidebarFilters: FC<SidebarData> = (sidebarData) => {
 
   return (
     <>
-      <div className={styles.searchContainer}>
-        <h3>Search</h3>
-        <Input
-          className={styles.searchInput}
-          placeholder="Search..."
-          prefix={<SearchOutlined />}
-          suffix={
-            <Tooltip title="Search by Study Code or Name ">
-              <InfoCircleOutlined />
-            </Tooltip>
-          }
-          onPressEnter={searchStoryNameCode}
-        />
-      </div>
       {Object.keys(data.data.aggregations).map((key) => {
         const found = sidebarData.studiesMappingResults.extendedMapping.find(
           (f: any) => f.field === key,
