@@ -1,4 +1,4 @@
-import { buildVariantIdSqon, enhanceNodeWithIndexKey, useLazyResultQuery } from '../utils/query';
+import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
 import { TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY, TAB_CLINICAL_QUERY } from './queries';
 
 export const useTabFrequenciesData = (variantId: string) => {
@@ -9,13 +9,12 @@ export const useTabFrequenciesData = (variantId: string) => {
   });
 
   const node = result?.variants?.hits?.edges[0]?.node;
-  const combinedExternalFrequencies = node?.frequencies?.internal?.combined || {};
 
   return {
     loading,
     data: {
-      combinedExternalFrequencies,
-      studies: enhanceNodeWithIndexKey(node?.studies?.hits?.edges),
+      frequencies: node?.frequencies || {},
+      studies: node?.studies?.hits?.edges || [],
     },
     error,
   };

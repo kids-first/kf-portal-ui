@@ -1,5 +1,4 @@
 import { makeUnGroupedDataRows } from '../clinical';
-
 const mockGenes1 = [
   {
     node: {
@@ -339,28 +338,26 @@ describe('Clinical', () => {
     expect(makeUnGroupedDataRows(mockGenes1)).toEqual([
       [
         {
-          source: 'Orphanet',
-          gene: 'gene1-NF2',
           condition: [
             ['gene1-Schwannomatosis', 3434],
             ['gene1-Meningioma', 1245],
             ['gene1-Neurofibromatosis type 2', 12482],
           ],
+          gene: 'gene1-NF2',
           inheritance: ['gene1-Autosomal dominant', 'gene1-Autosomal dominant'],
+          source: 'Orphanet',
         },
         {
-          source: 'OMIM',
-          gene: ['gene1-NF2', 'gene1-607379'],
           condition: [
             ['gene1-Neurofibromatosis, type 2', 'gene1-101000'],
             ['gene1-Schwannomatosis, somatic', 'gene1-162091'],
             ['gene1-Meningioma, NF2-related, somatic', 'gene1-607174'],
           ],
+          gene: ['gene1-NF2', 'gene1-607379'],
           inheritance: ['gene1-AD'],
+          source: 'OMIM',
         },
         {
-          source: 'HPO',
-          gene: 'gene1-NF2',
           condition: [
             ['gene1-Brain stem compression (HP:0002512)', 'gene1-HP:0002512'],
             ['gene1-Epiretinal membrane (HP:0100014)', 'gene1-HP:0002512'],
@@ -373,48 +370,48 @@ describe('Clinical', () => {
             ['gene1-Intracranial meningioma (HP:0100009)', 'gene1-HP:0002512'],
             ['gene1-Abnormality of the skin (HP:0000951)', 'gene1-HP:0002512'],
           ],
+          gene: 'gene1-NF2',
           inheritance: '--',
+          source: 'HPO',
         },
         {
-          source: 'Ddd',
-          gene: 'gene1-NF2',
           condition: [
             'gene1-MUSCULAR DYSTROPHY-DYSTROGLYCANOPATHY CONGENITAL WITH MENTAL RETARDATION TYPE B6',
             'gene1-MUSCULAR DYSTROPHY-DYSTROGLYCANOPATHY 6',
           ],
+          gene: 'gene1-NF2',
           inheritance: '--',
+          source: 'Ddd',
         },
         {
-          source: 'Cosmic',
+          condition: ['gene1-meningioma', 'gene1-acoustic neuroma'],
           gene: 'gene1-NF2',
-          condition: [['gene1-meningioma', 'gene1-acoustic neuroma']],
           inheritance: '--',
+          source: 'Cosmic',
         },
       ],
       [
         {
-          source: 'Orphanet',
-          gene: 'gene2-NF2',
           condition: [
             ['gene2-Schwannomatosis', 124],
             ['gene2-Meningioma', 32434],
             ['gene2-Neurofibromatosis type 2', 12477],
           ],
+          gene: 'gene2-NF2',
           inheritance: ['gene2-Autosomal dominant', 'gene2-Autosomal dominant'],
+          source: 'Orphanet',
         },
         {
-          source: 'OMIM',
-          gene: ['gene2-NF2', 'gene2-607379'],
           condition: [
             ['gene2-Neurofibromatosis, type 2', 'gene2-101000'],
             [' gene2-Schwannomatosis, somatic', 'gene2-162091'],
             ['gene2-Meningioma, NF2-related, somatic', 'gene2-607174'],
           ],
+          gene: ['gene2-NF2', 'gene2-607379'],
           inheritance: ['gene2-AD'],
+          source: 'OMIM',
         },
         {
-          source: 'HPO',
-          gene: 'gene2-NF2',
           condition: [
             ['gene2-Brain stem compression (HP:0002512)', 'gene2-HP:0002512'],
             ['gene2-Epiretinal membrane (HP:0100014)', 'gene2-HP:0002512'],
@@ -424,13 +421,15 @@ describe('Clinical', () => {
             ['gene2-Ependymoma (HP:0002888)', 'gene2-HP:0002512'],
             ['gene2-Bilateral vestibular Schwannoma (HP:0009589)', 'gene2-HP:0002512'],
           ],
+          gene: 'gene2-NF2',
           inheritance: '--',
+          source: 'HPO',
         },
         {
-          source: 'Cosmic',
+          condition: ['gene2-meningioma', ' gene2-acoustic neuroma'],
           gene: 'gene2-NF2',
-          condition: [['gene2-meningioma', ' gene2-acoustic neuroma']],
           inheritance: '--',
+          source: 'Cosmic',
         },
       ],
     ]);
