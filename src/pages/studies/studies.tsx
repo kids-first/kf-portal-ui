@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { useState } from 'react';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 
 import PageContent from 'components/Layout/PageContent';
@@ -13,9 +13,12 @@ import styles from './studies.module.scss';
 let previousData: any | null = null;
 let previousMappingData: any | null = null;
 
-const Studies: FC = () => {
+const Studies = () => {
   const { filters } = useFilters();
-  let studiesResults = useGetStudiesPageData({ sqon: filters, first: 10, offset: 0 });
+  const [currentPage, setCurrentPage ] = useState(0);
+
+  let studiesResults = useGetStudiesPageData({ sqon: filters, first: 2, offset: currentPage });
+
   let studiesMappingResults = useGetExtendedMappings('studies');
 
   if (studiesResults.loading || studiesMappingResults.loadingMapping) {
@@ -40,7 +43,18 @@ const Studies: FC = () => {
       <Sidebar studiesMappingResults={studiesMappingResults} studiesResults={studiesResults} />
       <ScrollView className={styles.scrollContent}>
         <PageContent title="Studies">
-          <StudyPageContainer studiesResults={studiesResults} filters={filters} />
+          <StudyPageContainer
+            studiesResults={studiesResults}
+            filters={filters}
+            pagination={{
+              current: currentPage,
+              pageSize: 2,
+              total: studiesResults.data?.hits.total || 0,
+              onChange: (page: number) => {
+                setCurrentPage(page);
+              },
+            }}
+          />
         </PageContent>
       </ScrollView>
     </Layout>

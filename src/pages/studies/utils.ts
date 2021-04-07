@@ -110,13 +110,20 @@ export const updateQueryParam = (history: any, key: string, value: any): void =>
   const query = getQueryParams();
 
   if (isEmpty(value) && !query[key]) {
+    console.log('query : nthing ', query);
+
     return;
   }
   if (isEmpty(value) && query[key]) {
+    console.log('query : delete');
+
     delete query[key];
   } else {
     query[key] = typeof value === 'object' ? JSON.stringify(value) : value;
+    console.log('query : ', query);
+
   }
+  console.log('query : ', query);
   history.push({
     search: `?${qs.stringify(query)}`,
   });

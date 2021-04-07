@@ -8,15 +8,15 @@ import {
   updateQueryParam,
 } from './utils';
 import history from 'services/history';
-import StudyTableContainer from './StudyTableContainer';
+import StudyTableContainer, { PaginationType } from './StudyTableContainer';
 import { StudiesPageContainerData } from '../../store/graphql/studies/actions';
 import StudyIcon from 'icons/StudyIconSvg';
 
 import styles from './StudiesPageContainer.module.scss';
 
-type StudyPageContainerProps = StudiesPageContainerData;
+type StudyPageContainerProps = StudiesPageContainerData & PaginationType;
 
-const StudyPageContainer = ({ studiesResults, filters }: StudyPageContainerProps) => {
+const StudyPageContainer = ({ studiesResults, filters, pagination }: StudyPageContainerProps) => {
   const total = studiesResults?.data?.hits?.total || 0;
 
   return (
@@ -33,7 +33,11 @@ const StudyPageContainer = ({ studiesResults, filters }: StudyPageContainerProps
         IconTotal={<StudyIcon className={styles.queryBuilderIcon} />}
       />
       <StackLayout vertical className={styles.tableContainer}>
-        <StudyTableContainer data={studiesResults.data} loading={studiesResults.loading} />
+        <StudyTableContainer
+          data={studiesResults.data}
+          loading={studiesResults.loading}
+          pagination={pagination}
+        />
       </StackLayout>
     </StackLayout>
   );

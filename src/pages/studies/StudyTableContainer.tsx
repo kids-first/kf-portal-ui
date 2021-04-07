@@ -23,11 +23,20 @@ const mapState = (state: RootState): StudyTableContainerState => ({
 const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
+export type PaginationType = {
+  pagination: {
+    current: number;
+    pageSize: number;
+    total: number;
+    onChange: (page: number) => void;
+  };
+};
 
-type Props = StudiesResults & PropsFromRedux;
+type Props = StudiesResults & PropsFromRedux & PaginationType;
 
 const StudyTable: FC<Props> = (props) => {
-  if (props.loading) {
+  const { loading, pagination } = props;
+  if (loading) {
     return null;
   }
 
@@ -38,6 +47,7 @@ const StudyTable: FC<Props> = (props) => {
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
         dataSource={tableData}
+        pagination={pagination}
       />
     </div>
   );
