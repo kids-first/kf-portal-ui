@@ -52,7 +52,7 @@ const Studies = () => {
             studiesResults={studiesResults}
             filters={filters}
             pagination={{
-              current: currentPage,
+              current: currentPage + 1,
               pageSize: studiesPerPage,
               total: studiesResults.data?.hits.total || 0,
               onChange: (page: number) => {

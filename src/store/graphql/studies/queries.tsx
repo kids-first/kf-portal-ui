@@ -15,6 +15,8 @@ export const STUDIES_QUERY = gql`
             family_count
             file_count
             participant_count
+            data_access_authority
+            external_id
             data_category_count {
               hits {
                 edges {
