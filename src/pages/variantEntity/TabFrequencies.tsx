@@ -1,9 +1,10 @@
 import React from 'react';
-import { Space, Table, Spin, Result } from 'antd';
+import { Space, Table, Spin } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import { enhanceNodeWithIndexKey } from 'store/graphql/utils/query';
 import { FreqCombined, Frequencies, StudyFreq } from 'store/graphql/variants/models';
+import TabError from './TabError';
 
 type OwnProps = {
   variantId: string;
@@ -121,13 +122,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
   const { loading, data, error } = useTabFrequenciesData(variantId);
 
   if (error) {
-    return (
-      <Result
-        status="500"
-        title="Server Error"
-        subTitle="An error has occured and we are not able to load content at this time."
-      />
-    );
+    return <TabError />;
   }
 
   const { studies, frequencies } = data;

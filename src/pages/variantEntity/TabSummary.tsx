@@ -1,10 +1,11 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { List, Result, Space, Spin, Table } from 'antd';
+import { List, Space, Spin, Table } from 'antd';
 import Summary from './Summary';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Consequence, VariantEntity } from 'store/graphql/variants/models';
+import TabError from './TabError';
 
 type OwnProps = {
   variantId: string;
@@ -169,13 +170,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
   const { loading, data: rawData, error } = useTabSummaryData(variantId);
 
   if (error) {
-    return (
-      <Result
-        status="500"
-        title="Server Error"
-        subTitle="An error has occured and we are not able to load content at this time."
-      />
-    );
+    return <TabError />;
   }
 
   const data = rawData as VariantEntity | undefined;
@@ -196,7 +191,6 @@ const TabSummary = ({ variantId }: OwnProps) => {
               <Table
                 key={index}
                 title={() => [symbol, omim, biotype].join(' ')}
-                bordered
                 dataSource={makeRows(orderedConsequences)}
                 columns={columns}
               />
