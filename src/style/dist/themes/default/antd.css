@@ -24869,6 +24869,13 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-layout-sider {
   border-right: thin solid #eaeaec;
 }
+.ant-tag {
+  border: none;
+  padding: 1px 8px;
+  height: fit-content;
+  line-height: 20px;
+  font-weight: 400;
+}
 .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab:not(.ant-tabs-tab-active) {
   background: none;
   border: 0;
@@ -24885,6 +24892,11 @@ h1.ant-typography {
   font-weight: 500;
   text-align: left;
   color: #2b388f;
+}
+h3,
+h3.ant-typography {
+  font-size: 20px;
+  font-weight: 600;
 }
 .ant-typography {
   color: #383f72;
