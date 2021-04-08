@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
 import { List, Result, Space, Spin, Table } from 'antd';
@@ -49,9 +50,7 @@ const orderGenes = (mSymbolToConsequences: SymbolToConsequences) => {
   if (!mSymbolToConsequences || Object.keys(mSymbolToConsequences).length === 0) {
     return [];
   }
-  return Object.entries(mSymbolToConsequences).map(([, values]) => {
-    return { ...values };
-  });
+  return Object.entries(mSymbolToConsequences).map(([, values]) => ({ ...values }));
 };
 
 const orderConsequences = (consequences: Consequence[]) => [...consequences];
@@ -87,15 +86,13 @@ const columns = [
   {
     title: 'Consequence',
     dataIndex: 'consequences',
-    render: (consequences: string[]) => {
-      return (
-        <List
-          size="small"
-          dataSource={consequences}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
-      );
-    },
+    render: (consequences: string[]) => (
+      <List
+        size="small"
+        dataSource={consequences}
+        renderItem={(item) => <List.Item>{item}</List.Item>}
+      />
+    ),
   },
   {
     title: 'Coding Dna',
@@ -113,17 +110,13 @@ const columns = [
   {
     title: 'Impact',
     dataIndex: 'impact',
-    render: (impacts: [string[]]) => {
-      return (
-        <List
-          size="small"
-          dataSource={impacts}
-          renderItem={(items: string[]) => {
-            return <List.Item>{items?.toString()}</List.Item>;
-          }}
-        />
-      );
-    },
+    render: (impacts: [string[]]) => (
+      <List
+        size="small"
+        dataSource={impacts}
+        renderItem={(items: string[]) => <List.Item>{items?.toString()}</List.Item>}
+      />
+    ),
   },
   {
     title: 'Conservations',
