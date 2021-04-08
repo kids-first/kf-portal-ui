@@ -10,8 +10,20 @@ type OwnProps = {
 };
 
 type StudyFreq = {
-  gru: { ac: number; af: number; an: number; heterozygotes: number; homozygotes: number };
-  hmb: { ac: number; af: number; an: number; heterozygotes: number; homozygotes: number };
+  lower_bound_kf: {
+    ac: number;
+    af: number;
+    an: number;
+    heterozygotes: number;
+    homozygotes: number;
+  };
+  upper_bound_kf: {
+    ac: number;
+    af: number;
+    an: number;
+    heterozygotes: number;
+    homozygotes: number;
+  };
 };
 
 const internalColumns = [
@@ -26,22 +38,22 @@ const internalColumns = [
   {
     title: 'ALT Allele',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.ac,
+    render: (frequencies: StudyFreq) => frequencies?.upper_bound_kf?.ac,
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.an,
+    render: (frequencies: StudyFreq) => frequencies?.upper_bound_kf?.an,
   },
   {
     title: 'Homozygote',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.homozygotes,
+    render: (frequencies: StudyFreq) => frequencies?.upper_bound_kf?.homozygotes,
   },
   {
     title: 'Frequency',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.af,
+    render: (frequencies: StudyFreq) => frequencies?.upper_bound_kf?.af,
   },
 ];
 
@@ -126,7 +138,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
   const { loading, data } = useTabFrequenciesData(variantId);
   const { studies, frequencies } = data;
 
-  const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.combined;
+  const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
   return (
     <Spin spinning={loading}>
@@ -139,7 +151,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
             summary={() => (
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                <Table.Summary.Cell index={1} />
+                <Table.Summary.Cell index={1}>{data?.participant_number}</Table.Summary.Cell>
                 <Table.Summary.Cell index={2}>{internalFrequencies?.ac}</Table.Summary.Cell>
                 <Table.Summary.Cell index={3}>{internalFrequencies?.an}</Table.Summary.Cell>
                 <Table.Summary.Cell index={4}>
@@ -148,11 +160,13 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
                 <Table.Summary.Cell index={5}>{internalFrequencies?.af}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
+            pagination={false}
           />
           <Table
             title={() => 'External Cohorts'}
             dataSource={makeRowFromFrequencies(frequencies)}
             columns={externalColumns}
+            pagination={false}
           />
         </Space>
       </StackLayout>

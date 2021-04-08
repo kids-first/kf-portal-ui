@@ -68,6 +68,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
       hits(filters: $sqon) {
         edges {
           node {
+            participant_number
             frequencies {
               topmed {
                 ac
@@ -100,11 +101,19 @@ export const TAB_FREQUENCIES_QUERY = gql`
                 homozygotes
               }
               internal {
-                combined {
-                  homozygotes
+                lower_bound_kf {
+                  ac
                   af
                   an
+                  heterozygotes
+                  homozygotes
+                }
+                upper_bound_kf {
                   ac
+                  af
+                  an
+                  heterozygotes
+                  homozygotes
                 }
               }
             }
@@ -113,14 +122,14 @@ export const TAB_FREQUENCIES_QUERY = gql`
                 edges {
                   node {
                     frequencies {
-                      gru {
+                      lower_bound_kf {
                         ac
                         af
                         an
                         heterozygotes
                         homozygotes
                       }
-                      hmb {
+                      upper_bound_kf {
                         ac
                         af
                         an

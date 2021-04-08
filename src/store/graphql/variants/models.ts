@@ -31,12 +31,13 @@ export type ClinVar = {
 export type FreqAll = { ac: number; af: number; an: number };
 export type FreqOneThousand = FreqAll & { homozygotes: number };
 export type Freqgnomad = FreqAll & { homozygotes: number };
-export type FreqCombined = FreqAll & { homozygotes: number };
+export type FreqCombined = FreqAll & { heterozygotes: number; homozygotes: number };
 export type FreqTopmed = FreqAll & { homozygotes: number };
 
 export type Frequencies = {
   internal: {
-    combined: FreqCombined;
+    lower_bound_kf: FreqCombined;
+    upper_bound_kf: FreqCombined;
   };
   topmed: FreqTopmed;
   one_thousand_genomes: FreqOneThousand;
