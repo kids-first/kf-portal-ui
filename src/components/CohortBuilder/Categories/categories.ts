@@ -68,8 +68,10 @@ export const CATEGORY_FIELDS = {
     'observed_phenotype.name',
     'is_proband',
     'study.short_name',
+    'study.code',
   ],
   study: [
+    'study.short_name',
     'study.code',
     'study.program',
     'study.domain',

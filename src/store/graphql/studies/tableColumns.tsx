@@ -4,6 +4,8 @@ import React from 'react';
 import { Sqon } from '../../sqon';
 import { addToSqons } from 'common/sqonUtils';
 import './tableColumn.scss';
+import { StudiesResult } from './models';
+import { DB_GA_P, generateUrlForDbGap } from 'common/constants';
 
 export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => void) =>
   [
@@ -41,6 +43,22 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
     {
       title: 'Domain',
       name: 'domain',
+      width: 150,
+      // eslint-disable-next-line react/display-name
+      render: (domain: string[]) => domain.join(', '),
+    },
+    {
+      title: 'dbGap',
+      name: 'external_id',
+      // eslint-disable-next-line react/display-name
+      render: (external_id: string, record: StudiesResult) =>
+        record.data_access_authority === DB_GA_P ? (
+          <a target="_blank" rel="noopener noreferrer" href={generateUrlForDbGap(external_id)}>
+            {external_id}
+          </a>
+        ) : (
+          ''
+        ),
     },
     {
       title: 'Participants',

@@ -3,12 +3,14 @@ import { HitsResultsDataCategory, StudiesResults } from './actions';
 export type StudiesResult = {
   kf_id: string;
   name: string;
-  domain: string;
+  domain: string[];
   score: string;
   code: string;
   family_count: string;
   file_count: string;
   data_category_count?: HitsResultsDataCategory;
+  data_access_authority: string;
+  external_id: string;
 };
 
 export type DataCategory = {
