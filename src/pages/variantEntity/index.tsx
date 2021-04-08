@@ -2,13 +2,14 @@ import React from 'react';
 import { Tabs, Tag, Typography } from 'antd';
 import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
 
-import styles from './VariantEntity.module.scss';
 import TabSummary from './TabSummary';
 import PageContent from 'components/Layout/PageContent';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import TabFrequencies from './TabFrequencies';
 import TabClinical from './TabClinical';
 import useTab from 'hooks/useTab';
+
+import styles from './VariantEntity.module.scss';
 
 const { TabPane } = Tabs;
 
@@ -34,13 +35,12 @@ const VariantEntity = (props: OwnProps) => {
 
   return (
     <PageContent
+      className={styles.pageContent}
       title={
-        <>
-          <StackLayout horizontal>
-            <Title level={3}>{hgvsg}</Title>
-            <Tag className={styles.variantTag}>Germline</Tag>
-          </StackLayout>
-        </>
+        <StackLayout horizontal>
+          <Title level={3}>{hgvsg}</Title>
+          <Tag className={styles.variantTag}>Germline</Tag>
+        </StackLayout>
       }
     >
       <Tabs activeKey={tabKey} onChange={setTabKey}>
