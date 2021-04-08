@@ -31,6 +31,7 @@ $orange-5: #f79122;
 
 // PURPLE
 $purple-2: #e6bddc;
+$purple-6: #a6278f;
 
 // RED
 $red-5: #dd1f2a;
@@ -48,6 +49,7 @@ $primary-color: #383f72;
 
 // BORDER
 $border-color-base: $gray-4;
+$border-color-split: $gray-5; // split border inside a component
 
 //Buttons
 $btn-primary-bg: #009bba;
@@ -72,15 +74,15 @@ $tag-default-bg: $gray-4;
 $tag-default-color: $body-1;
 
 // Tabs
-$tabs-highlight-color: #a6278f;
-$tabs-color: #515885;
+$tabs-highlight-color: $purple-6;
+$tabs-color: $body-1;
 
 //Popover
-$popover-color: #515885;
+$popover-color: $body-1;
 
 //Table
 // $table-header-bg: #f9f9fb; //$background-color-light
 
-$badge-color: #515885;
+$badge-color: $body-1;
 
 $badge-new-color: #52c41a;
