@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Table, Spin } from 'antd';
+import { Card, Space, Table, Spin } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import { enhanceNodeWithIndexKey } from 'store/graphql/utils/query';
@@ -134,30 +134,34 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Table
-            title={() => 'Internal Cohorts'}
-            dataSource={enhanceNodeWithIndexKey(studies)}
-            columns={internalColumns}
-            summary={() => (
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                <Table.Summary.Cell index={1}>{data?.participant_number}</Table.Summary.Cell>
-                <Table.Summary.Cell index={2}>{internalFrequencies?.ac}</Table.Summary.Cell>
-                <Table.Summary.Cell index={3}>{internalFrequencies?.an}</Table.Summary.Cell>
-                <Table.Summary.Cell index={4}>
-                  {internalFrequencies?.homozygotes}
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={5}>{internalFrequencies?.af}</Table.Summary.Cell>
-              </Table.Summary.Row>
-            )}
-            pagination={false}
-          />
-          <Table
-            title={() => 'External Cohorts'}
-            dataSource={makeRowFromFrequencies(frequencies)}
-            columns={externalColumns}
-            pagination={false}
-          />
+          <Card>
+            <Table
+              title={() => 'Internal Cohorts'}
+              dataSource={enhanceNodeWithIndexKey(studies)}
+              columns={internalColumns}
+              summary={() => (
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
+                  <Table.Summary.Cell index={1}>{data?.participant_number}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={2}>{internalFrequencies?.ac}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={3}>{internalFrequencies?.an}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={4}>
+                    {internalFrequencies?.homozygotes}
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={5}>{internalFrequencies?.af}</Table.Summary.Cell>
+                </Table.Summary.Row>
+              )}
+              pagination={false}
+            />
+          </Card>
+          <Card>
+            <Table
+              title={() => 'External Cohorts'}
+              dataSource={makeRowFromFrequencies(frequencies)}
+              columns={externalColumns}
+              pagination={false}
+            />
+          </Card>
         </Space>
       </StackLayout>
     </Spin>
