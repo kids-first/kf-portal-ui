@@ -8,13 +8,18 @@ import {
   makeClinVarRows,
   makeGenesOrderedRow,
 } from './clinical';
+import TabError from './TabError';
 
 type OwnProps = {
   variantId: string;
 };
 
 const TabClinical = ({ variantId }: OwnProps) => {
-  const { loading, data } = useTabClinicalData(variantId);
+  const { loading, data, error } = useTabClinicalData(variantId);
+
+  if (error) {
+    return <TabError />;
+  }
 
   const dataClinvar = data?.clinvar || {};
   const clinvarId = dataClinvar.clinvar_id;
