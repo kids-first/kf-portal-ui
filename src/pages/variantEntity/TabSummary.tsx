@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { List, Space, Spin, Table } from 'antd';
+import { Card, List, Space, Spin, Table } from 'antd';
 import Summary from './Summary';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Consequence, VariantEntity } from 'store/graphql/variants/models';
@@ -188,12 +188,14 @@ const TabSummary = ({ variantId }: OwnProps) => {
             const biotype = tableData.biotype;
             const orderedConsequences = tableData.consequences;
             return (
-              <Table
-                key={index}
-                title={() => [symbol, omim, biotype].join(' ')}
-                dataSource={makeRows(orderedConsequences)}
-                columns={columns}
-              />
+              <Card>
+                <Table
+                  key={index}
+                  title={() => [symbol, omim, biotype].join(' ')}
+                  dataSource={makeRows(orderedConsequences)}
+                  columns={columns}
+                />
+              </Card>
             );
           })}
         </Space>
