@@ -1,17 +1,12 @@
 import React from 'react';
-import { Space, Table, Spin } from 'antd';
+import { Space, Table, Spin, Result } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import { enhanceNodeWithIndexKey } from 'store/graphql/utils/query';
-import { FreqCombined, Frequencies } from 'store/graphql/variants/models';
+import { FreqCombined, Frequencies, StudyFreq } from 'store/graphql/variants/models';
 
 type OwnProps = {
   variantId: string;
-};
-
-type StudyFreq = {
-  gru: { ac: number; af: number; an: number; heterozygotes: number; homozygotes: number };
-  hmb: { ac: number; af: number; an: number; heterozygotes: number; homozygotes: number };
 };
 
 const internalColumns = [
@@ -123,7 +118,18 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
 };
 
 const TabFrequencies = ({ variantId }: OwnProps) => {
-  const { loading, data } = useTabFrequenciesData(variantId);
+  const { loading, data, error } = useTabFrequenciesData(variantId);
+
+  if (error) {
+    return (
+      <Result
+        status="500"
+        title="Server Error"
+        subTitle="An error has occured and we are not able to load content at this time."
+      />
+    );
+  }
+
   const { studies, frequencies } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.combined;

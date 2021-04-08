@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Spin, Table } from 'antd';
+import { Result, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabClinicalData } from 'store/graphql/variants/tabActions';
 import {
@@ -14,7 +14,17 @@ type OwnProps = {
 };
 
 const TabClinical = ({ variantId }: OwnProps) => {
-  const { loading, data } = useTabClinicalData(variantId);
+  const { loading, data, error } = useTabClinicalData(variantId);
+
+  if (error) {
+    return (
+      <Result
+        status="500"
+        title="Server Error"
+        subTitle="An error has occured and we are not able to load content at this time."
+      />
+    );
+  }
 
   const dataClinvar = data?.clinvar || {};
   const clinvarId = dataClinvar.clinvar_id;

@@ -1,49 +1,216 @@
-import React, { FC } from 'react';
-import Card from '@ferlab/ui/core/view/GridCard';
+import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { Spin } from 'antd';
+import { List, Result, Space, Spin, Table } from 'antd';
+import Summary from './Summary';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Consequence, VariantEntity } from 'store/graphql/variants/models';
 
 type OwnProps = {
   variantId: string;
 };
 
-const TabSummary: FC<OwnProps> = ({ variantId }) => {
-  const { loading } = useTabSummaryData(variantId);
+type TableGroup = {
+  consequences: Consequence[];
+  omim: string;
+  biotype: string;
+  symbol: string;
+};
+
+type SymbolToConsequences = {
+  [key: string]: TableGroup;
+};
+
+const groupConsequencesBySymbol = (consequences: Consequence[]) => {
+  if (consequences.length === 0) {
+    return {};
+  }
+  return consequences.reduce((acc: SymbolToConsequences, consequence: Consequence) => {
+    const symbol = consequence.node.symbol;
+    if (!symbol) {
+      return acc;
+    }
+    const omim = consequence.node.omim_gene_id || '';
+    const biotype = consequence.node.biotype || '';
+    const oldConsequences = acc[symbol]?.consequences || [];
+
+    return {
+      ...acc,
+      [symbol]: {
+        consequences: [...oldConsequences, { ...consequence }],
+        omim,
+        biotype,
+        symbol,
+      },
+    };
+  }, {});
+};
+
+const orderGenes = (mSymbolToConsequences: SymbolToConsequences) => {
+  if (!mSymbolToConsequences || Object.keys(mSymbolToConsequences).length === 0) {
+    return [];
+  }
+  return Object.entries(mSymbolToConsequences).map(([, values]) => {
+    return { ...values };
+  });
+};
+
+const orderConsequences = (consequences: Consequence[]) => [...consequences];
+
+const orderConsequencesForTable = (tableGroups: TableGroup[]) => {
+  if (!tableGroups || tableGroups.length === 0) {
+    return [];
+  }
+
+  return tableGroups.map((tableGroup: TableGroup) => {
+    const consequences = tableGroup.consequences;
+    return {
+      ...tableGroup,
+      consequences: orderConsequences(consequences),
+    };
+  });
+};
+
+const makeTables = (rawConsequences: Consequence[]) => {
+  if (!rawConsequences || rawConsequences.length === 0) {
+    return [];
+  }
+  const symbolToConsequences = groupConsequencesBySymbol(rawConsequences);
+  const orderedGenes = orderGenes(symbolToConsequences);
+  return orderConsequencesForTable(orderedGenes);
+};
+
+const columns = [
+  {
+    title: 'AA',
+    dataIndex: 'aa',
+  },
+  {
+    title: 'Consequence',
+    dataIndex: 'consequences',
+    render: (consequences: string[]) => {
+      return (
+        <List
+          size="small"
+          dataSource={consequences}
+          renderItem={(item) => <List.Item>{item}</List.Item>}
+        />
+      );
+    },
+  },
+  {
+    title: 'Coding Dna',
+    dataIndex: 'codingDna',
+  },
+  {
+    title: 'Strand',
+    dataIndex: 'strand',
+  },
+  {
+    title: 'VEP',
+    dataIndex: 'vep',
+  },
+
+  {
+    title: 'Impact',
+    dataIndex: 'impact',
+    render: (impacts: [string[]]) => {
+      return (
+        <List
+          size="small"
+          dataSource={impacts}
+          renderItem={(items: string[]) => {
+            return <List.Item>{items?.toString()}</List.Item>;
+          }}
+        />
+      );
+    },
+  },
+  {
+    title: 'Conservations',
+    dataIndex: 'conservations',
+  },
+  {
+    title: 'Transcript',
+    dataIndex: 'transcript',
+  },
+];
+
+const makeRows = (consequences: Consequence[]) =>
+  consequences.map((consequence: Consequence, index: number) => ({
+    key: `${index + 1}`,
+    aa: consequence.node.aa_change,
+    consequences: consequence.node.consequences.filter((c) => c || c.length > 0),
+    codingDna: consequence.node.coding_dna_change,
+    strand: consequence.node.strand,
+    vep: consequence.node.vep_impact,
+    impact: [
+      [
+        'sift',
+        consequence.node.predictions?.sift_pred,
+        consequence.node.predictions?.sift_converted_rank_score,
+      ],
+      [
+        'polyphen2',
+        consequence.node.predictions?.polyphen2_hvar_pred,
+        consequence.node.predictions?.sift_converted_rank_score,
+      ],
+      [
+        'fathmm',
+        consequence.node.predictions?.fathmm_pred,
+        consequence.node.predictions?.fathmm_converted_rankscore,
+      ],
+      ['cadd', consequence.node.predictions?.cadd_rankscore],
+      ['dann', consequence.node.predictions?.dann_rankscore],
+      [
+        'lrt',
+        consequence.node.predictions?.lrt_pred,
+        consequence.node.predictions?.lrt_converted_rankscore,
+      ],
+      ['revel', consequence.node.predictions?.revel_rankscore],
+    ],
+    conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
+    transcript: consequence.node.ensembl_transcript_id,
+  }));
+
+const TabSummary = ({ variantId }: OwnProps) => {
+  const { loading, data: rawData, error } = useTabSummaryData(variantId);
+
+  if (error) {
+    return (
+      <Result
+        status="500"
+        title="Server Error"
+        subTitle="An error has occured and we are not able to load content at this time."
+      />
+    );
+  }
+
+  const data = rawData as VariantEntity | undefined;
+
+  const consequences = (data?.consequences?.hits?.edges || []) as Consequence[];
 
   return (
     <Spin spinning={loading}>
-      <div className={'content-container'}>
-        <Card>
-          <div className={'grid-top-container'}>
-            <div className={'grid-top-container-item'}>
-              <div style={{ display: 'flex' }}>
-                <div style={{ width: '25%' }}>Chr</div>
-                <div style={{ width: '75%' }}>missing</div>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ width: '25%' }}>Start</div>
-                <div style={{ width: '75%' }}>33</div>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ width: '25%' }}>Allele Alt.</div>
-                <div style={{ width: '75%' }}>33</div>
-              </div>
-              <div style={{ display: 'flex' }}>
-                <div style={{ width: '25%' }}>Allele Réf.</div>
-                <div style={{ width: '75%' }}>33</div>
-              </div>
-            </div>
-            <div className={'grid-top-container-item'}>
-              <div className={'grid-top-container-item'}>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ width: '25%' }}>rre</div>
-                  <div style={{ width: '75%' }}>33</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
+      <StackLayout vertical fitContent>
+        <Space direction={'vertical'} size={'large'}>
+          <Summary variant={data} />
+          {makeTables(consequences).map((tableData: TableGroup, index: number) => {
+            const symbol = tableData.symbol;
+            const omim = tableData.omim;
+            const biotype = tableData.biotype;
+            const orderedConsequences = tableData.consequences;
+            return (
+              <Table
+                key={index}
+                title={() => [symbol, omim, biotype].join(' ')}
+                bordered
+                dataSource={makeRows(orderedConsequences)}
+                columns={columns}
+              />
+            );
+          })}
+        </Space>
+      </StackLayout>
     </Spin>
   );
 };

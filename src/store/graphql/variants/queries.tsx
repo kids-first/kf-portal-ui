@@ -22,6 +22,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
                 edges {
                   node {
                     symbol
+                    canonical
                     vep_impact
                     symbol
                     consequences
@@ -145,9 +146,84 @@ export const TAB_SUMMARY_QUERY = gql`
   query GetSummaryTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
+        total
         edges {
           node {
+            alternate
+            chromosome
+            hgvsg
             hash
+            locus
+            clinvar {
+              clinvar_id
+              clin_sig
+            }
+            rsnumber
+            reference
+            start
+            participant_number
+            participant_ids
+            variant_class
+            consequences {
+              hits {
+                edges {
+                  node {
+                    biotype
+                    symbol
+                    vep_impact
+                    symbol
+                    consequences
+                    coding_dna_change
+                    omim_gene_id
+                    aa_change
+                    strand
+                    canonical
+                    conservations {
+                      phylo_p17way_primate_rankscore
+                    }
+                    ensembl_transcript_id
+                    predictions {
+                      fathmm_pred
+                      FATHMM_converted_rankscore
+                      cadd_score
+                      dann_score
+                      lrt_pred
+                      lrt_converted_rankscore
+                      revel_rankscore
+                      sift_converted_rank_score
+                      sift_pred
+                      polyphen2_hvar_score
+                      polyphen2_hvar_pred
+                    }
+                    impact_score
+                  }
+                }
+              }
+            }
+            frequencies {
+              internal {
+                combined {
+                  homozygotes
+                  af
+                  an
+                  ac
+                }
+              }
+            }
+            studies {
+              hits {
+                total
+              }
+            }
+            genes {
+              hits {
+                edges {
+                  node {
+                    symbol
+                  }
+                }
+              }
+            }
           }
         }
       }
