@@ -11,16 +11,14 @@ type Conservations = {
 
 type Predictions = {
   fathmm_pred: any | null;
-  FATHMM_converted_rankscore: any | null;
   fathmm_converted_rankscore: any | null;
-  cadd_score: any | null;
   cadd_rankscore: any | null;
   dann_score: any | null;
   dann_rankscore: any | null;
   lrt_pred: any | null;
   lrt_converted_rankscore: any | null;
   revel_rankscore: any | null;
-  sift_converted_rank_score: any | null;
+  sift_converted_rankscore: any | null;
   sift_pred: any | null;
   polyphen2_hvar_score: any | null;
   polyphen2_hvar_pred: any | null;
@@ -66,18 +64,24 @@ export type ClinVar = {
 export type FreqAll = { ac: number; af: number; an: number };
 export type FreqOneThousand = FreqAll & { homozygotes: number };
 export type Freqgnomad = FreqAll & { homozygotes: number };
-export type FreqCombined = FreqAll & { homozygotes: number };
+export type FreqCombined = FreqAll & { heterozygotes: number; homozygotes: number };
 export type FreqTopmed = FreqAll & { homozygotes: number };
 
-export type StudyFreq = {
-  gru: FreqAll & { homozygotes: number; heterozygotes: number };
-  hmb: FreqAll & { homozygotes: number; heterozygotes: number };
+type BoundKfType = {
+  ac: number;
+  af: number;
+  an: number;
+  heterozygotes: number;
+  homozygotes: number;
+};
+
+export type FreqInternal = {
+  lower_bound_kf: BoundKfType;
+  upper_bound_kf: BoundKfType;
 };
 
 export type Frequencies = {
-  internal: {
-    combined: FreqCombined;
-  };
+  internal: FreqInternal;
   topmed: FreqTopmed;
   one_thousand_genomes: FreqOneThousand;
   gnomad_exomes_2_1: Freqgnomad;
@@ -140,7 +144,7 @@ type Study = {
   node: {
     participant_number: number;
     study_id: string;
-    frequencies: StudyFreq;
+    frequencies: FreqInternal;
   };
 };
 

@@ -13,14 +13,12 @@ type SummaryProps = {
   variant: VariantEntity | undefined;
 };
 
-const SummaryItem = (field: string, value: string) => {
-  return (
-    <div style={{ display: 'flex' }}>
-      <div style={{ width: '25%' }}>{field}</div>
-      <div style={{ width: '75%' }}>{value}</div>
-    </div>
-  );
-};
+const SummaryItem = (field: string, value: string) => (
+  <div style={{ display: 'flex' }}>
+    <div style={{ width: '25%' }}>{field}</div>
+    <div style={{ width: '75%' }}>{value}</div>
+  </div>
+);
 
 const Summary = ({ variant }: SummaryProps) => {
   if (!variant) {
@@ -52,7 +50,7 @@ const Summary = ({ variant }: SummaryProps) => {
               <CountWithIcon
                 Icon={<RiseOutlined className={'query-builder-icon'} />}
                 label={'Participants'}
-                total={variant.frequencies.internal.combined.af.toExponential(2)}
+                total={variant.frequencies.internal.lower_bound_kf.af.toExponential(2)}
               />
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

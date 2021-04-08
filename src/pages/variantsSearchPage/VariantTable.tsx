@@ -145,22 +145,22 @@ const generateColumns = (props: Props) =>
     {
       title: 'ALT Allele',
       dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.combined?.ac,
+      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
       title: 'Total Allele',
       dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.combined?.an,
+      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.an,
     },
     {
       title: 'Allele Freq.',
       dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.combined?.af,
+      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.af,
     },
     {
       title: 'Homozygote',
       dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.combined?.homozygotes,
+      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
   ].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
 
