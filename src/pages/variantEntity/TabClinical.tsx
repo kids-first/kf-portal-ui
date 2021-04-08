@@ -26,13 +26,11 @@ const TabClinical = ({ variantId }: OwnProps) => {
         <Space direction={'vertical'} size={'large'}>
           <Table
             title={() => <span>Clinvar {clinvarId ? `[${dataClinvar.clinvar_id}]` : ''}</span>}
-            bordered
             dataSource={makeClinVarRows(dataClinvar)}
             columns={columnsClinVar}
           />
           <Table
             title={() => 'Gene - Phenotype'}
-            bordered
             dataSource={makeGenesOrderedRow(dataGenes)}
             columns={columnsPhenotypes}
           />

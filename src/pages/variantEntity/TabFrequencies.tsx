@@ -134,7 +134,6 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
         <Space direction={'vertical'} size={'large'}>
           <Table
             title={() => 'Internal Cohorts'}
-            bordered
             dataSource={enhanceNodeWithIndexKey(studies)}
             columns={internalColumns}
             summary={() => (
@@ -152,7 +151,6 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
           />
           <Table
             title={() => 'External Cohorts'}
-            bordered
             dataSource={makeRowFromFrequencies(frequencies)}
             columns={externalColumns}
           />
