@@ -3,7 +3,7 @@ import { Space, Table, Spin } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import { enhanceNodeWithIndexKey } from 'store/graphql/utils/query';
-import { FreqCombined, Frequencies, StudyFreq } from 'store/graphql/variants/models';
+import { FreqCombined, FreqInternal, Frequencies } from 'store/graphql/variants/models';
 import TabError from './TabError';
 
 type OwnProps = {
@@ -22,22 +22,22 @@ const internalColumns = [
   {
     title: 'ALT Allele',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.ac,
+    render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.ac,
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.an,
+    render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.an,
   },
   {
     title: 'Homozygote',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.homozygotes,
+    render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.homozygotes,
   },
   {
     title: 'Frequency',
     dataIndex: 'frequencies',
-    render: (frequencies: StudyFreq) => frequencies?.gru?.af,
+    render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.af,
   },
 ];
 
@@ -68,6 +68,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
   if (!frequencies || Object.keys(frequencies).length === 0) {
     return [];
   }
+
   const topmed = frequencies.topmed || {};
   const gnomadGenomes3 = frequencies.gnomad_genomes_3_0 || {};
   const gnomadGenomes2_1 = frequencies.gnomad_genomes_2_1 || {};
@@ -127,7 +128,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
 
   const { studies, frequencies } = data;
 
-  const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.combined;
+  const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
   return (
     <Spin spinning={loading}>
@@ -140,7 +141,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
             summary={() => (
               <Table.Summary.Row>
                 <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                <Table.Summary.Cell index={1} />
+                <Table.Summary.Cell index={1}>{data?.participant_number}</Table.Summary.Cell>
                 <Table.Summary.Cell index={2}>{internalFrequencies?.ac}</Table.Summary.Cell>
                 <Table.Summary.Cell index={3}>{internalFrequencies?.an}</Table.Summary.Cell>
                 <Table.Summary.Cell index={4}>
@@ -149,11 +150,13 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
                 <Table.Summary.Cell index={5}>{internalFrequencies?.af}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
+            pagination={false}
           />
           <Table
             title={() => 'External Cohorts'}
             dataSource={makeRowFromFrequencies(frequencies)}
             columns={externalColumns}
+            pagination={false}
           />
         </Space>
       </StackLayout>

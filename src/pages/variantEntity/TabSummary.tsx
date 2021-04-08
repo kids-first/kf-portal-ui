@@ -141,12 +141,12 @@ const makeRows = (consequences: Consequence[]) =>
       [
         'sift',
         consequence.node.predictions?.sift_pred,
-        consequence.node.predictions?.sift_converted_rank_score,
+        consequence.node.predictions?.sift_converted_rankscore,
       ],
       [
         'polyphen2',
         consequence.node.predictions?.polyphen2_hvar_pred,
-        consequence.node.predictions?.sift_converted_rank_score,
+        consequence.node.predictions?.sift_converted_rankscore,
       ],
       [
         'fathmm',

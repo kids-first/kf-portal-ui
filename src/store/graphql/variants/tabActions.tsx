@@ -15,6 +15,7 @@ export const useTabFrequenciesData = (variantId: string) => {
     data: {
       frequencies: node?.frequencies || {},
       studies: node?.studies?.hits?.edges || [],
+      participant_number: node?.participant_number || 0,
     },
     error,
   };
