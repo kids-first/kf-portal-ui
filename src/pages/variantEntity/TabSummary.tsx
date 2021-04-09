@@ -191,8 +191,8 @@ const makeRows = (consequences: Consequence[]) =>
       ],
       [
         'Fathmm',
-        consequence.node.predictions?.fathmm_pred,
-        consequence.node.predictions?.fathmm_converted_rankscore,
+        consequence.node.predictions?.fathmm_pred || 'toto',
+        consequence.node.predictions?.fathmm_converted_rankscore || 89,
       ],
       ['Cadd', null, consequence.node.predictions?.cadd_rankscore],
       ['Dann', null, consequence.node.predictions?.dann_rankscore],
@@ -233,7 +233,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
                 <ExpandableTable
                   numWhenCollapsed={1}
                   buttonText={(showAll, hiddenNum) =>
-                    showAll ? 'Less' : `Show Transcripts (${hiddenNum})`
+                    showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
                   }
                   key={index}
                   title={() => [symbol, omim, biotype].join(' ')}
