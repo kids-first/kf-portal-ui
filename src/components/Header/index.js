@@ -90,8 +90,8 @@ const NavigationToolBar = (props) => {
               )}
               {isKfInvestigator(egoGroups) && (
                 <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
-                    <DatabaseOutlined /> Variant Workbench
+                  <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
+                    <DatabaseOutlined /> Variant
                   </NavLink>
                 </li>
               )}

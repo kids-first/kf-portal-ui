@@ -18,11 +18,10 @@ const ROUTES = {
   search: '/search',
   searchMember: '/memberPage',
   user: '/user',
-  variantDb: '/variantDb',
+  variantDb: '/variant',
   profile: '/profile',
   termsConditions: '/termsConditions',
   /* temporary while constructing the new variant page*/
-  devVariantDb: '/devVariantDb',
 };
 
 export default ROUTES;
