@@ -188,12 +188,8 @@ const TabSummary = ({ variantId }: OwnProps) => {
             const biotype = tableData.biotype;
             const orderedConsequences = tableData.consequences;
             return (
-              <Card key={index}>
-                <Table
-                  title={() => [symbol, omim, biotype].join(' ')}
-                  dataSource={makeRows(orderedConsequences)}
-                  columns={columns}
-                />
+              <Card key={index} title={[symbol, omim, biotype].join(' ')}>
+                <Table dataSource={makeRows(orderedConsequences)} columns={columns} />
               </Card>
             );
           })}
