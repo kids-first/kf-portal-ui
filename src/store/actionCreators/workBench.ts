@@ -7,30 +7,27 @@ import {
   stopCluster as apiStopCluster,
 } from 'services/workBench';
 
-export const toggleLoading = (isLoading: boolean): WorkBenchActionTypes => ({
+const toggleLoading = (isLoading: boolean): WorkBenchActionTypes => ({
   type: WorkBenchActions.toggleLoading,
   isLoading,
 });
 
-export const failure = (error: Error): WorkBenchActionTypes => ({
+const failure = (error: Error): WorkBenchActionTypes => ({
   type: WorkBenchActions.failure,
   error,
 });
 
-export const addStatus = (status: ClusterStatus): WorkBenchActionTypes => ({
+const addStatus = (status: ClusterStatus): WorkBenchActionTypes => ({
   type: WorkBenchActions.addClusterStatus,
   status,
 });
 
-export const reInitializeState = (): WorkBenchActionTypes => ({
-  type: WorkBenchActions.reInitialize,
-});
-
-export const getStatus = (): ThunkAction<void, RootState, null, WorkBenchActionTypes> => async (
-  dispatch,
-) => {
+const switchCluster = (
+  shouldStart: boolean,
+): ThunkAction<void, RootState, null, WorkBenchActionTypes> => async (dispatch) => {
   dispatch(toggleLoading(true));
   try {
+    await (shouldStart ? apiStartCluster() : apiStopCluster());
     const response = await getClusterStatus();
     const clusterStatus = response.status as ClusterStatus;
     dispatch(addStatus(clusterStatus));
@@ -41,12 +38,15 @@ export const getStatus = (): ThunkAction<void, RootState, null, WorkBenchActionT
   }
 };
 
-const switchCluster = (
-  shouldStart: boolean,
-): ThunkAction<void, RootState, null, WorkBenchActionTypes> => async (dispatch) => {
+export const reInitializeState = (): WorkBenchActionTypes => ({
+  type: WorkBenchActions.reInitialize,
+});
+
+export const getStatus = (): ThunkAction<void, RootState, null, WorkBenchActionTypes> => async (
+  dispatch,
+) => {
   dispatch(toggleLoading(true));
   try {
-    await (shouldStart ? apiStartCluster() : apiStopCluster());
     const response = await getClusterStatus();
     const clusterStatus = response.status as ClusterStatus;
     dispatch(addStatus(clusterStatus));
