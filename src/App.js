@@ -32,7 +32,6 @@ import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
-import VariantDb from 'components/VariantDb';
 import TermsConditions from 'components/Login/TermsConditions';
 import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
@@ -134,7 +133,7 @@ const App = compose(
             />
             <Route
               /* temporary: this will be the new variant db page*/
-              path={ROUTES.devVariantDb}
+              path={ROUTES.variant}
               exact
               render={(props) =>
                 protectRoute({
@@ -149,15 +148,15 @@ const App = compose(
               }
             />
             <Route
-              path={ROUTES.variantDb}
+              path={`${ROUTES.variant}/:hgvsg/:variantId`}
               exact
               render={(props) =>
                 protectRoute({
-                  api,
                   isLoadingUser,
-                  Component: VariantDb,
+                  Component: VariantEntityPage,
                   loggedInUser,
-                  WrapperPage: FixedFooterPage,
+                  variantId: props.match.params.variantId,
+                  hgvsg: props.match.params.hgvsg,
                   ...props,
                 })
               }
@@ -172,20 +171,6 @@ const App = compose(
                   Component: FileEntity,
                   loggedInUser,
                   fileId: props.match.params.fileId,
-                  ...props,
-                })
-              }
-            />
-            <Route
-              path={`${ROUTES.variant}/:hgvsg/:variantId`}
-              exact
-              render={(props) =>
-                protectRoute({
-                  isLoadingUser,
-                  Component: VariantEntityPage,
-                  loggedInUser,
-                  variantId: props.match.params.variantId,
-                  hgvsg: props.match.params.hgvsg,
                   ...props,
                 })
               }
