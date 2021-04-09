@@ -5,7 +5,7 @@ import WorkBench from './WorkBench';
 import { isKfInvestigator } from 'common/profile';
 import { EgoGroups } from 'store/userTypes';
 import VariantStats from './VariantStats';
-import './VariantSearchPage.css';
+import style from './VariantsSearchPage.module.scss';
 
 type OwnProps = {
   egoGroups: EgoGroups;
@@ -13,10 +13,10 @@ type OwnProps = {
 
 const VariantPage: FC<OwnProps> = ({ egoGroups }) => (
   <PageContent title={'The Kids First Variant Database'}>
-    <div className={'variant-page-grid'}>
+    <div className={style.variantPageGrid}>
       <VariantStats />
       {isKfInvestigator(egoGroups) && <WorkBench />}
-      <div className={'variant-page-grid-item-table'}>
+      <div className={style.variantPageGridItemTable}>
         <SearchView />
       </div>
     </div>

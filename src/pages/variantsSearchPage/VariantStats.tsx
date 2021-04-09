@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import CountWithIcon from '@ferlab/ui/core/components/labels/CountWithIcon';
 import Title from 'antd/es/typography/Title';
@@ -9,8 +9,9 @@ import ParticipantIcon from 'icons/ParticipantIcon';
 import VariantIcon from 'icons/VariantIcon';
 import OccurencesIcon from 'icons/OccurencesIcon';
 import { Card } from 'antd';
+import style from './VariantsSearchPage.module.scss';
 
-const VariantStatsContainer: FC = () => {
+const VariantStatsContainer = () => {
   let result: VariantStatsResults = useStatVariants();
 
   if (result.loading) {
@@ -20,18 +21,17 @@ const VariantStatsContainer: FC = () => {
   return (
     <Card
       title={
-        <div className={'variant-page-flex variant-page-space-between'}>
+        <div className={style.variantStatsContainer}>
           <Title level={3}>Data Release 1</Title>
           <div>April 08th, 2021</div>
         </div>
       }
     >
-      <StackLayout className={'variant-page-space-between'}>
+      <StackLayout className={style.variantStatsContainer}>
         <CountWithIcon
           total={result.stats.studiesCount}
-          Icon={
-            <StudyIcon className={'variant-page-icons'} fill={'#383f72'} height={30} width={30} />
-          }
+          // Icon={<StudyIcon className={style.variantPageIcons} />}
+          Icon={<StudyIcon fill={'#383f72'} height={30} width={30} />}
           label={'Studies'}
         />
         <CountWithIcon
