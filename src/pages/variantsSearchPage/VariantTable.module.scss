@@ -11,3 +11,13 @@
 .rowOdd {
   background-color: $gray-2;
 }
+
+.variantTableLink {
+  color: $primary-color;
+  text-decoration: underline;
+}
+
+.variantTableLink:hover {
+  color: $primary-color;
+  text-decoration: none;
+}

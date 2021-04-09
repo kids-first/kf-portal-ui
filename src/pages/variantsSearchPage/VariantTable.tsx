@@ -16,7 +16,7 @@ import { Sqon } from 'store/sqon';
 import { withHistory } from 'services/history';
 // @ts-ignore
 import { compose } from 'recompose';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
@@ -54,10 +54,14 @@ const generateColumns = (props: Props) =>
       sorter: true,
       ellipsis: true,
       width: '10%',
-      render: (hgvsg: string) =>
+      render: (hgvsg: string, record: any) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
-            {hgvsg}
+            <Link to={`/variant/${record.hash}?hgvsg=${hgvsg}`} href={'#top'}>
+              <Button type="link">
+                <div className={style.variantTableLink}>{hgvsg}</div>
+              </Button>
+            </Link>
           </Tooltip>
         ) : (
           ''
@@ -102,7 +106,7 @@ const generateColumns = (props: Props) =>
             target="_blank"
             rel="noopener noreferrer"
           >
-            {clinVar.clin_sig}
+            {clinVar.clin_sig.join(', ')}
           </a>
         ) : (
           ''
@@ -110,17 +114,18 @@ const generateColumns = (props: Props) =>
       sorter: true,
     },
     {
-      title: '# Studies',
+      title: 'Studies',
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }) => studies?.hits?.total || 0,
     },
     {
-      title: 'Participant',
+      title: 'Participants',
       dataIndex: 'participant_ids',
       render: (participantIds: string[]) => {
         const size = participantIds?.length || 0;
-        return (
+        return size > 10 ? (
           <Button
+            className={style.variantTableLink}
             onClick={
               size
                 ? () => {
@@ -137,8 +142,10 @@ const generateColumns = (props: Props) =>
             }
             type="link"
           >
-            [{size}]
+            {size}
           </Button>
+        ) : (
+          size
         );
       },
     },
@@ -155,7 +162,8 @@ const generateColumns = (props: Props) =>
     {
       title: 'Allele Freq.',
       dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.af,
+      render: (frequencies: Frequencies) =>
+        frequencies?.internal?.upper_bound_kf?.af.toExponential(2),
     },
     {
       title: 'Homozygote',

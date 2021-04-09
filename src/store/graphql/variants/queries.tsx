@@ -10,6 +10,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
             hgvsg
             hash
             locus
+            variant_class
             clinvar {
               clinvar_id
               clin_sig
