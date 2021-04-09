@@ -123,9 +123,21 @@ export type VariantEntityResults = {
   loading: boolean;
 };
 
+export type VariantStatsResults = {
+  stats: VariantStats;
+  loading: boolean;
+};
+
 type VariantPageData = {
   aggregations: AggregationResults;
   hits: HitsResults;
+};
+
+export type VariantStats = {
+  distinctVariantsCount: number;
+  occurrencesCount: number;
+  participantsCount: number;
+  studiesCount: number;
 };
 
 type HitsResults = {

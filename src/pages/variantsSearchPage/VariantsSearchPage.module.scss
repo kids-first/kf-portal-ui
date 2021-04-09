@@ -1,0 +1,31 @@
+@import 'src/style/themes/default/colors.module.scss';
+
+.statsAndZepplinContainer {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.variantPageGrid {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: 50% auto;
+}
+
+.variantStatsContainer {
+  justify-content: space-between;
+  display: flex;
+}
+
+.variantPageGridItem {
+  text-align: left;
+}
+
+.variantPageGridItemTable {
+  grid-column: 1 / 3;
+}
+
+.variantPageIcons {
+  height: 18px;
+  vertical-align: middle;
+  fill: $body-1;
+}
