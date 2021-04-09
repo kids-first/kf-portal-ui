@@ -134,9 +134,8 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Card>
+          <Card title="Internal Cohorts">
             <Table
-              title={() => 'Internal Cohorts'}
               dataSource={enhanceNodeWithIndexKey(studies)}
               columns={internalColumns}
               summary={() => (
@@ -154,9 +153,8 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
               pagination={false}
             />
           </Card>
-          <Card>
+          <Card title="External Cohorts">
             <Table
-              title={() => 'External Cohorts'}
               dataSource={makeRowFromFrequencies(frequencies)}
               columns={externalColumns}
               pagination={false}

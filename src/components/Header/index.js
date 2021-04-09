@@ -76,11 +76,6 @@ const NavigationToolBar = (props) => {
                   <HomeOutlined /> Dashboard
                 </NavLink>
               </li>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
-                  <TeamOutlined /> Explore Data
-                </NavLink>
-              </li>
               {isFeatureEnabled('studiesPage') && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
@@ -88,6 +83,12 @@ const NavigationToolBar = (props) => {
                   </NavLink>
                 </li>
               )}
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
+                  <TeamOutlined /> Explore Data
+                </NavLink>
+              </li>
+
               {isKfInvestigator(egoGroups) && (
                 <li>
                   <NavLink currentPathName={currentPathName} to={ROUTES.variant}>

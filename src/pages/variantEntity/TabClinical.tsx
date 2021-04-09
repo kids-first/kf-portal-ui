@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Spin, Table } from 'antd';
+import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabClinicalData } from 'store/graphql/variants/tabActions';
 import {
@@ -29,16 +29,12 @@ const TabClinical = ({ variantId }: OwnProps) => {
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Table
-            title={() => <span>Clinvar {clinvarId ? `[${dataClinvar.clinvar_id}]` : ''}</span>}
-            dataSource={makeClinVarRows(dataClinvar)}
-            columns={columnsClinVar}
-          />
-          <Table
-            title={() => 'Gene - Phenotype'}
-            dataSource={makeGenesOrderedRow(dataGenes)}
-            columns={columnsPhenotypes}
-          />
+          <Card title={<span>Clinvar {clinvarId ? `[${dataClinvar.clinvar_id}]` : ''}</span>}>
+            <Table dataSource={makeClinVarRows(dataClinvar)} columns={columnsClinVar} />
+          </Card>
+          <Card title="Gene - Phenotype">
+            <Table dataSource={makeGenesOrderedRow(dataGenes)} columns={columnsPhenotypes} />
+          </Card>
         </Space>
       </StackLayout>
     </Spin>
