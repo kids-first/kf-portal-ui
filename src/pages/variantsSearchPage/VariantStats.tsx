@@ -10,6 +10,7 @@ import VariantIcon from 'icons/VariantIcon';
 import OccurencesIcon from 'icons/OccurencesIcon';
 import { Card } from 'antd';
 import style from './VariantsSearchPage.module.scss';
+import colors from 'style/themes/default/_colors.scss';
 
 const VariantStatsContainer = () => {
   let result: VariantStatsResults = useStatVariants();
@@ -30,23 +31,22 @@ const VariantStatsContainer = () => {
       <StackLayout className={style.variantStatsContainer}>
         <CountWithIcon
           total={result.stats.studiesCount}
-          // Icon={<StudyIcon className={style.variantPageIcons} />}
-          Icon={<StudyIcon fill={'#383f72'} height={30} width={30} />}
+          Icon={<StudyIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Studies'}
         />
         <CountWithIcon
           total={result.stats.participantsCount}
-          Icon={<ParticipantIcon fill={'#383f72'} height={30} width={30} />}
+          Icon={<ParticipantIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Participants'}
         />
         <CountWithIcon
           total={result.stats.distinctVariantsCount}
-          Icon={<VariantIcon fill={'#383f72'} height={30} width={30} />}
+          Icon={<VariantIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Unique Variants'}
         />
         <CountWithIcon
           total={result.stats.occurrencesCount}
-          Icon={<OccurencesIcon fill={'#383f72'} height={30} width={30} />}
+          Icon={<OccurencesIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Occurences'}
         />
       </StackLayout>
