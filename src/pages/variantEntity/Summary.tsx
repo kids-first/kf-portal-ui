@@ -1,24 +1,39 @@
 import React from 'react';
-
-import './Summary.css';
-import CountWithIcon from '@ferlab/ui/core/components/labels/CountWithIcon';
-import StudyIcon from 'icons/StudyIconSvg';
-import ParticipantIcon from 'icons/ParticipantIcon';
+import { Card } from 'antd';
 import { RiseOutlined } from '@ant-design/icons';
 
+import CountWithIcon from '@ferlab/ui/core/components/labels/CountWithIcon';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import StudyIcon from 'icons/StudyIconSvg';
+import ParticipantIcon from 'icons/ParticipantIcon';
+
 import { VariantEntity } from 'store/graphql/variants/models';
-import { Card } from 'antd';
+
+import styles from './Summary.module.scss';
+
+type SummaryItemProps = {
+  field: string;
+  value: string;
+};
+
+const SummaryItem = ({ field, value }: SummaryItemProps) => (
+  <StackLayout className={styles.summaryItem}>
+    <Label>{field}</Label>
+    <Value>{value}</Value>
+  </StackLayout>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className={styles.label}>{children}</div>
+);
+
+const Value = ({ children }: { children: React.ReactNode }) => (
+  <div className={styles.value}>{children}</div>
+);
 
 type SummaryProps = {
   variant: VariantEntity | undefined;
 };
-
-const SummaryItem = (field: string, value: string) => (
-  <div style={{ display: 'flex' }}>
-    <div style={{ width: '25%' }}>{field}</div>
-    <div style={{ width: '75%' }}>{value}</div>
-  </div>
-);
 
 const Summary = ({ variant }: SummaryProps) => {
   if (!variant) {
@@ -27,51 +42,49 @@ const Summary = ({ variant }: SummaryProps) => {
 
   return (
     <Card>
-      <div className={'grid-top-container'}>
-        <div className={'grid-top-container-item'}>
-          {SummaryItem('Chr', variant.chromosome)}
-          {SummaryItem('Start', variant.start)}
-          {SummaryItem('Allele Alt.', variant.start)}
-          {SummaryItem('Allele Réf.', variant.reference)}
+      <div className={styles.topContainer}>
+        <div>
+          <SummaryItem field="Chr" value={variant.chromosome} />
+          <SummaryItem field="Start" value={variant.start} />
+          <SummaryItem field="Allele Alt." value={variant.start} />
+          <SummaryItem field="Allele Réf." value={variant.reference} />
         </div>
-        <div className={'grid-top-container-item'}>
-          <div className={'grid-top-container-item'}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <CountWithIcon
-                Icon={<StudyIcon className={'query-builder-icon'} />}
-                label={'Studies'}
-                total={variant.studies.hits.total}
-              />
-              <CountWithIcon
-                Icon={<ParticipantIcon className={'query-builder-icon'} />}
-                label={'Participants'}
-                total={variant.participant_number}
-              />
-              <CountWithIcon
-                Icon={<RiseOutlined className={'query-builder-icon'} />}
-                label={'Participants'}
-                total={variant.frequencies.internal.lower_bound_kf.af.toExponential(2)}
-              />
+        <div>
+          <StackLayout className={styles.topLeftContainer}>
+            <CountWithIcon
+              Icon={<StudyIcon />}
+              label={'Studies'}
+              total={variant.studies.hits.total}
+            />
+            <CountWithIcon
+              Icon={<ParticipantIcon />}
+              label={'Participants'}
+              total={variant.participant_number}
+            />
+            <CountWithIcon
+              Icon={<RiseOutlined />}
+              label={'Participants'}
+              total={variant.frequencies.internal.lower_bound_kf.af.toExponential(2)}
+            />
+          </StackLayout>
+          <StackLayout className={styles.buttomLeftContainer}>
+            <div>
+              <Label>Type</Label>
+              <Value>{variant.variant_class}</Value>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <div>Type</div>
-                <div>{variant.variant_class}</div>
-              </div>
-              <div>
-                <div>Genome Ref.</div>
-                <div>GRCh38</div>
-              </div>
-              <div>
-                <div>ClinVar</div>
-                <div>{variant.clinvar?.clinvar_id || '-'}</div>
-              </div>
-              <div>
-                <div>dbSNP</div>
-                <div>{variant.rsnumber || '-'}</div>
-              </div>
+            <div>
+              <Label>Genome Ref.</Label>
+              <Value>GRCh38</Value>
             </div>
-          </div>
+            <div>
+              <Label>ClinVar</Label>
+              <Value>{variant.clinvar?.clinvar_id || '-'}</Value>
+            </div>
+            <div>
+              <Label>dbSNP</Label>
+              <Value>{variant.rsnumber || '-'}</Value>
+            </div>
+          </StackLayout>
         </div>
       </div>
     </Card>
