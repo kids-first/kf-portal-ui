@@ -113,7 +113,7 @@ const columns = [
   {
     title: 'Strand',
     dataIndex: 'strand',
-    render(strand: any) {
+    render(strand: number) {
       const isInDomain = [-1, 1].some((e) => e === strand);
       if (!isInDomain) {
         return <></>;
@@ -140,7 +140,7 @@ const columns = [
 
       return (
         <ExpandableCell
-          numWhenCollapsed={2}
+          nOfElementsWhenCollapsed={2}
           dataSource={impacts}
           renderItem={(itemImpact: string[]) => {
             const title = itemImpact[INDEX_IMPACT_TITLE];
@@ -191,8 +191,8 @@ const makeRows = (consequences: Consequence[]) =>
       ],
       [
         'Fathmm',
-        consequence.node.predictions?.fathmm_pred || 'toto',
-        consequence.node.predictions?.fathmm_converted_rankscore || 89,
+        consequence.node.predictions?.fathmm_pred,
+        consequence.node.predictions?.fathmm_converted_rankscore,
       ],
       ['Cadd', null, consequence.node.predictions?.cadd_rankscore],
       ['Dann', null, consequence.node.predictions?.dann_rankscore],
@@ -229,14 +229,13 @@ const TabSummary = ({ variantId }: OwnProps) => {
             const biotype = tableData.biotype;
             const orderedConsequences = tableData.consequences;
             return (
-              <Card key={index}>
+              <Card title={[symbol, omim, biotype].join(' ')} key={index}>
                 <ExpandableTable
-                  numWhenCollapsed={1}
+                  nOfElementsWhenCollapsed={1}
                   buttonText={(showAll, hiddenNum) =>
                     showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
                   }
                   key={index}
-                  title={() => [symbol, omim, biotype].join(' ')}
                   dataSource={makeRows(orderedConsequences)}
                   columns={columns}
                   pagination={false}

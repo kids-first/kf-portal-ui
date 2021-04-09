@@ -4,20 +4,21 @@ import { ListProps } from 'antd/lib/list';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 type OwnProps = ListProps<any> & {
-  numWhenCollapsed?: number;
+  nOfElementsWhenCollapsed?: number;
 };
 
 const DEFAULT_NUM_COLLAPSED = 5;
 
-const ExpandableCell = ({ numWhenCollapsed, dataSource, renderItem, ...listProps }: OwnProps) => {
+const ExpandableCell = ({
+  nOfElementsWhenCollapsed = DEFAULT_NUM_COLLAPSED,
+  dataSource,
+  renderItem,
+  ...listProps
+}: OwnProps) => {
   const [showAll, setShowAll] = useState(false);
-
-  const nLimit = numWhenCollapsed || DEFAULT_NUM_COLLAPSED;
-
-  const sliceNum = showAll ? undefined : nLimit;
-
-  const showButton = (dataSource?.length || 0) > nLimit;
-
+  const dataTotalLength = dataSource?.length || 0;
+  const sliceNum = showAll ? dataTotalLength : nOfElementsWhenCollapsed;
+  const showButton = dataTotalLength > nOfElementsWhenCollapsed;
   return (
     <Space direction="vertical" align={'start'}>
       <List
