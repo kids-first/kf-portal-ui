@@ -334,3 +334,20 @@ export const TAB_CLINICAL_QUERY = gql`
     }
   }
 `;
+
+export const VARIANT_STATS_QUERY = gql`
+  query VariantStats {
+    variantStats {
+      hits {
+        edges {
+          node {
+            distinctVariantsCount
+            occurrencesCount
+            participantsCount
+            studiesCount
+          }
+        }
+      }
+    }
+  }
+`;
