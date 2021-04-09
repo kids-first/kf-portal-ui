@@ -2,7 +2,7 @@
 import React from 'react';
 
 type StudyIconProps = {
-  className: string | undefined;
+  className?: string;
 };
 
 const StudyIcon = ({ className }: StudyIconProps) => (
