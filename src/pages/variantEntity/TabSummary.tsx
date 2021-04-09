@@ -1,11 +1,18 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { Card, List, Space, Spin, Table } from 'antd';
+import { Card, List, Space, Spin, Tag, Typography } from 'antd';
 import Summary from './Summary';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Consequence, VariantEntity } from 'store/graphql/variants/models';
+import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
 import TabError from './TabError';
+import ExpandableCell from 'components/ExpandableCell';
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import capitalize from 'lodash/capitalize';
+import style from 'style/themes/default/_colors.scss';
+import ExpandableTable from 'components/ExpandableTable';
+
+const { Text } = Typography;
 
 type OwnProps = {
   variantId: string;
@@ -79,6 +86,10 @@ const makeTables = (rawConsequences: Consequence[]) => {
   return orderConsequencesForTable(orderedGenes);
 };
 
+const INDEX_IMPACT_TITLE = 0;
+const INDEX_IMPACT_LABEL = 1;
+const INDEX_IMPACT_SCORE = 2;
+
 const columns = [
   {
     title: 'AA',
@@ -102,22 +113,52 @@ const columns = [
   {
     title: 'Strand',
     dataIndex: 'strand',
+    render(strand: any) {
+      const isInDomain = [-1, 1].some((e) => e === strand);
+      if (!isInDomain) {
+        return <></>;
+      }
+      return strand > 0 ? <PlusOutlined /> : <MinusOutlined />;
+    },
   },
   {
     title: 'VEP',
     dataIndex: 'vep',
+    render: (vep: Impact) => {
+      const loweredCaseVep = vep.toLowerCase();
+      return <Tag color={style[`${loweredCaseVep}Impact`]}>{capitalize(loweredCaseVep)}</Tag>;
+    },
   },
 
   {
     title: 'Impact',
     dataIndex: 'impact',
-    render: (impacts: [string[]]) => (
-      <List
-        size="small"
-        dataSource={impacts}
-        renderItem={(items: string[]) => <List.Item>{items?.toString()}</List.Item>}
-      />
-    ),
+    render: (impacts: string[][]) => {
+      if (impacts.length === 0) {
+        return <></>;
+      }
+
+      return (
+        <ExpandableCell
+          numWhenCollapsed={2}
+          dataSource={impacts}
+          renderItem={(itemImpact: string[]) => {
+            const title = itemImpact[INDEX_IMPACT_TITLE];
+            const label = itemImpact[INDEX_IMPACT_LABEL];
+            const score = itemImpact[INDEX_IMPACT_SCORE];
+            const description = label ? `${label} - ${score}` : score;
+            return (
+              <List.Item>
+                <Space>
+                  <Text type={'secondary'}>{title}:</Text>
+                  <Text>{description}</Text>
+                </Space>
+              </List.Item>
+            );
+          }}
+        />
+      );
+    },
   },
   {
     title: 'Conservations',
@@ -139,29 +180,29 @@ const makeRows = (consequences: Consequence[]) =>
     vep: consequence.node.vep_impact,
     impact: [
       [
-        'sift',
+        'Sift',
         consequence.node.predictions?.sift_pred,
         consequence.node.predictions?.sift_converted_rankscore,
       ],
       [
-        'polyphen2',
+        'Polyphen2',
         consequence.node.predictions?.polyphen2_hvar_pred,
         consequence.node.predictions?.sift_converted_rankscore,
       ],
       [
-        'fathmm',
+        'Fathmm',
         consequence.node.predictions?.fathmm_pred,
         consequence.node.predictions?.fathmm_converted_rankscore,
       ],
-      ['cadd', consequence.node.predictions?.cadd_rankscore],
-      ['dann', consequence.node.predictions?.dann_rankscore],
+      ['Cadd', null, consequence.node.predictions?.cadd_rankscore],
+      ['Dann', null, consequence.node.predictions?.dann_rankscore],
       [
-        'lrt',
+        'Lrt',
         consequence.node.predictions?.lrt_pred,
         consequence.node.predictions?.lrt_converted_rankscore,
       ],
-      ['revel', consequence.node.predictions?.revel_rankscore],
-    ],
+      ['Revel', null, consequence.node.predictions?.revel_rankscore],
+    ].filter(([label, , score]) => ['Sift', 'Polyphen2'].includes(label) || score),
     conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
     transcript: consequence.node.ensembl_transcript_id,
   }));
@@ -188,8 +229,18 @@ const TabSummary = ({ variantId }: OwnProps) => {
             const biotype = tableData.biotype;
             const orderedConsequences = tableData.consequences;
             return (
-              <Card key={index} title={[symbol, omim, biotype].join(' ')}>
-                <Table dataSource={makeRows(orderedConsequences)} columns={columns} />
+              <Card key={index}>
+                <ExpandableTable
+                  numWhenCollapsed={1}
+                  buttonText={(showAll, hiddenNum) =>
+                    showAll ? 'Less' : `Show Transcripts (${hiddenNum})`
+                  }
+                  key={index}
+                  title={() => [symbol, omim, biotype].join(' ')}
+                  dataSource={makeRows(orderedConsequences)}
+                  columns={columns}
+                  pagination={false}
+                />
               </Card>
             );
           })}
