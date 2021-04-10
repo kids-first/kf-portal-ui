@@ -21,9 +21,9 @@ const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
     : buildVariantIdSqon(suggestionId);
 };
 
-const PAGE_SIZE = 10;
+export const SEARCH_PAGE_SIZE = 10;
 
-const computeOffSet = (pageNum: number) => PAGE_SIZE * (pageNum - 1);
+const computeOffSet = (pageNum: number) => SEARCH_PAGE_SIZE * (pageNum - 1);
 
 export const useVariantSearchTableData = (
   selectedSuggestion: SelectedSuggestion,
@@ -32,7 +32,7 @@ export const useVariantSearchTableData = (
   const { loading, result } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
     variables: {
       sqon: buildSearchTableSqon(selectedSuggestion),
-      pageSize: PAGE_SIZE,
+      pageSize: SEARCH_PAGE_SIZE,
       offset: computeOffSet(pageNum),
     },
   });
