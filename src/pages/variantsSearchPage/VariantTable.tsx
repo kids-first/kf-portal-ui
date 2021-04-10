@@ -9,6 +9,7 @@ import {
   Consequence,
   Frequencies,
   SelectedSuggestion,
+  VariantEntity,
 } from 'store/graphql/variants/models';
 import { connect, ConnectedProps } from 'react-redux';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
@@ -54,7 +55,7 @@ const generateColumns = (props: Props) =>
       sorter: true,
       ellipsis: true,
       width: '10%',
-      render: (hgvsg: string, record: any) =>
+      render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
             <Link to={`/variant/${record.hash}?hgvsg=${hgvsg}`} href={'#top'}>
@@ -175,10 +176,10 @@ const generateColumns = (props: Props) =>
 const VariantTable: FunctionComponent<Props> = (props) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
   const { selectedSuggestion } = props;
-  const { loading: loadingData, results: data } = useVariantSearchTableData(
-    selectedSuggestion,
-    currentPageNum,
-  );
+  const {
+    loading: loadingData,
+    results: { variants: data, total },
+  } = useVariantSearchTableData(selectedSuggestion, currentPageNum);
 
   useEffect(() => {
     //make sure page number is reset when another selection is selected
@@ -189,7 +190,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
     <Table
       pagination={{
         current: currentPageNum,
-        total: data.total,
+        total: total,
         onChange: (page) => {
           if (currentPageNum !== page) {
             setCurrentPageNum(page);
@@ -198,7 +199,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
       }}
       loading={loadingData}
       bordered
-      dataSource={data.nodes}
+      dataSource={data}
       columns={generateColumns(props)}
       className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}
