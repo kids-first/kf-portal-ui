@@ -10,6 +10,7 @@ import ParticipantIcon from 'icons/ParticipantIcon';
 import { VariantEntity } from 'store/graphql/variants/models';
 
 import styles from './Summary.module.scss';
+import { toExponentialNotation } from 'utils';
 
 type SummaryItemProps = {
   field: string;
@@ -46,7 +47,10 @@ const Summary = ({ variant }: SummaryProps) => {
         <div>
           <SummaryItem field="Chr" value={variant.chromosome} />
           <SummaryItem field="Start" value={variant.start} />
-          <SummaryItem field="Allele Alt." value={variant.start} />
+          <SummaryItem
+            field="Allele Alt."
+            value={`${variant.frequencies?.internal?.upper_bound_kf?.ac}`}
+          />
           <SummaryItem field="Allele Réf." value={variant.reference} />
         </div>
         <div>
@@ -63,8 +67,8 @@ const Summary = ({ variant }: SummaryProps) => {
             />
             <CountWithIcon
               Icon={<RiseOutlined />}
-              label={'Participants'}
-              total={variant.frequencies.internal.lower_bound_kf.af.toExponential(2)}
+              label={'Frequency'}
+              total={toExponentialNotation(variant.frequencies?.internal?.upper_bound_kf?.af)}
             />
           </StackLayout>
           <StackLayout className={styles.buttomLeftContainer}>
@@ -73,7 +77,7 @@ const Summary = ({ variant }: SummaryProps) => {
               <Value>{variant.variant_class}</Value>
             </div>
             <div>
-              <Label>Genome Ref.</Label>
+              <Label>Ref Genome</Label>
               <Value>GRCh38</Value>
             </div>
             <div>

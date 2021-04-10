@@ -91,3 +91,8 @@ export const getFieldDisplayName = (fieldName, extendedMapping) =>
   extendedMapping.find((mapping) => mapping.field === fieldName)?.displayName || fieldName;
 
 export const hasUserRole = (user) => Array.isArray(user.roles) && !!user.roles[0];
+
+export const isNumber = (n) => n && !Number.isNaN(n);
+
+export const toExponentialNotation = (numberCandidate, fractionDigits = 2) =>
+  isNumber(numberCandidate) ? numberCandidate.toExponential(fractionDigits) : numberCandidate;

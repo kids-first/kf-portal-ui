@@ -99,11 +99,7 @@ const columns = [
     title: 'Consequence',
     dataIndex: 'consequences',
     render: (consequences: string[]) => (
-      <List
-        size="small"
-        dataSource={consequences}
-        renderItem={(item) => <List.Item>{item}</List.Item>}
-      />
+      <ExpandableCell dataSource={consequences} />
     ),
   },
   {

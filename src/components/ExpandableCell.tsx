@@ -7,12 +7,12 @@ type OwnProps = ListProps<any> & {
   nOfElementsWhenCollapsed?: number;
 };
 
-const DEFAULT_NUM_COLLAPSED = 5;
+const DEFAULT_NUM_COLLAPSED = 3;
 
 const ExpandableCell = ({
   nOfElementsWhenCollapsed = DEFAULT_NUM_COLLAPSED,
   dataSource,
-  renderItem,
+  renderItem = (item) => <List.Item>{item}</List.Item>,
   ...listProps
 }: OwnProps) => {
   const [showAll, setShowAll] = useState(false);

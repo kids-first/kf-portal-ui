@@ -153,19 +153,42 @@ type AggregationResults = {
 };
 
 type Study = {
-  node: {
-    participant_number: number;
-    study_id: string;
-    frequencies: FreqInternal;
-  };
+  participant_number: number;
+  study_id: string;
+  frequencies: FreqInternal;
+};
+
+export type StudyNode = {
+  node: Study;
 };
 
 export type StudiesHits = {
   hits: {
     total: number;
-    edges: Study[];
+    edges: StudyNode[];
   };
 };
+
+export type OmimCondition = string[][];
+export type HpoCondition = string[][];
+export type OrphanetCondition = [string, number][];
+export type DddCondition = string[];
+export type CosmicCondition = string[];
+
+export type Condition =
+  | OmimCondition
+  | HpoCondition
+  | OrphanetCondition
+  | DddCondition
+  | CosmicCondition;
+
+export type OrphanetInheritance = string[];
+
+export type OmimInheritance = string[];
+
+export type Inheritance = string | OrphanetInheritance | OmimInheritance;
+
+export type OmimGene = string[][];
 
 export type Ddd = {
   node: {
@@ -176,7 +199,7 @@ export type Ddd = {
 export type Orphanet = {
   node: {
     panel: string;
-    inheritance: string[] | null | undefined;
+    inheritance: OrphanetInheritance | null | undefined;
     disorder_id: number;
   };
 };
@@ -185,7 +208,7 @@ export type Omim = {
   node: {
     omim_id: string;
     name: string;
-    inheritance: string[] | undefined | null;
+    inheritance: OmimInheritance | undefined | null;
   };
 };
 
@@ -264,6 +287,10 @@ export type VariantEntity = {
   genes: GenesHits;
   consequences: ConsequencesHitsEdges;
   [key: string]: any;
+};
+
+export type VariantEntityNode = {
+  node: VariantEntity;
 };
 
 export type VariantEntityHitsEdges = {
