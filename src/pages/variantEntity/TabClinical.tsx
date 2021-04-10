@@ -30,10 +30,18 @@ const TabClinical = ({ variantId }: OwnProps) => {
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Card title={<span>Clinvar {clinvarId ? `[${dataClinvar.clinvar_id}]` : ''}</span>}>
-            <Table dataSource={makeClinVarRows(dataClinvar)} columns={columnsClinVar} />
+            <Table
+              pagination={false}
+              dataSource={makeClinVarRows(dataClinvar)}
+              columns={columnsClinVar}
+            />
           </Card>
           <Card title="Gene - Phenotype">
-            <Table dataSource={makeGenesOrderedRow(dataGenes)} columns={columnsPhenotypes} />
+            <Table
+              pagination={false}
+              dataSource={makeGenesOrderedRow(dataGenes)}
+              columns={columnsPhenotypes}
+            />
           </Card>
         </Space>
       </StackLayout>

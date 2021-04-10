@@ -7,10 +7,20 @@ import {
   Orphanet,
   HitsEdges,
   ClinVar,
+  Condition,
+  OrphanetCondition,
+  OmimGene,
+  DddCondition,
+  Inheritance,
+  OrphanetInheritance,
+  OmimCondition,
+  OmimInheritance,
+  HpoCondition,
+  CosmicCondition,
 } from 'store/graphql/variants/models';
 import { toKebabCase } from 'utils';
-import { List } from 'antd';
 import React from 'react';
+import ExpandableCell from 'components/ExpandableCell';
 
 export enum Source {
   orphanet = 'Orphanet',
@@ -139,8 +149,8 @@ export const makeGenesOrderedRow = (genesHits: HitsEdges) => {
   return groupedRows.map((row, index) => ({
     source: row.source,
     gene: row.gene,
-    condition: row.condition,
-    inheritance: row.inheritance,
+    condition: row.condition as Condition,
+    inheritance: row.inheritance as Inheritance,
     key: toKebabCase(`${index}-${[row.gene].flat().join('-')}`),
   }));
 };
@@ -159,21 +169,6 @@ export const columnsClinVar = [
     dataIndex: 'inheritance',
   },
 ];
-
-type OmimCondition = string[][];
-type HpoCondition = string[][];
-type OrphanetCondition = [string, number][];
-type DddCondition = string[];
-type CosmicCondition = string[];
-
-type Condition = OmimCondition | HpoCondition | OrphanetCondition | DddCondition | CosmicCondition;
-
-type OrphanetInheritance = string[];
-type OmimInheritance = string[];
-
-type Inheritance = string | OrphanetInheritance | OmimInheritance;
-
-type OmimGene = string[][];
 
 type Record = {
   source: Source;
@@ -219,7 +214,7 @@ export const columnsPhenotypes = [
       const source = record.source;
       if (source === Source.omim) {
         const omimCondition = record.condition as OmimCondition;
-        const list = omimCondition.map(([geneOmimName, omimId], index: number) => (
+        const omimConditions = omimCondition.map(([geneOmimName, omimId], index: number) => (
           <span key={index}>
             {geneOmimName} ( MIM: &nbsp;
             <a
@@ -233,16 +228,10 @@ export const columnsPhenotypes = [
             &nbsp; )
           </span>
         ));
-        return (
-          <List
-            size="small"
-            dataSource={list}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        return <ExpandableCell dataSource={omimConditions} />;
       } else if (source === Source.orphanet) {
-        const orphanetCondition = record.condition as OrphanetCondition;
-        const list = orphanetCondition.map(([panel, diseaseId], index: number) => (
+        const orphanetConditions = record.condition as OrphanetCondition;
+        const orphanetCondtions = orphanetConditions.map(([panel, diseaseId], index: number) => (
           <a
             key={index}
             target="_blank"
@@ -255,16 +244,10 @@ export const columnsPhenotypes = [
             {panel}
           </a>
         ));
-        return (
-          <List
-            size="small"
-            dataSource={list}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        return <ExpandableCell dataSource={orphanetCondtions} />;
       } else if (source === Source.hpo) {
         const hpoCondition = record.condition as HpoCondition;
-        const list = hpoCondition.map(([termLabel, termId], index: number) => {
+        const hpoConditions = hpoCondition.map(([termLabel, termId], index: number) => {
           const split = termLabel.split('(');
           const condition = split[0];
           return (
@@ -282,32 +265,14 @@ export const columnsPhenotypes = [
             </span>
           );
         });
-        return (
-          <List
-            size="small"
-            dataSource={list}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        return <ExpandableCell dataSource={hpoConditions} />;
       } else if (source === Source.ddd) {
         const dddCondition = record.condition as DddCondition;
-        return (
-          <List
-            size="small"
-            dataSource={dddCondition}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        return <ExpandableCell dataSource={dddCondition} />;
       }
       //Cosmic
       const comicCondition = record.condition as CosmicCondition;
-      return (
-        <List
-          size="small"
-          dataSource={comicCondition}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
-      );
+      return <ExpandableCell dataSource={comicCondition} />;
     },
   },
   {
@@ -316,23 +281,11 @@ export const columnsPhenotypes = [
     render: (text: Inheritance, record: Record) => {
       const source = record.source;
       if (source === Source.orphanet) {
-        const orphanetInheritance = record.inheritance as OrphanetInheritance;
-        return (
-          <List
-            size="small"
-            dataSource={orphanetInheritance}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        const orphanetInheritance = (record.inheritance || []) as OrphanetInheritance;
+        return <ExpandableCell dataSource={orphanetInheritance.filter((e) => e)} />;
       } else if (source === Source.omim) {
         const omimInheritance = record.inheritance as OmimInheritance;
-        return (
-          <List
-            size="small"
-            dataSource={omimInheritance}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
-          />
-        );
+        return <ExpandableCell dataSource={omimInheritance} />;
       }
       return record.inheritance;
     },

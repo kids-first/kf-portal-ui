@@ -91,3 +91,6 @@ export const getFieldDisplayName = (fieldName, extendedMapping) =>
   extendedMapping.find((mapping) => mapping.field === fieldName)?.displayName || fieldName;
 
 export const hasUserRole = (user) => Array.isArray(user.roles) && !!user.roles[0];
+
+export const formatVariantFrequency = (frequency, fractionDigits = 2) =>
+  frequency && !Number.isNaN(frequency) ? frequency.toExponential(fractionDigits) : frequency;

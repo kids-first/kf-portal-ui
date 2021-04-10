@@ -10,6 +10,7 @@ import {
   Frequencies,
   SelectedSuggestion,
   VariantEntity,
+  VariantEntityNode,
 } from 'store/graphql/variants/models';
 import { connect, ConnectedProps } from 'react-redux';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
@@ -22,6 +23,7 @@ import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
+import { formatVariantFrequency } from 'utils';
 
 const DEFAULT_PAGE_NUM = 1;
 type VariantTableState = {
@@ -164,7 +166,7 @@ const generateColumns = (props: Props) =>
       title: 'Allele Freq.',
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) =>
-        frequencies?.internal?.upper_bound_kf?.af.toExponential(2),
+        formatVariantFrequency(frequencies?.internal?.upper_bound_kf?.af),
     },
     {
       title: 'Homozygote',
@@ -172,6 +174,9 @@ const generateColumns = (props: Props) =>
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
   ].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
+
+const makeRows = (rows: VariantEntityNode[]) =>
+  rows.map((row: VariantEntityNode, index: number) => ({ ...row.node, key: `${index}` }));
 
 const VariantTable: FunctionComponent<Props> = (props) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
@@ -199,7 +204,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
       }}
       loading={loadingData}
       bordered
-      dataSource={data}
+      dataSource={makeRows(data)}
       columns={generateColumns(props)}
       className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}

@@ -24916,3 +24916,10 @@ h3.ant-typography {
 .ant-alert {
   color: #910616;
 }
+.ant-list {
+  color: #383f72;
+}
+.ant-btn-link:hover,
+.ant-btn-link:focus {
+  border: none;
+}

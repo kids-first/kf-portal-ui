@@ -1,10 +1,6 @@
 import { SEARCH_VARIANT_TABLE_QUERY } from './queries';
-import {
-  buildVariantIdSqon,
-  enhanceNodeWithIndexKey,
-  useLazyResultQuery,
-} from 'store/graphql/utils/query';
-import { GenomicFeatureType, SelectedSuggestion, VariantEntity } from './models';
+import { buildVariantIdSqon, useLazyResultQuery } from 'store/graphql/utils/query';
+import { GenomicFeatureType, SelectedSuggestion, VariantEntityNode } from './models';
 
 const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
   const { suggestionId, featureType, geneSymbol } = selectedSuggestion;
@@ -41,10 +37,9 @@ export const useVariantSearchTableData = (
     },
   });
 
-  const nodes = enhanceNodeWithIndexKey(result?.variants?.hits?.edges);
+  const nodes = result?.variants?.hits?.edges || [];
 
-  // @ts-ignore
-  const variants = nodes as VariantEntity[];
+  const variants = nodes as VariantEntityNode[];
 
   const total = result?.variants?.hits?.total || 0;
   return {
