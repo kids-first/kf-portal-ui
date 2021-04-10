@@ -4,7 +4,7 @@ import {
   enhanceNodeWithIndexKey,
   useLazyResultQuery,
 } from 'store/graphql/utils/query';
-import { GenomicFeatureType, SelectedSuggestion } from './models';
+import { GenomicFeatureType, SelectedSuggestion, VariantEntity } from './models';
 
 const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
   const { suggestionId, featureType, geneSymbol } = selectedSuggestion;
@@ -43,11 +43,14 @@ export const useVariantSearchTableData = (
 
   const nodes = enhanceNodeWithIndexKey(result?.variants?.hits?.edges);
 
+  // @ts-ignore
+  const variants = nodes as VariantEntity[];
+
   const total = result?.variants?.hits?.total || 0;
   return {
     loading,
     results: {
-      nodes,
+      variants,
       total,
     },
   };

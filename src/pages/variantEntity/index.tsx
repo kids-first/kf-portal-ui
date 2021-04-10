@@ -17,7 +17,7 @@ const { Title } = Typography;
 
 type OwnProps = {
   variantId: string;
-  hgvsg: string;
+  hash: string;
 };
 
 const mTabKeys = {
@@ -29,7 +29,9 @@ const mTabKeys = {
 const tabKeyValues = Object.keys(mTabKeys);
 
 const VariantEntity = (props: OwnProps) => {
-  const { variantId, hgvsg } = props;
+  const { hash } = props;
+
+  const hgvsg = new URLSearchParams(window.location.search).get('hgvsg');
 
   const [tabKey, setTabKey] = useTab(tabKeyValues, mTabKeys.summary);
 
@@ -53,7 +55,7 @@ const VariantEntity = (props: OwnProps) => {
           }
           key={mTabKeys.summary}
         >
-          <TabSummary variantId={variantId} />
+          <TabSummary variantId={hash} />
         </TabPane>
         <TabPane
           tab={
@@ -64,7 +66,7 @@ const VariantEntity = (props: OwnProps) => {
           }
           key={mTabKeys.frequencies}
         >
-          <TabFrequencies variantId={variantId} />
+          <TabFrequencies variantId={hash} />
         </TabPane>
         <TabPane
           tab={
@@ -75,7 +77,7 @@ const VariantEntity = (props: OwnProps) => {
           }
           key={mTabKeys.clinical}
         >
-          <TabClinical variantId={variantId} />
+          <TabClinical variantId={hash} />
         </TabPane>
       </Tabs>
     </PageContent>

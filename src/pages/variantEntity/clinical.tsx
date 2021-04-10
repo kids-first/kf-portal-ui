@@ -247,10 +247,10 @@ export const columnsPhenotypes = [
             key={index}
             target="_blank"
             rel="noopener noreferrer"
-            href={`https://www.orpha.net/consor/cgi-bin/Disease_Search.php\
-              ?lng=EN\
-              &data_id=1738\
-              &Disease_Disease_Search_diseaseGroup=${diseaseId}`}
+            href={
+              'https://www.orpha.net/consor/cgi-bin/Disease_Search.php' +
+              `?lng=EN&data_id=1738&Disease_Disease_Search_diseaseGroup=${diseaseId}`
+            }
           >
             {panel}
           </a>
