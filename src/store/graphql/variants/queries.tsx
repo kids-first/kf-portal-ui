@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_VARIANT_TABLE_QUERY = gql`
-  query GetSearchedVariant($sqon: JSON, $pageSize: Int, $offset: Int) {
+  query GetSearchedVariant($sqon: JSON, $pageSize: Int, $offset: Int, $sort: [Sort]) {
     variants {
-      hits(filters: $sqon, first: $pageSize, offset: $offset) {
+      hits(filters: $sqon, first: $pageSize, offset: $offset, sort: $sort) {
         total
         edges {
           node {

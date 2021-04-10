@@ -65,7 +65,7 @@ const Suggester: FunctionComponent<Props> = (props) => {
   const handleSearch = (userRawInput: string) => {
     onClearSuggestions();
     if (userRawInput && userRawInput.length >= MIN_N_OF_CHARS_BEFORE_SEARCH) {
-      return onFetchSuggestions(userRawInput);
+      return onFetchSuggestions(encodeURI(userRawInput));
     }
   };
 
