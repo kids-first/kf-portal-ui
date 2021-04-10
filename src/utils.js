@@ -92,5 +92,7 @@ export const getFieldDisplayName = (fieldName, extendedMapping) =>
 
 export const hasUserRole = (user) => Array.isArray(user.roles) && !!user.roles[0];
 
-export const formatVariantFrequency = (frequency, fractionDigits = 2) =>
-  frequency && !Number.isNaN(frequency) ? frequency.toExponential(fractionDigits) : frequency;
+export const isNumber = (n) => n && !Number.isNaN(n);
+
+export const toExponentialNotation = (numberCandidate, fractionDigits = 2) =>
+  isNumber(numberCandidate) ? numberCandidate.toExponential(fractionDigits) : numberCandidate;

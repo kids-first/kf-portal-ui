@@ -4,7 +4,7 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import { FreqCombined, FreqInternal, Frequencies, StudyNode } from 'store/graphql/variants/models';
 import TabError from './TabError';
-import { formatVariantFrequency } from 'utils';
+import { toExponentialNotation } from 'utils';
 
 type OwnProps = {
   variantId: string;
@@ -37,7 +37,7 @@ const internalColumns = [
   {
     title: 'Frequency',
     dataIndex: 'frequencies',
-    render: (frequencies: FreqInternal) => formatVariantFrequency(frequencies?.upper_bound_kf?.af),
+    render: (frequencies: FreqInternal) => toExponentialNotation(frequencies?.upper_bound_kf?.af),
   },
 ];
 
@@ -81,7 +81,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
       alt: topmed.ac,
       altRef: topmed.an,
       homozygotes: topmed.homozygotes,
-      frequency: formatVariantFrequency(topmed.af),
+      frequency: toExponentialNotation(topmed.af),
       key: '1',
     },
     {
@@ -89,7 +89,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
       alt: gnomadGenomes3.ac,
       altRef: gnomadGenomes3.an,
       homozygotes: gnomadGenomes3.homozygotes,
-      frequency: formatVariantFrequency(gnomadGenomes3.af),
+      frequency: toExponentialNotation(gnomadGenomes3.af),
       key: '2',
     },
     {
@@ -97,7 +97,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
       alt: gnomadGenomes2_1.ac,
       altRef: gnomadGenomes2_1.an,
       homozygotes: gnomadGenomes2_1.homozygotes,
-      frequency: formatVariantFrequency(gnomadGenomes2_1.af),
+      frequency: toExponentialNotation(gnomadGenomes2_1.af),
       key: '3',
     },
     {
@@ -105,7 +105,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
       alt: gnomadExomes2_1.ac,
       altRef: gnomadExomes2_1.an,
       homozygotes: gnomadExomes2_1.homozygotes,
-      frequency: formatVariantFrequency(gnomadExomes2_1.af),
+      frequency: toExponentialNotation(gnomadExomes2_1.af),
       key: '4',
     },
     {
@@ -113,7 +113,7 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
       alt: oneThousandsGenomes.ac,
       altRef: oneThousandsGenomes.an,
       homozygotes: oneThousandsGenomes.homozygotes,
-      frequency: formatVariantFrequency(oneThousandsGenomes.af),
+      frequency: toExponentialNotation(oneThousandsGenomes.af),
       key: '5',
     },
   ];
@@ -151,7 +151,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
                     {internalFrequencies?.homozygotes}
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={5}>
-                    {formatVariantFrequency(internalFrequencies?.af)}
+                    {toExponentialNotation(internalFrequencies?.af)}
                   </Table.Summary.Cell>
                 </Table.Summary.Row>
               )}

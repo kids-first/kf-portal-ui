@@ -23,7 +23,7 @@ import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
-import { formatVariantFrequency } from 'utils';
+import { toExponentialNotation } from 'utils';
 
 const DEFAULT_PAGE_NUM = 1;
 type VariantTableState = {
@@ -166,7 +166,7 @@ const generateColumns = (props: Props) =>
       title: 'Allele Freq.',
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) =>
-        formatVariantFrequency(frequencies?.internal?.upper_bound_kf?.af),
+        toExponentialNotation(frequencies?.internal?.upper_bound_kf?.af),
     },
     {
       title: 'Homozygote',

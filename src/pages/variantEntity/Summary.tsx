@@ -10,7 +10,7 @@ import ParticipantIcon from 'icons/ParticipantIcon';
 import { VariantEntity } from 'store/graphql/variants/models';
 
 import styles from './Summary.module.scss';
-import { formatVariantFrequency } from 'utils';
+import { toExponentialNotation } from 'utils';
 
 type SummaryItemProps = {
   field: string;
@@ -68,7 +68,7 @@ const Summary = ({ variant }: SummaryProps) => {
             <CountWithIcon
               Icon={<RiseOutlined />}
               label={'Frequency'}
-              total={formatVariantFrequency(variant.frequencies?.internal?.upper_bound_kf?.af)}
+              total={toExponentialNotation(variant.frequencies?.internal?.upper_bound_kf?.af)}
             />
           </StackLayout>
           <StackLayout className={styles.buttomLeftContainer}>
