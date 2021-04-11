@@ -16,12 +16,12 @@ const studiesPerPage = 10;
 
 const Studies = () => {
   const { filters } = useFilters();
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   let studiesResults = useGetStudiesPageData({
     sqon: filters,
     first: studiesPerPage,
-    offset: currentPage,
+    offset: (currentPage - 1) * studiesPerPage,
   });
 
   let studiesMappingResults = useGetExtendedMappings('studies');
@@ -52,7 +52,7 @@ const Studies = () => {
             studiesResults={studiesResults}
             filters={filters}
             pagination={{
-              current: currentPage + 1,
+              current: currentPage,
               pageSize: studiesPerPage,
               total: studiesResults.data?.hits.total || 0,
               onChange: (page: number) => {
