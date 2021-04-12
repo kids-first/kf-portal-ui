@@ -3,7 +3,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Table, Tooltip } from 'antd';
 import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
-import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
+import { SEARCH_PAGE_SIZE, useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import {
   ClinVar,
   Consequence,
@@ -23,7 +23,7 @@ import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
-import { toExponentialNotation } from 'utils';
+import { generatePaginationMessage, toExponentialNotation } from 'utils';
 
 const DEFAULT_PAGE_NUM = 1;
 type VariantTableState = {
@@ -193,6 +193,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
 
   return (
     <Table
+      title={() => generatePaginationMessage(currentPageNum, SEARCH_PAGE_SIZE, total)}
       pagination={{
         current: currentPageNum,
         total: total,

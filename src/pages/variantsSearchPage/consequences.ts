@@ -2,35 +2,41 @@ import { Consequence } from 'store/graphql/variants/models';
 
 const keyNoSymbol = 'noSymbol_';
 
-const findHighestImpactConsequenceWithSymbol = (consequences: Consequence[]) =>
-  consequences.reduce((consequenceWithHighestScore, currentConsequence) => {
-    const currentScore = currentConsequence.node?.impact_score || 0;
-    const highestScoreFoundSoFar = consequenceWithHighestScore.node?.impact_score || 0;
-    const currentConsequenceWins = currentScore > highestScoreFoundSoFar;
-    if (currentConsequenceWins) {
-      return { ...currentConsequence };
-    }
-    return { ...consequenceWithHighestScore };
-  }, consequences[0]);
-
 /*
  * Algorithm:
  *   Input: consequences
  *   #=====#
  *   - IF consequence has NO gene (symbol) then keep it;
+ *   - IF consequence has multiple symbols, then keep one consequence per symbol.
  *   - IF consequence has a symbol filter accordingly to these rules:
  *      for a given symbol,
- *        IF
- *          a canonical consequence exists keep it and discard the others (assumes there is only one as such);
- *        ELSE
- *          find the consequence that as the highest "impact_score"(If scores are all equal, take the first one at hand);
+ *        find consequence with highest score s
+ *        IF multiple consequences with same score s then find the one that is canonical
+ *          IF canonical does not exist then grab whatever consequence with score s.
  *   #=====#
  *   Output: filtered consequences.
  * */
-
+export const sortConsequences = (consequences: Consequence[]) => {
+  if (!consequences || consequences.length === 0) {
+    return [];
+  }
+  return consequences
+    .filter((c) => c.node?.impact_score !== null)
+    .sort((a, b) => {
+      const isSameScore = a.node.impact_score! === b.node.impact_score!;
+      const canonicalIsNotFirst = !a.node.canonical && b.node.canonical;
+      const canonicalNeedsToBeSwapped = isSameScore && canonicalIsNotFirst;
+      if (canonicalNeedsToBeSwapped) {
+        return 1;
+      }
+      return b.node.impact_score! - a.node.impact_score!;
+    });
+};
 type SymbolToConsequences = { [key: string]: Consequence[] };
 
-export const generateConsequencesDataLines = (rawConsequences: Consequence[]): Consequence[] => {
+export const generateConsequencesDataLines = (
+  rawConsequences: Consequence[] | null,
+): Consequence[] => {
   if (!rawConsequences || rawConsequences.length === 0) {
     return [];
   }
@@ -45,17 +51,12 @@ export const generateConsequencesDataLines = (rawConsequences: Consequence[]): C
   );
 
   return Object.entries(symbolToConsequences).reduce((acc: Consequence[], [key, consequences]) => {
+    // no gene then show
     if (key === keyNoSymbol) {
       return [...acc, ...consequences];
     }
 
-    const canonicalConsequence = consequences.find(
-      (consequence: Consequence) => consequence.node.canonical,
-    );
-    if (canonicalConsequence) {
-      return [...acc, { ...canonicalConsequence }];
-    }
-
-    return [...acc, { ...findHighestImpactConsequenceWithSymbol(consequences) }];
+    const highestRanked = sortConsequences(consequences)[0] || {};
+    return [...acc, { ...highestRanked }];
   }, []);
 };

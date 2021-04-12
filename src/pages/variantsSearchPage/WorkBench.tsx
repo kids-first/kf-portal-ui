@@ -1,7 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import azicon from 'assets/appache-zeppelin.png';
-import { Card, Typography, Switch, Alert, Button } from 'antd';
+import { Card, Typography, Switch, Alert, Button, Space } from 'antd';
 import style from './WorkBench.module.scss';
 import { RootState } from 'store/rootState';
 
@@ -47,14 +47,14 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux;
+type Props = { isAllowed: boolean } & PropsFromRedux;
 
 const showSwitch = (status: ClusterStatus) =>
   status === ClusterUnverifiedStatus.unverified || isClusterStatusIdling(status);
 
 const showProgress = (status: ClusterStatus) => isClusterStatusInProgress(status);
 
-const WorkBench: FC<Props> = (props) => {
+const WorkBench = (props: Props) => {
   const {
     isLoadingStatus,
     error,
@@ -63,6 +63,7 @@ const WorkBench: FC<Props> = (props) => {
     onStartCluster,
     onStopCluster,
     onReInitializeState,
+    isAllowed,
   } = props;
 
   useInterval(
@@ -74,11 +75,11 @@ const WorkBench: FC<Props> = (props) => {
   );
 
   useEffect(() => {
-    const shouldCheckStatus = !error && status === ClusterUnverifiedStatus.unverified;
+    const shouldCheckStatus = isAllowed && !error && status === ClusterUnverifiedStatus.unverified;
     if (shouldCheckStatus) {
       onGetStatus();
     }
-  }, [status, onGetStatus, error]);
+  }, [status, onGetStatus, error, isAllowed]);
 
   return (
     <Card>
@@ -93,16 +94,22 @@ const WorkBench: FC<Props> = (props) => {
           </Paragraph>
           <div>
             {!error && showSwitch(status) && (
-              <Switch
-                checked={status === ClusterApiStatus.createComplete}
-                loading={isLoadingStatus}
-                size={'small'}
-                onChange={(switchIsOn: boolean) =>
-                  switchIsOn ? onStartCluster() : onStopCluster()
-                }
-                checkedChildren={isLoadingStatus ? '' : 'On'}
-                unCheckedChildren={isLoadingStatus ? '' : 'Off'}
-              />
+              <Space>
+                <Switch
+                  disabled={!isAllowed}
+                  checked={status === ClusterApiStatus.createComplete}
+                  loading={isLoadingStatus}
+                  size={'small'}
+                  onChange={(switchIsOn: boolean) =>
+                    switchIsOn ? onStartCluster() : onStopCluster()
+                  }
+                  checkedChildren={isLoadingStatus ? '' : 'On'}
+                  unCheckedChildren={isLoadingStatus ? '' : 'Off'}
+                />
+                {!isAllowed && (
+                  <Text disabled>Currently available for Kids First investigators only.</Text>
+                )}
+              </Space>
             )}
             {showProgress(status) && <IndeterminateProgress />}
             {error && (
