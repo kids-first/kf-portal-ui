@@ -79,6 +79,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
         edges {
           node {
             participant_number
+            participant_ids
             frequencies {
               topmed {
                 ac
@@ -153,6 +154,22 @@ export const TAB_FREQUENCIES_QUERY = gql`
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const TAB_FREQUENCIES_STUDY_ID_CODE = gql`
+  query GetAllStudiesIdsCodes($sqon: JSON) {
+    studies {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            id
+            code
+            domain
           }
         }
       }

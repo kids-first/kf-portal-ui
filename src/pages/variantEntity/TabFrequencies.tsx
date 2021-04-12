@@ -1,23 +1,92 @@
 import React from 'react';
-import { Card, Space, Table, Spin } from 'antd';
+import { Button, Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
-import { FreqCombined, FreqInternal, Frequencies, StudyNode } from 'store/graphql/variants/models';
+import {
+  useTabFrequenciesData,
+  useTabFrequenciesStudiesData,
+} from 'store/graphql/variants/tabActions';
+import {
+  FreqCombined,
+  FreqInternal,
+  Frequencies,
+  StudyInfo,
+  StudyNode,
+} from 'store/graphql/variants/models';
 import TabError from './TabError';
 import { toExponentialNotation } from 'utils';
+import { Link } from 'react-router-dom';
+import style from '../variantsSearchPage/VariantTable.module.scss';
+import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
+import { Sqon } from 'store/sqon';
+import { RootState } from 'store/rootState';
+import { connect, ConnectedProps } from 'react-redux';
+import { addToSqons } from 'common/sqonUtils';
 
 type OwnProps = {
   variantId: string;
 };
 
-const internalColumns = [
+type FrequencyTabTableContainerState = {
+  currentVirtualStudy: Sqon[];
+};
+
+const internalColumns = (
+  studiesInfo: StudyInfo[],
+  participants: string[],
+  onLinkClick: (sqons: Sqon[]) => void,
+  sqons: Sqon[],
+) => [
   {
     title: 'Studies',
     dataIndex: 'study_id',
+    // eslint-disable-next-line react/display-name
+    render: (study_id: string) => {
+      const study = studiesInfo.find((s) => s.id === study_id);
+      return study ? <div>{study.code}</div> : <div>{study_id}</div>;
+    },
+  },
+  {
+    title: 'Domain',
+    dataIndex: 'study_id',
+    // eslint-disable-next-line react/display-name
+    render: (study_id: string) => {
+      const study = studiesInfo.find((s) => s.id === study_id);
+      return study ? <div>{study.domain.join(', ')}</div> : <div>-</div>;
+    },
   },
   {
     title: '# Participants',
     dataIndex: 'participant_number',
+    // eslint-disable-next-line react/display-name
+    render: (participant_number: string, row: any) =>
+      parseInt(participant_number) > 10 ? (
+        <Link
+          to={'/explore'}
+          href={'#top'}
+          onClick={() => {
+            const study = studiesInfo.find((s) => s.id === row.study_id);
+            if (study) {
+              onLinkClick(
+                addToSqons({
+                  fieldsWValues: [
+                    { field: 'kf_id', value: participants },
+                    { field: 'study.code', value: study.code },
+                  ],
+                  sqons: sqons,
+                }),
+              );
+            }
+            const toTop = document.getElementById('main-page-container');
+            toTop?.scrollTo(0, 0);
+          }}
+        >
+          <Button type="link">
+            <div className={style.variantTableLink}>{participant_number}</div>
+          </Button>
+        </Link>
+      ) : (
+        participant_number
+      ),
   },
   {
     title: 'ALT Allele',
@@ -122,35 +191,77 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
 const makeInternalCohortsRows = (rows: StudyNode[]) =>
   rows.map((row: StudyNode, index: number) => ({ ...row.node, key: `${index}` }));
 
-const TabFrequencies = ({ variantId }: OwnProps) => {
-  const { loading, data, error } = useTabFrequenciesData(variantId);
+const mapDispatch = (dispatch: DispatchStoryPage) => ({
+  onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
+});
 
-  if (error) {
+const mapState = (state: RootState): FrequencyTabTableContainerState => ({
+  currentVirtualStudy: state.currentVirtualStudy.sqons,
+});
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = OwnProps & PropsFromRedux;
+
+const TabFrequencies = (props: Props) => {
+  const { loading, data, error } = useTabFrequenciesData(props.variantId);
+
+  const studyIdList = data.studies.map((s: { node: { study_id: any } }) => s.node.study_id);
+  const { loadingStudies, dataStudies, errorStudies } = useTabFrequenciesStudiesData(studyIdList);
+
+  if (error || errorStudies) {
     return <TabError />;
   }
 
-  const { studies, frequencies } = data;
+  const { studies, frequencies, participant_ids } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={loading || loadingStudies}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Card title="Kids First Studies">
             <Table
               dataSource={makeInternalCohortsRows(studies)}
-              columns={internalColumns}
+              columns={internalColumns(
+                dataStudies || [],
+                participant_ids,
+                props.onClickStudyLink,
+                props.currentVirtualStudy,
+              )}
               summary={() => (
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                  <Table.Summary.Cell index={1}>{data?.participant_number}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={2}>{internalFrequencies?.ac}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={3}>{internalFrequencies?.an}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={4}>
+                  <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={2}>
+                    <Link
+                      to={'/explore'}
+                      href={'#top'}
+                      onClick={() => {
+                        props.onClickStudyLink(
+                          addToSqons({
+                            fieldsWValues: [{ field: 'kf_id', value: participant_ids }],
+                            sqons: props.currentVirtualStudy,
+                          }),
+                        );
+                        const toTop = document.getElementById('main-page-container');
+                        toTop?.scrollTo(0, 0);
+                      }}
+                    >
+                      <Button type="link">
+                        <div className={style.variantTableLink}>{data?.participant_number}</div>
+                      </Button>
+                    </Link>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={3}>{internalFrequencies?.ac}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={4}>{internalFrequencies?.an}</Table.Summary.Cell>
+                  <Table.Summary.Cell index={5}>
                     {internalFrequencies?.homozygotes}
                   </Table.Summary.Cell>
-                  <Table.Summary.Cell index={5}>
+                  <Table.Summary.Cell index={6}>
                     {toExponentialNotation(internalFrequencies?.af)}
                   </Table.Summary.Cell>
                 </Table.Summary.Row>
@@ -171,4 +282,6 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
   );
 };
 
-export default TabFrequencies;
+const Connected = connector(TabFrequencies);
+
+export default Connected;

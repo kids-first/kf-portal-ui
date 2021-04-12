@@ -1,5 +1,11 @@
 import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
-import { TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY, TAB_CLINICAL_QUERY } from './queries';
+import {
+  TAB_CLINICAL_QUERY,
+  TAB_FREQUENCIES_QUERY,
+  TAB_FREQUENCIES_STUDY_ID_CODE,
+  TAB_SUMMARY_QUERY,
+} from './queries';
+import { StudyInfoResults } from './models';
 
 export const useTabFrequenciesData = (variantId: string) => {
   const { loading, result, error } = useLazyResultQuery<any>(TAB_FREQUENCIES_QUERY, {
@@ -16,8 +22,39 @@ export const useTabFrequenciesData = (variantId: string) => {
       frequencies: node?.frequencies || {},
       studies: node?.studies?.hits?.edges || [],
       participant_number: node?.participant_number || 0,
+      participant_ids: node?.participant_ids || [],
     },
     error,
+  };
+};
+
+export const useTabFrequenciesStudiesData = (studiesIds: string[]) => {
+  const { loading, result, error } = useLazyResultQuery<StudyInfoResults>(
+    TAB_FREQUENCIES_STUDY_ID_CODE,
+    {
+      variables: {
+        sqon: {
+          content: [
+            {
+              content: {
+                field: 'kf_id',
+                value: studiesIds,
+              },
+              op: 'in',
+            },
+          ],
+          op: 'and',
+        },
+      },
+    },
+  );
+
+  const nodes = result?.studies?.hits?.edges;
+
+  return {
+    loadingStudies: loading,
+    dataStudies: nodes?.map((n) => n.node),
+    errorStudies: error,
   };
 };
 
