@@ -40,6 +40,7 @@ export type Consequence = {
     predictions: Predictions;
     coding_dna_change: string | null;
     omim_gene_id: string | null;
+    ensembl_gene_id: string | null;
     [key: string]: any;
   };
   [key: string]: any;

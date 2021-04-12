@@ -9,6 +9,7 @@ import {
   makeGenesOrderedRow,
 } from './clinical';
 import TabError from './TabError';
+import ClinVarExternalLink from './ClinVarExternalLink';
 
 type OwnProps = {
   variantId: string;
@@ -29,7 +30,13 @@ const TabClinical = ({ variantId }: OwnProps) => {
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Card title={<span>Clinvar {clinvarId ? `[${dataClinvar.clinvar_id}]` : ''}</span>}>
+          <Card
+            title={
+              <span>
+                Clinvar {clinvarId ? <ClinVarExternalLink clinvarId={`[${clinvarId}]`} /> : ''}
+              </span>
+            }
+          >
             <Table
               pagination={false}
               dataSource={makeClinVarRows(dataClinvar)}
