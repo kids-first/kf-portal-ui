@@ -12,6 +12,8 @@ import { Card } from 'antd';
 import style from './VariantsSearchPage.module.scss';
 import colors from 'style/themes/default/_colors.scss';
 
+const formatCounts = (num: number) => (num || 0).toLocaleString();
+
 const VariantStatsContainer = () => {
   let result: VariantStatsResults = useStatVariants();
 
@@ -30,22 +32,22 @@ const VariantStatsContainer = () => {
     >
       <StackLayout className={style.variantStatsContainer}>
         <CountWithIcon
-          total={result.stats.studiesCount}
+          total={formatCounts(result?.stats?.studiesCount)}
           Icon={<StudyIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Studies'}
         />
         <CountWithIcon
-          total={result.stats.participantsCount}
+          total={formatCounts(result?.stats?.participantsCount)}
           Icon={<ParticipantIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Participants'}
         />
         <CountWithIcon
-          total={result.stats.distinctVariantsCount}
+          total={formatCounts(result.stats.distinctVariantsCount)}
           Icon={<VariantIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Unique Variants'}
         />
         <CountWithIcon
-          total={result.stats.occurrencesCount}
+          total={formatCounts(result.stats.occurrencesCount)}
           Icon={<OccurencesIcon fill={colors.iconColor} height={30} width={30} />}
           label={'Occurences'}
         />
