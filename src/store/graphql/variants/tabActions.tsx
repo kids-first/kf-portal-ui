@@ -1,60 +1,29 @@
 import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
-import {
-  TAB_CLINICAL_QUERY,
-  TAB_FREQUENCIES_QUERY,
-  TAB_FREQUENCIES_STUDY_ID_CODE,
-  TAB_SUMMARY_QUERY,
-} from './queries';
-import { StudyInfoResults } from './models';
+import { TAB_CLINICAL_QUERY, TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY } from './queries';
+
+const MAX_NUMBER_STUDIES = 2000;
 
 export const useTabFrequenciesData = (variantId: string) => {
   const { loading, result, error } = useLazyResultQuery<any>(TAB_FREQUENCIES_QUERY, {
     variables: {
       sqon: buildVariantIdSqon(variantId),
+      studiesSize: MAX_NUMBER_STUDIES,
     },
   });
 
-  const node = result?.variants?.hits?.edges[0]?.node;
+  const nodeVariant = result?.variants?.hits?.edges[0]?.node;
+  const nodesStudies = result?.studies?.hits?.edges;
 
   return {
     loading,
     data: {
-      frequencies: node?.frequencies || {},
-      studies: node?.studies?.hits?.edges || [],
-      participant_number: node?.participant_number || 0,
-      participant_ids: node?.participant_ids || [],
+      frequencies: nodeVariant?.frequencies || {},
+      studies: nodeVariant?.studies?.hits?.edges || [],
+      participant_number: nodeVariant?.participant_number || 0,
+      participant_ids: nodeVariant?.participant_ids || [],
+      dataStudies: nodesStudies?.map((n: { node: any }) => n.node),
     },
     error,
-  };
-};
-
-export const useTabFrequenciesStudiesData = (studiesIds: string[]) => {
-  const { loading, result, error } = useLazyResultQuery<StudyInfoResults>(
-    TAB_FREQUENCIES_STUDY_ID_CODE,
-    {
-      variables: {
-        sqon: {
-          content: [
-            {
-              content: {
-                field: 'kf_id',
-                value: studiesIds,
-              },
-              op: 'in',
-            },
-          ],
-          op: 'and',
-        },
-      },
-    },
-  );
-
-  const nodes = result?.studies?.hits?.edges;
-
-  return {
-    loadingStudies: loading,
-    dataStudies: nodes?.map((n) => n.node),
-    errorStudies: error,
   };
 };
 

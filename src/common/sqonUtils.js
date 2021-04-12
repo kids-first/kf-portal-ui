@@ -171,7 +171,7 @@ export const termToSqon = ({ field, value }) => ({
 
 export const addToSqons = ({ fieldsWValues, sqons }) => {
   const currentSqon = {
-    content: fieldsWValues.map((fv) => ({ ...termToSqon({ field: fv.field, value: fv.value }) })),
+    content: fieldsWValues.map(({ field, value }) => ({ ...termToSqon({ field, value }) })),
     op: 'and',
   };
 

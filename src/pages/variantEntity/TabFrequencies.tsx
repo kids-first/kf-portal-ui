@@ -1,10 +1,7 @@
 import React from 'react';
 import { Button, Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import {
-  useTabFrequenciesData,
-  useTabFrequenciesStudiesData,
-} from 'store/graphql/variants/tabActions';
+import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import {
   FreqCombined,
   FreqInternal,
@@ -30,6 +27,8 @@ type FrequencyTabTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
 
+const MIN_FOR_LINK = 10;
+
 const internalColumns = (
   studiesInfo: StudyInfo[],
   participants: string[],
@@ -42,7 +41,7 @@ const internalColumns = (
     // eslint-disable-next-line react/display-name
     render: (study_id: string) => {
       const study = studiesInfo.find((s) => s.id === study_id);
-      return study ? <div>{study.code}</div> : <div>{study_id}</div>;
+      return study?.code || study_id;
     },
   },
   {
@@ -51,7 +50,7 @@ const internalColumns = (
     // eslint-disable-next-line react/display-name
     render: (study_id: string) => {
       const study = studiesInfo.find((s) => s.id === study_id);
-      return study ? <div>{study.domain.join(', ')}</div> : <div>-</div>;
+      return study?.domain.join(', ') || '';
     },
   },
   {
@@ -59,7 +58,7 @@ const internalColumns = (
     dataIndex: 'participant_number',
     // eslint-disable-next-line react/display-name
     render: (participant_number: string, row: any) =>
-      parseInt(participant_number) > 10 ? (
+      parseInt(participant_number) > MIN_FOR_LINK ? (
         <Link
           to={'/explore'}
           href={'#top'}
@@ -208,26 +207,23 @@ type Props = OwnProps & PropsFromRedux;
 const TabFrequencies = (props: Props) => {
   const { loading, data, error } = useTabFrequenciesData(props.variantId);
 
-  const studyIdList = data.studies.map((s: { node: { study_id: any } }) => s.node.study_id);
-  const { loadingStudies, dataStudies, errorStudies } = useTabFrequenciesStudiesData(studyIdList);
-
-  if (error || errorStudies) {
+  if (error) {
     return <TabError />;
   }
 
-  const { studies, frequencies, participant_ids } = data;
+  const { studies, frequencies, participant_ids, dataStudies } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
   return (
-    <Spin spinning={loading || loadingStudies}>
+    <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Card title="Kids First Studies">
             <Table
               dataSource={makeInternalCohortsRows(studies)}
               columns={internalColumns(
-                dataStudies || [],
+                dataStudies,
                 participant_ids,
                 props.onClickStudyLink,
                 props.currentVirtualStudy,

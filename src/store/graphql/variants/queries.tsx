@@ -73,7 +73,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
 `;
 
 export const TAB_FREQUENCIES_QUERY = gql`
-  query GetFrequenciesTabVariant($sqon: JSON) {
+  query GetFrequenciesTabVariant($sqon: JSON, $studiesSize: Int) {
     variants {
       hits(filters: $sqon) {
         edges {
@@ -158,17 +158,12 @@ export const TAB_FREQUENCIES_QUERY = gql`
         }
       }
     }
-  }
-`;
-
-export const TAB_FREQUENCIES_STUDY_ID_CODE = gql`
-  query GetAllStudiesIdsCodes($sqon: JSON) {
     studies {
-      hits(filters: $sqon) {
+      hits(first: $studiesSize) {
         edges {
           node {
-            id
             code
+            id
             domain
           }
         }
