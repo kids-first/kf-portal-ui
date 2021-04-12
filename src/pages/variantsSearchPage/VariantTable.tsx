@@ -20,7 +20,7 @@ import { withHistory } from 'services/history';
 import { compose } from 'recompose';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import ROUTES from 'common/routes';
-import { createQueryInCohortBuilder } from '../../store/actionCreators/studyPage';
+import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
 import { generatePaginationMessage, toExponentialNotation } from 'utils';

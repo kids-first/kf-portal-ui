@@ -13,7 +13,7 @@ import style from 'style/themes/default/_colors.scss';
 import ExpandableTable from 'components/ExpandableTable';
 
 import styles from './tables.module.scss';
-import { sortConsequences } from 'components/Variants/consequences';
+import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
 
 const { Text } = Typography;
 
@@ -73,7 +73,7 @@ const orderConsequencesForTable = (tableGroups: TableGroup[]) => {
     const consequences = tableGroup.consequences;
     return {
       ...tableGroup,
-      consequences: sortConsequences(consequences),
+      consequences: filterThanSortConsequencesByImpact(consequences),
     };
   });
 };

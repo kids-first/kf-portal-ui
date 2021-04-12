@@ -1,4 +1,4 @@
-import { generateConsequencesDataLines, sortConsequences } from '../consequences';
+import { generateConsequencesDataLines, filterThanSortConsequencesByImpact } from '../consequences';
 
 describe('Consequences', () => {
   describe('sortConsequences', () => {});
@@ -21,7 +21,7 @@ describe('Consequences', () => {
       },
     ];
     // @ts-ignore only needed data.
-    expect(sortConsequences(generalCase)).toEqual([
+    expect(filterThanSortConsequencesByImpact(generalCase)).toEqual([
       {
         node: {
           biotype: 'protein_coding',

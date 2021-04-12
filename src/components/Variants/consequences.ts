@@ -16,7 +16,7 @@ const keyNoSymbol = 'noSymbol_';
  *   #=====#
  *   Output: filtered consequences.
  * */
-export const sortConsequences = (consequences: Consequence[]) => {
+export const filterThanSortConsequencesByImpact = (consequences: Consequence[]) => {
   if (!consequences || consequences.length === 0) {
     return [];
   }
@@ -57,7 +57,7 @@ export const generateConsequencesDataLines = (
       return [...acc, ...consequences];
     }
 
-    const highestRanked = sortConsequences(consequences)[0] || {};
+    const highestRanked = filterThanSortConsequencesByImpact(consequences)[0] || {};
     return [...acc, { ...highestRanked }];
   }, []);
 };
