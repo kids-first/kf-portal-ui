@@ -47,10 +47,7 @@ const Summary = ({ variant }: SummaryProps) => {
         <div>
           <SummaryItem field="Chr" value={variant.chromosome} />
           <SummaryItem field="Start" value={variant.start} />
-          <SummaryItem
-            field="Allele Alt."
-            value={`${variant.frequencies?.internal?.upper_bound_kf?.ac}`}
-          />
+          <SummaryItem field="Allele Alt." value={`${variant.alternate}`} />
           <SummaryItem field="Allele Réf." value={variant.reference} />
         </div>
         <div>
