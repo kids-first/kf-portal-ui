@@ -140,9 +140,7 @@ const columns = [
         <ExpandableCell
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
-          renderItem={(item): React.ReactNode => {
-            if (item?.length === 0) return null;
-
+          renderItem={(item: any): React.ReactNode => {
             const title = item[INDEX_IMPACT_TITLE];
             const label = item[INDEX_IMPACT_LABEL];
             const score = item[INDEX_IMPACT_SCORE];
