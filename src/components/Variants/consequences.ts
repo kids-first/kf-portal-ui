@@ -22,6 +22,7 @@ export const sortConsequences = (consequences: Consequence[]) => {
   }
   return consequences
     .filter((c) => c.node?.impact_score !== null)
+    .map((c) => ({ ...c }))
     .sort((a, b) => {
       const isSameScore = a.node.impact_score! === b.node.impact_score!;
       const canonicalIsNotFirst = !a.node.canonical && b.node.canonical;
