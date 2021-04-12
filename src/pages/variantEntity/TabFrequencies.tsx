@@ -109,18 +109,15 @@ const internalColumns = (
   },
 ];
 
-const INDEX_COHORT_NAME = 0;
-const INDEX_COHORT_LINK = 1;
-
 const externalColumns = [
   {
     title: 'Cohort',
     dataIndex: 'cohort',
-    render: (cohort: string) => {
-      const cohortName = cohort[INDEX_COHORT_NAME];
+    render: (cohort: { cohortName: string; link?: string }) => {
+      const cohortName = cohort.cohortName;
       if (['TopMed', 'Gnomad Genomes (v3)'].includes(cohortName)) {
         return (
-          <a href={cohort[INDEX_COHORT_LINK]} target="_blank" rel="noopener noreferrer">
+          <a href={cohort.link} target="_blank" rel="noopener noreferrer">
             {cohortName}
           </a>
         );
@@ -159,38 +156,47 @@ const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
 
   return [
     {
-      cohort: ['TopMed', `https://bravo.sph.umich.edu/freeze8/hg38/variant/snv/${locus}`],
+      cohort: {
+        cohortName: 'TopMed',
+        link: `https://bravo.sph.umich.edu/freeze8/hg38/variant/snv/${locus}`,
+      },
       alt: topmed.ac,
       altRef: topmed.an,
       homozygotes: topmed.homozygotes,
       frequency: toExponentialNotation(topmed.af),
     },
     {
-      cohort: [
-        'Gnomad Genomes (v3)',
-        `https://gnomad.broadinstitute.org/variant/${locus}?dataset=gnomad_r3`,
-      ],
+      cohort: {
+        cohortName: 'Gnomad Genomes (v3)',
+        link: `https://gnomad.broadinstitute.org/variant/${locus}?dataset=gnomad_r3`,
+      },
       alt: gnomadGenomes3.ac,
       altRef: gnomadGenomes3.an,
       homozygotes: gnomadGenomes3.homozygotes,
       frequency: toExponentialNotation(gnomadGenomes3.af),
     },
     {
-      cohort: ['Gnomad Genomes (v2.1)'],
+      cohort: {
+        cohortName: 'Gnomad Genomes (v2.1)',
+      },
       alt: gnomadGenomes2_1.ac,
       altRef: gnomadGenomes2_1.an,
       homozygotes: gnomadGenomes2_1.homozygotes,
       frequency: toExponentialNotation(gnomadGenomes2_1.af),
     },
     {
-      cohort: ['Gnomad Exomes (v2.1)'],
+      cohort: {
+        cohortName: 'Gnomad Exomes (v2.1)',
+      },
       alt: gnomadExomes2_1.ac,
       altRef: gnomadExomes2_1.an,
       homozygotes: gnomadExomes2_1.homozygotes,
       frequency: toExponentialNotation(gnomadExomes2_1.af),
     },
     {
-      cohort: ['1000 Genomes'],
+      cohort: {
+        cohortName: '1000 Genomes',
+      },
       alt: oneThousandsGenomes.ac,
       altRef: oneThousandsGenomes.an,
       homozygotes: oneThousandsGenomes.homozygotes,
