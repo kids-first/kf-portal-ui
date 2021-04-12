@@ -27,7 +27,7 @@ type FrequencyTabTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
 
-const MIN_FOR_LINK = 10;
+const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 const internalColumns = (
   studiesInfo: StudyInfo[],
@@ -58,7 +58,7 @@ const internalColumns = (
     dataIndex: 'participant_number',
     // eslint-disable-next-line react/display-name
     render: (participant_number: string, row: any) =>
-      parseInt(participant_number) > MIN_FOR_LINK ? (
+      parseInt(participant_number) > MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
         <Link
           to={'/explore'}
           href={'#top'}
