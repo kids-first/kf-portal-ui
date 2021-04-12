@@ -12,12 +12,12 @@ import {
 import TabError from './TabError';
 import { toExponentialNotation } from 'utils';
 import { Link } from 'react-router-dom';
-import style from '../variantsSearchPage/VariantTable.module.scss';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { Sqon } from 'store/sqon';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { addToSqons } from 'common/sqonUtils';
+import style from '../variantsSearchPage/VariantTable.module.scss';
 
 type OwnProps = {
   variantId: string;
