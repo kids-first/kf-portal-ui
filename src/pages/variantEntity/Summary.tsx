@@ -79,11 +79,35 @@ const Summary = ({ variant }: SummaryProps) => {
             </div>
             <div>
               <Label>ClinVar</Label>
-              <Value>{variant.clinvar?.clinvar_id || '-'}</Value>
+              <Value>
+                {variant.clinvar?.clinvar_id ? (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar.clinvar_id}`}
+                  >
+                    {variant.clinvar.clinvar_id}
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </Value>
             </div>
             <div>
               <Label>dbSNP</Label>
-              <Value>{variant.rsnumber || '-'}</Value>
+              <Value>
+                {variant.rsnumber ? (
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://www.ncbi.nlm.nih.gov/snp/${variant.rsnumber}`}
+                  >
+                    {variant.rsnumber}
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </Value>
             </div>
           </StackLayout>
         </div>

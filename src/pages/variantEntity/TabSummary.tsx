@@ -176,7 +176,19 @@ const columns = [
   },
   {
     title: 'Transcript',
-    dataIndex: 'transcript',
+    dataIndex: 'transcriptId',
+    render: (transcriptId: string) =>
+      transcriptId ? (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`https://www.ensembl.org/id/${transcriptId}`}
+        >
+          {transcriptId}
+        </a>
+      ) : (
+        ''
+      ),
   },
 ];
 
@@ -214,7 +226,7 @@ const makeRows = (consequences: Consequence[]) =>
       ['Revel', null, consequence.node.predictions?.revel_rankscore],
     ].filter(([, , score]) => score),
     conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
-    transcript: consequence.node.ensembl_transcript_id,
+    transcriptId: consequence.node.ensembl_transcript_id,
   }));
 
 const TabSummary = ({ variantId }: OwnProps) => {
