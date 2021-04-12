@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Layout } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
@@ -11,7 +11,12 @@ import styles from './Sidebar.module.scss';
 
 const { Sider } = Layout;
 
-const StudiesFiltersSider: FC<SidebarData> = ({ studiesResults, studiesMappingResults }) => {
+type StudiesProps = {
+  onChange: () => void;
+};
+type OwnProps = SidebarData & StudiesProps;
+
+const StudiesFiltersSider = ({ studiesResults, studiesMappingResults, onChange }: OwnProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   return (
     <Sider
@@ -32,6 +37,7 @@ const StudiesFiltersSider: FC<SidebarData> = ({ studiesResults, studiesMappingRe
         <ScrollView className={styles.scrollView}>
           {!collapsed && (
             <SidebarFilters
+              onChange={onChange}
               studiesResults={studiesResults}
               studiesMappingResults={studiesMappingResults}
             />
