@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React from 'react';
 import style from './ConsequencesCell.module.scss';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import Symbol from './Symbol';
 import { toKebabCase } from 'utils';
 import { Consequence, Impact } from 'store/graphql/variants/models';
-import { generateConsequencesDataLines } from './consequences';
+import { generateConsequencesDataLines } from 'components/Variants/consequences';
 
 type OwnProps = {
   consequences: Consequence[];
@@ -23,7 +23,7 @@ const Bullet = ({ colorClassName = '' }) => (
   <span className={`${style.bullet} ${colorClassName}`} />
 );
 
-const ConsequencesCell: FC<OwnProps> = ({ consequences }) => {
+const ConsequencesCell = ({ consequences }: OwnProps) => {
   const lines = generateConsequencesDataLines(consequences);
   return (
     <>

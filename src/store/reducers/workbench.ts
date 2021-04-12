@@ -6,7 +6,7 @@ import {
 } from '../WorkBenchTypes';
 
 const initialState: WorkBenchState = {
-  isLoading: true,
+  isLoading: false,
   error: null,
   status: ClusterUnverifiedStatus.unverified,
 };

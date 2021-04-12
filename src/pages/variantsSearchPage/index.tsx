@@ -15,7 +15,7 @@ const VariantPage: FC<OwnProps> = ({ egoGroups }) => (
   <PageContent title={'The Kids First Variant Database'}>
     <div className={style.variantPageGrid}>
       <VariantStats />
-      {isKfInvestigator(egoGroups) && <WorkBench />}
+      <WorkBench isAllowed={isKfInvestigator(egoGroups)} />
       <div className={style.variantPageGridItemTable}>
         <SearchView />
       </div>

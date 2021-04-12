@@ -137,7 +137,7 @@ const TabFrequencies = ({ variantId }: OwnProps) => {
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
-          <Card title="Internal Cohorts">
+          <Card title="Kids First Studies">
             <Table
               dataSource={makeInternalCohortsRows(studies)}
               columns={internalColumns}

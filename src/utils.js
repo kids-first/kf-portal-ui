@@ -96,3 +96,26 @@ export const isNumber = (n) => n && !Number.isNaN(n);
 
 export const toExponentialNotation = (numberCandidate, fractionDigits = 2) =>
   isNumber(numberCandidate) ? numberCandidate.toExponential(fractionDigits) : numberCandidate;
+
+const computeStartStopPagination = (currentPage, pageSize, total) => {
+  const isLessOrEqualThanPageSize = total <= pageSize;
+  if (isLessOrEqualThanPageSize) {
+    return [1, total];
+  }
+
+  const nOfPositionsCoveredByPageSize = total - (total % pageSize);
+
+  const cursorOfLastPosition = currentPage * pageSize;
+  const isLastPositionCovered = cursorOfLastPosition <= nOfPositionsCoveredByPageSize;
+  if (isLastPositionCovered) {
+    const start = cursorOfLastPosition - pageSize + 1;
+    return [start, cursorOfLastPosition];
+  }
+  const start = nOfPositionsCoveredByPageSize + 1;
+  return [start, total];
+};
+
+export const generatePaginationMessage = (currentPage, pageSize, total) => {
+  const [start, stop] = computeStartStopPagination(currentPage, pageSize, total);
+  return `Showing ${start.toLocaleString()} - ${stop.toLocaleString()} of ${total.toLocaleString()}`;
+};
