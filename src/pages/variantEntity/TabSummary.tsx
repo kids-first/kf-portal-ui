@@ -99,7 +99,21 @@ const columns = [
   {
     title: 'Consequence',
     dataIndex: 'consequences',
-    render: (consequences: string[]) => <ExpandableCell dataSource={consequences} />,
+    render: (consequences: string[]) => {
+      if (consequences.length === 0) {
+        return <></>;
+      }
+      return (
+        <ExpandableCell
+          dataSource={consequences}
+          renderItem={(item: any, id): React.ReactNode => (
+            <StackLayout key={id} horizontal className={styles.cellList}>
+              <Text>{item}</Text>
+            </StackLayout>
+          )}
+        />
+      );
+    },
   },
   {
     title: 'Coding Dna',
@@ -139,13 +153,13 @@ const columns = [
         <ExpandableCell
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
-          renderItem={(item: any): React.ReactNode => {
+          renderItem={(item: any, id): React.ReactNode => {
             const title = item[INDEX_IMPACT_TITLE];
             const label = item[INDEX_IMPACT_LABEL];
             const score = item[INDEX_IMPACT_SCORE];
             const description = label ? `${label} - ${score}` : score;
             return (
-              <StackLayout horizontal className={styles.cellList}>
+              <StackLayout key={id} horizontal className={styles.cellList}>
                 <Text type={'secondary'}>{title}:</Text>
                 <Text>{description}</Text>
               </StackLayout>
@@ -157,7 +171,7 @@ const columns = [
     width: 270,
   },
   {
-    title: 'Conservations',
+    title: 'Conservation',
     dataIndex: 'conservations',
   },
   {
@@ -198,7 +212,7 @@ const makeRows = (consequences: Consequence[]) =>
         consequence.node.predictions?.lrt_converted_rankscore,
       ],
       ['Revel', null, consequence.node.predictions?.revel_rankscore],
-    ].filter(([label, , score]) => ['Sift', 'Polyphen2'].includes(label) || score),
+    ].filter(([, , score]) => score),
     conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
     transcript: consequence.node.ensembl_transcript_id,
   }));
