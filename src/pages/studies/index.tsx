@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import Studies from './studies';
 
-const StudiesPage: FC = () => <Studies />;
+const StudiesPage = () => <Studies />;
 
 export default StudiesPage;
