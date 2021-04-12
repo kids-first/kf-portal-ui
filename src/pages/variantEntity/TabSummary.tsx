@@ -12,6 +12,8 @@ import capitalize from 'lodash/capitalize';
 import style from 'style/themes/default/_colors.scss';
 import ExpandableTable from 'components/ExpandableTable';
 
+import styles from './tables.module.scss';
+
 const { Text } = Typography;
 
 type OwnProps = {
@@ -98,9 +100,7 @@ const columns = [
   {
     title: 'Consequence',
     dataIndex: 'consequences',
-    render: (consequences: string[]) => (
-      <ExpandableCell dataSource={consequences} />
-    ),
+    render: (consequences: string[]) => <ExpandableCell dataSource={consequences} />,
   },
   {
     title: 'Coding Dna',
@@ -116,6 +116,7 @@ const columns = [
       }
       return strand > 0 ? <PlusOutlined /> : <MinusOutlined />;
     },
+    width: 60,
   },
   {
     title: 'VEP',
@@ -124,6 +125,7 @@ const columns = [
       const loweredCaseVep = vep.toLowerCase();
       return <Tag color={style[`${loweredCaseVep}Impact`]}>{capitalize(loweredCaseVep)}</Tag>;
     },
+    width: 120,
   },
 
   {
@@ -138,23 +140,22 @@ const columns = [
         <ExpandableCell
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
-          renderItem={(itemImpact: string[]) => {
-            const title = itemImpact[INDEX_IMPACT_TITLE];
-            const label = itemImpact[INDEX_IMPACT_LABEL];
-            const score = itemImpact[INDEX_IMPACT_SCORE];
+          renderItem={(item): React.ReactNode => {
+            const title = item[INDEX_IMPACT_TITLE];
+            const label = item[INDEX_IMPACT_LABEL];
+            const score = item[INDEX_IMPACT_SCORE];
             const description = label ? `${label} - ${score}` : score;
             return (
-              <List.Item>
-                <Space>
-                  <Text type={'secondary'}>{title}:</Text>
-                  <Text>{description}</Text>
-                </Space>
-              </List.Item>
+              <StackLayout horizontal className={styles.cellList}>
+                <Text type={'secondary'}>{title}:</Text>
+                <Text>{description}</Text>
+              </StackLayout>
             );
           }}
         />
       );
     },
+    width: 270,
   },
   {
     title: 'Conservations',

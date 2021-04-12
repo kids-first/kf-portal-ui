@@ -1,34 +1,35 @@
 import React, { useState } from 'react';
-import { Button, List, Space } from 'antd';
+import { Button, Space } from 'antd';
 import { ListProps } from 'antd/lib/list';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { RecordWithTtl } from 'dns';
+import styles from './ExpandableCell.module.scss';
 
-type OwnProps = ListProps<any> & {
+type OwnProps = {
   nOfElementsWhenCollapsed?: number;
+  dataSource: string[] | string[][];
+  renderItem?: (item: string | string[]) => React.ReactNode;
 };
 
 const DEFAULT_NUM_COLLAPSED = 3;
 
+const renderItemDefault = (item: React.ReactNode) => <span>{item}</span>;
+
 const ExpandableCell = ({
   nOfElementsWhenCollapsed = DEFAULT_NUM_COLLAPSED,
-  dataSource,
-  renderItem = (item) => <List.Item>{item}</List.Item>,
-  ...listProps
+  dataSource = [],
+  renderItem = renderItemDefault,
 }: OwnProps) => {
   const [showAll, setShowAll] = useState(false);
   const dataTotalLength = dataSource?.length || 0;
   const sliceNum = showAll ? dataTotalLength : nOfElementsWhenCollapsed;
   const showButton = dataTotalLength > nOfElementsWhenCollapsed;
   return (
-    <Space direction="vertical" align={'start'}>
-      <List
-        dataSource={(dataSource || []).slice(0, sliceNum)}
-        renderItem={renderItem}
-        split={false}
-        {...(listProps || {})}
-      />
+    <>
+      {dataSource.slice(0, sliceNum).map((data: any) => renderItem(data))}
       {showButton && (
         <Button
+          className={styles.tableCellButton}
           type={'link'}
           icon={showAll ? <CaretUpOutlined /> : <CaretDownOutlined />}
           onClick={() => setShowAll(!showAll)}
@@ -36,7 +37,7 @@ const ExpandableCell = ({
           {showAll ? 'Less' : 'More'}
         </Button>
       )}
-    </Space>
+    </>
   );
 };
 
