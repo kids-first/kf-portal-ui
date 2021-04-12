@@ -45,7 +45,11 @@ const Studies = () => {
 
   return (
     <Layout className={styles.layout}>
-      <Sidebar studiesMappingResults={studiesMappingResults} studiesResults={studiesResults} />
+      <Sidebar
+        studiesMappingResults={studiesMappingResults}
+        studiesResults={studiesResults}
+        onChange={() => setCurrentPage(1)}
+      />
       <ScrollView className={styles.scrollContent}>
         <PageContent title="Studies">
           <StudyPageContainer
