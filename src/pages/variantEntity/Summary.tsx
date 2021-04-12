@@ -11,6 +11,7 @@ import { VariantEntity } from 'store/graphql/variants/models';
 
 import styles from './Summary.module.scss';
 import { toExponentialNotation } from 'utils';
+import ClinVarExternalLink from './ClinVarExternalLink';
 
 type SummaryItemProps = {
   field: string;
@@ -81,13 +82,7 @@ const Summary = ({ variant }: SummaryProps) => {
               <Label>ClinVar</Label>
               <Value>
                 {variant.clinvar?.clinvar_id ? (
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar.clinvar_id}`}
-                  >
-                    {variant.clinvar.clinvar_id}
-                  </a>
+                  <ClinVarExternalLink clinvarId={variant.clinvar.clinvar_id} />
                 ) : (
                   '-'
                 )}

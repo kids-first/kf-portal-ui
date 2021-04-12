@@ -78,6 +78,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
       hits(filters: $sqon) {
         edges {
           node {
+            locus
             participant_number
             participant_ids
             frequencies {
@@ -203,6 +204,7 @@ export const TAB_SUMMARY_QUERY = gql`
                     vep_impact
                     symbol
                     consequences
+                    ensembl_gene_id
                     coding_dna_change
                     omim_gene_id
                     aa_change

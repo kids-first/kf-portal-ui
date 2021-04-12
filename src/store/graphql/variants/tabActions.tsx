@@ -18,6 +18,7 @@ export const useTabFrequenciesData = (variantId: string) => {
     loading,
     data: {
       frequencies: nodeVariant?.frequencies || {},
+      locus: nodeVariant?.locus || '',
       studies: nodeVariant?.studies?.hits?.edges || [],
       participant_number: nodeVariant?.participant_number || 0,
       participant_ids: nodeVariant?.participant_ids || [],

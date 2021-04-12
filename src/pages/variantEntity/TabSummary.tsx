@@ -26,6 +26,7 @@ type TableGroup = {
   omim: string;
   biotype: string;
   symbol: string;
+  ensembleGeneId: string;
 };
 
 type SymbolToConsequences = {
@@ -43,6 +44,7 @@ const groupConsequencesBySymbol = (consequences: Consequence[]) => {
     }
     const omim = consequence.node.omim_gene_id || '';
     const biotype = consequence.node.biotype || '';
+    const ensembleGeneId = consequence.node.ensembl_gene_id || '';
     const oldConsequences = acc[symbol]?.consequences || [];
 
     return {
@@ -52,6 +54,7 @@ const groupConsequencesBySymbol = (consequences: Consequence[]) => {
         omim,
         biotype,
         symbol,
+        ensembleGeneId,
       },
     };
   }, {});
@@ -247,11 +250,33 @@ const TabSummary = ({ variantId }: OwnProps) => {
           <Summary variant={data} />
           {makeTables(consequences).map((tableData: TableGroup, index: number) => {
             const symbol = tableData.symbol;
-            const omim = tableData.omim;
+            const omim = tableData.omim; //https://www.omim.org/entry/158340
             const biotype = tableData.biotype;
+            //const ensemblGeneId = tableData.ensemblGeneDd; link: http://www.ensembl.org/id/ensemblGeneId
             const orderedConsequences = tableData.consequences;
+
             return (
-              <Card title={[symbol, omim, biotype].join(' ')} key={index}>
+              <Card
+                title={
+                  <Space>
+                    <span>Gene</span>
+                    <span>{symbol}</span>
+                    {omim && (
+                      <>
+                        <span>Omim</span>
+                        <span>{omim}</span>
+                      </>
+                    )}
+                    {biotype && (
+                      <>
+                        <span>Biotype</span>
+                        <span>{biotype}</span>
+                      </>
+                    )}
+                  </Space>
+                }
+                key={index}
+              >
                 <ExpandableTable
                   nOfElementsWhenCollapsed={1}
                   buttonText={(showAll, hiddenNum) =>
@@ -265,6 +290,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
               </Card>
             );
           })}
+          )
         </Space>
       </StackLayout>
     </Spin>

@@ -109,10 +109,24 @@ const internalColumns = (
   },
 ];
 
+const INDEX_COHORT_NAME = 0;
+const INDEX_COHORT_LINK = 1;
+
 const externalColumns = [
   {
     title: 'Cohort',
-    dataIndex: 'cohortName',
+    dataIndex: 'cohort',
+    render: (cohort: string) => {
+      const cohortName = cohort[INDEX_COHORT_NAME];
+      if (['TopMed', 'Gnomad Genomes (v3)'].includes(cohortName)) {
+        return (
+          <a href={cohort[INDEX_COHORT_LINK]} target="_blank" rel="noopener noreferrer">
+            {cohortName}
+          </a>
+        );
+      }
+      return cohortName;
+    },
   },
   {
     title: 'ALT Allele',
@@ -132,7 +146,7 @@ const externalColumns = [
   },
 ];
 
-const makeRowFromFrequencies = (frequencies: Frequencies) => {
+const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
   if (!frequencies || Object.keys(frequencies).length === 0) {
     return [];
   }
@@ -145,46 +159,44 @@ const makeRowFromFrequencies = (frequencies: Frequencies) => {
 
   return [
     {
-      cohortName: 'TopMed',
+      cohort: ['TopMed', `https://bravo.sph.umich.edu/freeze8/hg38/variant/snv/${locus}`],
       alt: topmed.ac,
       altRef: topmed.an,
       homozygotes: topmed.homozygotes,
       frequency: toExponentialNotation(topmed.af),
-      key: '1',
     },
     {
-      cohortName: 'Gnomad Genomes (v3)',
+      cohort: [
+        'Gnomad Genomes (v3)',
+        `https://gnomad.broadinstitute.org/variant/${locus}?dataset=gnomad_r3`,
+      ],
       alt: gnomadGenomes3.ac,
       altRef: gnomadGenomes3.an,
       homozygotes: gnomadGenomes3.homozygotes,
       frequency: toExponentialNotation(gnomadGenomes3.af),
-      key: '2',
     },
     {
-      cohortName: 'Gnomad Genomes (v2.1)',
+      cohort: ['Gnomad Genomes (v2.1)'],
       alt: gnomadGenomes2_1.ac,
       altRef: gnomadGenomes2_1.an,
       homozygotes: gnomadGenomes2_1.homozygotes,
       frequency: toExponentialNotation(gnomadGenomes2_1.af),
-      key: '3',
     },
     {
-      cohortName: 'Gnomad Exomes (v2.1)',
+      cohort: ['Gnomad Exomes (v2.1)'],
       alt: gnomadExomes2_1.ac,
       altRef: gnomadExomes2_1.an,
       homozygotes: gnomadExomes2_1.homozygotes,
       frequency: toExponentialNotation(gnomadExomes2_1.af),
-      key: '4',
     },
     {
-      cohortName: '1000 Genomes',
+      cohort: ['1000 Genomes'],
       alt: oneThousandsGenomes.ac,
       altRef: oneThousandsGenomes.an,
       homozygotes: oneThousandsGenomes.homozygotes,
       frequency: toExponentialNotation(oneThousandsGenomes.af),
-      key: '5',
     },
-  ];
+  ].map((row, index) => ({ ...row, key: `${index}` }));
 };
 
 const makeInternalCohortsRows = (rows: StudyNode[]) =>
@@ -211,7 +223,7 @@ const TabFrequencies = (props: Props) => {
     return <TabError />;
   }
 
-  const { studies, frequencies, participant_ids, dataStudies } = data;
+  const { studies, frequencies, participant_ids, dataStudies, locus } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
@@ -267,7 +279,7 @@ const TabFrequencies = (props: Props) => {
           </Card>
           <Card title="External Cohorts">
             <Table
-              dataSource={makeRowFromFrequencies(frequencies)}
+              dataSource={makeRowFromFrequencies(frequencies, locus)}
               columns={externalColumns}
               pagination={false}
             />
