@@ -290,7 +290,6 @@ const TabSummary = ({ variantId }: OwnProps) => {
               </Card>
             );
           })}
-          )
         </Space>
       </StackLayout>
     </Spin>
