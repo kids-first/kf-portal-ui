@@ -1,7 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Table, Tooltip } from 'antd';
-import style from './VariantTable.module.scss';
 import ConsequencesCell from './ConsequencesCell';
 import { SEARCH_PAGE_SIZE, useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import {
@@ -24,6 +23,8 @@ import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
 import { generatePaginationMessage, toExponentialNotation } from 'utils';
+
+import style from './VariantTable.module.scss';
 
 const DEFAULT_PAGE_NUM = 1;
 type VariantTableState = {
@@ -56,7 +57,7 @@ const generateColumns = (props: Props) =>
       dataIndex: 'hgvsg',
       sorter: true,
       ellipsis: true,
-      width: '10%',
+      className: style.variantTableCell,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
@@ -76,6 +77,7 @@ const generateColumns = (props: Props) =>
     },
     {
       title: 'dbSnp',
+      className: style.dbSnpTableCell,
       dataIndex: 'rsnumber',
       render: (rsNumber: string) =>
         rsNumber ? (
@@ -118,11 +120,13 @@ const generateColumns = (props: Props) =>
     },
     {
       title: 'Studies',
+      className: style.tableCellAlignRight,
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }) => studies?.hits?.total || 0,
     },
     {
       title: 'Participants',
+      className: style.tableCellAlignRight,
       dataIndex: 'participant_ids',
       render: (participantIds: string[]) => {
         const size = participantIds?.length || 0;
@@ -154,22 +158,26 @@ const generateColumns = (props: Props) =>
     },
     {
       title: 'ALT Allele',
+      className: style.tableCellAlignRight,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
       title: 'Total Allele',
+      className: style.tableCellAlignRight,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.an,
     },
     {
       title: 'Allele Freq.',
+      className: style.tableCellAlignRight,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) =>
         toExponentialNotation(frequencies?.internal?.upper_bound_kf?.af),
     },
     {
       title: 'Homozygote',
+      className: style.tableCellAlignRight,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
@@ -194,6 +202,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
   return (
     <Table
       title={() => generatePaginationMessage(currentPageNum, SEARCH_PAGE_SIZE, total)}
+      tableLayout="auto"
       pagination={{
         current: currentPageNum,
         total: total,
@@ -204,7 +213,6 @@ const VariantTable: FunctionComponent<Props> = (props) => {
         },
       }}
       loading={loadingData}
-      bordered
       dataSource={makeRows(data)}
       columns={generateColumns(props)}
       className={style.table}
