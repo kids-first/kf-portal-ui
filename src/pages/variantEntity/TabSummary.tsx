@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { Card, List, Space, Spin, Tag, Typography } from 'antd';
+import { Card, Space, Spin, Tag, Typography } from 'antd';
 import Summary from './Summary';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
@@ -141,6 +141,8 @@ const columns = [
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
           renderItem={(item): React.ReactNode => {
+            if (item?.length === 0) return null;
+
             const title = item[INDEX_IMPACT_TITLE];
             const label = item[INDEX_IMPACT_LABEL];
             const score = item[INDEX_IMPACT_SCORE];
