@@ -169,10 +169,13 @@ export const termToSqon = ({ field, value }) => ({
   },
 });
 
-export const addToSqons = ({ field, value, sqons }) => {
-  const currentSqon = { content: [termToSqon({ field: field, value: value })], op: 'and' };
+export const addToSqons = ({ fieldsWValues, sqons }) => {
+  const currentSqon = {
+    content: fieldsWValues.map(({ field, value }) => ({ ...termToSqon({ field, value }) })),
+    op: 'and',
+  };
 
-  if (sqons.length === 0) {
+  if (!sqons || sqons.length === 0) {
     return [currentSqon];
   }
 

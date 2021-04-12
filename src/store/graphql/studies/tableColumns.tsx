@@ -19,7 +19,9 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
           to={'/explore'}
           href={'#top'}
           onClick={() => {
-            onLinkClick(addToSqons({ field: 'study.code', value: code, sqons }));
+            onLinkClick(
+              addToSqons({ fieldsWValues: [{ field: 'study.code', value: code }], sqons }),
+            );
             const toTop = document.getElementById('main-page-container');
             toTop?.scrollTo(0, 0);
           }}

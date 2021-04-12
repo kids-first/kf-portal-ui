@@ -133,6 +133,12 @@ type VariantPageData = {
   hits: HitsResults;
 };
 
+export type StudyInfoResults = {
+  loadingStudies: boolean;
+  studies: { hits: { edges: [{ node: StudyInfo }] } };
+  errorStudies: Error;
+};
+
 export type VariantStats = {
   distinctVariantsCount: number;
   occurrencesCount: number;
@@ -154,8 +160,15 @@ type AggregationResults = {
 
 type Study = {
   participant_number: number;
+  participant_ids: string[];
   study_id: string;
   frequencies: FreqInternal;
+};
+
+export type StudyInfo = {
+  id: string;
+  code: string;
+  domain: string[];
 };
 
 export type StudyNode = {

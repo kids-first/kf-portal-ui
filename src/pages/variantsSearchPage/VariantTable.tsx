@@ -138,8 +138,12 @@ const generateColumns = (props: Props) =>
                 ? () => {
                     props.onClickParticipantLink(
                       addToSqons({
-                        field: 'kf_id',
-                        value: participantIds,
+                        fieldsWValues: [
+                          {
+                            field: 'kf_id',
+                            value: participantIds,
+                          },
+                        ],
                         sqons: props.currentSqons,
                       }),
                     );

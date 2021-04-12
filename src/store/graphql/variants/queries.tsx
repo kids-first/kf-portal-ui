@@ -73,12 +73,13 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
 `;
 
 export const TAB_FREQUENCIES_QUERY = gql`
-  query GetFrequenciesTabVariant($sqon: JSON) {
+  query GetFrequenciesTabVariant($sqon: JSON, $studiesSize: Int) {
     variants {
       hits(filters: $sqon) {
         edges {
           node {
             participant_number
+            participant_ids
             frequencies {
               topmed {
                 ac
@@ -153,6 +154,17 @@ export const TAB_FREQUENCIES_QUERY = gql`
                 }
               }
             }
+          }
+        }
+      }
+    }
+    studies {
+      hits(first: $studiesSize) {
+        edges {
+          node {
+            code
+            id
+            domain
           }
         }
       }
