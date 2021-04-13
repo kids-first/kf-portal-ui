@@ -6,6 +6,7 @@ import {
   FreqCombined,
   FreqInternal,
   Frequencies,
+  Study,
   StudyInfo,
   StudyNode,
 } from 'store/graphql/variants/models';
@@ -58,7 +59,7 @@ const internalColumns = (
     dataIndex: 'participant_number',
     // eslint-disable-next-line react/display-name
     render: (participant_number: string, row: any) =>
-      parseInt(participant_number) > MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
+      parseInt(participant_number) >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
         <Link
           to={'/explore'}
           href={'#top'}
@@ -233,6 +234,10 @@ const TabFrequencies = (props: Props) => {
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
+  const noParticipantLink: boolean = studies
+    .map((s: { node: Study }) => s.node.participant_number)
+    .some((s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK);
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
@@ -251,24 +256,28 @@ const TabFrequencies = (props: Props) => {
                   <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
                   <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
                   <Table.Summary.Cell index={2}>
-                    <Link
-                      to={'/explore'}
-                      href={'#top'}
-                      onClick={() => {
-                        props.onClickStudyLink(
-                          addToSqons({
-                            fieldsWValues: [{ field: 'kf_id', value: participant_ids }],
-                            sqons: props.currentVirtualStudy,
-                          }),
-                        );
-                        const toTop = document.getElementById('main-page-container');
-                        toTop?.scrollTo(0, 0);
-                      }}
-                    >
-                      <Button type="link">
-                        <div className={style.variantTableLink}>{data?.participant_number}</div>
-                      </Button>
-                    </Link>
+                    {noParticipantLink ? (
+                      data?.participant_number
+                    ) : (
+                      <Link
+                        to={'/explore'}
+                        href={'#top'}
+                        onClick={() => {
+                          props.onClickStudyLink(
+                            addToSqons({
+                              fieldsWValues: [{ field: 'kf_id', value: participant_ids }],
+                              sqons: props.currentVirtualStudy,
+                            }),
+                          );
+                          const toTop = document.getElementById('main-page-container');
+                          toTop?.scrollTo(0, 0);
+                        }}
+                      >
+                        <Button type="link">
+                          <div className={style.variantTableLink}>{data?.participant_number}</div>
+                        </Button>
+                      </Link>
+                    )}
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={3}>{internalFrequencies?.ac}</Table.Summary.Cell>
                   <Table.Summary.Cell index={4}>{internalFrequencies?.an}</Table.Summary.Cell>

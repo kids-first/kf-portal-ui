@@ -159,7 +159,7 @@ type AggregationResults = {
   hgvsg: string;
 };
 
-type Study = {
+export type Study = {
   participant_number: number;
   participant_ids: string[];
   study_id: string;
