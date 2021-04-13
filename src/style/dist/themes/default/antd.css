@@ -24888,6 +24888,22 @@ div.ant-typography-edit-content.ant-typography-rtl {
   line-height: 20px;
   font-weight: 400;
 }
+.ant-tag.highImpact {
+  background-color: #ffe3ee;
+  color: #991765;
+}
+.ant-tag.lowImpact {
+  background-color: #d9f7be;
+  color: #237804;
+}
+.ant-tag.moderateImpact {
+  background-color: #ffebc7;
+  color: #853700;
+}
+.ant-tag.modifierImpact {
+  background-color: #eaeaec;
+  color: #383f72;
+}
 body {
   background-color: #f3f4f6;
 }
