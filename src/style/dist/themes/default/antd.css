@@ -24844,25 +24844,35 @@ div.ant-typography-edit-content.ant-typography-rtl {
   border-color: #d7d8db;
   color: #007694;
 }
-.ant-btn-link > span {
+.ant-btn-link,
+.ant-btn-text {
+  transition: none;
+}
+.ant-btn-link > span,
+.ant-btn-text > span {
   text-decoration: underline;
   line-height: 22px;
   color: #007694;
 }
-.ant-btn-link > span:hover {
+.ant-btn-link > span:hover,
+.ant-btn-text > span:hover {
   text-decoration: none;
 }
-.ant-btn-link > span:active {
+.ant-btn-link > span:active,
+.ant-btn-text > span:active {
   color: #00546e;
 }
-.ant-btn-link:hover {
+.ant-btn-link:hover,
+.ant-btn-text:hover {
   background-color: transparent;
-  border-color: transparent;
+  border: solid 1px transparent;
 }
-.ant-btn-link:disabled {
+.ant-btn-link:disabled,
+.ant-btn-text:disabled {
   color: #8a8da8;
 }
-.ant-btn-link:focus > span {
+.ant-btn-link:focus > span,
+.ant-btn-text:focus > span {
   text-decoration: none;
 }
 .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
@@ -24920,8 +24930,4 @@ h3.ant-typography {
 }
 .ant-list {
   color: #383f72;
-}
-.ant-btn-link:hover,
-.ant-btn-link:focus {
-  border: none;
 }

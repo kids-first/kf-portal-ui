@@ -29,7 +29,10 @@
     color: @btn-default-color;
   }
 
-  &-link {
+  &-link,
+  &-text {
+    transition: none;
+
     > span {
       text-decoration: underline;
       line-height: 22px;
@@ -46,7 +49,7 @@
 
     &:hover {
       background-color: transparent;
-      border-color: transparent;
+      border: solid 1px transparent;
     }
 
     &:disabled {
