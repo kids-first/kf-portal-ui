@@ -86,13 +86,11 @@ const NavigationToolBar = (props) => {
                 </NavLink>
               </li>
 
-              {isKfInvestigator(egoGroups) && (
-                <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
-                    <DatabaseOutlined /> Variant
-                  </NavLink>
-                </li>
-              )}
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
+                  <DatabaseOutlined /> Variant
+                </NavLink>
+              </li>
               <li>
                 <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
                   <FolderOutlined /> File Repository
