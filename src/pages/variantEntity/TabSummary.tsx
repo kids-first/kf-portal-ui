@@ -9,11 +9,10 @@ import TabError from './TabError';
 import ExpandableCell from 'components/ExpandableCell';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import capitalize from 'lodash/capitalize';
-import style from 'style/themes/default/_colors.scss';
 import ExpandableTable from 'components/ExpandableTable';
+import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
 
 import styles from './tables.module.scss';
-import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
 
 const { Text } = Typography;
 
@@ -138,7 +137,7 @@ const columns = [
     dataIndex: 'vep',
     render: (vep: Impact) => {
       const loweredCaseVep = vep.toLowerCase();
-      return <Tag color={style[`${loweredCaseVep}Impact`]}>{capitalize(loweredCaseVep)}</Tag>;
+      return <Tag className={`${loweredCaseVep}Impact`}>{capitalize(loweredCaseVep)}</Tag>;
     },
     width: 120,
   },
