@@ -26,7 +26,7 @@ const VariantStatsContainer = () => {
       title={
         <div className={style.variantStatsContainer}>
           <Title level={3}>Data Release 1</Title>
-          <div>April 08th, 2021</div>
+          <div>January 21th, 2021</div>
         </div>
       }
     >

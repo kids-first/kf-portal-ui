@@ -1,7 +1,13 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_VARIANT_TABLE_QUERY = gql`
-  query GetSearchedVariant($sqon: JSON, $pageSize: Int, $offset: Int, $sort: [Sort]) {
+  query GetSearchedVariant(
+    $sqon: JSON
+    $pageSize: Int
+    $offset: Int
+    $sort: [Sort]
+    $studiesSize: Int
+  ) {
     variants {
       hits(filters: $sqon, first: $pageSize, offset: $offset, sort: $sort) {
         total
@@ -53,6 +59,11 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
             }
             studies {
               hits {
+                edges {
+                  node {
+                    study_id
+                  }
+                }
                 total
               }
             }
@@ -65,6 +76,17 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
                 }
               }
             }
+          }
+        }
+      }
+    }
+    studies {
+      hits(first: $studiesSize) {
+        edges {
+          node {
+            id
+            code
+            domain
           }
         }
       }

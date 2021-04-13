@@ -1,6 +1,8 @@
 import { SEARCH_VARIANT_TABLE_QUERY } from './queries';
 import { buildVariantIdSqon, useLazyResultQuery } from 'store/graphql/utils/query';
-import { GenomicFeatureType, SelectedSuggestion, VariantEntityNode } from './models';
+import { GenomicFeatureType, SelectedSuggestion, StudyInfo, VariantEntityNode } from './models';
+
+const MAX_NUMBER_STUDIES = 2000;
 
 const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
   const { suggestionId, featureType, geneSymbol } = selectedSuggestion;
@@ -35,6 +37,7 @@ export const useVariantSearchTableData = (
       pageSize: SEARCH_PAGE_SIZE,
       offset: computeOffSet(pageNum),
       sort: [{ field: 'impact_score', order: 'desc' }],
+      studiesSize: MAX_NUMBER_STUDIES,
     },
   });
 
@@ -43,11 +46,16 @@ export const useVariantSearchTableData = (
   const variants = nodes as VariantEntityNode[];
 
   const total = result?.variants?.hits?.total || 0;
+
+  const nodesStudies = result?.studies?.hits?.edges || [];
+  const studies = nodesStudies.map((n: { node: string }) => n.node) as StudyInfo[];
+
   return {
     loading,
     results: {
       variants,
       total,
     },
+    studies: studies,
   };
 };
