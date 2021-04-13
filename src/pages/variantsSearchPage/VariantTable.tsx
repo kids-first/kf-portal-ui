@@ -8,6 +8,7 @@ import {
   Consequence,
   Frequencies,
   SelectedSuggestion,
+  StudyInfo,
   VariantEntity,
   VariantEntityNode,
 } from 'store/graphql/variants/models';
@@ -50,7 +51,7 @@ type Props = {
   history: RouteComponentProps['history'];
 } & PropsFromRedux;
 
-const generateColumns = (props: Props) =>
+const generateColumns = (props: Props, studyList: StudyInfo[]) =>
   [
     {
       title: 'Variant',
@@ -122,7 +123,35 @@ const generateColumns = (props: Props) =>
       title: 'Studies',
       className: style.tableCellAlignRight,
       dataIndex: 'studies',
-      render: (studies: { hits: { total: number } }) => studies?.hits?.total || 0,
+      render: (studies: { hits: { total: number } }, row: any) => {
+        const studyIds = (row?.studies.hits.edges || []).map(
+          (r: { node: { study_id: string } }) => r.node.study_id,
+        );
+        const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
+
+        return studies?.hits?.total ? (
+          <Link
+            to={'/explore'}
+            href={'#top'}
+            onClick={() => {
+              props.onClickParticipantLink(
+                addToSqons({
+                  fieldsWValues: [{ field: 'study.code', value: studyCodes }],
+                  sqons: props.currentSqons,
+                }),
+              );
+              const toTop = document.getElementById('main-page-container');
+              toTop?.scrollTo(0, 0);
+            }}
+          >
+            <Button type="link">
+              <div className={style.variantTableLink}>{studies?.hits?.total || 0}</div>
+            </Button>
+          </Link>
+        ) : (
+          0
+        );
+      },
     },
     {
       title: 'Participants',
@@ -196,6 +225,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
   const {
     loading: loadingData,
     results: { variants: data, total },
+    studies,
   } = useVariantSearchTableData(selectedSuggestion, currentPageNum);
 
   useEffect(() => {
@@ -218,7 +248,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
       }}
       loading={loadingData}
       dataSource={makeRows(data)}
-      columns={generateColumns(props)}
+      columns={generateColumns(props, studies)}
       className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}
     />
