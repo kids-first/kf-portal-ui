@@ -6,10 +6,10 @@ import { Alert, Layout } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
-  UserOutlined,
-  TeamOutlined,
   HomeOutlined,
   ReadOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import { LinkAsButton, NavBarList, NavLink } from './ui';
@@ -17,7 +17,6 @@ import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { isFeatureEnabled } from 'common/featuresToggles';
 
 import UserMenu from './UserMenu';
 
@@ -76,13 +75,11 @@ const NavigationToolBar = (props) => {
                   <HomeOutlined /> Dashboard
                 </NavLink>
               </li>
-              {isFeatureEnabled('studiesPage') && (
-                <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
-                    <ReadOutlined /> Studies
-                  </NavLink>
-                </li>
-              )}
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
+                  <ReadOutlined /> Studies
+                </NavLink>
+              </li>
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
                   <TeamOutlined /> Explore Data
