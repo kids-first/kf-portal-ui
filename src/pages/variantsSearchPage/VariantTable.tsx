@@ -8,6 +8,7 @@ import {
   Consequence,
   Frequencies,
   SelectedSuggestion,
+  Study,
   StudyInfo,
   VariantEntity,
   VariantEntityNode,
@@ -33,6 +34,8 @@ type VariantTableState = {
 };
 
 const isEven = (n: number) => n % 2 === 0;
+
+const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
   onClickParticipantLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
@@ -122,9 +125,9 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       className: style.tableCellAlignRight,
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }, row: any) => {
-        const studyIds = (row?.studies.hits.edges || []).map(
-          (r: { node: { study_id: string } }) => r.node.study_id,
-        );
+        const nodes = row?.studies.hits.edges || [];
+        const studyIds = nodes.map((r: { node: { study_id: string } }) => r.node.study_id);
+
         const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
 
         return studies?.hits?.total ? (
@@ -155,9 +158,16 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       title: 'Participants',
       className: style.tableCellAlignRight,
       dataIndex: 'participant_ids',
-      render: (participantIds: string[]) => {
+      render: (participantIds: string[], row: any) => {
         const size = participantIds?.length || 0;
-        return size > 10 ? (
+        const nodes = row?.studies.hits.edges || [];
+        const participantsPerStudy = nodes.map(
+          (r: { node: { participant_number: string } }) => r.node.participant_number,
+        );
+        const hasMinRequiredParticipants = !participantsPerStudy.some(
+          (s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK,
+        );
+        return hasMinRequiredParticipants ? (
           <Button
             className={style.variantTableLink}
             onClick={
