@@ -24,7 +24,6 @@ type OwnProps = {
 type TableGroup = {
   consequences: Consequence[];
   omim: string;
-  biotype: string;
   symbol: string;
   ensembleGeneId: string;
 };
@@ -43,7 +42,6 @@ const groupConsequencesBySymbol = (consequences: Consequence[]) => {
       return acc;
     }
     const omim = consequence.node.omim_gene_id || '';
-    const biotype = consequence.node.biotype || '';
     const ensembleGeneId = consequence.node.ensembl_gene_id || '';
     const oldConsequences = acc[symbol]?.consequences || [];
 
@@ -52,7 +50,6 @@ const groupConsequencesBySymbol = (consequences: Consequence[]) => {
       [symbol]: {
         consequences: [...oldConsequences, { ...consequence }],
         omim,
-        biotype,
         symbol,
         ensembleGeneId,
       },
@@ -254,7 +251,6 @@ const TabSummary = ({ variantId }: OwnProps) => {
           {makeTables(consequences).map((tableData: TableGroup, index: number) => {
             const symbol = tableData.symbol;
             const omim = tableData.omim; //https://www.omim.org/entry/158340
-            const biotype = tableData.biotype;
             //const ensemblGeneId = tableData.ensemblGeneDd; link: http://www.ensembl.org/id/ensemblGeneId
             const orderedConsequences = tableData.consequences;
 
@@ -268,12 +264,6 @@ const TabSummary = ({ variantId }: OwnProps) => {
                       <>
                         <span>Omim</span>
                         <span>{omim}</span>
-                      </>
-                    )}
-                    {biotype && (
-                      <>
-                        <span>Biotype</span>
-                        <span>{biotype}</span>
                       </>
                     )}
                   </Space>
