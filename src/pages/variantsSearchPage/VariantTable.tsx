@@ -55,7 +55,6 @@ const generateColumns = (props: Props) =>
     {
       title: 'Variant',
       dataIndex: 'hgvsg',
-      sorter: true,
       ellipsis: true,
       className: style.variantTableCell,
       render: (hgvsg: string, record: VariantEntity) =>
@@ -116,7 +115,6 @@ const generateColumns = (props: Props) =>
         ) : (
           ''
         ),
-      sorter: true,
     },
     {
       title: 'Studies',

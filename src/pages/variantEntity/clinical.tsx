@@ -21,6 +21,10 @@ import {
 import { toKebabCase } from 'utils';
 import React from 'react';
 import ExpandableCell from 'components/ExpandableCell';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 export enum Source {
   orphanet = 'Orphanet',
@@ -29,6 +33,7 @@ export enum Source {
   ddd = 'Ddd',
   cosmic = 'Cosmic',
 }
+//FIXME (Types) use object vs array for Conditions
 
 const getEdgesOrDefault = (arr: HitsEdges) => arr?.hits?.edges || [];
 
@@ -190,8 +195,8 @@ export const columnsPhenotypes = [
       if (source === Source.omim) {
         const [geneName, omimId] = record.gene as OmimGene;
         return (
-          <span>
-            {geneName} ( MIM: &nbsp;
+          <>
+            <Text>{geneName}</Text> &nbsp; (MIM:
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -199,8 +204,8 @@ export const columnsPhenotypes = [
             >
               {omimId}
             </a>
-            &nbsp; )
-          </span>
+            )
+          </>
         );
       }
       return record.gene;
@@ -214,21 +219,32 @@ export const columnsPhenotypes = [
       const source = record.source;
       if (source === Source.omim) {
         const omimCondition = record.condition as OmimCondition;
-        const omimConditions = omimCondition.map(([geneOmimName, omimId], index: number) => (
-          <span key={index}>
-            {geneOmimName} ( MIM: &nbsp;
-            <a
-              key={index}
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`https://www.omim.org/entry/${omimId}`}
-            >
-              {omimId}
-            </a>
-            &nbsp; )
-          </span>
-        ));
-        return <ExpandableCell dataSource={omimConditions} />;
+        return (
+          <ExpandableCell
+            dataSource={omimCondition || []}
+            renderItem={(omimItem, id) => {
+              const item = omimItem as string[];
+
+              const geneOmimName = item[0];
+              const omimId = item[1];
+
+              return (
+                <StackLayout key={id}>
+                  <Text>{geneOmimName}</Text> &nbsp; (MIM:
+                  <a
+                    key={id}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://www.omim.org/entry/${omimId}`}
+                  >
+                    {omimId}
+                  </a>
+                  )
+                </StackLayout>
+              );
+            }}
+          />
+        );
       } else if (source === Source.orphanet) {
         const orphanetConditions = record.condition as OrphanetCondition;
         const orphanetCondtions = orphanetConditions.map(([panel, diseaseId], index: number) => (
@@ -247,25 +263,35 @@ export const columnsPhenotypes = [
         return <ExpandableCell dataSource={orphanetCondtions} />;
       } else if (source === Source.hpo) {
         const hpoCondition = record.condition as HpoCondition;
-        const hpoConditions = hpoCondition.map(([termLabel, termId], index: number) => {
-          const split = termLabel.split('(');
-          const condition = split[0];
-          return (
-            <span key={index}>
-              {condition}(
-              <a
-                key={index}
-                target="_blank"
-                rel="noopener noreferrer"
-                href={`https://hpo.jax.org/app/browse/term/${termId}`}
-              >
-                {termId}
-              </a>
-              )
-            </span>
-          );
-        });
-        return <ExpandableCell dataSource={hpoConditions} />;
+        return (
+          <ExpandableCell
+            dataSource={hpoCondition || []}
+            renderItem={(hpoItem, id) => {
+              const item = hpoItem as string[];
+
+              const termLabel = item[0] || '';
+              const termId = item[1];
+
+              const split = termLabel.split('(');
+              const condition = split[0];
+
+              return (
+                <StackLayout key={id}>
+                  <Text>{condition}</Text> &nbsp; (MIM:
+                  <a
+                    key={id}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://hpo.jax.org/app/browse/term/${termId}`}
+                  >
+                    {termId}
+                  </a>
+                  )
+                </StackLayout>
+              );
+            }}
+          />
+        );
       } else if (source === Source.ddd) {
         const dddCondition = record.condition as DddCondition;
         return <ExpandableCell dataSource={dddCondition} />;
