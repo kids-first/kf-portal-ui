@@ -245,6 +245,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Summary variant={data} />
+          <h3>Gene Consequences</h3>
           {makeTables(consequences).map((tableData: TableGroup, index: number) => {
             const symbol = tableData.symbol;
             const omim = tableData.omim; //https://www.omim.org/entry/158340
