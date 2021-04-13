@@ -168,10 +168,12 @@ export const columnsClinVar = [
   {
     title: 'Condition',
     dataIndex: 'condition',
+    width: '25%',
   },
   {
     title: 'Inheritance',
     dataIndex: 'inheritance',
+    width: '25%',
   },
 ];
 
@@ -300,6 +302,7 @@ export const columnsPhenotypes = [
       const comicCondition = record.condition as CosmicCondition;
       return <ExpandableCell dataSource={comicCondition} />;
     },
+    width: '25%',
   },
   {
     title: 'Inheritance',
@@ -315,5 +318,6 @@ export const columnsPhenotypes = [
       }
       return record.inheritance;
     },
+    width: '25%',
   },
 ];

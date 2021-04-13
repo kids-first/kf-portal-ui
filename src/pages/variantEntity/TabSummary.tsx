@@ -95,6 +95,7 @@ const columns = [
   {
     title: 'AA',
     dataIndex: 'aa',
+    width: '10%',
   },
   {
     title: 'Consequence',
@@ -114,6 +115,7 @@ const columns = [
         />
       );
     },
+    width: '25%',
   },
   {
     title: 'Coding Dna',
