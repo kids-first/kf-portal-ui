@@ -290,7 +290,7 @@ export const columnsPhenotypes = [
 
               return (
                 <StackLayout key={id}>
-                  <Text>{condition}</Text> &nbsp; (MIM:
+                  <Text>{condition}</Text> &nbsp; (
                   <a
                     key={id}
                     target="_blank"
