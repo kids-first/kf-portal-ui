@@ -33,7 +33,12 @@ const TabClinical = ({ variantId }: OwnProps) => {
           <Card
             title={
               <span>
-                Clinvar {clinvarId ? <ClinVarExternalLink clinvarId={`[${clinvarId}]`} /> : ''}
+                Clinvar{' '}
+                {clinvarId ? (
+                  <ClinVarExternalLink label={`[${clinvarId}]`} clinvarId={clinvarId} />
+                ) : (
+                  ''
+                )}
               </span>
             }
           >
