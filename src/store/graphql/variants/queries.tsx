@@ -62,6 +62,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
                 edges {
                   node {
                     study_id
+                    participant_number
                   }
                 }
                 total
