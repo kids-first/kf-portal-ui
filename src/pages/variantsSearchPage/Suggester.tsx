@@ -87,7 +87,8 @@ const Suggester: FunctionComponent<Props> = (props) => {
     >
       <Form.Item
         name="variantSearch"
-        help="Search examples: 11-2928377-A-G, rs282772, BRAF, BRAF V292G"
+        help="Search examples: 1-45331556-C-T, MUTYH, MUTYH G393D, rs36053993,
+        ENSG00000132781, ENST00000372098, 5294 (Clinvar ID)"
       >
         <AutoComplete
           className={style.inputVariant}
