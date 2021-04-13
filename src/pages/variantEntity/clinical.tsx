@@ -249,20 +249,31 @@ export const columnsPhenotypes = [
         );
       } else if (source === Source.orphanet) {
         const orphanetConditions = record.condition as OrphanetCondition;
-        const orphanetCondtions = orphanetConditions.map(([panel, diseaseId], index: number) => (
-          <a
-            key={index}
-            target="_blank"
-            rel="noopener noreferrer"
-            href={
-              'https://www.orpha.net/consor/cgi-bin/Disease_Search.php' +
-              `?lng=EN&data_id=1738&Disease_Disease_Search_diseaseGroup=${diseaseId}`
-            }
-          >
-            {panel}
-          </a>
-        ));
-        return <ExpandableCell dataSource={orphanetCondtions} />;
+        return (
+          <ExpandableCell
+            dataSource={orphanetConditions || []}
+            renderItem={(orphanetItem, id) => {
+              const item = orphanetItem as string[];
+
+              const panel = item[0];
+              const diseaseId = item[1];
+
+              return (
+                <a
+                  key={id}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={
+                    'https://www.orpha.net/consor/cgi-bin/Disease_Search.php' +
+                    `?lng=EN&data_id=1738&Disease_Disease_Search_diseaseGroup=${diseaseId}`
+                  }
+                >
+                  {panel}
+                </a>
+              );
+            }}
+          />
+        );
       } else if (source === Source.hpo) {
         const hpoCondition = record.condition as HpoCondition;
         return (
@@ -296,11 +307,29 @@ export const columnsPhenotypes = [
         );
       } else if (source === Source.ddd) {
         const dddCondition = record.condition as DddCondition;
-        return <ExpandableCell dataSource={dddCondition} />;
+        return (
+          <ExpandableCell
+            dataSource={dddCondition}
+            renderItem={(item, id) => (
+              <StackLayout key={id}>
+                <Text>{item}</Text>
+              </StackLayout>
+            )}
+          />
+        );
       }
       //Cosmic
       const comicCondition = record.condition as CosmicCondition;
-      return <ExpandableCell dataSource={comicCondition} />;
+      return (
+        <ExpandableCell
+          dataSource={comicCondition}
+          renderItem={(item, id) => (
+            <StackLayout key={id}>
+              <Text>{item}</Text>
+            </StackLayout>
+          )}
+        />
+      );
     },
     width: '25%',
   },
@@ -311,10 +340,28 @@ export const columnsPhenotypes = [
       const source = record.source;
       if (source === Source.orphanet) {
         const orphanetInheritance = (record.inheritance || []) as OrphanetInheritance;
-        return <ExpandableCell dataSource={orphanetInheritance.filter((e) => e)} />;
+        return (
+          <ExpandableCell
+            dataSource={orphanetInheritance.filter((e) => e)}
+            renderItem={(item, id) => (
+              <StackLayout key={id}>
+                <Text>{item}</Text>
+              </StackLayout>
+            )}
+          />
+        );
       } else if (source === Source.omim) {
         const omimInheritance = record.inheritance as OmimInheritance;
-        return <ExpandableCell dataSource={omimInheritance} />;
+        return (
+          <ExpandableCell
+            dataSource={omimInheritance}
+            renderItem={(item, id) => (
+              <StackLayout key={id}>
+                <Text>{item}</Text>
+              </StackLayout>
+            )}
+          />
+        );
       }
       return record.inheritance;
     },
