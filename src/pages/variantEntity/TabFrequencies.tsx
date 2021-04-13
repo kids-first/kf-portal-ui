@@ -92,21 +92,25 @@ const internalColumns = (
     title: 'ALT Allele',
     dataIndex: 'frequencies',
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.ac,
+    width: '14%',
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'frequencies',
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.an,
+    width: '14%',
   },
   {
     title: 'Homozygote',
     dataIndex: 'frequencies',
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.homozygotes,
+    width: '14%',
   },
   {
     title: 'Frequency',
     dataIndex: 'frequencies',
     render: (frequencies: FreqInternal) => toExponentialNotation(frequencies?.upper_bound_kf?.af),
+    width: '14%',
   },
 ];
 
@@ -129,18 +133,22 @@ const externalColumns = [
   {
     title: 'ALT Allele',
     dataIndex: 'alt',
+    width: '14%',
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'altRef',
+    width: '14%',
   },
   {
     title: 'Homozygote',
     dataIndex: 'homozygotes',
+    width: '14%',
   },
   {
     title: 'Frequency',
     dataIndex: 'frequency',
+    width: '14%',
   },
 ];
 
