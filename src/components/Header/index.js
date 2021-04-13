@@ -21,8 +21,6 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import UserMenu from './UserMenu';
 
 import './Header.css';
-
-import { isKfInvestigator } from 'common/profile';
 import { injectState } from 'freactal';
 
 const { Header } = Layout;
@@ -39,7 +37,7 @@ const NavigationToolBar = (props) => {
   const {
     history,
     match: { path },
-    state: { loggedInUser, egoGroups },
+    state: { loggedInUser },
   } = props;
 
   const currentPathName = history.location.pathname;
