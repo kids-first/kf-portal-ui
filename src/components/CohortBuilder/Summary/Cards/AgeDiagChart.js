@@ -10,10 +10,10 @@ import { setSqonValueAtIndex } from 'common/sqonUtils';
 
 import PropTypes from 'prop-types';
 
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import Empty, { SIZE } from 'components/UI/Empty';
 
-const CHART_HEIGHT_PX = 350;
+const CHART_HEIGHT_PX = 320;
 
 const ageAtDiagnosisTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;

@@ -13,7 +13,8 @@ import SurvivalChart from './Cards/SurvivalChart';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DataTypeCard from './Cards/DataTypeCard';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
+
 import GridContainer from '@ferlab/ui/core/layout/Grid';
 
 import './Summary.css';
@@ -62,7 +63,7 @@ const Summary = ({
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
               classNameCardItem={'ontology-sunburst-card'}
             >
-              <OntologySunburst sqon={sqon} />
+              <OntologySunburst sqon={sqon} height={260} width={260} />
             </Card>
             <DiagnosesChart
               api={api}

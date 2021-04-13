@@ -1,5 +1,7 @@
 import { Sqon } from './sqon';
 import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './actionTypes';
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from './rootState';
 
 export type VirtualStudy = {
   activeIndex: number;
@@ -30,3 +32,5 @@ export type Term = {
   field: string;
   value: string;
 };
+
+export type DispatchVirtualStudies = ThunkDispatch<RootState, null, any>;

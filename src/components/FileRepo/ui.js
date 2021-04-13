@@ -1,14 +1,11 @@
 import * as React from 'react';
 import Spinner from 'react-spinkit';
 
-// [NEXT] beagle import moved to ./index.css
-import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
-
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 
 import { flexCenter } from 'theme/tempTheme.module.css';
-import './FileRepo.css';
+import './FileRepo.scss';
 
 export const ControlledIcon = ({ className = '', ...props }) => (
   <ControlledAccessIcon {...props} className={`controlledAccessIcon ${className}`} />

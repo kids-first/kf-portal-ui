@@ -8,6 +8,7 @@ const ROUTES = {
   dashboard: '/dashboard',
   error: '/error',
   file: '/file',
+  variant: '/variant',
   gen3Redirect: '/gen3_redirect',
   join: '/join',
   login: '/',
@@ -17,11 +18,10 @@ const ROUTES = {
   search: '/search',
   searchMember: '/memberPage',
   user: '/user',
-  variantDb: '/variantDb',
+  variantDb: '/variant',
   profile: '/profile',
   termsConditions: '/termsConditions',
   /* temporary while constructing the new variant page*/
-  devVariantDb: '/devVariantDb',
 };
 
 export default ROUTES;

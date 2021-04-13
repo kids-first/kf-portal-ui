@@ -1,5 +1,10 @@
 @import '../../../../../node_modules/antd/dist/antd.less'; // Import Ant Design styles by less entry
 @import './_colors.less';
+@import './table.less';
+@import './buttons.less';
+@import './collapse.less';
+@import './layout/sider';
+@import './tag.less';
 
 //info: font-size-base: 14px;
 @heading-2-size: ceil(@font-size-base * 2);
@@ -7,16 +12,9 @@
 @heading-4-size: ceil(@font-size-base * 1);
 @typography-title-font-weight: 500;
 
-.@{btn-prefix-cls} {
-  &-link {
-    > span {
-      text-decoration: underline;
-    }
-  }
+body {
+  background-color: @gray-3;
 }
-
-// Filters
-
 //Tabs
 @tabs-ink-bar-color: @tabs-highlight-color;
 
@@ -43,4 +41,34 @@ h1.ant-typography {
   font-weight: 500;
   text-align: left;
   color: @heading-color;
+}
+
+h3,
+h3.ant-typography {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ant-typography {
+  color: @body-1;
+}
+
+.ant-switch-checked {
+  background-color: @cyan-6;
+}
+
+.ant-alert-message {
+  color: @red-8;
+}
+
+.ant-alert-with-description .ant-alert-message {
+  color: @red-8;
+}
+
+.ant-alert {
+  color: @red-8;
+}
+
+.ant-list {
+  color: @body-1;
 }

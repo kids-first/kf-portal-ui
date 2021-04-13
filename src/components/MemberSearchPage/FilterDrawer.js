@@ -18,14 +18,7 @@ const FilterDrawer = ({ isAdmin }) => {
   };
 
   return (
-    <Sider
-      trigger={null}
-      width={314}
-      collapsedWidth={37}
-      collapsible
-      collapsed={collapsed}
-      style={{ boxShadow: '0 0 4.9px 0.2px rgba(0,0,0,0.5)' }}
-    >
+    <Sider trigger={null} width={314} collapsedWidth={37} collapsible collapsed={collapsed}>
       <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
         <Title
           level={3}

@@ -29,7 +29,7 @@ import {
 } from './SavedQueries.module.css';
 import './SavedQueries.scss';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const FileRepositoryLink = styleComponent(Link, 'color-primary');

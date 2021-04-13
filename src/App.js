@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { default as ApolloProvider } from 'store/providers';
+
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
@@ -30,7 +32,6 @@ import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
-import VariantDb from 'components/VariantDb';
 import TermsConditions from 'components/Login/TermsConditions';
 import Join from 'components/Login/Join';
 import { Spinner } from 'uikit/Spinner';
@@ -44,13 +45,14 @@ const userIsRequiredToLogIn = (loggedInUser) =>
   requireLogin;
 
 const StudiesPage = lazy(() => import('pages/studies'));
-const VariantPage = lazy(() => import('pages/variant'));
+const VariantSearchPage = lazy(() => import('pages/variantsSearchPage'));
+const VariantEntityPage = lazy(() => import('pages/variantEntity'));
 
 const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, isLoadingUser, isJoining } = state;
+  const { loggedInUser, isLoadingUser, isJoining, egoGroups } = state;
 
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
@@ -80,244 +82,250 @@ const App = compose(
   };
 
   return (
-    <div className="appContainer">
-      {showForumBanner() && <ForumBanner />}
-      <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
-        <Switch>
-          <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-          <Route
-            path={ROUTES.termsConditions}
-            exact
-            render={() => (
-              <SideImagePage
-                logo={logo}
-                sideImagePath={loginImage}
-                Component={TermsConditions}
-                Footer={LoginFooter}
-              />
-            )}
-          />
-          <Route
-            path={ROUTES.cohortBuilder}
-            exact
-            render={(props) =>
-              protectRoute({
-                isLoadingUser,
-                Component: CohortBuilder,
-                // TODO REMOVE?
-                loggedInUser,
-                // TODO REMOVE?
-                index: props.match.params.index,
-                // TODO REMOVE?
-                graphqlField: props.match.params.index,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={ROUTES.searchMember}
-            exact
-            render={(props) =>
-              protectRoute({
-                isLoadingUser,
-                Component: MemberSearchPage,
-                loggedInUser,
-                isAdmin: state.isAdmin,
-                loggedInUserToken: state.loggedInUserToken,
-                ...props,
-              })
-            }
-          />
-          <Route
-            /* temporary: this will be the new variant db page*/
-            path={ROUTES.devVariantDb}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: VariantPage,
-                WrapperPage: FixedFooterPage,
-                loggedInUser,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={ROUTES.variantDb}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: VariantDb,
-                loggedInUser,
-                WrapperPage: FixedFooterPage,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={`${ROUTES.file}/:fileId`}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: FileEntity,
-                loggedInUser,
-                fileId: props.match.params.fileId,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={`${ROUTES.participant}/:participantId`}
-            exact
-            render={(props) =>
-              protectRoute({
-                isLoadingUser,
-                loggedInUser,
-                Component: ParticipantEntity,
-                participantId: props.match.params.participantId,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={`${ROUTES.search}/:index`}
-            exact
-            render={(props) =>
-              protectRoute({
-                isLoadingUser,
-                Component: FileRepo,
-                WrapperPage: FixedFooterPage,
-                loggedInUser,
-                index: props.match.params.index,
-                graphqlField: props.match.params.index,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={ROUTES.dashboard}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: UserDashboard,
-                loggedInUser,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={ROUTES.studies}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: StudiesPage,
-                WrapperPage: FixedFooterPage,
-                loggedInUser,
-                userToken: state.loggedInUserToken,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={ROUTES.join}
-            exact
-            render={() => {
-              if (isJoinFormNeeded(loggedInUser)) {
-                return (
-                  <SideImagePage
-                    backgroundImage={scienceBgPath}
-                    logo={logo}
-                    Component={Join}
-                    sideImagePath={joinImage}
-                  />
-                );
+    <ApolloProvider userToken={state.loggedInUserToken}>
+      <div className="appContainer">
+        {showForumBanner() && <ForumBanner />}
+        <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
+          <Switch>
+            <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+            <Route
+              path={ROUTES.termsConditions}
+              exact
+              render={() => (
+                <SideImagePage
+                  logo={logo}
+                  sideImagePath={loginImage}
+                  Component={TermsConditions}
+                  Footer={LoginFooter}
+                />
+              )}
+            />
+            <Route
+              path={ROUTES.cohortBuilder}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: CohortBuilder,
+                  // TODO REMOVE?
+                  loggedInUser,
+                  // TODO REMOVE?
+                  index: props.match.params.index,
+                  // TODO REMOVE?
+                  graphqlField: props.match.params.index,
+                  ...props,
+                })
               }
-              return <Redirect to="/" />;
-            }}
-          />
-          <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />
-          <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-          <Route
-            path={ROUTES.orcid}
-            exact
-            render={(props) => (
-              <SideImagePage
-                logo={logo}
-                backgroundImage={scienceBgPath}
-                Component={LoginPage}
-                Footer={LoginFooter}
-                sideImagePath={loginImage}
-                stealth={true} // hide some of the visuals of the page during redirection
-                {...props}
-              />
-            )}
-          />
-          <Route path={ROUTES.redirected} exact component={() => null} />
-          <Route
-            path={ROUTES.gen3Redirect}
-            exact
-            render={() => <FenceAuthRedirect fence={GEN3} />}
-          />
-          <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
-          <Route
-            path={ROUTES.profile}
-            exact
-            render={(props) =>
-              protectRoute({
-                api,
-                isLoadingUser,
-                Component: UserProfile,
-                loggedInUser,
-                userID: null,
-                ...props,
-              })
-            }
-          />
-          <Route
-            path={`${ROUTES.user}/:userID`}
-            exact
-            render={(props) => {
-              const userIdUrlParam = props.match.params.userID;
-              return protectRoute({
-                api,
-                isLoadingUser,
-                Component: UserProfile,
-                loggedInUser,
-                userInfo: {
-                  userID: userIdUrlParam,
-                  isSelf: isSelfInUrlWhenLoggedIn(userIdUrlParam, loggedInUser),
-                },
-                isAdmin: state.isAdmin,
-                ...props,
-              });
-            }}
-          />
-          <Route
-            path={ROUTES.error}
-            exact
-            render={() => (
-              <SideImagePage
-                logo={logo}
-                sideImagePath={loginImage}
-                Component={Error}
-                Footer={LoginFooter}
-              />
-            )}
-          />
-          <Redirect from="*" to={ROUTES.dashboard} />
-        </Switch>
-      </Suspense>
-      <Modal />
-    </div>
+            />
+            <Route
+              path={ROUTES.searchMember}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: MemberSearchPage,
+                  loggedInUser,
+                  isAdmin: state.isAdmin,
+                  loggedInUserToken: state.loggedInUserToken,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              /* temporary: this will be the new variant db page*/
+              path={ROUTES.variant}
+              exact
+              render={(props) =>
+                protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: VariantSearchPage,
+                  WrapperPage: FixedFooterPage,
+                  loggedInUser,
+                  egoGroups,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.variant}/:hash`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: VariantEntityPage,
+                  loggedInUser,
+                  hash: props.match.params.hash,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.file}/:fileId`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: FileEntity,
+                  loggedInUser,
+                  fileId: props.match.params.fileId,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.participant}/:participantId`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  loggedInUser,
+                  Component: ParticipantEntity,
+                  participantId: props.match.params.participantId,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.search}/:index`}
+              exact
+              render={(props) =>
+                protectRoute({
+                  isLoadingUser,
+                  Component: FileRepo,
+                  WrapperPage: FixedFooterPage,
+                  loggedInUser,
+                  index: props.match.params.index,
+                  graphqlField: props.match.params.index,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={ROUTES.dashboard}
+              exact
+              render={(props) =>
+                protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: UserDashboard,
+                  loggedInUser,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={ROUTES.studies}
+              exact
+              render={(props) =>
+                protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: StudiesPage,
+                  WrapperPage: FixedFooterPage,
+                  loggedInUser,
+                  userToken: state.loggedInUserToken,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={ROUTES.join}
+              exact
+              render={() => {
+                if (isJoinFormNeeded(loggedInUser)) {
+                  return (
+                    <SideImagePage
+                      backgroundImage={scienceBgPath}
+                      logo={logo}
+                      Component={Join}
+                      sideImagePath={joinImage}
+                    />
+                  );
+                }
+                return <Redirect to="/" />;
+              }}
+            />
+            <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />
+            <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+            <Route
+              path={ROUTES.orcid}
+              exact
+              render={(props) => (
+                <SideImagePage
+                  logo={logo}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  Footer={LoginFooter}
+                  sideImagePath={loginImage}
+                  stealth={true} // hide some of the visuals of the page during redirection
+                  {...props}
+                />
+              )}
+            />
+            <Route path={ROUTES.redirected} exact component={() => null} />
+            <Route
+              path={ROUTES.gen3Redirect}
+              exact
+              render={() => <FenceAuthRedirect fence={GEN3} />}
+            />
+            <Route
+              path={ROUTES.dcfRedirect}
+              exact
+              render={() => <FenceAuthRedirect fence={DCF} />}
+            />
+            <Route
+              path={ROUTES.profile}
+              exact
+              render={(props) =>
+                protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: UserProfile,
+                  loggedInUser,
+                  userID: null,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path={`${ROUTES.user}/:userID`}
+              exact
+              render={(props) => {
+                const userIdUrlParam = props.match.params.userID;
+                return protectRoute({
+                  api,
+                  isLoadingUser,
+                  Component: UserProfile,
+                  loggedInUser,
+                  userInfo: {
+                    userID: userIdUrlParam,
+                    isSelf: isSelfInUrlWhenLoggedIn(userIdUrlParam, loggedInUser),
+                  },
+                  isAdmin: state.isAdmin,
+                  ...props,
+                });
+              }}
+            />
+            <Route
+              path={ROUTES.error}
+              exact
+              render={() => (
+                <SideImagePage
+                  logo={logo}
+                  sideImagePath={loginImage}
+                  Component={Error}
+                  Footer={LoginFooter}
+                />
+              )}
+            />
+            <Redirect from="*" to={ROUTES.dashboard} />
+          </Switch>
+        </Suspense>
+        <Modal />
+      </div>
+    </ApolloProvider>
   );
 });
 

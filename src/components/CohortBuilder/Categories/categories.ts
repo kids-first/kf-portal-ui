@@ -68,8 +68,16 @@ export const CATEGORY_FIELDS = {
     'observed_phenotype.name',
     'is_proband',
     'study.short_name',
+    'study.code',
   ],
-  study: ['study.data_access_authority', 'is_proband', 'study.short_name'],
+  study: [
+    'study.short_name',
+    'study.code',
+    'study.program',
+    'study.domain',
+    'study.data_access_authority',
+    'is_proband',
+  ],
   demographic: ['ethnicity', 'gender', 'race'],
   clinical: [
     'affected_status',
@@ -111,6 +119,7 @@ export const CATEGORY_FIELDS = {
     'biospecimens.concentration_mg_per_ml',
   ],
   availableData: [
+    'available_data_categories',
     'available_data_types',
     'files.sequencing_experiments.experiment_strategy',
     'family.family_compositions.available_data_types',

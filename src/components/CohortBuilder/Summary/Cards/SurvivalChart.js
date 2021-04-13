@@ -13,7 +13,7 @@ import Tooltip from 'uikit/Tooltip';
 import { styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import SurvivalPlot from './SurvivalPlot';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 
 import './SurvivalChart.css';
 import Empty, { SIZE } from 'components/UI/Empty';
@@ -223,7 +223,7 @@ export class SurvivalChart extends React.Component {
 
     return (
       <Card title={Header} loading={this.state.isLoading}>
-        <SurvivalCardContent>{renderGraphContent(330, 325)}</SurvivalCardContent>
+        <SurvivalCardContent>{renderGraphContent(300, 295)}</SurvivalCardContent>
       </Card>
     );
   }

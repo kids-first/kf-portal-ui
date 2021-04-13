@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 export const SORTABLE_FIELDS_MAPPING = new Map([
   ['participantId', 'kf_id'],
   ['studyName', 'study.short_name'],
+  ['studyCode', 'study.code'],
   ['isProband', 'is_proband'],
   ['vitalStatus', 'outcome.vital_status'],
   ['gender', 'gender'],
@@ -23,6 +24,7 @@ export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => (
                 kf_id
                 name
                 short_name
+                code
               }
               is_proband
               outcome {
@@ -155,6 +157,7 @@ const transformData = (data) => {
       return {
         participantId: get(node, 'kf_id'),
         studyName: get(node, 'study.short_name'),
+        studyCode: get(node, 'study.code'),
         studyId: get(node, 'study.kf_id'),
         isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
         vitalStatus: get(node, 'outcome.vital_status'),

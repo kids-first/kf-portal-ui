@@ -1,23 +1,72 @@
-/* eslint-disable react/display-name */
-import React, { FC } from 'react';
-
-import { Table } from 'antd';
+import React, { useState } from 'react';
+import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 
 import PageContent from 'components/Layout/PageContent';
-import { studiesColumns } from 'store/graphql/studies/models';
-import { getStudiesPageData } from 'store/graphql/studies/actions';
+import Sidebar from './Sidebar';
+import StudyPageContainer from './StudyPageContainer';
+import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useFilters } from './utils';
+import { Layout } from 'antd';
 
-const Studies: FC = () => {
-  const { loading: loadingData, results: data } = getStudiesPageData()();
+import styles from './studies.module.scss';
 
-  if (loadingData) {
-    return null;
+let previousData: any | null = null;
+let previousMappingData: any | null = null;
+const studiesPerPage = 10;
+
+const Studies = () => {
+  const { filters } = useFilters();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  let studiesResults = useGetStudiesPageData({
+    sqon: filters,
+    first: studiesPerPage,
+    offset: (currentPage - 1) * studiesPerPage,
+  });
+
+  let studiesMappingResults = useGetExtendedMappings('studies');
+
+  if (studiesResults.loading || studiesMappingResults.loadingMapping) {
+    if (!studiesResults.data && previousData) {
+      studiesResults = previousData;
+    }
+
+    if (!studiesMappingResults.extendedMapping && previousMappingData) {
+      studiesMappingResults = previousMappingData;
+    }
+  }
+
+  if (studiesResults.data) {
+    previousData = studiesResults;
+  }
+  if (studiesMappingResults) {
+    previousMappingData = studiesMappingResults;
   }
 
   return (
-    <PageContent title="Studies">
-      <Table columns={studiesColumns} dataSource={data} />
-    </PageContent>
+    <Layout className={styles.layout}>
+      <Sidebar
+        studiesMappingResults={studiesMappingResults}
+        studiesResults={studiesResults}
+        onChange={() => setCurrentPage(1)}
+      />
+      <ScrollView className={styles.scrollContent}>
+        <PageContent title="Studies">
+          <StudyPageContainer
+            studiesResults={studiesResults}
+            filters={filters}
+            pagination={{
+              current: currentPage,
+              pageSize: studiesPerPage,
+              total: studiesResults.data?.hits.total || 0,
+              onChange: (page: number) => {
+                setCurrentPage(page);
+              },
+            }}
+          />
+        </PageContent>
+      </ScrollView>
+    </Layout>
   );
 };
 

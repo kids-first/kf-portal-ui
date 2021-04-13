@@ -14,7 +14,7 @@ import {
 } from 'services/analyticsTracking';
 
 import { Badge, Result } from 'antd';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import { getMsgFromErrorOrElse } from 'utils';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 

@@ -9,6 +9,7 @@ import {
   UserOutlined,
   TeamOutlined,
   HomeOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import { LinkAsButton, NavBarList, NavLink } from './ui';
@@ -22,7 +23,7 @@ import UserMenu from './UserMenu';
 
 import './Header.css';
 
-import { isPartOfGroup } from 'common/profile';
+import { isKfInvestigator } from 'common/profile';
 import { injectState } from 'freactal';
 
 const { Header } = Layout;
@@ -75,22 +76,23 @@ const NavigationToolBar = (props) => {
                   <HomeOutlined /> Dashboard
                 </NavLink>
               </li>
+              {isFeatureEnabled('studiesPage') && (
+                <li>
+                  <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
+                    <ReadOutlined /> Studies
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
                   <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
-              {isFeatureEnabled('studiesPage') && (
+
+              {isKfInvestigator(egoGroups) && (
                 <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.studies}>
-                    <TeamOutlined /> Studies
-                  </NavLink>
-                </li>
-              )}
-              {isPartOfGroup('kf-investigator', egoGroups) && (
-                <li>
-                  <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
-                    <DatabaseOutlined /> Variant Workbench
+                  <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
+                    <DatabaseOutlined /> Variant
                   </NavLink>
                 </li>
               )}

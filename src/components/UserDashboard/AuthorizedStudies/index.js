@@ -8,7 +8,7 @@ import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnect
 import AccessGate from '../../AccessGate';
 import Info from '../Info';
 import { Badge, Button } from 'antd';
-import Card from '@ferlab/ui/core/cards/GridCard';
+import Card from '@ferlab/ui/core/view/GridCard';
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const AuthorizedStudies = compose(
