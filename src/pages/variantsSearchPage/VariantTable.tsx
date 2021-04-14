@@ -8,7 +8,6 @@ import {
   Consequence,
   Frequencies,
   SelectedSuggestion,
-  Study,
   StudyInfo,
   VariantEntity,
   VariantEntityNode,
