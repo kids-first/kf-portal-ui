@@ -23,7 +23,6 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
             }
             rsnumber
             participant_number
-            participant_ids
             consequences {
               hits {
                 edges {
@@ -103,7 +102,6 @@ export const TAB_FREQUENCIES_QUERY = gql`
           node {
             locus
             participant_number
-            participant_ids
             frequencies {
               topmed {
                 ac

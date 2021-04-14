@@ -8,7 +8,6 @@ import {
   Consequence,
   Frequencies,
   SelectedSuggestion,
-  Study,
   StudyInfo,
   VariantEntity,
   VariantEntityNode,
@@ -20,7 +19,6 @@ import { withHistory } from 'services/history';
 // @ts-ignore
 import { compose } from 'recompose';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import ROUTES from 'common/routes';
 import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
@@ -35,7 +33,7 @@ type VariantTableState = {
 
 const isEven = (n: number) => n % 2 === 0;
 
-const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
+// const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
   onClickParticipantLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
@@ -157,45 +155,45 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     {
       title: 'Participants',
       className: style.tableCellAlignRight,
-      dataIndex: 'participant_ids',
-      render: (participantIds: string[], row: any) => {
-        const size = participantIds?.length || 0;
-        const nodes = row?.studies.hits.edges || [];
-        const participantsPerStudy = nodes.map(
-          (r: { node: { participant_number: string } }) => r.node.participant_number,
-        );
-        const hasMinRequiredParticipants = !participantsPerStudy.some(
-          (s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK,
-        );
-        return hasMinRequiredParticipants ? (
-          <Button
-            className={style.variantTableLink}
-            onClick={
-              size
-                ? () => {
-                    props.onClickParticipantLink(
-                      addToSqons({
-                        fieldsWValues: [
-                          {
-                            field: 'kf_id',
-                            value: participantIds,
-                          },
-                        ],
-                        sqons: props.currentSqons,
-                      }),
-                    );
-                    props.history.push(ROUTES.cohortBuilder);
-                  }
-                : undefined
-            }
-            type="link"
-          >
-            {size}
-          </Button>
-        ) : (
-          size
-        );
-      },
+      dataIndex: 'participant_number',
+      // render: (participantIds: string[], row: any) => {
+      //   const size = participantIds?.length || 0;
+      //   const nodes = row?.studies.hits.edges || [];
+      //   const participantsPerStudy = nodes.map(
+      //     (r: { node: { participant_number: string } }) => r.node.participant_number,
+      //   );
+      //   const hasMinRequiredParticipants = !participantsPerStudy.some(
+      //     (s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK,
+      //   );
+      //   return hasMinRequiredParticipants ? (
+      //     <Button
+      //       className={style.variantTableLink}
+      //       onClick={
+      //         size
+      //           ? () => {
+      //               props.onClickParticipantLink(
+      //                 addToSqons({
+      //                   fieldsWValues: [
+      //                     {
+      //                       field: 'kf_id',
+      //                       value: participantIds,
+      //                     },
+      //                   ],
+      //                   sqons: props.currentSqons,
+      //                 }),
+      //               );
+      //               props.history.push(ROUTES.cohortBuilder);
+      //             }
+      //           : undefined
+      //       }
+      //       type="link"
+      //     >
+      //       {size}
+      //     </Button>
+      //   ) : (
+      //     size
+      //   );
+      // },
     },
     {
       title: 'ALT Allele',

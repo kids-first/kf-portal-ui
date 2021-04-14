@@ -1,24 +1,20 @@
 import React from 'react';
-import { Button, Card, Space, Spin, Table } from 'antd';
+import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import {
   FreqCombined,
   FreqInternal,
   Frequencies,
-  Study,
   StudyInfo,
   StudyNode,
 } from 'store/graphql/variants/models';
 import TabError from './TabError';
 import { toExponentialNotation } from 'utils';
-import { Link } from 'react-router-dom';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { Sqon } from 'store/sqon';
 import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
-import { addToSqons } from 'common/sqonUtils';
-import style from '../variantsSearchPage/VariantTable.module.scss';
 
 type OwnProps = {
   variantId: string;
@@ -28,14 +24,9 @@ type FrequencyTabTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
 
-const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
+// const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
-const internalColumns = (
-  studiesInfo: StudyInfo[],
-  participants: string[],
-  onLinkClick: (sqons: Sqon[]) => void,
-  sqons: Sqon[],
-) => [
+const internalColumns = (studiesInfo: StudyInfo[]) => [
   {
     title: 'Studies',
     dataIndex: 'study_id',
@@ -58,35 +49,35 @@ const internalColumns = (
     title: '# Participants',
     dataIndex: 'participant_number',
     // eslint-disable-next-line react/display-name
-    render: (participant_number: string, row: any) =>
-      parseInt(participant_number) >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
-        <Link
-          to={'/explore'}
-          href={'#top'}
-          onClick={() => {
-            const study = studiesInfo.find((s) => s.id === row.study_id);
-            if (study) {
-              onLinkClick(
-                addToSqons({
-                  fieldsWValues: [
-                    { field: 'kf_id', value: participants },
-                    { field: 'study.code', value: study.code },
-                  ],
-                  sqons: sqons,
-                }),
-              );
-            }
-            const toTop = document.getElementById('main-page-container');
-            toTop?.scrollTo(0, 0);
-          }}
-        >
-          <Button type="link">
-            <div className={style.variantTableLink}>{participant_number}</div>
-          </Button>
-        </Link>
-      ) : (
-        participant_number
-      ),
+    // render: (participant_number: string, row: any) =>
+    //   parseInt(participant_number) >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
+    //     <Link
+    //       to={'/explore'}
+    //       href={'#top'}
+    //       onClick={() => {
+    //         const study = studiesInfo.find((s) => s.id === row.study_id);
+    //         if (study) {
+    //           onLinkClick(
+    //             addToSqons({
+    //               fieldsWValues: [
+    //                 { field: 'kf_id', value: participants },
+    //                 { field: 'study.code', value: study.code },
+    //               ],
+    //               sqons: sqons,
+    //             }),
+    //           );
+    //         }
+    //         const toTop = document.getElementById('main-page-container');
+    //         toTop?.scrollTo(0, 0);
+    //       }}
+    //     >
+    //       <Button type="link">
+    //         <div className={style.variantTableLink}>{participant_number}</div>
+    //       </Button>
+    //     </Link>
+    //   ) : (
+    //     participant_number
+    //   ),
   },
   {
     title: 'ALT Allele',
@@ -238,13 +229,13 @@ const TabFrequencies = (props: Props) => {
     return <TabError />;
   }
 
-  const { studies, frequencies, participant_ids, dataStudies, locus } = data;
+  const { studies, frequencies, dataStudies, locus } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
-  const noParticipantLink: boolean = studies
-    .map((s: { node: Study }) => s.node.participant_number)
-    .some((s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK);
+  // const noParticipantLink: boolean = studies
+  //   .map((s: { node: Study }) => s.node.participant_number)
+  //   .some((s: number) => s < MIN_N_OF_PARTICIPANTS_FOR_LINK);
 
   return (
     <Spin spinning={loading}>
@@ -253,39 +244,35 @@ const TabFrequencies = (props: Props) => {
           <Card title="Kids First Studies">
             <Table
               dataSource={makeInternalCohortsRows(studies)}
-              columns={internalColumns(
-                dataStudies,
-                participant_ids,
-                props.onClickStudyLink,
-                props.currentVirtualStudy,
-              )}
+              columns={internalColumns(dataStudies)}
               summary={() => (
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
                   <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
                   <Table.Summary.Cell index={2}>
-                    {noParticipantLink ? (
-                      data?.participant_number
-                    ) : (
-                      <Link
-                        to={'/explore'}
-                        href={'#top'}
-                        onClick={() => {
-                          props.onClickStudyLink(
-                            addToSqons({
-                              fieldsWValues: [{ field: 'kf_id', value: participant_ids }],
-                              sqons: props.currentVirtualStudy,
-                            }),
-                          );
-                          const toTop = document.getElementById('main-page-container');
-                          toTop?.scrollTo(0, 0);
-                        }}
-                      >
-                        <Button type="link">
-                          <div className={style.variantTableLink}>{data?.participant_number}</div>
-                        </Button>
-                      </Link>
-                    )}
+                    {data?.participant_number}
+                    {/*{noParticipantLink ? (*/}
+                    {/*  data?.participant_number*/}
+                    {/*) : (*/}
+                    {/*  <Link*/}
+                    {/*    to={'/explore'}*/}
+                    {/*    href={'#top'}*/}
+                    {/*    onClick={() => {*/}
+                    {/*      props.onClickStudyLink(*/}
+                    {/*        addToSqons({*/}
+                    {/*          fieldsWValues: [{ field: 'kf_id', value: participant_ids }],*/}
+                    {/*          sqons: props.currentVirtualStudy,*/}
+                    {/*        }),*/}
+                    {/*      );*/}
+                    {/*      const toTop = document.getElementById('main-page-container');*/}
+                    {/*      toTop?.scrollTo(0, 0);*/}
+                    {/*    }}*/}
+                    {/*  >*/}
+                    {/*    <Button type="link">*/}
+                    {/*      <div className={style.variantTableLink}>{data?.participant_number}</div>*/}
+                    {/*    </Button>*/}
+                    {/*  </Link>*/}
+                    {/*)}*/}
                   </Table.Summary.Cell>
                   <Table.Summary.Cell index={3}>{internalFrequencies?.ac}</Table.Summary.Cell>
                   <Table.Summary.Cell index={4}>{internalFrequencies?.an}</Table.Summary.Cell>

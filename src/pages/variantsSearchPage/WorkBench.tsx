@@ -14,7 +14,12 @@ import {
   isClusterStatusIdling,
   isClusterStatusInProgress,
 } from 'store/WorkBenchTypes';
-import { selectIsLoading, selectError, selectStatus } from 'store/selectors/workBench';
+import {
+  selectIsLoading,
+  selectError,
+  selectStatus,
+  selectClusterUrl,
+} from 'store/selectors/workBench';
 import {
   getStatus,
   reInitializeState,
@@ -34,6 +39,7 @@ const mapState = (state: RootState) => ({
   isLoadingStatus: selectIsLoading(state),
   error: selectError(state),
   status: selectStatus(state),
+  url: selectClusterUrl(state),
 });
 
 const mapDispatch = (dispatch: DispatchWorkBench) => ({
@@ -64,6 +70,7 @@ const WorkBench = (props: Props) => {
     onStopCluster,
     onReInitializeState,
     isAllowed,
+    url,
   } = props;
 
   useInterval(
@@ -94,12 +101,11 @@ const WorkBench = (props: Props) => {
           </Paragraph>
           <div>
             {!error && showSwitch(status) && (
-              <Space>
+              <Space size={'middle'}>
                 <Switch
                   disabled={!isAllowed}
                   checked={status === ClusterApiStatus.createComplete}
                   loading={isLoadingStatus}
-                  size={'small'}
                   onChange={(switchIsOn: boolean) =>
                     switchIsOn ? onStartCluster() : onStopCluster()
                   }
@@ -108,6 +114,11 @@ const WorkBench = (props: Props) => {
                 />
                 {!isAllowed && (
                   <Text disabled>Currently available for Kids First investigators only.</Text>
+                )}
+                {url && (
+                  <Button href={url} target="_blank" rel="noopener noreferrer" type={'link'}>
+                    Access your SPARK cluster
+                  </Button>
                 )}
               </Space>
             )}

@@ -5,7 +5,7 @@ import { generateUrlForDbGap } from 'common/constants';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 // eslint-disable-next-line react/prop-types
 export default ({ original }) => {
-  const { study } = original?.participants.hits.edges[0].node || {};
+  const { study } = original?.participants?.hits?.edges[0]?.node || {};
   const { data_access_authority, external_id } = study;
   return data_access_authority === DB_GA_P ? (
     <ExternalLink
