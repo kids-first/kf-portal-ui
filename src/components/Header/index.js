@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { Alert, Layout } from 'antd';
+import { Alert, Badge, Layout } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
@@ -22,6 +22,7 @@ import UserMenu from './UserMenu';
 
 import './Header.css';
 import { injectState } from 'freactal';
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 
 const { Header } = Layout;
 
@@ -85,9 +86,11 @@ const NavigationToolBar = (props) => {
               </li>
 
               <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
-                  <DatabaseOutlined /> Variant
-                </NavLink>
+                <Badge count={'Beta'} style={{ backgroundColor: styleThemeColors.badgeNewColor }}>
+                  <NavLink currentPathName={currentPathName} to={ROUTES.variant}>
+                    <DatabaseOutlined /> Variant
+                  </NavLink>
+                </Badge>
               </li>
               <li>
                 <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
