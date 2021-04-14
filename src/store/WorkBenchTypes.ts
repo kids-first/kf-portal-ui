@@ -30,6 +30,7 @@ export enum WorkBenchActions {
   failure = 'FailureAction',
   toggleLoading = 'ToggleLoadingAction',
   reInitialize = 'ReInitializeAction',
+  addClusterUrl = 'AddClusterUrlAction',
 }
 
 type reInitializeStateAction = {
@@ -59,10 +60,16 @@ type ToggleLoadingAction = {
   isLoading: boolean;
 };
 
+type AddClusterUrl = {
+  type: WorkBenchActions.addClusterUrl;
+  url: string;
+};
+
 export type WorkBenchState = {
   isLoading: boolean;
   error: Error | null | undefined;
   status: ClusterStatus;
+  url: string | null | undefined;
 };
 
 export type WorkBenchActionTypes =
@@ -71,6 +78,7 @@ export type WorkBenchActionTypes =
   | ToggleLoadingAction
   | StartClusterAction
   | DeleteClusterAction
+  | AddClusterUrl
   | reInitializeStateAction;
 
 export type DispatchWorkBench = ThunkDispatch<RootState, null, WorkBenchActionTypes>;

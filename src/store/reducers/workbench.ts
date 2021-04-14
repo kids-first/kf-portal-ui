@@ -9,6 +9,7 @@ const initialState: WorkBenchState = {
   isLoading: false,
   error: null,
   status: ClusterUnverifiedStatus.unverified,
+  url: null,
 };
 
 export default (state = initialState, action: WorkBenchActionTypes): WorkBenchState => {
@@ -24,6 +25,9 @@ export default (state = initialState, action: WorkBenchActionTypes): WorkBenchSt
     }
     case WorkBenchActions.reInitialize: {
       return { ...initialState };
+    }
+    case WorkBenchActions.addClusterUrl: {
+      return { ...state, url: action.url };
     }
     default:
       return state;

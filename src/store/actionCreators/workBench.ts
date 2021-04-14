@@ -1,4 +1,9 @@
-import { ClusterStatus, WorkBenchActions, WorkBenchActionTypes } from '../WorkBenchTypes';
+import {
+  ClusterApiStatus,
+  ClusterStatus,
+  WorkBenchActions,
+  WorkBenchActionTypes,
+} from '../WorkBenchTypes';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootState';
 import {
@@ -20,6 +25,11 @@ const failure = (error: Error): WorkBenchActionTypes => ({
 const addStatus = (status: ClusterStatus): WorkBenchActionTypes => ({
   type: WorkBenchActions.addClusterStatus,
   status,
+});
+
+const addClusterUrl = (url: string): WorkBenchActionTypes => ({
+  type: WorkBenchActions.addClusterUrl,
+  url,
 });
 
 const switchCluster = (
@@ -50,6 +60,10 @@ export const getStatus = (): ThunkAction<void, RootState, null, WorkBenchActionT
     const response = await getClusterStatus();
     const clusterStatus = response.status as ClusterStatus;
     dispatch(addStatus(clusterStatus));
+    const url = response.url;
+    if (clusterStatus === ClusterApiStatus.createComplete && url) {
+      dispatch(addClusterUrl(url));
+    }
   } catch (e) {
     dispatch(failure(e));
   } finally {
