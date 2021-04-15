@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react';
-import { AutoComplete, Form, Input, notification, Spin } from 'antd';
+import { AutoComplete, Badge, Form, Input, notification, Spin } from 'antd';
 import style from './Suggester.module.scss';
 import { SearchOutlined } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
@@ -111,20 +111,22 @@ const Suggester: FunctionComponent<Props> = (props) => {
           }}
           disabled={!!error}
         >
-          <Input
-            prefix={<SearchOutlined />}
-            maxLength={MAX_N_OF_CHARS}
-            allowClear
-            size="large"
-            placeholder="Search..."
-            onPressEnter={(e: any) => {
-              e.preventDefault();
-              const value = e.target.value;
-              if (!value || !value.trim()) {
-                reInitializeState();
-              }
-            }}
-          />
+          <Badge count={'Beta'} offset={[8, -12]}>
+            <Input
+              prefix={<SearchOutlined />}
+              maxLength={MAX_N_OF_CHARS}
+              allowClear
+              size="large"
+              placeholder="Search..."
+              onPressEnter={(e: any) => {
+                e.preventDefault();
+                const value = e.target.value;
+                if (!value || !value.trim()) {
+                  reInitializeState();
+                }
+              }}
+            />
+          </Badge>
         </AutoComplete>
       </Form.Item>
     </Form>
