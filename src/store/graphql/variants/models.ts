@@ -183,24 +183,44 @@ export type StudiesHits = {
   };
 };
 
-export type OmimCondition = string[][];
-export type HpoCondition = string[][];
-export type OrphanetCondition = [string, number][];
-export type DddCondition = string[];
-export type CosmicCondition = string[];
+export type OmimCondition = {
+  omimName: string;
+  omimId: string;
+};
+export type OmimConditions = OmimCondition[];
 
-export type Condition =
-  | OmimCondition
-  | HpoCondition
-  | OrphanetCondition
-  | DddCondition
-  | CosmicCondition;
+export type HpoCondition = {
+  hpoTermLabel: string;
+  hpoTermTermId: string;
+};
+export type HpoConditions = HpoCondition[];
 
-export type OrphanetInheritance = string[];
+export type OrphanetCondition = {
+  panel: string;
+  disorderId: number;
+};
+export type OrphanetConditions = OrphanetCondition[];
 
-export type OmimInheritance = string[];
+export type DddCondition = string;
+export type DddConditions = DddCondition[];
 
-export type Inheritance = string | OrphanetInheritance | OmimInheritance;
+export type CosmicCondition = string;
+export type CosmicConditions = CosmicCondition[];
+
+export type Conditions =
+  | OmimConditions
+  | HpoConditions
+  | OrphanetConditions
+  | DddConditions
+  | CosmicConditions;
+
+export type OrphanetInheritance = string[][];
+
+export type OmimInheritance = string[][];
+
+export type SingleValuedInheritance = string;
+
+export type Inheritance = SingleValuedInheritance | OrphanetInheritance | OmimInheritance;
 
 export type OmimGene = string[][];
 
@@ -313,3 +333,11 @@ export type VariantEntityHitsEdges = {
     edges: VariantEntity;
   };
 };
+
+export enum ClinicalGenesTableSource {
+  orphanet = 'Orphanet',
+  omim = 'OMIM',
+  hpo = 'HPO',
+  ddd = 'DDD',
+  cosmic = 'Cosmic',
+}
