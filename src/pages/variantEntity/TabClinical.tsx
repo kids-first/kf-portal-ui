@@ -2,14 +2,10 @@ import React from 'react';
 import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabClinicalData } from 'store/graphql/variants/tabActions';
-import {
-  columnsClinVar,
-  columnsPhenotypes,
-  makeClinVarRows,
-  makeGenesOrderedRow,
-} from './clinical';
+import { columnsClinVar, columnsPhenotypes } from './clinicalColumns';
 import TabError from './TabError';
 import ClinVarExternalLink from './ClinVarExternalLink';
+import { makeGenesOrderedRow, makeClinVarRows } from './clinicalRowsGenerators';
 
 type OwnProps = {
   variantId: string;
