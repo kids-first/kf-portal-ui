@@ -90,28 +90,28 @@ const Suggester: FunctionComponent<Props> = (props) => {
         help="Search examples: 1-45331556-C-T, MUTYH, MUTYH G393D, rs36053993,
         ENSG00000132781, ENST00000372098, 5294 (Clinvar ID)"
       >
-        <AutoComplete
-          className={style.inputVariant}
-          style={{ width: style.autoCompleteWidth }}
-          onSearch={debounce(handleSearch, WAIT_IN_MS)}
-          options={generateSuggestionOptions(suggestionSearchText, suggestions)}
-          notFoundContent={isLoading ? <Spin /> : 'No results found'}
-          filterOption={(inputValue, option) =>
-            //  make sure we show suggestions for corresponding search only.
-            (inputValue || '').trim() === option?.meta?.searchText
-          }
-          onSelect={(value, option) => {
-            onClearSuggestions();
-            onSelectSuggestion({
-              suggestionId: option.meta.suggestionId,
-              featureType: option.meta.featureType,
-              geneSymbol: option.meta.geneSymbol,
-              displayName: option.meta.displayName,
-            });
-          }}
-          disabled={!!error}
-        >
-          <Badge count={'Beta'} offset={[8, -12]}>
+        <Badge count={'Beta'} offset={[0, -5]}>
+          <AutoComplete
+            className={style.inputVariant}
+            style={{ width: style.autoCompleteWidth }}
+            onSearch={debounce(handleSearch, WAIT_IN_MS)}
+            options={generateSuggestionOptions(suggestionSearchText, suggestions)}
+            notFoundContent={isLoading ? <Spin /> : 'No results found'}
+            filterOption={(inputValue, option) =>
+              //  make sure we show suggestions for corresponding search only.
+              (inputValue || '').trim() === option?.meta?.searchText
+            }
+            onSelect={(value, option) => {
+              onClearSuggestions();
+              onSelectSuggestion({
+                suggestionId: option.meta.suggestionId,
+                featureType: option.meta.featureType,
+                geneSymbol: option.meta.geneSymbol,
+                displayName: option.meta.displayName,
+              });
+            }}
+            disabled={!!error}
+          >
             <Input
               prefix={<SearchOutlined />}
               maxLength={MAX_N_OF_CHARS}
@@ -126,8 +126,8 @@ const Suggester: FunctionComponent<Props> = (props) => {
                 }
               }}
             />
-          </Badge>
-        </AutoComplete>
+          </AutoComplete>
+        </Badge>
       </Form.Item>
     </Form>
   );
