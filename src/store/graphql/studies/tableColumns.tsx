@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Tooltip } from 'antd';
+
 import { Sqon } from '../../sqon';
 import { addToSqons } from 'common/sqonUtils';
-import './tableColumn.scss';
 import { StudiesResult } from './models';
 import { DB_GA_P, generateUrlForDbGap } from 'common/constants';
+
+import './tableColumn.scss';
 
 export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => void) =>
   [
@@ -71,31 +73,59 @@ export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => vo
       name: 'family_count',
     },
     {
-      title: 'Seq',
+      title: (
+        <Tooltip title="Sequencing reads">
+          <span>Seq</span>
+        </Tooltip>
+      ),
       name: 'seq',
     },
     {
-      title: 'Snv',
+      title: (
+        <Tooltip title="Simple Nucleotide Variations">
+          <span>Snv</span>
+        </Tooltip>
+      ),
       name: 'snv',
     },
     {
-      title: 'Cnv',
+      title: (
+        <Tooltip title="Copy number variations">
+          <span>Cnv</span>
+        </Tooltip>
+      ),
       name: 'cnv',
     },
     {
-      title: 'Exp',
+      title: (
+        <Tooltip title="Transcriptome profiling">
+          <span>Exp</span>
+        </Tooltip>
+      ),
       name: 'exp',
     },
     {
-      title: 'Sv',
+      title: (
+        <Tooltip title="Structural variations">
+          <span>Sv</span>
+        </Tooltip>
+      ),
       name: 'sv',
     },
     {
-      title: 'Pat',
+      title: (
+        <Tooltip title="Pathology">
+          <span>Pat</span>
+        </Tooltip>
+      ),
       name: 'pat',
     },
     {
-      title: 'Rad',
+      title: (
+        <Tooltip title="Radiology">
+          <span>Rad</span>
+        </Tooltip>
+      ),
       name: 'rad',
     },
     {
