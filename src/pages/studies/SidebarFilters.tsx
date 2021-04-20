@@ -5,6 +5,8 @@ import { IFilter } from '@ferlab/ui/core/components/filters/types';
 
 import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
+import { Input, Tooltip } from 'antd';
+import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
@@ -32,6 +34,26 @@ const keyEnhanceBooleanOnly = (key: string) => {
   }
 };
 
+const onSearch = (search: string) => {
+  const searchFields = ['name', 'code'];
+  searchFields.forEach((f) =>
+    updateQueryFilters(
+      history,
+      f,
+      [
+        {
+          content: {
+            field: f,
+            value: [search.toLowerCase()],
+          },
+          op: 'in',
+        },
+      ],
+      'or',
+    ),
+  );
+};
+
 type StudiesProps = {
   onChange: () => void;
 };
@@ -47,6 +69,23 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
 
   return (
     <>
+      <div>Search</div>
+      <Input
+        prefix={<SearchOutlined />}
+        placeholder="Search..."
+        onPressEnter={(e: any) => {
+          e.preventDefault();
+          const value = e.target.value;
+          if (value && value.trim()) {
+            onSearch(e.target.value);
+          }
+        }}
+        suffix={
+          <Tooltip title="Search Story by Code or Name">
+            <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+          </Tooltip>
+        }
+      />
       {Object.keys(data.data.aggregations).map((key) => {
         const found = studiesMappingResults.extendedMapping.find((f: any) => f.field === key);
         const filterGroup = {
