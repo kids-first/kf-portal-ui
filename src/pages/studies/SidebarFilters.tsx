@@ -7,6 +7,7 @@ import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
 import { Input, Tooltip } from 'antd';
 import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import colors from 'style/themes/default/_colors.scss';
 
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
@@ -69,9 +70,9 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
 
   return (
     <>
-      <div>Search</div>
+      <div style={{ color: colors.iconColor }}>Search</div>
       <Input
-        prefix={<SearchOutlined />}
+        prefix={<SearchOutlined style={{ color: colors.iconColorDisabled }} />}
         placeholder="Search..."
         onPressEnter={(e: any) => {
           e.preventDefault();
@@ -82,7 +83,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
         }}
         suffix={
           <Tooltip title="Search Story by Code or Name">
-            <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+            <InfoCircleOutlined style={{ color: colors.iconColorDisabled }} />
           </Tooltip>
         }
       />
