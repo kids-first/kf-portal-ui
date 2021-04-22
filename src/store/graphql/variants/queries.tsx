@@ -61,6 +61,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
                 edges {
                   node {
                     study_id
+                    participant_ids
                     participant_number
                   }
                 }
@@ -171,6 +172,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
                       }
                     }
                     participant_number
+                    participant_ids
                     study_id
                   }
                 }
@@ -214,7 +216,6 @@ export const TAB_SUMMARY_QUERY = gql`
             reference
             start
             participant_number
-            participant_ids
             variant_class
             consequences {
               hits {

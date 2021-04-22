@@ -1,5 +1,6 @@
 import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
 import { TAB_CLINICAL_QUERY, TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY } from './queries';
+import { StudyNode } from './models';
 
 const MAX_NUMBER_STUDIES = 2000;
 
@@ -19,7 +20,7 @@ export const useTabFrequenciesData = (variantId: string) => {
     data: {
       frequencies: nodeVariant?.frequencies || {},
       locus: nodeVariant?.locus || '',
-      studies: nodeVariant?.studies?.hits?.edges || [],
+      studies: nodeVariant?.studies?.hits?.edges.map((e: StudyNode) => e.node) || [],
       participant_number: nodeVariant?.participant_number || 0,
       participant_ids: nodeVariant?.participant_ids || [],
       dataStudies: nodesStudies?.map((n: { node: any }) => n.node),
