@@ -1,7 +1,7 @@
 import { Result } from 'antd';
 import React from 'react';
 
-const TabError = () => (
+const ServerError = () => (
   <Result
     status="500"
     title="Server Error"
@@ -9,4 +9,4 @@ const TabError = () => (
   />
 );
 
-export default TabError;
+export default ServerError;
