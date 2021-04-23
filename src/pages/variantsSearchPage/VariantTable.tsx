@@ -23,15 +23,22 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
-import { generatePaginationMessage, toExponentialNotation } from 'utils';
-
+import { formatQuotientOrElse, generatePaginationMessage } from 'utils';
+import ServerError from 'components/Variants/ServerError';
 import ROUTES from 'common/routes';
 import style from './VariantTable.module.scss';
 
 const DEFAULT_PAGE_NUM = 1;
+
 type VariantTableState = {
   currentSqons: Sqon[];
 };
+
+enum Align {
+  center = 'center',
+  left = 'left',
+  right = 'right',
+}
 
 const isEven = (n: number) => n % 2 === 0;
 
@@ -122,11 +129,11 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Studies',
-      className: style.tableCellAlignRight,
+      align: Align.center,
       dataIndex: 'studies',
-      render: (studies: { hits: { total: number } }, row: any) => {
-        const nodes = row?.studies.hits.edges || [];
-        const studyIds = nodes.map((r: { node: { study_id: string } }) => r.node.study_id);
+      render: (studies: { hits: { total: number } }, row: VariantEntity) => {
+        const nodes: StudyNode[] = row?.studies.hits.edges || [];
+        const studyIds = nodes.map((r) => r.node.study_id);
 
         const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
 
@@ -146,7 +153,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             }}
           >
             <Button type="link">
-              <div className={style.variantTableLink}>{studies?.hits?.total || 0}</div>
+              <div className={style.variantTableLink}>{studies.hits.total || 0}</div>
             </Button>
           </Link>
         ) : (
@@ -156,30 +163,36 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Participants',
-      className: style.tableCellAlignRight,
-      dataIndex: 'participant_number',
-      render: (participant_number: number, row: any) => {
-        const nodes: StudyNode[] = row?.studies.hits.edges || [];
-        const participantsPerStudy = nodes.map((r) => r.node.participant_number);
-        let participantsListPerStudy: string[] = [];
-        nodes
-          .map((r) => r.node.participant_ids || [])
-          .map((a) => participantsListPerStudy.push(...a));
-        const hasMinRequiredParticipants = participantsPerStudy.some(
-          (s: number) => s >= MIN_N_OF_PARTICIPANTS_FOR_LINK,
+      align: Align.left,
+      dataIndex: '',
+      render: (row: VariantEntity) => {
+        const participantNumber = row.participant_number;
+        const participantTotalNumber = row.participant_total_number;
+
+        const studyNodes: StudyNode[] = row?.studies.hits.edges || [];
+        const hasMinRequiredParticipants = studyNodes.some(
+          (s: StudyNode) => s.node.participant_number >= MIN_N_OF_PARTICIPANTS_FOR_LINK,
         );
+
+        const studiesParticipants = hasMinRequiredParticipants
+          ? studyNodes.reduce((acc: string[], curr) => {
+              const participantsCurrStudy = curr.node.participant_ids || [];
+              return [...acc, ...participantsCurrStudy];
+            }, [])
+          : [];
+
         return hasMinRequiredParticipants ? (
           <Button
             className={style.variantTableLink}
             onClick={
-              participant_number
+              participantNumber
                 ? () => {
                     props.onClickParticipantLink(
                       addToSqons({
                         fieldsWValues: [
                           {
                             field: 'kf_id',
-                            value: participantsListPerStudy,
+                            value: studiesParticipants,
                           },
                         ],
                         sqons: props.currentSqons,
@@ -191,35 +204,22 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             }
             type="link"
           >
-            {row.participant_number}
+            {formatQuotientOrElse(participantNumber, participantTotalNumber)}
           </Button>
         ) : (
-          row.participant_number
+          formatQuotientOrElse(participantNumber, participantTotalNumber)
         );
       },
     },
     {
-      title: 'ALT Allele',
-      className: style.tableCellAlignRight,
+      title: 'ALT Alleles',
+      align: Align.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
-      title: 'Total Allele',
-      className: style.tableCellAlignRight,
-      dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.an,
-    },
-    {
-      title: 'Allele Freq.',
-      className: style.tableCellAlignRight,
-      dataIndex: 'frequencies',
-      render: (frequencies: Frequencies) =>
-        toExponentialNotation(frequencies?.internal?.upper_bound_kf?.af),
-    },
-    {
-      title: 'Homozygote',
-      className: style.tableCellAlignRight,
+      title: 'Homozygotes',
+      align: Align.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
@@ -235,12 +235,17 @@ const VariantTable: FunctionComponent<Props> = (props) => {
     loading: loadingData,
     results: { variants: data, total },
     studies,
+    error,
   } = useVariantSearchTableData(selectedSuggestion, currentPageNum);
 
   useEffect(() => {
     //make sure page number is reset when another selection is selected
     setCurrentPageNum(DEFAULT_PAGE_NUM);
   }, [selectedSuggestion.suggestionId]);
+
+  if (error) {
+    return <ServerError />;
+  }
 
   return (
     <Table

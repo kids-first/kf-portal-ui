@@ -66,7 +66,7 @@ const Summary = ({ variant }: SummaryProps) => {
             <CountWithIcon
               Icon={<RiseOutlined />}
               label={'Frequency'}
-              total={toExponentialNotation(variant.frequencies?.internal?.upper_bound_kf?.af)}
+              total={toExponentialNotation(variant.participant_frequency)}
             />
           </StackLayout>
           <StackLayout className={styles.buttomLeftContainer}>

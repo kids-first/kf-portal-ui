@@ -3,7 +3,7 @@ import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabClinicalData } from 'store/graphql/variants/tabActions';
 import { columnsClinVar, columnsPhenotypes } from './clinicalColumns';
-import TabError from './TabError';
+import ServerError from 'components/Variants/ServerError';
 import ClinVarExternalLink from './ClinVarExternalLink';
 import { makeGenesOrderedRow, makeClinVarRows } from './clinicalRowsGenerators';
 
@@ -15,7 +15,7 @@ const TabClinical = ({ variantId }: OwnProps) => {
   const { loading, data, error } = useTabClinicalData(variantId);
 
   if (error) {
-    return <TabError />;
+    return <ServerError />;
   }
 
   const dataClinvar = data?.clinvar || {};

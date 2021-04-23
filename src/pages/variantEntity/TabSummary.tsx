@@ -5,13 +5,12 @@ import { Card, Space, Spin, Tag, Typography } from 'antd';
 import Summary from './Summary';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
-import TabError from './TabError';
 import ExpandableCell from 'components/ExpandableCell';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import capitalize from 'lodash/capitalize';
 import ExpandableTable from 'components/ExpandableTable';
 import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
-
+import ServerError from 'components/Variants/ServerError';
 import styles from './tables.module.scss';
 
 const { Text } = Typography;
@@ -234,7 +233,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
   const { loading, data: rawData, error } = useTabSummaryData(variantId);
 
   if (error) {
-    return <TabError />;
+    return <ServerError />;
   }
 
   const data = rawData as VariantEntity | undefined;

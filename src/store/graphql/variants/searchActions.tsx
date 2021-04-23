@@ -31,7 +31,7 @@ export const useVariantSearchTableData = (
   selectedSuggestion: SelectedSuggestion,
   pageNum: number,
 ) => {
-  const { loading, result } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
+  const { loading, result, error } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
     variables: {
       sqon: buildSearchTableSqon(selectedSuggestion),
       pageSize: SEARCH_PAGE_SIZE,
@@ -56,6 +56,7 @@ export const useVariantSearchTableData = (
       variants,
       total,
     },
+    error,
     studies: studies,
   };
 };
