@@ -1,6 +1,6 @@
 import {
-  ClusterApiStatus,
   ClusterStatus,
+  isClusterRunning,
   WorkBenchActions,
   WorkBenchActionTypes,
 } from '../WorkBenchTypes';
@@ -61,7 +61,7 @@ export const getStatus = (): ThunkAction<void, RootState, null, WorkBenchActionT
     const clusterStatus = response.status as ClusterStatus;
     dispatch(addStatus(clusterStatus));
     const url = response.url;
-    if (clusterStatus === ClusterApiStatus.createComplete && url) {
+    if (isClusterRunning(clusterStatus) && url) {
       dispatch(addClusterUrl(url));
     }
   } catch (e) {
