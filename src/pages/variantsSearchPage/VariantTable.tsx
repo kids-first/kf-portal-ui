@@ -27,6 +27,7 @@ import { formatQuotientOrElse, generatePaginationMessage } from 'utils';
 import ServerError from 'components/Variants/ServerError';
 import ROUTES from 'common/routes';
 import style from './VariantTable.module.scss';
+import { Align } from 'ui/types';
 
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -35,12 +36,6 @@ const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 type VariantTableState = {
   currentSqons: Sqon[];
 };
-
-enum Align {
-  center = 'center',
-  left = 'left',
-  right = 'right',
-}
 
 const isEven = (n: number) => n % 2 === 0;
 

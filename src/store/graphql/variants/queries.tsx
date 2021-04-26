@@ -153,6 +153,10 @@ export const TAB_FREQUENCIES_QUERY = gql`
                 }
               }
             }
+            participant_number
+            participant_number_visible
+            participant_total_number
+            participant_frequency
             studies {
               hits {
                 edges {

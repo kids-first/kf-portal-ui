@@ -20,10 +20,15 @@ export const useTabFrequenciesData = (variantId: string) => {
     data: {
       frequencies: nodeVariant?.frequencies || {},
       locus: nodeVariant?.locus || '',
-      studies: nodeVariant?.studies?.hits?.edges.map((e: StudyNode) => e.node) || [],
-      participant_number: nodeVariant?.participant_number || 0,
+      variantStudies:
+        nodeVariant?.studies?.hits?.edges.map((e: StudyNode) => ({
+          ...e.node,
+          participantTotalNumber: nodeVariant?.participant_total_number || 0,
+        })) || [],
+      participantTotalNumber: nodeVariant?.participant_total_number || 0,
+      participantNumber: nodeVariant?.participant_number || 0,
       participant_ids: nodeVariant?.participant_ids || [],
-      dataStudies: nodesStudies?.map((n: { node: any }) => n.node),
+      globalStudies: nodesStudies?.map((n: StudyNode) => n.node),
     },
     error,
   };
