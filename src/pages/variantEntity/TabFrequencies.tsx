@@ -9,7 +9,6 @@ import {
   Study,
   StudyInfo,
 } from 'store/graphql/variants/models';
-import TabError from './TabError';
 import { toExponentialNotation } from 'utils';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { Sqon } from 'store/sqon';
@@ -17,6 +16,7 @@ import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addToSqons } from 'common/sqonUtils';
+import ServerError from 'components/Variants/ServerError';
 
 import style from '../variantsSearchPage/VariantTable.module.scss';
 
@@ -231,7 +231,7 @@ const TabFrequencies = (props: Props) => {
   const { loading, data, error } = useTabFrequenciesData(props.variantId);
 
   if (error) {
-    return <TabError />;
+    return <ServerError />;
   }
 
   const { studies, frequencies, dataStudies, locus } = data;

@@ -119,3 +119,6 @@ export const generatePaginationMessage = (currentPage, pageSize, total) => {
   const [start, stop] = computeStartStopPagination(currentPage, pageSize, total);
   return `Showing ${start.toLocaleString()} - ${stop.toLocaleString()} of ${total.toLocaleString()}`;
 };
+
+export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
+  denum === 0 ? defaultValue : `${num} / ${denum} (${toExponentialNotation(num / denum)})`;

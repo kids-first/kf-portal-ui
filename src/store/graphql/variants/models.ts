@@ -313,6 +313,8 @@ export type VariantEntity = {
   start: string;
   reference: string;
   participant_number: number;
+  participant_total_number: number;
+  participant_frequency: number;
   variant_class: string;
   rsnumber: string;
   frequencies: Frequencies;

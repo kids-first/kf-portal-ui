@@ -23,6 +23,8 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
             }
             rsnumber
             participant_number
+            participant_frequency
+            participant_total_number
             consequences {
               hits {
                 edges {
@@ -216,6 +218,7 @@ export const TAB_SUMMARY_QUERY = gql`
             reference
             start
             participant_number
+            participant_frequency
             variant_class
             consequences {
               hits {
