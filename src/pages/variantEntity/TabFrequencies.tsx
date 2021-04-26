@@ -9,7 +9,11 @@ import {
   Study,
   StudyInfo,
 } from 'store/graphql/variants/models';
-import { formatQuotientOrElse, toExponentialNotation } from 'utils';
+import {
+  formatQuotientOrElse,
+  formatQuotientToExponentialOrElse,
+  toExponentialNotation,
+} from 'utils';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { Sqon } from 'store/sqon';
 import { RootState } from 'store/rootState';
@@ -20,7 +24,7 @@ import ServerError from 'components/Variants/ServerError';
 
 import style from '../variantsSearchPage/VariantTable.module.scss';
 import TableSummaryKfStudies from './TableSummaryKfStudies';
-import { Align } from 'ui/types';
+import { AlignmentOptions } from 'ui/TableOptions';
 
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
@@ -73,45 +77,57 @@ const internalColumns = (
       const participantsTotal = row.participantTotalNumber;
 
       return participantsNumber && participantsNumber >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
-        <Link
-          to={'/explore'}
-          href={'#top'}
-          onClick={() => {
-            const study = globalStudies.find((s) => s.id === row.study_id);
-            if (study) {
-              onLinkClick(
-                addToSqons({
-                  fieldsWValues: [{ field: 'kf_id', value: row.participant_ids || [] }],
-                  sqons: sqons,
-                }),
-              );
-            }
-            const toTop = document.getElementById('main-page-container');
-            toTop?.scrollTo(0, 0);
-          }}
-        >
-          <Button type="link">
-            <div className={style.variantTableLink}>
-              {formatQuotientOrElse(participantsNumber, participantsTotal)}
-            </div>
-          </Button>
-        </Link>
+        <>
+          <Link
+            to={'/explore'}
+            href={'#top'}
+            onClick={() => {
+              const study = globalStudies.find((s) => s.id === row.study_id);
+              if (study) {
+                onLinkClick(
+                  addToSqons({
+                    fieldsWValues: [{ field: 'kf_id', value: row.participant_ids || [] }],
+                    sqons: sqons,
+                  }),
+                );
+              }
+              const toTop = document.getElementById('main-page-container');
+              toTop?.scrollTo(0, 0);
+            }}
+          >
+            <Button type="link">
+              <div className={style.variantTableLink}>{participantsNumber}</div>
+            </Button>
+          </Link>
+          {participantsTotal ? ` / ${participantsTotal}` : ''}
+        </>
       ) : (
         formatQuotientOrElse(participantsNumber, participantsTotal)
       );
     },
   },
   {
+    title: 'Frequency',
+    align: AlignmentOptions.center,
+    dataIndex: '',
+    // eslint-disable-next-line react/display-name
+    render: (row: InternalRow) => {
+      const participantsNumber = row.participant_number;
+      const participantsTotal = row.participantTotalNumber;
+      return formatQuotientToExponentialOrElse(participantsNumber, participantsTotal);
+    },
+  },
+  {
     title: 'ALT Alleles',
     dataIndex: 'frequencies',
-    align: Align.center,
+    align: AlignmentOptions.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.ac,
     width: '14%',
   },
   {
     title: 'Homozygotes',
     dataIndex: 'frequencies',
-    align: Align.center,
+    align: AlignmentOptions.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.homozygotes,
     width: '14%',
   },
