@@ -54,6 +54,7 @@ const Studies = () => {
         <PageContent title="Studies">
           <StudyPageContainer
             studiesResults={studiesResults}
+            studiesMappingResults={studiesMappingResults}
             filters={filters}
             pagination={{
               current: currentPage,
