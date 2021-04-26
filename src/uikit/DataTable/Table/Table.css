@@ -220,6 +220,7 @@
   -webkit-box-flex: 1;
   -ms-flex: 1 0 0px;
   flex: 1 0 0;
+  font-size: 14px; /* Follow antdesign theme, will be replace by ant table */
   white-space: normal;
   text-overflow: ellipsis;
   padding: 7px 5px;
@@ -372,9 +373,11 @@
   font-weight: 600;
 }
 
+/* match ant default style, dont use variable, will be replace */
 .dataTable .ReactTable .rt-thead .rt-th {
   border-color: #e0e1e6;
   border-bottom: none;
+  font-weight: 600;
   padding: 10px 10px;
   background-color: #edeef1;
   z-index: 0;

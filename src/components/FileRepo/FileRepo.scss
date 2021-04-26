@@ -86,11 +86,14 @@ $font-ajustment: 1.3rem;
   text-align: right;
 }
 
+// match ant default style, dont use variable, will be replace
 .arranger-container .ReactTable .rt-thead .rt-tr .rt-th {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2b388f;
 }
 .arranger-container .ReactTable .rt-tbody .rt-tl .rt-td {
-  font-size: 13px;
+  font-size: 14px;
   color: rgb(52, 52, 52);
 }
 .arranger-container .ReactTable .rt-td {
@@ -127,9 +130,6 @@ $font-ajustment: 1.3rem;
   align-items: center;
   justify-content: center;
   height: 100vh;
-}
-
-.downloadButtonWrapper {
 }
 
 .stat-container {
