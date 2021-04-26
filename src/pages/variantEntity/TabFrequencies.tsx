@@ -9,7 +9,7 @@ import {
   Study,
   StudyInfo,
 } from 'store/graphql/variants/models';
-import { toExponentialNotation } from 'utils';
+import { formatQuotientOrElse, toExponentialNotation } from 'utils';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { Sqon } from 'store/sqon';
 import { RootState } from 'store/rootState';
@@ -19,6 +19,10 @@ import { addToSqons } from 'common/sqonUtils';
 import ServerError from 'components/Variants/ServerError';
 
 import style from '../variantsSearchPage/VariantTable.module.scss';
+import TableSummaryKfStudies from './TableSummaryKfStudies';
+import { Align } from 'ui/types';
+
+const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type OwnProps = {
   variantId: string;
@@ -28,10 +32,17 @@ type FrequencyTabTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
 
-const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
+type InternalRow = {
+  frequencies: FreqInternal;
+  key: string;
+  participantTotalNumber: number;
+  participant_ids: null | string[];
+  participant_number: number;
+  study_id: string;
+};
 
 const internalColumns = (
-  studiesInfo: StudyInfo[],
+  globalStudies: StudyInfo[],
   onLinkClick: (sqons: Sqon[]) => void,
   sqons: Sqon[],
 ) => [
@@ -39,31 +50,34 @@ const internalColumns = (
     title: 'Studies',
     dataIndex: 'study_id',
     // eslint-disable-next-line react/display-name
-    render: (study_id: string) => {
-      const study = studiesInfo.find((s) => s.id === study_id);
-      return study?.code || study_id;
+    render: (variantStudyId: string) => {
+      const study = globalStudies.find((s) => s.id === variantStudyId);
+      return study?.code || variantStudyId;
     },
   },
   {
     title: 'Domain',
     dataIndex: 'study_id',
     // eslint-disable-next-line react/display-name
-    render: (study_id: string) => {
-      const study = studiesInfo.find((s) => s.id === study_id);
+    render: (variantStudyId: string) => {
+      const study = globalStudies.find((s) => s.id === variantStudyId);
       return study?.domain.join(', ') || '';
     },
   },
   {
     title: '# Participants',
-    dataIndex: 'participant_number',
+    dataIndex: '',
     // eslint-disable-next-line react/display-name
-    render: (participant_number: string, row: any) =>
-      parseInt(participant_number) >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
+    render: (row: InternalRow) => {
+      const participantsNumber = row.participant_number;
+      const participantsTotal = row.participantTotalNumber;
+
+      return participantsNumber && participantsNumber >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
         <Link
           to={'/explore'}
           href={'#top'}
           onClick={() => {
-            const study = studiesInfo.find((s) => s.id === row.study_id);
+            const study = globalStudies.find((s) => s.id === row.study_id);
             if (study) {
               onLinkClick(
                 addToSqons({
@@ -77,35 +91,28 @@ const internalColumns = (
           }}
         >
           <Button type="link">
-            <div className={style.variantTableLink}>{participant_number}</div>
+            <div className={style.variantTableLink}>
+              {formatQuotientOrElse(participantsNumber, participantsTotal)}
+            </div>
           </Button>
         </Link>
       ) : (
-        participant_number
-      ),
+        formatQuotientOrElse(participantsNumber, participantsTotal)
+      );
+    },
   },
   {
-    title: 'ALT Allele',
+    title: 'ALT Alleles',
     dataIndex: 'frequencies',
+    align: Align.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.ac,
     width: '14%',
   },
   {
-    title: 'Alleles (ALT + REF)',
+    title: 'Homozygotes',
     dataIndex: 'frequencies',
-    render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.an,
-    width: '14%',
-  },
-  {
-    title: 'Homozygote',
-    dataIndex: 'frequencies',
+    align: Align.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.homozygotes,
-    width: '14%',
-  },
-  {
-    title: 'Frequency',
-    dataIndex: 'frequencies',
-    render: (frequencies: FreqInternal) => toExponentialNotation(frequencies?.upper_bound_kf?.af),
     width: '14%',
   },
 ];
@@ -234,17 +241,16 @@ const TabFrequencies = (props: Props) => {
     return <ServerError />;
   }
 
-  const { studies, frequencies, dataStudies, locus } = data;
+  const {
+    variantStudies,
+    frequencies,
+    globalStudies,
+    locus,
+    participantTotalNumber,
+    participantNumber,
+  } = data;
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
-
-  const hasParticipantLink: boolean = studies.some(
-    (s: Study) => s.participant_number >= MIN_N_OF_PARTICIPANTS_FOR_LINK,
-  );
-
-  const allParticipants: string[] = [].concat(
-    ...studies.map((s: Study) => s.participant_ids || []),
-  );
 
   return (
     <Spin spinning={loading}>
@@ -252,49 +258,22 @@ const TabFrequencies = (props: Props) => {
         <Space direction={'vertical'} size={'large'}>
           <Card title="Kids First Studies">
             <Table
-              dataSource={makeInternalCohortsRows(studies)}
+              dataSource={makeInternalCohortsRows(variantStudies)}
               columns={internalColumns(
-                dataStudies,
+                globalStudies,
                 props.onClickStudyLink,
                 props.currentVirtualStudy,
               )}
               summary={() => (
-                <Table.Summary.Row>
-                  <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
-                  <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={2}>
-                    {hasParticipantLink ? (
-                      <Link
-                        to={'/explore'}
-                        href={'#top'}
-                        onClick={() => {
-                          props.onClickStudyLink(
-                            addToSqons({
-                              fieldsWValues: [{ field: 'kf_id', value: allParticipants }],
-                              sqons: props.currentVirtualStudy,
-                            }),
-                          );
-                          const toTop = document.getElementById('main-page-container');
-                          toTop?.scrollTo(0, 0);
-                        }}
-                      >
-                        <Button type="link">
-                          <div className={style.variantTableLink}>{data?.participant_number}</div>
-                        </Button>
-                      </Link>
-                    ) : (
-                      data?.participant_number
-                    )}
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={3}>{internalFrequencies?.ac}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={4}>{internalFrequencies?.an}</Table.Summary.Cell>
-                  <Table.Summary.Cell index={5}>
-                    {internalFrequencies?.homozygotes}
-                  </Table.Summary.Cell>
-                  <Table.Summary.Cell index={6}>
-                    {toExponentialNotation(internalFrequencies?.af)}
-                  </Table.Summary.Cell>
-                </Table.Summary.Row>
+                <TableSummaryKfStudies
+                  variantStudies={variantStudies}
+                  onClickStudyLink={props.onClickStudyLink}
+                  currentVirtualStudy={props.currentVirtualStudy}
+                  participantNumber={participantNumber}
+                  altAlleles={internalFrequencies?.ac}
+                  homozygotes={internalFrequencies?.homozygotes}
+                  participantTotalNumber={participantTotalNumber}
+                />
               )}
               pagination={false}
             />
