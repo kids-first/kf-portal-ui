@@ -5,8 +5,8 @@ import { addToSqons } from '../../common/sqonUtils';
 import style from '../variantsSearchPage/VariantTable.module.scss';
 import { Study } from 'store/graphql/variants/models';
 import { Sqon } from 'store/sqon';
-import { formatQuotientOrElse } from 'utils';
-import { Align } from 'ui/types';
+import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
+import { AlignmentOptions } from 'ui/TableOptions';
 
 type EnhancedVariantStudy = Study & { participantTotalNumber: number };
 
@@ -46,34 +46,38 @@ const TableSummaryKfStudies = (props: OwnProps) => {
       <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
       <Table.Summary.Cell index={2}>
         {hasParticipantLink ? (
-          <Link
-            to={'/explore'}
-            href={'#top'}
-            onClick={() => {
-              onClickStudyLink(
-                addToSqons({
-                  fieldsWValues: [{ field: 'kf_id', value: allParticipants }],
-                  sqons: currentVirtualStudy,
-                }),
-              );
-              const toTop = document.getElementById('main-page-container');
-              toTop?.scrollTo(0, 0);
-            }}
-          >
-            <Button type="link">
-              <div className={style.variantTableLink}>
-                {formatQuotientOrElse(participantNumber, participantTotalNumber)}
-              </div>
-            </Button>
-          </Link>
+          <>
+            <Link
+              to={'/explore'}
+              href={'#top'}
+              onClick={() => {
+                onClickStudyLink(
+                  addToSqons({
+                    fieldsWValues: [{ field: 'kf_id', value: allParticipants }],
+                    sqons: currentVirtualStudy,
+                  }),
+                );
+                const toTop = document.getElementById('main-page-container');
+                toTop?.scrollTo(0, 0);
+              }}
+            >
+              <Button type="link">
+                <div className={style.variantTableLink}>{participantNumber}</div>
+              </Button>
+            </Link>
+            {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
+          </>
         ) : (
           formatQuotientOrElse(participantNumber, participantTotalNumber)
         )}
       </Table.Summary.Cell>
-      <Table.Summary.Cell align={Align.center} index={3}>
+      <Table.Summary.Cell align={AlignmentOptions.center} index={3}>
+        {formatQuotientToExponentialOrElse(participantNumber, participantTotalNumber)}
+      </Table.Summary.Cell>
+      <Table.Summary.Cell align={AlignmentOptions.center} index={4}>
         {altAlleles}
       </Table.Summary.Cell>
-      <Table.Summary.Cell align={Align.center} index={4}>
+      <Table.Summary.Cell align={AlignmentOptions.center} index={5}>
         {homozygotes}
       </Table.Summary.Cell>
     </Table.Summary.Row>
