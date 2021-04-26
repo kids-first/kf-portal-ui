@@ -2,7 +2,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Table, Tooltip } from 'antd';
 import ConsequencesCell from './ConsequencesCell';
-import { SEARCH_PAGE_SIZE, useVariantSearchTableData } from 'store/graphql/variants/searchActions';
+import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import {
   ClinVar,
   Consequence,
@@ -29,6 +29,8 @@ import ROUTES from 'common/routes';
 import style from './VariantTable.module.scss';
 
 const DEFAULT_PAGE_NUM = 1;
+const DEFAULT_PAGE_SIZE = 10;
+const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type VariantTableState = {
   currentSqons: Sqon[];
@@ -41,8 +43,6 @@ enum Align {
 }
 
 const isEven = (n: number) => n % 2 === 0;
-
-const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
   onClickParticipantLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
@@ -230,13 +230,14 @@ const makeRows = (rows: VariantEntityNode[]) =>
 
 const VariantTable: FunctionComponent<Props> = (props) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
+  const [currentPageSize, setCurrentPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { selectedSuggestion } = props;
   const {
     loading: loadingData,
     results: { variants: data, total },
     studies,
     error,
-  } = useVariantSearchTableData(selectedSuggestion, currentPageNum);
+  } = useVariantSearchTableData(selectedSuggestion, currentPageNum, currentPageSize);
 
   useEffect(() => {
     //make sure page number is reset when another selection is selected
@@ -249,14 +250,17 @@ const VariantTable: FunctionComponent<Props> = (props) => {
 
   return (
     <Table
-      title={() => generatePaginationMessage(currentPageNum, SEARCH_PAGE_SIZE, total)}
+      title={() => generatePaginationMessage(currentPageNum, currentPageSize, total)}
       tableLayout="auto"
       pagination={{
         current: currentPageNum,
         total: total,
-        onChange: (page) => {
+        onChange: (page, pageSize) => {
           if (currentPageNum !== page) {
             setCurrentPageNum(page);
+          }
+          if (currentPageSize !== pageSize) {
+            setCurrentPageSize(pageSize || DEFAULT_PAGE_SIZE);
           }
         },
       }}
