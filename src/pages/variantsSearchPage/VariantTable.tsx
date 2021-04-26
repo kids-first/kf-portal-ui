@@ -23,11 +23,15 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import { RootState } from 'store/rootState';
 import { addToSqons } from 'common/sqonUtils';
-import { formatQuotientOrElse, generatePaginationMessage } from 'utils';
+import {
+  formatQuotientOrElse,
+  formatQuotientToExponentialOrElse,
+  generatePaginationMessage,
+} from 'utils';
 import ServerError from 'components/Variants/ServerError';
 import ROUTES from 'common/routes';
 import style from './VariantTable.module.scss';
-import { Align } from 'ui/types';
+import { AlignmentOptions } from 'ui/TableOptions';
 
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -124,7 +128,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Studies',
-      align: Align.center,
+      align: AlignmentOptions.center,
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies.hits.edges || [];
@@ -158,7 +162,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Participants',
-      align: Align.left,
+      align: AlignmentOptions.left,
       dataIndex: '',
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
@@ -177,44 +181,57 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
           : [];
 
         return hasMinRequiredParticipants ? (
-          <Button
-            className={style.variantTableLink}
-            onClick={
-              participantNumber
-                ? () => {
-                    props.onClickParticipantLink(
-                      addToSqons({
-                        fieldsWValues: [
-                          {
-                            field: 'kf_id',
-                            value: studiesParticipants,
-                          },
-                        ],
-                        sqons: props.currentSqons,
-                      }),
-                    );
-                    props.history.push(ROUTES.cohortBuilder);
-                  }
-                : undefined
-            }
-            type="link"
-          >
-            {formatQuotientOrElse(participantNumber, participantTotalNumber)}
-          </Button>
+          <>
+            <Button
+              className={style.variantTableLink}
+              onClick={
+                participantNumber
+                  ? () => {
+                      props.onClickParticipantLink(
+                        addToSqons({
+                          fieldsWValues: [
+                            {
+                              field: 'kf_id',
+                              value: studiesParticipants,
+                            },
+                          ],
+                          sqons: props.currentSqons,
+                        }),
+                      );
+                      props.history.push(ROUTES.cohortBuilder);
+                    }
+                  : undefined
+              }
+              type="link"
+            >
+              {participantNumber}
+            </Button>
+            {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
+          </>
         ) : (
           formatQuotientOrElse(participantNumber, participantTotalNumber)
         );
       },
     },
     {
+      title: 'Frequency',
+      align: AlignmentOptions.center,
+      dataIndex: '',
+      render: (row: VariantEntity) => {
+        const participantNumber = row.participant_number;
+        const participantTotalNumber = row.participant_total_number;
+        return formatQuotientToExponentialOrElse(participantNumber, participantTotalNumber);
+      },
+    },
+    {
       title: 'ALT Alleles',
-      align: Align.center,
+      align: AlignmentOptions.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
       title: 'Homozygotes',
-      align: Align.center,
+      align: AlignmentOptions.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },

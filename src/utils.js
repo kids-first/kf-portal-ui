@@ -120,5 +120,13 @@ export const generatePaginationMessage = (currentPage, pageSize, total) => {
   return `Showing ${start.toLocaleString()} - ${stop.toLocaleString()} of ${total.toLocaleString()}`;
 };
 
+const canQuotientBeComputed = (num, denum) => {
+  const areNumbers = !isNaN(num) && !isNaN(denum);
+  return areNumbers && denum !== 0;
+};
+
 export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
-  denum === 0 ? defaultValue : `${num} / ${denum} (${toExponentialNotation(num / denum)})`;
+  canQuotientBeComputed(num, denum) ? `${num} / ${denum}` : defaultValue;
+
+export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '') =>
+  canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
