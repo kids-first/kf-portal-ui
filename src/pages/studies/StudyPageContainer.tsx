@@ -17,20 +17,19 @@ import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
 
 type StudyPageContainerProps = StudiesPageContainerData & PaginationType;
 
-const StudyPageContainer = ({ studiesResults, filters, pagination }: StudyPageContainerProps) => {
+const StudyPageContainer = ({
+  studiesResults,
+  studiesMappingResults,
+  filters,
+  pagination,
+}: StudyPageContainerProps) => {
   const total = studiesResults?.data?.hits?.total || 0;
-
-  const labelByFieldKeyMap: Record<string, string> = {
-    domain: 'Domain',
-    program: 'Program',
-    family_data: 'Family Data',
-    data_categories: 'Data Categories',
-    experimental_strategy: 'Experimental Strategy',
-  };
 
   const dictionary: IDictionary = {
     query: {
-      facet: (key) => labelByFieldKeyMap[key] || key,
+      facet: (key) =>
+        studiesMappingResults?.extendedMapping?.find((mapping: any) => key === mapping.field)
+          ?.displayName || key,
     },
   };
 
