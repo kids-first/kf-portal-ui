@@ -13,6 +13,8 @@ export enum ClusterUnverifiedStatus {
   unverified = 'UNVERIFIED',
 }
 
+export const NO_OPEN_CONNECTION_DATA_INTEGRATION = 'no.open.connection';
+
 export type ClusterStatus = ClusterApiStatus | ClusterUnverifiedStatus;
 
 export const isClusterStatusIdling = (status: ClusterStatus) =>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import azicon from 'assets/appache-zeppelin.png';
 import { Card, Typography, Switch, Alert, Button, Space } from 'antd';
+import { Link } from 'uikit/Core';
 import style from './WorkBench.module.scss';
 import { RootState } from 'store/rootState';
 
@@ -13,7 +14,9 @@ import {
   isClusterStatusIdling,
   isClusterStatusInProgress,
   isClusterRunning,
+  NO_OPEN_CONNECTION_DATA_INTEGRATION,
 } from 'store/WorkBenchTypes';
+import { selectLoggedInUser } from 'store/selectors/users';
 import {
   selectIsLoading,
   selectError,
@@ -28,6 +31,7 @@ import {
 } from 'store/actionCreators/workBench';
 import useInterval from 'hooks/useInterval';
 import IndeterminateProgress from 'components/UI/IndeterminateProgress';
+import { LoggedInUser } from 'store/userTypes';
 
 const POLLING_DELAY_IN_MS = 30000; //30[s]
 
@@ -40,6 +44,7 @@ const mapState = (state: RootState) => ({
   error: selectError(state),
   status: selectStatus(state),
   url: selectClusterUrl(state),
+  loggedInUser: selectLoggedInUser(state),
 });
 
 const mapDispatch = (dispatch: DispatchWorkBench) => ({
@@ -60,6 +65,9 @@ const showSwitch = (status: ClusterStatus) =>
 
 const showProgress = (status: ClusterStatus) => isClusterStatusInProgress(status);
 
+const showNoConnectionError = (error: any) =>
+  NO_OPEN_CONNECTION_DATA_INTEGRATION === error.response?.data?.code;
+
 const WorkBench = (props: Props) => {
   const {
     isLoadingStatus,
@@ -71,6 +79,7 @@ const WorkBench = (props: Props) => {
     onReInitializeState,
     isAllowed,
     url,
+    loggedInUser,
   } = props;
 
   useInterval(
@@ -125,29 +134,61 @@ const WorkBench = (props: Props) => {
               </Space>
             )}
             {showProgress(status) && <IndeterminateProgress />}
-            {error && (
-              <Alert
-                className={style.alert}
-                message={
-                  <>
-                    <span>{'We were unable to complete this operation. '}</span>
-                    <a href={'mailto:support@kidsfirstdrc.org'}>Contact support</a>
-                    <span>{' if the issue persists'}</span>
-                  </>
-                }
-                type="error"
-                action={
-                  <Button type="primary" danger onClick={() => onReInitializeState()}>
-                    Try again
-                  </Button>
-                }
-              />
-            )}
+            {error && displayError(error, loggedInUser, onReInitializeState)}
           </div>
         </StackLayout>
       </StackLayout>
     </Card>
   );
+};
+
+const displayError = (error: any, loggedInUser: LoggedInUser, onReInitializeState: () => void) => {
+  if (showNoConnectionError(error)) {
+    return (
+      <Alert
+        className={style.alert}
+        message={
+          <>
+            <span>{'no.open.connection '}</span>
+            <Link
+              className="color-primary"
+              to={{
+                pathname: `/user/${loggedInUser._id}`,
+                hash: '#settings',
+              }}
+            >
+              link.to.settings
+            </Link>
+          </>
+        }
+        type="error"
+        action={
+          <Button type="primary" danger onClick={() => onReInitializeState()}>
+            Try again
+          </Button>
+        }
+      />
+    );
+  } else {
+    return (
+      <Alert
+        className={style.alert}
+        message={
+          <>
+            <span>{'We were unable to complete this operation. '}</span>
+            <a href={'mailto:support@kidsfirstdrc.org'}>Contact support</a>
+            <span>{' if the issue persists'}</span>
+          </>
+        }
+        type="error"
+        action={
+          <Button type="primary" danger onClick={() => onReInitializeState()}>
+            Try again
+          </Button>
+        }
+      />
+    );
+  }
 };
 
 export default connector(WorkBench);
