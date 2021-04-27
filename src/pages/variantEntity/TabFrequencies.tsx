@@ -107,7 +107,6 @@ const internalColumns = (
   },
   {
     title: 'Frequency',
-    //TODOalign: AlignmentOptions.center,
     dataIndex: '',
     // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
