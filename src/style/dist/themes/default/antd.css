@@ -24800,14 +24800,26 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin: 8px 0 0;
   padding: 0;
 }
+.ant-table table {
+  border-collapse: collapse;
+  border-radius: 2px;
+}
+.ant-table-thead > tr > th {
+  border-bottom: 1px solid #eaeaec;
+}
 .ant-table-tbody > tr:nth-child(2n) {
   background-color: #f9f9fb;
-  border-top: 1px solid #eaeaec;
+}
+.ant-table-tbody > tr {
   border-bottom: 1px solid #eaeaec;
+}
+.ant-table-tbody > tr:last-child {
+  border-bottom: none;
 }
 .ant-table-tbody > tr > td {
   color: #383f72;
   vertical-align: top;
+  border: none;
 }
 .ant-table-thead .ant-table-cell {
   font-weight: 600;
