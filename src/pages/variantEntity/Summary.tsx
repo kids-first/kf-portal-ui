@@ -49,7 +49,7 @@ const Summary = ({ variant }: SummaryProps) => {
           <SummaryItem field="Chr" value={variant.chromosome} />
           <SummaryItem field="Start" value={variant.start} />
           <SummaryItem field="Allele Alt." value={`${variant.alternate}`} />
-          <SummaryItem field="Allele Réf." value={variant.reference} />
+          <SummaryItem field="Allele Ref." value={variant.reference} />
         </div>
         <div>
           <StackLayout className={styles.topLeftContainer}>
