@@ -18,7 +18,7 @@ export default (state = initialState, action: WorkBenchActionTypes): WorkBenchSt
       return { ...state, isLoading: action.isLoading };
     }
     case WorkBenchActions.addClusterStatus: {
-      return { ...state, status: action.status };
+      return { ...state, status: action.status, error: null, url: null };
     }
     case WorkBenchActions.failure: {
       return { ...initialState, error: action.error };
@@ -27,7 +27,10 @@ export default (state = initialState, action: WorkBenchActionTypes): WorkBenchSt
       return { ...initialState };
     }
     case WorkBenchActions.addClusterUrl: {
-      return { ...state, url: action.url };
+      return { ...state, url: action.url, error: null };
+    }
+    case WorkBenchActions.clearClusterError: {
+      return { ...state, error: null };
     }
     default:
       return state;

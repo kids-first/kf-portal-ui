@@ -1,7 +1,11 @@
 import { kfVariantClusterUrl } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
+import { UnAuthorizedClusterError } from 'store/WorkBenchTypes';
 
-const api = initializeApi();
+const api = initializeApi({
+  onUnauthorized: (err) =>
+    Promise.reject(new UnAuthorizedClusterError(err.data?.code ?? err.message)),
+});
 
 export const startCluster = () =>
   api({
