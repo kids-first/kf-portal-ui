@@ -15,6 +15,7 @@ import {
   isClusterStatusInProgress,
   isClusterRunning,
   NO_OPEN_CONNECTION_DATA_INTEGRATION,
+  UnAuthorizedClusterError,
 } from 'store/WorkBenchTypes';
 import { selectLoggedInUser } from 'store/selectors/users';
 import {
@@ -65,8 +66,8 @@ const showSwitch = (status: ClusterStatus) =>
 
 const showProgress = (status: ClusterStatus) => isClusterStatusInProgress(status);
 
-const showNoConnectionError = (error: any) =>
-  NO_OPEN_CONNECTION_DATA_INTEGRATION === error.response?.data?.code;
+const showNoConnectionError = (error: Error | UnAuthorizedClusterError) =>
+  NO_OPEN_CONNECTION_DATA_INTEGRATION === error.message;
 
 const WorkBench = (props: Props) => {
   const {
@@ -142,14 +143,22 @@ const WorkBench = (props: Props) => {
   );
 };
 
-const displayError = (error: any, loggedInUser: LoggedInUser, onReInitializeState: () => void) => {
+const displayError = (
+  error: UnAuthorizedClusterError | Error,
+  loggedInUser: LoggedInUser,
+  onReInitializeState: () => void,
+) => {
   if (showNoConnectionError(error)) {
     return (
       <Alert
         className={style.alert}
         message={
-          <>
-            <span>{'no.open.connection '}</span>
+          <div>
+            <span>
+              {
+                'In order to lauch your notebook, you must first connect to your data repositories in your '
+              }
+            </span>
             <Link
               className="color-primary"
               to={{
@@ -157,16 +166,12 @@ const displayError = (error: any, loggedInUser: LoggedInUser, onReInitializeStat
                 hash: '#settings',
               }}
             >
-              link.to.settings
+              account settings
             </Link>
-          </>
+            <span>.</span>
+          </div>
         }
         type="error"
-        action={
-          <Button type="primary" danger onClick={() => onReInitializeState()}>
-            Try again
-          </Button>
-        }
       />
     );
   } else {

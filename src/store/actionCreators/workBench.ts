@@ -82,3 +82,7 @@ export const stopCluster = (): ThunkAction<void, RootState, null, WorkBenchActio
 ) => {
   dispatch(switchCluster(false));
 };
+
+export const clearClusterError = (): WorkBenchActionTypes => ({
+  type: WorkBenchActions.clearClusterError,
+});
