@@ -24,7 +24,6 @@ import ServerError from 'components/Variants/ServerError';
 
 import style from '../variantsSearchPage/VariantTable.module.scss';
 import TableSummaryKfStudies from './TableSummaryKfStudies';
-import { AlignmentOptions } from 'ui/TableOptions';
 
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
@@ -69,7 +68,7 @@ const internalColumns = (
     },
   },
   {
-    title: '# Participants',
+    title: 'Participants',
     dataIndex: '',
     // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
@@ -108,7 +107,6 @@ const internalColumns = (
   },
   {
     title: 'Frequency',
-    align: AlignmentOptions.center,
     dataIndex: '',
     // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
@@ -120,14 +118,12 @@ const internalColumns = (
   {
     title: 'ALT Alleles',
     dataIndex: 'frequencies',
-    align: AlignmentOptions.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.ac,
     width: '14%',
   },
   {
     title: 'Homozygotes',
     dataIndex: 'frequencies',
-    align: AlignmentOptions.center,
     render: (frequencies: FreqInternal) => frequencies?.upper_bound_kf?.homozygotes,
     width: '14%',
   },

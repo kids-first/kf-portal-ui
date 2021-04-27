@@ -151,9 +151,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
               toTop?.scrollTo(0, 0);
             }}
           >
-            <Button type="link">
-              <div className={style.variantTableLink}>{studies.hits.total || 0}</div>
-            </Button>
+            <div className={style.variantTableLink}>{studies.hits.total || 0}</div>
           </Link>
         ) : (
           0
@@ -215,7 +213,6 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Frequency',
-      align: AlignmentOptions.center,
       dataIndex: '',
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
@@ -225,13 +222,11 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'ALT Alleles',
-      align: AlignmentOptions.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
       title: 'Homozygotes',
-      align: AlignmentOptions.center,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },

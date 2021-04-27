@@ -2,11 +2,10 @@ import React from 'react';
 import { Button, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import { addToSqons } from '../../common/sqonUtils';
-import style from '../variantsSearchPage/VariantTable.module.scss';
 import { Study } from 'store/graphql/variants/models';
 import { Sqon } from 'store/sqon';
 import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
-import { AlignmentOptions } from 'ui/TableOptions';
+import style from './TableSummaryKfStudies.module.scss';
 
 type EnhancedVariantStudy = Study & { participantTotalNumber: number };
 
@@ -42,9 +41,11 @@ const TableSummaryKfStudies = (props: OwnProps) => {
 
   return (
     <Table.Summary.Row>
-      <Table.Summary.Cell index={0}>Total</Table.Summary.Cell>
+      <Table.Summary.Cell className={style.cell} index={0}>
+        Total
+      </Table.Summary.Cell>
       <Table.Summary.Cell index={1}>{''}</Table.Summary.Cell>
-      <Table.Summary.Cell index={2}>
+      <Table.Summary.Cell className={style.cell} index={2}>
         {hasParticipantLink ? (
           <>
             <Link
@@ -62,7 +63,7 @@ const TableSummaryKfStudies = (props: OwnProps) => {
               }}
             >
               <Button type="link">
-                <div className={style.variantTableLink}>{participantNumber}</div>
+                <div className={style.participantNumLink}>{participantNumber}</div>
               </Button>
             </Link>
             {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
@@ -71,13 +72,13 @@ const TableSummaryKfStudies = (props: OwnProps) => {
           formatQuotientOrElse(participantNumber, participantTotalNumber)
         )}
       </Table.Summary.Cell>
-      <Table.Summary.Cell align={AlignmentOptions.center} index={3}>
+      <Table.Summary.Cell className={style.cell} index={3}>
         {formatQuotientToExponentialOrElse(participantNumber, participantTotalNumber)}
       </Table.Summary.Cell>
-      <Table.Summary.Cell align={AlignmentOptions.center} index={4}>
+      <Table.Summary.Cell className={style.cell} index={4}>
         {altAlleles}
       </Table.Summary.Cell>
-      <Table.Summary.Cell align={AlignmentOptions.center} index={5}>
+      <Table.Summary.Cell className={style.cell} index={5}>
         {homozygotes}
       </Table.Summary.Cell>
     </Table.Summary.Row>
