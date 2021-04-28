@@ -8,11 +8,11 @@ import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
 import {
   ClusterStatus,
-  ClusterApiStatus,
   ClusterUnverifiedStatus,
   DispatchWorkBench,
   isClusterStatusIdling,
   isClusterStatusInProgress,
+  isClusterRunning,
 } from 'store/WorkBenchTypes';
 import {
   selectIsLoading,
@@ -78,7 +78,9 @@ const WorkBench = (props: Props) => {
       onGetStatus();
     },
     // Delay in milliseconds or null to stop it
-    isClusterStatusInProgress(status) ? POLLING_DELAY_IN_MS : STOP_POLLING,
+    isClusterStatusInProgress(status) || isClusterRunning(status)
+      ? POLLING_DELAY_IN_MS
+      : STOP_POLLING,
   );
 
   useEffect(() => {
@@ -104,7 +106,7 @@ const WorkBench = (props: Props) => {
               <Space size={'middle'}>
                 <Switch
                   disabled={!isAllowed}
-                  checked={status === ClusterApiStatus.createComplete}
+                  checked={isClusterRunning(status)}
                   loading={isLoadingStatus}
                   onChange={(switchIsOn: boolean) =>
                     switchIsOn ? onStartCluster() : onStopCluster()

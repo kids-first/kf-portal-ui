@@ -23,6 +23,9 @@ export const isClusterStatusIdling = (status: ClusterStatus) =>
 export const isClusterStatusInProgress = (status: ClusterStatus) =>
   status === ClusterApiStatus.deleteInProgress || status === ClusterApiStatus.createInProgress;
 
+export const isClusterRunning = (status: ClusterStatus) =>
+  status === ClusterApiStatus.createComplete;
+
 export enum WorkBenchActions {
   startCluster = 'StartClusterAction',
   addClusterStatus = 'AddClusterStatusAction',

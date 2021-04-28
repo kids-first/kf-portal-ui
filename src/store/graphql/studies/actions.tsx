@@ -67,6 +67,7 @@ export type SidebarData = {
 
 export type StudiesPageContainerData = {
   studiesResults: StudiesResults;
+  studiesMappingResults: StudiesMappingResults;
   filters: ISqonGroupFilter;
 };
 
@@ -78,7 +79,7 @@ export type QueryVariable = {
   sqon: any;
   first: number; // number of element to fetch
   offset: number; // start from offset number of elements
-}
+};
 
 export const useGetStudiesPageData = (variables: QueryVariable): StudiesResults => {
   const { loading, result } = useLazyResultQuery<any>(STUDIES_QUERY, {

@@ -23,19 +23,18 @@ const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
     : buildVariantIdSqon(suggestionId);
 };
 
-export const SEARCH_PAGE_SIZE = 10;
-
-const computeOffSet = (pageNum: number) => SEARCH_PAGE_SIZE * (pageNum - 1);
+const computeOffSet = (pageNum: number, pageSize: number) => pageSize * (pageNum - 1);
 
 export const useVariantSearchTableData = (
   selectedSuggestion: SelectedSuggestion,
   pageNum: number,
+  pageSize: number,
 ) => {
-  const { loading, result } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
+  const { loading, result, error } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
     variables: {
       sqon: buildSearchTableSqon(selectedSuggestion),
-      pageSize: SEARCH_PAGE_SIZE,
-      offset: computeOffSet(pageNum),
+      pageSize: pageSize,
+      offset: computeOffSet(pageNum, pageSize),
       sort: [{ field: 'impact_score', order: 'desc' }],
       studiesSize: MAX_NUMBER_STUDIES,
     },
@@ -56,6 +55,7 @@ export const useVariantSearchTableData = (
       variants,
       total,
     },
+    error,
     studies: studies,
   };
 };

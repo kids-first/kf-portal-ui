@@ -1,0 +1,11 @@
+@import 'src/style/themes/default/colors';
+
+.participantNumLink {
+  color: $primary-color;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.cell {
+  font-weight: bold;
+}

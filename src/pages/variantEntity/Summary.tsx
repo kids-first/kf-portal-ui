@@ -48,8 +48,8 @@ const Summary = ({ variant }: SummaryProps) => {
         <div>
           <SummaryItem field="Chr" value={variant.chromosome} />
           <SummaryItem field="Start" value={variant.start} />
-          <SummaryItem field="Allele Alt." value={`${variant.alternate}`} />
-          <SummaryItem field="Allele Réf." value={variant.reference} />
+          <SummaryItem field="Alt. Allele" value={`${variant.alternate}`} />
+          <SummaryItem field="Ref. Allele" value={variant.reference} />
         </div>
         <div>
           <StackLayout className={styles.topLeftContainer}>
@@ -66,7 +66,7 @@ const Summary = ({ variant }: SummaryProps) => {
             <CountWithIcon
               Icon={<RiseOutlined />}
               label={'Frequency'}
-              total={toExponentialNotation(variant.frequencies?.internal?.upper_bound_kf?.af)}
+              total={toExponentialNotation(variant.participant_frequency)}
             />
           </StackLayout>
           <StackLayout className={styles.buttomLeftContainer}>
