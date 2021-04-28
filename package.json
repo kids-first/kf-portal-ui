@@ -51,7 +51,7 @@
     "build": "react-scripts build",
     "lint:all": "eslint src/",
     "eject": "react-scripts eject",
-    "eslint:fix": "eslint --fix",
+    "eslint:fix": "eslint --fix $(git diff --name-only HEAD | xargs)",
     "prepare": "npm run theme",
     "pretest": "lint-staged",
     "start": "react-scripts start",
