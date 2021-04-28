@@ -198,7 +198,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     const formDefaultValue =
       saveSetActionType === SaveSetActionsTypes.CREATE
         ? { nameSet: defaultName !== SET_DEFAULT_NAME ? defaultName : '' }
-        : { nameSet: setToRename?.name || '' };
+        : { nameSet: setToRename?.name ?? '' };
     form.setFieldsValue(formDefaultValue);
     setLoadingDefaultTagName(false);
   }, [form, saveSetActionType, setToRename, sqon]);
