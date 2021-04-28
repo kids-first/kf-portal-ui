@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Space, Spin, Table } from 'antd';
+import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
 import {
@@ -22,7 +22,6 @@ import { Link } from 'react-router-dom';
 import { addToSqons } from 'common/sqonUtils';
 import ServerError from 'components/Variants/ServerError';
 
-import style from '../variantsSearchPage/VariantTable.module.scss';
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
@@ -94,9 +93,7 @@ const internalColumns = (
               toTop?.scrollTo(0, 0);
             }}
           >
-            <Button type="link">
-              <div className={style.variantTableLink}>{participantsNumber}</div>
-            </Button>
+            {participantsNumber}
           </Link>
           {participantsTotal ? ` / ${participantsTotal}` : ''}
         </>
