@@ -201,7 +201,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         : { nameSet: setToRename?.name || '' };
     form.setFieldsValue(formDefaultValue);
     setLoadingDefaultTagName(false);
-  }, [sqon]);
+  }, [form, saveSetActionType, setToRename, sqon]);
 
   const displayHelp = () => {
     if (error) {
