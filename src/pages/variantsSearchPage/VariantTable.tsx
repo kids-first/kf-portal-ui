@@ -71,9 +71,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
             <Link to={`/variant/${record.hash}?hgvsg=${hgvsg}`} href={'#top'}>
-              <Button type="link">
-                <div className={style.variantTableLink}>{hgvsg}</div>
-              </Button>
+              {hgvsg}
             </Link>
           </Tooltip>
         ) : (
@@ -151,7 +149,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
               toTop?.scrollTo(0, 0);
             }}
           >
-            <div className={style.variantTableLink}>{studies.hits.total || 0}</div>
+            {studies.hits.total || 0}
           </Link>
         ) : (
           0
@@ -181,7 +179,6 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
         return hasMinRequiredParticipants ? (
           <>
             <Button
-              className={style.variantTableLink}
               onClick={
                 participantNumber
                   ? () => {
