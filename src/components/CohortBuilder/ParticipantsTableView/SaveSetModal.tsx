@@ -93,7 +93,6 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [hasErrorMessage, setHasErrorMessage] = useState('');
-  const [defaultTagName, setDefaultTagName] = useState('');
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
   const {
@@ -196,9 +195,13 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   useEffect(() => {
     const defaultName = filtersToName({ filters: sqon });
     setLoadingDefaultTagName(true);
-    setDefaultTagName(defaultName !== SET_DEFAULT_NAME ? defaultName : '');
+    const formDefaultValue =
+      saveSetActionType === SaveSetActionsTypes.CREATE
+        ? { nameSet: defaultName !== SET_DEFAULT_NAME ? defaultName : '' }
+        : { nameSet: setToRename?.name ?? '' };
+    form.setFieldsValue(formDefaultValue);
     setLoadingDefaultTagName(false);
-  }, [sqon]);
+  }, [form, saveSetActionType, setToRename, sqon]);
 
   const displayHelp = () => {
     if (error) {
@@ -241,16 +244,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
       {SaveSetActionsTypes.CREATE === saveSetActionType && loadingDefaultTagName ? (
         <Spin size="small" tip="Loading..." />
       ) : (
-        <Form
-          form={form}
-          name={FORM_NAME}
-          initialValues={
-            saveSetActionType === SaveSetActionsTypes.CREATE
-              ? { nameSet: defaultTagName }
-              : { nameSet: setToRename?.name || '' }
-          }
-          onFinish={onFinish}
-        >
+        <Form form={form} name={FORM_NAME} onFinish={onFinish}>
           <Form.Item
             label="Name"
             name="nameSet"
