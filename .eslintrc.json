@@ -12,7 +12,7 @@
     "prettier/@typescript-eslint"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [ "@typescript-eslint", "jest", "react", "react-hooks"],
+  "plugins": [ "@typescript-eslint", "jest", "simple-import-sort", "react", "react-hooks"],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
