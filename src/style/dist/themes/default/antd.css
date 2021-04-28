@@ -24833,8 +24833,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
   color: #383f72;
   align-items: top;
 }
+.ant-table-cell button.ant-btn-link {
+  height: auto;
+  line-height: 1;
+  padding: 0;
+}
 .ant-table-cell > a {
-  text-decoration-line: underline;
   color: #383f72;
 }
 .ant-btn:disabled {
