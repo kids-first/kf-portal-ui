@@ -1,12 +1,12 @@
 {
   "name": "kf-portal-ui",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.11",
     "@ferlab/style": "^1.4.8",
     "@ferlab/ui": "^1.4.8",
-    "@kfarranger/components": "1.24.0",
+    "@kfarranger/components": "1.25.0",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

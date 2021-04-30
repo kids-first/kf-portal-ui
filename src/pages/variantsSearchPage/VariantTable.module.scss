@@ -1,12 +1,8 @@
 @import 'src/style/themes/default/colors';
+
 .table {
   width: 100%;
   table-layout: auto;
-}
-
-.link {
-  text-decoration-line: underline;
-  color: $body-1;
 }
 
 .rowOdd {
@@ -16,16 +12,6 @@
 .variantTableCell {
   min-width: 160px;
   width: 14%;
-}
-
-.variantTableLink {
-  color: $primary-color;
-  text-decoration: underline;
-}
-
-.variantTableLink:hover {
-  color: $primary-color;
-  text-decoration: none;
 }
 
 .dbSnpTableCell {

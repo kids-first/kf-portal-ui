@@ -12,6 +12,9 @@ export enum ClusterApiStatus {
 export enum ClusterUnverifiedStatus {
   unverified = 'UNVERIFIED',
 }
+export class UnAuthorizedClusterError extends Error {}
+
+export const NO_OPEN_CONNECTION_DATA_INTEGRATION = 'no.open.connection';
 
 export type ClusterStatus = ClusterApiStatus | ClusterUnverifiedStatus;
 
@@ -34,13 +37,14 @@ export enum WorkBenchActions {
   toggleLoading = 'ToggleLoadingAction',
   reInitialize = 'ReInitializeAction',
   addClusterUrl = 'AddClusterUrlAction',
+  clearClusterError = 'ClearClusterError',
 }
 
-type reInitializeStateAction = {
+type ReInitializeStateAction = {
   type: WorkBenchActions.reInitialize;
 };
 
-type addStatusAction = {
+type AddStatusAction = {
   type: WorkBenchActions.addClusterStatus;
   status: ClusterStatus;
 };
@@ -68,20 +72,25 @@ type AddClusterUrl = {
   url: string;
 };
 
+type ClearClusterError = {
+  type: WorkBenchActions.clearClusterError;
+};
+
 export type WorkBenchState = {
   isLoading: boolean;
-  error: Error | null | undefined;
+  error: Error | UnAuthorizedClusterError | null | undefined;
   status: ClusterStatus;
   url: string | null | undefined;
 };
 
 export type WorkBenchActionTypes =
-  | addStatusAction
+  | AddStatusAction
   | FailureAction
   | ToggleLoadingAction
   | StartClusterAction
   | DeleteClusterAction
   | AddClusterUrl
-  | reInitializeStateAction;
+  | ReInitializeStateAction
+  | ClearClusterError;
 
 export type DispatchWorkBench = ThunkDispatch<RootState, null, WorkBenchActionTypes>;
