@@ -7,6 +7,39 @@
 
 ### Technical / Other changes
 -->
+
+## 2021-04-30 kf-portal-ui  3.0.1
+
+### Features
+
+- [2905](https://github.com/kids-first/kf-portal-ui/issues/2905) Feature (Variant Page, Spark Cluster): Users will now see a more detailed error message if starting the cluster fails. The on/off button will now also be updated when the cluster is turned off.
+- [2934](https://github.com/kids-first/kf-portal-ui/issues/2934) Feature (Portal, Studies Page): There is now a new Studies page on the portal. Users can now search and filter KF studies by domain, program name, available data and experimental strategy.
+- [2935](https://github.com/kids-first/kf-portal-ui/issues/2935) Feature (Portal, Studies Page): The results table columns are not filterable and showable/hideable.
+- [2974](https://github.com/kids-first/kf-portal-ui/issues/2974) Feature (Portal, Variant Search Page): There is now an updated Variant page on the portal allowing users to search for variants present in the KF variant database directly from the Portal.
+- [3001](https://github.com/kids-first/kf-portal-ui/issues/3001) Feature (Portal, Facets): Added new facets to the Cohort Builder and File repository to allow users to search with the same fields than the ones present in the Studies Page
+- [3020](https://github.com/kids-first/kf-portal-ui/issues/3020) Feature (Portal, Variant Entity Page): There is now a new Variant Entity page on the portal allowing users to see the details of all the variant annotations stored in the variant database.
+- [3032](https://github.com/kids-first/kf-portal-ui/issues/3032) Feature (Portal, Studies Page): Clicking on a Studies from the Studies page now redirects the user to the Cohort Builder with the study pre-selected in a new query.
+- [3140](https://github.com/kids-first/kf-portal-ui/issues/3140) Feature (Variant Entity Page, Frequencies): For all studies having 10 or more participants of a specific variant, clicking on the number of participants now redirects to the query builder with those Participants ID selected in a new query
+
+### Technical / Other changes
+
+- [2818](https://github.com/kids-first/kf-portal-ui/issues/2818) Refactor (Studies page, Table): Adjusted the scrolling mechanism of the results table.
+- [2865](https://github.com/kids-first/kf-portal-ui/issues/2865) Fix (Portal, ETL): Added a fix to the ETL preventing mapping family members if a participant has no family ID.
+- [2895](https://github.com/kids-first/kf-portal-ui/issues/2895) Refactor (Portal, Arranger): Development of a new microservice containing the latest version of arranger (2.2.0) to be used on the Studies and Variant pages and secured with Ego. 
+- [2896](https://github.com/kids-first/kf-portal-ui/issues/2896) Refactor (Portal, ETL): Addition of the new Studies fields to the existing ETL (File Centric and participant Centric).
+- [2897](https://github.com/kids-first/kf-portal-ui/issues/2897) Refactor (Portal, ETL): Addition of a new Studies index to the ETL.
+- [2952](https://github.com/kids-first/kf-portal-ui/issues/2952) Refactor (Studies page, Librairies): Integration of the Apollo library.
+- [3004](https://github.com/kids-first/kf-portal-ui/issues/3004) Refactor (Cohort Builder, Participant table): Replaced the “Study name” column by the “Study code” column.
+- [3009](https://github.com/kids-first/kf-portal-ui/issues/3009) Refactor (Studies page, Filters): Modified the label used to identify the study domains by using the full word instead of only an acronym.
+- [3023](https://github.com/kids-first/kf-portal-ui/issues/3023) Refactor (Studies page, Filters): Adjustments regarding the theme colors and the alignment of some tags.
+- [3062](https://github.com/kids-first/kf-portal-ui/issues/3062) Fix (Cohort Builder, Saved Sets): Fixed an issue where the default naming when creating a new Saved Set was not working anymore.
+- [3105](https://github.com/kids-first/kf-portal-ui/issues/3105) Refactor (Variant Entity page, Clinical Associations): Corrections were made in the data for the Gene - Phenotype table to remove unwanted brackets and also use the entire inheritance name instead of just the first letter
+- [3108](https://github.com/kids-first/kf-portal-ui/issues/3108) Fix (Portal, ETL): Fixed different issues with the ETL regarding family data and also the display name for the Studies.
+- [3123](https://github.com/kids-first/kf-portal-ui/issues/3123) Fix (Variant Page, Search results table): Fixed the colors and hover states for links.
+- [3126](https://github.com/kids-first/kf-portal-ui/issues/3126) Fix (File Repository, Columns): Fixed an issue where the column title label wasn’t displayed correctly and also another issue that was displaying a column that was supposed to be hidden.
+- [3137](https://github.com/kids-first/kf-portal-ui/issues/3137) Fix (File Repository, Columns): Fixed an issue with the Study Domain column in which values were never displayed.
+- [3167](https://github.com/kids-first/kf-portal-ui/issues/3167) Fix (Variant Page, Search results table): Fixed an issue where the user was unable to select and copy the text from the Variant Column in the Variant Search page.
+
 ## 2021-03-22 kf-portal-ui  2.36.0
 
 ### Features
