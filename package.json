@@ -49,9 +49,9 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-    "eslint": "eslint $(git diff --name-only HEAD | xargs)",
+    "eslint": "eslint $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
     "eslint:all": "eslint src/",
-    "eslint:fix": "eslint --fix $(git diff --name-only HEAD | xargs)",
+    "eslint:fix": "eslint --fix $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
     "eject": "react-scripts eject",
     "prepare": "npm run theme",
     "pretest": "lint-staged",
