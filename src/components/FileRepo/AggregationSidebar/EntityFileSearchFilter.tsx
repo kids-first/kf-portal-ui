@@ -1,4 +1,10 @@
 /* eslint-disable react/prop-types */
+import React, { FunctionComponent } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { Button, Form, Input } from 'antd';
+import capitalize from 'lodash/capitalize';
+
+import { reInitializeFilterState, searchById } from 'store/actionCreators/fileSearchFilters';
 import {
   DispatchFileSearchFilters,
   EntityName,
@@ -6,18 +12,14 @@ import {
   FileSearchFilterSubState,
   SearchConfig,
 } from 'store/fileSearchFiltersTypes';
-import { setSqonArrangerCB } from 'store/sqon';
-import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'store/rootState';
 import {
   selectFileSearchFilterError,
   selectIsFileSearchFilterLoading,
 } from 'store/selectors/fileSearchFilters';
-import { reInitializeFilterState, searchById } from 'store/actionCreators/fileSearchFilters';
-import React, { FunctionComponent } from 'react';
-import { Input, Form, Button } from 'antd';
+import { setSqonArrangerCB } from 'store/sqon';
+
 import './aggregationSideBar.css';
-import capitalize from 'lodash/capitalize';
 
 const { Search } = Input;
 
@@ -59,7 +61,7 @@ const displayErrorMessage = (entityName: EntityName, error?: Error | null) => {
   return 'an error occurred';
 };
 
-const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
+export const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
   const {
     isLoading,
     error,

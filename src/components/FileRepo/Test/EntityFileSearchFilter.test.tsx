@@ -1,38 +1,41 @@
 import React from 'react';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
-import EntityFilesSearchInput from '../AggregationSidebar/EntityFileSearchFilter';
-import { EntityName, FileSearchFilterSubState } from 'store/fileSearchFiltersTypes';
-import { Button as AntdButton, Input } from 'antd';
-import { jestPatchMatchMedia } from '../../../utils';
 
-const { Search } = Input;
+import { EntityName } from 'store/fileSearchFiltersTypes';
+
+import { jestPatchMatchMedia } from '../../../utils';
+import { EntityFileSearchFilter } from '../AggregationSidebar/EntityFileSearchFilter';
 
 configure({ adapter: new Adapter() });
 
-const middleware = [thunk];
-const mockStore = configureStore(middleware);
-
-const initialSearchFilterState: FileSearchFilterSubState = {
-  isLoading: false,
-  error: null,
-};
-
 describe('File Search Filter Button', () => {
   let wrapper: ReactWrapper;
+  type callbackMapType = {
+    [key: string]: any;
+  };
 
-  const mountWithProvider = (fakeStore: any) =>
+  const map: callbackMapType = {};
+
+  window.addEventListener = jest.fn((event, cb) => {
+    map[event] = cb;
+  });
+
+  const mountWithProvider = (error: any = null) =>
     mount(
-      <Provider store={fakeStore}>
-        <EntityFilesSearchInput
-          entityName={EntityName.PARTICIPANT}
-          setSqon={() => {}}
-          placeholder={'placeholder'}
-        />
-      </Provider>,
+      <EntityFileSearchFilter
+        reInitializeState={(entityName: EntityName) => ({
+          type: 'TOGGLE_LOADING_FILES_SEARCH',
+          isLoading: false,
+          entityName,
+        })}
+        onSearchById={() => {}}
+        isLoading={false}
+        error={error}
+        entityName={EntityName.PARTICIPANT}
+        setSqon={() => {}}
+        placeholder={'placeholder'}
+      />,
     );
 
   beforeAll(() => jestPatchMatchMedia());
@@ -42,45 +45,7 @@ describe('File Search Filter Button', () => {
   });
 
   it('should render', () => {
-    const store = mockStore({
-      fileSearchFilters: {
-        [EntityName.PARTICIPANT]: {
-          ...initialSearchFilterState,
-        },
-      },
-    });
-    wrapper = mountWithProvider(store);
+    wrapper = mountWithProvider();
     expect(wrapper.exists()).toBe(true);
-  });
-
-  it('should display a disabled "antd" Search input when there is an error', () => {
-    const store = mockStore({
-      fileSearchFilters: {
-        [EntityName.PARTICIPANT]: {
-          ...initialSearchFilterState,
-          error: new Error(''),
-        },
-      },
-    });
-    wrapper = mountWithProvider(store);
-    const SearchInput = wrapper.find(Search);
-    expect(SearchInput.props().disabled).toBe(true);
-  });
-
-  it('should display an "antd" button with a reset label when there is an error', () => {
-    const store = mockStore({
-      fileSearchFilters: {
-        [EntityName.PARTICIPANT]: {
-          ...initialSearchFilterState,
-          error: new Error(''),
-        },
-      },
-    });
-
-    wrapper = mountWithProvider(store);
-
-    const Buttons = wrapper.find(AntdButton); //button from input + reset button
-    const INDEX_OF_RESET_BTN = 1;
-    expect(Buttons.at(INDEX_OF_RESET_BTN).text()).toEqual('Reset');
   });
 });

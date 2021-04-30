@@ -1,10 +1,12 @@
+import * as React from 'react';
+import Enzyme, { shallow, ShallowWrapper } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+import { jestPatchMatchMedia } from '../../../utils';
 import { TreeNode } from '../Model';
 import { SelectionTree } from '../SelectionTree';
-import * as React from 'react';
-import Enzyme, { mount, shallow, ShallowWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+
 import { treeData } from './mockData';
-import { jestPatchMatchMedia } from '../../../utils';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -191,26 +193,6 @@ describe('In SelectionTree', () => {
 
     wrapper.find('Input').simulate('change', event);
     expect(wrapper.state().expandedKeys).toEqual(['Abnormality of the integument (HP:0001574)']);
-  });
-
-  it('should render participants count and exact count for each term', () => {
-    const component = mount(
-      <SelectionTree
-        dataSource={treeData}
-        checkedKeys={checkedKeys}
-        onItemSelect={onItemSelect}
-        targetKeys={targetKeys}
-        onItemSelectAll={onItemSelectAll}
-        selectedField={''}
-      />,
-    );
-    expect(
-      component
-        .find('Tag')
-        .getElements()
-        .map((e) => e.props.children),
-    ).toMatchSnapshot();
-    component.unmount();
   });
 
   it('should searchInTree method should return results as expected', () => {
