@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import PropTypes from 'prop-types';
-import autobind from 'auto-bind-es5';
-
-import { defaultTheme } from '../themes';
-import Legend from './Legend';
-import { truncateText } from '../utils';
-import { TextBugWrapper } from '../styles';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Tooltip } from 'antd';
+import autobind from 'auto-bind-es5';
+import PropTypes from 'prop-types';
+
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+
+import { TextBugWrapper } from '../styles';
+import { defaultTheme } from '../themes';
+import { truncateText } from '../utils';
+
+import Legend from './Legend';
+
 import 'ui/Tooltips/tooltips.scss';
 
 class HorizontalBar extends Component {
@@ -61,6 +64,7 @@ class HorizontalBar extends Component {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
+    const { tooltipDictionary } = this.props;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
@@ -77,8 +81,12 @@ class HorizontalBar extends Component {
       }
     };
 
+    const tooltipValue = tooltipDictionary
+      ? tooltipDictionary.find((d) => d.label === value)?.tooltip ?? value
+      : value;
+
     return (
-      <Tooltip key={key} title={value}>
+      <Tooltip key={key} title={tooltipValue}>
         <g
           key={key}
           transform={`translate(${x - xOffset},${y})`}
@@ -250,6 +258,7 @@ HorizontalBar.propTypes = {
   maxValue: PropTypes.number,
   tickValues: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.array,
+  tooltipDictionary: PropTypes.array,
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,

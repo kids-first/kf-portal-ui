@@ -1,21 +1,22 @@
 import React from 'react';
+import GridContainer from '@ferlab/ui/core/layout/Grid';
+import Card from '@ferlab/ui/core/view/GridCard';
+import { Row } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { Row } from 'antd';
+
+import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
+import { withApi } from 'services/api';
 
 import QueriesResolver from '../QueriesResolver';
-import { withApi } from 'services/api';
+
+import AgeDiagChart, { ageDiagQuery } from './Cards/AgeDiagChart';
+import DataTypeCard from './Cards/DataTypeCard';
+import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
 import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
-import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
-import AgeDiagChart, { ageDiagQuery } from './Cards/AgeDiagChart';
+import StudiesChart, { allStudiesQuery, studiesQuery } from './Cards/StudiesChart';
 import SurvivalChart from './Cards/SurvivalChart';
-import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
-import DataTypeCard from './Cards/DataTypeCard';
-import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
-import Card from '@ferlab/ui/core/view/GridCard';
-
-import GridContainer from '@ferlab/ui/core/layout/Grid';
 
 import './Summary.css';
 
@@ -36,6 +37,7 @@ const Summary = ({
       ageDiagQuery(sqon),
       diagnosesQuery(sqon),
       studiesQuery(sqon),
+      allStudiesQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
@@ -46,6 +48,7 @@ const Summary = ({
         ageDiagData = [],
         topDiagnosesData = [],
         studiesData = [],
+        allStudiesQuery = [],
       ] = data;
 
       return !data ? (
@@ -58,7 +61,7 @@ const Summary = ({
               dataTypesData={dataTypesData}
               experimentalStrategyData={experimentalStrategyData}
             />
-            <StudiesChart isLoading={isLoading} data={studiesData} />
+            <StudiesChart isLoading={isLoading} data={studiesData} studies={allStudiesQuery} />
             <Card
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
               classNameCardItem={'ontology-sunburst-card'}

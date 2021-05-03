@@ -1,18 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Card from '@ferlab/ui/core/view/GridCard';
+import { Badge } from 'antd';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
-import { Badge } from 'antd';
-
-import theme from 'theme/defaultTheme';
-import { getCohortBarColors } from '../ui';
-import { setSqons } from 'store/actionCreators/virtualStudies';
-import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
-import Card from '@ferlab/ui/core/view/GridCard';
-import { toKebabCase } from 'utils';
 import PropTypes from 'prop-types';
+
+import { MERGE_OPERATOR_STRATEGIES, setSqonValueAtIndex } from 'common/sqonUtils';
 import { studiesToolTip } from 'components/Charts';
 import Empty, { SIZE } from 'components/UI/Empty';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import theme from 'theme/defaultTheme';
+import { toKebabCase } from 'utils';
+
+import { getCohortBarColors } from '../ui';
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
@@ -31,7 +32,7 @@ export const studiesQuery = (sqon) => ({
             op: "and"
           }
         ) {
-          study__short_name {
+          study__code {
             buckets {
               key
               doc_count
@@ -48,7 +49,7 @@ export const studiesQuery = (sqon) => ({
             op: "and"
           }
         ) {
-          study__short_name {
+          study__code {
             buckets {
               key
               doc_count
@@ -64,12 +65,12 @@ export const studiesQuery = (sqon) => ({
 
     const studyLabelToCounts = {};
 
-    const probandsBuckets = participants.probands.study__short_name.buckets;
+    const probandsBuckets = participants.probands.study__code.buckets;
     probandsBuckets.forEach(
       (pB) => (studyLabelToCounts[pB.key] = { probands: pB.doc_count, familyMembers: 0 }),
     );
 
-    const familyMembersBuckets = participants.familyMembers.study__short_name.buckets;
+    const familyMembersBuckets = participants.familyMembers.study__code.buckets;
     familyMembersBuckets.forEach((fmB) => {
       const label = fmB.key;
       const labelAlreadyExists = !!studyLabelToCounts[label];
@@ -88,6 +89,25 @@ export const studiesQuery = (sqon) => ({
   },
 });
 
+export const allStudiesQuery = () => ({
+  query: gql`
+    query {
+      studies {
+        hits {
+          edges {
+            node {
+              id
+              code
+              name
+            }
+          }
+        }
+      }
+    }
+  `,
+  transform: (response) => (response.data.studies?.hits?.edges ?? []).map((n) => n.node),
+});
+
 class StudiesChart extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
@@ -95,6 +115,7 @@ class StudiesChart extends React.Component {
     setSqons: PropTypes.func.isRequired,
     virtualStudy: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
+    studies: PropTypes.array.isRequired,
   };
 
   addSqon = (value) => {
@@ -103,7 +124,7 @@ class StudiesChart extends React.Component {
     const newSqon = {
       op: 'in',
       content: {
-        field: 'study.short_name',
+        field: 'study.code',
         value: [value],
       },
     };
@@ -118,7 +139,8 @@ class StudiesChart extends React.Component {
   };
 
   render() {
-    const { data: rawData, isLoading } = this.props;
+    const { data: rawData, isLoading, studies } = this.props;
+
     const data = rawData.flat();
     const hasNoData = data.length === 0;
     return (
@@ -138,6 +160,7 @@ class StudiesChart extends React.Component {
           <HorizontalBar
             showCursor={true}
             data={data}
+            tooltipDictionary={studies.map((s) => ({ label: s.code, tooltip: s.name }))}
             indexBy="label"
             keys={['probands', 'familyMembers']}
             tooltipFormatter={studiesToolTip}
