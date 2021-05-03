@@ -1,12 +1,12 @@
-import cloneDeep from 'lodash/cloneDeep';
-import merge from 'lodash/merge';
-import union from 'lodash/union';
-import isEqual from 'lodash/isEqual';
 import {
   BOOLEAN_OPS,
   isEmptySqon as arrangerIsEmptySqon,
   isReference,
 } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
+import union from 'lodash/union';
 
 /**
  * Returns a default, empty sqon.
@@ -250,8 +250,8 @@ export const addSetToActiveQuery = ({ setId, querySqons, activeIndex }) => {
   return newSqons;
 };
 
-export const addFieldToActiveQuery = ({ term, querySqons, activeIndex }) => {
-  const newActiveSqon = addFieldToActiveSqon(term, querySqons[activeIndex].content);
+export const addFieldToActiveQuery = ({ term, querySqons, activeIndex, sqonOp }) => {
+  const newActiveSqon = addFieldToActiveSqon(term, querySqons[activeIndex].content, sqonOp);
 
   const newQuerySqon = [...querySqons];
 
@@ -259,7 +259,7 @@ export const addFieldToActiveQuery = ({ term, querySqons, activeIndex }) => {
   return newQuerySqon;
 };
 
-const addFieldToActiveSqon = (term, activeSqon) => {
+const addFieldToActiveSqon = (term, activeSqon, sqonOp) => {
   const sameTermIndex = activeSqon.findIndex((s) => s.content.field === term.field);
   if (sameTermIndex >= 0) {
     const valuesAsSet = new Set();
@@ -267,12 +267,15 @@ const addFieldToActiveSqon = (term, activeSqon) => {
     valuesAsSet.add(term.value);
     return activeSqon.map((s) => {
       if (s.content.field === term.field) {
-        return { ...s, content: { field: term.field, value: [...valuesAsSet] } };
+        return {
+          ...s,
+          content: { field: term.field, value: [...valuesAsSet] },
+          op: sqonOp || s.op,
+        };
       } else {
         return { ...s };
       }
     });
-  } else {
-    return [...activeSqon, termToSqon(term)];
   }
+  return [...activeSqon, termToSqon(term)];
 };
