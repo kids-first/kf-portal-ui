@@ -1,3 +1,12 @@
+import { apiInitialized } from 'services/api';
+import {
+  createNewVirtualStudy,
+  deleteVirtualStudy as deleteVirtualStudyApi,
+  getVirtualStudies,
+  getVirtualStudy,
+  updateVirtualStudy,
+} from 'services/virtualStudies';
+
 import {
   ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
   FETCH_VIRTUAL_STUDIES_FAILURE,
@@ -18,14 +27,6 @@ import {
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
-import {
-  createNewVirtualStudy,
-  deleteVirtualStudy as deleteVirtualStudyApi,
-  getVirtualStudies,
-  getVirtualStudy,
-  updateVirtualStudy,
-} from 'services/virtualStudies';
-import { apiInitialized } from 'services/api';
 
 const api = apiInitialized;
 
@@ -183,11 +184,12 @@ export const cleanError = () => ({
   type: VIRTUAL_STUDY_CLEAN_ERROR,
 });
 
-export const addTermToActiveIndex = (term) => (dispatch) => {
+export const addTermToActiveIndex = (term, sqonOp) => (dispatch) => {
   dispatch({
     type: ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
     payload: {
       term: term,
+      sqonOp,
     },
   });
 };

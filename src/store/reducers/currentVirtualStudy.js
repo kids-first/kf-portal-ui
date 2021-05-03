@@ -1,10 +1,12 @@
 import cloneDeep from 'lodash/cloneDeep';
+
 import {
-  getDefaultSqon,
-  isDefaultSqon,
   addSetToActiveQuery,
   createNewQueryFromSetId,
+  getDefaultSqon,
+  isDefaultSqon,
 } from 'common/sqonUtils';
+import { addFieldToActiveQuery } from 'common/sqonUtils';
 
 import {
   ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
@@ -24,8 +26,7 @@ import {
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
 } from '../actionTypes';
-import { CREATE_SET_QUERY_REQUEST, ADD_SET_TO_CURRENT_QUERY } from '../saveSetTypes';
-import { addFieldToActiveQuery } from '../../common/sqonUtils';
+import { ADD_SET_TO_CURRENT_QUERY, CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -148,6 +149,7 @@ export default (state = initialState, action) => {
       const { activeIndex, sqons } = state;
       const newSqons = addFieldToActiveQuery({
         term: action.payload.term,
+        sqonOp: action.payload.sqonOp,
         querySqons: sqons,
         activeIndex: activeIndex,
       });
