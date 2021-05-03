@@ -168,6 +168,7 @@ class StudiesChart extends React.Component {
             tickInterval={4}
             colors={getCohortBarColors(data, theme)}
             xTickTextLength={28}
+            xOffset={100}
             legends={[
               { title: 'Probands', color: theme.chartColors.blue },
               { title: 'Other Participants', color: theme.chartColors.purple },

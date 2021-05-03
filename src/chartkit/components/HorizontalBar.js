@@ -60,7 +60,7 @@ class HorizontalBar extends Component {
     if (onClick) onClick(data);
   }
 
-  renderAxisLeftTick(tick) {
+  renderAxisLeftTick(tick, xOffset) {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
@@ -69,8 +69,6 @@ class HorizontalBar extends Component {
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
     const text = truncateText(value, xTickTextLength);
-
-    const xOffset = 160;
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
@@ -152,6 +150,7 @@ class HorizontalBar extends Component {
       height,
       axisBottomFormat = this.defaultAxisBottomFormat,
       axisLeftFormat = this.defaultLeftFormat,
+      xOffset = 160,
     } = this.props;
 
     const chartData = {
@@ -165,7 +164,7 @@ class HorizontalBar extends Component {
         top: 0,
         right: 5,
         bottom: 70,
-        left: 160,
+        left: xOffset,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
       colors: colors,
@@ -204,7 +203,7 @@ class HorizontalBar extends Component {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        renderTick: this.renderAxisLeftTick,
+        renderTick: (tick) => this.renderAxisLeftTick(tick, xOffset),
         format: axisLeftFormat,
       },
       enableGridX: true,
@@ -273,6 +272,7 @@ HorizontalBar.propTypes = {
   axisBottomFormat: PropTypes.func,
   axisLeftFormat: PropTypes.func,
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
+  xOffset: PropTypes.number,
 };
 
 export default HorizontalBar;
