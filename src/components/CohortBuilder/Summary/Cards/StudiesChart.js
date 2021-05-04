@@ -105,7 +105,11 @@ export const allStudiesQuery = () => ({
       }
     }
   `,
-  transform: (response) => (response.data.studies?.hits?.edges ?? []).map((n) => n.node),
+  transform: (response) =>
+    (response.data.studies?.hits?.edges ?? []).map((n) => ({
+      label: n.node.code,
+      tooltip: n.node.name,
+    })),
 });
 
 class StudiesChart extends React.Component {
@@ -160,7 +164,7 @@ class StudiesChart extends React.Component {
           <HorizontalBar
             showCursor={true}
             data={data}
-            tooltipDictionary={studies.map((s) => ({ label: s.code, tooltip: s.name }))}
+            tooltipDictionary={studies}
             indexBy="label"
             keys={['probands', 'familyMembers']}
             tooltipFormatter={studiesToolTip}
