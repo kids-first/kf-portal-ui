@@ -24921,6 +24921,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
   background-color: #eaeaec;
   color: #383f72;
 }
+.ant-card-head {
+  font-weight: 600;
+}
 body {
   background-color: #f3f4f6;
 }
