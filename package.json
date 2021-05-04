@@ -136,7 +136,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run pretest",
-      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS && exit 0) || (print $'\\xF0\\x9F\\x9A\\xA8  \\xE2\\x84\\xB9 Message Format: type(scope?): #[github issue] message\n' && exit 10)"
+      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS -g commitlint.config.js && exit 0) || (echo $'\\xF0\\x9F\\x9A\\xA8  \\xE2\\x84\\xB9 Message Format: type(scope?): #[github issue] message\n' && exit 10)"
     }
   },
   "lint-staged": {
