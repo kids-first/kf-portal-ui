@@ -1,13 +1,12 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Card, Space, Spin, Table } from 'antd';
-// @ts-ignore
-import { compose } from 'recompose';
 
 import { addToSqons } from 'common/sqonUtils';
-import EmptyMessage from 'components/Variants/EmptyTable';
+import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import {
@@ -47,15 +46,17 @@ type InternalRow = {
   study_id: string;
 };
 
+type ExternalCohortDatum = number | null;
+
 type Row = {
   cohort: {
     cohortName: string;
     link?: string;
   };
-  alt: number | null;
-  altRef: number | null;
-  homozygotes: number | null;
-  frequency: number | null;
+  alt: ExternalCohortDatum;
+  altRef: ExternalCohortDatum;
+  homozygotes: ExternalCohortDatum;
+  frequency: ExternalCohortDatum;
   key: string;
 };
 
@@ -69,7 +70,6 @@ const internalColumns = (
   {
     title: 'Studies',
     dataIndex: 'study_id',
-    // eslint-disable-next-line react/display-name
     render: (variantStudyId: string) => {
       const study = globalStudies.find((s) => s.id === variantStudyId);
       return study?.code || variantStudyId;
@@ -78,7 +78,6 @@ const internalColumns = (
   {
     title: 'Domain',
     dataIndex: 'study_id',
-    // eslint-disable-next-line react/display-name
     render: (variantStudyId: string) => {
       const study = globalStudies.find((s) => s.id === variantStudyId);
       return study?.domain.join(', ') || '';
@@ -87,7 +86,6 @@ const internalColumns = (
   {
     title: 'Participants',
     dataIndex: '',
-    // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
       const participantsNumber = row.participant_number;
       const participantsTotal = row.participantTotalNumber;
@@ -123,7 +121,6 @@ const internalColumns = (
   {
     title: 'Frequency',
     dataIndex: '',
-    // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
       const participantsNumber = row.participant_number;
       const participantsTotal = row.participantTotalNumber;
@@ -144,6 +141,9 @@ const internalColumns = (
   },
 ];
 
+const displayDefaultIfNeeded = (datum: ExternalCohortDatum) =>
+  datum == null ? DISPLAY_WHEN_EMPTY_DATUM : datum;
+
 const externalColumns = [
   {
     title: 'Cohort',
@@ -163,21 +163,25 @@ const externalColumns = [
   {
     title: 'ALT Allele',
     dataIndex: 'alt',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'altRef',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Homozygote',
     dataIndex: 'homozygotes',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Frequency',
     dataIndex: 'frequency',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
 ];
@@ -247,11 +251,12 @@ const makeRowFromFrequencies = (frequencies: Frequencies, locus: string): Rows =
 const makeInternalCohortsRows = (rows: Study[]) =>
   rows.map((row: Study, index: number) => ({ ...row, key: `${index}` }));
 
-const hasTruthyProperties = (obj: Omit<Row, 'key' | 'cohort'>) => Object.values(obj).some((e) => e);
+const hasAtLeastOneTruthyProperty = (obj: Omit<Row, 'key' | 'cohort'>) =>
+  Object.values(obj).some((e) => e);
 
-const filterRows = (rows: Rows) =>
+const isExternalCohortsTableEmpty = (rows: Rows) =>
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (rows || []).filter(({ cohort, key, ...visibleRow }: Row) => hasTruthyProperties(visibleRow));
+  rows.every(({ cohort, key, ...visibleRow }: Row) => !hasAtLeastOneTruthyProperty(visibleRow));
 
 const mapDispatch = (dispatch: DispatchStoryPage) => ({
   onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
@@ -285,8 +290,8 @@ const TabFrequencies = (props: Props) => {
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
-  const filteredCohortsRows = compose(filterRows, makeRowFromFrequencies)(frequencies, locus);
-  const hasEmptyCohorts = filteredCohortsRows.length === 0;
+  const externalCohortsRows = makeRowFromFrequencies(frequencies, locus);
+  const hasEmptyCohorts = isExternalCohortsTableEmpty(externalCohortsRows);
 
   return (
     <Spin spinning={loading}>
@@ -319,7 +324,7 @@ const TabFrequencies = (props: Props) => {
               <EmptyMessage />
             ) : (
               <Table
-                dataSource={filteredCohortsRows}
+                dataSource={externalCohortsRows}
                 columns={externalColumns}
                 pagination={false}
               />
