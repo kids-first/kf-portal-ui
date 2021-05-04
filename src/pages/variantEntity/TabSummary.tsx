@@ -1,16 +1,20 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { Card, Space, Spin, Tag, Typography } from 'antd';
-import Summary from './Summary';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
-import ExpandableCell from 'components/ExpandableCell';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Card, Space, Spin, Tag, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
+
+import ExpandableCell from 'components/ExpandableCell';
 import ExpandableTable from 'components/ExpandableTable';
 import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
+import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
+import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
+import { useTabSummaryData } from 'store/graphql/variants/tabActions';
+
+import Summary from './Summary';
+
 import styles from './tables.module.scss';
 
 const { Text } = Typography;
@@ -93,6 +97,7 @@ const columns = [
   {
     title: 'AA',
     dataIndex: 'aa',
+    render: (aa: string) => aa || DISPLAY_WHEN_EMPTY_DATUM,
     width: '10%',
   },
   {
@@ -118,6 +123,7 @@ const columns = [
   {
     title: 'Coding Dna',
     dataIndex: 'codingDna',
+    render: (codingDna: string) => codingDna || DISPLAY_WHEN_EMPTY_DATUM,
   },
   {
     title: 'Strand',
@@ -125,7 +131,7 @@ const columns = [
     render(strand: number) {
       const isInDomain = [-1, 1].some((e) => e === strand);
       if (!isInDomain) {
-        return <></>;
+        return DISPLAY_WHEN_EMPTY_DATUM;
       }
       return strand > 0 ? <PlusOutlined /> : <MinusOutlined />;
     },
@@ -146,7 +152,7 @@ const columns = [
     dataIndex: 'impact',
     render: (impacts: string[][]) => {
       if (impacts.length === 0) {
-        return <></>;
+        return DISPLAY_WHEN_EMPTY_DATUM;
       }
 
       return (
@@ -172,7 +178,9 @@ const columns = [
   },
   {
     title: 'Conservation',
-    dataIndex: 'conservations',
+    dataIndex: 'conservation',
+    render: (conservation: number) =>
+      conservation == null ? DISPLAY_WHEN_EMPTY_DATUM : conservation,
   },
   {
     title: 'Transcript',
@@ -187,7 +195,7 @@ const columns = [
           {transcriptId}
         </a>
       ) : (
-        ''
+        DISPLAY_WHEN_EMPTY_DATUM
       ),
   },
 ];
@@ -225,7 +233,7 @@ const makeRows = (consequences: Consequence[]) =>
       ],
       ['Revel', null, consequence.node.predictions?.revel_rankscore],
     ].filter(([, , score]) => score),
-    conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
+    conservation: consequence.node.conservations?.phylo_p17way_primate_rankscore,
     transcriptId: consequence.node.ensembl_transcript_id,
   }));
 
@@ -248,8 +256,7 @@ const TabSummary = ({ variantId }: OwnProps) => {
           <h3>Gene Consequences</h3>
           {makeTables(consequences).map((tableData: TableGroup, index: number) => {
             const symbol = tableData.symbol;
-            const omim = tableData.omim; //https://www.omim.org/entry/158340
-            //const ensemblGeneId = tableData.ensemblGeneDd; link: http://www.ensembl.org/id/ensemblGeneId
+            const omim = tableData.omim;
             const orderedConsequences = tableData.consequences;
 
             return (

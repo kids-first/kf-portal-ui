@@ -2,7 +2,7 @@ import React from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Card, Space, Spin, Table } from 'antd';
 
-import EmptyMessage from 'components/Variants/EmptyTable';
+import EmptyMessage from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
 import { useTabClinicalData } from 'store/graphql/variants/tabActions';
 

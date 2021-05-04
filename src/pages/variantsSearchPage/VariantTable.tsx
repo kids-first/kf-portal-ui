@@ -1,8 +1,17 @@
 /* eslint-disable react/display-name */
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Table, Tooltip } from 'antd';
-import ConsequencesCell from './ConsequencesCell';
-import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
+// @ts-ignore
+import { compose } from 'recompose';
+
+import ROUTES from 'common/routes';
+import { addToSqons } from 'common/sqonUtils';
+import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
+import ServerError from 'components/Variants/ServerError';
+import { withHistory } from 'services/history';
+import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import {
   ClinVar,
   Consequence,
@@ -13,25 +22,20 @@ import {
   VariantEntity,
   VariantEntityNode,
 } from 'store/graphql/variants/models';
-import { connect, ConnectedProps } from 'react-redux';
-import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
-import { Sqon } from 'store/sqon';
-import { withHistory } from 'services/history';
-// @ts-ignore
-import { compose } from 'recompose';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
+import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import { RootState } from 'store/rootState';
-import { addToSqons } from 'common/sqonUtils';
+import { Sqon } from 'store/sqon';
+import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
+import { AlignmentOptions } from 'ui/TableOptions';
 import {
   formatQuotientOrElse,
   formatQuotientToExponentialOrElse,
   generatePaginationMessage,
 } from 'utils';
-import ServerError from 'components/Variants/ServerError';
-import ROUTES from 'common/routes';
+
+import ConsequencesCell from './ConsequencesCell';
+
 import style from './VariantTable.module.scss';
-import { AlignmentOptions } from 'ui/TableOptions';
 
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -75,7 +79,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             </Link>
           </Tooltip>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -96,7 +100,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             {rsNumber}
           </a>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -121,7 +125,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             {clinVar.clin_sig.join(', ')}
           </a>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -204,7 +208,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
           </>
         ) : (
-          formatQuotientOrElse(participantNumber, participantTotalNumber)
+          formatQuotientOrElse(participantNumber, participantTotalNumber, DISPLAY_WHEN_EMPTY_DATUM)
         );
       },
     },
@@ -214,7 +218,11 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
         const participantTotalNumber = row.participant_total_number;
-        return formatQuotientToExponentialOrElse(participantNumber, participantTotalNumber);
+        return formatQuotientToExponentialOrElse(
+          participantNumber,
+          participantTotalNumber,
+          DISPLAY_WHEN_EMPTY_DATUM,
+        );
       },
     },
     {

@@ -1,28 +1,27 @@
-import {
-  OrphanetCondition,
-  OmimGene,
-  Inheritance,
-  OrphanetInheritance,
-  OmimCondition,
-  OmimInheritance,
-  HpoCondition,
-  OrphanetConditions,
-  OmimConditions,
-  HpoConditions,
-  DddConditions,
-  CosmicConditions,
-  Conditions,
-  ClinicalGenesTableSource,
-  SingleValuedInheritance,
-} from 'store/graphql/variants/models';
 import React from 'react';
-import ExpandableCell from 'components/ExpandableCell';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Typography } from 'antd';
 
+import ExpandableCell from 'components/ExpandableCell';
+import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
+import {
+  ClinicalGenesTableSource,
+  Conditions,
+  CosmicConditions,
+  DddConditions,
+  HpoCondition,
+  HpoConditions,
+  Inheritance,
+  OmimCondition,
+  OmimConditions,
+  OmimGene,
+  OmimInheritance,
+  OrphanetCondition,
+  OrphanetConditions,
+  OrphanetInheritance,
+  SingleValuedInheritance,
+} from 'store/graphql/variants/models';
 const { Text } = Typography;
-
-const DISPLAY_WHEN_NO_RESULT = '--';
 
 export const columnsClinVar = [
   {
@@ -91,7 +90,7 @@ export const columnsPhenotypes = [
         return (
           <div>
             {omimConditions.map((omimCondition: OmimCondition, index: number) => {
-              const geneOmimName = omimCondition.omimName || DISPLAY_WHEN_NO_RESULT;
+              const geneOmimName = omimCondition.omimName || DISPLAY_WHEN_EMPTY_DATUM;
               const omimId = omimCondition.omimId;
 
               return (
@@ -211,7 +210,7 @@ export const columnsPhenotypes = [
           <>
             {orphanetInheritance.map((inheritance: string[], index: number) => (
               <StackLayout key={index}>
-                <Text>{inheritance ? inheritance.join(',') : DISPLAY_WHEN_NO_RESULT}</Text>
+                <Text>{inheritance ? inheritance.join(',') : DISPLAY_WHEN_EMPTY_DATUM}</Text>
               </StackLayout>
             ))}
           </>
@@ -222,14 +221,14 @@ export const columnsPhenotypes = [
           <>
             {omimInheritance.map((inheritance: string[], index: number) => (
               <StackLayout key={index}>
-                <Text>{inheritance ? inheritance.join(',') : DISPLAY_WHEN_NO_RESULT}</Text>
+                <Text>{inheritance ? inheritance.join(',') : DISPLAY_WHEN_EMPTY_DATUM}</Text>
               </StackLayout>
             ))}
           </>
         );
       }
       const inheritance = record.inheritance as SingleValuedInheritance;
-      return inheritance || DISPLAY_WHEN_NO_RESULT;
+      return inheritance || DISPLAY_WHEN_EMPTY_DATUM;
     },
     width: '35%',
   },
