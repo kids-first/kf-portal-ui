@@ -1,11 +1,14 @@
 import React from 'react';
-import { Card, Space, Spin, Table } from 'antd';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { useTabClinicalData } from 'store/graphql/variants/tabActions';
-import { columnsClinVar, columnsPhenotypes } from './clinicalColumns';
+import { Card, Space, Spin, Table } from 'antd';
+
+import EmptyMessage from 'components/Variants/EmptyTable';
 import ServerError from 'components/Variants/ServerError';
+import { useTabClinicalData } from 'store/graphql/variants/tabActions';
+
+import { columnsClinVar, columnsPhenotypes } from './clinicalColumns';
+import { makeClinVarRows, makeGenesOrderedRow } from './clinicalRowsGenerators';
 import ClinVarExternalLink from './ClinVarExternalLink';
-import { makeGenesOrderedRow, makeClinVarRows } from './clinicalRowsGenerators';
 
 type OwnProps = {
   variantId: string;
@@ -21,6 +24,9 @@ const TabClinical = ({ variantId }: OwnProps) => {
   const dataClinvar = data?.clinvar || {};
   const clinvarId = dataClinvar.clinvar_id;
   const dataGenes = data?.genes || {};
+
+  const clinVarRows = makeClinVarRows(dataClinvar);
+  const clinVarHasRows = clinVarRows.length > 0;
 
   return (
     <Spin spinning={loading}>
@@ -38,12 +44,13 @@ const TabClinical = ({ variantId }: OwnProps) => {
               </span>
             }
           >
-            <Table
-              pagination={false}
-              dataSource={makeClinVarRows(dataClinvar)}
-              columns={columnsClinVar}
-            />
+            {clinVarHasRows ? (
+              <Table pagination={false} dataSource={clinVarRows} columns={columnsClinVar} />
+            ) : (
+              <EmptyMessage />
+            )}
           </Card>
+
           <Card title="Gene - Phenotype">
             <Table
               pagination={false}

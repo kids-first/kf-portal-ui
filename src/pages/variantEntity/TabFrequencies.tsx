@@ -1,7 +1,15 @@
 import React from 'react';
-import { Card, Space, Spin, Table } from 'antd';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link } from 'react-router-dom';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
+import { Card, Space, Spin, Table } from 'antd';
+// @ts-ignore
+import { compose } from 'recompose';
+
+import { addToSqons } from 'common/sqonUtils';
+import EmptyMessage from 'components/Variants/EmptyTable';
+import ServerError from 'components/Variants/ServerError';
+import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import {
   FreqCombined,
   FreqInternal,
@@ -9,18 +17,14 @@ import {
   Study,
   StudyInfo,
 } from 'store/graphql/variants/models';
+import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
+import { RootState } from 'store/rootState';
+import { Sqon } from 'store/sqon';
 import {
   formatQuotientOrElse,
   formatQuotientToExponentialOrElse,
   toExponentialNotation,
 } from 'utils';
-import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
-import { Sqon } from 'store/sqon';
-import { RootState } from 'store/rootState';
-import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { addToSqons } from 'common/sqonUtils';
-import ServerError from 'components/Variants/ServerError';
 
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
@@ -42,6 +46,20 @@ type InternalRow = {
   participant_number: number;
   study_id: string;
 };
+
+type Row = {
+  cohort: {
+    cohortName: string;
+    link?: string;
+  };
+  alt: number | null;
+  altRef: number | null;
+  homozygotes: number | null;
+  frequency: number | null;
+  key: string;
+};
+
+type Rows = Row[];
 
 const internalColumns = (
   globalStudies: StudyInfo[],
@@ -164,7 +182,7 @@ const externalColumns = [
   },
 ];
 
-const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
+const makeRowFromFrequencies = (frequencies: Frequencies, locus: string): Rows => {
   if (!frequencies || Object.keys(frequencies).length === 0) {
     return [];
   }
@@ -229,6 +247,12 @@ const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
 const makeInternalCohortsRows = (rows: Study[]) =>
   rows.map((row: Study, index: number) => ({ ...row, key: `${index}` }));
 
+const hasTruthyProperties = (obj: Omit<Row, 'key' | 'cohort'>) => Object.values(obj).some((e) => e);
+
+const filterRows = (rows: Rows) =>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (rows || []).filter(({ cohort, key, ...visibleRow }: Row) => hasTruthyProperties(visibleRow));
+
 const mapDispatch = (dispatch: DispatchStoryPage) => ({
   onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
 });
@@ -261,6 +285,9 @@ const TabFrequencies = (props: Props) => {
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
+  const filteredCohortsRows = compose(filterRows, makeRowFromFrequencies)(frequencies, locus);
+  const hasEmptyCohorts = filteredCohortsRows.length === 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
@@ -288,11 +315,15 @@ const TabFrequencies = (props: Props) => {
             />
           </Card>
           <Card title="External Cohorts">
-            <Table
-              dataSource={makeRowFromFrequencies(frequencies, locus)}
-              columns={externalColumns}
-              pagination={false}
-            />
+            {hasEmptyCohorts ? (
+              <EmptyMessage />
+            ) : (
+              <Table
+                dataSource={filteredCohortsRows}
+                columns={externalColumns}
+                pagination={false}
+              />
+            )}
           </Card>
         </Space>
       </StackLayout>
