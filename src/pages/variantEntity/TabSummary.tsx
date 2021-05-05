@@ -34,6 +34,28 @@ type SymbolToConsequences = {
   [key: string]: TableGroup;
 };
 
+export const shortToLongPrediction: Record<string, string> = {
+  'sift.d': 'damaging',
+  'sift.t': 'tolerated',
+  'polyphen2.p': 'possibly damaging',
+  'polyphen2.d': 'probably damaging',
+  'polyphen2.b': 'benign',
+  'fathmm.d': 'damaging',
+  'fathmm.t': 'tolerated',
+  'lrt.d': 'deleterious',
+  'lrt.n': 'neutral',
+  'lrt.u': 'unknown',
+};
+
+const getLongPredictionLabelIfKnown = (predictionField: string, predictionShortLabel: string) => {
+  if (!predictionField || !predictionShortLabel) {
+    return null;
+  }
+  const dictionaryPath = `${predictionField.toLowerCase()}.${predictionShortLabel.toLowerCase()}`;
+  const longPrediction = shortToLongPrediction[dictionaryPath];
+  return longPrediction || null;
+};
+
 const groupConsequencesBySymbol = (consequences: Consequence[]) => {
   if (consequences.length === 0) {
     return {};
@@ -89,8 +111,8 @@ const makeTables = (rawConsequences: Consequence[]) => {
   return orderConsequencesForTable(orderedGenes);
 };
 
-const INDEX_IMPACT_TITLE = 0;
-const INDEX_IMPACT_LABEL = 1;
+const INDEX_IMPACT_PREDICTION_FIELD = 0;
+const INDEX_IMPACT_PREDICTION_SHORT_LABEL = 1;
 const INDEX_IMPACT_SCORE = 2;
 
 const columns = [
@@ -160,13 +182,21 @@ const columns = [
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
           renderItem={(item: any, id): React.ReactNode => {
-            const title = item[INDEX_IMPACT_TITLE];
-            const label = item[INDEX_IMPACT_LABEL];
+            const predictionField = item[INDEX_IMPACT_PREDICTION_FIELD];
             const score = item[INDEX_IMPACT_SCORE];
-            const description = label ? `${label} - ${score}` : score;
+            const predictionShortLabel = item[INDEX_IMPACT_PREDICTION_SHORT_LABEL];
+
+            const predictionLongLabel = getLongPredictionLabelIfKnown(
+              predictionField,
+              predictionShortLabel,
+            );
+
+            const label = predictionLongLabel || predictionShortLabel;
+
+            const description = label ? `${capitalize(label)} - ${score}` : score;
             return (
               <StackLayout key={id} horizontal className={styles.cellList}>
-                <Text type={'secondary'}>{title}:</Text>
+                <Text type={'secondary'}>{predictionField}:</Text>
                 <Text>{description}</Text>
               </StackLayout>
             );
