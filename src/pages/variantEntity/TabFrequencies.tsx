@@ -2,8 +2,9 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Card, Space, Spin, Table } from 'antd';
+import { Card, Space, Spin, Table, Tooltip } from 'antd';
 
 import { addToSqons } from 'common/sqonUtils';
 import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
@@ -27,6 +28,7 @@ import {
 
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
+import styles from './tables.module.scss';
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type OwnProps = {
@@ -61,11 +63,17 @@ type Row = {
 };
 
 type Rows = Row[];
+const canMakeParticipantsLink = (nOfParticipants: number) =>
+  nOfParticipants && nOfParticipants >= MIN_N_OF_PARTICIPANTS_FOR_LINK;
+
+const hasAtLeastOneParticipantsLink = (rows: InternalRow[]) =>
+  (rows || []).some((row: InternalRow) => canMakeParticipantsLink(row.participant_number));
 
 const internalColumns = (
   globalStudies: StudyInfo[],
   onLinkClick: (sqons: Sqon[]) => void,
   sqons: Sqon[],
+  hasParticipantsLinks: boolean,
 ) => [
   {
     title: 'Studies',
@@ -84,13 +92,26 @@ const internalColumns = (
     },
   },
   {
-    title: 'Participants',
+    title: hasParticipantsLinks ? (
+      <>
+        Participants{' '}
+        <Tooltip
+          color={styles.participantsLinksTooltipColor}
+          title={
+            'Due to participant confidentiality, links may return a smaller number than displayed.'
+          }
+        >
+          <InfoCircleOutlined />
+        </Tooltip>
+      </>
+    ) : (
+      'Participants'
+    ),
     dataIndex: '',
     render: (row: InternalRow) => {
       const participantsNumber = row.participant_number;
       const participantsTotal = row.participantTotalNumber;
-
-      return participantsNumber && participantsNumber >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
+      return canMakeParticipantsLink(participantsNumber) ? (
         <>
           <Link
             to={'/explore'}
@@ -304,6 +325,7 @@ const TabFrequencies = (props: Props) => {
                 globalStudies,
                 props.onClickStudyLink,
                 props.currentVirtualStudy,
+                hasAtLeastOneParticipantsLink(variantStudies),
               )}
               summary={() => (
                 <TableSummaryKfStudies
