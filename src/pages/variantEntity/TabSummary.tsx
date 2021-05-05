@@ -2,7 +2,7 @@
 import React from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Card, Space, Spin, Tag, Typography } from 'antd';
+import { Avatar, Card, Space, Spin, Tag, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
 
 import ExpandableCell from 'components/ExpandableCell';
@@ -214,16 +214,23 @@ const columns = [
   },
   {
     title: 'Transcript',
-    dataIndex: 'transcriptId',
-    render: (transcriptId: string) =>
-      transcriptId ? (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`https://www.ensembl.org/id/${transcriptId}`}
-        >
-          {transcriptId}
-        </a>
+    dataIndex: 'transcript',
+    render: (transcript: { id: string; isCanonical?: boolean }) =>
+      transcript.id ? (
+        <Space size={'small'}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`https://www.ensembl.org/id/${transcript.id}`}
+          >
+            {transcript.id}
+          </a>
+          {transcript.isCanonical && (
+            <Avatar className={styles.transcriptAvatar} size={16}>
+              C
+            </Avatar>
+          )}
+        </Space>
       ) : (
         DISPLAY_WHEN_EMPTY_DATUM
       ),
@@ -264,7 +271,10 @@ const makeRows = (consequences: Consequence[]) =>
       ['Revel', null, consequence.node.predictions?.revel_rankscore],
     ].filter(([, , score]) => score),
     conservation: consequence.node.conservations?.phylo_p17way_primate_rankscore,
-    transcriptId: consequence.node.ensembl_transcript_id,
+    transcript: {
+      id: consequence.node.ensembl_transcript_id,
+      isCanonical: consequence.node.canonical,
+    },
   }));
 
 const TabSummary = ({ variantId }: OwnProps) => {
