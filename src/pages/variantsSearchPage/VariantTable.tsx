@@ -262,7 +262,9 @@ const VariantTable: FunctionComponent<Props> = (props) => {
 
   return (
     <Table
-      title={() => generatePaginationMessage(currentPageNum, currentPageSize, total)}
+      title={() =>
+        total > 0 ? generatePaginationMessage(currentPageNum, currentPageSize, total) : ''
+      }
       tableLayout="auto"
       pagination={{
         current: currentPageNum,
