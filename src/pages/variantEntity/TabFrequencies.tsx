@@ -28,7 +28,6 @@ import {
 
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
-import styles from './tables.module.scss';
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type OwnProps = {
@@ -96,7 +95,6 @@ const internalColumns = (
       <>
         Participants{' '}
         <Tooltip
-          color={styles.participantsLinksTooltipColor}
           title={
             'Due to participant confidentiality, links may return a smaller number than displayed.'
           }
