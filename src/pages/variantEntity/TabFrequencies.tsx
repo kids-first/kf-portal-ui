@@ -1,7 +1,15 @@
+/* eslint-disable react/display-name */
 import React from 'react';
-import { Card, Space, Spin, Table } from 'antd';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
+import { Card, Space, Spin, Table, Tooltip } from 'antd';
+
+import { addToSqons } from 'common/sqonUtils';
+import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
+import ServerError from 'components/Variants/ServerError';
+import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import {
   FreqCombined,
   FreqInternal,
@@ -9,18 +17,14 @@ import {
   Study,
   StudyInfo,
 } from 'store/graphql/variants/models';
+import { useTabFrequenciesData } from 'store/graphql/variants/tabActions';
+import { RootState } from 'store/rootState';
+import { Sqon } from 'store/sqon';
 import {
   formatQuotientOrElse,
   formatQuotientToExponentialOrElse,
   toExponentialNotation,
 } from 'utils';
-import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
-import { Sqon } from 'store/sqon';
-import { RootState } from 'store/rootState';
-import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { addToSqons } from 'common/sqonUtils';
-import ServerError from 'components/Variants/ServerError';
 
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
@@ -43,15 +47,36 @@ type InternalRow = {
   study_id: string;
 };
 
+type ExternalCohortDatum = number | null;
+
+type Row = {
+  cohort: {
+    cohortName: string;
+    link?: string;
+  };
+  alt: ExternalCohortDatum;
+  altRef: ExternalCohortDatum;
+  homozygotes: ExternalCohortDatum;
+  frequency: ExternalCohortDatum;
+  key: string;
+};
+
+type Rows = Row[];
+const canMakeParticipantsLink = (nOfParticipants: number) =>
+  nOfParticipants && nOfParticipants >= MIN_N_OF_PARTICIPANTS_FOR_LINK;
+
+const hasAtLeastOneParticipantsLink = (rows: InternalRow[]) =>
+  (rows || []).some((row: InternalRow) => canMakeParticipantsLink(row.participant_number));
+
 const internalColumns = (
   globalStudies: StudyInfo[],
   onLinkClick: (sqons: Sqon[]) => void,
   sqons: Sqon[],
+  hasParticipantsLinks: boolean,
 ) => [
   {
     title: 'Studies',
     dataIndex: 'study_id',
-    // eslint-disable-next-line react/display-name
     render: (variantStudyId: string) => {
       const study = globalStudies.find((s) => s.id === variantStudyId);
       return study?.code || variantStudyId;
@@ -60,21 +85,31 @@ const internalColumns = (
   {
     title: 'Domain',
     dataIndex: 'study_id',
-    // eslint-disable-next-line react/display-name
     render: (variantStudyId: string) => {
       const study = globalStudies.find((s) => s.id === variantStudyId);
-      return study?.domain.join(', ') || '';
+      return study?.domain.join(', ') || DISPLAY_WHEN_EMPTY_DATUM;
     },
   },
   {
-    title: 'Participants',
+    title: hasParticipantsLinks ? (
+      <>
+        Participants{' '}
+        <Tooltip
+          title={
+            'Due to participant confidentiality, links may return a smaller number than displayed.'
+          }
+        >
+          <InfoCircleOutlined />
+        </Tooltip>
+      </>
+    ) : (
+      'Participants'
+    ),
     dataIndex: '',
-    // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
       const participantsNumber = row.participant_number;
       const participantsTotal = row.participantTotalNumber;
-
-      return participantsNumber && participantsNumber >= MIN_N_OF_PARTICIPANTS_FOR_LINK ? (
+      return canMakeParticipantsLink(participantsNumber) ? (
         <>
           <Link
             to={'/explore'}
@@ -105,7 +140,6 @@ const internalColumns = (
   {
     title: 'Frequency',
     dataIndex: '',
-    // eslint-disable-next-line react/display-name
     render: (row: InternalRow) => {
       const participantsNumber = row.participant_number;
       const participantsTotal = row.participantTotalNumber;
@@ -126,6 +160,9 @@ const internalColumns = (
   },
 ];
 
+const displayDefaultIfNeeded = (datum: ExternalCohortDatum) =>
+  datum == null ? DISPLAY_WHEN_EMPTY_DATUM : datum;
+
 const externalColumns = [
   {
     title: 'Cohort',
@@ -145,26 +182,30 @@ const externalColumns = [
   {
     title: 'ALT Allele',
     dataIndex: 'alt',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Alleles (ALT + REF)',
     dataIndex: 'altRef',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Homozygote',
     dataIndex: 'homozygotes',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
   {
     title: 'Frequency',
     dataIndex: 'frequency',
+    render: displayDefaultIfNeeded,
     width: '14%',
   },
 ];
 
-const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
+const makeRowFromFrequencies = (frequencies: Frequencies, locus: string): Rows => {
   if (!frequencies || Object.keys(frequencies).length === 0) {
     return [];
   }
@@ -229,6 +270,13 @@ const makeRowFromFrequencies = (frequencies: Frequencies, locus: string) => {
 const makeInternalCohortsRows = (rows: Study[]) =>
   rows.map((row: Study, index: number) => ({ ...row, key: `${index}` }));
 
+const hasAtLeastOneTruthyProperty = (obj: Omit<Row, 'key' | 'cohort'>) =>
+  Object.values(obj).some((e) => e);
+
+const isExternalCohortsTableEmpty = (rows: Rows) =>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  rows.every(({ cohort, key, ...visibleRow }: Row) => !hasAtLeastOneTruthyProperty(visibleRow));
+
 const mapDispatch = (dispatch: DispatchStoryPage) => ({
   onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
 });
@@ -261,38 +309,53 @@ const TabFrequencies = (props: Props) => {
 
   const internalFrequencies: FreqCombined | undefined = data?.frequencies?.internal?.upper_bound_kf;
 
+  const externalCohortsRows = makeRowFromFrequencies(frequencies, locus);
+  const hasEmptyCohorts = isExternalCohortsTableEmpty(externalCohortsRows);
+
+  const internalCohortRows = makeInternalCohortsRows(variantStudies);
+  const hasInternalCohorts = internalCohortRows.length > 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Card title="Kids First Studies">
-            <Table
-              dataSource={makeInternalCohortsRows(variantStudies)}
-              columns={internalColumns(
-                globalStudies,
-                props.onClickStudyLink,
-                props.currentVirtualStudy,
-              )}
-              summary={() => (
-                <TableSummaryKfStudies
-                  variantStudies={variantStudies}
-                  onClickStudyLink={props.onClickStudyLink}
-                  currentVirtualStudy={props.currentVirtualStudy}
-                  participantNumber={participantNumber}
-                  altAlleles={internalFrequencies?.ac}
-                  homozygotes={internalFrequencies?.homozygotes}
-                  participantTotalNumber={participantTotalNumber}
-                />
-              )}
-              pagination={false}
-            />
+            {hasInternalCohorts ? (
+              <Table
+                dataSource={makeInternalCohortsRows(variantStudies)}
+                columns={internalColumns(
+                  globalStudies,
+                  props.onClickStudyLink,
+                  props.currentVirtualStudy,
+                  hasAtLeastOneParticipantsLink(variantStudies),
+                )}
+                summary={() => (
+                  <TableSummaryKfStudies
+                    variantStudies={variantStudies}
+                    onClickStudyLink={props.onClickStudyLink}
+                    currentVirtualStudy={props.currentVirtualStudy}
+                    participantNumber={participantNumber}
+                    altAlleles={internalFrequencies?.ac}
+                    homozygotes={internalFrequencies?.homozygotes}
+                    participantTotalNumber={participantTotalNumber}
+                  />
+                )}
+                pagination={false}
+              />
+            ) : (
+              <EmptyMessage />
+            )}
           </Card>
           <Card title="External Cohorts">
-            <Table
-              dataSource={makeRowFromFrequencies(frequencies, locus)}
-              columns={externalColumns}
-              pagination={false}
-            />
+            {hasEmptyCohorts ? (
+              <EmptyMessage />
+            ) : (
+              <Table
+                dataSource={externalCohortsRows}
+                columns={externalColumns}
+                pagination={false}
+              />
+            )}
           </Card>
         </Space>
       </StackLayout>

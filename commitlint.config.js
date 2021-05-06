@@ -1,11 +1,11 @@
-module.exports = {
+const Configuration = {
   rules: {
+    'scope-case': [2, 'always', 'lower-case'],
     'body-leading-blank': [1, 'always'],
     'body-max-line-length': [2, 'always', 100],
     'footer-leading-blank': [1, 'always'],
     'footer-max-line-length': [2, 'always', 100],
     'header-max-length': [2, 'always', 100],
-    'scope-case': [2, 'always', 'lower-case'],
     'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
     'subject-empty': [2, 'never'],
     'subject-full-stop': [2, 'never', '.'],
@@ -28,11 +28,32 @@ module.exports = {
         'test',
       ],
     ],
+    'github-ticket-number': [2, 'always'],
   },
+  plugins: [
+    {
+      rules: {
+        'github-ticket-number': ({ githubTicketNumber = null }) => {
+          const ticketReg = /^#\d+$/;
+          let containTicketNumber = false;
+          if (githubTicketNumber !== null) {
+            containTicketNumber = !!githubTicketNumber.trim().match(ticketReg);
+          }
+
+          return [
+            containTicketNumber,
+            `Ticket number should not be empty\n\t\te.g. type(scope?): #[github issue] message\n\t\tGot : ${githubTicketNumber}`,
+          ];
+        },
+      },
+    },
+  ],
   parserPreset: {
     parserOpts: {
-      headerPattern: /^(\w*)(\(\w*\))?: (#\d+)\s(\w*)\s?(.*)?$/,
-      headerCorrespondence: ['type', '', 'github-ticket', 'subject', ''],
+      headerPattern: /^(\w*)(\([a-zA-Z0-9_ ]+\))?:\s?(\s#\d+)\s?([\w ]*)?$/,
+      headerCorrespondence: ['type', 'scope', 'githubTicketNumber', 'subject'],
     },
   },
 };
+
+module.exports = Configuration;

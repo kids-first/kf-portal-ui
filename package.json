@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.11",
@@ -35,7 +35,6 @@
     "react-modal": "^3.11.2",
     "react-places-autocomplete": "^7.2.1",
     "react-redux": "^7.2.0",
-    "react-scripts": "^3.4.1",
     "react-share": "^3.0.1",
     "react-slick": "^0.23.2",
     "react-social-icons": "^4.1.0",
@@ -44,17 +43,18 @@
     "redux-thunk": "^2.3.0",
     "scriptjs": "^2.5.9",
     "slick-carousel": "^1.8.1",
-    "tinygradient": "^1.1.2",
-    "watch": "^1.0.2"
+    "tinygradient": "^1.1.2"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "build": "react-scripts build",
-    "lint:all": "eslint src/",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "eslint": "eslint $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
+    "eslint:all": "eslint src/",
+    "eslint:fix": "eslint --fix $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
     "eject": "react-scripts eject",
     "prepare": "npm run theme",
     "pretest": "lint-staged",
-    "start": "react-scripts start",
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "test": "react-scripts test --ci --coverage",
     "test:watch": "react-scripts test --coverage",
     "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha --watch --require ./node_modules/@babel/register src/**/*.unit.js",
@@ -89,8 +89,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@babel/register": "^7.9.0",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@testing-library/jest-dom": "^5.8.0",
     "@testing-library/react": "^10.0.4",
     "@testing-library/user-event": "^10.3.5",
@@ -111,34 +111,37 @@
     "chai": "^4.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb": "^18.1.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.13.2",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^4.2.5",
     "less": "^3.12.2",
     "lint-staged": "^10.2.6",
     "mocha": "^7.2.0",
     "prettier": "^2.0.5",
     "prettier-eslint": "^10.1.1",
+    "react-scripts": "^4.0.3",
     "redux-mock-store": "^1.5.4",
     "source-map-explorer": "^2.4.2",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "watch": "^1.0.2"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run pretest",
-      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS && exit 0) || (print $'\\xF0\\x9F\\x9A\\xA8  \\xE2\\x84\\xB9 Message Format: type(scope?): #[github issue] message\n' && exit 10)"
+      "commit-msg": "(commitlint -E HUSKY_GIT_PARAMS -g commitlint.config.js && exit 0) || (echo $'\\xF0\\x9F\\x9A\\xA8  \\xE2\\x84\\xB9 Message Format: type(scope?): #[github issue] message\n' && exit 10)"
     }
   },
   "lint-staged": {
     "*.(ts|tsx|js|jsx)": [
-      "eslint -c .eslintrc.json --fix"
+      "npm run eslint"
     ]
   }
 }

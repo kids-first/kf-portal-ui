@@ -1,15 +1,19 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent, ReactText } from 'react';
-import { generatePhenotypeByTitle, Phenotype } from 'store/sunburstTypes';
-import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
-import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
-import { ThunkDispatch } from 'redux-thunk';
-import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
+// @ts-ignore
+import { ALL_OP } from '@kfarranger/middleware/dist/constants';
 import { Button, Tree } from 'antd';
+import { ThunkDispatch } from 'redux-thunk';
+
 import { TreeNode } from 'components/OntologyBrowser/Model';
-import './sunburst.css';
 import { RegexExtractPhenotype } from 'components/OntologyBrowser/store';
+import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
+import { RootState } from 'store/rootState';
+import { generatePhenotypeByTitle, Phenotype } from 'store/sunburstTypes';
+import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
+
+import './sunburst.css';
 
 type OwnProps = {
   data: Pick<Phenotype, 'title' | 'key' | 'results' | 'exactTagCount'>;
@@ -22,7 +26,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
 const mapDispatch = (dispatch: ThunkDispatch<RootState, null, AddTermToActiveIndex>) => ({
-  onClickAddTermToActiveIndex: (term: Term) => dispatch(addTermToActiveIndex(term)),
+  onClickAddTermToActiveIndex: (term: Term) => dispatch(addTermToActiveIndex(term, ALL_OP)),
 });
 
 const connector = connect(null, mapDispatch);

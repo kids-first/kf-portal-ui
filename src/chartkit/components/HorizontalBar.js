@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
-import PropTypes from 'prop-types';
-import autobind from 'auto-bind-es5';
-
-import { defaultTheme } from '../themes';
-import Legend from './Legend';
-import { truncateText } from '../utils';
-import { TextBugWrapper } from '../styles';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Tooltip } from 'antd';
+import autobind from 'auto-bind-es5';
+import PropTypes from 'prop-types';
+
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+
+import { TextBugWrapper } from '../styles';
+import { defaultTheme } from '../themes';
+import { truncateText } from '../utils';
+
+import Legend from './Legend';
+
 import 'ui/Tooltips/tooltips.scss';
 
 class HorizontalBar extends Component {
@@ -57,16 +60,15 @@ class HorizontalBar extends Component {
     if (onClick) onClick(data);
   }
 
-  renderAxisLeftTick(tick) {
+  renderAxisLeftTick(tick, xOffset) {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
+    const { tooltipDictionary } = this.props;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
     const text = truncateText(value, xTickTextLength);
-
-    const xOffset = 160;
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
@@ -77,8 +79,12 @@ class HorizontalBar extends Component {
       }
     };
 
+    const tooltipValue = tooltipDictionary
+      ? tooltipDictionary.find((d) => d.label === value)?.tooltip ?? value
+      : value;
+
     return (
-      <Tooltip key={key} title={value}>
+      <Tooltip key={key} title={tooltipValue}>
         <g
           key={key}
           transform={`translate(${x - xOffset},${y})`}
@@ -144,6 +150,7 @@ class HorizontalBar extends Component {
       height,
       axisBottomFormat = this.defaultAxisBottomFormat,
       axisLeftFormat = this.defaultLeftFormat,
+      xOffset = 160,
     } = this.props;
 
     const chartData = {
@@ -157,7 +164,7 @@ class HorizontalBar extends Component {
         top: 0,
         right: 5,
         bottom: 70,
-        left: 160,
+        left: xOffset,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
       colors: colors,
@@ -196,7 +203,7 @@ class HorizontalBar extends Component {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        renderTick: this.renderAxisLeftTick,
+        renderTick: (tick) => this.renderAxisLeftTick(tick, xOffset),
         format: axisLeftFormat,
       },
       enableGridX: true,
@@ -250,6 +257,7 @@ HorizontalBar.propTypes = {
   maxValue: PropTypes.number,
   tickValues: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.array,
+  tooltipDictionary: PropTypes.array,
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,
@@ -264,6 +272,7 @@ HorizontalBar.propTypes = {
   axisBottomFormat: PropTypes.func,
   axisLeftFormat: PropTypes.func,
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
+  xOffset: PropTypes.number,
 };
 
 export default HorizontalBar;

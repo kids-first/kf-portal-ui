@@ -1,16 +1,20 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import { useTabSummaryData } from 'store/graphql/variants/tabActions';
-import { Card, Space, Spin, Tag, Typography } from 'antd';
-import Summary from './Summary';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
-import ExpandableCell from 'components/ExpandableCell';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Card, Space, Spin, Tag, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
+
+import ExpandableCell from 'components/ExpandableCell';
 import ExpandableTable from 'components/ExpandableTable';
 import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
+import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
+import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
+import { useTabSummaryData } from 'store/graphql/variants/tabActions';
+
+import Summary from './Summary';
+
 import styles from './tables.module.scss';
 
 const { Text } = Typography;
@@ -28,6 +32,28 @@ type TableGroup = {
 
 type SymbolToConsequences = {
   [key: string]: TableGroup;
+};
+
+export const shortToLongPrediction: Record<string, string> = {
+  'sift.d': 'damaging',
+  'sift.t': 'tolerated',
+  'polyphen2.p': 'possibly damaging',
+  'polyphen2.d': 'probably damaging',
+  'polyphen2.b': 'benign',
+  'fathmm.d': 'damaging',
+  'fathmm.t': 'tolerated',
+  'lrt.d': 'deleterious',
+  'lrt.n': 'neutral',
+  'lrt.u': 'unknown',
+};
+
+const getLongPredictionLabelIfKnown = (predictionField: string, predictionShortLabel: string) => {
+  if (!predictionField || !predictionShortLabel) {
+    return null;
+  }
+  const dictionaryPath = `${predictionField.toLowerCase()}.${predictionShortLabel.toLowerCase()}`;
+  const longPrediction = shortToLongPrediction[dictionaryPath];
+  return longPrediction || null;
 };
 
 const groupConsequencesBySymbol = (consequences: Consequence[]) => {
@@ -85,14 +111,15 @@ const makeTables = (rawConsequences: Consequence[]) => {
   return orderConsequencesForTable(orderedGenes);
 };
 
-const INDEX_IMPACT_TITLE = 0;
-const INDEX_IMPACT_LABEL = 1;
+const INDEX_IMPACT_PREDICTION_FIELD = 0;
+const INDEX_IMPACT_PREDICTION_SHORT_LABEL = 1;
 const INDEX_IMPACT_SCORE = 2;
 
 const columns = [
   {
     title: 'AA',
     dataIndex: 'aa',
+    render: (aa: string) => aa || DISPLAY_WHEN_EMPTY_DATUM,
     width: '10%',
   },
   {
@@ -118,6 +145,7 @@ const columns = [
   {
     title: 'Coding Dna',
     dataIndex: 'codingDna',
+    render: (codingDna: string) => codingDna || DISPLAY_WHEN_EMPTY_DATUM,
   },
   {
     title: 'Strand',
@@ -125,7 +153,7 @@ const columns = [
     render(strand: number) {
       const isInDomain = [-1, 1].some((e) => e === strand);
       if (!isInDomain) {
-        return <></>;
+        return DISPLAY_WHEN_EMPTY_DATUM;
       }
       return strand > 0 ? <PlusOutlined /> : <MinusOutlined />;
     },
@@ -146,7 +174,7 @@ const columns = [
     dataIndex: 'impact',
     render: (impacts: string[][]) => {
       if (impacts.length === 0) {
-        return <></>;
+        return DISPLAY_WHEN_EMPTY_DATUM;
       }
 
       return (
@@ -154,13 +182,21 @@ const columns = [
           nOfElementsWhenCollapsed={2}
           dataSource={impacts}
           renderItem={(item: any, id): React.ReactNode => {
-            const title = item[INDEX_IMPACT_TITLE];
-            const label = item[INDEX_IMPACT_LABEL];
+            const predictionField = item[INDEX_IMPACT_PREDICTION_FIELD];
             const score = item[INDEX_IMPACT_SCORE];
-            const description = label ? `${label} - ${score}` : score;
+            const predictionShortLabel = item[INDEX_IMPACT_PREDICTION_SHORT_LABEL];
+
+            const predictionLongLabel = getLongPredictionLabelIfKnown(
+              predictionField,
+              predictionShortLabel,
+            );
+
+            const label = predictionLongLabel || predictionShortLabel;
+
+            const description = label ? `${capitalize(label)} - ${score}` : score;
             return (
               <StackLayout key={id} horizontal className={styles.cellList}>
-                <Text type={'secondary'}>{title}:</Text>
+                <Text type={'secondary'}>{predictionField}:</Text>
                 <Text>{description}</Text>
               </StackLayout>
             );
@@ -172,22 +208,24 @@ const columns = [
   },
   {
     title: 'Conservation',
-    dataIndex: 'conservations',
+    dataIndex: 'conservation',
+    render: (conservation: number) =>
+      conservation == null ? DISPLAY_WHEN_EMPTY_DATUM : conservation,
   },
   {
     title: 'Transcript',
-    dataIndex: 'transcriptId',
-    render: (transcriptId: string) =>
-      transcriptId ? (
+    dataIndex: 'transcript',
+    render: (transcript: { id: string; isCanonical?: boolean }) =>
+      transcript.id ? (
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`https://www.ensembl.org/id/${transcriptId}`}
+          href={`https://www.ensembl.org/id/${transcript.id}`}
         >
-          {transcriptId}
+          {transcript.id}
         </a>
       ) : (
-        ''
+        DISPLAY_WHEN_EMPTY_DATUM
       ),
   },
 ];
@@ -225,8 +263,11 @@ const makeRows = (consequences: Consequence[]) =>
       ],
       ['Revel', null, consequence.node.predictions?.revel_rankscore],
     ].filter(([, , score]) => score),
-    conservations: consequence.node.conservations?.phylo_p17way_primate_rankscore,
-    transcriptId: consequence.node.ensembl_transcript_id,
+    conservation: consequence.node.conservations?.phylo_p17way_primate_rankscore,
+    transcript: {
+      id: consequence.node.ensembl_transcript_id,
+      isCanonical: consequence.node.canonical,
+    },
   }));
 
 const TabSummary = ({ variantId }: OwnProps) => {
@@ -240,47 +281,55 @@ const TabSummary = ({ variantId }: OwnProps) => {
 
   const consequences = (data?.consequences?.hits?.edges || []) as Consequence[];
 
+  const tables = makeTables(consequences);
+  const hasTables = tables.length > 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Summary variant={data} />
           <h3>Gene Consequences</h3>
-          {makeTables(consequences).map((tableData: TableGroup, index: number) => {
-            const symbol = tableData.symbol;
-            const omim = tableData.omim; //https://www.omim.org/entry/158340
-            //const ensemblGeneId = tableData.ensemblGeneDd; link: http://www.ensembl.org/id/ensemblGeneId
-            const orderedConsequences = tableData.consequences;
+          {hasTables ? (
+            tables.map((tableData: TableGroup, index: number) => {
+              const symbol = tableData.symbol;
+              const omim = tableData.omim;
+              const orderedConsequences = tableData.consequences;
 
-            return (
-              <Card
-                title={
-                  <Space>
-                    <span>Gene</span>
-                    <span>{symbol}</span>
-                    {omim && (
-                      <>
-                        <span>Omim</span>
-                        <span>{omim}</span>
-                      </>
-                    )}
-                  </Space>
-                }
-                key={index}
-              >
-                <ExpandableTable
-                  nOfElementsWhenCollapsed={1}
-                  buttonText={(showAll, hiddenNum) =>
-                    showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
+              return (
+                <Card
+                  title={
+                    <Space>
+                      <span>Gene</span>
+                      <span>{symbol}</span>
+                      {omim && (
+                        <>
+                          <span>Omim</span>
+                          <span>{omim}</span>
+                        </>
+                      )}
+                    </Space>
                   }
                   key={index}
-                  dataSource={makeRows(orderedConsequences)}
-                  columns={columns}
-                  pagination={false}
-                />
-              </Card>
-            );
-          })}
+                >
+                  <ExpandableTable
+                    nOfElementsWhenCollapsed={1}
+                    buttonText={(showAll, hiddenNum) =>
+                      showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
+                    }
+                    key={index}
+                    dataSource={makeRows(orderedConsequences)}
+                    columns={columns}
+                    pagination={false}
+                  />
+                </Card>
+              );
+            })
+          ) : (
+            <Card title={'Gene'}>
+              <EmptyMessage />
+            </Card>
+          )}
         </Space>
       </StackLayout>
     </Spin>

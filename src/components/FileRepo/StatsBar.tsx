@@ -1,5 +1,12 @@
 import React, { FunctionComponent } from 'react';
+
+import sizeIcon from '../../assets/icon-database.svg';
+import familiesIcon from '../../assets/icon-families-grey.svg';
+import filesIcon from '../../assets/icon-files.svg';
+import participantsIcon from '../../assets/icon-participants.svg';
+
 import Stat from './Stat';
+import { Tags } from './statsConstants';
 import {
   buildStatQueriesForFamily,
   buildStatQueriesForFile,
@@ -7,7 +14,6 @@ import {
   buildStatQueriesForParticipant,
 } from './statsQueries';
 
-import { Tags } from './statsConstants';
 import './FileRepo.scss';
 
 interface Props {
@@ -26,7 +32,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
       label={'Files'}
       icon={
         <img
-          src={require('../../assets/icon-files.svg')}
+          src={filesIcon}
           alt=""
           style={{
             width: '16px',
@@ -44,7 +50,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
       label={'Participants'}
       icon={
         <img
-          src={require('../../assets/icon-participants.svg')}
+          src={participantsIcon}
           alt=""
           style={{
             width: '21px',
@@ -62,7 +68,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
       label={'Families'}
       icon={
         <img
-          src={require('../../assets/icon-families-grey.svg')}
+          src={familiesIcon}
           alt=""
           style={{
             width: '26px',
@@ -80,7 +86,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
       label={'Size'}
       icon={
         <img
-          src={require('../../assets/icon-database.svg')}
+          src={sizeIcon}
           alt=""
           style={{
             width: '18px',

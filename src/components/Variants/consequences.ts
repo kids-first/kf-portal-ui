@@ -23,15 +23,10 @@ export const filterThanSortConsequencesByImpact = (consequences: Consequence[]) 
   return consequences
     .filter((c) => c.node?.impact_score !== null)
     .map((c) => ({ ...c }))
-    .sort((a, b) => {
-      const isSameScore = a.node.impact_score! === b.node.impact_score!;
-      const canonicalIsNotFirst = !a.node.canonical && b.node.canonical;
-      const canonicalNeedsToBeSwapped = isSameScore && canonicalIsNotFirst;
-      if (canonicalNeedsToBeSwapped) {
-        return 1;
-      }
-      return b.node.impact_score! - a.node.impact_score!;
-    });
+    .sort(
+      (a, b) =>
+        b.node.impact_score! - a.node.impact_score! || +b.node.canonical! - +a.node.canonical!,
+    );
 };
 type SymbolToConsequences = { [key: string]: Consequence[] };
 

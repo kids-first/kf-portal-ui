@@ -1,8 +1,14 @@
 /* eslint-disable react/display-name */
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Table, Tooltip } from 'antd';
-import ConsequencesCell from './ConsequencesCell';
-import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
+import { connect, ConnectedProps } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Table, Tooltip } from 'antd';
+
+import ROUTES from 'common/routes';
+import { addToSqons } from 'common/sqonUtils';
+import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
+import ServerError from 'components/Variants/ServerError';
+import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import {
   ClinVar,
   Consequence,
@@ -13,25 +19,20 @@ import {
   VariantEntity,
   VariantEntityNode,
 } from 'store/graphql/variants/models';
-import { connect, ConnectedProps } from 'react-redux';
-import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
-import { Sqon } from 'store/sqon';
-import { withHistory } from 'services/history';
-// @ts-ignore
-import { compose } from 'recompose';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
+import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import { RootState } from 'store/rootState';
-import { addToSqons } from 'common/sqonUtils';
+import { Sqon } from 'store/sqon';
+import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
+import { AlignmentOptions } from 'ui/TableOptions';
 import {
   formatQuotientOrElse,
   formatQuotientToExponentialOrElse,
   generatePaginationMessage,
 } from 'utils';
-import ServerError from 'components/Variants/ServerError';
-import ROUTES from 'common/routes';
+
+import ConsequencesCell from './ConsequencesCell';
+
 import style from './VariantTable.module.scss';
-import { AlignmentOptions } from 'ui/TableOptions';
 
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
@@ -57,7 +58,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = {
   selectedSuggestion: SelectedSuggestion;
-  history: RouteComponentProps['history'];
 } & PropsFromRedux;
 
 const generateColumns = (props: Props, studyList: StudyInfo[]) =>
@@ -69,13 +69,13 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       className: style.variantTableCell,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
-          <Tooltip placement="topLeft" title={hgvsg} color={'#2b388f'}>
+          <Tooltip placement="topLeft" title={hgvsg}>
             <Link to={`/variant/${record.hash}?hgvsg=${hgvsg}`} href={'#top'}>
               {hgvsg}
             </Link>
           </Tooltip>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -96,7 +96,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             {rsNumber}
           </a>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -121,7 +121,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
             {clinVar.clin_sig.join(', ')}
           </a>
         ) : (
-          ''
+          DISPLAY_WHEN_EMPTY_DATUM
         ),
     },
     {
@@ -136,7 +136,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
 
         return studies?.hits?.total ? (
           <Link
-            to={'/explore'}
+            to={ROUTES.cohortBuilder}
             href={'#top'}
             onClick={() => {
               props.onClickParticipantLink(
@@ -178,7 +178,8 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
 
         return hasMinRequiredParticipants ? (
           <>
-            <Button
+            <Link
+              to={ROUTES.cohortBuilder}
               onClick={
                 participantNumber
                   ? () => {
@@ -193,18 +194,16 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
                           sqons: props.currentSqons,
                         }),
                       );
-                      props.history.push(ROUTES.cohortBuilder);
                     }
                   : undefined
               }
-              type="link"
             >
               {participantNumber}
-            </Button>
+            </Link>
             {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
           </>
         ) : (
-          formatQuotientOrElse(participantNumber, participantTotalNumber)
+          formatQuotientOrElse(participantNumber, participantTotalNumber, DISPLAY_WHEN_EMPTY_DATUM)
         );
       },
     },
@@ -214,7 +213,11 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
         const participantTotalNumber = row.participant_total_number;
-        return formatQuotientToExponentialOrElse(participantNumber, participantTotalNumber);
+        return formatQuotientToExponentialOrElse(
+          participantNumber,
+          participantTotalNumber,
+          DISPLAY_WHEN_EMPTY_DATUM,
+        );
       },
     },
     {
@@ -254,7 +257,9 @@ const VariantTable: FunctionComponent<Props> = (props) => {
 
   return (
     <Table
-      title={() => generatePaginationMessage(currentPageNum, currentPageSize, total)}
+      title={() =>
+        total > 0 ? generatePaginationMessage(currentPageNum, currentPageSize, total) : ''
+      }
       tableLayout="auto"
       pagination={{
         current: currentPageNum,
@@ -277,4 +282,4 @@ const VariantTable: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default compose(withHistory, connector)(VariantTable);
+export default connector(VariantTable);

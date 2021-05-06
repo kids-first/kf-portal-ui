@@ -1,11 +1,11 @@
-import { generateConsequencesDataLines, filterThanSortConsequencesByImpact } from '../consequences';
+import { filterThanSortConsequencesByImpact, generateConsequencesDataLines } from '../consequences';
 
 describe('Consequences', () => {
   describe('sortConsequences', () => {});
   it('should sort correctly (desc impact and canonical comes first)', () => {
     const generalCase = [
       {
-        node: { biotype: 'protein_coding', impact_score: 4, canonical: true },
+        node: { biotype: 'protein_coding', impact_score: 4, canonical: false },
       },
       {
         node: { biotype: 'retained_intron', impact_score: 4, canonical: false },
@@ -19,6 +19,9 @@ describe('Consequences', () => {
       {
         node: { biotype: 'protein_coding', impact_score: 1, canonical: false },
       },
+      {
+        node: { biotype: 'protein_coding', impact_score: 4, canonical: true },
+      },
     ];
     // @ts-ignore only needed data.
     expect(filterThanSortConsequencesByImpact(generalCase)).toEqual([
@@ -26,6 +29,13 @@ describe('Consequences', () => {
         node: {
           biotype: 'protein_coding',
           canonical: true,
+          impact_score: 4,
+        },
+      },
+      {
+        node: {
+          biotype: 'protein_coding',
+          canonical: false,
           impact_score: 4,
         },
       },
