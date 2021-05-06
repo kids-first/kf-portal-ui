@@ -24884,6 +24884,10 @@ div.ant-typography-edit-content.ant-typography-rtl {
   background-color: transparent;
   border: solid 1px transparent;
 }
+.ant-btn-link:not([disabled]),
+.ant-btn-text:not([disabled]) {
+  text-decoration: underline;
+}
 .ant-btn-link:disabled,
 .ant-btn-text:disabled {
   color: #8a8da8;
@@ -24920,6 +24924,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-tag.modifierImpact {
   background-color: #eaeaec;
   color: #383f72;
+}
+.ant-pagination-item a {
+  text-decoration: none;
 }
 .ant-card-head {
   font-weight: 600;
