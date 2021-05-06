@@ -1,12 +1,26 @@
 # Release notes for kf-portal-ui
 
 <!--
-## 2020-01-?? kf-portal-ui 2.??.??
+## 2020-01-?? kf-portal-ui 3.??.??
 
 ### Features
 
 ### Technical / Other changes
 -->
+## 2020-05-06 kf-portal-ui 3.0.2
+
+### Features
+- [3165](https://github.com/kids-first/kf-portal-ui/issues/3165) Variant page : Add tooltip to participants column in KF Studies table.
+- [3111](https://github.com/kids-first/kf-portal-ui/issues/3111) Display impact long names.
+
+### Technical / Other changes
+- [3124](https://github.com/kids-first/kf-portal-ui/issues/3124) Tables : fix border color for table rows.
+- [3177](https://github.com/kids-first/kf-portal-ui/issues/3177) Fix Table column dropdown in File Repo.
+- [3070](https://github.com/kids-first/kf-portal-ui/issues/3070) Use operator AND when adding a term to an active query from the sunburst.
+- [3005](https://github.com/kids-first/kf-portal-ui/issues/3005) Cohort builder - Summary View - Studies bar chart: Replace study names by study codes in Y axis.
+- [3200](https://github.com/kids-first/kf-portal-ui/issues/3200) Fix(variant search page): remove the "showing" message if table is empty.
+- [3113](https://github.com/kids-first/kf-portal-ui/issues/3113) Add -- when there's no data (variant search page + variant entity).
+- [3128](https://github.com/kids-first/kf-portal-ui/issues/3128) Variant entity page : update display for empty tables (change request).
 
 ## 2021-04-30 kf-portal-ui  3.0.1
 

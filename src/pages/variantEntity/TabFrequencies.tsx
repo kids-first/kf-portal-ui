@@ -312,32 +312,39 @@ const TabFrequencies = (props: Props) => {
   const externalCohortsRows = makeRowFromFrequencies(frequencies, locus);
   const hasEmptyCohorts = isExternalCohortsTableEmpty(externalCohortsRows);
 
+  const internalCohortRows = makeInternalCohortsRows(variantStudies);
+  const hasInternalCohorts = internalCohortRows.length > 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Card title="Kids First Studies">
-            <Table
-              dataSource={makeInternalCohortsRows(variantStudies)}
-              columns={internalColumns(
-                globalStudies,
-                props.onClickStudyLink,
-                props.currentVirtualStudy,
-                hasAtLeastOneParticipantsLink(variantStudies),
-              )}
-              summary={() => (
-                <TableSummaryKfStudies
-                  variantStudies={variantStudies}
-                  onClickStudyLink={props.onClickStudyLink}
-                  currentVirtualStudy={props.currentVirtualStudy}
-                  participantNumber={participantNumber}
-                  altAlleles={internalFrequencies?.ac}
-                  homozygotes={internalFrequencies?.homozygotes}
-                  participantTotalNumber={participantTotalNumber}
-                />
-              )}
-              pagination={false}
-            />
+            {hasInternalCohorts ? (
+              <Table
+                dataSource={makeInternalCohortsRows(variantStudies)}
+                columns={internalColumns(
+                  globalStudies,
+                  props.onClickStudyLink,
+                  props.currentVirtualStudy,
+                  hasAtLeastOneParticipantsLink(variantStudies),
+                )}
+                summary={() => (
+                  <TableSummaryKfStudies
+                    variantStudies={variantStudies}
+                    onClickStudyLink={props.onClickStudyLink}
+                    currentVirtualStudy={props.currentVirtualStudy}
+                    participantNumber={participantNumber}
+                    altAlleles={internalFrequencies?.ac}
+                    homozygotes={internalFrequencies?.homozygotes}
+                    participantTotalNumber={participantTotalNumber}
+                  />
+                )}
+                pagination={false}
+              />
+            ) : (
+              <EmptyMessage />
+            )}
           </Card>
           <Card title="External Cohorts">
             {hasEmptyCohorts ? (
