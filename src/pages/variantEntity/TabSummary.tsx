@@ -2,13 +2,13 @@
 import React from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Avatar, Card, Space, Spin, Tag, Typography } from 'antd';
+import { Card, Space, Spin, Tag, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
 
 import ExpandableCell from 'components/ExpandableCell';
 import ExpandableTable from 'components/ExpandableTable';
 import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
-import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
+import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
 import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
@@ -217,20 +217,13 @@ const columns = [
     dataIndex: 'transcript',
     render: (transcript: { id: string; isCanonical?: boolean }) =>
       transcript.id ? (
-        <Space size={'small'}>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`https://www.ensembl.org/id/${transcript.id}`}
-          >
-            {transcript.id}
-          </a>
-          {transcript.isCanonical && (
-            <Avatar className={styles.transcriptAvatar} size={16}>
-              C
-            </Avatar>
-          )}
-        </Space>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`https://www.ensembl.org/id/${transcript.id}`}
+        >
+          {transcript.id}
+        </a>
       ) : (
         DISPLAY_WHEN_EMPTY_DATUM
       ),
@@ -288,46 +281,55 @@ const TabSummary = ({ variantId }: OwnProps) => {
 
   const consequences = (data?.consequences?.hits?.edges || []) as Consequence[];
 
+  const tables = makeTables(consequences);
+  const hasTables = tables.length > 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
         <Space direction={'vertical'} size={'large'}>
           <Summary variant={data} />
           <h3>Gene Consequences</h3>
-          {makeTables(consequences).map((tableData: TableGroup, index: number) => {
-            const symbol = tableData.symbol;
-            const omim = tableData.omim;
-            const orderedConsequences = tableData.consequences;
+          {hasTables ? (
+            tables.map((tableData: TableGroup, index: number) => {
+              const symbol = tableData.symbol;
+              const omim = tableData.omim;
+              const orderedConsequences = tableData.consequences;
 
-            return (
-              <Card
-                title={
-                  <Space>
-                    <span>Gene</span>
-                    <span>{symbol}</span>
-                    {omim && (
-                      <>
-                        <span>Omim</span>
-                        <span>{omim}</span>
-                      </>
-                    )}
-                  </Space>
-                }
-                key={index}
-              >
-                <ExpandableTable
-                  nOfElementsWhenCollapsed={1}
-                  buttonText={(showAll, hiddenNum) =>
-                    showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
+              return (
+                <Card
+                  title={
+                    <Space>
+                      <span>Gene</span>
+                      <span>{symbol}</span>
+                      {omim && (
+                        <>
+                          <span>Omim</span>
+                          <span>{omim}</span>
+                        </>
+                      )}
+                    </Space>
                   }
                   key={index}
-                  dataSource={makeRows(orderedConsequences)}
-                  columns={columns}
-                  pagination={false}
-                />
-              </Card>
-            );
-          })}
+                >
+                  <ExpandableTable
+                    nOfElementsWhenCollapsed={1}
+                    buttonText={(showAll, hiddenNum) =>
+                      showAll ? 'Hide Transcripts' : `Show Transcripts (${hiddenNum})`
+                    }
+                    key={index}
+                    dataSource={makeRows(orderedConsequences)}
+                    columns={columns}
+                    pagination={false}
+                  />
+                </Card>
+              );
+            })
+          ) : (
+            <Card title={'Gene'}>
+              <EmptyMessage />
+            </Card>
+          )}
         </Space>
       </StackLayout>
     </Spin>

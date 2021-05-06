@@ -1,16 +1,13 @@
 /* eslint-disable react/display-name */
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Table, Tooltip } from 'antd';
-// @ts-ignore
-import { compose } from 'recompose';
+import { Link } from 'react-router-dom';
+import { Table, Tooltip } from 'antd';
 
 import ROUTES from 'common/routes';
 import { addToSqons } from 'common/sqonUtils';
 import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
-import { withHistory } from 'services/history';
 import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
 import {
   ClinVar,
@@ -61,7 +58,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = {
   selectedSuggestion: SelectedSuggestion;
-  history: RouteComponentProps['history'];
 } & PropsFromRedux;
 
 const generateColumns = (props: Props, studyList: StudyInfo[]) =>
@@ -140,7 +136,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
 
         return studies?.hits?.total ? (
           <Link
-            to={'/explore'}
+            to={ROUTES.cohortBuilder}
             href={'#top'}
             onClick={() => {
               props.onClickParticipantLink(
@@ -182,7 +178,8 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
 
         return hasMinRequiredParticipants ? (
           <>
-            <Button
+            <Link
+              to={ROUTES.cohortBuilder}
               onClick={
                 participantNumber
                   ? () => {
@@ -197,14 +194,12 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
                           sqons: props.currentSqons,
                         }),
                       );
-                      props.history.push(ROUTES.cohortBuilder);
                     }
                   : undefined
               }
-              type="link"
             >
               {participantNumber}
-            </Button>
+            </Link>
             {participantTotalNumber ? ` / ${participantTotalNumber}` : ''}
           </>
         ) : (
@@ -287,4 +282,4 @@ const VariantTable: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default compose(withHistory, connector)(VariantTable);
+export default connector(VariantTable);

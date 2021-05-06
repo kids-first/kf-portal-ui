@@ -28,6 +28,9 @@ const TabClinical = ({ variantId }: OwnProps) => {
   const clinVarRows = makeClinVarRows(dataClinvar);
   const clinVarHasRows = clinVarRows.length > 0;
 
+  const genesRows = makeGenesOrderedRow(dataGenes);
+  const genesHasRows = genesRows.length > 0;
+
   return (
     <Spin spinning={loading}>
       <StackLayout vertical fitContent>
@@ -52,11 +55,15 @@ const TabClinical = ({ variantId }: OwnProps) => {
           </Card>
 
           <Card title="Gene - Phenotype">
-            <Table
-              pagination={false}
-              dataSource={makeGenesOrderedRow(dataGenes)}
-              columns={columnsPhenotypes}
-            />
+            {genesHasRows ? (
+              <Table
+                pagination={false}
+                dataSource={makeGenesOrderedRow(dataGenes)}
+                columns={columnsPhenotypes}
+              />
+            ) : (
+              <EmptyMessage />
+            )}
           </Card>
         </Space>
       </StackLayout>

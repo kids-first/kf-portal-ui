@@ -87,7 +87,7 @@ const internalColumns = (
     dataIndex: 'study_id',
     render: (variantStudyId: string) => {
       const study = globalStudies.find((s) => s.id === variantStudyId);
-      return study?.domain.join(', ') || '';
+      return study?.domain.join(', ') || DISPLAY_WHEN_EMPTY_DATUM;
     },
   },
   {
