@@ -1,19 +1,21 @@
 import React from 'react';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
+import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+
+import StudyIcon from 'icons/StudyIconSvg';
+import history from 'services/history';
+import { StudiesPageContainerData } from 'store/graphql/studies/actions';
+
+import StudyTableContainer, { PaginationType } from './StudyTableContainer';
 import {
   getQueryBuilderCache,
   setQueryBuilderCache,
   updateQueryFilters,
   updateQueryParam,
 } from './utils';
-import history from 'services/history';
-import StudyTableContainer, { PaginationType } from './StudyTableContainer';
-import { StudiesPageContainerData } from '../../store/graphql/studies/actions';
-import StudyIcon from 'icons/StudyIconSvg';
 
 import styles from './StudiesPageContainer.module.scss';
-import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
 
 type StudyPageContainerProps = StudiesPageContainerData & PaginationType;
 

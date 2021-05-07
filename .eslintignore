@@ -4,3 +4,7 @@ package-lock.json
 tsconfig.json
 NEWS.md
 commitlint.config.js
+
+*.scss
+*.css
+*.less

@@ -1,5 +1,20 @@
 @import 'style/themes/default/_colors';
 
+.sider {
+  border-right: thin solid $gray-4;
+  min-width: 320px;
+  width: 420px;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+
+  &[data-collapsed='true'] {
+    min-width: 50px;
+    max-width: 50px;
+    width: 50px;
+  }
+}
+
 .siderContainer {
   margin: 12px 16px;
   overflow-y: hidden;
@@ -44,9 +59,12 @@
   }
 
   & :global(.ant-collapse),
-  :global(.ant-collapse-content),
   :global(.ant-collapse-item) {
     background-color: $gray-1;
     border: none;
   }
+}
+
+:export {
+  width: 420;
 }

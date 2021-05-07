@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
+import { Layout } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
+import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
+
 import Sidebar from './Sidebar';
 import StudyPageContainer from './StudyPageContainer';
-import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
 import { useFilters } from './utils';
-import { Layout } from 'antd';
 
 import styles from './studies.module.scss';
 
