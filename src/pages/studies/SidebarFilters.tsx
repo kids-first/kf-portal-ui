@@ -1,11 +1,12 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import history from 'services/history';
-
-import { IFilter } from '@ferlab/ui/core/components/filters/types';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
-import { getFilterType, getSelectedFilters, updateFilters } from './utils';
+import { IFilter } from '@ferlab/ui/core/components/filters/types';
+
+import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
+
+import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
 const keyEnhance = (key: string) => {
   switch (key) {
