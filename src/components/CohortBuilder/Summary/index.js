@@ -37,7 +37,7 @@ const Summary = ({
       ageDiagQuery(sqon),
       diagnosesQuery(sqon),
       studiesQuery(sqon),
-      allStudiesQuery(sqon),
+      // allStudiesQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
