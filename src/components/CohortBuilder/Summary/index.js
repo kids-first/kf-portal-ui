@@ -15,7 +15,7 @@ import DataTypeCard from './Cards/DataTypeCard';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
 import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
-import StudiesChart, { allStudiesQuery, studiesQuery } from './Cards/StudiesChart';
+import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
 import SurvivalChart from './Cards/SurvivalChart';
 
 import './Summary.css';
