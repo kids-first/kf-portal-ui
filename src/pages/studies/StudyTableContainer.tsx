@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
-import { Table } from 'antd';
-import { generateTableData } from 'store/graphql/studies/models';
-import { StudiesResults } from 'store/graphql/studies/actions';
-import { studiesColumns } from 'store/graphql/studies/tableColumns';
 import { connect, ConnectedProps } from 'react-redux';
+import { Table } from 'antd';
+import { Typography } from 'antd';
+
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
+import { StudiesResults } from 'store/graphql/studies/actions';
+import { generateTableData } from 'store/graphql/studies/models';
+import { studiesColumns } from 'store/graphql/studies/tableColumns';
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
 
+import styles from './StudiesPageContainer.module.scss';
+
+const { Text } = Typography;
 type StudyTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
@@ -36,14 +41,22 @@ type Props = StudiesResults & PropsFromRedux & PaginationType;
 
 const StudyTable: FC<Props> = (props) => {
   const { loading, pagination } = props;
+  const { current: currentPage, total: itemTotal, pageSize: itemPerPage } = pagination;
+
   if (loading) {
     return null;
   }
 
   const tableData = generateTableData(props);
+  const pageRange = `${currentPage}-${itemTotal > itemPerPage ? itemPerPage : itemTotal}`;
 
   return (
     <div>
+      <div className={styles.tableHeader}>
+        Showing <Text strong>{pageRange}</Text>
+        <span> out of </span>
+        <Text strong>{itemTotal}</Text>
+      </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
         dataSource={tableData}
