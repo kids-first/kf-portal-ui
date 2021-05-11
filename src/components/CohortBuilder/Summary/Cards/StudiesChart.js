@@ -36,6 +36,7 @@ export const studiesQuery = (sqon) => ({
             buckets {
               key
               doc_count
+              top_hits(_source: ["study.short_name"], size: 1)
             }
           }
         }
@@ -53,6 +54,7 @@ export const studiesQuery = (sqon) => ({
             buckets {
               key
               doc_count
+              top_hits(_source: ["study.short_name"], size: 1)
             }
           }
         }
@@ -66,11 +68,23 @@ export const studiesQuery = (sqon) => ({
     const studyLabelToCounts = {};
 
     const probandsBuckets = participants.probands.study__code.buckets;
+
+    const studyDictionaryProbands = probandsBuckets.map((b) => ({
+      label: b.key,
+      tooltip: b.top_hits.study.short_name,
+    }));
+
     probandsBuckets.forEach(
       (pB) => (studyLabelToCounts[pB.key] = { probands: pB.doc_count, familyMembers: 0 }),
     );
 
     const familyMembersBuckets = participants.familyMembers.study__code.buckets;
+
+    const studyDictionaryFamily = familyMembersBuckets.map((b) => ({
+      label: b.key,
+      tooltip: b.top_hits.study.short_name,
+    }));
+
     familyMembersBuckets.forEach((fmB) => {
       const label = fmB.key;
       const labelAlreadyExists = !!studyLabelToCounts[label];
@@ -82,34 +96,14 @@ export const studiesQuery = (sqon) => ({
       };
     });
 
-    return Object.entries(studyLabelToCounts).reduce((accumulator, [label, counts]) => {
-      const { familyMembers, probands } = counts;
-      return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
-    }, []);
+    return {
+      data: Object.entries(studyLabelToCounts).reduce((accumulator, [label, counts]) => {
+        const { familyMembers, probands } = counts;
+        return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
+      }, []),
+      dictionary: [...studyDictionaryProbands, ...studyDictionaryFamily],
+    };
   },
-});
-
-export const allStudiesQuery = () => ({
-  query: gql`
-    query {
-      studies {
-        hits {
-          edges {
-            node {
-              id
-              code
-              name
-            }
-          }
-        }
-      }
-    }
-  `,
-  transform: (response) =>
-    (response.data.studies?.hits?.edges ?? []).map((n) => ({
-      label: n.node.code,
-      tooltip: n.node.name,
-    })),
 });
 
 class StudiesChart extends React.Component {

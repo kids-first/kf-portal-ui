@@ -37,7 +37,6 @@ const Summary = ({
       ageDiagQuery(sqon),
       diagnosesQuery(sqon),
       studiesQuery(sqon),
-      // allStudiesQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
@@ -47,8 +46,7 @@ const Summary = ({
         demographicData = {},
         ageDiagData = [],
         topDiagnosesData = [],
-        studiesData = [],
-        allStudiesQuery = [],
+        studiesData = { data: [], dictionary: [] },
       ] = data;
 
       return !data ? (
@@ -61,7 +59,11 @@ const Summary = ({
               dataTypesData={dataTypesData}
               experimentalStrategyData={experimentalStrategyData}
             />
-            <StudiesChart isLoading={isLoading} data={studiesData} studies={allStudiesQuery} />
+            <StudiesChart
+              isLoading={isLoading}
+              data={studiesData.data}
+              studies={studiesData.dictionary}
+            />
             <Card
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
               classNameCardItem={'ontology-sunburst-card'}
