@@ -4,6 +4,8 @@ executors:
   node-executor:
     docker:
       - image: circleci/node:14
+        environment:
+          NODE_OPTIONS: --max_old_space_size=4096
     working_directory: ~/repo
 
 jobs:
