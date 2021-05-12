@@ -21,6 +21,11 @@ const sortDescParticipant = (a, b) => {
   return aTotal - bTotal;
 };
 
+const bucketTooltipExtract = (b) => ({
+  label: b.key,
+  tooltip: b.top_hits.study.short_name,
+});
+
 export const studiesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
@@ -36,6 +41,7 @@ export const studiesQuery = (sqon) => ({
             buckets {
               key
               doc_count
+              top_hits(_source: ["study.short_name"], size: 1)
             }
           }
         }
@@ -53,6 +59,7 @@ export const studiesQuery = (sqon) => ({
             buckets {
               key
               doc_count
+              top_hits(_source: ["study.short_name"], size: 1)
             }
           }
         }
@@ -66,11 +73,17 @@ export const studiesQuery = (sqon) => ({
     const studyLabelToCounts = {};
 
     const probandsBuckets = participants.probands.study__code.buckets;
+
+    const labelToTooltipConvProbands = probandsBuckets.map((b) => bucketTooltipExtract(b));
+
     probandsBuckets.forEach(
       (pB) => (studyLabelToCounts[pB.key] = { probands: pB.doc_count, familyMembers: 0 }),
     );
 
     const familyMembersBuckets = participants.familyMembers.study__code.buckets;
+
+    const labelToTooltipConvFamily = familyMembersBuckets.map((b) => bucketTooltipExtract(b));
+
     familyMembersBuckets.forEach((fmB) => {
       const label = fmB.key;
       const labelAlreadyExists = !!studyLabelToCounts[label];
@@ -82,34 +95,14 @@ export const studiesQuery = (sqon) => ({
       };
     });
 
-    return Object.entries(studyLabelToCounts).reduce((accumulator, [label, counts]) => {
-      const { familyMembers, probands } = counts;
-      return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
-    }, []);
+    return {
+      data: Object.entries(studyLabelToCounts).reduce((accumulator, [label, counts]) => {
+        const { familyMembers, probands } = counts;
+        return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
+      }, []),
+      tooltipLabelMapping: [...labelToTooltipConvProbands, ...labelToTooltipConvFamily],
+    };
   },
-});
-
-export const allStudiesQuery = () => ({
-  query: gql`
-    query {
-      studies {
-        hits {
-          edges {
-            node {
-              id
-              code
-              name
-            }
-          }
-        }
-      }
-    }
-  `,
-  transform: (response) =>
-    (response.data.studies?.hits?.edges ?? []).map((n) => ({
-      label: n.node.code,
-      tooltip: n.node.name,
-    })),
 });
 
 class StudiesChart extends React.Component {
