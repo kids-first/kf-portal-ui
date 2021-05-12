@@ -62,7 +62,7 @@ const Summary = ({
             <StudiesChart
               isLoading={isLoading}
               data={studiesData.data}
-              studies={studiesData.dictionary}
+              studies={studiesData.tooltipLabelMapping}
             />
             <Card
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}

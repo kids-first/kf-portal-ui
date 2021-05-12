@@ -21,6 +21,11 @@ const sortDescParticipant = (a, b) => {
   return aTotal - bTotal;
 };
 
+const bucketTooltipExtract = (b) => ({
+  label: b.key,
+  tooltip: b.top_hits.study.short_name,
+});
+
 export const studiesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
@@ -69,10 +74,7 @@ export const studiesQuery = (sqon) => ({
 
     const probandsBuckets = participants.probands.study__code.buckets;
 
-    const studyDictionaryProbands = probandsBuckets.map((b) => ({
-      label: b.key,
-      tooltip: b.top_hits.study.short_name,
-    }));
+    const labelToTooltipConvProbands = probandsBuckets.map((b) => bucketTooltipExtract(b));
 
     probandsBuckets.forEach(
       (pB) => (studyLabelToCounts[pB.key] = { probands: pB.doc_count, familyMembers: 0 }),
@@ -80,10 +82,7 @@ export const studiesQuery = (sqon) => ({
 
     const familyMembersBuckets = participants.familyMembers.study__code.buckets;
 
-    const studyDictionaryFamily = familyMembersBuckets.map((b) => ({
-      label: b.key,
-      tooltip: b.top_hits.study.short_name,
-    }));
+    const labelToTooltipConvFamily = familyMembersBuckets.map((b) => bucketTooltipExtract(b));
 
     familyMembersBuckets.forEach((fmB) => {
       const label = fmB.key;
@@ -101,7 +100,7 @@ export const studiesQuery = (sqon) => ({
         const { familyMembers, probands } = counts;
         return [...accumulator, { label, familyMembers, probands, id: toKebabCase(label) }];
       }, []),
-      dictionary: [...studyDictionaryProbands, ...studyDictionaryFamily],
+      tooltipLabelMapping: [...labelToTooltipConvProbands, ...labelToTooltipConvFamily],
     };
   },
 });
