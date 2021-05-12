@@ -1,25 +1,24 @@
 import React from 'react';
-import { configure, mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import InfoPanel from 'components/UI/Charts/Sunburst';
-import { treeData } from 'components/OntologyBrowser/Test/mockData';
-import thunk from 'redux-thunk';
-import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
-import { generateEmptyPhenotype } from 'store/sunburstTypes';
-import { getPath } from '../InfoPanel';
+import { shallow } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-configure({ adapter: new Adapter() });
+import { treeData } from 'components/OntologyBrowser/Test/mockData';
+import InfoPanel from 'components/UI/Charts/Sunburst';
+import { generateEmptyPhenotype } from 'store/sunburstTypes';
+
+import { getPath } from '../InfoPanel';
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
 
 describe('Info Panel', () => {
-  let wrapper: ReactWrapper;
+  const store = mockStore({});
 
-  const mountWithProvider = (fakeStore: any, sunburstProps = {}) =>
-    mount(
-      <Provider store={fakeStore}>
+  const shallowWithProvider = (sunburstProps = {}) =>
+    shallow(
+      <Provider store={store}>
         <InfoPanel
           data={generateEmptyPhenotype()}
           treeData={treeData[0]}
@@ -29,14 +28,9 @@ describe('Info Panel', () => {
       </Provider>,
     );
 
-  afterAll(() => {
-    wrapper.unmount();
-  });
-
-  it('should render', () => {
-    const store = mockStore({});
-    wrapper = mountWithProvider(store);
-    expect(wrapper.length).toEqual(1);
+  it('should render', async () => {
+    const wrapper = shallowWithProvider();
+    expect(wrapper).toBeDefined();
   });
 });
 
@@ -45,9 +39,8 @@ describe('getPath', () => {
     const node =
       'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
       '-Abnormality of skin morphology (HP:0011121)';
-    const treeNodeInput = treeData;
 
-    const result = getPath(node, treeNodeInput);
+    const result = getPath(node, treeData);
 
     const expectedOutput = [
       'Abnormality of the integument (HP:0001574)',
@@ -56,8 +49,6 @@ describe('getPath', () => {
         '-Abnormality of skin morphology (HP:0011121)',
     ];
 
-    // const store = mockStore({});
-    // wrapper = mountWithProvider(store);
     expect(result).toEqual(expectedOutput);
   });
 });
