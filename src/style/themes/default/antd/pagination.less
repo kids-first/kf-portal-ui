@@ -3,5 +3,60 @@
     a {
       text-decoration: none;
     }
+
+    &-active {
+      background-color: @gray-3;
+    }
+  }
+
+  &.mini &-item {
+    border: none;
+
+    button {
+      border: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: @body-1;
+    }
+
+    &:hover {
+      background-color: @gray-3;
+      a {
+        color: @primary-color;
+      }
+    }
+  }
+
+  &-prev,
+  &-next {
+    &:hover button {
+      background-color: @gray-2;
+    }
+
+    &.@{pagination-prefix-cls}-disabled {
+      &:hover button {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &.mini &-prev,
+  &.mini &-next {
+    &:hover button {
+      background-color: @gray-3;
+    }
+
+    .@{pagination-prefix-cls}-item-link {
+      border: none;
+      color: @body-3;
+    }
+
+    &.@{pagination-prefix-cls}-disabled {
+      &:hover button {
+        background-color: transparent;
+      }
+    }
   }
 }
