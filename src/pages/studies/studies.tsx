@@ -64,6 +64,7 @@ const Studies = () => {
               onChange: (page: number) => {
                 setCurrentPage(page);
               },
+              size: 'small',
             }}
           />
         </PageContent>

@@ -24928,6 +24928,46 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-pagination-item a {
   text-decoration: none;
 }
+.ant-pagination-item-active {
+  background-color: #f3f4f6;
+}
+.ant-pagination.mini .ant-pagination-item {
+  border: none;
+}
+.ant-pagination.mini .ant-pagination-item button {
+  border: none;
+}
+.ant-pagination.mini .ant-pagination-item a {
+  text-decoration: none;
+  color: #383f72;
+}
+.ant-pagination.mini .ant-pagination-item:hover {
+  background-color: #f3f4f6;
+}
+.ant-pagination.mini .ant-pagination-item:hover a {
+  color: #383f72;
+}
+.ant-pagination-prev:hover button,
+.ant-pagination-next:hover button {
+  background-color: #f9f9fb;
+}
+.ant-pagination-prev.ant-pagination-disabled:hover button,
+.ant-pagination-next.ant-pagination-disabled:hover button {
+  background-color: transparent;
+}
+.ant-pagination.mini .ant-pagination-prev:hover button,
+.ant-pagination.mini .ant-pagination-next:hover button {
+  background-color: #f3f4f6;
+}
+.ant-pagination.mini .ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination.mini .ant-pagination-next .ant-pagination-item-link {
+  border: none;
+  color: #8a8da8;
+}
+.ant-pagination.mini .ant-pagination-prev.ant-pagination-disabled:hover button,
+.ant-pagination.mini .ant-pagination-next.ant-pagination-disabled:hover button {
+  background-color: transparent;
+}
 .ant-card-head {
   font-weight: 600;
 }

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Table } from 'antd';
 import { Typography } from 'antd';
+import { TablePaginationConfig } from 'antd/lib/table';
 
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { StudiesResults } from 'store/graphql/studies/actions';
@@ -29,19 +30,14 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 export type PaginationType = {
-  pagination: {
-    current: number;
-    pageSize: number;
-    total: number;
-    onChange: (page: number) => void;
-  };
+  pagination: TablePaginationConfig;
 };
 
 type Props = StudiesResults & PropsFromRedux & PaginationType;
 
 const StudyTable: FC<Props> = (props) => {
   const { loading, pagination } = props;
-  const { current: currentPage, total: itemTotal, pageSize: itemPerPage } = pagination;
+  const { current: currentPage, total: itemTotal = 0, pageSize: itemPerPage = 10 } = pagination;
 
   if (loading) {
     return null;

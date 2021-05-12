@@ -272,6 +272,7 @@ const VariantTable: FunctionComponent<Props> = (props) => {
             setCurrentPageSize(pageSize || DEFAULT_PAGE_SIZE);
           }
         },
+        size: 'small',
       }}
       loading={loadingData}
       dataSource={makeRows(data)}
