@@ -52,7 +52,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
 
-      - run: npm run test
+      - run: react-scripts test --coverage --maxWorkers 2
 
       - store_artifacts:
           path: coverage
