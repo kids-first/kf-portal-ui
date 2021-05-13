@@ -3,7 +3,9 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: circleci/node:13
+      - image: circleci/node:14
+        environment:
+          NODE_OPTIONS: --max_old_space_size=4096
     working_directory: ~/repo
 
 jobs:
@@ -50,7 +52,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
 
-      - run: npm run test
+      - run: npm run test -- --maxWorkers=2
 
       - store_artifacts:
           path: coverage
