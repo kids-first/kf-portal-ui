@@ -3,10 +3,6 @@ import queryString from 'querystring';
 
 export const getApplicationEnvVar = (envVarName) => process.env[`REACT_APP_${envVarName}`];
 
-localStorage.setItem('debug', getApplicationEnvVar('DEBUG') || ''); // manually set because CRA doesn't allow arbitrary env variable names.
-const debug = require('debug');
-global.log = debug('app');
-
 const qs = queryString.parse(global.location.search.replace(/^\?/, ''));
 
 const egoApiOverride = qs.EGO_API;
