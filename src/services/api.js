@@ -1,6 +1,8 @@
 import React from 'react';
-import { arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
+
+import { arrangerApiRoot } from 'common/injectGlobals';
+
 import ajax from './ajax';
 
 export const initializeApi = ({
@@ -16,16 +18,9 @@ export const initializeApi = ({
   arrangerRoot = arrangerApiRoot,
 }) => {
   const uri = url || urlJoin(arrangerRoot, endpoint);
-  return ajax[method.toLowerCase()](uri, body, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(defaultHeaders || {}),
-      ...headers,
-    },
-  })
-    .then((response) => {
-      return response.data;
-    })
+  const methodLowerCase = (method || '').toLowerCase();
+  return sendRequest(defaultHeaders, methodLowerCase, body, headers, uri)
+    .then((response) => response.data)
     .catch((err) => {
       const { response } = err;
       if ((response || {}).status === 401) {
@@ -35,6 +30,28 @@ export const initializeApi = ({
     });
 };
 
+const sendRequest = (defaultHeaders, method, body, headers, uri) => {
+  const requestHeaders = {
+    'Content-Type': 'application/json',
+    ...(defaultHeaders || {}),
+    ...headers,
+  };
+  switch (method) {
+    case 'delete':
+    case 'get':
+    case 'head':
+    case 'options':
+      return ajax[method](uri, {
+        headers: requestHeaders,
+        data: body,
+      });
+    default:
+      return ajax[method](uri, body, {
+        headers: requestHeaders,
+      });
+  }
+};
+
 export const ApiContext = React.createContext(null);
 
 export const withApi = (WrappedComponent) => (props) => (
@@ -42,7 +59,7 @@ export const withApi = (WrappedComponent) => (props) => (
 );
 
 export const apiInitialized = initializeApi({
-  onError: console.err,
+  onError: (err) => console.error(err),
   onUnauthorized: (response) => {
     console.warn('Unauthorized', response);
   },

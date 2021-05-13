@@ -128,7 +128,7 @@ export const columnsPhenotypes = [
                     rel="noopener noreferrer"
                     href={
                       'https://www.orpha.net/consor/cgi-bin/Disease_Search.php' +
-                      `?lng=EN&data_id=1738&Disease_Disease_Search_diseaseGroup=${disorderId}`
+                      `?lng=EN&data_id=${disorderId}`
                     }
                   >
                     {panel}

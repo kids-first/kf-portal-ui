@@ -15,7 +15,7 @@ import DataTypeCard from './Cards/DataTypeCard';
 import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
 import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
 import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
-import StudiesChart, { allStudiesQuery, studiesQuery } from './Cards/StudiesChart';
+import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
 import SurvivalChart from './Cards/SurvivalChart';
 
 import './Summary.css';
@@ -37,7 +37,6 @@ const Summary = ({
       ageDiagQuery(sqon),
       diagnosesQuery(sqon),
       studiesQuery(sqon),
-      allStudiesQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
@@ -47,8 +46,7 @@ const Summary = ({
         demographicData = {},
         ageDiagData = [],
         topDiagnosesData = [],
-        studiesData = [],
-        allStudiesQuery = [],
+        studiesData = { data: [], dictionary: [] },
       ] = data;
 
       return !data ? (
@@ -61,7 +59,11 @@ const Summary = ({
               dataTypesData={dataTypesData}
               experimentalStrategyData={experimentalStrategyData}
             />
-            <StudiesChart isLoading={isLoading} data={studiesData} studies={allStudiesQuery} />
+            <StudiesChart
+              isLoading={isLoading}
+              data={studiesData.data}
+              studies={studiesData.tooltipLabelMapping}
+            />
             <Card
               title={<span className={'title-summary-card'}>Observed Phenotypes</span>}
               classNameCardItem={'ontology-sunburst-card'}
