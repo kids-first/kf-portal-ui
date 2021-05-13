@@ -18,7 +18,8 @@ export const initializeApi = ({
   arrangerRoot = arrangerApiRoot,
 }) => {
   const uri = url || urlJoin(arrangerRoot, endpoint);
-  return sendRequest(defaultHeaders, method, body, headers, uri)
+  const methodLowerCase = (method || '').toLowerCase();
+  return sendRequest(defaultHeaders, methodLowerCase, body, headers, uri)
     .then((response) => response.data)
     .catch((err) => {
       const { response } = err;
@@ -30,28 +31,23 @@ export const initializeApi = ({
 };
 
 const sendRequest = (defaultHeaders, method, body, headers, uri) => {
-  switch (method.toLowerCase()) {
-    case 'post':
-    case 'put':
-    case 'patch':
-      return ajax[method.toLowerCase()](uri, body, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(defaultHeaders || {}),
-          ...headers,
-        },
-      });
+  const requestHeaders = {
+    'Content-Type': 'application/json',
+    ...(defaultHeaders || {}),
+    ...headers,
+  };
+  switch (method) {
     case 'delete':
     case 'get':
     case 'head':
     case 'options':
-      return ajax[method.toLowerCase()](uri, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(defaultHeaders || {}),
-          ...headers,
-        },
+      return ajax[method](uri, {
+        headers: requestHeaders,
         data: body,
+      });
+    default:
+      return ajax[method](uri, body, {
+        headers: requestHeaders,
       });
   }
 };
