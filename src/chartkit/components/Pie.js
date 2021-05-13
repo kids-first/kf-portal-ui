@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
 import tinygradient from 'tinygradient';
-import { ResponsivePie } from '@nivo/pie';
 
 import Tooltip from './Tooltip';
 
@@ -33,7 +33,7 @@ class Pie extends Component {
     e.target.style.cursor = 'pointer';
   }
 
-  onMouseLeave(data, e) {
+  onMouseLeave() {
     this.setState({ highlightedIndex: null });
   }
 
@@ -51,10 +51,10 @@ class Pie extends Component {
         <ResponsivePie
           {...this.props}
           data={colorData}
-          colorBy={data => data.color}
+          colors={(data) => data.color}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
-          fill={[{ match: x => x.data.index === this.state.highlightedIndex, id: 'lines' }]}
+          fill={[{ match: (x) => x.data.index === this.state.highlightedIndex, id: 'lines' }]}
         />
       </div>
     );

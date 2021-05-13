@@ -63,7 +63,7 @@ class HorizontalBar extends Component {
   renderAxisLeftTick(tick, xOffset) {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
-    const { format, key, x, y, theme, tickIndex } = tick;
+    const { format, key, x, y, tickIndex } = tick;
     const { tooltipDictionary } = this.props;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
@@ -96,7 +96,7 @@ class HorizontalBar extends Component {
             className="tickTextAxisLeft"
             textAnchor="start"
             alignmentBaseline="middle"
-            style={{ ...theme.axis.ticks.text, ...highlighted }}
+            style={{ ...defaultTheme.axis.ticks.text, ...highlighted }}
             onClick={() => onLabelClick(tick)}
           >
             {text}
