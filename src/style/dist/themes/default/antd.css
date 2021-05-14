@@ -364,33 +364,33 @@ mark {
   display: inline-block;
   animation: loadingCircle 1s infinite linear;
 }
-.ant-fade-enter,
-.ant-fade-appear {
+.fade-enter,
+.fade-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-fade-leave {
+.fade-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-fade-enter.ant-fade-enter-active,
-.ant-fade-appear.ant-fade-appear-active {
+.fade-enter.fade-enter-active,
+.fade-appear.fade-appear-active {
   animation-name: antFadeIn;
   animation-play-state: running;
 }
-.ant-fade-leave.ant-fade-leave-active {
+.fade-leave.fade-leave-active {
   animation-name: antFadeOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-fade-enter,
-.ant-fade-appear {
+.fade-enter,
+.fade-appear {
   opacity: 0;
   animation-timing-function: linear;
 }
-.ant-fade-leave {
+.fade-leave {
   animation-timing-function: linear;
 }
 @keyframes antFadeIn {
@@ -409,120 +409,120 @@ mark {
     opacity: 0;
   }
 }
-.ant-move-up-enter,
-.ant-move-up-appear {
+.move-up-enter,
+.move-up-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-up-leave {
+.move-up-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-up-enter.ant-move-up-enter-active,
-.ant-move-up-appear.ant-move-up-appear-active {
+.move-up-enter.move-up-enter-active,
+.move-up-appear.move-up-appear-active {
   animation-name: antMoveUpIn;
   animation-play-state: running;
 }
-.ant-move-up-leave.ant-move-up-leave-active {
+.move-up-leave.move-up-leave-active {
   animation-name: antMoveUpOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-move-up-enter,
-.ant-move-up-appear {
+.move-up-enter,
+.move-up-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-move-up-leave {
+.move-up-leave {
   animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
 }
-.ant-move-down-enter,
-.ant-move-down-appear {
+.move-down-enter,
+.move-down-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-down-leave {
+.move-down-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-down-enter.ant-move-down-enter-active,
-.ant-move-down-appear.ant-move-down-appear-active {
+.move-down-enter.move-down-enter-active,
+.move-down-appear.move-down-appear-active {
   animation-name: antMoveDownIn;
   animation-play-state: running;
 }
-.ant-move-down-leave.ant-move-down-leave-active {
+.move-down-leave.move-down-leave-active {
   animation-name: antMoveDownOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-move-down-enter,
-.ant-move-down-appear {
+.move-down-enter,
+.move-down-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-move-down-leave {
+.move-down-leave {
   animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
 }
-.ant-move-left-enter,
-.ant-move-left-appear {
+.move-left-enter,
+.move-left-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-left-leave {
+.move-left-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-left-enter.ant-move-left-enter-active,
-.ant-move-left-appear.ant-move-left-appear-active {
+.move-left-enter.move-left-enter-active,
+.move-left-appear.move-left-appear-active {
   animation-name: antMoveLeftIn;
   animation-play-state: running;
 }
-.ant-move-left-leave.ant-move-left-leave-active {
+.move-left-leave.move-left-leave-active {
   animation-name: antMoveLeftOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-move-left-enter,
-.ant-move-left-appear {
+.move-left-enter,
+.move-left-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-move-left-leave {
+.move-left-leave {
   animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
 }
-.ant-move-right-enter,
-.ant-move-right-appear {
+.move-right-enter,
+.move-right-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-right-leave {
+.move-right-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-move-right-enter.ant-move-right-enter-active,
-.ant-move-right-appear.ant-move-right-appear-active {
+.move-right-enter.move-right-enter-active,
+.move-right-appear.move-right-appear-active {
   animation-name: antMoveRightIn;
   animation-play-state: running;
 }
-.ant-move-right-leave.ant-move-right-leave-active {
+.move-right-leave.move-right-leave-active {
   animation-name: antMoveRightOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-move-right-enter,
-.ant-move-right-appear {
+.move-right-enter,
+.move-right-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-move-right-leave {
+.move-right-leave {
   animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
 }
 @keyframes antMoveDownIn {
@@ -662,120 +662,120 @@ html {
     opacity: 0;
   }
 }
-.ant-slide-up-enter,
-.ant-slide-up-appear {
+.slide-up-enter,
+.slide-up-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-up-leave {
+.slide-up-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-up-enter.ant-slide-up-enter-active,
-.ant-slide-up-appear.ant-slide-up-appear-active {
+.slide-up-enter.slide-up-enter-active,
+.slide-up-appear.slide-up-appear-active {
   animation-name: antSlideUpIn;
   animation-play-state: running;
 }
-.ant-slide-up-leave.ant-slide-up-leave-active {
+.slide-up-leave.slide-up-leave-active {
   animation-name: antSlideUpOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-slide-up-enter,
-.ant-slide-up-appear {
+.slide-up-enter,
+.slide-up-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
-.ant-slide-up-leave {
+.slide-up-leave {
   animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
-.ant-slide-down-enter,
-.ant-slide-down-appear {
+.slide-down-enter,
+.slide-down-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-down-leave {
+.slide-down-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-down-enter.ant-slide-down-enter-active,
-.ant-slide-down-appear.ant-slide-down-appear-active {
+.slide-down-enter.slide-down-enter-active,
+.slide-down-appear.slide-down-appear-active {
   animation-name: antSlideDownIn;
   animation-play-state: running;
 }
-.ant-slide-down-leave.ant-slide-down-leave-active {
+.slide-down-leave.slide-down-leave-active {
   animation-name: antSlideDownOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-slide-down-enter,
-.ant-slide-down-appear {
+.slide-down-enter,
+.slide-down-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
-.ant-slide-down-leave {
+.slide-down-leave {
   animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
-.ant-slide-left-enter,
-.ant-slide-left-appear {
+.slide-left-enter,
+.slide-left-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-left-leave {
+.slide-left-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-left-enter.ant-slide-left-enter-active,
-.ant-slide-left-appear.ant-slide-left-appear-active {
+.slide-left-enter.slide-left-enter-active,
+.slide-left-appear.slide-left-appear-active {
   animation-name: antSlideLeftIn;
   animation-play-state: running;
 }
-.ant-slide-left-leave.ant-slide-left-leave-active {
+.slide-left-leave.slide-left-leave-active {
   animation-name: antSlideLeftOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-slide-left-enter,
-.ant-slide-left-appear {
+.slide-left-enter,
+.slide-left-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
-.ant-slide-left-leave {
+.slide-left-leave {
   animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
-.ant-slide-right-enter,
-.ant-slide-right-appear {
+.slide-right-enter,
+.slide-right-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-right-leave {
+.slide-right-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-slide-right-enter.ant-slide-right-enter-active,
-.ant-slide-right-appear.ant-slide-right-appear-active {
+.slide-right-enter.slide-right-enter-active,
+.slide-right-appear.slide-right-appear-active {
   animation-name: antSlideRightIn;
   animation-play-state: running;
 }
-.ant-slide-right-leave.ant-slide-right-leave-active {
+.slide-right-leave.slide-right-leave-active {
   animation-name: antSlideRightOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-slide-right-enter,
-.ant-slide-right-appear {
+.slide-right-enter,
+.slide-right-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
-.ant-slide-right-leave {
+.slide-right-leave {
   animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
 @keyframes antSlideUpIn {
@@ -874,242 +874,242 @@ html {
     opacity: 0;
   }
 }
-.ant-zoom-enter,
-.ant-zoom-appear {
+.zoom-enter,
+.zoom-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-leave {
+.zoom-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-enter.ant-zoom-enter-active,
-.ant-zoom-appear.ant-zoom-appear-active {
+.zoom-enter.zoom-enter-active,
+.zoom-appear.zoom-appear-active {
   animation-name: antZoomIn;
   animation-play-state: running;
 }
-.ant-zoom-leave.ant-zoom-leave-active {
+.zoom-leave.zoom-leave-active {
   animation-name: antZoomOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-enter,
-.ant-zoom-appear {
+.zoom-enter,
+.zoom-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-enter-prepare,
-.ant-zoom-appear-prepare {
+.zoom-enter-prepare,
+.zoom-appear-prepare {
   transform: none;
 }
-.ant-zoom-leave {
+.zoom-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-big-enter,
-.ant-zoom-big-appear {
+.zoom-big-enter,
+.zoom-big-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-big-leave {
+.zoom-big-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-big-enter.ant-zoom-big-enter-active,
-.ant-zoom-big-appear.ant-zoom-big-appear-active {
+.zoom-big-enter.zoom-big-enter-active,
+.zoom-big-appear.zoom-big-appear-active {
   animation-name: antZoomBigIn;
   animation-play-state: running;
 }
-.ant-zoom-big-leave.ant-zoom-big-leave-active {
+.zoom-big-leave.zoom-big-leave-active {
   animation-name: antZoomBigOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-big-enter,
-.ant-zoom-big-appear {
+.zoom-big-enter,
+.zoom-big-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-big-enter-prepare,
-.ant-zoom-big-appear-prepare {
+.zoom-big-enter-prepare,
+.zoom-big-appear-prepare {
   transform: none;
 }
-.ant-zoom-big-leave {
+.zoom-big-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-big-fast-enter,
-.ant-zoom-big-fast-appear {
+.zoom-big-fast-enter,
+.zoom-big-fast-appear {
   animation-duration: 0.1s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-big-fast-leave {
+.zoom-big-fast-leave {
   animation-duration: 0.1s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-big-fast-enter.ant-zoom-big-fast-enter-active,
-.ant-zoom-big-fast-appear.ant-zoom-big-fast-appear-active {
+.zoom-big-fast-enter.zoom-big-fast-enter-active,
+.zoom-big-fast-appear.zoom-big-fast-appear-active {
   animation-name: antZoomBigIn;
   animation-play-state: running;
 }
-.ant-zoom-big-fast-leave.ant-zoom-big-fast-leave-active {
+.zoom-big-fast-leave.zoom-big-fast-leave-active {
   animation-name: antZoomBigOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-big-fast-enter,
-.ant-zoom-big-fast-appear {
+.zoom-big-fast-enter,
+.zoom-big-fast-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-big-fast-enter-prepare,
-.ant-zoom-big-fast-appear-prepare {
+.zoom-big-fast-enter-prepare,
+.zoom-big-fast-appear-prepare {
   transform: none;
 }
-.ant-zoom-big-fast-leave {
+.zoom-big-fast-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-up-enter,
-.ant-zoom-up-appear {
+.zoom-up-enter,
+.zoom-up-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-up-leave {
+.zoom-up-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-up-enter.ant-zoom-up-enter-active,
-.ant-zoom-up-appear.ant-zoom-up-appear-active {
+.zoom-up-enter.zoom-up-enter-active,
+.zoom-up-appear.zoom-up-appear-active {
   animation-name: antZoomUpIn;
   animation-play-state: running;
 }
-.ant-zoom-up-leave.ant-zoom-up-leave-active {
+.zoom-up-leave.zoom-up-leave-active {
   animation-name: antZoomUpOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-up-enter,
-.ant-zoom-up-appear {
+.zoom-up-enter,
+.zoom-up-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-up-enter-prepare,
-.ant-zoom-up-appear-prepare {
+.zoom-up-enter-prepare,
+.zoom-up-appear-prepare {
   transform: none;
 }
-.ant-zoom-up-leave {
+.zoom-up-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-down-enter,
-.ant-zoom-down-appear {
+.zoom-down-enter,
+.zoom-down-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-down-leave {
+.zoom-down-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-down-enter.ant-zoom-down-enter-active,
-.ant-zoom-down-appear.ant-zoom-down-appear-active {
+.zoom-down-enter.zoom-down-enter-active,
+.zoom-down-appear.zoom-down-appear-active {
   animation-name: antZoomDownIn;
   animation-play-state: running;
 }
-.ant-zoom-down-leave.ant-zoom-down-leave-active {
+.zoom-down-leave.zoom-down-leave-active {
   animation-name: antZoomDownOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-down-enter,
-.ant-zoom-down-appear {
+.zoom-down-enter,
+.zoom-down-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-down-enter-prepare,
-.ant-zoom-down-appear-prepare {
+.zoom-down-enter-prepare,
+.zoom-down-appear-prepare {
   transform: none;
 }
-.ant-zoom-down-leave {
+.zoom-down-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-left-enter,
-.ant-zoom-left-appear {
+.zoom-left-enter,
+.zoom-left-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-left-leave {
+.zoom-left-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-left-enter.ant-zoom-left-enter-active,
-.ant-zoom-left-appear.ant-zoom-left-appear-active {
+.zoom-left-enter.zoom-left-enter-active,
+.zoom-left-appear.zoom-left-appear-active {
   animation-name: antZoomLeftIn;
   animation-play-state: running;
 }
-.ant-zoom-left-leave.ant-zoom-left-leave-active {
+.zoom-left-leave.zoom-left-leave-active {
   animation-name: antZoomLeftOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-left-enter,
-.ant-zoom-left-appear {
+.zoom-left-enter,
+.zoom-left-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-left-enter-prepare,
-.ant-zoom-left-appear-prepare {
+.zoom-left-enter-prepare,
+.zoom-left-appear-prepare {
   transform: none;
 }
-.ant-zoom-left-leave {
+.zoom-left-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
-.ant-zoom-right-enter,
-.ant-zoom-right-appear {
+.zoom-right-enter,
+.zoom-right-appear {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-right-leave {
+.zoom-right-leave {
   animation-duration: 0.2s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-zoom-right-enter.ant-zoom-right-enter-active,
-.ant-zoom-right-appear.ant-zoom-right-appear-active {
+.zoom-right-enter.zoom-right-enter-active,
+.zoom-right-appear.zoom-right-appear-active {
   animation-name: antZoomRightIn;
   animation-play-state: running;
 }
-.ant-zoom-right-leave.ant-zoom-right-leave-active {
+.zoom-right-leave.zoom-right-leave-active {
   animation-name: antZoomRightOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-zoom-right-enter,
-.ant-zoom-right-appear {
+.zoom-right-enter,
+.zoom-right-appear {
   transform: scale(0);
   opacity: 0;
   animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
 }
-.ant-zoom-right-enter-prepare,
-.ant-zoom-right-appear-prepare {
+.zoom-right-enter-prepare,
+.zoom-right-appear-prepare {
   transform: none;
 }
-.ant-zoom-right-leave {
+.zoom-right-leave {
   animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
 @keyframes antZoomIn {
@@ -1718,7 +1718,6 @@ html {
 .ant-badge-dot {
   z-index: auto;
   width: 6px;
-  min-width: 6px;
   height: 6px;
   background: #dd1f2a;
   border-radius: 100%;
@@ -1836,10 +1835,6 @@ html {
 .ant-badge-not-a-wrapper:not(.ant-badge-status) {
   vertical-align: middle;
 }
-.ant-badge-not-a-wrapper .ant-scroll-number-custom-component {
-  transform: none;
-}
-.ant-badge-not-a-wrapper .ant-scroll-number-custom-component,
 .ant-badge-not-a-wrapper .ant-scroll-number {
   position: relative;
   top: auto;
@@ -1863,18 +1858,13 @@ html {
   overflow: hidden;
 }
 .ant-scroll-number-only {
-  position: relative;
   display: inline-block;
   height: 20px;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  -webkit-transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
 }
 .ant-scroll-number-only > p.ant-scroll-number-only-unit {
   height: 20px;
   margin: 0;
-  -webkit-transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
 }
 .ant-scroll-number-symbol {
   vertical-align: top;
@@ -4450,10 +4440,6 @@ a.ant-btn-sm {
 .ant-card-actions > li:not(:last-child) {
   border-right: 1px solid #d7d8db;
 }
-.ant-card-rtl .ant-card-actions > li:not(:last-child) {
-  border-right: none;
-  border-left: 1px solid #d7d8db;
-}
 .ant-card-type-inner .ant-card-head {
   padding: 0 24px;
   background: #fafafa;
@@ -4571,9 +4557,9 @@ a.ant-btn-sm {
   position: relative;
   display: block;
   box-sizing: border-box;
+  -webkit-touch-callout: none;
   -ms-touch-action: pan-y;
   touch-action: pan-y;
-  -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 }
 .ant-carousel .slick-list {
@@ -4721,7 +4707,6 @@ a.ant-btn-sm {
 }
 .ant-carousel .slick-dots-top {
   top: 12px;
-  bottom: auto;
 }
 .ant-carousel .slick-dots li {
   position: relative;
@@ -5354,7 +5339,7 @@ a.ant-btn-sm {
   color: #2b388f;
   line-height: 1.5715;
   cursor: pointer;
-  transition: all 0.3s, visibility 0s;
+  transition: all 0.3s;
 }
 .ant-collapse > .ant-collapse-item > .ant-collapse-header::before {
   display: table;
@@ -7043,7 +7028,7 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 }
 .ant-drawer-footer {
   flex-shrink: 0;
-  padding: 10px 16px;
+  padding: 10px 10px;
   border-top: 1px solid #d7d8db;
 }
 .ant-drawer-mask {
@@ -7288,16 +7273,12 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   background-color: #fff;
   cursor: not-allowed;
 }
-.ant-dropdown-menu-item-disabled > .anticon + span > a,
-.ant-dropdown-menu-submenu-title-disabled > .anticon + span > a,
 .ant-dropdown-menu-item-disabled > a,
 .ant-dropdown-menu-submenu-title-disabled > a {
   position: relative;
   color: rgba(0, 0, 0, 0.25);
   pointer-events: none;
 }
-.ant-dropdown-menu-item-disabled > .anticon + span > a::after,
-.ant-dropdown-menu-submenu-title-disabled > .anticon + span > a::after,
 .ant-dropdown-menu-item-disabled > a::after,
 .ant-dropdown-menu-submenu-title-disabled > a::after {
   position: absolute;
@@ -7494,6 +7475,9 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   height: 100%;
   margin: auto;
 }
+.ant-empty-description {
+  margin: 0;
+}
 .ant-empty-footer {
   margin-top: 16px;
 }
@@ -7512,8 +7496,8 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   height: 35px;
 }
 .ant-empty-img-default-ellipse {
-  fill: #f5f5f5;
   fill-opacity: 0.8;
+  fill: #f5f5f5;
 }
 .ant-empty-img-default-path-1 {
   fill: #aeb8c2;
@@ -8195,10 +8179,9 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
   display: none;
 }
 .ant-form-item-label > label .ant-form-item-tooltip {
-  color: #6e7190;
-  cursor: help;
   writing-mode: horizontal-tb;
   margin-inline-start: 4px;
+  color: #6e7190;
 }
 .ant-form-item-label > label::after {
   content: ':';
@@ -8231,42 +8214,44 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 .ant-form-item-extra {
   clear: both;
   min-height: 24px;
+  padding-top: 0px;
   color: #6e7190;
   font-size: 14px;
   line-height: 1.5715;
   transition: color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
-  padding-top: 0px;
 }
 .ant-form-item .ant-input-textarea-show-count::after {
-  margin-bottom: -22px;
+  position: absolute;
+  bottom: -22px;
+  width: 100%;
 }
-.ant-show-help-enter,
-.ant-show-help-appear {
+.show-help-enter,
+.show-help-appear {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-show-help-leave {
+.show-help-leave {
   animation-duration: 0.3s;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
-.ant-show-help-enter.ant-show-help-enter-active,
-.ant-show-help-appear.ant-show-help-appear-active {
+.show-help-enter.show-help-enter-active,
+.show-help-appear.show-help-appear-active {
   animation-name: antShowHelpIn;
   animation-play-state: running;
 }
-.ant-show-help-leave.ant-show-help-leave-active {
+.show-help-leave.show-help-leave-active {
   animation-name: antShowHelpOut;
   animation-play-state: running;
   pointer-events: none;
 }
-.ant-show-help-enter,
-.ant-show-help-appear {
+.show-help-enter,
+.show-help-appear {
   opacity: 0;
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
-.ant-show-help-leave {
+.show-help-leave {
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 @keyframes antShowHelpIn {
@@ -13855,16 +13840,16 @@ textarea.ant-input-affix-wrapper {
 .ant-input-affix-wrapper-rtl {
   direction: rtl;
 }
-.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+.ant-input-affix-wrapper:hover {
   border-color: #535a80;
   border-right-width: 1px !important;
   z-index: 1;
 }
-.ant-input-rtl .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+.ant-input-rtl .ant-input-affix-wrapper:hover {
   border-right-width: 0;
   border-left-width: 1px !important;
 }
-.ant-input-search-with-button .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+.ant-input-search-with-button .ant-input-affix-wrapper:hover {
   z-index: 0;
 }
 .ant-input-affix-wrapper-focused,
@@ -14359,11 +14344,10 @@ textarea.ant-input {
   padding-bottom: 3px;
 }
 .ant-input-textarea-show-count::after {
-  float: right;
+  display: block;
   color: #6e7190;
-  white-space: nowrap;
+  text-align: right;
   content: attr(data-count);
-  pointer-events: none;
 }
 .ant-input-search .ant-input:hover,
 .ant-input-search .ant-input:focus {
@@ -14726,9 +14710,6 @@ textarea.ant-input-number {
   margin-right: 0;
   font-size: 7px;
 }
-.ant-input-number-borderless .ant-input-number-handler-wrap {
-  border-left-width: 0;
-}
 .ant-input-number-handler-wrap:hover .ant-input-number-handler {
   height: 40%;
 }
@@ -14761,9 +14742,6 @@ textarea.ant-input-number {
 .ant-input-number-handler-down:hover {
   height: 60% !important;
 }
-.ant-input-number-borderless .ant-input-number-handler-down {
-  border-top-width: 0;
-}
 .ant-input-number-handler-up-disabled,
 .ant-input-number-handler-down-disabled {
   cursor: not-allowed;
@@ -14771,12 +14749,6 @@ textarea.ant-input-number {
 .ant-input-number-handler-up-disabled:hover .ant-input-number-handler-up-inner,
 .ant-input-number-handler-down-disabled:hover .ant-input-number-handler-down-inner {
   color: rgba(0, 0, 0, 0.25);
-}
-.ant-input-number-borderless {
-  box-shadow: none;
-}
-.ant-input-number-out-of-range input {
-  color: #dd1f2a;
 }
 .ant-input-number-rtl {
   direction: rtl;
@@ -14787,9 +14759,6 @@ textarea.ant-input-number {
   border-right: 1px solid #eaeaec;
   border-left: 0;
   border-radius: 2px 0 0 2px;
-}
-.ant-input-number-rtl.ant-input-number-borderless .ant-input-number-handler-wrap {
-  border-right-width: 0;
 }
 .ant-input-number-rtl .ant-input-number-input {
   direction: ltr;
@@ -16029,7 +15998,6 @@ textarea.ant-mentions {
 }
 .ant-menu-sub.ant-menu-inline {
   padding: 0;
-  background: #fafafa;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -16546,7 +16514,7 @@ textarea.ant-mentions {
   border-top: 1px solid #d7d8db;
   border-radius: 0 0 2px 2px;
 }
-.ant-modal-footer .ant-btn + .ant-btn {
+.ant-modal-footer button + button {
   margin-bottom: 0;
   margin-left: 8px;
 }
@@ -16627,7 +16595,7 @@ textarea.ant-mentions {
   float: right;
   margin-top: 24px;
 }
-.ant-modal-confirm .ant-modal-confirm-btns .ant-btn + .ant-btn {
+.ant-modal-confirm .ant-modal-confirm-btns button + button {
   margin-bottom: 0;
   margin-left: 8px;
 }
@@ -16654,7 +16622,7 @@ textarea.ant-mentions {
 .ant-modal-wrap-rtl .ant-modal-footer {
   text-align: left;
 }
-.ant-modal-wrap-rtl .ant-modal-footer .ant-btn + .ant-btn {
+.ant-modal-wrap-rtl .ant-modal-footer button + button {
   margin-right: 8px;
   margin-left: 0;
 }
@@ -16673,7 +16641,7 @@ textarea.ant-mentions {
 .ant-modal-wrap-rtl .ant-modal-confirm-btns {
   float: left;
 }
-.ant-modal-wrap-rtl .ant-modal-confirm-btns .ant-btn + .ant-btn {
+.ant-modal-wrap-rtl .ant-modal-confirm-btns button + button {
   margin-right: 8px;
   margin-left: 0;
 }
@@ -16808,10 +16776,10 @@ textarea.ant-mentions {
 }
 .ant-notification-fade-enter,
 .ant-notification-fade-appear {
+  opacity: 0;
   animation-duration: 0.24s;
   animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
   animation-fill-mode: both;
-  opacity: 0;
   animation-play-state: paused;
 }
 .ant-notification-fade-leave {
@@ -16854,6 +16822,8 @@ textarea.ant-mentions {
   0% {
     max-height: 150px;
     margin-bottom: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     opacity: 1;
   }
   100% {
@@ -17838,7 +17808,7 @@ textarea.ant-pagination-options-quick-jumper input {
   display: inline-block;
   width: 2em;
   margin-left: 8px;
-  color: rgba(0, 0, 0, 0.85);
+  color: #6e7190;
   font-size: 1em;
   line-height: 1;
   white-space: nowrap;
@@ -18547,7 +18517,6 @@ span.ant-radio + * {
 }
 .ant-select-selection-overflow-item {
   flex: none;
-  align-self: center;
   max-width: 100%;
 }
 .ant-select-multiple .ant-select-selector {
@@ -18582,7 +18551,10 @@ span.ant-radio + * {
   max-width: 100%;
   height: 24px;
   margin-top: 2px;
+  margin-inline-end: 4px;
   margin-bottom: 2px;
+  padding-inline-start: 8px;
+  padding-inline-end: 4px;
   line-height: 22px;
   background: #f5f5f5;
   border: 1px solid #d7d8db;
@@ -18590,9 +18562,6 @@ span.ant-radio + * {
   cursor: default;
   transition: font-size 0.3s, line-height 0.3s, height 0.3s;
   user-select: none;
-  margin-inline-end: 4px;
-  padding-inline-start: 8px;
-  padding-inline-end: 4px;
 }
 .ant-select-disabled.ant-select-multiple .ant-select-selection-item {
   color: #bfbfbf;
@@ -18686,8 +18655,8 @@ span.ant-radio + * {
   line-height: 30px;
 }
 .ant-select-multiple.ant-select-lg .ant-select-selection-search {
-  height: 32px;
-  line-height: 32px;
+  height: 33px;
+  line-height: 33px;
 }
 .ant-select-multiple.ant-select-lg .ant-select-selection-search-input,
 .ant-select-multiple.ant-select-lg .ant-select-selection-search-mirror {
@@ -18702,8 +18671,8 @@ span.ant-radio + * {
   line-height: 14px;
 }
 .ant-select-multiple.ant-select-sm .ant-select-selection-search {
-  height: 16px;
-  line-height: 16px;
+  height: 17px;
+  line-height: 17px;
 }
 .ant-select-multiple.ant-select-sm .ant-select-selection-search-input,
 .ant-select-multiple.ant-select-sm .ant-select-selection-search-mirror {
@@ -18713,8 +18682,8 @@ span.ant-radio + * {
 .ant-select-multiple.ant-select-sm .ant-select-selection-placeholder {
   left: 7px;
 }
-.ant-select-multiple.ant-select-sm .ant-select-selection-search {
-  margin-inline-start: 3px;
+.ant-select-multiple.ant-select-sm .ant-select-selection-search:first-child .ant-select-selection-search-input {
+  margin-left: 3px;
 }
 .ant-select-multiple.ant-select-lg .ant-select-selection-item {
   height: 32px;
@@ -18768,9 +18737,6 @@ span.ant-radio + * {
   color: rgba(0, 0, 0, 0.25);
   background: #f5f5f5;
   cursor: not-allowed;
-}
-.ant-select-multiple.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector {
-  background: #f5f5f5;
 }
 .ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector input {
   cursor: not-allowed;
@@ -19041,6 +19007,10 @@ span.ant-radio + * {
   right: 0;
   left: auto;
 }
+.ant-select-rtl.ant-select-multiple .ant-select-selection-search:first-child > .ant-select-selection-search-input {
+  margin-right: 5px !important;
+  margin-left: 0 !important;
+}
 .ant-select-rtl.ant-select-multiple .ant-select-selection-placeholder {
   right: 11px;
   left: auto;
@@ -19063,8 +19033,11 @@ span.ant-radio + * {
   padding-right: 0;
   padding-left: 18px;
 }
+.ant-select-rtl.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+  padding: 0 11px;
+}
 .ant-select-rtl.ant-select-single.ant-select-sm:not(.ant-select-customize-input).ant-select-show-arrow .ant-select-selection-search {
-  right: 6px;
+  right: 0;
 }
 .ant-select-rtl.ant-select-single.ant-select-sm:not(.ant-select-customize-input).ant-select-show-arrow .ant-select-selection-item,
 .ant-select-rtl.ant-select-single.ant-select-sm:not(.ant-select-customize-input).ant-select-show-arrow .ant-select-selection-placeholder {
@@ -19836,7 +19809,7 @@ span.ant-radio + * {
 }
 .ant-steps-item-icon .ant-steps-icon {
   position: relative;
-  top: -0.5px;
+  top: -1px;
   color: #383f72;
   line-height: 1;
 }
@@ -21129,8 +21102,6 @@ table tr td.ant-table-selection-column .ant-radio-wrapper {
   border: 1px solid #d7d8db;
   border-radius: 2px;
   outline: none;
-  transform: scale(0.94117647);
-  transform-origin: bottom;
   transition: all 0.3s;
   user-select: none;
 }
@@ -21190,11 +21161,7 @@ tr.ant-table-expanded-row > td,
 tr.ant-table-expanded-row:hover > td {
   background: #fbfbfb;
 }
-tr.ant-table-expanded-row .ant-descriptions-view {
-  display: flex;
-}
 tr.ant-table-expanded-row .ant-descriptions-view table {
-  flex: auto;
   width: auto;
 }
 .ant-table .ant-table-expanded-row-fixed {
@@ -21459,10 +21426,10 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tabs-rtl.ant-tabs-right > .ant-tabs-content-holder {
   order: 1;
 }
-.ant-tabs-rtl.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-rtl.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-rtl.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-rtl.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
+.ant-tabs-rtl.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-rtl.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-rtl.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-rtl.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
   margin-right: 0;
   margin-left: 2px;
 }
@@ -21579,8 +21546,15 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tabs-right > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab {
+  margin: 0 0 16px 0;
   padding: 8px 24px;
   text-align: center;
+}
+.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab:last-of-type,
+.ant-tabs-right > .ant-tabs-nav .ant-tabs-tab:last-of-type,
+.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab:last-of-type,
+.ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab:last-of-type {
+  margin-bottom: 0;
 }
 .ant-tabs-left > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn,
 .ant-tabs-right > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn,
@@ -21588,12 +21562,6 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
   font-weight: normal;
   text-shadow: 0 0 0.25px #22254d;
-}
-.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-right > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
-  margin: 16px 0 0 0;
 }
 .ant-tabs-left > .ant-tabs-nav .ant-tabs-nav-wrap,
 .ant-tabs-right > .ant-tabs-nav .ant-tabs-nav-wrap,
@@ -21765,11 +21733,11 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-ink-bar {
   visibility: hidden;
 }
-.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
-  margin-left: 2px;
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+  margin-right: 2px;
 }
 .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab {
@@ -21787,11 +21755,11 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-tabs-card.ant-tabs-bottom > div > .ant-tabs-nav .ant-tabs-tab-active {
   border-top-color: #fff;
 }
-.ant-tabs-card.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-right > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab,
-.ant-tabs-card.ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
-  margin-top: 2px;
+.ant-tabs-card.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-right > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type),
+.ant-tabs-card.ant-tabs-right > div > .ant-tabs-nav .ant-tabs-tab:not(:last-of-type) {
+  margin-bottom: 2px;
 }
 .ant-tabs-card.ant-tabs-left > .ant-tabs-nav .ant-tabs-tab,
 .ant-tabs-card.ant-tabs-left > div > .ant-tabs-nav .ant-tabs-tab {
@@ -21922,12 +21890,17 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   position: relative;
   display: inline-flex;
   align-items: center;
+  margin: 0 32px 0 0;
   padding: 12px 0;
   font-size: 14px;
   background: transparent;
   border: 0;
   outline: none;
   cursor: pointer;
+}
+.ant-tabs-tab:last-of-type {
+  margin-right: 0;
+  margin-left: 0;
 }
 .ant-tabs-tab-btn:focus,
 .ant-tabs-tab-remove:focus,
@@ -21976,9 +21949,6 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 }
 .ant-tabs-tab .anticon {
   margin-right: 12px;
-}
-.ant-tabs-tab + .ant-tabs-tab {
-  margin: 0 0 0 32px;
 }
 .ant-tabs-content {
   display: flex;
@@ -22075,7 +22045,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   display: none;
 }
 .ant-tag-pink {
-  color: #c41d7f;
+  color: #eb2f96;
   background: #fff0f6;
   border-color: #ffadd2;
 }
@@ -22085,7 +22055,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #eb2f96;
 }
 .ant-tag-magenta {
-  color: #c41d7f;
+  color: #eb2f96;
   background: #fff0f6;
   border-color: #ffadd2;
 }
@@ -22095,7 +22065,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #eb2f96;
 }
 .ant-tag-red {
-  color: #cf1322;
+  color: #f5222d;
   background: #fff1f0;
   border-color: #ffa39e;
 }
@@ -22105,7 +22075,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #f5222d;
 }
 .ant-tag-volcano {
-  color: #d4380d;
+  color: #fa541c;
   background: #fff2e8;
   border-color: #ffbb96;
 }
@@ -22115,7 +22085,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #fa541c;
 }
 .ant-tag-orange {
-  color: #d46b08;
+  color: #fa8c16;
   background: #fff7e6;
   border-color: #ffd591;
 }
@@ -22125,7 +22095,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #fa8c16;
 }
 .ant-tag-yellow {
-  color: #d4b106;
+  color: #fadb14;
   background: #feffe6;
   border-color: #fffb8f;
 }
@@ -22135,7 +22105,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #fadb14;
 }
 .ant-tag-gold {
-  color: #d48806;
+  color: #faad14;
   background: #fffbe6;
   border-color: #ffe58f;
 }
@@ -22145,7 +22115,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #faad14;
 }
 .ant-tag-cyan {
-  color: #007694;
+  color: #009bba;
   background: #e1fafa;
   border-color: #6cd9e0;
 }
@@ -22155,7 +22125,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #009bba;
 }
 .ant-tag-lime {
-  color: #7cb305;
+  color: #a0d911;
   background: #fcffe6;
   border-color: #eaff8f;
 }
@@ -22165,7 +22135,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #a0d911;
 }
 .ant-tag-green {
-  color: #389e0d;
+  color: #52c41a;
   background: #f6ffed;
   border-color: #b7eb8f;
 }
@@ -22175,7 +22145,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #52c41a;
 }
 .ant-tag-blue {
-  color: #096dd9;
+  color: #1890ff;
   background: #e6f7ff;
   border-color: #91d5ff;
 }
@@ -22185,7 +22155,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #1890ff;
 }
 .ant-tag-geekblue {
-  color: #2b388f;
+  color: #2f54eb;
   background: #f0f5ff;
   border-color: #adc6ff;
 }
@@ -22195,7 +22165,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #2f54eb;
 }
 .ant-tag-purple {
-  color: #801770;
+  color: #a6278f;
   background: #e6d8e1;
   border-color: #cc91bb;
 }
@@ -23274,10 +23244,6 @@ span.ant-transfer-list-search-action {
 .ant-tree .ant-tree-treenode-active .ant-tree-node-content-wrapper {
   background: #f5f5f5;
 }
-.ant-tree .ant-tree-treenode:not(.ant-tree .ant-tree-treenode-disabled).filter-node .ant-tree-title {
-  color: inherit;
-  font-weight: 500;
-}
 .ant-tree-indent {
   align-self: stretch;
   white-space: nowrap;
@@ -23710,10 +23676,6 @@ span.ant-transfer-list-search-action {
 }
 .ant-select-tree .ant-select-tree-treenode-active .ant-select-tree-node-content-wrapper {
   background: #f5f5f5;
-}
-.ant-select-tree .ant-select-tree-treenode:not(.ant-select-tree .ant-select-tree-treenode-disabled).filter-node .ant-select-tree-title {
-  color: inherit;
-  font-weight: 500;
 }
 .ant-select-tree-indent {
   align-self: stretch;
@@ -24178,10 +24140,10 @@ span.ant-typography-ellipsis-single-line {
 }
 .ant-typography-ellipsis-multiple-line {
   display: -webkit-box;
-  overflow: hidden;
   -webkit-line-clamp: 3;
   /*! autoprefixer: ignore next */
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .ant-typography-rtl {
   direction: rtl;
