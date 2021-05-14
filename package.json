@@ -35,6 +35,7 @@
     "react-modal": "^3.11.2",
     "react-places-autocomplete": "^7.2.1",
     "react-redux": "^7.2.0",
+    "react-router": "^5.2.0",
     "react-share": "^3.0.1",
     "react-slick": "^0.23.2",
     "react-social-icons": "^4.1.0",
