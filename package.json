@@ -15,7 +15,7 @@
     "@nivo/core": "0.59.0",
     "@nivo/pie": "0.59.0",
     "@oncojs/survivalplot": "^0.7.2",
-    "antd": "4.13.1",
+    "antd": "4.12.3",
     "auto-bind-es5": "^1.1.0",
     "axios": "^0.21.1",
     "d3": "^5.16.0",
