@@ -63,7 +63,7 @@
     "prepare": "npm run theme",
     "pretest": "lint-staged",
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
-    "test": "react-scripts test --ci --coverage",
+    "test": "react-scripts test --ci --coverage --coverage",
     "test:watch": "react-scripts test --coverage",
     "theme": "npm run theme:antd",
     "theme:watch": "nodemon --watch './src/style/themes' -e scss,less --exec 'npm run theme'",

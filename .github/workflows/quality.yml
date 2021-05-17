@@ -1,0 +1,59 @@
+name: Quality
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  build:
+    name: Install Dependencies
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '15.14'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/deps.lock') }}
+      - name: Install dependencies
+        run: npm install
+  linter:
+    name: Run Linter
+    runs-on: ubuntu-18.04
+    needs: build
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '15.14'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/deps.lock') }}
+      - name: Run linter
+        run: npm run eslint
+  tests:
+    runs-on: ubuntu-18.04
+    needs: build
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '15.14'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/deps.lock') }}
+      - name: Run tests
+        run: npm run test
