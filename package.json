@@ -9,7 +9,6 @@
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@apollo/client": "^3.3.11",
-    "@babel/runtime": "^7.12.1",
     "@ferlab/style": "^1.5.0",
     "@ferlab/ui": "^1.4.8",
     "@kfarranger/components": "1.25.0",
