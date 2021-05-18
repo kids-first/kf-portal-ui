@@ -1,5 +1,7 @@
 /* eslint-disable simple-import-sort/imports */
 import 'react-app-polyfill/stable';
+
+// Here, styles should be imported first to apply correctly.
 import 'style/dist/themes/default/antd.css';
 import 'style/themes/default/main.scss';
 import 'index.css';
