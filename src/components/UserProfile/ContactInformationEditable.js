@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
+import { Form, Input, Select, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { Input, Select, Typography, Form } from 'antd';
+
 import { ROLES } from 'common/constants';
-import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
-import './style.css';
-import { isResearcher, showInstitution } from './utils';
+
 import { ERROR_TOO_MANY_CHARACTERS } from './constants';
+import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
+import { isResearcher, showInstitution } from './utils';
+
+import './style.css';
 
 const { fromEntries, entries } = Object;
 
@@ -16,7 +19,7 @@ const { Text } = Typography;
 
 const MAX_LENGTH_FIELD = 100;
 
-const ContactInformationEditable = props => {
+const ContactInformationEditable = (props) => {
   const { setIsSaveButtonDisabledCB, data, parentForm, selectedRole } = props;
   const { setFieldsValue } = parentForm;
 
@@ -54,7 +57,7 @@ const ContactInformationEditable = props => {
   });
 
   return (
-    <Fragment>
+    <>
       <div>
         <Form.Item name="title" label="Title" rules={[{ required: false }]}>
           <Select size={'small'}>
@@ -154,7 +157,7 @@ const ContactInformationEditable = props => {
       <div>
         <Text>Search Location</Text>
         <ContactEditablePlacesAutoComplete
-          setAddressCb={address => {
+          setAddressCb={(address) => {
             const addressWithNonEmptyFields = fromEntries(
               entries(address).filter(([, value]) => Boolean(value)),
             );
@@ -174,7 +177,7 @@ const ContactInformationEditable = props => {
           zip={data.zip}
         />
       </div>
-    </Fragment>
+    </>
   );
 };
 
@@ -201,7 +204,7 @@ ContactInformationEditable.propTypes = {
     setFieldsValue: PropTypes.func.isRequired,
     getFieldValue: PropTypes.func.isRequired,
   }),
-  selectedRole: PropTypes.object.isRequired,
+  selectedRole: PropTypes.string.isRequired,
 };
 
 export default ContactInformationEditable;
