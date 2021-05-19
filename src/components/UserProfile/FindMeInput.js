@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 //based on : https://ant.design/components/form/?locale=en-US#header
 class FindMeInput extends Component {
@@ -17,7 +17,7 @@ class FindMeInput extends Component {
     inputVal: (this.props.value || {}).inputVal,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const value = e.target.value;
     if (!('value' in this.props)) {
       this.setState({ inputVal: value });
@@ -25,7 +25,7 @@ class FindMeInput extends Component {
     this.triggerChange({ inputVal: value });
   };
 
-  triggerChange = changedValue => {
+  triggerChange = (changedValue) => {
     const { onChange } = this.props;
     if (onChange) {
       onChange({
@@ -39,13 +39,13 @@ class FindMeInput extends Component {
     const { item } = this.props;
     const { inputVal } = this.state;
     return (
-        <Input
-            placeholder={item.placeHolder}
-            size={'small'}
-            value={inputVal}
-            type="text"
-            onChange={this.onChange}
-        />
+      <Input
+        placeholder={item.placeHolder}
+        size={'small'}
+        value={inputVal}
+        type="text"
+        onChange={this.onChange}
+      />
     );
   }
 }

@@ -1,27 +1,72 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Form } from 'antd';
-import PropTypes from 'prop-types';
+import { Card, Col, Form, Row } from 'antd';
+
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
-import FindMeEditable from './FindMeEditable';
-import './style.css';
-import { findMeFields } from './constants';
-import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
+import { extractRoleFromProfile, makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 import { socialItems } from 'components/UserProfile/utils';
+import { LoggedInUser } from 'store/userTypes';
+
+import { findMeFields } from './constants';
+import FindMeEditable from './FindMeEditable';
+
+import './style.css';
 
 const { entries } = Object;
 
-const buildInitialValuesForFindMe = profile =>
+enum Service {
+  website = 'website',
+  googleScholarId = 'googleScholarId',
+  linkedin = 'linkedin',
+  facebook = 'facebook',
+  twitter = 'twitter',
+  github = 'github',
+  orchid = 'orchid',
+}
+
+type FindMeInput = {
+  linkedin: { inputVal: string };
+  orchid: { inputVal: string };
+  twitter: { inputVal: string };
+  website: { inputVal: string };
+  googleScholarId: { inputVal: string };
+  github: { inputVal: string };
+  facebook: { inputVal: string };
+};
+
+type SubLoggedInUser = Pick<
+  LoggedInUser,
+  | 'addressLine1'
+  | 'addressLine2'
+  | 'city'
+  | 'country'
+  | 'department'
+  | 'eraCommonsID'
+  | 'firstName'
+  | 'institution'
+  | 'institutionalEmail'
+  | 'jobTitle'
+  | 'lastName'
+  | 'phone'
+  | 'roles'
+  | 'state'
+  | 'title'
+  | 'zip'
+>;
+
+type FormFields = SubLoggedInUser | FindMeInput;
+
+const buildInitialValuesForFindMe = (profile: LoggedInUser) =>
   entries(socialItems()).reduce(
     (acc, [serviceName]) => ({
       ...acc,
-      key: { inputVal: profile[serviceName], protocol: '' },
+      [serviceName]: { inputVal: profile[serviceName as Service] },
     }),
     {},
   );
 
-const reshapeForProfile = fields =>
+const reshapeForProfile = (fields: FormFields) =>
   entries(fields).reduce(
-    (acc, [key, value]) => {
+    (acc: any, [key, value]) => {
       if (key === 'roles' && !Array.isArray(value)) {
         return {
           ...acc,
@@ -39,18 +84,30 @@ const reshapeForProfile = fields =>
     { ...fields },
   );
 
-const ContactEditForm = props => {
+type Props = {
+  onClickSaveCb: () => void;
+  updateProfileCb: (profile: LoggedInUser) => void;
+  data: LoggedInUser;
+  onClickCancelCb: () => void;
+  isProfileUpdating: boolean;
+};
+
+const ContactEditForm = (props: Props) => {
   const [form] = Form.useForm();
   const { onClickSaveCb, updateProfileCb, data, onClickCancelCb, isProfileUpdating } = props;
   const { getFieldValue } = form;
 
-  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
-  const [selectedRole, updateSelectedRole] = useState({ roles: data.roles[0] });
+  const role = extractRoleFromProfile(data);
 
-  const handleSubmit = formFields => {
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
+  const [selectedRole, updateSelectedRole] = useState(role);
+
+  const handleSubmit = (formFields: FormFields) => {
     updateProfileCb(reshapeForProfile(formFields));
     onClickSaveCb();
   };
+
+  const findMeInitialValues = buildInitialValuesForFindMe(data);
 
   return (
     <Form
@@ -59,7 +116,7 @@ const ContactEditForm = props => {
       layout={'vertical'}
       initialValues={{
         title: data.title,
-        roles: data.roles[0],
+        roles: role,
         firstName: data.firstName,
         lastName: data.lastName,
         institution: data.institution,
@@ -74,23 +131,24 @@ const ContactEditForm = props => {
         state: data.state,
         zip: data.zip,
         country: data.country,
-        ...buildInitialValuesForFindMe(data),
+        ...findMeInitialValues,
       }}
       className={'form-card'}
       onFinish={handleSubmit}
-      onFieldsChange={props => {
+      onFieldsChange={(props) => {
         /*
          * Some fields are hidden according to the role.
          * E.g : role researcher has more fields than community.
          * So, if someone's role is community but is changed in the form to researcher,
          * than make sure fields for researcher shows up dynamically.
          * */
-        const hasRolesFieldChanged = (props[0]?.name || []).includes('roles');
+        const fieldNameBeingTouched = (props[0]?.name || []) as string[];
+        const hasRolesFieldChanged = fieldNameBeingTouched.includes('roles');
         if (hasRolesFieldChanged) {
           const roleValueFromForm = getFieldValue('roles');
           const hasRoleChanged = roleValueFromForm !== selectedRole;
           if (hasRoleChanged) {
-            updateSelectedRole({ roles: [roleValueFromForm] });
+            updateSelectedRole(roleValueFromForm);
           }
         }
       }}
@@ -113,21 +171,15 @@ const ContactEditForm = props => {
             />
           </Col>
           <Col span={12} className={'find-me-col'}>
-            <FindMeEditable setIsSaveButtonDisabledCB={setIsSaveButtonDisabled} />
+            <FindMeEditable
+              setIsSaveButtonDisabledCB={setIsSaveButtonDisabled}
+              findMeInitialValues={findMeInitialValues}
+            />
           </Col>
         </Row>
       </Card>
     </Form>
   );
-};
-
-ContactEditForm.propTypes = {
-  data: PropTypes.object.isRequired,
-  onClickCancelCb: PropTypes.func.isRequired,
-  onClickSaveCb: PropTypes.func.isRequired,
-  isProfileUpdating: PropTypes.bool.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
-  updateProfileCb: PropTypes.func.isRequired,
 };
 
 export default ContactEditForm;

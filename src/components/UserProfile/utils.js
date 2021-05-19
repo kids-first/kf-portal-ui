@@ -1,27 +1,29 @@
-import get from 'lodash/get';
-import { ROLES } from 'common/constants';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { SocialIcon } from 'react-social-icons';
-import { kfFacebook, kfGithub, kfTwitter } from 'common/injectGlobals';
-import orchidIcon from 'assets/icon-findemeon-orchid.png';
-import WebsiteIcon from 'icons/WebsiteIcon';
-import GoogleScholarIcon from 'icons/GoogleScholarIcon';
-import LinkedInIcon from 'icons/LinkedInIcon';
-import { findMeFields } from './constants';
-import style from 'components/UserProfile/style';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Typography } from 'antd';
+import get from 'lodash/get';
+
+import orchidIcon from 'assets/icon-findemeon-orchid.png';
+import { ROLES } from 'common/constants';
+import { kfFacebook, kfGithub, kfTwitter } from 'common/injectGlobals';
+import style from 'components/UserProfile/style';
+import GoogleScholarIcon from 'icons/GoogleScholarIcon';
+import LinkedInIcon from 'icons/LinkedInIcon';
+import WebsiteIcon from 'icons/WebsiteIcon';
+
+import { findMeFields } from './constants';
 
 const { Text } = Typography;
 
-const addWebProtocolToUrlIfNeeded = value => {
+const addWebProtocolToUrlIfNeeded = (value) => {
   if (!value || value.startsWith('http://') || value.startsWith('https://')) {
     return value;
   }
   return `https://${value}`;
 };
 
-const href = v => addWebProtocolToUrlIfNeeded(v);
+const href = addWebProtocolToUrlIfNeeded;
 
 export const socialItems = (width = 32, height = 32) => {
   const commonSize = { height, width };
@@ -63,8 +65,8 @@ export const socialItems = (width = 32, height = 32) => {
       name: 'Twitter handle/username',
       placeholder: 'e.g. @kidsfirstDRC',
       type: 'text',
-      href: v => `https://twitter.com/${v}`,
-      linkText: v => `@${v}`,
+      href: (v) => `https://twitter.com/${v}`,
+      linkText: (v) => `@${v}`,
       service: 'Twitter',
     },
     github: {
@@ -72,7 +74,7 @@ export const socialItems = (width = 32, height = 32) => {
       name: 'Github username',
       placeholder: 'e.g. kids-first',
       type: 'text',
-      href: v => `https://github.com/${v}`,
+      href: (v) => `https://github.com/${v}`,
       service: 'Github',
     },
     orchid: {
@@ -80,7 +82,7 @@ export const socialItems = (width = 32, height = 32) => {
       name: 'ORCID ID',
       placeholder: 'e.g. 0000-0003-0436-4189',
       type: 'text',
-      href: v => `https://orcid.org/${v}`,
+      href: (v) => `https://orcid.org/${v}`,
       service: 'Orchid',
     },
   };
@@ -89,7 +91,7 @@ export const userProfileBackground = (
   profile,
   { showBanner = true, gradientDirection = 'right' } = {},
 ) => {
-  const role = ROLES.find(x => x.type === get(profile, 'roles[0]', '')) || {};
+  const role = ROLES.find((x) => x.type === get(profile, 'roles[0]', '')) || {};
   const banner = get(role, 'banner', '');
   const profileColors = get(role, 'profileColors', {});
   return {
@@ -106,18 +108,21 @@ export const userProfileBackground = (
   };
 };
 
-export const extractFindMeFromProfile = (profile = {}) => Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
+export const extractFindMeFromProfile = (profile = {}) =>
+  Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
     if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
       return { ...accFindMe, [profileKey]: profileValue };
     }
     return accFindMe;
   }, {});
 
-export const isResearcher = data => data.roles[0] === 'research';
+export const extractRoleFromProfile = (profile) => profile?.roles[0] || '';
 
-export const isCommunity = data => data.roles[0] === 'community';
+export const isResearcher = (role) => role === 'research';
 
-export const showInstitution = data => isResearcher(data) || isCommunity(data);
+export const isCommunity = (role) => role === 'community';
+
+export const showInstitution = (role) => isResearcher(role) || isCommunity(role);
 
 export const makeCommonCardPropsReadOnly = ({
   isProfileUpdating,
@@ -125,23 +130,23 @@ export const makeCommonCardPropsReadOnly = ({
   onClickEditCb,
   canEdit,
 }) => ({
-    loading: isProfileUpdating,
-    title: <Text className={'header-title'}>{title}</Text>,
-    className: 'card-container',
-    headStyle: style.cardHeadStyle,
-    bodyStyle: style.cardBodyStyle,
-    extra: canEdit ? (
-      <Button
-        size={'small'}
-        icon={<EditOutlined />}
-        shape="round"
-        onClick={onClickEditCb}
-        style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
-      >
-        EDIT
-      </Button>
-    ) : null,
-  });
+  loading: isProfileUpdating,
+  title: <Text className={'header-title'}>{title}</Text>,
+  className: 'card-container',
+  headStyle: style.cardHeadStyle,
+  bodyStyle: style.cardBodyStyle,
+  extra: canEdit ? (
+    <Button
+      size={'small'}
+      icon={<EditOutlined />}
+      shape="round"
+      onClick={onClickEditCb}
+      style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
+    >
+      EDIT
+    </Button>
+  ) : null,
+});
 
 export const makeCommonCardPropsEditing = ({
   isProfileUpdating,
@@ -149,44 +154,41 @@ export const makeCommonCardPropsEditing = ({
   onClickCancelCb,
   disableSaveButton,
 }) => ({
-    loading: isProfileUpdating,
-    title: <Text className={'header-title'}>{title}</Text>,
-    className: 'card-container',
-    headStyle: style.cardHeadStyle,
-    bodyStyle: style.cardBodyStyleWhenEditing,
-    extra: (
-      <Fragment>
-        <Button
-          size={'small'}
-          className={'extra-button'}
-          shape="round"
-          onClick={onClickCancelCb}
-          style={{ color: 'rgb(144, 38, 142)' }}
-        >
-          CANCEL
-        </Button>
-        <Button
-          size={'small'}
-          className={'extra-button'}
-          icon={<CheckOutlined />}
-          shape="round"
-          style={{
-            backgroundColor: disableSaveButton ? 'lightgrey' : 'rgb(144, 38, 142)',
-            color: 'white',
-          }}
-          disabled={Boolean(disableSaveButton)}
-          htmlType="submit"
-        >
-          SAVE
-        </Button>
-      </Fragment>
-    ),
-  });
+  loading: isProfileUpdating,
+  title: <Text className={'header-title'}>{title}</Text>,
+  className: 'card-container',
+  headStyle: style.cardHeadStyle,
+  bodyStyle: style.cardBodyStyleWhenEditing,
+  extra: (
+    <>
+      <Button
+        size={'small'}
+        className={'extra-button'}
+        shape="round"
+        onClick={onClickCancelCb}
+        style={{ color: 'rgb(144, 38, 142)' }}
+      >
+        CANCEL
+      </Button>
+      <Button
+        size={'small'}
+        className={'extra-button'}
+        icon={<CheckOutlined />}
+        shape="round"
+        style={{
+          backgroundColor: disableSaveButton ? 'lightgrey' : 'rgb(144, 38, 142)',
+          color: 'white',
+        }}
+        disabled={Boolean(disableSaveButton)}
+        htmlType="submit"
+      >
+        SAVE
+      </Button>
+    </>
+  ),
+});
 
 export const showWhenHasDataOrCanEdit = (data, canEdit) => Boolean(data) || canEdit;
-
-export const hasFieldInError = fields =>
-  Object.entries(fields || {}).some(([, value]) => Array.isArray(value) && value.length > 0);
 
 //When persona throws an AccessError, show details to user.
 export const getMsgFromAccessError = (rawError, defaultMsgIfNotFound = '') =>
