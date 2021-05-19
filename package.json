@@ -50,7 +50,8 @@
     "redux-thunk": "^2.3.0",
     "scriptjs": "^2.5.9",
     "slick-carousel": "^1.8.1",
-    "tinygradient": "^1.1.2"
+    "tinygradient": "^1.1.2",
+    "ts-invariant": "^0.7.3"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
