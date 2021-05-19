@@ -57,12 +57,14 @@ const hasData = (data: LoggedInUser) => {
   if (!data) {
     return false;
   }
+
   const role = extractRoleFromProfile(data);
-  let fieldsToCheckFor = COMMON_PROPERTIES;
+
+  let fieldsToCheckFor = [...COMMON_PROPERTIES];
   if (role === 'research') {
-    fieldsToCheckFor = fieldsToCheckFor.concat(RESEARCHER_SPECIFIC_PROPERTIES);
+    fieldsToCheckFor = [...fieldsToCheckFor, ...RESEARCHER_SPECIFIC_PROPERTIES];
   } else if (role === 'community') {
-    fieldsToCheckFor = fieldsToCheckFor.concat(COMMUNITY_SPECIFIC_PROPERTIES);
+    fieldsToCheckFor = [...fieldsToCheckFor, ...COMMUNITY_SPECIFIC_PROPERTIES];
   }
   return fieldsToCheckFor.some((f) => data[f as keyof LoggedInUser]);
 };

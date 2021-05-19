@@ -15,12 +15,8 @@ type Props = {
 
 const generateContactValueStyle = (info: FieldValue) => (info ? '' : 'contact-info-value');
 
-const convertValueToEmailLinkIfNeeded = (value: FieldValue, isEmail: boolean) => {
-  if (isEmail && value) {
-    return <a href={`mailto:${value}`}>{value}</a>;
-  }
-  return value;
-};
+const convertValueToEmailLinkIfNeeded = (value: FieldValue, isEmail: boolean) =>
+  isEmail && value ? <a href={`mailto:${value}`}>{value}</a> : value;
 
 const ContactReadInformation = ({ fieldLabel, fieldValue, isEmail = false }: Props) => (
   <>

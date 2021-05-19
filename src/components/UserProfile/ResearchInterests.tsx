@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircleFilled } from '@ant-design/icons';
-import { Row, Typography } from 'antd';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Typography } from 'antd';
 import chunk from 'lodash/chunk';
 
 import { toKebabCase } from 'utils';
@@ -22,12 +23,7 @@ const ResearchInterest = ({ interests }: Props) => {
       {chunks.map((chunk, index) => {
         const [interestLeft, interestRight] = chunk;
         return (
-          <Row
-            justify={'space-around'}
-            align={'middle'}
-            key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}
-            className={'ri-row'}
-          >
+          <StackLayout key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}>
             <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
               <Text>
                 <CheckCircleFilled className={'ri-icon'} />
@@ -42,7 +38,7 @@ const ResearchInterest = ({ interests }: Props) => {
                 </Text>
               )}
             </div>
-          </Row>
+          </StackLayout>
         );
       })}
     </>

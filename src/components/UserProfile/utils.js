@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Typography } from 'antd';
@@ -160,7 +160,7 @@ export const makeCommonCardPropsEditing = ({
   headStyle: style.cardHeadStyle,
   bodyStyle: style.cardBodyStyleWhenEditing,
   extra: (
-    <Fragment>
+    <>
       <Button
         size={'small'}
         className={'extra-button'}
@@ -184,7 +184,7 @@ export const makeCommonCardPropsEditing = ({
       >
         SAVE
       </Button>
-    </Fragment>
+    </>
   ),
 });
 
