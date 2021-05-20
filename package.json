@@ -56,6 +56,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "build:netlify": "npm ci && npm run build",
     "eslint": "eslint $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
     "eslint:all": "eslint src/",
     "eslint:fix": "eslint --fix $(git diff-index --name-only --diff-filter=d HEAD | xargs)",
