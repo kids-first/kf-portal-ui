@@ -46,7 +46,7 @@ const Summary = ({
         demographicData = {},
         ageDiagData = [],
         topDiagnosesData = [],
-        studiesData = { data: [], dictionary: [] },
+        studiesData = { data: [], tooltipLabelMapping: [] },
       ] = data;
 
       return !data ? (

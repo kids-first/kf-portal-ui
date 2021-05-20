@@ -23,7 +23,7 @@ const sortDescParticipant = (a, b) => {
 
 const bucketTooltipExtract = (b) => ({
   label: b.key,
-  tooltip: b.top_hits.study.short_name,
+  tooltip: b.top_hits?.study.short_name || '',
 });
 
 export const studiesQuery = (sqon) => ({
