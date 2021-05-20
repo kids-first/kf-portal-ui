@@ -1,15 +1,15 @@
 /* eslint-disable react/display-name */
 import React from 'react';
+import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
+import { Input, Tooltip } from 'antd';
 
 import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
-import { Input, Tooltip } from 'antd';
-import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import colors from 'style/themes/default/_colors.scss';
 
-import { getFilterType, getSelectedFilters, updateFilters } from './utils';
+import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
 
 const keyEnhance = (key: string) => {
   switch (key) {
@@ -36,7 +36,7 @@ const keyEnhanceBooleanOnly = (key: string) => {
 };
 
 const onSearch = (search: string) => {
-  const searchFields = ['name', 'code'];
+  const searchFields = ['search'];
   searchFields.forEach((f) =>
     updateQueryFilters(
       history,
@@ -50,7 +50,7 @@ const onSearch = (search: string) => {
           op: 'in',
         },
       ],
-      'or',
+      'and',
     ),
   );
 };
