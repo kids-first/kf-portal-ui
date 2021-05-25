@@ -7,7 +7,7 @@
 
 ### Technical / Other changes
 -->
-## 2021-05-25 kf-portal-ui
+## 2021-05-25 kf-portal-ui 3.1.3
 
 ### Technical / Other changes
 - [3016](https://github.com/kids-first/kf-portal-ui/issues/3016) Fix (Portal, User Profile): Fixed an issue where users newly entered profile information would be reset after logging out and logging back in.
