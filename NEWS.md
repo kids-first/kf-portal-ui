@@ -7,6 +7,16 @@
 
 ### Technical / Other changes
 -->
+## 2021-05-25 kf-portal-ui
+
+### Technical / Other changes
+- [3016](https://github.com/kids-first/kf-portal-ui/issues/3016) Fix (Portal, User Profile): Fixed an issue where users newly entered profile information would be reset after logging out and logging back in.
+- [3226](https://github.com/kids-first/kf-portal-ui/issues/3226) Fix (Variants, Frequencies Tab): Fixed an issue where the Orphanet link in the Frequencies tab of the Variant Entity page was always redirecting to the same page.
+- [3247](https://github.com/kids-first/kf-portal-ui/issues/3247) Fix (Cohort Builder, Virtual Studies): Fixed an issue where it was impossible to delete a virtual study.
+- [3248](https://github.com/kids-first/kf-portal-ui/issues/3248) Fix (Cohort Builder, Charts): Fixed an issue where selecting the “No data” filter from the facets would work but clicking on the “No data” portion of the charts would always return a query with 0 result.
+- [3255](https://github.com/kids-first/kf-portal-ui/issues/3255) Fix (Cohort Builder, Charts): Removed an unwanted underline on field labels from Studies and Mondo graphs.
+- [3275](https://github.com/kids-first/kf-portal-ui/issues/3275) Fix (Portal, User Profile): Fixed an issue where users were not able to enter values for the following fields: institution, institutional email and title
+
 ## 2020-05-06 kf-portal-ui 3.0.2
 
 ### Features
