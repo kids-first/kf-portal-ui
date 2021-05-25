@@ -43,7 +43,3 @@
 .tooltip-dx-chart-container {
   min-width: 50px;
 }
-
-.tooltip-dx-chart-label, .tooltip-studies-chart-label {
-  text-decoration: underline;
-}

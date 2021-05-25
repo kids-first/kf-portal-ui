@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
+
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+
+import { TextBugWrapper } from '../styles';
 import { defaultTheme } from '../themes';
+import { truncateText } from '../utils';
+
 import Legend from './Legend';
 import Tooltip from './Tooltip';
-import { truncateText } from '../utils';
-import { TextBugWrapper } from '../styles';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
 import { verticalBarWrapper } from 'chartkit/chartkit.module.css';
 
 class VerticalBar extends Component {
@@ -48,7 +52,7 @@ class VerticalBar extends Component {
   renderAxisLeftTick = (tick) => {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
-    const { format, key, x, y, theme, tickIndex } = tick;
+    const { format, key, x, y, tickIndex } = tick;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
@@ -78,7 +82,7 @@ class VerticalBar extends Component {
           className="tickTextAxisLeft"
           textAnchor="start"
           alignmentBaseline="middle"
-          style={{ ...theme.axis.ticks.text, ...highlighted }}
+          style={{ ...defaultTheme.axis.ticks.text, ...highlighted }}
           onClick={() => onLabelClick(tick)}
         >
           {text}

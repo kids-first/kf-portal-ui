@@ -1,11 +1,14 @@
 import React from 'react';
+import { Form, Row, Space, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { socialItems } from 'components/UserProfile/utils';
-import { Row, Typography, Form } from 'antd';
-import { isUrl } from 'utils';
-import './style.css';
+
 import FindMeInput from 'components/UserProfile/FindMeInput';
-import { PLEASE_ENTER_A_VALID_URL, ERROR_TOO_MANY_CHARACTERS } from './constants';
+import { socialItems } from 'components/UserProfile/utils';
+import { isUrl } from 'utils';
+
+import { ERROR_TOO_MANY_CHARACTERS, PLEASE_ENTER_A_VALID_URL } from './constants';
+
+import './style.css';
 
 const { Title } = Typography;
 
@@ -13,7 +16,7 @@ const { entries } = Object;
 
 const URL_MAX_LENGTH = 1024;
 
-function FindMeEditable({ setIsSaveButtonDisabledCB }) {
+function FindMeEditable({ setIsSaveButtonDisabledCB, findMeInitialValues }) {
   const validateInput = (rule, value) => {
     if (value && value.inputVal && value.inputVal.length > URL_MAX_LENGTH) {
       setIsSaveButtonDisabledCB(true);
@@ -34,11 +37,12 @@ function FindMeEditable({ setIsSaveButtonDisabledCB }) {
   };
 
   const socialItemsWithSize = socialItems(28, 28);
-  const socialIcons = entries(socialItemsWithSize).map(([key, value]) => ({
-    id: key,
+  const socialIcons = entries(socialItemsWithSize).map(([serviceName, value]) => ({
+    id: serviceName,
     label: value.name,
     placeHolder: value.placeholder,
     icon: value.icon,
+    initialValue: findMeInitialValues[serviceName] || '',
   }));
 
   return (
@@ -46,29 +50,32 @@ function FindMeEditable({ setIsSaveButtonDisabledCB }) {
       <Row className={'find-me-on-edit-label'}>
         <Title level={3}>Find me on...</Title>
       </Row>
-      {socialIcons.map(item => (
-        <Row key={item.id} type={'flex'} align={'middle'}>
-          <div className={'fmi-icon-wrapper'}>{item.icon}</div>
-          <Form.Item
-            name={item.id}
-            label={item.label}
-            rules={[
-              { required: false },
-              () => ({
-                validator: validateInput,
-              }),
-            ]}
-          >
-            <FindMeInput item={item} />
-          </Form.Item>
-        </Row>
-      ))}
+      <Space direction={'vertical'}>
+        {socialIcons.map((item) => (
+          <Space direction={'horizontal'} key={item.id}>
+            {item.icon}
+            <Form.Item
+              name={item.id}
+              label={item.label}
+              rules={[
+                { required: false },
+                () => ({
+                  validator: validateInput,
+                }),
+              ]}
+            >
+              <FindMeInput item={item} />
+            </Form.Item>
+          </Space>
+        ))}
+      </Space>
     </div>
   );
 }
 
 FindMeEditable.propTypes = {
   setIsSaveButtonDisabledCB: PropTypes.func.isRequired,
+  findMeInitialValues: PropTypes.object.isRequired,
 };
 
 export default FindMeEditable;

@@ -1,4 +1,7 @@
-import 'babel-polyfill';
+/* eslint-disable simple-import-sort/imports */
+import 'react-app-polyfill/stable';
+
+// Here, styles should be imported first to apply correctly.
 import 'style/dist/themes/default/antd.css';
 import 'style/themes/default/main.scss';
 import 'index.css';
@@ -7,17 +10,18 @@ import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { initStore, getPreloadedState } from './store/index';
-import { getAppElement } from './services/globalDomNodes.js';
-import googleSDK from 'services/googleSDK';
-import facebookSDK from 'services/facebookSDK';
-import { initAnalyticsTracking } from 'services/analyticsTracking';
+
 import { maintenanceMode } from 'common/injectGlobals';
+import { initAnalyticsTracking } from 'services/analyticsTracking';
+import facebookSDK from 'services/facebookSDK';
+import googleSDK from 'services/googleSDK';
+
+import { getAppElement } from './services/globalDomNodes.js';
+import { getPreloadedState, initStore } from './store/index';
+import App from './App';
 import MaintenancePage from './MaintenancePage';
+import * as serviceWorker from './serviceWorker';
 
 initAnalyticsTracking();
 googleSDK();

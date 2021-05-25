@@ -3,7 +3,9 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: circleci/node:13
+      - image: circleci/node:15
+        environment:
+          NODE_OPTIONS: --max_old_space_size=4096
     working_directory: ~/repo
 
 jobs:
@@ -19,7 +21,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
 
-      - run: npm i
+      - run: npm ci
 
       - save_cache:
           paths:
@@ -40,25 +42,21 @@ jobs:
       - run: git config --global user.name "Kids First Bot"
       - run: npm run pretest
 
-  tests:
-    executor: node-executor
-
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-
-      - run: npm run test
-
-      - store_artifacts:
-          path: coverage
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+  # tests:
+  #   executor: node-executor
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "package.json" }}
+  #           - v1-dependencies-
+  #     - run: npm run test -- --maxWorkers=2
+  #     - store_artifacts:
+  #         path: coverage
+  #     - save_cache:
+  #         paths:
+  #           - node_modules
+  #         key: v1-dependencies-{{ checksum "package.json" }}
 
 workflows:
   version: 2.1
@@ -66,9 +64,9 @@ workflows:
   tests:
     jobs:
       - install
-      - tests:
-          requires:
-            - install
+      # - tests:
+      #     requires:
+      #       - install
       - linter:
           requires:
             - install

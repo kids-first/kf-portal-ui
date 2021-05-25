@@ -1,20 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Card from '@ferlab/ui/core/view/GridCard';
+import Pie from 'chartkit/components/Pie';
 import gql from 'graphql-tag';
 import get from 'lodash/get';
 import startCase from 'lodash/startCase';
-
-import theme from 'theme/defaultTheme';
-import Pie from 'chartkit/components/Pie';
-import { setSqons } from 'store/actionCreators/virtualStudies';
-import {
-  setSqonValueAtIndex,
-  MERGE_VALUES_STRATEGIES,
-  MERGE_OPERATOR_STRATEGIES,
-} from 'common/sqonUtils';
-import Card from '@ferlab/ui/core/view/GridCard';
 import PropTypes from 'prop-types';
+
+import {
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
+} from 'common/sqonUtils';
 import Empty, { SIZE } from 'components/UI/Empty';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import theme from 'theme/defaultTheme';
+
+const DATA_MISSING = '__missing__';
+
+const NO_DATA = 'No Data';
+
+const convertKeyToLabel = (key) => {
+  if (key === DATA_MISSING) {
+    return startCase(NO_DATA);
+  } else if (key.includes('+')) {
+    return startCase(key.replace('+', 'plus'));
+  }
+  return startCase(key);
+};
+
+const convertNoDataLabelToAnalogSqonValueIfNeeded = (labelValue) =>
+  labelValue === NO_DATA ? DATA_MISSING : labelValue;
+
 export const demographicQuery = (sqon) => ({
   query: gql`
     fragment bucketsAgg on Aggregations {
@@ -45,15 +62,13 @@ export const demographicQuery = (sqon) => ({
   variables: { sqon },
   transform: (data) => {
     const toChartData = ({ key, doc_count }) => {
-      const dataKey = keyToDisplay(key === DATA_MISSING ? 'No Data' : key);
+      const dataKey = convertKeyToLabel(key);
       return {
         id: dataKey,
         label: dataKey,
         value: doc_count,
       };
     };
-
-    const DATA_MISSING = '__missing__';
 
     return {
       race: get(data, 'data.participant.aggregations.race.buckets', []).map(toChartData),
@@ -71,9 +86,6 @@ export const demographicQuery = (sqon) => ({
   },
 });
 
-const keyToDisplay = (key) =>
-  key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
-
 class DemographicChart extends React.Component {
   static propTypes = {
     virtualStudy: PropTypes.object,
@@ -85,11 +97,13 @@ class DemographicChart extends React.Component {
   addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
 
+    const sqonValue = convertNoDataLabelToAnalogSqonValueIfNeeded(value);
+
     const newSqon = {
       op: 'in',
       content: {
         field: field,
-        value: [value],
+        value: [sqonValue],
       },
     };
 

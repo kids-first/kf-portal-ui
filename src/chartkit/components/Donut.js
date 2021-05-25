@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { ResponsivePie } from '@nivo/pie';
+import { defaultTheme } from 'chartkit/themes';
+import truncate from 'lodash/truncate';
 import PropTypes from 'prop-types';
 import tinygradient from 'tinygradient';
-import truncate from 'lodash/truncate';
 
-import { defaultTheme } from 'chartkit/themes';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 import ChartDisplayContainer from './ChartDisplayContainer';
 import Tooltip from './Tooltip';
-import { trackUserInteraction } from 'services/analyticsTracking';
 
 const DonutTooltip = ({ id, value }) => (
   <Tooltip key={id}>
@@ -45,7 +45,7 @@ class Donut extends Component {
     }
   }
 
-  onMouseLeave(data, e) {
+  onMouseLeave() {
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
@@ -80,11 +80,10 @@ class Donut extends Component {
           spacing: 10,
         },
       ],
-      fill: [{ match: x => x.data.index === this.state.highlightedIndex, id: 'lines' }],
+      fill: [{ match: (x) => x.data.index === this.state.highlightedIndex, id: 'lines' }],
       sortByValue: true,
       innerRadius: 0.5,
-      colors: 'reds',
-      colorBy: data => data.color,
+      colors: (data) => data.color,
       borderWidth: 1,
       borderColor: '#ffffff',
       startAngle: -315,
@@ -96,7 +95,7 @@ class Donut extends Component {
       radialLabelsLinkHorizontalLength: 8,
       radialLabelsLinkStrokeWidth: 1,
       radialLabelsLinkColor: '#333333',
-      radialLabel: d => truncate(d.label, { length: 12 }),
+      radialLabel: (d) => truncate(d.label, { length: 12 }),
       enableSlicesLabels: false,
       animate: true,
       motionStiffness: 90,
