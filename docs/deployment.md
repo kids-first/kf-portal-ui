@@ -26,7 +26,7 @@
 
   4. Push on origin
      ```sh
-     git push origin/master
+     git push origin/dev
      ```
 
 - Create PR against `master`
