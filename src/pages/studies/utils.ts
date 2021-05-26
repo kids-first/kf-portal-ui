@@ -89,7 +89,7 @@ export const updateQueryFilters = (
 ): void => {
   const currentFilter = getFiltersQuery();
 
-  let newFilters: ISqonGroupFilter | Record<string, never> = { content: filters, op: operator };
+  let newFilters: ISqonGroupFilter | object = { content: filters, op: operator };
 
   if (!isEmpty(currentFilter)) {
     const filterWithoutSelection = getFilterWithNoSelection(currentFilter, field);

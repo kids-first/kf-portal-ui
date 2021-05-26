@@ -7,9 +7,10 @@ import { Input, Tooltip } from 'antd';
 
 import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
-import colors from 'style/themes/default/_colors.scss';
 
 import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
+
+import style from './SidebarFilter.module.scss';
 
 const keyEnhance = (key: string) => {
   switch (key) {
@@ -36,22 +37,19 @@ const keyEnhanceBooleanOnly = (key: string) => {
 };
 
 const onSearch = (search: string) => {
-  const searchFields = ['search'];
-  searchFields.forEach((f) =>
-    updateQueryFilters(
-      history,
-      f,
-      [
-        {
-          content: {
-            field: f,
-            value: [search.toLowerCase()],
-          },
-          op: 'in',
+  updateQueryFilters(
+    history,
+    'search',
+    [
+      {
+        content: {
+          field: 'search',
+          value: [search.toLowerCase()],
         },
-      ],
-      'and',
-    ),
+        op: 'in',
+      },
+    ],
+    'and',
   );
 };
 
@@ -70,9 +68,9 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
 
   return (
     <>
-      <div style={{ color: colors.iconColor }}>Search</div>
+      <div className={style.storySearchIcons}>Search</div>
       <Input
-        prefix={<SearchOutlined style={{ color: colors.iconColorDisabled }} />}
+        prefix={<SearchOutlined className={style.storySearchIconsDisabled} />}
         placeholder="Search..."
         onPressEnter={(e: any) => {
           e.preventDefault();
@@ -83,7 +81,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
         }}
         suffix={
           <Tooltip title="Search Story by Code or Name">
-            <InfoCircleOutlined style={{ color: colors.iconColorDisabled }} />
+            <InfoCircleOutlined className={style.storySearchIconsDisabled} />
           </Tooltip>
         }
       />
