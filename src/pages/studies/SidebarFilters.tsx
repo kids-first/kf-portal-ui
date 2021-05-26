@@ -1,12 +1,16 @@
 /* eslint-disable react/display-name */
 import React from 'react';
+import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
+import { Input, Tooltip } from 'antd';
 
 import history from 'services/history';
 import { SidebarData } from 'store/graphql/studies/actions';
 
-import { getFilterType, getSelectedFilters, updateFilters } from './utils';
+import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
+
+import style from './SidebarFilter.module.scss';
 
 const keyEnhance = (key: string) => {
   switch (key) {
@@ -32,6 +36,23 @@ const keyEnhanceBooleanOnly = (key: string) => {
   }
 };
 
+const onSearch = (search: string) => {
+  updateQueryFilters(
+    history,
+    'search',
+    [
+      {
+        content: {
+          field: 'search',
+          value: [search.toLowerCase()],
+        },
+        op: 'in',
+      },
+    ],
+    'and',
+  );
+};
+
 type StudiesProps = {
   onChange: () => void;
 };
@@ -47,6 +68,23 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
 
   return (
     <>
+      <div className={style.storySearchIcons}>Search</div>
+      <Input
+        prefix={<SearchOutlined className={style.storySearchIconsDisabled} />}
+        placeholder="Search..."
+        onPressEnter={(e: any) => {
+          e.preventDefault();
+          const value = e.target.value;
+          if (value && value.trim()) {
+            onSearch(e.target.value);
+          }
+        }}
+        suffix={
+          <Tooltip title="Search Story by Code or Name">
+            <InfoCircleOutlined className={style.storySearchIconsDisabled} />
+          </Tooltip>
+        }
+      />
       {Object.keys(data.data.aggregations).map((key) => {
         const found = studiesMappingResults.extendedMapping.find((f: any) => f.field === key);
         const filterGroup = {
