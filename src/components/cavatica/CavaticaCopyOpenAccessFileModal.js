@@ -1,18 +1,23 @@
 import * as React from 'react';
-import { Alert, notification } from 'antd';
-import { ModalFooter } from 'components/Modal/index.js';
-import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
-import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
-import { copyToProject } from './api';
-import CavaticaProjects from './CavaticaProjects';
-import './cavatica.css';
-import './CavaticaCopyMultipleFilesModal.css';
+import { Alert, Button, Modal, notification } from 'antd';
 import PropTypes from 'prop-types';
 
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+
+import LoadingOnClick from '../LoadingOnClick';
+
+import { copyToProject } from './api';
+import CavaticaProjects from './CavaticaProjects';
+import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
+
+import './cavatica.css';
+import './CavaticaCopyMultipleFilesModal.css';
+
 class CavaticaCopyOpenAccessFileModal extends React.Component {
-  propTypes = {
+  static propTypes = {
     fileId: PropTypes.string.isRequired,
     onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
     file: PropTypes.object.isRequired,
   };
 
@@ -23,39 +28,24 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
   };
 
   render() {
-    const { fileId, onComplete, file } = this.props;
+    const { fileId, onComplete, file, onCancel } = this.props;
 
     const { addingProject, selectedProjectData } = this.state;
     const { error } = this.state;
 
     return (
-      <div className="copyModalRoot">
-        {error && (
-          <Alert
-            message="Error"
-            description="An error occured. Please try again or contact our support."
-            type="error"
-            closable
-            showIcon
-          />
-        )}
-        <div className="content">
-          <span className="cavatica-modalHeader">
-            Select which Cavatica project you want to copy to:
-          </span>
-          <CavaticaProjects
-            onAddProject={() => {
-              this.setState({ addingProject: true });
-            }}
-            onSelectProject={(project) => {
-              this.setState({ selectedProjectData: project });
-            }}
-            addingProject={addingProject}
-          />
-        </div>
-        <ModalFooter
-          {...{
-            handleSubmit: async () => {
+      <Modal
+        title={`Copy File to Cavatica Project`}
+        width={'65%'}
+        visible
+        onCancel={onCancel}
+        footer={[
+          <Button key="cancel" onClick={onCancel}>
+            Cancel
+          </Button>,
+          <LoadingOnClick
+            key={'submit'}
+            onClick={async () => {
               const fence = file.repository;
               const latestDid = file.latest_did;
               try {
@@ -91,12 +81,41 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
                 console.error(e);
                 this.setState({ error: e });
               }
-            },
-            submitDisabled: !selectedProjectData,
-            submitText: `Copy Authorized`.toUpperCase(),
-          }}
-        />
-      </div>
+            }}
+            render={({ onClick, loading }) => (
+              <Button loading={loading} onClick={onClick} disabled={!selectedProjectData}>
+                {`Copy Authorized`}
+              </Button>
+            )}
+          />,
+        ]}
+      >
+        <div className="copyModalRoot">
+          {error && (
+            <Alert
+              message="Error"
+              description="An error occured. Please try again or contact our support."
+              type="error"
+              closable
+              showIcon
+            />
+          )}
+          <div className="content">
+            <span className="cavatica-modalHeader">
+              Select which Cavatica project you want to copy to:
+            </span>
+            <CavaticaProjects
+              onAddProject={() => {
+                this.setState({ addingProject: true });
+              }}
+              onSelectProject={(project) => {
+                this.setState({ selectedProjectData: project });
+              }}
+              addingProject={addingProject}
+            />
+          </div>
+        </div>
+      </Modal>
     );
   }
 }

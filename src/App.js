@@ -1,42 +1,43 @@
-import React, { Suspense, lazy } from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
+import React, { lazy, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { default as ApolloProvider } from 'store/providers';
+import ErrorBoundary from 'ErrorBoundary';
+import { injectState } from 'freactal';
+import isEmpty from 'lodash/isEmpty';
+import isPlainObject from 'lodash/isPlainObject';
+import { compose } from 'recompose';
 
-import Modal from 'components/Modal';
-import UserProfile from 'components/UserProfile';
-import UserDashboard from 'components/UserDashboard';
-import FileRepo from 'components/FileRepo';
-import { hasUserRole, isSelfInUrlWhenLoggedIn } from 'utils';
-import LoginPage from './components/Login/LoginPage';
-import LoginFooter from 'components/Login/LoginFooter';
-import FileEntity from 'components/EntityPage/File';
-import ParticipantEntity from 'components/EntityPage/Participant';
-import CohortBuilder from 'components/CohortBuilder';
-import MemberSearchPage from 'components/MemberSearchPage';
-import AuthRedirect from 'components/AuthRedirect';
-import SideImagePage from 'components/SideImagePage';
-import Page, { FixedFooterPage } from 'components/Page';
-import ContextProvider from 'components/ContextProvider';
-import Error from 'components/Error';
-import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
-import { DCF, GEN3 } from 'common/constants';
-import loginImage from 'assets/smiling-girl.jpg';
-import joinImage from 'assets/smiling-boy.jpg';
 import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
+import joinImage from 'assets/smiling-boy.jpg';
+import loginImage from 'assets/smiling-girl.jpg';
+import { CAVATICA, DCF, GEN3 } from 'common/constants';
 import { requireLogin } from 'common/injectGlobals';
-import { withApi } from 'services/api';
-import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
-import isPlainObject from 'lodash/isPlainObject';
-import isEmpty from 'lodash/isEmpty';
-import TermsConditions from 'components/Login/TermsConditions';
+import AuthRedirect from 'components/AuthRedirect';
+import CohortBuilder from 'components/CohortBuilder';
+import ContextProvider from 'components/ContextProvider';
+import FileEntity from 'components/EntityPage/File';
+import ParticipantEntity from 'components/EntityPage/Participant';
+import Error from 'components/Error';
+import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
+import LoginFooter from 'components/Login/LoginFooter';
+import TermsConditions from 'components/Login/TermsConditions';
+import MemberSearchPage from 'components/MemberSearchPage';
+import Page, { FixedFooterPage } from 'components/Page';
+import SideImagePage from 'components/SideImagePage';
+import UserDashboard from 'components/UserDashboard';
+import UserProfile from 'components/UserProfile';
+import { withApi } from 'services/api';
+import { default as ApolloProvider } from 'store/providers';
 import { Spinner } from 'uikit/Spinner';
-import 'index.css';
+import { hasUserRole, isSelfInUrlWhenLoggedIn } from 'utils';
+
+import LoginPage from './components/Login/LoginPage';
 import ForumBanner, { showForumBanner } from './ForumBanner';
+
+import 'index.css';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
@@ -52,8 +53,7 @@ const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, isLoadingUser, isJoining, egoGroups } = state;
-
+  const { loggedInUser, isLoadingUser, isJoining, egoGroups, integrationTokens } = state;
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
   }
@@ -80,6 +80,8 @@ const App = compose(
     }
     return <WrapperPage {...props} />;
   };
+
+  const isConnectedToCavatica = integrationTokens[CAVATICA] || false;
 
   return (
     <ApolloProvider userToken={state.loggedInUserToken}>
@@ -170,6 +172,7 @@ const App = compose(
                   Component: FileEntity,
                   loggedInUser,
                   fileId: props.match.params.fileId,
+                  isConnectedToCavatica,
                   ...props,
                 })
               }
@@ -198,6 +201,7 @@ const App = compose(
                   loggedInUser,
                   index: props.match.params.index,
                   graphqlField: props.match.params.index,
+                  isConnectedToCavatica,
                   ...props,
                 })
               }
@@ -323,7 +327,6 @@ const App = compose(
             <Redirect from="*" to={ROUTES.dashboard} />
           </Switch>
         </Suspense>
-        <Modal />
       </div>
     </ApolloProvider>
   );

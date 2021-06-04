@@ -1,26 +1,24 @@
 import React from 'react';
+import Query from '@kfarranger/components/dist/Query';
+import { Spin } from 'antd';
 import get from 'lodash/get';
 import intersection from 'lodash/intersection';
-import { compose } from 'recompose';
-import Query from '@kfarranger/components/dist/Query';
-
-import theme from 'theme/defaultTheme';
-import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
-import { arrangerGqlRecompose } from 'services/arranger';
-import { withApi } from 'services/api';
-import { ControlledIcon } from '../ui';
-import DownloadIcon from 'icons/DownloadIcon';
-import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-import Tooltip from 'uikit/Tooltip';
-import { arrangerProjectId } from 'common/injectGlobals';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { DCF } from 'common/constants';
-import CavaticaLogo from 'icons/CavaticaLogo';
-import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
-import { ACTIONS_COLUMNS } from 'common/constants';
-import { Spin } from 'antd';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+
+import { DCF } from 'common/constants';
+import { arrangerProjectId } from 'common/injectGlobals';
+import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
+import DownloadIcon from 'icons/DownloadIcon';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
+import { arrangerGqlRecompose } from 'services/arranger';
+import theme from 'theme/defaultTheme';
+import Row from 'uikit/Row';
+import Tooltip from 'uikit/Tooltip';
+
+import { ControlledIcon } from '../ui';
+
 import './customColumns.css';
 const enhance = compose(withApi);
 
@@ -61,32 +59,20 @@ FenceDownloadButton.propTypes = {
   kfId: PropTypes.string.isRequired,
 };
 
-const ActionItems = ({ value, fence, hasAccess, file }) => (
-  <React.Fragment>
-    <Column className={'action-items-column'}>
-      {hasAccess ? (
-        <FenceDownloadButton fence={fence} kfId={value} />
-      ) : (
-        <Tooltip
-          position="bottom"
-          interactive
-          html={<Row p={'10px'}>You do not have access to this file.</Row>}
-        >
-          <ControlledIcon fill={theme.lightBlue} />
-        </Tooltip>
-      )}
-    </Column>
-    <Column className={'action-items-column'}>
-      {hasAccess && (
-        <CavaticaOpenModalWrapper
-          fileIds={[value]}
-          source={{ location: ACTIONS_COLUMNS, hasAccess, file }}
-        >
-          <CavaticaLogo fill={theme.lightBlue} width={16} />
-        </CavaticaOpenModalWrapper>
-      )}
-    </Column>
-  </React.Fragment>
+const ActionItems = ({ value, fence, hasAccess }) => (
+  <>
+    {hasAccess ? (
+      <FenceDownloadButton fence={fence} kfId={value} />
+    ) : (
+      <Tooltip
+        position="bottom"
+        interactive
+        html={<Row p={'10px'}>You do not have access to this file.</Row>}
+      >
+        <ControlledIcon fill={theme.lightBlue} />
+      </Tooltip>
+    )}
+  </>
 );
 
 ActionItems.propTypes = {

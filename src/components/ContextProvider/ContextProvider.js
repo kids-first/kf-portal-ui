@@ -1,18 +1,19 @@
 import React from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
 import { Router } from 'react-router';
-import ScrollbarSizeProvider from './ScrollbarSizeProvider';
-import { provideLoggedInUser, provideModalState, provideFenceConnections } from 'stateProviders';
-import { initializeApi, ApiContext } from 'services/api';
+import { injectState } from 'freactal';
+import { compose } from 'recompose';
+
+import { EGO_JWT_KEY } from 'common/constants';
+import { ApiContext, initializeApi } from 'services/api';
 import history, { HistoryContext } from 'services/history';
 import { logoutAll } from 'services/login';
-import { EGO_JWT_KEY } from 'common/constants';
+import { provideFenceConnections, provideLoggedInUser } from 'stateProviders';
+
+import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 
 export default compose(
   provideLoggedInUser,
   provideFenceConnections,
-  provideModalState,
   injectState,
 )(({ children }) => (
   <HistoryContext.Provider>

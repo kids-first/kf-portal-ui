@@ -1,60 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { BarChartOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import get from 'lodash/get';
 import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
-import get from 'lodash/get';
+import PropTypes from 'prop-types';
 
-import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-import SummaryTable from 'uikit/SummaryTable';
-import BaseDataTable from 'uikit/DataTable';
-import { InfoBoxRow } from 'uikit/InfoBox';
-import ExternalLink from 'uikit/ExternalLink';
-import { Link } from 'uikit/Core';
-import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
-
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { kfWebRoot } from 'common/injectGlobals';
 import { FENCES } from 'common/constants';
-
+import { kfWebRoot } from 'common/injectGlobals';
+import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import {
-  EntityTitleBar,
-  EntityTitle,
   EntityActionBar,
   EntityContent,
-  EntityContentSection,
   EntityContentDivider,
+  EntityContentSection,
+  EntityTitle,
+  EntityTitleBar,
 } from 'components/EntityPage';
-
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { buildSqonForIds } from 'services/arranger';
+import { checkUserFilePermission } from 'services/fileAccessControl';
+import { closeModal, openModal } from 'store/actions/modal';
+import { selectModalId } from 'store/selectors/modal';
+import { fillCenter } from 'theme/tempTheme.module.css';
+import Column from 'uikit/Column';
+import { Link } from 'uikit/Core';
+import BaseDataTable from 'uikit/DataTable';
+import ExternalLink from 'uikit/ExternalLink';
+import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
+import { InfoBoxRow } from 'uikit/InfoBox';
+import Row from 'uikit/Row';
+import ShareButton from 'uikit/ShareButton';
+import { Spinner } from 'uikit/Spinner';
+import SummaryTable from 'uikit/SummaryTable';
 
-import ArrangerDataProvider from 'components/ArrangerDataProvider';
+import CavaticaConnectModal2 from '../../cavatica/CavaticaConnectModal2';
+import CavaticaCopyOpenAccessFileModal from '../../cavatica/CavaticaCopyOpenAccessFileModal';
 
-import {
-  particpantBiospecimenColumns,
-  toParticpantBiospecimenData,
-} from './participantBiospecimenTable';
-
+import Download from './Download';
 import {
   experimentalStrategiesColumns,
   toExperimentalStrategiesData,
 } from './experimentalStrategies';
-
 import { fileQuery, toFilePropertiesSummary } from './fileProperties';
+import {
+  particpantBiospecimenColumns,
+  toParticpantBiospecimenData,
+} from './participantBiospecimenTable';
 import { hasSequencingReadProperties, toSequencingReadProperties } from './sequencingProperties';
 
-import CavaticaAnalyse from './CavaticaAnalyse';
-import Download from './Download';
-import ShareButton from 'uikit/ShareButton';
-import { checkUserFilePermission } from 'services/fileAccessControl';
-import { FILE_VIEW } from 'common/constants';
-
 import '../EntityPage.css';
-import { Spinner } from 'uikit/Spinner';
-import PropTypes from 'prop-types';
-import { fillCenter } from 'theme/tempTheme.module.css';
+
+const mapStateToProps = (state) => ({
+  openModalId: selectModalId(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openModal: (id) => dispatch(openModal(id)),
+  closeModal: (id) => dispatch(closeModal(id)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
 // file types
 const FILE_TYPE_BAM = 'bam';
 const FILE_TYPE_CRAM = 'cram';
+
+const CAVATICA_CONNECT_FILE_MODAL_ID = 'CAVATICA_CONNECT_FILE_MODAL_ID';
+const CAVATICA_COPY_FILE_MODAL_ID = 'CAVATICA_COPY_FILE_MODAL_ID';
 
 const getTags = (data) => {
   const dataType = data.data_type;
@@ -64,7 +78,7 @@ const getTags = (data) => {
 
 const DisplayLoader = () => <Spinner className={fillCenter} size={'large'} />;
 
-const FileEntity = ({ api, fileId }) => {
+const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnectedToCavatica }) => {
   const [isPageLoading, setPageLoading] = useState(true);
   const [hasFilePermission, setUserFilePermission] = useState(null);
 
@@ -85,6 +99,8 @@ const FileEntity = ({ api, fileId }) => {
     return <DisplayLoader />;
   }
 
+  const showConnectModal = openModalId === CAVATICA_CONNECT_FILE_MODAL_ID;
+  const showCavaticaCopyModal = openModalId === CAVATICA_COPY_FILE_MODAL_ID;
   return (
     <ArrangerDataProvider
       api={api}
@@ -112,23 +128,57 @@ const FileEntity = ({ api, fileId }) => {
         const hasParticipants =
           Object.keys(get(data, 'participants.hits.edges[0].node', {})).length > 0;
 
+        const onCloseCavaticaCopyModal = () => closeModal(CAVATICA_COPY_FILE_MODAL_ID);
+
         return (
           <Column className="entityPage-container">
             <EntityTitleBar>
               <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
             </EntityTitleBar>
             <EntityActionBar>
-              <CavaticaAnalyse
-                fileId={fileId}
-                disabled={!hasFilePermission}
-                hasFilePermission={hasFilePermission}
-                file={{
-                  acl: data.acl,
-                  latest_did: data.latest_did,
-                  repository: data.repository,
+              <div
+                style={{
+                  width: 'auto',
+                  marginRight: '10px',
                 }}
-                sourceLocation={FILE_VIEW}
-              />
+              >
+                {showConnectModal && (
+                  <CavaticaConnectModal2
+                    isVisible={showConnectModal}
+                    onComplete={() => {
+                      closeModal(CAVATICA_CONNECT_FILE_MODAL_ID);
+                      openModal(CAVATICA_COPY_FILE_MODAL_ID);
+                    }}
+                    onCancelCB={() => closeModal(CAVATICA_CONNECT_FILE_MODAL_ID)}
+                  />
+                )}
+                {showCavaticaCopyModal && (
+                  <CavaticaCopyOpenAccessFileModal
+                    fileId={fileId}
+                    onCancel={onCloseCavaticaCopyModal}
+                    onComplete={onCloseCavaticaCopyModal}
+                    file={{
+                      acl: data.acl,
+                      latest_did: data.latest_did,
+                      repository: data.repository,
+                    }}
+                  />
+                )}
+                <Button
+                  type={'primary'}
+                  icon={<BarChartOutlined />}
+                  disabled={!hasFilePermission}
+                  onClick={() =>
+                    openModal(
+                      isConnectedToCavatica
+                        ? CAVATICA_COPY_FILE_MODAL_ID
+                        : CAVATICA_CONNECT_FILE_MODAL_ID,
+                    )
+                  }
+                >
+                  Analyse in Cavatica
+                </Button>
+              </div>
               <Download
                 onSuccess={async (url) => {
                   await trackUserInteraction({
@@ -237,6 +287,10 @@ const FileEntity = ({ api, fileId }) => {
 FileEntity.propTypes = {
   api: PropTypes.func,
   fileId: PropTypes.string,
+  openModalId: PropTypes.func,
+  closeModal: PropTypes.func,
+  openModal: PropTypes.func,
+  isConnectedToCavatica: PropTypes.bool,
 };
 
-export default FileEntity;
+export default connector(FileEntity);
