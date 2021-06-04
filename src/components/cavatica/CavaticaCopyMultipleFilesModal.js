@@ -1,26 +1,29 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
-import { graphql } from 'services/arranger';
-import { withApi } from 'services/api';
-import { ModalFooter } from 'components/Modal/index.js';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
-import { copyToProject, isEveryFileTransferred, sumFilesTransfers } from './api';
-import CavaticaProjects from './CavaticaProjects';
 import { Link } from 'react-router-dom';
-import CavaticaFileSummary from './CavaticaFileSummary';
-import { ModalWarning } from 'components/Modal/index.js';
-import { Paragraph } from 'uikit/Core';
-import { getUserStudyPermission } from 'services/fileAccessControl';
+import { Alert, Button, Modal, notification, Typography } from 'antd';
+import { injectState } from 'freactal';
 import flatten from 'lodash/flatten';
-import { FENCES } from 'common/constants';
-import { notification } from 'antd';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+
+import { FENCES } from 'common/constants';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
+import { graphql } from 'services/arranger';
+import { getUserStudyPermission } from 'services/fileAccessControl';
+
+import LoadingOnClick from '../LoadingOnClick';
+
+import { copyToProject, isEveryFileTransferred, sumFilesTransfers } from './api';
+import CavaticaFileSummary from './CavaticaFileSummary';
+import CavaticaProjects from './CavaticaProjects';
+import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
 
 import './cavatica.css';
 import './CavaticaCopyMultipleFilesModal.css';
+
+const { Text, Paragraph } = Typography;
 
 const shapeStudyAggs = (studyAggs = []) =>
   studyAggs
@@ -53,13 +56,13 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     authorizedFilesCombined: [],
   };
 
-  propTypes = {
+  static propTypes = {
     api: PropTypes.func.isRequired,
     sqon: PropTypes.object,
     fileIds: PropTypes.arrayOf(PropTypes.string),
     state: PropTypes.object,
-    effects: PropTypes.object.isRequired,
     onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
   };
 
   async componentDidMount() {
@@ -149,11 +152,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
   }
 
   render() {
-    const {
-      state,
-      effects: { unsetModal },
-      onComplete,
-    } = this.props;
+    const { state, onComplete, onCancel } = this.props;
 
     const {
       addingProject,
@@ -170,55 +169,17 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     const isFilesSelected = filesSelected && filesSelected.length > 0;
     const unauthFilesWarning = unauthorizedFiles && unauthorizedFiles.length > 0;
     return (
-      <div className="copyModalRoot">
-        {unauthFilesWarning && (
-          <ModalWarning>
-            <span style={{ fontSize: '16px', fontWeight: '500' }}>Access Error</span>
-            <span>
-              <br />
-              You are attempting to copy files that you are not authorized to access.
-            </span>
-            {!hasFenceConnection && (
-              <Paragraph>
-                Please{' '}
-                <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
-                  connect to data repositories
-                </Link>{' '}
-                to lookup which files you are authorized to copy.
-              </Paragraph>
-            )}
-          </ModalWarning>
-        )}
-        {isFilesSelected && (
-          <div className="content">
-            <CavaticaFileSummary
-              {...{
-                unauthorizedFiles,
-                authorizedFiles,
-                fileAuthInitialized,
-                authorizedFilesCombined,
-                fileStudyData,
-              }}
-            />
-          </div>
-        )}
-        <div className="content">
-          <span className="cavatica-modalHeader">
-            Select which Cavatica project you want to copy to:
-          </span>
-          <CavaticaProjects
-            onAddProject={() => {
-              this.setState({ addingProject: true });
-            }}
-            onSelectProject={(project) => {
-              this.setState({ selectedProjectData: project });
-            }}
-            addingProject={addingProject}
-          />
-        </div>
-        <ModalFooter
-          {...{
-            handleSubmit: async () => {
+      <Modal
+        title={`Copy File(s) to Cavatica Project`}
+        width={'65%'}
+        visible
+        onCancel={onCancel}
+        footer={[
+          <Button key="cancel" onClick={onCancel}>
+            Cancel
+          </Button>,
+          <LoadingOnClick
+            onClick={async () => {
               try {
                 const uuids = authorizedFilesCombined;
                 const copyResults = await copyToProject({
@@ -265,14 +226,75 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
               } finally {
                 onComplete();
               }
-            },
-            submitDisabled: !(selectedProjectData && authorizedFilesCombined.length > 0),
-            submitText: hasFenceConnection
-              ? `Copy ${authorizedFiles ? authorizedFilesCombined.length : 0} files`.toUpperCase()
-              : `Copy Authorized`.toUpperCase(),
-          }}
-        />
-      </div>
+            }}
+            key={'submit'}
+            render={({ onClick, loading }) => (
+              <Button
+                loading={loading}
+                onClick={onClick}
+                disabled={!(selectedProjectData && authorizedFilesCombined.length > 0)}
+              >
+                {hasFenceConnection
+                  ? `Copy ${authorizedFiles ? authorizedFilesCombined.length : 0} Files`
+                  : `Copy Authorized`}
+              </Button>
+            )}
+          />,
+        ]}
+      >
+        <>
+          {unauthFilesWarning && (
+            <Alert
+              message="Access Error"
+              description={
+                <>
+                  <Text>
+                    {' '}
+                    You are attempting to copy files that you are not authorized to access.
+                  </Text>
+                  {!hasFenceConnection && (
+                    <Paragraph>
+                      Please{' '}
+                      <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={onCancel}>
+                        connect to data repositories
+                      </Link>{' '}
+                      to lookup which files you are authorized to copy.
+                    </Paragraph>
+                  )}
+                </>
+              }
+              type="error"
+            />
+          )}
+          {isFilesSelected && (
+            <div className="content">
+              <CavaticaFileSummary
+                {...{
+                  unauthorizedFiles,
+                  authorizedFiles,
+                  fileAuthInitialized,
+                  authorizedFilesCombined,
+                  fileStudyData,
+                }}
+              />
+            </div>
+          )}
+          <div className="content">
+            <span className="cavatica-modalHeader">
+              Select which Cavatica project you want to copy to:
+            </span>
+            <CavaticaProjects
+              onAddProject={() => {
+                this.setState({ addingProject: true });
+              }}
+              onSelectProject={(project) => {
+                this.setState({ selectedProjectData: project });
+              }}
+              addingProject={addingProject}
+            />
+          </div>
+        </>
+      </Modal>
     );
   }
 }

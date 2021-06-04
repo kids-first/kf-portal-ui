@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Spinner from 'react-spinkit';
 
-import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
-
 import { flexCenter } from 'theme/tempTheme.module.css';
+import Row from 'uikit/Row';
+
 import './FileRepo.scss';
 
 export const ControlledIcon = ({ className = '', ...props }) => (
@@ -26,15 +25,5 @@ export const OpenIcon = () => (
       margin: 'auto',
       display: 'block',
     }}
-  />
-);
-
-export const TableSpinner = ({ props, style = {} }) => (
-  <Spinner
-    fadeIn="none"
-    name="circle"
-    color="#a9adc0"
-    style={{ width: 50, height: 60, ...style }}
-    {...props}
   />
 );

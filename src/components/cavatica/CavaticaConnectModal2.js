@@ -1,24 +1,25 @@
 //FIXME slowly removing freactal (effects.setModal, ...) CavaticaConnectModal is used elsewhere and it's too complicated to do in 1 PR
 //FIXME use redux store redux + clean
 import React, { useState } from 'react';
-import { compose } from 'recompose';
-import { isValidKey } from 'services/cavatica';
-import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
-import { deleteSecret, setSecret } from 'services/secrets';
-import { CAVATICA } from 'common/constants';
-import { getUser as getCavaticaUser } from 'services/cavatica';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { ModalWarning } from 'components/Modal/index.js';
-import ExternalLink from 'uikit/ExternalLink';
-import Input from 'uikit/Input';
-import { Paragraph } from 'uikit/Core';
-import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGlobals';
-
-import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
 import { Button, Modal, notification } from 'antd';
-import './cavatica.css';
+import { injectState } from 'freactal';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+
+import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
+import { CAVATICA } from 'common/constants';
+import { cavaticaWebRegistrationRoot, cavaticaWebRoot } from 'common/injectGlobals';
+import { ModalWarning } from 'components/Modal/index.js';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { isValidKey } from 'services/cavatica';
+import { getUser as getCavaticaUser } from 'services/cavatica';
+import { deleteSecret, setSecret } from 'services/secrets';
+import { Paragraph } from 'uikit/Core';
+import ExternalLink from 'uikit/ExternalLink';
+import Input from 'uikit/Input';
+
+import './cavatica.css';
 
 const enhance = compose(injectState);
 
@@ -198,3 +199,4 @@ CavaticaConnectModal2.propTypes = {
 };
 
 export default enhance(CavaticaConnectModal2);
+//TODO naming + test onComplete + warning
