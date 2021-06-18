@@ -44,7 +44,7 @@ type OwnProps = SidebarData & StudiesProps;
 
 export interface ItemProps {
   label: React.ReactElement;
-  value: [string, string];
+  value: string;
 }
 
 const sqon = {
@@ -53,7 +53,6 @@ const sqon = {
 };
 
 const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: OwnProps) => {
-  const mappingData = studiesMappingResults;
   const data = studiesResults;
   const options: ItemProps[] = [];
 
@@ -79,13 +78,9 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
             </Row>
           </>
         ),
-        value: [n.node.code, n.node.name],
+        value: `${n.node.code}|${n.node.name}`,
       }),
     );
-  }
-
-  if (mappingData?.loadingMapping || !mappingData?.extendedMapping || data.loading || !data.data) {
-    return null;
   }
 
   return (
@@ -101,12 +96,14 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
         </Col>
       </Row>
       {options.length > 0 ? <SearchBar options={options} /> : <div />}
-      {Object.keys(data.data.aggregations).map((key) => {
-        const found = studiesMappingResults.extendedMapping.find((f: any) => f.field === key);
+      {Object.keys(data.data?.aggregations || []).map((key) => {
+        const found = (studiesMappingResults?.extendedMapping || []).find(
+          (f: any) => f.field === key,
+        );
         const filterGroup = {
-          field: found!.field,
-          title: found!.displayName,
-          type: getFilterType(found!.type),
+          field: found?.field || '',
+          title: found?.displayName || '',
+          type: getFilterType(found?.type || ''),
         };
         // @ts-ignore
         const filters: IFilter[] = studiesResults.data.aggregations[key!].buckets.map((f: any) => ({

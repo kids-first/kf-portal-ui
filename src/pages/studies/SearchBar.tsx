@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { Select, Tag } from 'antd';
 
 import history from 'services/history';
-
-import { useGetStudiesSearch } from '../../store/graphql/studies/actions';
 
 import { ItemProps } from './SidebarFilters';
 import { updateFilters, useFilters } from './utils';
@@ -13,37 +12,27 @@ type OwnProps = {
   options: ItemProps[];
 };
 
+const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
+  const find = filters.content.find(
+    (s: { content: { field: string } }) => s.content.field === 'code',
+  );
+  return find ? find.content.value : [];
+};
+
 const SearchBar = ({ options }: OwnProps) => {
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState<string[]>([]);
 
   const { filters } = useFilters();
-
-  const sqon = {
-    content: [],
-    op: 'and',
-  };
-
-  let { loading, data } = useGetStudiesSearch({
-    sqon: sqon,
-    first: 10,
-    offset: 0,
-  });
+  const selectedStudyCodes = extractCodesFromFilter(filters);
 
   useEffect(() => {
-    if (filters.content && data && !loading) {
-      const { content: find } =
-        filters.content.find((s: { content: { field: string } }) => s.content.field === 'code') ||
-        [];
-
-      if (find) {
-        const studiesInFilter = data.hits.edges.filter((n) => find.value.includes(n.node.code));
-        // @ts-ignore
-        setSelected([...selected, ...studiesInFilter.map((t) => [t.node.code, t.node.name])]);
-      }
+    if (selected.length != selectedStudyCodes.length) {
+      const updateSelected = selected.filter((f) => selectedStudyCodes.includes(f.split('|')[0]));
+      setSelected(updateSelected);
     }
-  }, [data]);
+  }, [filters, selected]);
 
-  const handleClose = (value: any) => {
+  const handleClose = (value: string) => {
     const remainingSelected = selected.filter((v) => v[0] !== value[0]);
 
     const iFilter = remainingSelected.map((c: any) => ({
@@ -61,10 +50,14 @@ const SearchBar = ({ options }: OwnProps) => {
     setSelected(remainingSelected);
   };
 
-  const handleOnChange = (select: any) => {
-    const codes = select.map((k: any[]) => k[0]);
+  const handleOnChange = (select: string[]) => {
+    const codes = select.map((k: string) => k.split('|')[0]);
 
-    const iFilter = codes.map((c: any) => ({ data: { key: c }, name: 'nametoto', id: 'nametoto' }));
+    const iFilter = codes.map((c: string) => ({
+      data: { key: c },
+      name: 'nametoto',
+      id: 'nametoto',
+    }));
     updateFilters(
       history,
       { field: 'code', title: 'Study Code', type: VisualType.Checkbox },
@@ -77,6 +70,7 @@ const SearchBar = ({ options }: OwnProps) => {
     style: { width: '100%' },
     value: selected,
     options,
+    allowClear: true,
     onChange: (newSelect: string[]) => {
       // @ts-ignore
       setSelected(newSelect);
@@ -84,10 +78,11 @@ const SearchBar = ({ options }: OwnProps) => {
     },
     placeholder: 'KF-DSD, Neuroblastoma…',
     maxTagCount: 'responsive' as const,
+    // @ts-ignore
     // eslint-disable-next-line react/display-name
-    tagRender: ({ value }: any) => (
-      <Tag key={value[0]} closable={true} onClose={() => handleClose(value)}>
-        {value[0]}
+    tagRender: ({ value }: string) => (
+      <Tag key={value} closable onClose={() => handleClose(value)}>
+        {value.split('|')[0]}
       </Tag>
     ),
   };

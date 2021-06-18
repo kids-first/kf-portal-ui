@@ -11,8 +11,6 @@ import { useFilters } from './utils';
 
 import styles from './studies.module.scss';
 
-let previousData: any | null = null;
-let previousMappingData: any | null = null;
 const studiesPerPage = 10;
 
 const Studies = () => {
@@ -26,23 +24,6 @@ const Studies = () => {
   });
 
   let studiesMappingResults = useGetExtendedMappings('studies');
-
-  if (studiesResults.loading || studiesMappingResults.loadingMapping) {
-    if (!studiesResults.data && previousData) {
-      studiesResults = previousData;
-    }
-
-    if (!studiesMappingResults.extendedMapping && previousMappingData) {
-      studiesMappingResults = previousMappingData;
-    }
-  }
-
-  if (studiesResults.data) {
-    previousData = studiesResults;
-  }
-  if (studiesMappingResults) {
-    previousMappingData = studiesMappingResults;
-  }
 
   return (
     <Layout className={styles.layout}>

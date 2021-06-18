@@ -36,12 +36,8 @@ export type PaginationType = {
 type Props = StudiesResults & PropsFromRedux & PaginationType;
 
 const StudyTable: FC<Props> = (props) => {
-  const { loading, pagination } = props;
+  const { pagination } = props;
   const { current: currentPage, total: itemTotal = 0, pageSize: itemPerPage = 10 } = pagination;
-
-  if (loading) {
-    return null;
-  }
 
   const tableData = generateTableData(props);
   const pageRange = `${currentPage}-${itemTotal > itemPerPage ? itemPerPage : itemTotal}`;
@@ -55,7 +51,7 @@ const StudyTable: FC<Props> = (props) => {
       </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
-        dataSource={tableData}
+        dataSource={tableData || []}
         pagination={pagination}
       />
     </div>
