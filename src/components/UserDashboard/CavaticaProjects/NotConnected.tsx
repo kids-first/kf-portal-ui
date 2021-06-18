@@ -1,14 +1,16 @@
 import React, { FunctionComponent } from 'react';
-import AccessGate from '../../AccessGate';
-import Cavatica from 'icons/Cavatica';
-import Info from '../Info';
+import { connect, ConnectedProps } from 'react-redux';
 import { ApiOutlined, RightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { selectModalId } from 'store/selectors/modal';
+
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import Cavatica from 'icons/Cavatica';
 import { closeModal, DispatchModal, openModal } from 'store/actions/modal';
-import { connect, ConnectedProps } from 'react-redux';
-import CavaticaConnectModal2 from 'components/cavatica/CavaticaConnectModal2';
 import { RootState } from 'store/rootState';
+import { selectModalId } from 'store/selectors/modal';
+
+import AccessGate from '../../AccessGate';
+import Info from '../Info';
 
 const mapStateToProps = (state: RootState) => ({
   openModalId: selectModalId(state),
@@ -38,7 +40,7 @@ const NotConnected: FunctionComponent<PropsFromRedux> = ({
 
   return (
     <>
-      <CavaticaConnectModal2
+      <CavaticaConnectModal
         isVisible={openModalId === CAVATICA_CONNECT_MODAL_ID}
         onComplete={onClose}
         onCancelCB={onClose}
@@ -50,9 +52,7 @@ const NotConnected: FunctionComponent<PropsFromRedux> = ({
         detail="To analyze Kids First data on the cloud, connect to Cavatica."
       >
         <Button
-          type={'primary'}
           icon={<ApiOutlined />}
-          shape="round"
           onClick={() => {
             openModal(CAVATICA_CONNECT_MODAL_ID);
           }}

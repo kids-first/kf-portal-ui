@@ -60,7 +60,7 @@ NumberBullet.propTypes = {
   children: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
-const CavaticaConnectModal2 = ({
+const CavaticaConnectModal = ({
   effects,
   withWarning,
   onComplete,
@@ -190,7 +190,7 @@ const CavaticaConnectModal2 = ({
   );
 };
 
-CavaticaConnectModal2.propTypes = {
+CavaticaConnectModal.propTypes = {
   effects: PropTypes.object.isRequired,
   withWarning: PropTypes.bool,
   onComplete: PropTypes.func.isRequired,
@@ -198,5 +198,4 @@ CavaticaConnectModal2.propTypes = {
   onCancelCB: PropTypes.func.isRequired,
 };
 
-export default enhance(CavaticaConnectModal2);
-//TODO naming + test onComplete + warning
+export default enhance(CavaticaConnectModal);
