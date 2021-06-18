@@ -1,21 +1,22 @@
 /* eslint-disable react/display-name */
 import React from 'react';
-import { InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
-import { Input, Tooltip } from 'antd';
+import { Col, Row, Tooltip } from 'antd';
 
 import history from 'services/history';
-import { SidebarData } from 'store/graphql/studies/actions';
+import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
 
-import { getFilterType, getSelectedFilters, updateFilters, updateQueryFilters } from './utils';
+import SearchBar from './SearchBar';
+import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
 import style from './SidebarFilter.module.scss';
 
-const keyEnhance = (key: string) => {
+const keyEnhance = (key: string, s: string = ' No Data') => {
   switch (key) {
     case '__missing__':
-      return ' No Data';
+      return s;
     case '1':
       return 'True';
     case '0':
@@ -36,31 +37,52 @@ const keyEnhanceBooleanOnly = (key: string) => {
   }
 };
 
-const onSearch = (search: string) => {
-  updateQueryFilters(
-    history,
-    'search',
-    [
-      {
-        content: {
-          field: 'search',
-          value: [search.toLowerCase()],
-        },
-        op: 'in',
-      },
-    ],
-    'and',
-  );
-};
-
 type StudiesProps = {
   onChange: () => void;
 };
 type OwnProps = SidebarData & StudiesProps;
 
+export interface ItemProps {
+  label: React.ReactElement;
+  value: [string, string];
+}
+
+const sqon = {
+  content: [],
+  op: 'and',
+};
+
 const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: OwnProps) => {
   const mappingData = studiesMappingResults;
   const data = studiesResults;
+  const options: ItemProps[] = [];
+
+  let allStudies = useGetStudiesSearch({
+    sqon: sqon,
+    first: 10,
+    offset: 0,
+  });
+
+  if (allStudies && allStudies.data) {
+    allStudies.data.hits.edges.forEach((n) =>
+      options.push({
+        label: (
+          <>
+            <Row>
+              <Col span={2}>
+                <ReadOutlined />
+              </Col>
+              <Col span={22}>
+                <div style={{ fontSize: '1.4rem', color: '#383F72' }}>{n.node.code}</div>
+                <div style={{ fontSize: '1.2rem', color: '#6E7190' }}>{n.node.name}</div>
+              </Col>
+            </Row>
+          </>
+        ),
+        value: [n.node.code, n.node.name],
+      }),
+    );
+  }
 
   if (mappingData?.loadingMapping || !mappingData?.extendedMapping || data.loading || !data.data) {
     return null;
@@ -68,23 +90,17 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
 
   return (
     <>
-      <div className={style.storySearchIcons}>Search</div>
-      <Input
-        prefix={<SearchOutlined className={style.storySearchIconsDisabled} />}
-        placeholder="Search..."
-        onPressEnter={(e: any) => {
-          e.preventDefault();
-          const value = e.target.value;
-          if (value && value.trim()) {
-            onSearch(e.target.value);
-          }
-        }}
-        suffix={
-          <Tooltip title="Search Story by Code or Name">
-            <InfoCircleOutlined className={style.storySearchIconsDisabled} />
+      <Row gutter={5}>
+        <Col>
+          <div className={style.storySearchIcons}>Search Studies</div>
+        </Col>
+        <Col>
+          <Tooltip placement="topLeft" title={'Search by study code, study name, or domain'}>
+            <InfoCircleOutlined style={{ color: '#8A8DA8' }} />
           </Tooltip>
-        }
-      />
+        </Col>
+      </Row>
+      {options.length > 0 ? <SearchBar options={options} /> : <div />}
       {Object.keys(data.data.aggregations).map((key) => {
         const found = studiesMappingResults.extendedMapping.find((f: any) => f.field === key);
         const filterGroup = {
