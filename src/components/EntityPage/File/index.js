@@ -35,7 +35,7 @@ import ShareButton from 'uikit/ShareButton';
 import { Spinner } from 'uikit/Spinner';
 import SummaryTable from 'uikit/SummaryTable';
 
-import CavaticaConnectModal2 from '../../cavatica/CavaticaConnectModal2';
+import CavaticaConnectModal from '../../cavatica/CavaticaConnectModal';
 import CavaticaCopyOpenAccessFileModal from '../../cavatica/CavaticaCopyOpenAccessFileModal';
 
 import Download from './Download';
@@ -143,7 +143,7 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
                 }}
               >
                 {showConnectModal && (
-                  <CavaticaConnectModal2
+                  <CavaticaConnectModal
                     isVisible={showConnectModal}
                     onComplete={() => {
                       closeModal(CAVATICA_CONNECT_FILE_MODAL_ID);

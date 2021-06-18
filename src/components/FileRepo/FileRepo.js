@@ -31,7 +31,7 @@ import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
 
-import CavaticaConnectModal2 from '../cavatica/CavaticaConnectModal2';
+import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
 import CavaticaCopyMultipleFilesModal from '../cavatica/CavaticaCopyMultipleFilesModal';
 
 import customTableColumns from './customTableColumns';
@@ -118,7 +118,7 @@ const FileRepo = ({
                 return (
                   <>
                     {showConnectModal && (
-                      <CavaticaConnectModal2
+                      <CavaticaConnectModal
                         isVisible={showConnectModal}
                         onComplete={() => {
                           closeModal(CAVATICA_CONNECT_FILE_REPO_MODAL_ID);
