@@ -31,6 +31,7 @@ const Studies = () => {
         studiesMappingResults={studiesMappingResults}
         studiesResults={studiesResults}
         onChange={() => setCurrentPage(1)}
+        filters={filters}
       />
       <ScrollView className={styles.scrollContent}>
         <PageContent title="Studies">

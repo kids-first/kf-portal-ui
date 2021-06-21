@@ -6,10 +6,11 @@ import { Select, Tag } from 'antd';
 import history from 'services/history';
 
 import { ItemProps } from './SidebarFilters';
-import { updateFilters, useFilters } from './utils';
+import { updateFilters } from './utils';
 
 type OwnProps = {
   options: ItemProps[];
+  filters: ISqonGroupFilter;
 };
 
 const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
@@ -19,18 +20,17 @@ const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
   return find ? find.content.value : [];
 };
 
-const SearchBar = ({ options }: OwnProps) => {
+const SearchBar = ({ options, filters }: OwnProps) => {
   const [selected, setSelected] = React.useState<string[]>([]);
 
-  const { filters } = useFilters();
   const selectedStudyCodes = extractCodesFromFilter(filters);
 
   useEffect(() => {
-    if (selected.length != selectedStudyCodes.length) {
-      const updateSelected = selected.filter((f) => selectedStudyCodes.includes(f.split('|')[0]));
-      setSelected(updateSelected);
-    }
-  }, [filters, selected]);
+    const updateSelected = options.filter((f) =>
+      selectedStudyCodes.includes(f.value.split('|')[0]),
+    );
+    setSelected(updateSelected.map((s) => s.value));
+  }, [filters]);
 
   const handleClose = (value: string) => {
     const remainingSelected = selected.filter((v) => v[0] !== value[0]);

@@ -3,6 +3,7 @@ import React from 'react';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { Col, Row, Tooltip } from 'antd';
 
 import history from 'services/history';
@@ -39,6 +40,7 @@ const keyEnhanceBooleanOnly = (key: string) => {
 
 type StudiesProps = {
   onChange: () => void;
+  filters: ISqonGroupFilter;
 };
 type OwnProps = SidebarData & StudiesProps;
 
@@ -52,7 +54,7 @@ const sqon = {
   op: 'and',
 };
 
-const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: OwnProps) => {
+const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filters }: OwnProps) => {
   const data = studiesResults;
   const options: ItemProps[] = [];
 
@@ -95,7 +97,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
           </Tooltip>
         </Col>
       </Row>
-      {options.length > 0 ? <SearchBar options={options} /> : <div />}
+      {options.length > 0 ? <SearchBar filters={filters} options={options} /> : <div />}
       {Object.keys(data.data?.aggregations || []).map((key) => {
         const found = (studiesMappingResults?.extendedMapping || []).find(
           (f: any) => f.field === key,
