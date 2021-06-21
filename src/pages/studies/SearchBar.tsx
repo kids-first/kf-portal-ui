@@ -8,6 +8,8 @@ import history from 'services/history';
 import { ItemProps } from './SidebarFilters';
 import { updateFilters } from './utils';
 
+import styles from './SearchBar.module.scss';
+
 type OwnProps = {
   options: ItemProps[];
   filters: ISqonGroupFilter;
@@ -37,8 +39,8 @@ const SearchBar = ({ options, filters }: OwnProps) => {
 
     const iFilter = remainingSelected.map((c: any) => ({
       data: { key: c[0] },
-      name: 'nametoto',
-      id: 'nametoto',
+      name: '',
+      id: '',
     }));
 
     updateFilters(
@@ -55,8 +57,8 @@ const SearchBar = ({ options, filters }: OwnProps) => {
 
     const iFilter = codes.map((c: string) => ({
       data: { key: c },
-      name: 'nametoto',
-      id: 'nametoto',
+      name: '',
+      id: '',
     }));
     updateFilters(
       history,
@@ -67,7 +69,6 @@ const SearchBar = ({ options, filters }: OwnProps) => {
 
   const selectProps = {
     mode: 'multiple' as const,
-    style: { width: '100%' },
     value: selected,
     options,
     allowClear: true,
@@ -81,15 +82,20 @@ const SearchBar = ({ options, filters }: OwnProps) => {
     // @ts-ignore
     // eslint-disable-next-line react/display-name
     tagRender: ({ value }: string) => (
-      <Tag key={value} closable onClose={() => handleClose(value)}>
+      <Tag key={value} className={styles.tagSearchBar} closable onClose={() => handleClose(value)}>
         {value.split('|')[0]}
       </Tag>
     ),
   };
 
-  //FIXME
-  // @ts-ignore
-  return <Select {...selectProps} />;
+  return (
+    // @ts-ignore
+    <Select
+      getPopupContainer={(trigger) => trigger.parentNode}
+      className={styles.storiesSearchBar}
+      {...selectProps}
+    />
+  );
 };
 
 export default SearchBar;

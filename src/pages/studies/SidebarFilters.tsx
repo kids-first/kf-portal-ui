@@ -87,17 +87,19 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filte
 
   return (
     <>
-      <Row gutter={5}>
-        <Col>
-          <div className={style.storySearchIcons}>Search Studies</div>
-        </Col>
-        <Col>
-          <Tooltip placement="topLeft" title={'Search by study code, study name, or domain'}>
-            <InfoCircleOutlined style={{ color: '#8A8DA8' }} />
-          </Tooltip>
-        </Col>
-      </Row>
-      {options.length > 0 ? <SearchBar filters={filters} options={options} /> : <div />}
+      <div id={'anchor-search-bar'}>
+        <Row gutter={5}>
+          <Col>
+            <div className={style.storySearchIcons}>Search Studies</div>
+          </Col>
+          <Col>
+            <Tooltip placement="topLeft" title={'Search by study code or study name'}>
+              <InfoCircleOutlined style={{ color: '#8A8DA8' }} />
+            </Tooltip>
+          </Col>
+        </Row>
+        {options.length > 0 ? <SearchBar filters={filters} options={options} /> : <div />}
+      </div>
       {Object.keys(data.data?.aggregations || []).map((key) => {
         const found = (studiesMappingResults?.extendedMapping || []).find(
           (f: any) => f.field === key,

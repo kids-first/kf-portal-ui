@@ -1,0 +1,18 @@
+@import 'style/themes/default/_colors';
+
+.tagSearchBar {
+  color: $gray-1;
+  background-color: $cyan-7;
+
+  :first-child {
+    color: $gray-1;
+  }
+}
+
+.storiesSearchBar {
+  width: 100%;
+  :global(.ant-select-selection-item) {
+    color: $gray-1;
+    background-color: $cyan-7;
+  }
+}
