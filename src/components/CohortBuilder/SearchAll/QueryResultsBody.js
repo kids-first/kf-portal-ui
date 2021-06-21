@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import TextHighlight from '@kfarranger/components/dist/TextHighlight';
-import LoadingSpinner from 'uikit/LoadingSpinner';
+import { Spin } from 'antd';
+import PropTypes from 'prop-types';
 
 const QueryResultsBody = ({
   filteredFields,
@@ -17,7 +16,7 @@ const QueryResultsBody = ({
     return null;
   }
 
-  const handleFieldNameClicked = evt => {
+  const handleFieldNameClicked = (evt) => {
     const field = filteredFields[evt.currentTarget.dataset.index];
     if (field && field.matchByDisplayName) {
       onSearchField(field.name);
@@ -43,7 +42,7 @@ const QueryResultsBody = ({
                   type="checkbox"
                   checked={selections[field.name] && selections[field.name].indexOf(key) > -1}
                   className="selection"
-                  onChange={evt => {
+                  onChange={(evt) => {
                     onSelectionChange(evt, field, key);
                   }}
                 />
@@ -55,7 +54,7 @@ const QueryResultsBody = ({
         </div>
       ))}
       <div className={`loader-container ${isLoading ? 'loading' : ''}`}>
-        <LoadingSpinner color="#a9adc0" size="50px" />
+        <Spin />
       </div>
     </div>
   );
@@ -79,6 +78,7 @@ QueryResultsBody.propTypes = {
   selections: PropTypes.object.isRequired,
   onSelectionChange: PropTypes.func.isRequired,
   onSearchField: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 export default QueryResultsBody;

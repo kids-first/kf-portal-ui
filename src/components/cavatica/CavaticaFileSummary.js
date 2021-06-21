@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Spin } from 'antd';
 import truncate from 'lodash/truncate';
 
-import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
-import Spinner from 'react-spinkit';
+import PlusIcon from 'icons/PlusCircleIcon';
 import theme from 'theme/defaultTheme';
 
 import './cavatica.css';
@@ -32,19 +32,7 @@ class CavaticaFileSummary extends React.Component {
         <span className="cavatica-modalHeader">File Summary:</span>
         <div className="cssFileSummaryRoot">
           <div className="filePermissions">
-            {!fileAuthInitialized && (
-              <Spinner
-                fadeIn="none"
-                name="circle"
-                color={theme.primary}
-                style={{
-                  width: 15,
-                  height: 15,
-                  marginRight: 9,
-                  display: 'inline-block',
-                }}
-              />
-            )}
+            {!fileAuthInitialized && <Spin />}
             {showAuth && (
               <div className="summary">
                 <div className="left block">
@@ -81,8 +69,8 @@ class CavaticaFileSummary extends React.Component {
               <div className="details">
                 <div className="left block">
                   {fileStudyData.authorized &&
-                    fileStudyData.authorized.map(study => (
-                      <div className="studyDetails">
+                    fileStudyData.authorized.map((study) => (
+                      <div key={study.id} className="studyDetails">
                         <div className="studyName">
                           {truncate(fileStudyData.names[study.id], {
                             length: 50,
@@ -97,8 +85,8 @@ class CavaticaFileSummary extends React.Component {
                 </div>
                 <div className="right block">
                   {fileStudyData.unauthorized &&
-                    fileStudyData.unauthorized.map(study => (
-                      <div className="studyDetails">
+                    fileStudyData.unauthorized.map((study) => (
+                      <div key={study.id} className="studyDetails">
                         <div className="studyName">
                           {truncate(fileStudyData.names[study.id], {
                             length: 50,

@@ -1,28 +1,22 @@
 import React, { Fragment } from 'react';
-import { compose } from 'recompose';
+import { Spin } from 'antd';
 import { injectState } from 'freactal';
 import get from 'lodash/get';
+import { compose } from 'recompose';
 
-import LoadingSpinner from 'uikit/LoadingSpinner';
-import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-import ExternalLink from 'uikit/ExternalLink';
-import { Span } from 'uikit/Core';
-import { PromptMessageContainer } from 'uikit/PromptMessage';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
+import Column from 'uikit/Column';
+import { Span } from 'uikit/Core';
+import ExternalLink from 'uikit/ExternalLink';
+import { PromptMessageContainer } from 'uikit/PromptMessage';
+import Row from 'uikit/Row';
 
 import './FenceAuthorizedStudies.css';
 
-const Spinner = () => (
-  <Row justifyContent={'center'}>
-    <LoadingSpinner width={20} height={20} />
-  </Row>
-);
-
-const sqonForStudy = studyId => ({
+const sqonForStudy = (studyId) => ({
   op: 'and',
   content: [
     {
@@ -37,7 +31,7 @@ const sqonForStudy = studyId => ({
 
 const FenceProjectList = ({ history, fenceConnectionsInitialized, authStudies }) =>
   !fenceConnectionsInitialized ? (
-    <Spinner />
+    <Spin />
   ) : (
     authStudies.map(({ id, studyShortName }) => {
       const sqon = sqonForStudy(id);
@@ -94,7 +88,7 @@ const FenceAuthorizedStudies = compose(
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>
               <Span className="title" fontWeight={'bold'}>
-                {'You don\'t have access to any study-controlled datasets.'}
+                {"You don't have access to any study-controlled datasets."}
               </Span>
             </PromptMessageContainer>
           </Row>
