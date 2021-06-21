@@ -1,15 +1,14 @@
 import React from 'react';
+import { Spin } from 'antd';
+import autobind from 'auto-bind-es5';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import queryString from 'querystring';
-import get from 'lodash/get';
-import autobind from 'auto-bind-es5';
 
-import { getOrcidToken } from 'services/ego/auth';
 import { ORCID } from 'common/constants';
-
-import PromptMessage from 'uikit/PromptMessage';
-import LoadingSpinner from 'uikit/LoadingSpinner';
+import { getOrcidToken } from 'services/ego/auth';
 import { Link } from 'uikit/Core';
+import PromptMessage from 'uikit/PromptMessage';
 
 import './index.css';
 
@@ -32,7 +31,7 @@ export default class OrcidRedirect extends React.Component {
 
   renderEmailEmpty() {
     return (
-      <React.Fragment>
+      <>
         <p key="error_line_1">
           We were unable to log you into Kids First DRC via ORCID because you have not shared your
           email with trusted parties.
@@ -49,13 +48,13 @@ export default class OrcidRedirect extends React.Component {
         <p key="error_line_3">
           If you have questions or need further assistance, please email support@kidsfirstdrc.org.
         </p>
-      </React.Fragment>
+      </>
     );
   }
 
   renderEmailNotVerified() {
     return (
-      <React.Fragment>
+      <>
         <p key="error_line_1">
           We were unable to log you into Kids First DRC via ORCID because you have not valitated
           your email with ORCID.
@@ -74,16 +73,12 @@ export default class OrcidRedirect extends React.Component {
         <p key="error_line_3">
           If you have questions or need further assistance, please email support@kidsfirstdrc.org.
         </p>
-      </React.Fragment>
+      </>
     );
   }
 
   renderDefaultError() {
-    return (
-      <React.Fragment>
-        <p key="error_line_1">If the error persist, please email support@kidsfirstdrc.org.</p>
-      </React.Fragment>
-    );
+    return <p key="error_line_1">If the error persist, please email support@kidsfirstdrc.org.</p>;
   }
 
   renderErorrMessages(error) {
@@ -98,19 +93,18 @@ export default class OrcidRedirect extends React.Component {
   }
 
   renderError(error) {
-    let message = this.renderErorrMessages(error);
-    let content = (
-      <React.Fragment>
-        {message}
-        <Link to="/">Try again</Link>
-      </React.Fragment>
-    );
+    const message = this.renderErorrMessages(error);
     return (
       <PromptMessage
         className="generic-error-display"
         heading="An error occured while trying to log in via ORCID"
-        content={content}
-        error={true}
+        content={
+          <>
+            {message}
+            <Link to="/">Try again</Link>
+          </>
+        }
+        error
       />
     );
   }
@@ -158,10 +152,10 @@ export default class OrcidRedirect extends React.Component {
     const content = error ? (
       error
     ) : (
-      <React.Fragment>
-        <LoadingSpinner size={96} color={'#a9adc0'} className="login-redirect-loader" />
+      <>
+        <Spin />
         <span>Trying to log in via ORCID iD...</span>
-      </React.Fragment>
+      </>
     );
 
     return <div className="login-redirect-loader-container">{content}</div>;

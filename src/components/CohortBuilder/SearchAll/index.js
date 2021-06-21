@@ -1,29 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SearchIcon from 'react-icons/lib/fa/search';
-import { compose } from 'recompose';
+import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
+import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import { Spin } from 'antd';
 import autobind from 'auto-bind-es5';
-import memoizeOne from 'memoize-one';
+import Downshift from 'downshift';
 import debounce from 'lodash/debounce';
 import isObject from 'lodash/isObject';
 import mapKeys from 'lodash/mapKeys';
-import Downshift from 'downshift';
-import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
+import memoizeOne from 'memoize-one';
+import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+
+import { arrangerProjectId } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
+import { sqonShape } from 'shapes';
+import Column from 'uikit/Column';
 
 import { SQONdiff } from '../../Utils';
-import { withApi } from 'services/api';
-import Column from 'uikit/Column';
-import LoadingSpinner from 'uikit/LoadingSpinner';
-import { arrangerProjectId } from 'common/injectGlobals';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import Filter from '../Categories/Filter';
-
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import QueriesResolver from '../QueriesResolver';
+
 import { searchAllQueries } from './queries';
 import QueryResults from './QueryResults';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { sqonShape } from 'shapes';
 
 import './SearchAll.css';
 
@@ -361,7 +362,7 @@ class SearchAll extends React.Component {
               }
 
               if (extendedMappingIsLoading || isLoading) {
-                return <LoadingSpinner color="#a9adc0" size="30px" />;
+                return <Spin />;
               }
 
               return (

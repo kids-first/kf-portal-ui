@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import union from 'lodash/union';
-import compact from 'lodash/compact';
-import { compose, withState } from 'recompose';
+import { connect } from 'react-redux';
+import { Tooltip } from 'antd';
 import autobind from 'auto-bind-es5';
-import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
+import compact from 'lodash/compact';
+import get from 'lodash/get';
+import union from 'lodash/union';
+import PropTypes from 'prop-types';
+import { compose, withState } from 'recompose';
+
+import { STUDIES_WITH_PEDCBIO } from 'common/constants';
+import FileIcon from 'icons/FileIcon';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
+import style from 'style/themes/default/colors.module.scss';
 import { Link } from 'uikit/Core';
+import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
-import { SORTABLE_FIELDS_MAPPING } from './queries';
-import FileIcon from 'icons/FileIcon';
+import ExternalLink from 'uikit/ExternalLink';
+import { externalLink } from 'uikit/ExternalLink.module.css';
+
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 
-import { connect } from 'react-redux';
-import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
-import { Tooltip } from 'antd';
-import { externalLink } from 'uikit/ExternalLink.module.css';
+import { SORTABLE_FIELDS_MAPPING } from './queries';
+
 import './ParticipantTableView.css';
-import style from 'style/themes/default/colors.module.scss';
-import ExternalLink from 'uikit/ExternalLink';
-import get from 'lodash/get';
-import { STUDIES_WITH_PEDCBIO } from 'common/constants';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -379,7 +382,7 @@ ParticipantsTable.propTypes = {
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
   addSqonTermToActiveIndex: PropTypes.func,
-  sort: PropTypes.func,
+  sort: PropTypes.array,
   sqon: PropTypes.any,
 };
 

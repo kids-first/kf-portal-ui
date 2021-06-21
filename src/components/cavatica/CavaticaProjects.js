@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import { Result, Spin } from 'antd';
 import { injectState } from 'freactal';
+import { compose, lifecycle, withState } from 'recompose';
 
+import CheckIcon from 'icons/CircleCheckIcon';
 import { getProjects as getCavaticaProjects } from 'services/cavatica';
+import theme from 'theme/defaultTheme';
+import { Box, Paragraph } from 'uikit/Core';
+import { FilterInput } from 'uikit/Input';
+import { TableHeader } from 'uikit/Table';
+import { getMsgFromErrorOrElse } from 'utils';
 
 import CavaticaAddProject from './CavaticaAddProject';
 
-import CheckIcon from 'icons/CircleCheckIcon';
-
-import { TableHeader } from 'uikit/Table';
-import { Paragraph, Box } from 'uikit/Core';
-import { FilterInput } from 'uikit/Input';
-import LoadingSpinner from 'uikit/LoadingSpinner';
-import { Result } from 'antd';
-import { getMsgFromErrorOrElse } from 'utils';
-import theme from 'theme/defaultTheme';
 import './cavatica.css';
 
 const enhance = compose(
@@ -41,6 +39,8 @@ const enhance = compose(
   }),
 );
 
+//eslint-disable-next-line: not fixed since I could not test the component properly + ...props
+
 const CavaticaProjects = ({
   projectSearchValue,
   setProjectSearchValue,
@@ -48,8 +48,11 @@ const CavaticaProjects = ({
   setProjectList,
   selectedProject,
   setSelectedProject,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addingProject,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setAddingProject,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getGen3Ids,
   isLoadingProjects,
   onSelectProject,
@@ -75,7 +78,7 @@ const CavaticaProjects = ({
             <FilterInput
               value={projectSearchValue}
               placeholder="Search projects"
-              onChange={e => {
+              onChange={(e) => {
                 setProjectSearchValue(e.target.value);
               }}
             />
@@ -83,15 +86,15 @@ const CavaticaProjects = ({
         }
       </div>
       <div className="body">
-        {isLoadingProjects && <LoadingSpinner size={'35px'} />}
+        {isLoadingProjects && <Spin />}
         {!isLoadingProjects && Array.isArray(projectList) && projectList.length > 0 && (
           <div className="projectSelector" onChange={() => {}}>
             {projectList
-              .filter(project => {
+              .filter((project) => {
                 if (project.id === selectedProject) return true;
                 return projectSearchValue !== '' ? project.name.includes(projectSearchValue) : true;
               })
-              .map(project => {
+              .map((project) => {
                 const selected = selectedProject === project.id;
                 return (
                   <div
@@ -114,12 +117,12 @@ const CavaticaProjects = ({
       </div>
       <div className="footer">
         <CavaticaAddProject
-          setSelectedProject={p => {
-              setSelectedProject(p.id);
-              onSelectProject(p);
+          setSelectedProject={(p) => {
+            setSelectedProject(p.id);
+            onSelectProject(p);
           }}
           onSuccess={() => {
-            getCavaticaProjects().then(projects => {
+            getCavaticaProjects().then((projects) => {
               setProjectList(projects);
             });
           }}

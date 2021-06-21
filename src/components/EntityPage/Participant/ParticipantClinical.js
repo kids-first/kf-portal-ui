@@ -1,33 +1,36 @@
-import * as React from 'react';
-import get from 'lodash/get';
+import React from 'react';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import flatMap from 'lodash/flatMap';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 
-import theme from 'theme/defaultTheme';
-import { EntityContentDivider, EntityContentSection } from '../';
-import FamilyTable from './Utils/FamilyTable';
-import sanitize from './Utils/sanitize';
-import ParticipantDataTable from './Utils/ParticipantDataTable';
-import graphql from 'services/arranger';
-import { initializeApi } from '../../../services/api';
-import { setSqons } from 'store/actionCreators/virtualStudies';
 import {
   getDefaultSqon,
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
   setSqonValueAtIndex,
-} from '../../../common/sqonUtils';
-import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
-import { store } from '../../../store';
-import prettifyAge from './Utils/prettifyAge';
-import { HPOLink, SNOMEDLink, MONDOLink, NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-import ClinicalIcon from 'icons/ClinicalIcon';
+} from 'common/sqonUtils';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
+import ClinicalIcon from 'icons/ClinicalIcon';
+import { initializeApi } from 'services/api';
+import graphql from 'services/arranger';
+import { store } from 'store';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { resetVirtualStudy } from 'store/actionCreators/virtualStudies';
+import theme from 'theme/defaultTheme';
+import { Spinner } from 'uikit/Spinner';
 import Tooltip from 'uikit/Tooltip';
-import LoadingSpinner from 'uikit/LoadingSpinner';
-import PropTypes from 'prop-types';
+
+import { HPOLink, MONDOLink, NCITLink, SNOMEDLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+import { EntityContentDivider, EntityContentSection } from '../';
+
+import FamilyTable from './Utils/FamilyTable';
+import ParticipantDataTable from './Utils/ParticipantDataTable';
+import prettifyAge from './Utils/prettifyAge';
+import sanitize from './Utils/sanitize';
+
 import './ParticipantClinical.css';
 
 const cellBreak = (wrapper) => (
@@ -356,7 +359,7 @@ class ParticipantClinical extends React.Component {
   render() {
     if (!this.state.hasLoadedPhenotypes || !this.state.hasLoadedDxs) {
       //make sure all data is loaded before deciding what to display.
-      return <LoadingSpinner color="#a9adc0" size="50px" />;
+      return <Spinner size={'large'} />;
     }
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;

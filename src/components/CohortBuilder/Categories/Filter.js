@@ -1,17 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
-
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-import LoadingSpinner from 'uikit/LoadingSpinner';
+import { Spin } from 'antd';
+import PropTypes from 'prop-types';
+import { compose } from 'recompose';
 
-import { withApi } from 'services/api';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
+import { withApi } from 'services/api';
+import { sqonShape } from 'shapes';
+
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { FieldFilterContainer } from '../FieldFilterContainer';
-import { sqonShape } from 'shapes';
 
 /**
  * This component also assumes we are only modifying the first level of sqon
@@ -41,12 +41,12 @@ const Filter = compose(withApi)(
         if (loading) {
           return (
             <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
-              <LoadingSpinner color="#a9adc0" size="30px" />
+              <Spin />
             </FieldFilterContainer>
           );
         }
         const { type } = extendedMapping[0] || {}; // assume extendedMapping[0] since `field` is provided to ExtendedMappingProvider.
-        const contentWithField = initialSqon.content.find(content => {
+        const contentWithField = initialSqon.content.find((content) => {
           if (!isReference(content)) {
             const {
               content: { field: _field },
@@ -94,7 +94,7 @@ const Filter = compose(withApi)(
             field={field}
             arrangerProjectId={arrangerProjectId}
             arrangerProjectIndex={arrangerProjectIndex}
-            ContainerComponent={props => <FieldFilterContainer {...props} onBack={onBack} />}
+            ContainerComponent={(props) => <FieldFilterContainer {...props} onBack={onBack} />}
           />
         );
       }}
