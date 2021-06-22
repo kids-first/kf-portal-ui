@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Table } from 'antd';
-import { Typography } from 'antd';
+import { Table, Typography } from 'antd';
 import { TablePaginationConfig } from 'antd/lib/table';
 
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
@@ -35,7 +34,7 @@ export type PaginationType = {
 
 type Props = StudiesResults & PropsFromRedux & PaginationType;
 
-const StudyTable: FC<Props> = (props) => {
+const StudyTable = (props: Props) => {
   const { pagination } = props;
   const { current: currentPage, total: itemTotal = 0, pageSize: itemPerPage = 10 } = pagination;
 

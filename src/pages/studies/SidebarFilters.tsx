@@ -6,10 +6,9 @@ import { IFilter } from '@ferlab/ui/core/components/filters/types';
 import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { Col, Row, Tooltip } from 'antd';
 
+import { MISSING_DATA } from 'services/arranger';
 import history from 'services/history';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
-
-import { MISSING_DATA } from '../../services/arranger';
 
 import SearchBar from './SearchBar';
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
