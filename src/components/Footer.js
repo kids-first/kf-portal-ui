@@ -1,47 +1,47 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { FacebookFilled, GithubFilled, TwitterSquareFilled } from '@ant-design/icons';
 import urlJoin from 'url-join';
-// [NEXT] 'react-icons' have these icons, 'react-social-icons' is not necessary here
-// e.g. https://fontawesome.com/icons/twitter
-import { SocialIcon } from 'react-social-icons';
-import DataVersionProvider from './DataVersionProvider';
 
-import { kfWebRoot, kfFacebook, kfTwitter, kfGithub, notionWebRoot } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
+import { kfFacebook, kfGithub, kfTwitter, kfWebRoot, notionWebRoot } from 'common/injectGlobals';
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 import Row from 'uikit/Row';
 
-import { footerLink, footerContainer, socialIconsContainer } from './Footer.module.css';
+import DataVersionProvider from './DataVersionProvider';
+import FooterLink from './FooterLink';
 
-const FooterLink = ({ href, children }) => (
-  <a className={`${footerLink} greyScale0`} href={href} target="_blank" rel="noopener noreferrer">
-    {children}
-  </a>
-);
-FooterLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element.isRequired]),
-};
+import { footerContainer, footerLink, socialIconsContainer } from './Footer.module.css';
 
-const socialIconSize = { width: 30, height: 30 };
+const socialIconFontSize = '30px';
+
 const Footer = () => (
   <footer className={`${footerContainer} greyScale9`}>
     <Row>
-      <FooterLink href={kfWebRoot}>kidsfirstdrc.org</FooterLink>
+      <FooterLink href={kfWebRoot} className={footerLink}>
+        kidsfirstdrc.org
+      </FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/portal')}>About the Portal</FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/portal')} className={footerLink}>
+        About the Portal
+      </FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/policies')}>Policies</FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/policies')} className={footerLink}>
+        Policies
+      </FooterLink>
       {' | '}
       <FooterLink
         href={urlJoin(
           notionWebRoot,
           '/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a',
         )}
+        className={footerLink}
       >
         Support
       </FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/contact')}>Contact</FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/contact')} className={footerLink}>
+        Contact
+      </FooterLink>
       {' | '}
       {`UI: ${UI_VERSION}`}
       {', '}
@@ -50,9 +50,21 @@ const Footer = () => (
     </Row>
     <div className={socialIconsContainer}>
       {'Follow Us'}
-      <SocialIcon url={kfFacebook} style={socialIconSize} />
-      <SocialIcon url={kfTwitter} style={socialIconSize} />
-      <SocialIcon url={kfGithub} style={socialIconSize} />
+      <a target="_blank" rel="noopener noreferrer" href={kfFacebook}>
+        <FacebookFilled
+          style={{ fontSize: socialIconFontSize, color: styleThemeColors.facebookColor }}
+        />
+      </a>
+      <a target="_blank" rel="noopener noreferrer" href={kfTwitter}>
+        <TwitterSquareFilled
+          style={{ fontSize: socialIconFontSize, color: styleThemeColors.twitterColor }}
+        />
+      </a>
+      <a target="_blank" rel="noopener noreferrer" href={kfGithub}>
+        <GithubFilled
+          style={{ fontSize: socialIconFontSize, color: styleThemeColors.githubColor }}
+        />
+      </a>
     </div>
   </footer>
 );

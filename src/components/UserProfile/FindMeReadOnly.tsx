@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Avatar, Row, Space, Typography } from 'antd';
+import { Row, Space, Typography } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
 import { socialItems } from 'components/UserProfile/utils';
@@ -61,7 +61,7 @@ const FindMeReadOnly = (props: Props) => {
       <Space direction={'vertical'} size={'middle'}>
         {userSocialItems.map(({ service, icon, value, href }, index) => (
           <Space key={index} align={'center'}>
-            <Avatar icon={icon} />
+            {icon}
             <a target="_blank" rel="noopener noreferrer" href={href(value)}>
               {service}
             </a>

@@ -45,6 +45,7 @@ class FindMeInput extends Component {
         value={inputVal}
         type="text"
         onChange={this.onChange}
+        prefix={item.icon}
       />
     );
   }

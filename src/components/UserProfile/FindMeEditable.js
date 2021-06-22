@@ -36,7 +36,7 @@ function FindMeEditable({ setIsSaveButtonDisabledCB, findMeInitialValues }) {
     return Promise.reject(PLEASE_ENTER_A_VALID_URL);
   };
 
-  const socialItemsWithSize = socialItems(28, 28);
+  const socialItemsWithSize = socialItems();
   const socialIcons = entries(socialItemsWithSize).map(([serviceName, value]) => ({
     id: serviceName,
     label: value.name,
@@ -52,21 +52,19 @@ function FindMeEditable({ setIsSaveButtonDisabledCB, findMeInitialValues }) {
       </Row>
       <Space direction={'vertical'}>
         {socialIcons.map((item) => (
-          <Space direction={'horizontal'} key={item.id}>
-            {item.icon}
-            <Form.Item
-              name={item.id}
-              label={item.label}
-              rules={[
-                { required: false },
-                () => ({
-                  validator: validateInput,
-                }),
-              ]}
-            >
-              <FindMeInput item={item} />
-            </Form.Item>
-          </Space>
+          <Form.Item
+            key={item.id}
+            name={item.id}
+            label={item.label}
+            rules={[
+              { required: false },
+              () => ({
+                validator: validateInput,
+              }),
+            ]}
+          >
+            <FindMeInput item={item} />
+          </Form.Item>
         ))}
       </Space>
     </div>
