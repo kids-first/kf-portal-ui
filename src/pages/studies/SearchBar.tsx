@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
 import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { Select, Tag } from 'antd';
@@ -22,23 +22,23 @@ const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
   return find ? find.content.value : [];
 };
 
+const codeFromKey = (key: string) => key.split('|')[0];
+
 const SearchBar = ({ options, filters }: OwnProps) => {
-  const [selected, setSelected] = React.useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const selectedStudyCodes = extractCodesFromFilter(filters);
 
   useEffect(() => {
-    const updateSelected = options.filter((f) =>
-      selectedStudyCodes.includes(f.value.split('|')[0]),
-    );
+    const updateSelected = options.filter((f) => selectedStudyCodes.includes(codeFromKey(f.value)));
     setSelected(updateSelected.map((s) => s.value));
   }, [filters]);
 
   const handleClose = (value: string) => {
-    const remainingSelected = selected.filter((v) => v[0] !== value[0]);
+    const remainingSelected = selected.filter((v) => v !== value);
 
-    const iFilter = remainingSelected.map((c: any) => ({
-      data: { key: c[0] },
+    const iFilter = remainingSelected.map((c: string) => ({
+      data: { key: codeFromKey(c) },
       name: '',
       id: '',
     }));
@@ -53,7 +53,7 @@ const SearchBar = ({ options, filters }: OwnProps) => {
   };
 
   const handleOnChange = (select: string[]) => {
-    const codes = select.map((k: string) => k.split('|')[0]);
+    const codes = select.map((k: string) => codeFromKey(k));
 
     const iFilter = codes.map((c: string) => ({
       data: { key: c },
@@ -73,7 +73,6 @@ const SearchBar = ({ options, filters }: OwnProps) => {
     options,
     allowClear: true,
     onChange: (newSelect: string[]) => {
-      // @ts-ignore
       setSelected(newSelect);
       handleOnChange(newSelect);
     },
@@ -83,7 +82,7 @@ const SearchBar = ({ options, filters }: OwnProps) => {
     // eslint-disable-next-line react/display-name
     tagRender: ({ value }: string) => (
       <Tag key={value} className={styles.tagSearchBar} closable onClose={() => handleClose(value)}>
-        {value.split('|')[0]}
+        {codeFromKey(value)}
       </Tag>
     ),
   };

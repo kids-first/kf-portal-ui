@@ -9,6 +9,8 @@ import { Col, Row, Tooltip } from 'antd';
 import history from 'services/history';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
 
+import { MISSING_DATA } from '../../services/arranger';
+
 import SearchBar from './SearchBar';
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
@@ -16,7 +18,7 @@ import style from './SidebarFilter.module.scss';
 
 const keyEnhance = (key: string, s: string = ' No Data') => {
   switch (key) {
-    case '__missing__':
+    case MISSING_DATA:
       return s;
     case '1':
       return 'True';
@@ -58,7 +60,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filte
   const data = studiesResults;
   const options: ItemProps[] = [];
 
-  let allStudies = useGetStudiesSearch({
+  const allStudies = useGetStudiesSearch({
     sqon: sqon,
     first: 10,
     offset: 0,
@@ -74,8 +76,8 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filte
                 <ReadOutlined />
               </Col>
               <Col span={22}>
-                <div style={{ fontSize: '1.4rem', color: '#383F72' }}>{n.node.code}</div>
-                <div style={{ fontSize: '1.2rem', color: '#6E7190' }}>{n.node.name}</div>
+                <div className={style.studySearchDropdownCode}>{n.node.code}</div>
+                <div className={style.studySearchDropdownName}>{n.node.name}</div>
               </Col>
             </Row>
           </>
@@ -90,15 +92,15 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filte
       <div id={'anchor-search-bar'}>
         <Row gutter={5}>
           <Col>
-            <div className={style.storySearchIcons}>Search Studies</div>
+            <div className={style.storySearchTitle}>Search Studies</div>
           </Col>
           <Col>
             <Tooltip placement="topLeft" title={'Search by study code or study name'}>
-              <InfoCircleOutlined style={{ color: '#8A8DA8' }} />
+              <InfoCircleOutlined className={style.storySearchIconsDisabled} />
             </Tooltip>
           </Col>
         </Row>
-        {options.length > 0 ? <SearchBar filters={filters} options={options} /> : <div />}
+        {options.length ? <SearchBar filters={filters} options={options} /> : <div />}
       </div>
       {Object.keys(data.data?.aggregations || []).map((key) => {
         const found = (studiesMappingResults?.extendedMapping || []).find(
