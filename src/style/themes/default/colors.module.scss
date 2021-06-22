@@ -4,4 +4,11 @@
   color: $btn-default-color;
 }
 
-$pageBackground: #ffffff;
+:export {
+  facebookColor: #4267B2;
+  twitterColor: #1DA1F2;
+  githubColor: #4078c0;
+  linkedinColor: #0077B5;
+  googleColor: #dd4b39;
+  homeWebsiteColor: $primary-color;
+}
