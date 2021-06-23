@@ -48,3 +48,11 @@ export const shapeFileTypeSqonFiltersForParticipantType = (fileCentricSqon: Sqon
     [],
   );
 };
+
+export const addFilterToSQON = (originalSqon: Sqon, field: string, values: string[]) => {
+  const newContent = [
+    ...originalSqon.content,
+    { content: { field: field, value: values }, op: 'in' },
+  ];
+  return { ...originalSqon, ...{ content: newContent } };
+};

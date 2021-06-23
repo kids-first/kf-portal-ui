@@ -9,9 +9,15 @@ import { compose } from 'recompose';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import { sqonShape } from 'shapes';
+import { addFilterToSQON } from 'store/sqonUtils';
 
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { FieldFilterContainer } from '../FieldFilterContainer';
+
+const fieldsWithCustomIsTaggedQuery = [
+  'diagnoses.source_text_diagnosis',
+  'diagnoses.ncit_id_diagnosis',
+];
 
 /**
  * This component also assumes we are only modifying the first level of sqon
@@ -61,12 +67,17 @@ const Filter = compose(withApi)(
             ? initialSqon.content.indexOf(contentWithField)
             : initialSqon.content.length,
         ];
+
+        const updatedSqon = fieldsWithCustomIsTaggedQuery.includes(field)
+          ? addFilterToSQON(initialSqon, 'diagnoses.is_tagged', ['true'])
+          : initialSqon;
+
         const initializedSqon = {
-          ...initialSqon,
+          ...updatedSqon,
           content: contentWithField
-            ? initialSqon.content
+            ? updatedSqon.content
             : [
-                ...initialSqon.content,
+                ...updatedSqon.content,
                 {
                   op: ['id', 'keyword', 'boolean'].includes(type) ? 'in' : 'between',
                   content: {
