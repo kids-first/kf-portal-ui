@@ -36,7 +36,6 @@ import { Spinner } from 'uikit/Spinner';
 import { hasUserRole, isSelfInUrlWhenLoggedIn } from 'utils';
 
 import LoginPage from './components/Login/LoginPage';
-import CavaticaServiceErrorBanner from './CavaticaIServiceErrorBanner';
 import ForumBanner, { showForumBanner } from './ForumBanner';
 
 import 'index.css';
@@ -88,7 +87,6 @@ const App = compose(
     <ApolloProvider userToken={state.loggedInUserToken}>
       <div className="appContainer">
         {showForumBanner() && <ForumBanner />}
-        <CavaticaServiceErrorBanner />
         <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
           <Switch>
             <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
