@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Table, Typography } from 'antd';
-import { TablePaginationConfig } from 'antd/lib/table';
 
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { StudiesResults } from 'store/graphql/studies/actions';
@@ -28,30 +27,23 @@ const mapState = (state: RootState): StudyTableContainerState => ({
 const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-export type PaginationType = {
-  pagination: TablePaginationConfig;
-};
 
-type Props = StudiesResults & PropsFromRedux & PaginationType;
+type Props = StudiesResults & PropsFromRedux & { total: number };
 
 const StudyTable = (props: Props) => {
-  const { pagination } = props;
-  const { current: currentPage, total: itemTotal = 0, pageSize: itemPerPage = 10 } = pagination;
-
   const tableData = generateTableData(props);
-  const pageRange = `${currentPage}-${itemTotal > itemPerPage ? itemPerPage : itemTotal}`;
+  const { total } = props;
 
   return (
     <div>
       <div className={styles.tableHeader}>
-        Showing <Text strong>{pageRange}</Text>
-        <span> out of </span>
-        <Text strong>{itemTotal}</Text>
+        Showing <Text strong>{total}</Text>
+        <span> studies </span>
       </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
         dataSource={tableData || []}
-        pagination={pagination}
+        pagination={false}
       />
     </div>
   );

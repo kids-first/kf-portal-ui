@@ -11,17 +11,11 @@ import SidebarFilters from './SidebarFilters';
 import styles from './Sidebar.module.scss';
 
 type StudiesProps = {
-  onChange: () => void;
   filters: ISqonGroupFilter;
 };
 type OwnProps = SidebarData & StudiesProps;
 
-const StudiesFiltersSider = ({
-  studiesResults,
-  studiesMappingResults,
-  onChange,
-  filters,
-}: OwnProps) => {
+const StudiesFiltersSider = ({ studiesResults, studiesMappingResults, filters }: OwnProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   return (
     <div className={styles.sider} data-collapsed={collapsed}>
@@ -35,7 +29,6 @@ const StudiesFiltersSider = ({
         <ScrollView className={styles.scrollView}>
           {!collapsed && (
             <SidebarFilters
-              onChange={onChange}
               studiesResults={studiesResults}
               studiesMappingResults={studiesMappingResults}
               filters={filters}

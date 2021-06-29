@@ -40,7 +40,6 @@ const keyEnhanceBooleanOnly = (key: string) => {
 };
 
 type StudiesProps = {
-  onChange: () => void;
   filters: ISqonGroupFilter;
 };
 type OwnProps = SidebarData & StudiesProps;
@@ -55,7 +54,7 @@ const sqon = {
   op: 'and',
 };
 
-const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filters }: OwnProps) => {
+const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnProps) => {
   const data = studiesResults;
   const options: ItemProps[] = [];
 
@@ -126,7 +125,6 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange, filte
             filterGroup={filterGroup}
             filters={filters}
             onChange={(fg, f) => {
-              onChange();
               updateFilters(history, fg, f);
             }}
             selectedFilters={selectedFilters}
