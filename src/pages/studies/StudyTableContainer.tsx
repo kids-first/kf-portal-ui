@@ -38,8 +38,7 @@ const StudyTable = (props: Props) => {
     <div>
       <div className={styles.tableHeader}>
         Showing <Text strong>{total}</Text>
-        <span> out of </span>
-        <Text strong>{total}</Text>
+        <span> studies </span>
       </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
