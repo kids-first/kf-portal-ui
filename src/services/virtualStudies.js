@@ -1,13 +1,14 @@
-import { isNumber } from 'util';
-import pick from 'lodash/pick';
+import { print } from 'graphql/language/printer';
+import gql from 'graphql-tag';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
+import pick from 'lodash/pick';
 import urlJoin from 'url-join';
-import gql from 'graphql-tag';
-import { print } from 'graphql/language/printer';
+import { isNumber } from 'util';
+
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { getDefaultSqon } from 'common/sqonUtils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 
 const COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY = 'DRAFT_VIRTUAL_STUDY';
 const DRAFT_FIELDS = [
@@ -24,7 +25,7 @@ const DRAFT_FIELDS = [
  * Normalizes a study coming from Riff into the format used in the application.
  * @param {Object} studyData - A virtual study coming from Riff
  */
-const normalizeRiffVirtualStudy = studyData => ({
+const normalizeRiffVirtualStudy = (studyData) => ({
   sqons: get(studyData, 'content.sqons', getDefaultSqon()),
   activeIndex: get(studyData, 'content.activeIndex', 0),
   virtualStudyId: studyData.id || null,
@@ -42,7 +43,7 @@ const normalizeRiffVirtualStudy = studyData => ({
  * @param {Object} study - A virtual study
  * @returns {Object} - A copy of the study, with detected errors corrected, or `null` if mandatory fields are missing.
  */
-const validateStudy = study => {
+const validateStudy = (study) => {
   if (typeof study !== 'object' || study === null) return null;
   if (!Array.isArray(study.sqons)) return null;
 
@@ -109,12 +110,12 @@ export const getVirtualStudies = async (api, egoId) => {
   const personaDataPromise = getVirtualStudiesFromPersona(api, egoId);
 
   return Promise.all([riffVirtualStudiesPromise, personaDataPromise])
-    .then(([riffVirtualStudies, personaVirtualStudies]) => {
-      return riffVirtualStudies.filter(rvs =>
-        personaVirtualStudies.some(pvs => get(pvs, 'id', null) === rvs.virtualStudyId),
-      );
-    })
-    .catch(err => {
+    .then(([riffVirtualStudies, personaVirtualStudies]) =>
+      riffVirtualStudies.filter((rvs) =>
+        personaVirtualStudies.some((pvs) => get(pvs, 'id', null) === rvs.virtualStudyId),
+      ),
+    )
+    .catch((err) => {
       throw new Error(`Failed to load virtual studies for user "${egoId} :\n${err.message}`);
     });
 };
@@ -123,11 +124,9 @@ const getVirtualStudiesFromRiff = async (api, egoId) =>
   api({
     url: urlJoin(shortUrlApi, 'user', egoId),
     method: 'GET',
-  }).then(result => {
-    return result.map(normalizeRiffVirtualStudy).map(validateStudy);
-  });
+  }).then((result) => result.map(normalizeRiffVirtualStudy).map(validateStudy));
 
-const getVirtualStudiesFromPersona = async api =>
+const getVirtualStudiesFromPersona = async (api) =>
   api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_SAVED_VIRTUAL_STUDIES'),
     body: {
@@ -142,7 +141,7 @@ const getVirtualStudiesFromPersona = async api =>
         }
       `),
     },
-  }).then(personaData => get(personaData, 'data.self.virtualStudies', []));
+  }).then((personaData) => get(personaData, 'data.self.virtualStudies', []));
 
 const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
   const { virtualStudyId: id, name } = newVirtualStudy;
@@ -238,7 +237,7 @@ export const createNewVirtualStudy = async (api, loggedInUser, study) => {
   return [normalizedStudy, updatedStudies];
 };
 
-export const getVirtualStudy = api => virtualStudyId => {
+export const getVirtualStudy = (api) => (virtualStudyId) => {
   if (!virtualStudyId) {
     return Promise.reject(new Error(`Failed to load virtual study: expected an "id"`));
   }
@@ -249,7 +248,7 @@ export const getVirtualStudy = api => virtualStudyId => {
   })
     .then(normalizeRiffVirtualStudy)
     .then(validateStudy)
-    .catch(err => {
+    .catch((err) => {
       throw new Error(`Failed to load virtual study ${virtualStudyId} with error:\n${err.message}`);
     });
 };
@@ -318,7 +317,7 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, virtualStudyId }) 
       userid: egoId,
     }),
   });
-  const newVirtualStudies = virtualStudies.filter(obj => obj.id !== virtualStudyId);
+  const newVirtualStudies = virtualStudies.filter((obj) => obj.id !== virtualStudyId);
   return await api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
     body: {
@@ -364,7 +363,7 @@ export const loadDraftVirtualStudy = () => {
   return virtualStudy === null ? null : pick(validateStudy(virtualStudy), DRAFT_FIELDS);
 };
 
-export const saveDraftVirtualStudy = virtualStudy => {
+export const saveDraftVirtualStudy = (virtualStudy) => {
   localStorage.setItem(
     COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY,
     JSON.stringify(pick(validateStudy(virtualStudy), DRAFT_FIELDS)),

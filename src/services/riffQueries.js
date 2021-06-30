@@ -1,7 +1,7 @@
 import urlJoin from 'url-join';
-import sqonToName from 'common/sqonToName';
+
 import { shortUrlApi } from 'common/injectGlobals';
-import { EXAMPLE_QUERIES } from 'common/constants';
+import sqonToName from 'common/sqonToName';
 
 const riffQuery = ({
   stats,
@@ -39,5 +39,14 @@ const riffQuery = ({
 
 export default riffQuery;
 
-export const createExampleQueries = (api, egoId) =>
-  Promise.all(EXAMPLE_QUERIES.map(q => riffQuery({ ...q, api, egoId })));
+export const fetchAllSavedQueries = (api, loggedInUser) =>
+  api({
+    url: urlJoin(shortUrlApi, 'user', loggedInUser.egoId),
+    method: 'GET',
+  });
+
+export const deleteSavedQuery = (api, queryId) =>
+  api({
+    url: urlJoin(shortUrlApi, queryId),
+    method: 'DELETE',
+  });
