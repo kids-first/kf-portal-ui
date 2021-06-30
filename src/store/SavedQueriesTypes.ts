@@ -18,7 +18,7 @@ type FilesQueryContent = {
 
 export type SavedQueryWithFileContent = {
   alias: string;
-  content: FilesQueryContent; //TODO
+  content: FilesQueryContent;
   creationDate: string;
   updatedDate: string;
   sharedPublicly: boolean;
