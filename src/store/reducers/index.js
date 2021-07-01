@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux';
-import virtualStudies from './virtualStudies';
+
 import currentVirtualStudy from './currentVirtualStudy';
-import user from './user';
-import ui from './ui';
 import enableFeatures from './enableFeatures';
+import fileSearchFilters from './fileSearchFilters';
+import genomicSuggester from './genomicSuggester';
 import modal from './modal';
 import report from './report';
-import fileSearchFilters from './fileSearchFilters';
+import savedQueries from './SavedQueries';
 import saveSets from './saveSets';
-import genomicSuggester from './genomicSuggester';
+import ui from './ui';
+import user from './user';
+import virtualStudies from './virtualStudies';
 import workBench from './workbench';
 
 export default combineReducers({
@@ -23,4 +25,5 @@ export default combineReducers({
   modal,
   genomicSuggester,
   workBench,
+  savedQueries,
 });
