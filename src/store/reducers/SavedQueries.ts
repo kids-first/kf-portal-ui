@@ -1,9 +1,12 @@
+import omit from 'lodash/omit';
+
 import {
   QueryType,
   SavedQueriesActions,
   SavedQueriesActionTypes,
   SavedQueriesState,
   SavedQueriesStatuses,
+  SplitSavedQueries,
 } from '../SavedQueriesTypes';
 
 const initialState: SavedQueriesState = {
@@ -13,10 +16,22 @@ const initialState: SavedQueriesState = {
   errorFetchAllQueries: null,
 };
 
+const removeGivenQueryFromQueries = (
+  queryIdToRemove: string,
+  queries: SplitSavedQueries,
+): SplitSavedQueries => {
+  const fileQueries = queries[QueryType.file].filter((q) => q.id !== queryIdToRemove);
+  const cohortQueries = queries[QueryType.cohort].filter((q) => q.id !== queryIdToRemove);
+  return { [QueryType.file]: fileQueries, [QueryType.cohort]: cohortQueries };
+};
+
 export default (state = initialState, action: SavedQueriesActionTypes): SavedQueriesState => {
   switch (action.type) {
     case SavedQueriesActions.toggleFetchAllSavedQueries: {
       return { ...state, isLoadingAllQueries: action.isLoadingAllQueries };
+    }
+    case SavedQueriesActions.requestFetchAllSavedQueries: {
+      return { ...initialState, isLoadingAllQueries: true };
     }
     case SavedQueriesActions.addAllSavedQueries: {
       return { ...state, queries: action.queries };
@@ -25,34 +40,30 @@ export default (state = initialState, action: SavedQueriesActionTypes): SavedQue
       return { ...state, errorFetchAllQueries: action.error };
     }
     case SavedQueriesActions.requestDeleteSavedQuery: {
-      const queryId = action.queryId;
-
-      const queryIdToStatusShallowCopy = { ...state.queryIdToStatus };
-      queryIdToStatusShallowCopy[queryId] = SavedQueriesStatuses.deleting;
-
-      return { ...state, queryIdToStatus: queryIdToStatusShallowCopy };
+      return {
+        ...state,
+        queryIdToStatus: {
+          ...state.queryIdToStatus,
+          [action.queryId]: SavedQueriesStatuses.deleting,
+        },
+      };
     }
     case SavedQueriesActions.successDeletingSavedQuery: {
       const queryId = action.queryId;
-      const queryType = action.queryType;
-
-      const queryIdToStatusShallowCopy = { ...state.queryIdToStatus };
-      delete queryIdToStatusShallowCopy[queryId];
-
-      const queriesShallowCopy = { ...state.queries };
-      const queriesForTypeShallowCopy = [...queriesShallowCopy[queryType]];
-      const filteredQueriesForType = queriesForTypeShallowCopy.filter((q) => q.id !== queryId);
       return {
         ...state,
-        queries: { ...queriesShallowCopy, [queryType]: filteredQueriesForType },
-        queryIdToStatus: queryIdToStatusShallowCopy,
+        queries: removeGivenQueryFromQueries(queryId, state.queries),
+        queryIdToStatus: omit(state.queryIdToStatus, [queryId]),
       };
     }
     case SavedQueriesActions.failureDeletingSavedQuery: {
-      const queryId = action.queryId;
-      const queryIdToStatusShallowCopy = { ...state.queryIdToStatus };
-      queryIdToStatusShallowCopy[queryId] = SavedQueriesStatuses.error;
-      return { ...state, queryIdToStatus: queryIdToStatusShallowCopy };
+      return {
+        ...state,
+        queryIdToStatus: {
+          ...state.queryIdToStatus,
+          [action.queryId]: SavedQueriesStatuses.error,
+        },
+      };
     }
     default:
       return state;

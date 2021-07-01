@@ -48,6 +48,7 @@ export enum SavedQueriesActions {
   failureFetchingAllSavedQueries = 'failureFetchingAllSavedQueries',
   failureDeletingSavedQuery = 'failureDeletingSavedQuery',
   addAllSavedQueries = 'addAllSavedQueries',
+  requestFetchAllSavedQueries = 'requestFetchAllSavedQueries',
 }
 
 type AddSavedQueriesAction = {
@@ -57,18 +58,22 @@ type AddSavedQueriesAction = {
 
 type FailureFetchingAllSavedQueriesAction = {
   type: SavedQueriesActions.failureFetchingAllSavedQueries;
-  error: Error | null;
+  error: Error;
 };
 
 type FailureDeletingSavedQueryAction = {
   type: SavedQueriesActions.failureDeletingSavedQuery;
-  error: Error | null;
+  error: Error;
   queryId: string;
 };
 
 type ToggleLoadingAllSavedQueriesAction = {
   type: SavedQueriesActions.toggleFetchAllSavedQueries;
   isLoadingAllQueries: boolean;
+};
+
+type RequestFetchAllSavedQueriesAction = {
+  type: SavedQueriesActions.requestFetchAllSavedQueries;
 };
 
 type FetchAllSavedQueriesAction = {
@@ -83,7 +88,6 @@ type RequestDeleteSavedQueryAction = {
 type SuccessDeletingSavedQueryAction = {
   type: SavedQueriesActions.successDeletingSavedQuery;
   queryId: string;
-  queryType: QueryType;
 };
 
 export enum SavedQueriesStatuses {
@@ -105,6 +109,7 @@ export type SavedQueriesActionTypes =
   | FailureFetchingAllSavedQueriesAction
   | FailureDeletingSavedQueryAction
   | AddSavedQueriesAction
-  | SuccessDeletingSavedQueryAction;
+  | SuccessDeletingSavedQueryAction
+  | RequestFetchAllSavedQueriesAction;
 
 export type DispatchSavedQueries = ThunkDispatch<RootState, null, SavedQueriesActionTypes>;

@@ -20,12 +20,12 @@ const toggleFetchAllQueriesLoading = (isLoadingAllQueries: boolean): SavedQuerie
   isLoadingAllQueries,
 });
 
-const addQueries = (queries: SplitSavedQueries): SavedQueriesActionTypes => ({
+const addSavedQueries = (queries: SplitSavedQueries): SavedQueriesActionTypes => ({
   type: SavedQueriesActions.addAllSavedQueries,
   queries,
 });
 
-const failureFetchingAllSavedQueries = (error: Error | null): SavedQueriesActionTypes => ({
+const failureFetchingAllSavedQueries = (error: Error): SavedQueriesActionTypes => ({
   type: SavedQueriesActions.failureFetchingAllSavedQueries,
   error,
 });
@@ -35,19 +35,19 @@ const requestDeleteSavedQueryAction = (queryId: string): SavedQueriesActionTypes
   queryId,
 });
 
-const successDeletingSavedQueryAction = (
-  queryId: string,
-  queryType: QueryType,
-): SavedQueriesActionTypes => ({
+const successDeletingSavedQueryAction = (queryId: string): SavedQueriesActionTypes => ({
   type: SavedQueriesActions.successDeletingSavedQuery,
   queryId,
-  queryType,
 });
 
-const failureDeletingQuery = (queryId: string, error: Error | null): SavedQueriesActionTypes => ({
+const failureDeletingSavedQuery = (queryId: string, error: Error): SavedQueriesActionTypes => ({
   type: SavedQueriesActions.failureDeletingSavedQuery,
   queryId,
   error,
+});
+
+const requestFetchAllSavedQueries = (): SavedQueriesActionTypes => ({
+  type: SavedQueriesActions.requestFetchAllSavedQueries,
 });
 
 export const deleteParticularSavedQuery = (
@@ -62,10 +62,10 @@ export const deleteParticularSavedQuery = (
       dispatch(deleteVirtualStudy({ virtualStudyId: queryId, loggedInUser }));
     }
     await deleteSavedQuery(api, queryId);
-    dispatch(successDeletingSavedQueryAction(queryId, queryType));
+    dispatch(successDeletingSavedQueryAction(queryId));
   } catch (error) {
     console.error(error);
-    dispatch(failureDeletingQuery(queryId, error));
+    dispatch(failureDeletingSavedQuery(queryId, error));
   }
 };
 
@@ -73,7 +73,7 @@ export const fetchSavedQueries = (
   api: Api,
   loggedInUser: LoggedInUser,
 ): ThunkAction<void, RootState, null, SavedQueriesActionTypes> => async (dispatch) => {
-  dispatch(toggleFetchAllQueriesLoading(true));
+  dispatch(requestFetchAllSavedQueries());
   try {
     const queriesFromRiff = await fetchAllSavedQueries(api, loggedInUser);
     const queriesVirtualStudies = await getVirtualStudies(api, loggedInUser.egoId);
@@ -90,7 +90,7 @@ export const fetchSavedQueries = (
     const cohortQueries = Array.isArray(queriesVirtualStudies)
       ? queriesVirtualStudies.map((vs) => ({ ...vs, id: vs.virtualStudyId }))
       : [];
-    dispatch(addQueries({ [QueryType.cohort]: cohortQueries, [QueryType.file]: fileQueries }));
+    dispatch(addSavedQueries({ [QueryType.cohort]: cohortQueries, [QueryType.file]: fileQueries }));
   } catch (e) {
     console.error(e);
     dispatch(failureFetchingAllSavedQueries(e));
