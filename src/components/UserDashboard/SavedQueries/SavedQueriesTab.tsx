@@ -85,7 +85,6 @@ const SavedQueriesTab = (props: Props) => {
                       type={'error'}
                       message={
                         'An error occurred while trying to delete the query.' +
-                        ' It may have not been delete correctly.' +
                         ' Please refresh and retry or contact support.'
                       }
                     />
