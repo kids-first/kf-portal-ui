@@ -11,7 +11,7 @@ const ROUTES = {
   variant: '/variant',
   gen3Redirect: '/gen3_redirect',
   join: '/join',
-  login: '/',
+  login: '/login',
   redirected: '/redirected',
   orcid: '/orcid',
   participant: '/participant',
@@ -21,7 +21,6 @@ const ROUTES = {
   variantDb: '/variant',
   profile: '/profile',
   termsConditions: '/termsConditions',
-  /* temporary while constructing the new variant page*/
 };
 
 export default ROUTES;
