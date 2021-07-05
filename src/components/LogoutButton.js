@@ -1,7 +1,9 @@
-import { logoutAll } from 'services/login';
-import { updateProfile, getUserLoggedInProfile } from 'services/profiles';
-import isEmpty from 'lodash/isEmpty';
 import { removeForumBanner } from 'ForumBanner';
+import isEmpty from 'lodash/isEmpty';
+
+import ROUTES from 'common/routes';
+import { logoutAll } from 'services/login';
+import { getUserLoggedInProfile, updateProfile } from 'services/profiles';
 
 export const uiLogout = async ({
   loggedInUser,
@@ -10,7 +12,12 @@ export const uiLogout = async ({
   clearIntegrationTokens,
   api,
   history,
+  setIsLoadingUser = null,
 }) => {
+  if (setIsLoadingUser) {
+    setIsLoadingUser(true);
+  }
+
   const isUserInMemory = loggedInUser && !isEmpty(loggedInUser);
   if (isUserInMemory) {
     const fetchedProfile = await getUserLoggedInProfile();
@@ -35,6 +42,6 @@ export const uiLogout = async ({
     })
     .then(() => {
       removeForumBanner();
-      history.push('/');
+      history.push(ROUTES.login);
     });
 };

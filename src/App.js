@@ -64,20 +64,14 @@ const App = compose(
   // eslint-disable-next-line react/prop-types
   const protectRoute = ({ loggedInUser, WrapperPage = Page, ...props }) => {
     if (userIsRequiredToLogIn(loggedInUser)) {
-      return (
-        <SideImagePage
-          logo={logo}
-          sideImagePath={loginImage}
-          Component={LoginPage}
-          Footer={LoginFooter}
-        />
-      );
+      return <Redirect to={ROUTES.login} />;
     } else if (isJoinFormNeeded(loggedInUser)) {
       return <Redirect to="/join" />;
       // eslint-disable-next-line react/prop-types
     } else if (!loggedInUser.acceptedTerms) {
       return <Redirect to={ROUTES.termsConditions} />;
     }
+
     return <WrapperPage {...props} />;
   };
 
@@ -90,6 +84,27 @@ const App = compose(
         <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
           <Switch>
             <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+            <Route
+              path={ROUTES.login}
+              exact
+              render={() => {
+                if (
+                  !userIsRequiredToLogIn(loggedInUser) &&
+                  !isJoinFormNeeded(loggedInUser) &&
+                  loggedInUser.acceptedTerms
+                ) {
+                  return <Redirect to="/" />;
+                }
+                return (
+                  <SideImagePage
+                    logo={logo}
+                    sideImagePath={loginImage}
+                    Component={LoginPage}
+                    Footer={LoginFooter}
+                  />
+                );
+              }}
+            />
             <Route
               path={ROUTES.termsConditions}
               exact
@@ -134,7 +149,6 @@ const App = compose(
               }
             />
             <Route
-              /* temporary: this will be the new variant db page*/
               path={ROUTES.variant}
               exact
               render={(props) =>
