@@ -1,5 +1,7 @@
 import { ModalStateType } from './reducers/modal';
 import { CurrentVirtualStudyTypes } from './currentVirtualStudyTypes';
+import { FenceConnectionsState } from './fenceConnectionsTypes';
+import { FenceStudiesState } from './fenceStudiesTypes';
 import { FileSearchFiltersState } from './fileSearchFiltersTypes';
 import { GenomicSuggesterState } from './genomicSuggesterTypes';
 import { ReportState } from './reportTypes';
@@ -24,4 +26,6 @@ export interface RootState {
   genomicSuggester: GenomicSuggesterState;
   workBench: WorkBenchState;
   savedQueries: SavedQueriesState;
+  fenceConnections: FenceConnectionsState;
+  fenceStudies: FenceStudiesState;
 }

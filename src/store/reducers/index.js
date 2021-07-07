@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 
 import currentVirtualStudy from './currentVirtualStudy';
 import enableFeatures from './enableFeatures';
+import fenceConnections from './fenceConnections';
+import fenceStudies from './fenceStudies';
 import fileSearchFilters from './fileSearchFilters';
 import genomicSuggester from './genomicSuggester';
 import modal from './modal';
@@ -26,4 +28,6 @@ export default combineReducers({
   genomicSuggester,
   workBench,
   savedQueries,
+  fenceConnections,
+  fenceStudies,
 });
