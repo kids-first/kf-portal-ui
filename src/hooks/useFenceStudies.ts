@@ -31,11 +31,8 @@ const useFenceStudies = (api: Api): Output => {
 
   useEffect(() => {
     const fences = keys(fenceConnections);
-    const shouldFetch = fences.length > 0;
-    if (shouldFetch) {
-      const aclsByFence = computeAclsByFence(fenceConnections);
-      dispatch(fetchAllFenceStudiesIfNeeded(api, fences, aclsByFence));
-    }
+    const aclsByFence = computeAclsByFence(fenceConnections);
+    dispatch(fetchAllFenceStudiesIfNeeded(api, fences, aclsByFence));
   }, [fenceConnections, dispatch, api]);
 
   return {

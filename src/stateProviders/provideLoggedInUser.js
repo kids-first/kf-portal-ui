@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 import get from 'lodash/get';
 
 import { EGO_JWT_KEY, SERVICES } from 'common/constants';
+import { INTEGRATION_PREFIX } from 'common/constants';
 import ROUTES from 'common/routes';
 import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
 import { getUserGroups } from 'components/Login/utils';
@@ -170,7 +171,7 @@ export default provideState({
     },
     setIntegrationToken: (effects, service, token) => (state) => {
       if (SERVICES.includes(service)) {
-        const tokenKey = `integration_${service}`;
+        const tokenKey = `${INTEGRATION_PREFIX}${service}`;
         if (token) {
           localStorage.setItem(tokenKey, token);
           state.integrationTokens[service] = token;
@@ -183,12 +184,12 @@ export default provideState({
     },
     getIntegrationToken: (effects, service) => () => {
       if (SERVICES.includes(service)) {
-        const tokenKey = `integration_${service}`;
+        const tokenKey = `${INTEGRATION_PREFIX}${service}`;
         return tokenKey ? localStorage.getItem(tokenKey) : null;
       }
     },
     clearIntegrationTokens: () => (state) => {
-      SERVICES.forEach((service) => localStorage.removeItem(`integration_${service}`));
+      SERVICES.forEach((service) => localStorage.removeItem(`${INTEGRATION_PREFIX}${service}`));
       return { ...state, integrationTokens: {} };
     },
     setIsLoadingUser: (isLoading) => (state) => ({ ...state, isLoadingUser: isLoading }),

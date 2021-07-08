@@ -198,3 +198,5 @@ export const DB_GA_P = 'dbGaP';
 
 export const generateUrlForDbGap = (dbGaPStudyId) =>
   `https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${dbGaPStudyId}.v1.p1`;
+
+export const INTEGRATION_PREFIX = 'integration_';

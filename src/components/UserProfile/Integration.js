@@ -1,26 +1,33 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { compose, setPropTypes } from 'recompose';
+import { connect as reduxConnect } from 'react-redux';
+import { BookOutlined } from '@ant-design/icons';
+import { notification } from 'antd';
 import { injectState } from 'freactal';
-import { withApi } from 'services/api';
 import get from 'lodash/get';
-import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
+import PropTypes from 'prop-types';
+import { compose, setPropTypes } from 'recompose';
+
+import useFenceConnections from 'hooks/useFenceConnections';
+import {
+  setUserDimension,
+  TRACKING_EVENTS,
+  trackUserInteraction,
+} from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import {
   convertTokenToUser,
   deleteFenceTokens,
   fenceConnect,
   getAccessToken,
 } from 'services/fence';
-import {
-  setUserDimension,
-  TRACKING_EVENTS,
-  trackUserInteraction,
-} from 'services/analyticsTracking';
-import PropTypes from 'prop-types';
-import IntegrationManager from './IntegrationManager';
-import { BookOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
+import { addFenceConnection } from 'store/actionCreators/fenceConnections';
+import { removeFenceConnection } from 'store/actionCreators/fenceConnections';
+import { computeAclsForConnection } from 'store/actionCreators/fenceConnections';
+import { fetchFenceStudiesIfNeeded } from 'store/actionCreators/fenceStudies';
+import { removeFenceStudies } from 'store/actionCreators/fenceStudies';
 
+import IntegrationManager from './IntegrationManager';
 const AUTHORIZED_STUDIES_DIM = '5';
 const CAVATICA_DIM = '6';
 const DCF_DIM = '7';
@@ -52,12 +59,21 @@ const trackFenceAction = async ({ fence, fenceDetails, category, action, label }
   await trackUserInteraction({ category, action, label });
 };
 
-const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
+const disconnect = async ({
+  fence,
+  api,
+  setConnecting,
+  effects,
+  setError,
+  removeFenceConnection,
+  removeFenceStudies,
+}) => {
   setConnecting(true);
   try {
     await deleteFenceTokens(api, fence);
     await effects.setIntegrationToken(fence, null);
-    await effects.removeFenceConnection(fence);
+    removeFenceConnection(fence);
+    removeFenceStudies(fence);
     await trackFenceAction({
       fence,
       fenceDetails: '',
@@ -71,15 +87,23 @@ const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(false);
 };
 
-const connect = async ({ fence, api, setConnecting, effects, setError }) => {
+const connect = async ({
+  fence,
+  api,
+  setConnecting,
+  effects,
+  setError,
+  fetchFenceStudiesIfNeeded,
+  addFenceConnection,
+}) => {
   setConnecting(true);
   try {
     await fenceConnect(api, fence);
     const token = await getAccessToken(api, fence);
     effects.setIntegrationToken(fence, token);
     const details = convertTokenToUser(token);
-    effects.addFenceConnection({ fence, details });
-    await effects.fetchFenceStudies({ api, fence, details });
+    addFenceConnection(fence, details);
+    fetchFenceStudiesIfNeeded(api, fence, computeAclsForConnection(details));
     setConnecting(false);
     notification.success({
       message: 'Success',
@@ -106,13 +130,23 @@ const connect = async ({ fence, api, setConnecting, effects, setError }) => {
 
 function Integration(props) {
   const {
+    addFenceConnection,
+    fetchFenceStudiesIfNeeded,
+    removeFenceConnection,
+    removeFenceStudies,
     fence,
-    state: { fenceConnectionsInitialized, fenceConnections },
     logo,
     description,
     effects,
     api,
   } = props;
+
+  const {
+    isCheckingIfFenceConnectionsFetchIsNeeded,
+    isFetchingAllFenceConnections,
+    fenceConnections,
+  } = useFenceConnections(api, [fence]);
+  const isLoadingFence = isCheckingIfFenceConnectionsFetchIsNeeded || isFetchingAllFenceConnections;
 
   return (
     <IntegrationManager
@@ -120,7 +154,7 @@ function Integration(props) {
       logo={logo}
       description={description}
       isConnected={!!get(fenceConnections, fence, false)}
-      isLoadingBeforeConnecting={!fenceConnectionsInitialized}
+      isLoadingBeforeConnecting={isLoadingFence}
       actionWhenConnected={{
         modalId: fence,
         buttonIcon: <BookOutlined />,
@@ -132,6 +166,8 @@ function Integration(props) {
           fence,
           api,
           effects,
+          addFenceConnection,
+          fetchFenceStudiesIfNeeded,
         },
       }}
       disConnection={{
@@ -140,15 +176,28 @@ function Integration(props) {
           fence,
           api,
           effects,
+          removeFenceConnection,
+          removeFenceStudies,
         },
       }}
     />
   );
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  addFenceConnection: (fenceName, connection) =>
+    dispatch(addFenceConnection(fenceName, connection)),
+  fetchFenceStudiesIfNeeded: (api, fenName, acls) =>
+    dispatch(fetchFenceStudiesIfNeeded(api, fenName, acls)),
+  removeFenceConnection: (fenceName) => dispatch(removeFenceConnection(fenceName)),
+  removeFenceStudies: (fenceName) => dispatch(removeFenceStudies(fenceName)),
+});
+
+const connector = reduxConnect(null, mapDispatchToProps);
+
 const Enhanced = compose(
+  connector,
   injectState,
-  fenceConnectionInitializeHoc,
   withApi,
   setPropTypes({
     logo: PropTypes.node.isRequired,
@@ -158,6 +207,10 @@ const Enhanced = compose(
     state: PropTypes.object.isRequired,
     effects: PropTypes.object.isRequired,
     api: PropTypes.func.isRequired,
+    addFenceConnection: PropTypes.func,
+    fetchFenceStudiesIfNeeded: PropTypes.func,
+    removeFenceConnection: PropTypes.func,
+    removeFenceStudies: PropTypes.func,
   }),
 )(Integration);
 

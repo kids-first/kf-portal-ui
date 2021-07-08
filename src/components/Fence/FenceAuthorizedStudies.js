@@ -1,18 +1,18 @@
-import React, { Fragment } from 'react';
-import { Spin } from 'antd';
-import { injectState } from 'freactal';
-import get from 'lodash/get';
+import React from 'react';
 import { compose } from 'recompose';
 
+import useFenceConnections from 'hooks/useFenceConnections';
+import useFenceStudies from 'hooks/useFenceStudies';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
+import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
-import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 import { PromptMessageContainer } from 'uikit/PromptMessage';
 import Row from 'uikit/Row';
+import { Spinner } from 'uikit/Spinner';
 
 import './FenceAuthorizedStudies.css';
 
@@ -29,47 +29,22 @@ const sqonForStudy = (studyId) => ({
   ],
 });
 
-const FenceProjectList = ({ history, fenceConnectionsInitialized, authStudies }) =>
-  !fenceConnectionsInitialized ? (
-    <Spin />
-  ) : (
-    authStudies.map(({ id, studyShortName }) => {
-      const sqon = sqonForStudy(id);
-      return (
-        <Row className={'itemRowContainer'} key={id}>
-          <Column justifyContent="center" p={15}>
-            <StackIcon width={20} />
-          </Column>
-          <Column flex={1} justifyContent="center" pr={10}>
-            <Span>
-              <strong>{studyShortName}</strong> ({`${id}`})
-            </Span>
-          </Column>
-          <Column justifyContent="center">
-            <ExternalLink hasExternalIcon={false}>
-              <Span
-                onClick={() => history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)}
-              >
-                {'View data files'} <RightChevron width={10} fill={'#90278e'} />
-              </Span>
-            </ExternalLink>
-          </Column>
-        </Row>
-      );
-    })
-  );
-
 const FenceAuthorizedStudies = compose(
+  withApi,
   withHistory,
-  injectState,
-  fenceConnectionInitializeHoc,
-)(({ fence, history, state: { fenceStudies, fenceConnectionsInitialized } }) => {
-  const authStudies = get(fenceStudies, `${fence}.authorizedStudies`, []);
+)(({ onCloseModalCb, api, fence, history }) => {
+  const { isFetchingAllFenceConnections } = useFenceConnections(api, [fence]);
+  const { isFetchingAllFenceStudies, fenceAuthStudies } = useFenceStudies(api);
+
+  const isLoadingStudies = isFetchingAllFenceConnections || isFetchingAllFenceStudies;
+  if (isLoadingStudies) {
+    return <Spinner />;
+  }
   return (
     <div className={'fenceAuthorizedStudiesContainer'}>
       <Column>
-        {authStudies.length ? (
-          <Fragment>
+        {fenceAuthStudies.length ? (
+          <>
             <Row style={{ margin: '10px 0' }}>
               <Span className="title" fontWeight={'bold'}>
                 {' '}
@@ -77,13 +52,34 @@ const FenceAuthorizedStudies = compose(
               </Span>
             </Row>
             <Column pl={15}>
-              <FenceProjectList
-                authStudies={authStudies}
-                history={history}
-                fenceConnectionsInitialized={fenceConnectionsInitialized}
-              />
+              {fenceAuthStudies.map(({ id, studyShortName }) => (
+                <Row className={'itemRowContainer'} key={id}>
+                  <Column justifyContent="center" p={15}>
+                    <StackIcon width={20} />
+                  </Column>
+                  <Column flex={1} justifyContent="center" pr={10}>
+                    <Span>
+                      <strong>{studyShortName}</strong> ({`${id}`})
+                    </Span>
+                  </Column>
+                  <Column justifyContent="center">
+                    <ExternalLink hasExternalIcon={false}>
+                      <Span
+                        onClick={() => {
+                          history.push(
+                            `/search/file?sqon=${encodeURI(JSON.stringify(sqonForStudy(id)))}`,
+                          );
+                          onCloseModalCb();
+                        }}
+                      >
+                        {'View data files'} <RightChevron width={10} fill={'#90278e'} />
+                      </Span>
+                    </ExternalLink>
+                  </Column>
+                </Row>
+              ))}
             </Column>
-          </Fragment>
+          </>
         ) : (
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>

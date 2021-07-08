@@ -1,6 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import { UserAcls } from './fenceTypes';
+import { FenceName, UserAcls } from './fenceTypes';
 import { RootState } from './rootState';
 
 export type FenceStudy = {
@@ -21,6 +21,7 @@ export enum FenceStudiesActions {
   toggleIsFetchingAllFenceStudies = 'toggleIsFetchingAllFenceStudies',
   fetchFenceStudies = 'fetchFenceStudies',
   addFenceStudies = 'addFenceStudies',
+  removeFenceStudies = 'removeFenceStudies',
 }
 
 export type ToggleIsFetchingAllFenceStudiesAction = {
@@ -33,11 +34,19 @@ export type AddFenceStudiesAction = {
   fenceAuthorizedStudies: FenceStudies;
 };
 
+export type RemoveFenceStudies = {
+  type: FenceStudiesActions.removeFenceStudies;
+  fenceName: FenceName;
+};
+
 export type FenceStudiesState = {
   fenceStudies: FenceStudies;
   isFetchingAllFenceStudies: boolean;
 };
 
-export type FenceStudiesActionTypes = ToggleIsFetchingAllFenceStudiesAction | AddFenceStudiesAction;
+export type FenceStudiesActionTypes =
+  | ToggleIsFetchingAllFenceStudiesAction
+  | AddFenceStudiesAction
+  | RemoveFenceStudies;
 
 export type DispatchFenceStudies = ThunkDispatch<RootState, null, FenceStudiesActionTypes>;

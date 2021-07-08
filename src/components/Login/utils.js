@@ -4,6 +4,7 @@ import isArrayLikeObject from 'lodash/isArrayLikeObject';
 import toLower from 'lodash/toLower';
 
 import { CAVATICA, FENCES } from 'common/constants';
+import { INTEGRATION_PREFIX } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getAccessToken } from 'services/fence';
 import { createProfile, getProfile } from 'services/profiles';
@@ -105,3 +106,6 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
       });
   });
 };
+
+export const hasIntegrationTokenForFence = (fenceName) =>
+  !!localStorage.getItem(`${INTEGRATION_PREFIX}${fenceName}`);

@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { ThunkAction } from 'redux-thunk';
 
+import { hasIntegrationTokenForFence } from 'components/Login/utils';
 import { getFenceUser } from 'services/fence';
 
 import { Api } from '../apiTypes';
@@ -16,7 +17,7 @@ import { selectFenceConnections } from '../selectors/fenceConnections';
 
 const { entries, keys } = Object;
 
-const addFenceConnection = (
+export const addFenceConnection = (
   fenceName: FenceName,
   connection: Connection,
 ): FenceConnectionsActionTypes => ({
@@ -31,7 +32,7 @@ const toggleIsFetchingAllFenceConnections = (isLoading: boolean): FenceConnectio
 });
 
 const shouldFetchConnections = (fenceName: FenceName, state: RootState): boolean =>
-  isEmpty(selectFenceConnections(state)[fenceName]);
+  hasIntegrationTokenForFence(fenceName) && isEmpty(selectFenceConnections(state)[fenceName]);
 
 const fetchFencesConnections = (
   api: Api,
@@ -44,6 +45,11 @@ const fetchFencesConnections = (
     console.error(`Error fetching fence connection for '${fenceName}': ${error}`);
   }
 };
+
+export const removeFenceConnection = (fenceName: FenceName): FenceConnectionsActionTypes => ({
+  type: FenceConnectionsActions.removeFenceConnection,
+  fenceName,
+});
 
 export const fetchFencesConnectionsIfNeeded = (
   api: Api,
@@ -73,11 +79,13 @@ export const concatAllFencesAcls = (fenceConnections: FenceConnections) => {
   return fenceNames.map((fence: FenceName) => keys(fenceConnections[fence].projects)).flat();
 };
 
+export const computeAclsForConnection = (connection: Connection) => keys(connection.projects || {});
+
 export const computeAclsByFence = (fenceConnections: FenceConnections) =>
   entries(fenceConnections).reduce(
     (acc, [fenceName, connection]) => ({
       ...acc,
-      [fenceName]: keys(connection.projects || {}),
+      [fenceName]: computeAclsForConnection(connection),
     }),
     {},
   );

@@ -20,7 +20,6 @@ import Tooltip from 'uikit/Tooltip';
 import { ControlledIcon } from '../ui';
 
 import './customColumns.css';
-const enhance = compose(withApi);
 
 const FenceDownloadButton = ({ fence, kfId }) =>
   // DCF files currently aren't available to download, so we show tooltip and grey out button
@@ -59,29 +58,6 @@ FenceDownloadButton.propTypes = {
   kfId: PropTypes.string.isRequired,
 };
 
-const ActionItems = ({ value, fence, hasAccess }) => (
-  <>
-    {hasAccess ? (
-      <FenceDownloadButton fence={fence} kfId={value} />
-    ) : (
-      <Tooltip
-        position="bottom"
-        interactive
-        html={<Row p={'10px'}>You do not have access to this file.</Row>}
-      >
-        <ControlledIcon fill={theme.lightBlue} />
-      </Tooltip>
-    )}
-  </>
-);
-
-ActionItems.propTypes = {
-  fence: PropTypes.string.isRequired,
-  file: PropTypes.object.isRequired,
-  hasAccess: PropTypes.bool.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
 const ActionsColumn = ({ value, api, fenceAcls }) => (
   <Query
     renderError
@@ -116,6 +92,13 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
       },
     }}
     render={({ loading: loadingQuery, data }) => {
+      if (loadingQuery) {
+        return (
+          <Row center className={'action-column-row'}>
+            <Spin size={'small'} />
+          </Row>
+        );
+      }
       const file = get(data, 'file.hits.edges[0].node', {});
       const acl = file.acl || [];
       const repository = file.repository;
@@ -125,7 +108,19 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
           {loadingQuery ? (
             <Spin size={'small'} />
           ) : (
-            <ActionItems value={value} fence={repository} hasAccess={hasAccess} file={file} />
+            <>
+              {hasAccess ? (
+                <FenceDownloadButton fence={repository} kfId={value} />
+              ) : (
+                <Tooltip
+                  position="bottom"
+                  interactive
+                  html={<Row p={'10px'}>You do not have access to this file.</Row>}
+                >
+                  <ControlledIcon fill={theme.lightBlue} />
+                </Tooltip>
+              )}
+            </>
           )}
         </Row>
       );
@@ -139,4 +134,4 @@ ActionsColumn.propTypes = {
   fenceAcls: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default enhance(ActionsColumn);
+export default compose(withApi)(ActionsColumn);

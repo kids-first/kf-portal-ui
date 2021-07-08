@@ -39,6 +39,7 @@ export enum FenceConnectionsActions {
   requestFetchFenceStudies = 'requestFetchFenceStudies',
   fetchFenceStudies = 'fetchFenceStudies',
   failureFetchingFenceStudies = 'failureFetchingFenceStudies',
+  removeFenceConnection = 'removeFenceConnection',
 }
 
 export type RequestFetchFenceStudiesAction = {
@@ -77,6 +78,11 @@ export type FenceConnectionsState = {
   isFetchingAllFenceConnections: boolean;
 };
 
+export type RemoveFenceConnection = {
+  type: FenceConnectionsActions.removeFenceConnection;
+  fenceName: FenceName;
+};
+
 export type FenceConnectionsActionTypes =
   | RequestFetchFenceConnectionsAction
   | FetchFenceConnectionsAction
@@ -84,6 +90,7 @@ export type FenceConnectionsActionTypes =
   | ToggleIsFetchingAllFenceConnectionsAction
   | RequestFetchFenceStudiesAction
   | FetchFenceStudiesAction
-  | FailureFetchingFenceStudiesAction;
+  | FailureFetchingFenceStudiesAction
+  | RemoveFenceConnection;
 
 export type DispatchFenceConnections = ThunkDispatch<RootState, null, FenceConnectionsActionTypes>;

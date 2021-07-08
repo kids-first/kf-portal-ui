@@ -1,3 +1,5 @@
+import omit from 'lodash/omit';
+
 import {
   FenceStudiesActions,
   FenceStudiesActionTypes,
@@ -21,6 +23,12 @@ export default (state = initialState, action: FenceStudiesActionTypes): FenceStu
           ...state.fenceStudies,
           ...action.fenceAuthorizedStudies,
         },
+      };
+    }
+    case FenceStudiesActions.removeFenceStudies: {
+      return {
+        ...state,
+        fenceStudies: omit(state.fenceStudies, [action.fenceName]),
       };
     }
     default:

@@ -2,6 +2,7 @@ import flatMap from 'lodash/flatMap';
 import isEmpty from 'lodash/isEmpty';
 import { ThunkAction } from 'redux-thunk';
 
+import { hasIntegrationTokenForFence } from 'components/Login/utils';
 import { getAuthStudiesIdAndCount, getStudiesCountByNameAndAcl } from 'services/fenceStudies';
 
 import { Api } from '../apiTypes';
@@ -22,9 +23,17 @@ const addFenceStudies = (fenceAuthorizedStudies: FenceStudies): FenceStudiesActi
   fenceAuthorizedStudies: fenceAuthorizedStudies,
 });
 
+export const removeFenceStudies = (fenceName: FenceName): FenceStudiesActionTypes => ({
+  type: FenceStudiesActions.removeFenceStudies,
+  fenceName,
+});
+
 const shouldFetchFenceStudies = (fenceName: FenceName, state: RootState) => {
   const studiesForFence = selectFenceStudies(state)[fenceName];
-  return isEmpty(studiesForFence) || isEmpty(studiesForFence.authorizedStudies);
+  return (
+    hasIntegrationTokenForFence(fenceName) &&
+    (isEmpty(studiesForFence) || isEmpty(studiesForFence.authorizedStudies))
+  );
 };
 
 const fetchFenceStudies = (
@@ -50,7 +59,7 @@ const fetchFenceStudies = (
   }
 };
 
-const fetchFenceStudiesIfNeeded = (
+export const fetchFenceStudiesIfNeeded = (
   api: Api,
   fenceName: FenceName,
   aclsByFence: AclsByFence,

@@ -1,3 +1,5 @@
+import omit from 'lodash/omit';
+
 import {
   FenceConnectionsActions,
   FenceConnectionsActionTypes,
@@ -16,6 +18,9 @@ export default (
   switch (action.type) {
     case FenceConnectionsActions.toggleIsFetchingAllFenceConnections: {
       return { ...state, isFetchingAllFenceConnections: action.isLoading };
+    }
+    case FenceConnectionsActions.removeFenceConnection: {
+      return { ...state, fenceConnections: omit(state.fenceConnections, [action.fenceName]) };
     }
     case FenceConnectionsActions.addFenceConnection: {
       return {
