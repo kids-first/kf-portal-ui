@@ -1,13 +1,13 @@
 import { Action } from 'redux';
 
 import { GEN3 } from 'common/constants';
-
 import {
   addFenceStudies,
   removeFenceStudies,
   toggleIsFetchingAllFenceStudies,
-} from '../../actionCreators/fenceStudies';
-import { MOCK_GEN3_STUDY_PHS_001436 } from '../../actionCreators/Test/mockDataFence';
+} from 'store/actionCreators/fenceStudies';
+import { MOCK_GEN3_STUDY_PHS_001436 } from 'store/actionCreators/Test/mockDataFence';
+
 import { FenceStudiesState } from '../../fenceStudiesTypes';
 import reducer from '../fenceStudies';
 
@@ -24,7 +24,7 @@ describe('Fence Studies Reducer', () => {
     expect(reducer(undefined, unknownAction)).toEqual(initialState);
   });
 
-  it('should handle toggleIsFetchingAllFenceConnections', () => {
+  it('should handle toggleIsFetchingAllFenceStudies', () => {
     expect(reducer(initialState, toggleIsFetchingAllFenceStudies(true))).toEqual({
       fenceStudies: {},
       isFetchingAllFenceStudies: true,

@@ -82,7 +82,7 @@ describe('Fence Studies actions', () => {
     ]);
   });
 
-  it('should create an action to add a fence study', () => {
+  it('should create an action to add a fence studies', () => {
     const expectedAction = {
       type: FenceStudiesActions.addFenceStudies,
       fenceAuthorizedStudies: MOCK_AUTH_STUDIES_WITH_2_FENCES,
