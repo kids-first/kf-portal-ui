@@ -3,21 +3,23 @@ import { ThunkDispatch } from 'redux-thunk';
 import { FenceName } from './fenceTypes';
 import { RootState } from './rootState';
 
+type Nullable<T> = T | undefined | null;
+
 export type Projects = { [index: string]: any };
 
 export type Connection = {
   authz: { [index: string]: any };
-  azp: string;
+  azp: Nullable<string>;
   certificates_uploaded: any[];
-  display_name: string;
-  email: string;
-  groups: any[];
+  display_name: Nullable<string>;
+  email: Nullable<string>;
+  groups: string[];
   is_admin: boolean;
   message: string;
   name: string;
-  phone_number: null;
-  preferred_username: null;
-  primary_google_service_account: null;
+  phone_number: Nullable<string>;
+  preferred_username: Nullable<string>;
+  primary_google_service_account: Nullable<string>;
   project_access: { [index: string]: any };
   projects: Projects;
   resources: any[];

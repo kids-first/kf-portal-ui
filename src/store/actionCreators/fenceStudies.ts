@@ -13,12 +13,12 @@ import { selectFenceStudies } from '../selectors/fenceStudies';
 
 const addWildCardToAcls = (acls: UserAcls) => [...(acls || []), '*'];
 
-const toggleIsFetchingAllFenceStudies = (isLoading: boolean): FenceStudiesActionTypes => ({
+export const toggleIsFetchingAllFenceStudies = (isLoading: boolean): FenceStudiesActionTypes => ({
   type: FenceStudiesActions.toggleIsFetchingAllFenceStudies,
   isLoading,
 });
 
-const addFenceStudies = (fenceAuthorizedStudies: FenceStudies): FenceStudiesActionTypes => ({
+export const addFenceStudies = (fenceAuthorizedStudies: FenceStudies): FenceStudiesActionTypes => ({
   type: FenceStudiesActions.addFenceStudies,
   fenceAuthorizedStudies: fenceAuthorizedStudies,
 });
@@ -36,7 +36,7 @@ const shouldFetchFenceStudies = (fenceName: FenceName, state: RootState) => {
   );
 };
 
-const fetchFenceStudies = (
+export const fetchFenceStudies = (
   api: Api,
   fenceName: FenceName,
   userAcls: UserAcls,
@@ -47,6 +47,7 @@ const fetchFenceStudies = (
     const authorizedStudies = isEmpty(studies)
       ? []
       : await getStudiesCountByNameAndAcl(api, studies, aclsWithWildCard);
+
     dispatch(
       addFenceStudies({
         [fenceName]: {

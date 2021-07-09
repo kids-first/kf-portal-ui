@@ -26,7 +26,9 @@ export const addFenceConnection = (
   connection,
 });
 
-const toggleIsFetchingAllFenceConnections = (isLoading: boolean): FenceConnectionsActionTypes => ({
+export const toggleIsFetchingAllFenceConnections = (
+  isLoading: boolean,
+): FenceConnectionsActionTypes => ({
   type: FenceConnectionsActions.toggleIsFetchingAllFenceConnections,
   isLoading,
 });
@@ -34,7 +36,7 @@ const toggleIsFetchingAllFenceConnections = (isLoading: boolean): FenceConnectio
 const shouldFetchConnections = (fenceName: FenceName, state: RootState): boolean =>
   hasIntegrationTokenForFence(fenceName) && isEmpty(selectFenceConnections(state)[fenceName]);
 
-const fetchFencesConnections = (
+export const fetchFencesConnections = (
   api: Api,
   fenceName: FenceName,
 ): ThunkAction<void, RootState, null, FenceConnectionsActionTypes> => async (dispatch) => {

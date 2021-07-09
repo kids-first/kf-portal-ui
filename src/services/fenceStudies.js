@@ -2,8 +2,8 @@ import keys from 'lodash/keys';
 
 import { graphql } from 'services/arranger';
 
-export const getAuthStudiesIdAndCount = async (api, fence, userAcl) =>
-  graphql(api)({
+export const getAuthStudiesIdAndCount = async (api, fence, userAcl) => {
+  const response = await graphql(api)({
     query: `
             query AuthorizedStudyIdsAndCount($sqon: JSON) {
               file {
@@ -26,34 +26,39 @@ export const getAuthStudiesIdAndCount = async (api, fence, userAcl) =>
         ],
       },
     },
-  }).then(
-    ({
-      data: {
-        file: {
-          aggregations: {
-            participants__study__external_id: { buckets },
-          },
+  });
+
+  const {
+    data: {
+      file: {
+        aggregations: {
+          participants__study__external_id: { buckets },
         },
       },
-    }) =>
-      buckets.reduce((obj, { key, doc_count }) => {
-        obj[key] = { authorizedFiles: doc_count };
-        return obj;
-      }, {}),
+    },
+  } = response;
+
+  return buckets.reduce(
+    (obj, { key, doc_count }) => ({ ...obj, [key]: { authorizedFiles: doc_count } }),
+    {},
   );
+};
 
 export const getStudiesCountByNameAndAcl = async (api, studies, userAcl) => {
   const studyIds = keys(studies);
 
-  const sqons = studyIds.reduce((obj, studyId) => {
-    obj[`${studyId}_sqon`] = {
-      op: 'in',
-      content: { field: 'participants.study.external_id', value: [studyId] },
-    };
-    return obj;
-  }, {});
+  const sqons = studyIds.reduce(
+    (obj, studyId) => ({
+      ...obj,
+      [`${studyId}_sqon`]: {
+        op: 'in',
+        content: { field: 'participants.study.external_id', value: [studyId] },
+      },
+    }),
+    {},
+  );
 
-  return graphql(api)({
+  const response = await graphql(api)({
     query: `
         query StudyCountByNamesAndAcl(${studyIds.map(
           (studyId) => `$${studyId}_sqon: JSON`,
@@ -83,17 +88,19 @@ export const getStudiesCountByNameAndAcl = async (api, studies, userAcl) => {
         }
     `,
     variables: sqons,
-  }).then(({ data: { file } }) =>
-    studyIds.map((id) => {
-      let study = {};
-      const agg = file[id];
-      study['acl'] = agg['acl']['buckets'].map((b) => b.key).filter((a) => userAcl.includes(a));
-      study['studyShortName'] = agg['participants__study__short_name']['buckets'][0]['key'];
-      study['totalFiles'] = agg['participants__study__short_name']['buckets'][0]['doc_count'];
-      study['id'] = id;
-      study['authorizedFiles'] = studies[id]['authorizedFiles'];
+  });
 
-      return study;
-    }),
-  );
+  const {
+    data: { file },
+  } = response;
+  return studyIds.map((id) => {
+    const agg = file[id];
+    return {
+      acl: agg['acl']['buckets'].map((b) => b.key).filter((a) => userAcl.includes(a)),
+      studyShortName: agg['participants__study__short_name']['buckets'][0]['key'],
+      totalFiles: agg['participants__study__short_name']['buckets'][0]['doc_count'],
+      id,
+      authorizedFiles: studies[id]['authorizedFiles'],
+    };
+  });
 };
