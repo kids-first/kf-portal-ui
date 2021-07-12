@@ -22,6 +22,11 @@ type Props = {
   queryIdToStatus: SavedQueriesIdToStatus;
 };
 
+const MAX_N_OF_CHARS_FOR_VS_DESCRIPTION = 140;
+
+const truncateWithEllipsis = (description: string) =>
+  `${description.slice(0, MAX_N_OF_CHARS_FOR_VS_DESCRIPTION)}...`;
+
 const CohortTab = (props: Props) => {
   const { queries, queryIdToStatus, loggedInUser, deleteParticularSavedQuery, api } = props;
 
@@ -31,11 +36,8 @@ const CohortTab = (props: Props) => {
       queryIdToStatus={queryIdToStatus}
       makeDescription={(item) => {
         const vs = item as VirtualStudyPlusId;
-        return (
-          <>
-            {vs.description.length >= 140 ? `${vs.description.slice(0, 140)}...` : vs.description}
-          </>
-        );
+        const descriptionIsLong = vs.description.length >= MAX_N_OF_CHARS_FOR_VS_DESCRIPTION;
+        return <>{descriptionIsLong ? truncateWithEllipsis(vs.description) : vs.description}</>;
       }}
       makeItemTitle={(item) => {
         const vs = item as VirtualStudyPlusId;
