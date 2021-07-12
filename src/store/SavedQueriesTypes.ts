@@ -95,11 +95,13 @@ export enum SavedQueriesStatuses {
   error = 'error',
 }
 
+export type SavedQueriesIdToStatus = Record<string, SavedQueriesStatuses>;
+
 export type SavedQueriesState = {
   queries: SplitSavedQueries;
   isLoadingAllQueries: boolean;
   errorFetchAllQueries: Error | null;
-  queryIdToStatus: Record<string, SavedQueriesStatuses>;
+  queryIdToStatus: SavedQueriesIdToStatus;
 };
 
 export type SavedQueriesActionTypes =
