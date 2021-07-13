@@ -1,4 +1,4 @@
-#[BUG | FEATUER | DOC] [TITLE]
+# [BUG | FEATUER | DOC] [TITLE]
 
 - closes #3242
 
