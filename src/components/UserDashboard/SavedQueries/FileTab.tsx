@@ -72,7 +72,7 @@ const FileTab = (props: Props) => {
       makeItemTitle={(item) => {
         const sq = item as SavedQueryWithFileContent;
         return (
-          <a
+          <Link
             onClick={async () => {
               await trackUserInteraction({
                 value: undefined,
@@ -81,10 +81,10 @@ const FileTab = (props: Props) => {
                 label: JSON.stringify(sq),
               });
             }}
-            href={`/search${sq.content.longUrl.split('/search')[1]}`}
+            to={`/search${sq.content.longUrl.split('/search')[1]}`}
           >
             {sq.alias}
-          </a>
+          </Link>
         );
       }}
       makeNoItemsInfoMessage={() => (

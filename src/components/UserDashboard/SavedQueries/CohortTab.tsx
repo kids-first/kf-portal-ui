@@ -41,7 +41,7 @@ const CohortTab = (props: Props) => {
       }}
       makeItemTitle={(item) => {
         const vs = item as VirtualStudyPlusId;
-        return <a href={`/explore?id=${vs.virtualStudyId}`}>{vs.name}</a>;
+        return <Link to={`/explore?id=${vs.virtualStudyId}`}>{vs.name}</Link>;
       }}
       makeNoItemsInfoMessage={() => (
         <>

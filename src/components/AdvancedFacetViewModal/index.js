@@ -1,8 +1,10 @@
 import React from 'react';
 import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
-import { FilterInput } from 'uikit/Input';
-import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import PropTypes from 'prop-types';
+
+import { TRACKING_EVENTS } from 'services/analyticsTracking';
+import { FilterInput } from 'uikit/Input';
+
 import './style.css';
 
 const CustomFilterInput = ({ children, style = {}, ...props }) => (

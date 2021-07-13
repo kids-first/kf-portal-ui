@@ -52,6 +52,7 @@ const NotConnected: FunctionComponent<PropsFromRedux> = ({
         detail="To analyze Kids First data on the cloud, connect to Cavatica."
       >
         <Button
+          type={'primary'}
           icon={<ApiOutlined />}
           onClick={() => {
             openModal(CAVATICA_CONNECT_MODAL_ID);

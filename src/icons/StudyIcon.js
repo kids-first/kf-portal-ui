@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 // eslint-disable-next-line react/display-name,react/prop-types
-export default ({ className = '', size = 28, width = 28, height = size }) => (
+export default ({ className = '', size = 28, width = 28, height = size, fill = 'none' }) => (
   <svg
     width={width}
     height={height}
     viewBox="0 0 28 28"
-    fill="none"
+    fill={fill}
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
