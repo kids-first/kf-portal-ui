@@ -8,6 +8,8 @@ import { VirtualStudyPlusId } from 'store/virtualStudiesTypes';
 import styleThemeColors from 'style/themes/default/colors.module.scss';
 import { toKebabCase } from 'utils';
 
+import './SavedQueries.scss';
+
 type Item = VirtualStudyPlusId | SavedQueryWithFileContent;
 
 type Items = Array<Item>;
@@ -79,7 +81,9 @@ const SavedQueriesTab = (props: Props) => {
               description={
                 <Space direction={'vertical'}>
                   {makeDescription(item)}
-                  <span>Saved {distanceInWords(new Date(), new Date(item.creationDate))} ago</span>
+                  <span className={'time-ago'}>
+                    Saved {distanceInWords(new Date(), new Date(item.creationDate))} ago
+                  </span>
                   {currentItemIsInError && (
                     <Alert
                       type={'error'}
