@@ -1,16 +1,20 @@
 import React from 'react';
-import { SocialIcon } from 'react-social-icons';
 import { CheckOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  FacebookFilled,
+  GithubFilled,
+  GoogleSquareFilled,
+  HomeFilled,
+  LinkedinFilled,
+  TwitterSquareFilled,
+} from '@ant-design/icons';
 import { Button, Typography } from 'antd';
 import get from 'lodash/get';
 
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import { ROLES } from 'common/constants';
-import { kfFacebook, kfGithub, kfTwitter } from 'common/injectGlobals';
 import style from 'components/UserProfile/style';
-import GoogleScholarIcon from 'icons/GoogleScholarIcon';
-import LinkedInIcon from 'icons/LinkedInIcon';
-import WebsiteIcon from 'icons/WebsiteIcon';
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 
 import { findMeFields } from './constants';
 
@@ -25,11 +29,12 @@ const addWebProtocolToUrlIfNeeded = (value) => {
 
 const href = addWebProtocolToUrlIfNeeded;
 
-export const socialItems = (width = 32, height = 32) => {
-  const commonSize = { height, width };
+export const socialItems = () => {
+  const width = 16;
+  const height = 16;
   return {
     website: {
-      icon: <WebsiteIcon {...commonSize} />,
+      icon: <HomeFilled style={{ fontSize: width, color: styleThemeColors.homeWebsiteColor }} />,
       name: 'Website URL',
       placeholder: 'e.g. kidsfirstdrc.org',
       type: 'text',
@@ -37,7 +42,7 @@ export const socialItems = (width = 32, height = 32) => {
       href,
     },
     googleScholarId: {
-      icon: <GoogleScholarIcon {...commonSize} />,
+      icon: <GoogleSquareFilled style={{ fontSize: width, color: styleThemeColors.googleColor }} />,
       name: 'Google Scholar URL',
       placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
       type: 'text',
@@ -45,7 +50,7 @@ export const socialItems = (width = 32, height = 32) => {
       href,
     },
     linkedin: {
-      icon: <LinkedInIcon {...commonSize} />,
+      icon: <LinkedinFilled style={{ fontSize: width, color: styleThemeColors.linkedinColor }} />,
       name: 'LinkedIn URL',
       placeholder: 'e.g. linkedin.com/in/acresnick',
       type: 'text',
@@ -53,7 +58,7 @@ export const socialItems = (width = 32, height = 32) => {
       href,
     },
     facebook: {
-      icon: <SocialIcon url={kfFacebook} style={{ ...commonSize }} />,
+      icon: <FacebookFilled style={{ fontSize: width, color: styleThemeColors.facebookColor }} />,
       name: 'Facebook URL',
       placeholder: 'e.g. facebook.com/kidsfirstDRC',
       type: 'text',
@@ -61,7 +66,9 @@ export const socialItems = (width = 32, height = 32) => {
       href,
     },
     twitter: {
-      icon: <SocialIcon url={kfTwitter} style={{ ...commonSize }} />,
+      icon: (
+        <TwitterSquareFilled style={{ fontSize: width, color: styleThemeColors.twitterColor }} />
+      ),
       name: 'Twitter handle/username',
       placeholder: 'e.g. @kidsfirstDRC',
       type: 'text',
@@ -70,7 +77,7 @@ export const socialItems = (width = 32, height = 32) => {
       service: 'Twitter',
     },
     github: {
-      icon: <SocialIcon url={kfGithub} style={{ ...commonSize }} />,
+      icon: <GithubFilled style={{ fontSize: width, color: styleThemeColors.githubColor }} />,
       name: 'Github username',
       placeholder: 'e.g. kids-first',
       type: 'text',
@@ -78,7 +85,7 @@ export const socialItems = (width = 32, height = 32) => {
       service: 'Github',
     },
     orchid: {
-      icon: <img alt="ORCHID" src={orchidIcon} {...commonSize} />,
+      icon: <img alt="ORCHID" src={orchidIcon} width={width} height={height} />,
       name: 'ORCID ID',
       placeholder: 'e.g. 0000-0003-0436-4189',
       type: 'text',

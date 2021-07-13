@@ -1,41 +1,45 @@
-/* FIXME eslint-disable is added to make the eslint pass for deploy. Too much clean up to do to fix this tech debt  */
-/* eslint-disable react/prop-types */
-import * as React from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-import isObject from 'lodash/isObject';
+import React from 'react';
 import FilterIcon from 'react-icons/lib/fa/filter';
-import { Layout } from 'antd';
-
-import Tooltip from 'uikit/Tooltip';
-import { FilterInput } from 'uikit/Input';
-import Column from 'uikit/Column';
-import Row from 'uikit/Row';
-import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
-
+import { connect } from 'react-redux';
+import { BarChartOutlined } from '@ant-design/icons';
 import { Arranger, CurrentSQON, Table } from '@kfarranger/components/dist/Arranger';
 import { replaceSQON } from '@kfarranger/components/dist/SQONView/utils';
+import { Button, Layout, Spin } from 'antd';
+import { injectState } from 'freactal';
+import isObject from 'lodash/isObject';
+import PropTypes from 'prop-types';
+import { compose } from 'recompose';
 
-import theme from 'theme/defaultTheme';
-import SQONURL from 'components/SQONURL';
-import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
-import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
-import { FileRepoStatsQuery } from 'components/Stats';
+import { arrangerProjectId } from 'common/injectGlobals';
+import translateSQON from 'common/translateSQONValue';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
+import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
+import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
+import SQONURL from 'components/SQONURL';
+import { FileRepoStatsQuery } from 'components/Stats';
 import DownloadIcon from 'icons/DownloadIcon';
-import translateSQON from 'common/translateSQONValue';
-import { arrangerProjectId } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
-import { ControlledIcon, OpenIcon, TableSpinner, SaveShareButtonContainer } from './ui';
+import { closeModal, openModal } from 'store/actions/modal';
+import { selectModalId } from 'store/selectors/modal';
+import theme from 'theme/defaultTheme';
+import { fillCenter } from 'theme/tempTheme.module.css';
+import Column from 'uikit/Column';
+import { FilterInput } from 'uikit/Input';
+import Row from 'uikit/Row';
+import Tooltip from 'uikit/Tooltip';
+
+import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
+import CavaticaCopyMultipleFilesModal from '../cavatica/CavaticaCopyMultipleFilesModal';
+
 import customTableColumns from './customTableColumns';
-import StatsBar from './StatsBar';
 import DownloadButton from './DownloadButton';
 import FileManifestButton from './FileManifestButton';
+import StatsBar from './StatsBar';
+import { ControlledIcon, OpenIcon, SaveShareButtonContainer } from './ui';
 
-import { fillCenter } from 'theme/tempTheme.module.css';
 import './FileRepo.scss';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
@@ -46,51 +50,21 @@ const trackFileRepoInteraction = ({ label, ...eventData }) =>
     ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
   });
 
-const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => (
-  <Row className={'relative'} right>
-    <Tooltip
-      position="top"
-      hideTitle
-      html={
-        <Row className={'relative'} p={'10px'}>
-          {disabled
-            ? 'Please select files in the table for this action.'
-            : 'Cavatica is a cloud processing platform where files can be ' +
-              'linked (not duplicated) and used immediately.'}
-        </Row>
-      }
-    >
-      <CavaticaCopyButton
-        fileIds={selectedTableRows}
-        sqon={sqon}
-        style={{
-          justifyContent: 'flex-start',
-          marginTop: '3px',
-          fontSize: '11px',
-        }}
-        text="Analyze in Cavatica"
-        {...props}
-      />
-    </Tooltip>
-    {disabled ? (
-      <Tooltip
-        position="top"
-        hideTitle
-        html={<Row>Please select files in the table for this action.</Row>}
-      >
-        <DownloadButton sqon={sqon} {...props} />
-        <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
-      </Tooltip>
-    ) : (
-      <>
-        <DownloadButton sqon={sqon} />
-        <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
-      </>
-    )}
-  </Row>
-);
+const CAVATICA_CONNECT_FILE_REPO_MODAL_ID = 'CAVATICA_CONNECT_FILE_REPO_MODAL_ID';
+const CAVATICA_COPY_FILE_REPO_MODAL_ID = 'CAVATICA_COPY_FILE_REPO_MODAL_ID';
 
-const enhance = compose(injectState, withApi, fenceConnectionInitializeHoc);
+const mapStateToProps = (state) => ({
+  openModalId: selectModalId(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openModal: (id) => dispatch(openModal(id)),
+  closeModal: (id) => dispatch(closeModal(id)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const enhance = compose(connector, injectState, withApi, fenceConnectionInitializeHoc);
 
 const FileRepo = ({
   state,
@@ -100,6 +74,10 @@ const FileRepo = ({
     sets: (state.loggedInUser || {}).sets || [],
   }),
   userProjectIds = gen3User ? Object.keys(gen3User.projects) : [],
+  isConnectedToCavatica,
+  openModalId,
+  closeModal,
+  openModal,
   ...props
 }) => (
   <SQONURL
@@ -112,9 +90,7 @@ const FileRepo = ({
               {connectionError ? (
                 `Unable to connect to the file repo, please try again later`
               ) : (
-                <Column className="tableSpinnerWrapper">
-                  <TableSpinner />
-                </Column>
+                <Spin size={'large'} />
               )}
             </div>
           ) : (
@@ -133,132 +109,190 @@ const FileRepo = ({
                       ],
                     })
                   : url.sqon;
+
+                const showConnectModal = openModalId === CAVATICA_CONNECT_FILE_REPO_MODAL_ID;
+                const showCavaticaCopyModal = openModalId === CAVATICA_COPY_FILE_REPO_MODAL_ID;
+
+                const closeCopyCavaticaModal = () => closeModal(CAVATICA_COPY_FILE_REPO_MODAL_ID);
+
                 return (
-                  <Layout className="arranger-container">
-                    <AggregationSidebar
-                      {...{ ...props, ...url, translateSQONValue, effects }}
-                      trackFileRepoInteraction={trackFileRepoInteraction}
-                    />
-                    <Column className="arranger-table-container">
-                      <Row mb={url.sqon ? 3 : 0}>
-                        <CurrentSQON
-                          {...props}
-                          {...url}
-                          {...{ translateSQONValue }}
-                          onClear={() => {
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                              action: TRACKING_EVENTS.actions.query.clear,
-                            });
-                            trackFileRepoInteraction({
-                              category: 'File Repo',
-                              action: TRACKING_EVENTS.actions.query.abandoned,
-                              label: 'cleared SQON',
-                              value: 1,
-                            });
-                          }}
-                        />
-                        {url.sqon && Object.keys(url.sqon).length > 0 && (
-                          <FileRepoStatsQuery
+                  <>
+                    {showConnectModal && (
+                      <CavaticaConnectModal
+                        isVisible={showConnectModal}
+                        onComplete={() => {
+                          closeModal(CAVATICA_CONNECT_FILE_REPO_MODAL_ID);
+                          openModal(CAVATICA_COPY_FILE_REPO_MODAL_ID);
+                        }}
+                        onCancelCB={() => closeModal(CAVATICA_CONNECT_FILE_REPO_MODAL_ID)}
+                      />
+                    )}
+                    {showCavaticaCopyModal && (
+                      <CavaticaCopyMultipleFilesModal
+                        fileIds={props.selectedTableRows}
+                        onComplete={closeCopyCavaticaModal}
+                        onCancel={closeCopyCavaticaModal}
+                        sqon={selectionSQON}
+                      />
+                    )}
+                    <Layout className="arranger-container">
+                      <AggregationSidebar
+                        {...{ ...props, ...url, translateSQONValue, effects }}
+                        trackFileRepoInteraction={trackFileRepoInteraction}
+                      />
+                      <Column className="arranger-table-container">
+                        <Row mb={url.sqon ? 3 : 0}>
+                          <CurrentSQON
                             {...props}
                             {...url}
-                            render={({ data: stats, loading: disabled }) => (
-                              <Row className="querySharing-container">
-                                <SaveShareButtonContainer>
-                                  <ShareQuery
-                                    api={props.api}
-                                    url={url}
-                                    stats={stats}
-                                    disabled={!!disabled}
-                                    loggedInUser={state.loggedInUser}
-                                    sqon={url.sqon}
-                                  />
-                                </SaveShareButtonContainer>
-                                <SaveShareButtonContainer>
-                                  <SaveQuery
-                                    api={props.api}
-                                    url={url}
-                                    stats={stats}
-                                    disabled={!!disabled}
-                                    loggedInUser={state.loggedInUser}
-                                    sqon={url.sqon}
-                                  />
-                                </SaveShareButtonContainer>
-                              </Row>
-                            )}
-                          />
-                        )}
-                      </Row>
-                      <StatsBar api={props.api} sqon={selectionSQON} />
-                      <Column className="arranger-table-wrapper">
-                        <Table
-                          {...props}
-                          {...url}
-                          keepSelectedOnPageChange
-                          customHeaderContent={
-                            <TableHeaderContent {...props} sqon={selectionSQON} disabled={false} />
-                          }
-                          customTypes={{
-                            // eslint-disable-next-line react/display-name
-                            access: ({ value }) => (
-                              <Row className="controlledAccess" center>
-                                {typeof value !== 'boolean' ? (
-                                  ``
-                                ) : value ? (
-                                  <ControlledIcon width={12} height={12} />
-                                ) : (
-                                  <OpenIcon />
-                                )}
-                              </Row>
-                            ),
-                          }}
-                          showFilterInput={false}
-                          InputComponent={(props) => (
-                            <FilterInput {...props} LeftIcon={FilterIcon} />
-                          )}
-                          customColumns={customTableColumns({
-                            theme,
-                            userProjectIds,
-                            fenceAcls: state.fenceAcls,
-                          })}
-                          filterInputPlaceholder={'Filter table'}
-                          columnDropdownText="Columns"
-                          fieldTypesForFilter={['text', 'keyword', 'id']}
-                          maxPagesOptions={5}
-                          onFilterChange={(val) => {
-                            if (val !== '') {
+                            {...{ translateSQONValue }}
+                            onClear={() => {
                               trackFileRepoInteraction({
                                 category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                action: TRACKING_EVENTS.actions.filter,
-                                label: val,
+                                action: TRACKING_EVENTS.actions.query.clear,
                               });
+                              trackFileRepoInteraction({
+                                category: 'File Repo',
+                                action: TRACKING_EVENTS.actions.query.abandoned,
+                                label: 'cleared SQON',
+                                value: 1,
+                              });
+                            }}
+                          />
+                          {url.sqon && Object.keys(url.sqon).length > 0 && (
+                            <FileRepoStatsQuery
+                              {...props}
+                              {...url}
+                              render={({ data: stats, loading: disabled }) => (
+                                <Row className="querySharing-container">
+                                  <SaveShareButtonContainer>
+                                    <ShareQuery
+                                      api={props.api}
+                                      url={url}
+                                      stats={stats}
+                                      disabled={!!disabled}
+                                      loggedInUser={state.loggedInUser}
+                                      sqon={url.sqon}
+                                    />
+                                  </SaveShareButtonContainer>
+                                  <SaveShareButtonContainer>
+                                    <SaveQuery
+                                      api={props.api}
+                                      url={url}
+                                      stats={stats}
+                                      disabled={!!disabled}
+                                      loggedInUser={state.loggedInUser}
+                                      sqon={url.sqon}
+                                    />
+                                  </SaveShareButtonContainer>
+                                </Row>
+                              )}
+                            />
+                          )}
+                        </Row>
+                        <StatsBar api={props.api} sqon={selectionSQON} />
+                        <Column className="arranger-table-wrapper">
+                          <Table
+                            {...props}
+                            {...url}
+                            keepSelectedOnPageChange
+                            customHeaderContent={
+                              <Row className={'relative'} right>
+                                <Tooltip
+                                  position="top"
+                                  hideTitle
+                                  html={
+                                    <Row className={'relative'} p={'10px'}>
+                                      {'Cavatica is a cloud processing platform where files can be ' +
+                                        'linked (not duplicated) and used immediately.'}
+                                    </Row>
+                                  }
+                                >
+                                  <Button
+                                    type={'primary'}
+                                    icon={<BarChartOutlined />}
+                                    onClick={() => {
+                                      openModal(
+                                        isConnectedToCavatica
+                                          ? CAVATICA_COPY_FILE_REPO_MODAL_ID
+                                          : CAVATICA_CONNECT_FILE_REPO_MODAL_ID,
+                                      );
+                                    }}
+                                  >
+                                    {'Analyze in Cavatica'}
+                                  </Button>
+                                </Tooltip>
+                                <>
+                                  <DownloadButton sqon={selectionSQON} />
+                                  <FileManifestButton
+                                    sqon={selectionSQON}
+                                    projectId={arrangerProjectId}
+                                  />
+                                </>
+                              </Row>
                             }
-                            if (props.onFilterChange) {
-                              props.onFilterChange(val);
+                            customTypes={{
+                              // eslint-disable-next-line react/display-name,react/prop-types
+                              access: ({ value }) => (
+                                <Row className="controlledAccess" center>
+                                  {typeof value !== 'boolean' ? (
+                                    ``
+                                  ) : value ? (
+                                    <ControlledIcon width={12} height={12} />
+                                  ) : (
+                                    <OpenIcon />
+                                  )}
+                                </Row>
+                              ),
+                            }}
+                            showFilterInput={false}
+                            InputComponent={(props) => (
+                              <FilterInput {...props} LeftIcon={FilterIcon} />
+                            )}
+                            customColumns={customTableColumns({
+                              theme,
+                              userProjectIds,
+                              fenceAcls: state.fenceAcls,
+                            })}
+                            filterInputPlaceholder={'Filter table'}
+                            columnDropdownText="Columns"
+                            fieldTypesForFilter={['text', 'keyword', 'id']}
+                            maxPagesOptions={5}
+                            onFilterChange={(val) => {
+                              if (val !== '') {
+                                trackFileRepoInteraction({
+                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                  action: TRACKING_EVENTS.actions.filter,
+                                  label: val,
+                                });
+                              }
+                              if (props.onFilterChange) {
+                                props.onFilterChange(val);
+                              }
+                            }}
+                            onTableExport={({ files }) => {
+                              trackFileRepoInteraction({
+                                category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                action: 'Export TSV',
+                                label: files,
+                              });
+                            }}
+                            exportTSVText={
+                              <>
+                                <DownloadIcon
+                                  fill={theme.greyScale3}
+                                  width={12}
+                                  height={18}
+                                  style={{ marginRight: '9px' }}
+                                />
+                                {'Export TSV'}
+                              </>
                             }
-                          }}
-                          onTableExport={({ files }) => {
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                              action: 'Export TSV',
-                              label: files,
-                            });
-                          }}
-                          exportTSVText={
-                            <>
-                              <DownloadIcon
-                                fill={theme.greyScale3}
-                                width={12}
-                                height={18}
-                                style={{ marginRight: '9px' }}
-                              />
-                              {'Export TSV'}
-                            </>
-                          }
-                        />
+                          />
+                        </Column>
                       </Column>
-                    </Column>
-                  </Layout>
+                    </Layout>
+                  </>
                 );
               }}
             />
@@ -268,5 +302,21 @@ const FileRepo = ({
     )}
   />
 );
+
+FileRepo.propTypes = {
+  state: PropTypes.object.isRequired,
+  effects: PropTypes.object.isRequired,
+  gen3User: PropTypes.object,
+  openModalId: PropTypes.string,
+  userProjectIds: PropTypes.array,
+  isConnectedToCavatica: PropTypes.bool.isRequired,
+  translateSQONValue: PropTypes.func,
+  closeModal: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  graphqlField: PropTypes.string,
+  selectedTableRows: PropTypes.array,
+  api: PropTypes.func,
+  onFilterChange: PropTypes.func,
+};
 
 export default enhance(FileRepo);

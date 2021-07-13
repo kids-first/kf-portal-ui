@@ -1,6 +1,11 @@
 import React from 'react';
-import filesize from 'filesize';
 import { CombinedStatsQuery } from '@kfarranger/components/dist/Arranger';
+
+import fileSizeStatVisualPath from 'assets/icon-database.svg';
+import familyMembersStatVisualPath from 'assets/icon-families-grey.svg';
+import fileStatVisualPath from 'assets/icon-files.svg';
+import participantsStatIconPath from 'assets/icon-participants.svg';
+import { formatBytesToHumanReadable } from 'utils';
 
 export const config = [
   {
@@ -8,7 +13,7 @@ export const config = [
     isRoot: true,
     icon: (
       <img
-        src={require('../assets/icon-files.svg')}
+        src={fileStatVisualPath}
         alt=""
         style={{
           width: '16px',
@@ -23,7 +28,7 @@ export const config = [
     field: 'participants.kf_id',
     icon: (
       <img
-        src={require('../assets/icon-participants.svg')}
+        src={participantsStatIconPath}
         alt=""
         style={{
           width: '21px',
@@ -38,7 +43,7 @@ export const config = [
     field: 'participants.family_id',
     icon: (
       <img
-        src={require('../assets/icon-families-grey.svg')}
+        src={familyMembersStatVisualPath}
         alt=""
         style={{
           width: '26px',
@@ -52,10 +57,10 @@ export const config = [
     label: 'Size',
     field: 'size',
     dataAccessor: 'stats.sum',
-    formatResult: x => filesize(x || 0).toUpperCase(),
+    formatResult: (x) => formatBytesToHumanReadable(x || 0),
     icon: (
       <img
-        src={require('../assets/icon-database.svg')}
+        src={fileSizeStatVisualPath}
         alt=""
         style={{
           width: '18px',
@@ -67,4 +72,4 @@ export const config = [
   },
 ];
 
-export const FileRepoStatsQuery = props => <CombinedStatsQuery {...props} stats={config} />;
+export const FileRepoStatsQuery = (props) => <CombinedStatsQuery {...props} stats={config} />;

@@ -1,18 +1,19 @@
-import { mergeIntoState, provideState } from 'freactal';
-import get from 'lodash/get';
-import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
-import { setToken } from 'services/ajax';
-import { getAllFieldNamesPromise, updateProfile } from 'services/profiles';
+import { mergeIntoState, provideState } from 'freactal';
+import jwtDecode from 'jwt-decode';
+import get from 'lodash/get';
+
 import { EGO_JWT_KEY, SERVICES } from 'common/constants';
-import { removeCookie, setCookie } from 'services/cookie';
-import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
-import { refreshToken } from 'services/login';
 import ROUTES from 'common/routes';
+import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
+import { getUserGroups } from 'components/Login/utils';
+import { setToken } from 'services/ajax';
 import { trackUserSession } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
+import { removeCookie, setCookie } from 'services/cookie';
 import history from 'services/history';
-import { getUserGroups } from 'components/Login/utils';
+import { refreshToken } from 'services/login';
+import { getAllFieldNamesPromise, updateProfile } from 'services/profiles';
 import { hasUserRole } from 'utils';
 
 const setEgoTokenCookie = (token) => {
@@ -190,5 +191,6 @@ export default provideState({
       SERVICES.forEach((service) => localStorage.removeItem(`integration_${service}`));
       return { ...state, integrationTokens: {} };
     },
+    setIsLoadingUser: (isLoading) => (state) => ({ ...state, isLoadingUser: isLoading }),
   },
 });

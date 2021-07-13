@@ -7,7 +7,24 @@
 
 ### Technical / Other changes
 -->
-## 2021-05-25 kf-portal-ui
+## 2021-07-13 kf-portal-ui 3.2.0
+
+### Features
+- [3014](https://github.com/kids-first/kf-portal-ui/issues/3014) Feature (Portal, Studies): Added a search bar at the top of the Facets panel which supports searching by study codes and study names
+- [3353](https://github.com/kids-first/kf-portal-ui/issues/3353) Feature (Portal, Studies): Removed the pagination from the Studies page as all studies are now displayed on one page.
+
+### Technical / Other changes
+- [3343](https://github.com/kids-first/kf-portal-ui/issues/3343) Refactor (Frontend, React): Removed react-grid-system
+- [3239](https://github.com/kids-first/kf-portal-ui/issues/3239) Refactor (Backend, Tests): Fixed issues with warnings and errors
+- [3257](https://github.com/kids-first/kf-portal-ui/issues/3257) Refactor (Backend, Build): Removed unused javascript file
+- [3315](https://github.com/kids-first/kf-portal-ui/issues/3315) Refactor (Frontend, Modals): Removed set/unset modal in code related to Cavatica
+- [3326](https://github.com/kids-first/kf-portal-ui/issues/3326) Refactor (Backend, Library): Updated md5 library
+- [3320](https://github.com/kids-first/kf-portal-ui/issues/3320) Refactor (Frontend, Components): Removed unused code from the multicard component and its associated unused library
+- [3321](https://github.com/kids-first/kf-portal-ui/issues/3321) Refactor (Frontend, Components): Replaced the unused react-spinkit library by the antd equivalent
+- [3322](https://github.com/kids-first/kf-portal-ui/issues/3322) Refactor (Frontend, Components): Removed and cleaned all unused icons and social icons
+- [3324](https://github.com/kids-first/kf-portal-ui/issues/3324) Refactor (Frontend, Components): Removed unused code from the wizard component and its associated unused library
+
+## 2021-05-25 kf-portal-ui 3.1.3
 
 ### Technical / Other changes
 - [3016](https://github.com/kids-first/kf-portal-ui/issues/3016) Fix (Portal, User Profile): Fixed an issue where users newly entered profile information would be reset after logging out and logging back in.

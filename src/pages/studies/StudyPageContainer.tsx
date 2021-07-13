@@ -7,7 +7,7 @@ import StudyIcon from 'icons/StudyIconSvg';
 import history from 'services/history';
 import { StudiesPageContainerData } from 'store/graphql/studies/actions';
 
-import StudyTableContainer, { PaginationType } from './StudyTableContainer';
+import StudyTableContainer from './StudyTableContainer';
 import {
   getQueryBuilderCache,
   setQueryBuilderCache,
@@ -17,13 +17,12 @@ import {
 
 import styles from './StudiesPageContainer.module.scss';
 
-type StudyPageContainerProps = StudiesPageContainerData & PaginationType;
+type StudyPageContainerProps = StudiesPageContainerData;
 
 const StudyPageContainer = ({
   studiesResults,
   studiesMappingResults,
   filters,
-  pagination,
 }: StudyPageContainerProps) => {
   const total = studiesResults?.data?.hits?.total || 0;
 
@@ -53,7 +52,7 @@ const StudyPageContainer = ({
         <StudyTableContainer
           data={studiesResults.data}
           loading={studiesResults.loading}
-          pagination={pagination}
+          total={total}
         />
       </StackLayout>
     </StackLayout>

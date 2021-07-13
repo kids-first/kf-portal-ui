@@ -1,18 +1,22 @@
 /* eslint-disable react/prop-types */
-import { Typography, Button, Modal } from 'antd';
-import PropTypes from 'prop-types';
-import { DisconnectOutlined, ApiOutlined } from '@ant-design/icons';
 import React, { Fragment } from 'react';
-import IntegrationItemErrorRow from './IntegrationItemErrorRow';
-import { compose, setPropTypes } from 'recompose';
-import { withRouter } from 'react-router';
-import './style.css';
-import { openModal, closeModal } from 'store/actions/modal';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { ApiOutlined, DisconnectOutlined } from '@ant-design/icons';
+import { Button, Modal, Typography } from 'antd';
+import PropTypes from 'prop-types';
+import { compose, setPropTypes } from 'recompose';
+
+import { closeModal, openModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
-import CavaticaConnectModal2 from '../cavatica/CavaticaConnectModal2';
+
+import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
 import FenceAuthorizedStudies from '../Fence/FenceAuthorizedStudies';
+
 import { CAVATICA_INTEGRATION_MODAL_ID } from './constants';
+import IntegrationItemErrorRow from './IntegrationItemErrorRow';
+
+import './style.css';
 
 const { Paragraph } = Typography;
 
@@ -67,9 +71,9 @@ const IntegrationItem = (props) => {
           history={history}
         />
       ) : (
-        <Fragment>
+        <>
           {showCavaticaModal && (
-            <CavaticaConnectModal2
+            <CavaticaConnectModal
               isVisible={showCavaticaModal}
               onComplete={onClose}
               onCancelCB={onClose}
@@ -124,7 +128,7 @@ const IntegrationItem = (props) => {
               )}
             </div>
           </div>
-        </Fragment>
+        </>
       )}
     </Fragment>
   );

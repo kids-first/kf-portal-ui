@@ -1,7 +1,8 @@
-import { Sqon } from './sqon';
-import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './actionTypes';
 import { ThunkDispatch } from 'redux-thunk';
+
+import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './actionTypes';
 import { RootState } from './rootState';
+import { Sqon } from './sqon';
 
 export type VirtualStudy = {
   activeIndex: number;
@@ -14,6 +15,8 @@ export type VirtualStudy = {
   uid: string;
   virtualStudyId: string;
 };
+
+export type VirtualStudyPlusId = VirtualStudy & { id: string };
 
 export interface VirtualStudiesState {
   studies: VirtualStudy[];

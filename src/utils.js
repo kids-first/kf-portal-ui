@@ -130,3 +130,20 @@ export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
 
 export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '') =>
   canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
+
+//https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript
+export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
+  if (bytes === 0) {
+    return '0';
+  }
+
+  const scale = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const matchedIndex = Math.floor(Math.log(bytes) / Math.log(scale));
+
+  return (
+    parseFloat((bytes / Math.pow(scale, matchedIndex)).toFixed(dm)) + ' ' + sizes[matchedIndex]
+  );
+};

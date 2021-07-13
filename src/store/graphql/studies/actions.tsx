@@ -1,7 +1,9 @@
-import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY } from './queries';
-import { useLazyResultQuery } from 'store/graphql/utils/query';
-import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+
+import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
+import { useLazyResultQuery } from 'store/graphql/utils/query';
+
+import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY, STUDIES_SEARCH_QUERY } from './queries';
 
 type AggregationBuckets = {
   buckets: [
@@ -83,6 +85,17 @@ export type QueryVariable = {
 
 export const useGetStudiesPageData = (variables: QueryVariable): StudiesResults => {
   const { loading, result } = useLazyResultQuery<any>(STUDIES_QUERY, {
+    variables: variables,
+  });
+
+  return {
+    loading,
+    data: result?.studies || null,
+  };
+};
+
+export const useGetStudiesSearch = (variables: QueryVariable): StudiesResults => {
+  const { loading, result } = useLazyResultQuery<any>(STUDIES_SEARCH_QUERY, {
     variables: variables,
   });
 

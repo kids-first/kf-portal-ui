@@ -1,12 +1,13 @@
 import React from 'react';
 import uniq from 'lodash/uniq';
-import { pickData } from './utils';
-import { formatBytesToHumanReadable } from './utils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { kfWebRoot } from 'common/injectGlobals';
 
-import ExternalLink from 'uikit/ExternalLink';
 import { DB_GA_P, generateUrlForDbGap } from 'common/constants';
+import { kfWebRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import ExternalLink from 'uikit/ExternalLink';
+import { formatBytesToHumanReadable } from 'utils';
+
+import { pickData } from './utils';
 
 export const fileQuery = `query ($sqon: JSON) {
   file {

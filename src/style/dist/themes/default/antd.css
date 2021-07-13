@@ -25052,3 +25052,6 @@ h3.ant-typography {
 .ant-collapse-header {
   font-weight: 600;
 }
+.ant-list-item-meta-title > a {
+  color: #a6278f;
+}

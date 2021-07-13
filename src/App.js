@@ -10,7 +10,7 @@ import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import joinImage from 'assets/smiling-boy.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
-import { DCF, GEN3 } from 'common/constants';
+import { CAVATICA, DCF, GEN3 } from 'common/constants';
 import { requireLogin } from 'common/injectGlobals';
 import ROUTES from 'common/routes';
 import AuthRedirect from 'components/AuthRedirect';
@@ -25,7 +25,6 @@ import Join from 'components/Login/Join';
 import LoginFooter from 'components/Login/LoginFooter';
 import TermsConditions from 'components/Login/TermsConditions';
 import MemberSearchPage from 'components/MemberSearchPage';
-import Modal from 'components/Modal';
 import Page, { FixedFooterPage } from 'components/Page';
 import SideImagePage from 'components/SideImagePage';
 import UserDashboard from 'components/UserDashboard';
@@ -54,8 +53,7 @@ const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, isLoadingUser, isJoining, egoGroups } = state;
-
+  const { loggedInUser, isLoadingUser, isJoining, egoGroups, integrationTokens } = state;
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
   }
@@ -66,22 +64,18 @@ const App = compose(
   // eslint-disable-next-line react/prop-types
   const protectRoute = ({ loggedInUser, WrapperPage = Page, ...props }) => {
     if (userIsRequiredToLogIn(loggedInUser)) {
-      return (
-        <SideImagePage
-          logo={logo}
-          sideImagePath={loginImage}
-          Component={LoginPage}
-          Footer={LoginFooter}
-        />
-      );
+      return <Redirect to={ROUTES.login} />;
     } else if (isJoinFormNeeded(loggedInUser)) {
       return <Redirect to="/join" />;
       // eslint-disable-next-line react/prop-types
     } else if (!loggedInUser.acceptedTerms) {
       return <Redirect to={ROUTES.termsConditions} />;
     }
+
     return <WrapperPage {...props} />;
   };
+
+  const isConnectedToCavatica = integrationTokens[CAVATICA] || false;
 
   return (
     <ApolloProvider userToken={state.loggedInUserToken}>
@@ -90,6 +84,27 @@ const App = compose(
         <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
           <Switch>
             <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+            <Route
+              path={ROUTES.login}
+              exact
+              render={() => {
+                if (
+                  !userIsRequiredToLogIn(loggedInUser) &&
+                  !isJoinFormNeeded(loggedInUser) &&
+                  loggedInUser.acceptedTerms
+                ) {
+                  return <Redirect to="/" />;
+                }
+                return (
+                  <SideImagePage
+                    logo={logo}
+                    sideImagePath={loginImage}
+                    Component={LoginPage}
+                    Footer={LoginFooter}
+                  />
+                );
+              }}
+            />
             <Route
               path={ROUTES.termsConditions}
               exact
@@ -134,7 +149,6 @@ const App = compose(
               }
             />
             <Route
-              /* temporary: this will be the new variant db page*/
               path={ROUTES.variant}
               exact
               render={(props) =>
@@ -172,6 +186,7 @@ const App = compose(
                   Component: FileEntity,
                   loggedInUser,
                   fileId: props.match.params.fileId,
+                  isConnectedToCavatica,
                   ...props,
                 })
               }
@@ -200,6 +215,7 @@ const App = compose(
                   loggedInUser,
                   index: props.match.params.index,
                   graphqlField: props.match.params.index,
+                  isConnectedToCavatica,
                   ...props,
                 })
               }
@@ -325,7 +341,6 @@ const App = compose(
             <Redirect from="*" to={ROUTES.dashboard} />
           </Switch>
         </Suspense>
-        <Modal />
       </div>
     </ApolloProvider>
   );

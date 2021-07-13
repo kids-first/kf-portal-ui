@@ -1,19 +1,23 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button } from 'antd';
-import './termsConditions.css';
-import SplashPage from '../SplashPage';
-import { uiLogout } from '../LogoutButton';
 // @ts-ignore
 import { injectState } from 'freactal';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { withApi } from 'services/api';
 // @ts-ignore
 import { compose } from 'recompose';
+
+import { withApi } from 'services/api';
 import { Api } from 'store/apiTypes';
 import { InjectStateProps } from 'store/freactalStateTypes';
+
+import { uiLogout } from '../LogoutButton';
+import SplashPage from '../SplashPage';
+
 import TermsConditionsAcceptButton from './TermsConditionsAcceptButton';
 import TermsConditionsBody from './TermsConditionsBody';
+
+import './termsConditions.css';
 
 type Props = InjectStateProps & Api & RouteComponentProps;
 

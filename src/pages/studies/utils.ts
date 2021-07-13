@@ -5,7 +5,11 @@ import {
   IFilterRange,
   VisualType,
 } from '@ferlab/ui/core/components/filters/types';
-import { ISqonGroupFilter, TSqonGroupContent } from '@ferlab/ui/core/components/QueryBuilder/types';
+import {
+  ISqonGroupFilter,
+  TSqonGroupContent,
+  TSqonGroupOp,
+} from '@ferlab/ui/core/components/QueryBuilder/types';
 import { isEmpty } from 'lodash';
 import get from 'lodash/get';
 import qs from 'query-string';
@@ -81,10 +85,12 @@ export const updateQueryFilters = (
   history: any,
   field: string,
   filters: TSqonGroupContent,
+  operator: TSqonGroupOp = 'and',
 ): void => {
   const currentFilter = getFiltersQuery();
 
-  let newFilters: ISqonGroupFilter | Record<string, never> = { content: filters, op: 'and' };
+  let newFilters: ISqonGroupFilter | object = { content: filters, op: operator };
+
   if (!isEmpty(currentFilter)) {
     const filterWithoutSelection = getFilterWithNoSelection(currentFilter, field);
     if (isEmpty(filterWithoutSelection.content) && isEmpty(filters)) {

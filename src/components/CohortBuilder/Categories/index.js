@@ -1,29 +1,31 @@
 import React from 'react';
-import SearchAll from '../SearchAll';
-import Category from './Category';
-import ActionCategory from './ActionCategory';
-import Row from 'uikit/Row';
-import StudyIcon from 'icons/StudyIcon';
+import { connect } from 'react-redux';
+import { FolderOpenFilled } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+
+import { isFeatureEnabled } from 'common/featuresToggles';
+import { SQONdiff } from 'components/Utils';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
-import UploadIcon from 'icons/UploadIcon';
-import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
-import { SQONdiff } from 'components/Utils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import SearchByIdModal from '../SearchById/SearchByIdModal';
+import FileIcon from 'icons/FileIcon';
+import StudyIcon from 'icons/StudyIcon';
+import UploadIcon from 'icons/UploadIcon';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { openModal } from 'store/actions/modal';
+import { selectModalId } from 'store/selectors/modal';
 import theme from 'theme/defaultTheme';
-import { isFeatureEnabled } from 'common/featuresToggles';
+import Row from 'uikit/Row';
 
+import SearchAll from '../SearchAll';
+import SearchByIdModal from '../SearchById/SearchByIdModal';
+
+import ActionCategory from './ActionCategory';
 import { CATEGORY_FIELDS } from './categories';
+import Category from './Category';
+import ModalSetsToQuery from './ModalSetsToQuery';
 
 import '../CohortBuilder.css';
-import { FolderOpenFilled } from '@ant-design/icons';
-import { selectModalId } from 'store/selectors/modal';
-import { openModal } from 'store/actions/modal';
-import { connect } from 'react-redux';
-import ModalSetsToQuery from './ModalSetsToQuery';
-import PropTypes from 'prop-types';
 
 const ADD_SET_TO_QUERY_MODAL_ID = 'ADD_SET_TO_QUERY_MODAL_ID';
 const SEARCH_MODAL_ID = 'SEARCH_MODAL_ID';
@@ -95,7 +97,7 @@ class Categories extends React.Component {
           color={theme.studyRed}
           anchorId={'anchor-study'}
         >
-          <StudyIcon fill={theme.studyRed} />
+          <StudyIcon fill={theme.studyRed} width="14px" height="17px" />
         </Category>
         <Category
           title="Demographic"

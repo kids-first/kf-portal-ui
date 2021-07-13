@@ -1,20 +1,18 @@
+import jwtDecode from 'jwt-decode';
 import get from 'lodash/get';
 import isArrayLikeObject from 'lodash/isArrayLikeObject';
 import toLower from 'lodash/toLower';
-import jwtDecode from 'jwt-decode';
 
-import { getProfile, createProfile } from 'services/profiles';
+import { CAVATICA, FENCES } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getAccessToken } from 'services/fence';
-import { createExampleQueries } from 'services/riffQueries';
-import { FENCES, CAVATICA } from 'common/constants';
+import { createProfile, getProfile } from 'services/profiles';
 import { store } from 'store';
-import { loginSuccess, loginFailure } from 'store/actionCreators/user';
+import { loginFailure, loginSuccess } from 'store/actionCreators/user';
 
 const initProfile = async (api, user, egoId) => {
   const profileCreation = createProfile(api)({ ...user, egoId });
-  const sampleQueryCreation = createExampleQueries(api, egoId);
-  const [x] = await Promise.all([profileCreation, sampleQueryCreation]);
+  const [x] = await Promise.all([profileCreation]);
   return x;
 };
 

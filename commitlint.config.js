@@ -34,7 +34,7 @@ const Configuration = {
     {
       rules: {
         'github-ticket-number': ({ githubTicketNumber = null }) => {
-          const ticketReg = /^#\d+$/;
+          const ticketReg = /^#[\w+\-]*\d+$/;
           let containTicketNumber = false;
           if (githubTicketNumber !== null) {
             containTicketNumber = !!githubTicketNumber.trim().match(ticketReg);
@@ -50,7 +50,7 @@ const Configuration = {
   ],
   parserPreset: {
     parserOpts: {
-      headerPattern: /^(\w*)(\([a-zA-Z0-9_ ]+\))?:\s?(\s#\d+)\s?([\w ]*)?$/,
+      headerPattern: /^(\w*)(\([a-zA-Z0-9_ ]+\))?:\s?(\s#[\w+\-]*\d+)\s?([\w ]*)?$/,
       headerCorrespondence: ['type', 'scope', 'githubTicketNumber', 'subject'],
     },
   },

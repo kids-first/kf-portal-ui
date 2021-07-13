@@ -1,6 +1,6 @@
+import { formatBytesToHumanReadable } from 'utils';
+
 import { Queries } from '../CohortBuilder/QueriesResolver';
-// @ts-ignore
-import filesize from 'filesize';
 
 const formatCount = (numOrString: number | string): string => numOrString.toLocaleString();
 
@@ -93,7 +93,7 @@ query ($sqon: JSON) {
 
 const getFileStats = (rawData: any) => {
   const sum = rawData?.data?.data?.aggregations?.size?.stats?.sum || 0;
-  return filesize(sum).toUpperCase();
+  return formatBytesToHumanReadable(sum);
 };
 
 export const buildStatQueriesForFile = (sqonContent: Object): Queries => [

@@ -1,11 +1,12 @@
+import CommunityBanner from 'assets/user-banner-community.png';
+import HealthBanner from 'assets/user-banner-health.png';
+import PatientBanner from 'assets/user-banner-patient.png';
+import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityIcon from 'icons/CommunityIcon';
-import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
 import PatientIcon from 'icons/PatientIcon';
-import HealthBanner from 'assets/user-banner-health.png';
-import ResearchBanner from 'assets/user-banner-research.png';
-import CommunityBanner from 'assets/user-banner-community.png';
-import PatientBanner from 'assets/user-banner-patient.png';
+import ResearchIcon from 'icons/ResearchIcon';
+
 import packageJson from '../../package.json';
 
 export const ADMIN_OPTIONS = {
@@ -186,10 +187,6 @@ export const LOGIN_ERROR_DETAILS = {
     'To sign in with Facebook, please whitelist Facebook in your ad blocker or other privacy settings.',
   thirdPartyData: 'To sign in with Google, please enable third party cookies in your browser.',
 };
-
-export const ACTIONS_COLUMNS = 'ACTIONS_COLUMNS';
-
-export const FILE_VIEW = 'FILE_VIEW';
 
 export const KEY_PUBLIC_PROFILE_INVITE_IS_SEEN = 'public_profile_invite_is_seen';
 

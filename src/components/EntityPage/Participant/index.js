@@ -1,30 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isNull from 'lodash/isNull';
-import Spinner from 'react-spinkit';
+import PropTypes from 'prop-types';
 
-import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import Column from 'uikit/Column';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
+import { SecondaryNavContent, SecondaryNavMenu } from 'uikit/SecondaryNav';
+import { Spinner } from 'uikit/Spinner';
 
-import { EntityTitleBar, EntityTitle, EntityActionBar, EntityContent } from '../';
-
-import ParticipantSummary from './ParticipantSummary';
-import ParticipantClinical from './ParticipantClinical';
+import { EntityActionBar, EntityContent, EntityTitle, EntityTitleBar } from '../';
 
 import { fetchParticipant } from './actionCreators';
+import ParticipantClinical from './ParticipantClinical';
+import ParticipantSummary from './ParticipantSummary';
 
 import '../EntityPage.css';
 
-const getTags = participant => {
+const getTags = (participant) => {
   const probandTag = participant.is_proband ? 'Proband' : 'Family Member';
   const diagnosisCategories = get(participant, 'diagnoses.hits.edges', [])
-    .map(dc => get(dc, 'node.diagnosis_category', null))
-    .filter(x => x !== null);
+    .map((dc) => get(dc, 'node.diagnosis_category', null))
+    .filter((x) => x !== null);
   const diagnosisTags = new Set(diagnosisCategories);
-  return [...Array.from(diagnosisTags), probandTag].filter(item => !isNull(item));
+  return [...Array.from(diagnosisTags), probandTag].filter((item) => !isNull(item));
 };
 
 class ParticipantEntity extends React.Component {
@@ -60,20 +59,8 @@ class ParticipantEntity extends React.Component {
 
     if (isLoading) {
       return (
-        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0 }}>
-          <Spinner
-            fadeIn="none"
-            name="circle"
-            color="#a9adc0"
-            style={{
-              width: 50,
-              height: 60,
-              top: '50%',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
+        <div className="entityPage-container">
+          <Spinner size={'large'} />
         </div>
       );
     }
@@ -118,7 +105,7 @@ class ParticipantEntity extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { isLoading, error, participant } = state.ui.participantEntityPage;
   return {
     isLoading,

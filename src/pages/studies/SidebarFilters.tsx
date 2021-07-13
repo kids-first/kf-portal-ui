@@ -1,17 +1,24 @@
 /* eslint-disable react/display-name */
 import React from 'react';
+import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { Col, Row, Tooltip } from 'antd';
 
+import { MISSING_DATA } from 'services/arranger';
 import history from 'services/history';
-import { SidebarData } from 'store/graphql/studies/actions';
+import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
 
+import SearchBar from './SearchBar';
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
-const keyEnhance = (key: string) => {
+import style from './SidebarFilter.module.scss';
+
+const keyEnhance = (key: string, s: string = ' No Data') => {
   switch (key) {
-    case '__missing__':
-      return ' No Data';
+    case MISSING_DATA:
+      return s;
     case '1':
       return 'True';
     case '0':
@@ -33,26 +40,74 @@ const keyEnhanceBooleanOnly = (key: string) => {
 };
 
 type StudiesProps = {
-  onChange: () => void;
+  filters: ISqonGroupFilter;
 };
 type OwnProps = SidebarData & StudiesProps;
 
-const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: OwnProps) => {
-  const mappingData = studiesMappingResults;
-  const data = studiesResults;
+export interface ItemProps {
+  label: React.ReactElement;
+  value: string;
+}
 
-  if (mappingData?.loadingMapping || !mappingData?.extendedMapping || data.loading || !data.data) {
-    return null;
+const sqon = {
+  content: [],
+  op: 'and',
+};
+
+const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnProps) => {
+  const data = studiesResults;
+  const options: ItemProps[] = [];
+
+  const allStudies = useGetStudiesSearch({
+    sqon: sqon,
+    first: 10,
+    offset: 0,
+  });
+
+  if (allStudies && allStudies.data) {
+    allStudies.data.hits.edges.forEach((n) =>
+      options.push({
+        label: (
+          <>
+            <Row>
+              <Col span={2}>
+                <ReadOutlined />
+              </Col>
+              <Col span={22}>
+                <div className={style.studySearchDropdownCode}>{n.node.code}</div>
+                <div className={style.studySearchDropdownName}>{n.node.name}</div>
+              </Col>
+            </Row>
+          </>
+        ),
+        value: `${n.node.code}|${n.node.name}`,
+      }),
+    );
   }
 
   return (
     <>
-      {Object.keys(data.data.aggregations).map((key) => {
-        const found = studiesMappingResults.extendedMapping.find((f: any) => f.field === key);
+      <div id={'anchor-search-bar'}>
+        <Row gutter={5}>
+          <Col>
+            <div className={style.storySearchTitle}>Search Studies</div>
+          </Col>
+          <Col>
+            <Tooltip placement="topLeft" title={'Search by study code or study name'}>
+              <InfoCircleOutlined className={style.storySearchIconsDisabled} />
+            </Tooltip>
+          </Col>
+        </Row>
+        {options.length ? <SearchBar filters={filters} options={options} /> : <div />}
+      </div>
+      {Object.keys(data.data?.aggregations || []).map((key) => {
+        const found = (studiesMappingResults?.extendedMapping || []).find(
+          (f: any) => f.field === key,
+        );
         const filterGroup = {
-          field: found!.field,
-          title: found!.displayName,
-          type: getFilterType(found!.type),
+          field: found?.field || '',
+          title: found?.displayName || '',
+          type: getFilterType(found?.type || ''),
         };
         // @ts-ignore
         const filters: IFilter[] = studiesResults.data.aggregations[key!].buckets.map((f: any) => ({
@@ -70,7 +125,6 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, onChange }: Own
             filterGroup={filterGroup}
             filters={filters}
             onChange={(fg, f) => {
-              onChange();
               updateFilters(history, fg, f);
             }}
             selectedFilters={selectedFilters}
