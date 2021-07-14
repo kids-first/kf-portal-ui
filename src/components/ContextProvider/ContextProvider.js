@@ -7,13 +7,12 @@ import { EGO_JWT_KEY } from 'common/constants';
 import { ApiContext, initializeApi } from 'services/api';
 import history, { HistoryContext } from 'services/history';
 import { logoutAll } from 'services/login';
-import { provideFenceConnections, provideLoggedInUser } from 'stateProviders';
+import { provideLoggedInUser } from 'stateProviders';
 
 import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 
 export default compose(
   provideLoggedInUser,
-  provideFenceConnections,
   injectState,
 )(({ children }) => (
   <HistoryContext.Provider>

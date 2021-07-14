@@ -3,7 +3,8 @@ import { mergeIntoState, provideState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import get from 'lodash/get';
 
-import { EGO_JWT_KEY, SERVICES } from 'common/constants';
+import { CAVATICA, EGO_JWT_KEY } from 'common/constants';
+import { INTEGRATION_PREFIX } from 'common/constants';
 import ROUTES from 'common/routes';
 import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
 import { getUserGroups } from 'components/Login/utils';
@@ -73,12 +74,10 @@ export default provideState({
           });
 
           // Get all integration keys from local storage
-          SERVICES.forEach((service) => {
-            const storedToken = localStorage.getItem(`integration_${service}`);
-            if (storedToken) {
-              state.integrationTokens[service] = storedToken;
-            }
-          });
+          const storedToken = localStorage.getItem(`${INTEGRATION_PREFIX}${CAVATICA}`);
+          if (storedToken) {
+            state.integrationTokens[CAVATICA] = storedToken;
+          }
           setEgoTokenCookie(jwt);
         };
 
@@ -169,26 +168,20 @@ export default provideState({
       return { ...state, loggedInUserToken: token, loginProvider: provider };
     },
     setIntegrationToken: (effects, service, token) => (state) => {
-      if (SERVICES.includes(service)) {
-        const tokenKey = `integration_${service}`;
+      if (CAVATICA === service) {
+        const tokenKey = `${INTEGRATION_PREFIX}${CAVATICA}`;
         if (token) {
           localStorage.setItem(tokenKey, token);
-          state.integrationTokens[service] = token;
+          state.integrationTokens[CAVATICA] = token;
         } else {
           localStorage.removeItem(tokenKey);
-          delete state.integrationTokens[service];
+          delete state.integrationTokens[CAVATICA];
         }
       }
       return { ...state, integrationTokens: { ...state.integrationTokens } };
     },
-    getIntegrationToken: (effects, service) => () => {
-      if (SERVICES.includes(service)) {
-        const tokenKey = `integration_${service}`;
-        return tokenKey ? localStorage.getItem(tokenKey) : null;
-      }
-    },
     clearIntegrationTokens: () => (state) => {
-      SERVICES.forEach((service) => localStorage.removeItem(`integration_${service}`));
+      localStorage.removeItem(`${INTEGRATION_PREFIX}${CAVATICA}`);
       return { ...state, integrationTokens: {} };
     },
     setIsLoadingUser: (isLoading) => (state) => ({ ...state, isLoadingUser: isLoading }),

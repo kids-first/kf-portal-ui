@@ -131,6 +131,37 @@ export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
 export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '') =>
   canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
 
+//ref: https://nofluffweb.com/mock-local-storage-in-jest-tests
+/*
+* setup example with jest:
+*   beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: makeFakeLocalStorage(),
+    });
+  });
+
+  afterEach(() => {
+    window.localStorage.clear();
+  });
+* */
+export const makeFakeLocalStorage = () => {
+  let store = {};
+  return {
+    getItem: function (key) {
+      return store[key] || null;
+    },
+    setItem: function (key, value) {
+      store[key] = value.toString();
+    },
+    removeItem: function (key) {
+      delete store[key];
+    },
+    clear: function () {
+      store = {};
+    },
+  };
+};
+
 //https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript
 export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
   if (bytes === 0) {

@@ -93,7 +93,7 @@ const IntegrationItem = (props) => {
                 </Button>,
               ]}
             >
-              <FenceAuthorizedStudies fence={fence} />
+              <FenceAuthorizedStudies fence={fence} onCloseModalCb={onClose} />
             </Modal>
           )}
           <div className={'ii-row'}>
