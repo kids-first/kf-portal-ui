@@ -132,6 +132,18 @@ export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '')
   canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
 
 //ref: https://nofluffweb.com/mock-local-storage-in-jest-tests
+/*
+* setup example with jest:
+*   beforeAll(() => {
+    Object.defineProperty(window, 'localStorage', {
+      value: makeFakeLocalStorage(),
+    });
+  });
+
+  afterEach(() => {
+    window.localStorage.clear();
+  });
+* */
 export const makeFakeLocalStorage = () => {
   let store = {};
   return {

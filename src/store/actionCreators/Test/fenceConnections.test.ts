@@ -2,10 +2,9 @@ import { AnyAction } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { DCF, FENCES, GEN3, INTEGRATION_PREFIX } from 'common/constants';
+import { DCF, GEN3 } from 'common/constants';
 import { getFenceUser } from 'services/fence';
 import { DispatchFenceConnections, FenceConnectionsActions } from 'store/fenceConnectionsTypes';
-import { makeFakeLocalStorage } from 'utils';
 
 import {
   addFenceConnection,
@@ -29,18 +28,11 @@ const mockStore = configureMockStore(middleware);
 jest.mock('services/fence');
 
 describe('Fence Connections actions', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'localStorage', {
-      value: makeFakeLocalStorage(),
-    });
-  });
-
   beforeEach(() => {
     (getFenceUser as jest.Mock).mockReset();
   });
 
   afterEach(() => {
-    window.localStorage.clear();
     jest.clearAllMocks();
   });
 
@@ -61,8 +53,11 @@ describe('Fence Connections actions', () => {
   });
 
   it('should manage acls adequately', () => {
+    // @ts-ignore
     expect(concatAllFencesAcls(MOCK_FENCE_CONNECTIONS)).toEqual(['a', 'b', 'c', 'x', 'y', 'z']);
+    // @ts-ignore
     expect(computeAclsForConnection(MOCK_FENCE_CONNECTIONS[GEN3])).toEqual(['a', 'b', 'c']);
+    // @ts-ignore
     expect(computeAclsByFence(MOCK_FENCE_CONNECTIONS)).toEqual({
       [GEN3]: ['a', 'b', 'c'],
       [DCF]: ['x', 'y', 'z'],
@@ -75,6 +70,7 @@ describe('Fence Connections actions', () => {
       fenceName: GEN3,
       connection: MOCK_GEN3_CONNECTION,
     };
+    // @ts-ignore
     expect(addFenceConnection(GEN3, MOCK_GEN3_CONNECTION)).toEqual(expectedAction);
   });
 
@@ -101,30 +97,11 @@ describe('Fence Connections actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should not fetch fence connections if user has no integration token for particular fence', async () => {
-    localStorage.removeItem(`${INTEGRATION_PREFIX}${GEN3}`);
-
-    const store = mockStore({
-      fenceConnections: {
-        fenceConnections: {},
-        isFetchingAllFenceConnections: false,
-      },
-    });
-
-    const dispatch: DispatchFenceConnections = store.dispatch;
-
-    await dispatch(fetchFencesConnectionsIfNeeded(mockApi, GEN3));
-
-    expect(store.getActions()).toEqual(NO_ACTIONS);
-  });
-
   it(
     'should not fetch fence connections if user has' +
-      ' 1) an integration token' +
-      ' 2) already has connection for particular fence',
+      ' already has connection for particular fence',
     async () => {
       (getFenceUser as jest.Mock).mockImplementation(() => Promise.resolve(MOCK_GEN3_CONNECTION));
-      localStorage.setItem(`${INTEGRATION_PREFIX}${GEN3}`, 'token');
 
       const store = mockStore({
         fenceConnections: {
@@ -152,18 +129,23 @@ describe('Fence Connections actions', () => {
     });
     const expectedActions = [
       {
-        type: FenceConnectionsActions.toggleIsFetchingAllFenceConnections,
         isLoading: true,
+        type: 'toggleIsFetchingAllFenceConnections',
       },
       {
-        type: FenceConnectionsActions.toggleIsFetchingAllFenceConnections,
+        connection: MOCK_GEN3_CONNECTION,
+        fenceName: GEN3,
+        type: FenceConnectionsActions.addFenceConnection,
+      },
+      {
         isLoading: false,
+        type: 'toggleIsFetchingAllFenceConnections',
       },
     ];
 
     const dispatch: DispatchFenceConnections = store.dispatch;
 
-    await dispatch(fetchAllFencesConnectionsIfNeeded(mockApi, FENCES));
+    await dispatch(fetchAllFencesConnectionsIfNeeded(mockApi, [GEN3]));
 
     expect(store.getActions()).toEqual(expectedActions);
   });

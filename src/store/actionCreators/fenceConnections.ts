@@ -1,7 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { ThunkAction } from 'redux-thunk';
 
-import { hasIntegrationTokenForFence } from 'components/Login/utils';
 import { getFenceUser } from 'services/fence';
 
 import { Api } from '../apiTypes';
@@ -34,7 +33,7 @@ export const toggleIsFetchingAllFenceConnections = (
 });
 
 const shouldFetchConnections = (fenceName: FenceName, state: RootState): boolean =>
-  hasIntegrationTokenForFence(fenceName) && isEmpty(selectFenceConnections(state)[fenceName]);
+  isEmpty(selectFenceConnections(state)[fenceName]);
 
 export const fetchFencesConnections = (
   api: Api,

@@ -2,10 +2,9 @@ import { AnyAction } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { DCF, GEN3, INTEGRATION_PREFIX } from 'common/constants';
+import { DCF, GEN3 } from 'common/constants';
 import { getAuthStudiesIdAndCount, getStudiesCountByNameAndAcl } from 'services/fenceStudies';
 import { DispatchFenceStudies, FenceStudiesActions } from 'store/fenceStudiesTypes';
-import { makeFakeLocalStorage } from 'utils';
 
 import {
   addFenceStudies,
@@ -31,19 +30,12 @@ const mockStore = configureMockStore(middleware);
 jest.mock('services/fenceStudies');
 
 describe('Fence Studies actions', () => {
-  beforeAll(() => {
-    Object.defineProperty(window, 'localStorage', {
-      value: makeFakeLocalStorage(),
-    });
-  });
-
   beforeEach(() => {
     (getAuthStudiesIdAndCount as jest.Mock).mockReset();
     (getStudiesCountByNameAndAcl as jest.Mock).mockReset();
   });
 
   afterEach(() => {
-    window.localStorage.clear();
     jest.clearAllMocks();
   });
 
@@ -117,12 +109,17 @@ describe('Fence Studies actions', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should not fetch fence studies if user has no integration token for particular fence', async () => {
-    localStorage.removeItem(`${INTEGRATION_PREFIX}${GEN3}`);
+  it('should  fetch fence studies if user has already has connection for particular fence', async () => {
+    (getAuthStudiesIdAndCount as jest.Mock).mockImplementation(() =>
+      Promise.resolve(MOCK_STUDIES_IDS_AND_COUNTS),
+    );
+    (getStudiesCountByNameAndAcl as jest.Mock).mockImplementation(() =>
+      Promise.resolve(MOCK_AUTH_STUDIES_FROM_GEN3),
+    );
 
     const store = mockStore({
       fenceStudies: {
-        fenceStudies: {},
+        fenceStudies: MOCK_AUTH_STUDIES_WITH_2_FENCES,
         isFetchingAllFenceStudies: false,
       },
     });
@@ -133,32 +130,4 @@ describe('Fence Studies actions', () => {
 
     expect(store.getActions()).toEqual(NO_ACTIONS);
   });
-
-  it(
-    'should  fetch fence studies if user has' +
-      ' 1) an integration token' +
-      ' 2) already has connection for particular fence',
-    async () => {
-      (getAuthStudiesIdAndCount as jest.Mock).mockImplementation(() =>
-        Promise.resolve(MOCK_STUDIES_IDS_AND_COUNTS),
-      );
-      (getStudiesCountByNameAndAcl as jest.Mock).mockImplementation(() =>
-        Promise.resolve(MOCK_AUTH_STUDIES_FROM_GEN3),
-      );
-      localStorage.setItem(`${INTEGRATION_PREFIX}${GEN3}`, 'token');
-
-      const store = mockStore({
-        fenceStudies: {
-          fenceStudies: MOCK_AUTH_STUDIES_WITH_2_FENCES,
-          isFetchingAllFenceStudies: false,
-        },
-      });
-
-      const dispatch: DispatchFenceStudies = store.dispatch;
-
-      await dispatch(fetchFenceStudiesIfNeeded(mockApi, GEN3, { [GEN3]: ['phs'] }));
-
-      expect(store.getActions()).toEqual(NO_ACTIONS);
-    },
-  );
 });

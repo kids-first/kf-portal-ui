@@ -3,7 +3,6 @@ import React from 'react';
 import { connect as reduxConnect } from 'react-redux';
 import { BookOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
-import { injectState } from 'freactal';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { compose, setPropTypes } from 'recompose';
@@ -63,7 +62,6 @@ const disconnect = async ({
   fence,
   api,
   setConnecting,
-  effects,
   setError,
   removeFenceConnection,
   removeFenceStudies,
@@ -71,7 +69,6 @@ const disconnect = async ({
   setConnecting(true);
   try {
     await deleteFenceTokens(api, fence);
-    await effects.setIntegrationToken(fence, null);
     removeFenceConnection(fence);
     removeFenceStudies(fence);
     await trackFenceAction({
@@ -91,7 +88,6 @@ const connect = async ({
   fence,
   api,
   setConnecting,
-  effects,
   setError,
   fetchFenceStudiesIfNeeded,
   addFenceConnection,
@@ -100,7 +96,6 @@ const connect = async ({
   try {
     await fenceConnect(api, fence);
     const token = await getAccessToken(api, fence);
-    effects.setIntegrationToken(fence, token);
     const details = convertTokenToUser(token);
     addFenceConnection(fence, details);
     fetchFenceStudiesIfNeeded(api, fence, computeAclsForConnection(details));
@@ -137,7 +132,6 @@ function Integration(props) {
     fence,
     logo,
     description,
-    effects,
     api,
   } = props;
 
@@ -165,7 +159,6 @@ function Integration(props) {
         connectCbParams: {
           fence,
           api,
-          effects,
           addFenceConnection,
           fetchFenceStudiesIfNeeded,
         },
@@ -175,7 +168,6 @@ function Integration(props) {
         disConnectCbParams: {
           fence,
           api,
-          effects,
           removeFenceConnection,
           removeFenceStudies,
         },
@@ -197,15 +189,12 @@ const connector = reduxConnect(null, mapDispatchToProps);
 
 const Enhanced = compose(
   connector,
-  injectState,
   withApi,
   setPropTypes({
     logo: PropTypes.node.isRequired,
     description: PropTypes.string.isRequired,
     connecting: PropTypes.bool,
     fence: PropTypes.string.isRequired,
-    state: PropTypes.object.isRequired,
-    effects: PropTypes.object.isRequired,
     api: PropTypes.func.isRequired,
     addFenceConnection: PropTypes.func,
     fetchFenceStudiesIfNeeded: PropTypes.func,
