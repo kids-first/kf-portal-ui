@@ -53,11 +53,8 @@ describe('Fence Connections actions', () => {
   });
 
   it('should manage acls adequately', () => {
-    // @ts-ignore
     expect(concatAllFencesAcls(MOCK_FENCE_CONNECTIONS)).toEqual(['a', 'b', 'c', 'x', 'y', 'z']);
-    // @ts-ignore
     expect(computeAclsForConnection(MOCK_FENCE_CONNECTIONS[GEN3])).toEqual(['a', 'b', 'c']);
-    // @ts-ignore
     expect(computeAclsByFence(MOCK_FENCE_CONNECTIONS)).toEqual({
       [GEN3]: ['a', 'b', 'c'],
       [DCF]: ['x', 'y', 'z'],
@@ -70,7 +67,7 @@ describe('Fence Connections actions', () => {
       fenceName: GEN3,
       connection: MOCK_GEN3_CONNECTION,
     };
-    // @ts-ignore
+
     expect(addFenceConnection(GEN3, MOCK_GEN3_CONNECTION)).toEqual(expectedAction);
   });
 

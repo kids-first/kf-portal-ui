@@ -28,16 +28,8 @@ import {
 export default compose(
   injectState,
   withApi,
-)(({ state: { loggedInUser }, api }) => {
-  if (!loggedInUser) {
-    return (
-      <div className={userDashboardContainer}>
-        <div className={userDashboardContent}></div>
-        <Spinner />
-      </div>
-    );
-  }
-  return (
+)(({ state: { loggedInUser }, api }) =>
+  loggedInUser ? (
     <div className={userDashboardContainer}>
       <div className={userDashboardContent}>
         <h1 className={dashboardTitle}>My Dashboard</h1>
@@ -61,5 +53,9 @@ export default compose(
         </Grid>
       </div>
     </div>
-  );
-});
+  ) : (
+    <div className={userDashboardContainer}>
+      <Spinner />
+    </div>
+  ),
+);

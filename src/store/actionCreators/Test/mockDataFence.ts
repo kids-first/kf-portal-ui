@@ -16,17 +16,14 @@ export const MOCK_GEN3_STUDY_PHS_001436 = {
 
 export const MOCK_GEN3_CONNECTION = {
   authz: {},
-  azp: null,
+
   certificates_uploaded: [],
-  display_name: null,
-  email: null,
+
   groups: [],
   is_admin: false,
   message: '',
   name: 'NAME',
-  phone_number: null,
-  preferred_username: null,
-  primary_google_service_account: null,
+
   project_access: {},
   projects: { a: 'a', b: 'b', c: 'c' },
   resources: [],
@@ -39,17 +36,11 @@ export const MOCK_GEN3_CONNECTION = {
 
 export const MOCK_DCF_CONNECTION = {
   authz: {},
-  azp: null,
   certificates_uploaded: [],
-  display_name: null,
-  email: null,
   groups: [],
   is_admin: false,
   message: '',
   name: 'NAME',
-  phone_number: null,
-  preferred_username: null,
-  primary_google_service_account: null,
   project_access: {},
   projects: { x: 'x', y: 'y', z: 'z' },
   resources: [],
