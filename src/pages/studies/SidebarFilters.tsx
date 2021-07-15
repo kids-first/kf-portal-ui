@@ -11,6 +11,7 @@ import history from 'services/history';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
 
 import SearchBar from './SearchBar';
+import { MAX_NUMBER_STUDIES } from './studies';
 import { getFilterType, getSelectedFilters, updateFilters } from './utils';
 
 import style from './SidebarFilter.module.scss';
@@ -60,7 +61,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnP
 
   const allStudies = useGetStudiesSearch({
     sqon: sqon,
-    first: 10,
+    first: MAX_NUMBER_STUDIES,
     offset: 0,
   });
 
