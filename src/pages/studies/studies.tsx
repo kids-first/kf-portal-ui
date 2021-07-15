@@ -11,7 +11,7 @@ import { useFilters } from './utils';
 
 import styles from './studies.module.scss';
 
-const MAX_NUMBER_STUDIES = 1000;
+export const MAX_NUMBER_STUDIES = 1000;
 
 const Studies = () => {
   const { filters } = useFilters();
