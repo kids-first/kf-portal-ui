@@ -17,6 +17,7 @@
     "@nivo/core": "0.59.0",
     "@nivo/pie": "0.59.0",
     "@oncojs/survivalplot": "^0.7.2",
+    "@reduxjs/toolkit": "^1.6.1",
     "antd": "4.12.3",
     "auto-bind-es5": "^1.1.0",
     "axios": "^0.21.1",
@@ -43,7 +44,6 @@
     "react-router-dom": "^5.2.0",
     "react-share": "^3.0.1",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "scriptjs": "^2.5.9",
     "tinygradient": "^1.1.5"
