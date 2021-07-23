@@ -12,6 +12,7 @@ import {
   ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
   LOGOUT,
   SET_ACTIVE_INDEX,
+  SET_SELECTION_SQONS,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   VIRTUAL_STUDY_CLEAN_ERROR,
@@ -30,6 +31,7 @@ import { ADD_SET_TO_CURRENT_QUERY, CREATE_SET_QUERY_REQUEST } from '../saveSetTy
 
 export const initialState = {
   sqons: getDefaultSqon(),
+  selectionSqon: null,
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
@@ -112,6 +114,11 @@ export default (state = initialState, action) => {
       return setState({
         dirty: true,
         sqons: action.payload,
+      });
+
+    case SET_SELECTION_SQONS:
+      return setState({
+        selectionSqon: action.payload,
       });
 
     case SET_VIRTUAL_STUDY_ID:

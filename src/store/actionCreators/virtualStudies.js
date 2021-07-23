@@ -13,6 +13,7 @@ import {
   FETCH_VIRTUAL_STUDIES_REQUESTED,
   FETCH_VIRTUAL_STUDIES_SUCCESS,
   SET_ACTIVE_INDEX,
+  SET_SELECTION_SQONS,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   VIRTUAL_STUDY_CLEAN_ERROR,
@@ -172,6 +173,11 @@ export const setActiveSqonIndex = (activeIndex) => ({
 
 export const setSqons = (sqons) => ({
   type: SET_SQONS,
+  payload: sqons,
+});
+
+export const setSelectionSqons = (sqons) => ({
+  type: SET_SELECTION_SQONS,
   payload: sqons,
 });
 
