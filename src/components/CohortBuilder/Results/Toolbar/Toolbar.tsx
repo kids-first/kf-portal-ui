@@ -1,26 +1,26 @@
 import React from 'react';
-import get from 'lodash/get';
-import capitalize from 'lodash/capitalize';
-import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
-import { roundIntToChosenPowerOfTen } from 'utils';
-import { notification, Spin } from 'antd';
-import DemographicIcon from 'icons/DemographicIcon';
-import FamilyMembersIcon from 'icons/FamilyMembersIcon';
-
 import { ArrowRightOutlined, FileFilled } from '@ant-design/icons';
-
-import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
+import { notification, Spin } from 'antd';
+import capitalize from 'lodash/capitalize';
+import get from 'lodash/get';
+
+import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
+import DemographicIcon from 'icons/DemographicIcon';
+import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 import graphql from 'services/arranger';
-import { createFileRepoLink } from '../../util';
-import DownloadButton from '../../ParticipantsTableView/DownloadButton';
-import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
 import { Sqon } from 'store/sqon';
 import { LoggedInUser } from 'store/userTypes';
+import colors from 'style/themes/default/_colors.scss';
+import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
+import { roundIntToChosenPowerOfTen } from 'utils';
+
+import DownloadButton from '../../ParticipantsTableView/DownloadButton';
+import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
+import { createFileRepoLink } from '../../util';
 
 import './Toolbar.scss';
-import colors from 'style/themes/default/_colors.scss';
 
 enum ToolbarLabels {
   participant,
@@ -192,7 +192,7 @@ const Toolbar = ({
           )}
         </div>
       )}
-      <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
+      <ParticipantSetDropdown user={loggedInUser} sqon={sqon} participantCount={participantCount} />
       <DownloadButton sqon={sqon} />
     </div>
   );
