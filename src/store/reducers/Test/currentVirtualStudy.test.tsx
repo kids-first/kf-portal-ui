@@ -1,7 +1,9 @@
-import reducer from '../currentVirtualStudy';
 import { Action } from 'redux';
-import { requestCreateQueryInCohort, addSetToCurrentQuery } from 'store/actionCreators/saveSets';
+
+import { addSetToCurrentQuery, requestCreateQueryInCohort } from 'store/actionCreators/saveSets';
 import { SetInfo } from 'store/saveSetTypes';
+
+import reducer from '../currentVirtualStudy';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -18,6 +20,7 @@ const initialState = {
   name: '',
   description: '',
   dirty: false,
+  selectionSqon: null,
   areSqonsEmpty: true,
   isLoading: false,
   error: null,
@@ -47,6 +50,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: false,
       isLoading: false,
       error: null,
@@ -68,6 +72,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: true,
       isLoading: false,
       error: null,
@@ -85,6 +90,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: false,
       isLoading: false,
       error: null,
@@ -118,6 +124,7 @@ describe('Current Virtual Study Reducer', () => {
         name: '',
         description: '',
         dirty: false,
+        selectionSqon: null,
         areSqonsEmpty: true,
         isLoading: false,
         error: null,
@@ -148,6 +155,7 @@ describe('Current Virtual Study Reducer', () => {
         name: '',
         description: '',
         dirty: false,
+        selectionSqon: null,
         areSqonsEmpty: false,
         isLoading: false,
         error: null,
@@ -177,6 +185,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: true,
       isLoading: false,
       error: null,
@@ -201,6 +210,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: false,
       isLoading: false,
       error: null,
@@ -229,6 +239,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: true,
       isLoading: false,
       error: null,
@@ -256,6 +267,7 @@ describe('Current Virtual Study Reducer', () => {
       name: '',
       description: '',
       dirty: false,
+      selectionSqon: null,
       areSqonsEmpty: false,
       isLoading: false,
       error: null,
