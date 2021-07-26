@@ -1,17 +1,5 @@
 @import 'style/themes/default/_colors';
 
-.ant-dropdown-menu-item:not(.ant-dropdown-menu-item-disabled) {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 22px !important;
-  color: #515885;
-}
-
-.ant-tooltip-placement-topRight {
-  padding-bottom: 7px;
-}
-
 .save-set-option-menu {
   #participant-count {
     &:hover {
@@ -31,21 +19,20 @@
     }
   }
 
-  .ant-dropdown-menu-item {
+  .save-set-option {
+    color: #515885;
     display: flex;
     align-items: center;
-  }
 
-  .ant-dropdown-menu-item-divider {
-    background-color: $gray-4;
-  }
+    .anticon {
+      font-size: 14px;
+    }
 
-  .anticon {
-    font-size: 14px !important;
-  }
-
-  .ant-dropdown-menu-item-disabled,
-  .ant-dropdown-menu-item-disabled:hover {
-    color: $body-3;
+    &[aria-disabled='true'] {
+      &:hover {
+        color: $body-3;
+      }
+      color: $body-3;
+    }
   }
 }

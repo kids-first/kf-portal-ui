@@ -18,7 +18,25 @@ type ParticipantsTableViewProps = {
   api: any;
 };
 
-const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
+type Participant = {
+  ageAtDiagnosis: Array<number>;
+  diagnosis: Array<string>;
+  diagnosisCategories: Array<string>;
+  diagnosisMondo: Array<string>;
+  familyCompositions: Array<string>;
+  familyId: string;
+  filesCount: number;
+  gender: string;
+  isProband: string;
+  participantId: string;
+  studyCode: string;
+  studyId: string;
+  studyName: string;
+  vitalStatus: string;
+  selected?: boolean;
+};
+
+const ParticipantsTableView = (props: ParticipantsTableViewProps) => {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
@@ -36,7 +54,7 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
     } else {
       dispatch(setSelectionSqons(null));
     }
-  }, [selectedRows]);
+  }, [dispatch, selectedRows]);
 
   return (
     <QueriesResolver
@@ -44,7 +62,7 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
       api={props.api}
       queries={[participantsQuery(props.sqon, sort, pageSize, pageIndex)]}
     >
-      {({ isLoading, data, error }: { isLoading: Boolean; data: any; error: any }) => {
+      {({ isLoading, data, error }: { isLoading: boolean; data: any; error: any }) => {
         if (error) {
           return (
             <div className="ptv-error-message">
@@ -53,12 +71,14 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
           );
         }
 
-        const isRowSelected = (node: any) =>
+        const isRowSelected = (node: Participant) =>
           allRowsSelected || selectedRows.some((row) => row === node.participantId);
 
-        const dataWithRowSelection = data[0]
-          ? data[0].nodes.map((node: any) => ({ ...node, selected: isRowSelected(node) }))
-          : [];
+        const dataWithRowSelection =
+          data[0]?.nodes?.map((node: Participant) => ({
+            ...node,
+            selected: isRowSelected(node),
+          })) || [];
 
         return (
           <ParticipantsTable
@@ -67,15 +87,15 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
             data={dataWithRowSelection}
             api={props.api}
             sort={sort}
-            dataTotalCount={data[0] ? data[0].total : 0}
+            dataTotalCount={data[0]?.total || 0}
             downloadName={'participant-table'}
             onFetchData={({
               page,
               pageSize,
               sorted,
             }: {
-              page: any;
-              pageSize: any;
+              page: number;
+              pageSize: number;
               sorted: any;
             }) => {
               const sorting = sorted
@@ -88,7 +108,7 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
               setPageSize(pageSize);
               setSort(sorting);
             }}
-            onRowSelected={(checked: any, row: any) => {
+            onRowSelected={(checked: boolean, row: any) => {
               const rowId = row.participantId;
               if (checked) {
                 setSelectedRows((s) => s.concat(rowId));
@@ -96,7 +116,7 @@ const ParticipantsTableView: React.FC<ParticipantsTableViewProps> = (props) => {
               }
               setSelectedRows((s) => s.filter((row) => row !== rowId));
             }}
-            onAllRowsSelected={(checked: any) => {
+            onAllRowsSelected={(checked: boolean) => {
               // don't keep individual rows selected when "select all" is checked
               //  to avoid having them selected after "unselect all"
               setAllRowsSelected(() => checked);

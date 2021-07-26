@@ -32,6 +32,8 @@ type ParticipantSetDropdownProps = {
   participantCount: number;
 };
 
+const ROW_SELECTION_LIMIT = 10000;
+
 const mapStateToProps = (state: RootState) => ({
   userSets: selectSets(state),
   selectionSqon: selectCurrentSelectionSqons(state),
@@ -114,14 +116,14 @@ const ParticipantSetDropdown = ({
     return participantCount;
   };
 
-  const exceedLimit = () => getSelectecParticipantCount() > 10000;
+  const exceedLimit = () => getSelectecParticipantCount() > ROW_SELECTION_LIMIT;
 
   const menu = () => (
     <Menu className="save-set-option-menu" onClick={onClick}>
       <Menu.Item
         id="participant-count"
         key="participant-count"
-        className={exceedLimit() ? 'over' : ''}
+        className={'save-set-option' + (exceedLimit() ? ' over' : '')}
         disabled
         icon={
           <DemographicIcon
@@ -141,14 +143,20 @@ const ParticipantSetDropdown = ({
         </Tooltip>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key={ActionType.save} icon={<PlusOutlined />}>
+      <Menu.Item key={ActionType.save} className="save-set-option" icon={<PlusOutlined />}>
         Save as new set
       </Menu.Item>
-      <Menu.Item key={ActionType.add} icon={<UsergroupAddOutlined />} disabled={isEditDisabled}>
+      <Menu.Item
+        key={ActionType.add}
+        className="save-set-option"
+        icon={<UsergroupAddOutlined />}
+        disabled={isEditDisabled}
+      >
         Add to existing set
       </Menu.Item>
       <Menu.Item
         key={ActionType.delete}
+        className="save-set-option"
         icon={<UsergroupDeleteOutlined />}
         disabled={isEditDisabled}
       >
