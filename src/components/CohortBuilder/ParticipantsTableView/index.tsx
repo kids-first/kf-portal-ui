@@ -3,6 +3,8 @@ import { connect, useDispatch } from 'react-redux';
 
 import { withApi } from 'services/api';
 import { setSelectionSqons } from 'store/actionCreators/virtualStudies';
+import { Sqon } from 'store/sqon';
+import { LoggedInUser } from 'store/userTypes';
 
 import QueriesResolver from '../QueriesResolver';
 
@@ -12,10 +14,10 @@ import TableErrorView from './TableErrorView';
 
 import './index.scss';
 
-type ParticipantsTableViewProps = {
-  sqon: object;
-  loggedInUser?: object;
-  api: any;
+type OwnProps = {
+  sqon: Sqon;
+  loggedInUser?: LoggedInUser;
+  api: Function;
 };
 
 type Participant = {
@@ -36,7 +38,7 @@ type Participant = {
   selected?: boolean;
 };
 
-const ParticipantsTableView = (props: ParticipantsTableViewProps) => {
+const ParticipantsTableView = (props: OwnProps) => {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
@@ -46,7 +48,7 @@ const ParticipantsTableView = (props: ParticipantsTableViewProps) => {
 
   useEffect(() => {
     if (selectedRows.length) {
-      let selectionSQON = {
+      const selectionSQON = {
         op: 'and',
         content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
       };

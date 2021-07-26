@@ -133,7 +133,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                       }
                     />
                   ) : (
-                    <ParticipantsTableView sqon={sqon} />
+                    <ParticipantsTableView sqon={sqon} loggedInUser={state.loggedInUser} />
                   )}
                 </TabPane>
               </Tabs>
