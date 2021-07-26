@@ -65,9 +65,9 @@ const StudyTable = (props: Props) => {
       </div>
       <Table
         columns={columns}
+        scroll={{ x: 1500 }}
         dataSource={tableData || []}
         pagination={false}
-        scroll={{ x: 1500 }}
         summary={(data: readonly StudiesResult[]) => (
           <Table.Summary.Row className={styles.studyTableFooter}>
             {renderColumnSummary(columns, data)}
