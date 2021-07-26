@@ -55,8 +55,9 @@ const StudyTable: FC<Props> = (props) => {
       </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
-        dataSource={tableData}
-        pagination={pagination}
+        scroll={{ x: 1500 }}
+        dataSource={tableData || []}
+        pagination={false}
       />
     </div>
   );
