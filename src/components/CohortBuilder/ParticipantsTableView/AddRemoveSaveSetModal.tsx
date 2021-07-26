@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { Button, Form, Modal, notification } from 'antd';
-import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
-import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
+
+import { addRemoveSetIds } from 'store/actionCreators/saveSets';
 import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
@@ -12,11 +13,13 @@ import {
   SaveSetState,
   SetSubActionTypes,
 } from 'store/saveSetTypes';
-import { connect, ConnectedProps } from 'react-redux';
-import { addRemoveSetIds } from 'store/actionCreators/saveSets';
-import './AddRemoveSaveSetModal.css';
+import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
+import { Sqon } from 'store/sqon';
 import { LoggedInUser } from 'store/userTypes';
+
 import UserSetsFrom from './../UserSetsForm';
+
+import './AddRemoveSaveSetModal.css';
 
 const FORM_NAME = 'add-remove-set';
 
