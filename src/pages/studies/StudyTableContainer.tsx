@@ -42,6 +42,7 @@ const StudyTable = (props: Props) => {
       </div>
       <Table
         columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
+        scroll={{ x: 1500 }}
         dataSource={tableData || []}
         pagination={false}
       />
