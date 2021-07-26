@@ -35,11 +35,6 @@ const StudyTable = (props: Props) => {
   const columns = studiesColumns(props.currentVirtualStudy, props.onClickStudyLink);
   const { total } = props;
 
-  const getColumnSummary = (dataIndex: string, data: Array<StudiesResult>) => {
-    const result = data.map((study: StudiesResult | any) => study[dataIndex]);
-    return result.length ? result.reduce((a, b) => a + b) : 0;
-  };
-
   const renderColumnSummary = (columns: any, data: any): Array<ReactNode> =>
     columns.map((column: any) => {
       if (column.children) {
@@ -52,10 +47,15 @@ const StudyTable = (props: Props) => {
           index={column.dataIndex}
           className={styles.studyTableFooterCell}
         >
-          <strong>{column.summary ? getColumnSummary(column.dataIndex, data) : ''}</strong>
+          <strong>{column.summary ? getColumnTotal(column.dataIndex, data) : ''}</strong>
         </Table.Summary.Cell>
       );
     });
+
+  const getColumnTotal = (dataIndex: string, data: Array<StudiesResult>) => {
+    const result = data.map((study: StudiesResult | any) => study[dataIndex]);
+    return result.length ? result.reduce((a, b) => a + b) : 0;
+  };
 
   return (
     <div>
