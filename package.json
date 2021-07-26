@@ -43,7 +43,7 @@
     "react-router-dom": "^5.2.0",
     "react-share": "^3.0.1",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "scriptjs": "^2.5.9",
     "tinygradient": "^1.1.5"
