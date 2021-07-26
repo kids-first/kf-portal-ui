@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Table, Typography } from 'antd';
 
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { StudiesResults } from 'store/graphql/studies/actions';
-import { generateTableData } from 'store/graphql/studies/models';
+import { generateTableData, StudiesResult } from 'store/graphql/studies/models';
 import { studiesColumns } from 'store/graphql/studies/tableColumns';
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
@@ -32,7 +32,30 @@ type Props = StudiesResults & PropsFromRedux & { total: number };
 
 const StudyTable = (props: Props) => {
   const tableData = generateTableData(props);
+  const columns = studiesColumns(props.currentVirtualStudy, props.onClickStudyLink);
   const { total } = props;
+
+  const getColumnSummary = (dataIndex: string, data: Array<StudiesResult>) => {
+    const result = data.map((study: StudiesResult | any) => study[dataIndex]);
+    return result.length ? result.reduce((a, b) => a + b) : 0;
+  };
+
+  const renderColumnSummary = (columns: any, data: any): Array<ReactNode> =>
+    columns.map((column: any) => {
+      if (column.children) {
+        return renderColumnSummary(column.children, data);
+      }
+
+      return (
+        <Table.Summary.Cell
+          key={column.dataIndex}
+          index={column.dataIndex}
+          className={styles.studyTableFooterCell}
+        >
+          <strong>{column.summary ? getColumnSummary(column.dataIndex, data) : ''}</strong>
+        </Table.Summary.Cell>
+      );
+    });
 
   return (
     <div>
@@ -41,14 +64,18 @@ const StudyTable = (props: Props) => {
         <span> studies </span>
       </div>
       <Table
-        columns={studiesColumns(props.currentVirtualStudy, props.onClickStudyLink)}
+        columns={columns}
         dataSource={tableData || []}
         pagination={false}
+        scroll={{ x: 1500 }}
+        summary={(data: readonly StudiesResult[]) => (
+          <Table.Summary.Row className={styles.studyTableFooter}>
+            {renderColumnSummary(columns, data)}
+          </Table.Summary.Row>
+        )}
       />
     </div>
   );
 };
 
-const Connected = connector(StudyTable);
-
-export default Connected;
+export default connector(StudyTable);

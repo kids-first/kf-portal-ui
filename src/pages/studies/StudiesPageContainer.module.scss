@@ -21,3 +21,8 @@
 .tableHeader {
   margin-bottom: 16px;
 }
+
+.studyTableFooter > .studyTableFooterCell {
+  border-top: 1px solid $gray-5;
+  border-bottom: none;
+}
