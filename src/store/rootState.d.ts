@@ -4,6 +4,7 @@ import { FenceConnectionsState } from './fenceConnectionsTypes';
 import { FenceStudiesState } from './fenceStudiesTypes';
 import { FileSearchFiltersState } from './fileSearchFiltersTypes';
 import { GenomicSuggesterState } from './genomicSuggesterTypes';
+import { QueryResolverState } from './QueryResolverTypes';
 import { ReportState } from './reportTypes';
 import { SavedQueriesState } from './SavedQueriesTypes';
 import { SaveSetState } from './saveSetTypes';
@@ -26,6 +27,7 @@ export interface RootState {
   genomicSuggester: GenomicSuggesterState;
   workBench: WorkBenchState;
   savedQueries: SavedQueriesState;
+  queryResolver: QueryResolverState;
   fenceConnections: FenceConnectionsState;
   fenceStudies: FenceStudiesState;
 }

@@ -7,6 +7,7 @@ import fenceStudies from './fenceStudies';
 import fileSearchFilters from './fileSearchFilters';
 import genomicSuggester from './genomicSuggester';
 import modal from './modal';
+import queryResolver from './queryResolver';
 import report from './report';
 import savedQueries from './SavedQueries';
 import saveSets from './saveSets';
@@ -30,4 +31,5 @@ export default combineReducers({
   savedQueries,
   fenceConnections,
   fenceStudies,
+  queryResolver,
 });
