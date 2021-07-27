@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { print } from 'graphql/language/printer';
 import urlJoin from 'url-join';
 
 import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
-import { addToCache } from 'store/actionCreators/queryResolver';
-import { RootState } from 'store/rootState';
-import { selectCache } from 'store/selectors/queryResolver';
+
+import useQueryResolverCache from './useQueryResolverCache';
 
 type Output = {
   isLoading: boolean;
@@ -31,8 +29,7 @@ const useQueryResolver = (
     error: null,
   });
   const [queryList, setQueryList] = useState(queries);
-  const cache = useSelector((state: RootState) => selectCache(state));
-  const dispatch = useDispatch();
+  const { cache, cacheQuery } = useQueryResolverCache();
 
   useEffect(() => {
     update();
@@ -49,12 +46,6 @@ const useQueryResolver = (
 
       try {
         const data = useCache ? await cachedFetchData(body) : await fetchData(body);
-        dispatch(
-          addToCache({
-            body: body,
-            result: data,
-          }),
-        );
         setPayload({
           ...payload,
           isLoading: false,
@@ -75,12 +66,17 @@ const useQueryResolver = (
       method: 'POST',
       url: urlJoin(arrangerApiRoot!, `/${arrangerProjectId}/graphql/${name}`),
       body,
-    }).then((data: any) =>
-      data.map((d: any, i: any) => {
+    }).then((data: any) => {
+      const result = data.map((d: any, i: any) => {
         const transform = queryList[i].transform;
         return transform ? transform(d) : d;
-      }),
-    );
+      });
+      cacheQuery({
+        body,
+        result,
+      });
+      return result;
+    });
 
     return result;
   };

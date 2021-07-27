@@ -63,7 +63,7 @@ const ParticipantsTableView = (props: OwnProps) => {
 
   useEffect(() => {
     updateQueries([participantsQuery(props.sqon, sort, pageSize, pageIndex)]);
-  }, [sort, pageSize, pageIndex]);
+  }, [sort, pageSize, pageIndex, props.sqon]);
 
   if (error) {
     return (
