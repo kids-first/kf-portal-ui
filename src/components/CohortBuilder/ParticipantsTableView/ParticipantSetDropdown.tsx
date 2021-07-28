@@ -11,6 +11,7 @@ import {
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
+import useQueryResolverCache from 'hooks/useQueryResolverCache';
 import DemographicIcon from 'icons/DemographicIcon';
 import { ApiContext } from 'services/api';
 import { fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
@@ -92,6 +93,7 @@ const ParticipantSetDropdown = ({
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [modal, setModal] = useState<ModalState>(modals.hideAll);
   const api = useContext(ApiContext);
+  const { clearQueryCache } = useQueryResolverCache();
 
   const onClick: MenuClickEventHandler = (e) => setModal(modals[e.key as ActionType]);
 
@@ -183,7 +185,10 @@ const ParticipantSetDropdown = ({
           sqon={selectionSqon || sqon}
           user={user}
           subActionType={modal.actionType}
-          hideModalCb={() => setModal(modals.hideAll)}
+          hideModalCb={() => {
+            setModal(modals.hideAll);
+            clearQueryCache();
+          }}
           saveSetActionType={SaveSetActionsTypes.EDIT}
         />
       )}

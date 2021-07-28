@@ -6,12 +6,19 @@ import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
 import useQueryResolverCache from './useQueryResolverCache';
 
-type Output = {
-  isLoading: boolean;
+type Payload = {
   data: Array<any>;
   error: any;
-  updateQueries: Function;
 };
+
+type Output = {
+  isLoading: boolean;
+  updateQueries: Function;
+  data: Array<any>;
+  error: any;
+};
+
+var loadingQueries: Array<string> = [];
 
 const useQueryResolver = (
   api: Function,
@@ -23,8 +30,7 @@ const useQueryResolver = (
   }> = [],
   useCache: boolean = true,
 ): Output => {
-  const [payload, setPayload] = useState({
-    isLoading: true,
+  const [payload, setPayload] = useState<Payload>({
     data: [],
     error: null,
   });
@@ -34,6 +40,23 @@ const useQueryResolver = (
   useEffect(() => {
     update();
   }, [queryList]);
+
+  const setLoading = (body: string, isLoading: boolean, error: any = null, data: any = []) => {
+    if (isLoading) {
+      loadingQueries.push(body);
+    } else {
+      loadingQueries = loadingQueries.filter((val) => val !== body);
+    }
+    if (data.length || error) {
+      setPayload({
+        ...payload,
+        error,
+        data,
+      });
+    }
+  };
+
+  const isQueryLoading = (body: string) => loadingQueries.includes(body);
 
   const update = async () => {
     if (queryList.length) {
@@ -45,18 +68,13 @@ const useQueryResolver = (
       );
 
       try {
-        const data = useCache ? await cachedFetchData(body) : await fetchData(body);
-        setPayload({
-          ...payload,
-          isLoading: false,
-          data: data,
-        });
+        if (!isQueryLoading(body)) {
+          setLoading(body, true);
+          const data = useCache ? await cachedFetchData(body) : await fetchData(body);
+          setLoading(body, false, null, data);
+        }
       } catch (err) {
-        setPayload({
-          ...payload,
-          isLoading: false,
-          error: err,
-        });
+        setLoading(body, false, err);
       }
     }
   };
@@ -83,7 +101,12 @@ const useQueryResolver = (
 
   const cachedFetchData = (body: any) => cache[body] || fetchData(body);
 
-  return { ...payload, updateQueries: setQueryList };
+  return {
+    data: payload.data,
+    error: payload.error,
+    isLoading: loadingQueries.length > 0,
+    updateQueries: setQueryList,
+  };
 };
 
 export default useQueryResolver;

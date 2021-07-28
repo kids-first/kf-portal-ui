@@ -28,6 +28,12 @@ export default (state = initialState, action: QueryResolverActionTypes): QueryRe
         },
       };
     }
+    case QueryResolverActions.clearCache: {
+      return {
+        ...state,
+        cache: {},
+      };
+    }
     default:
       return state;
   }

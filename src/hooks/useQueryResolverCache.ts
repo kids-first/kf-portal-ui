@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addToCache, removeFromCache } from 'store/actionCreators/queryResolver';
+import { addToCache, clearCache, removeFromCache } from 'store/actionCreators/queryResolver';
 import { QueryType } from 'store/QueryResolverTypes';
 import { RootState } from 'store/rootState';
 import { selectCache } from 'store/selectors/queryResolver';
@@ -11,6 +11,7 @@ type Output = {
   };
   cacheQuery: Function;
   unCacheQuery: Function;
+  clearQueryCache: Function;
 };
 
 const useQueryResolverCache = (): Output => {
@@ -25,7 +26,11 @@ const useQueryResolverCache = (): Output => {
     dispatch(removeFromCache(queryBody));
   };
 
-  return { cache, cacheQuery, unCacheQuery };
+  const clearQueryCache = () => {
+    dispatch(clearCache());
+  };
+
+  return { cache, cacheQuery, unCacheQuery, clearQueryCache };
 };
 
 export default useQueryResolverCache;

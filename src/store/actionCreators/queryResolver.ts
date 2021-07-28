@@ -9,3 +9,7 @@ export const addToCache = (query: QueryType): QueryResolverActionTypes => ({
   type: QueryResolverActions.addToCache,
   query,
 });
+
+export const clearCache = (): QueryResolverActionTypes => ({
+  type: QueryResolverActions.clearCache,
+});

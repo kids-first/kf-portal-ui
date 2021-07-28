@@ -39,7 +39,7 @@ type Participant = {
 
 const ParticipantsTableView = (props: OwnProps) => {
   const dispatch = useDispatch();
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [pageIndex, setPageIndex] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
   const [allRowsSelected, setAllRowsSelected] = useState(false);
