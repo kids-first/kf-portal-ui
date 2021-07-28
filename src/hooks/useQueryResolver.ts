@@ -18,7 +18,7 @@ type Output = {
   error: any;
 };
 
-var loadingQueries: Array<string> = [];
+var loadingQueries: { [index: string]: Array<any> } = {};
 
 const useQueryResolver = (
   api: Function,
@@ -38,14 +38,17 @@ const useQueryResolver = (
   const { cache, cacheQuery } = useQueryResolverCache();
 
   useEffect(() => {
+    if (!loadingQueries[name]) {
+      loadingQueries[name] = [];
+    }
     update();
   }, [queryList]);
 
   const setLoading = (body: string, isLoading: boolean, error: any = null, data: any = []) => {
     if (isLoading) {
-      loadingQueries.push(body);
+      loadingQueries[name].push(body);
     } else {
-      loadingQueries = loadingQueries.filter((val) => val !== body);
+      loadingQueries[name] = loadingQueries[name].filter((val) => val !== body);
     }
     if (data.length || error) {
       setPayload({
@@ -56,7 +59,7 @@ const useQueryResolver = (
     }
   };
 
-  const isQueryLoading = (body: string) => loadingQueries.includes(body);
+  const isQueryLoading = (body: string) => loadingQueries[name].includes(body);
 
   const update = async () => {
     if (queryList.length) {
@@ -104,7 +107,7 @@ const useQueryResolver = (
   return {
     data: payload.data,
     error: payload.error,
-    isLoading: loadingQueries.length > 0,
+    isLoading: loadingQueries[name]?.length > 0,
     updateQueries: setQueryList,
   };
 };
