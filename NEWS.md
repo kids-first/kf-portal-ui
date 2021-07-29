@@ -7,13 +7,22 @@
 
 ### Technical / Other changes
 -->
+
+## 2021-07-29 kf-portal-ui 3.2.1
+
+### Technical / Other changes
+
+- Fix broken studies table (truncated)
+
 ## 2021-07-13 kf-portal-ui 3.2.0
 
 ### Features
+
 - [3014](https://github.com/kids-first/kf-portal-ui/issues/3014) Feature (Portal, Studies): Added a search bar at the top of the Facets panel which supports searching by study codes and study names
 - [3353](https://github.com/kids-first/kf-portal-ui/issues/3353) Feature (Portal, Studies): Removed the pagination from the Studies page as all studies are now displayed on one page.
 
 ### Technical / Other changes
+
 - [3343](https://github.com/kids-first/kf-portal-ui/issues/3343) Refactor (Frontend, React): Removed react-grid-system
 - [3239](https://github.com/kids-first/kf-portal-ui/issues/3239) Refactor (Backend, Tests): Fixed issues with warnings and errors
 - [3257](https://github.com/kids-first/kf-portal-ui/issues/3257) Refactor (Backend, Build): Removed unused javascript file
@@ -27,6 +36,7 @@
 ## 2021-05-25 kf-portal-ui 3.1.3
 
 ### Technical / Other changes
+
 - [3016](https://github.com/kids-first/kf-portal-ui/issues/3016) Fix (Portal, User Profile): Fixed an issue where users newly entered profile information would be reset after logging out and logging back in.
 - [3226](https://github.com/kids-first/kf-portal-ui/issues/3226) Fix (Variants, Frequencies Tab): Fixed an issue where the Orphanet link in the Frequencies tab of the Variant Entity page was always redirecting to the same page.
 - [3247](https://github.com/kids-first/kf-portal-ui/issues/3247) Fix (Cohort Builder, Virtual Studies): Fixed an issue where it was impossible to delete a virtual study.
@@ -37,10 +47,12 @@
 ## 2020-05-06 kf-portal-ui 3.0.2
 
 ### Features
+
 - [3165](https://github.com/kids-first/kf-portal-ui/issues/3165) Variant page : Add tooltip to participants column in KF Studies table.
 - [3111](https://github.com/kids-first/kf-portal-ui/issues/3111) Display impact long names.
 
 ### Technical / Other changes
+
 - [3124](https://github.com/kids-first/kf-portal-ui/issues/3124) Tables : fix border color for table rows.
 - [3177](https://github.com/kids-first/kf-portal-ui/issues/3177) Fix Table column dropdown in File Repo.
 - [3070](https://github.com/kids-first/kf-portal-ui/issues/3070) Use operator AND when adding a term to an active query from the sunburst.
@@ -49,7 +61,7 @@
 - [3113](https://github.com/kids-first/kf-portal-ui/issues/3113) Add -- when there's no data (variant search page + variant entity).
 - [3128](https://github.com/kids-first/kf-portal-ui/issues/3128) Variant entity page : update display for empty tables (change request).
 
-## 2021-04-30 kf-portal-ui  3.0.1
+## 2021-04-30 kf-portal-ui 3.0.1
 
 ### Features
 
@@ -66,7 +78,7 @@
 
 - [2818](https://github.com/kids-first/kf-portal-ui/issues/2818) Refactor (Studies page, Table): Adjusted the scrolling mechanism of the results table.
 - [2865](https://github.com/kids-first/kf-portal-ui/issues/2865) Fix (Portal, ETL): Added a fix to the ETL preventing mapping family members if a participant has no family ID.
-- [2895](https://github.com/kids-first/kf-portal-ui/issues/2895) Refactor (Portal, Arranger): Development of a new microservice containing the latest version of arranger (2.2.0) to be used on the Studies and Variant pages and secured with Ego. 
+- [2895](https://github.com/kids-first/kf-portal-ui/issues/2895) Refactor (Portal, Arranger): Development of a new microservice containing the latest version of arranger (2.2.0) to be used on the Studies and Variant pages and secured with Ego.
 - [2896](https://github.com/kids-first/kf-portal-ui/issues/2896) Refactor (Portal, ETL): Addition of the new Studies fields to the existing ETL (File Centric and participant Centric).
 - [2897](https://github.com/kids-first/kf-portal-ui/issues/2897) Refactor (Portal, ETL): Addition of a new Studies index to the ETL.
 - [2952](https://github.com/kids-first/kf-portal-ui/issues/2952) Refactor (Studies page, Librairies): Integration of the Apollo library.
@@ -81,9 +93,10 @@
 - [3137](https://github.com/kids-first/kf-portal-ui/issues/3137) Fix (File Repository, Columns): Fixed an issue with the Study Domain column in which values were never displayed.
 - [3167](https://github.com/kids-first/kf-portal-ui/issues/3167) Fix (Variant Page, Search results table): Fixed an issue where the user was unable to select and copy the text from the Variant Column in the Variant Search page.
 
-## 2021-03-22 kf-portal-ui  2.36.0
+## 2021-03-22 kf-portal-ui 2.36.0
 
 ### Features
+
 - [2929](https://github.com/kids-first/kf-portal-ui/issues/2929) Feature (Portal, Arranger): Integrated a new separate and up-to-date Arranger microservice for future development.
 - [2952](https://github.com/kids-first/kf-portal-ui/issues/2952) Feature (Portal, Apollo): Integrated Apollo to the portal libraries for future development.
 - [2965](https://github.com/kids-first/kf-portal-ui/issues/2965) Feature (Data Repository Integrations, RAS): The Data Repository Integration now uses RAS (Research Auth Service) instead of the Fences.
@@ -91,31 +104,40 @@
 ## 2020-02-16 kf-portal-ui 2.35.0
 
 ### Features
+
 - [2926](https://github.com/kids-first/kf-portal-ui/issues/2926) Missing Biospecimen attributes from the Cohort Builder filtering
 
 ## 2021-02-09 kf-portal-ui 2.34.0
+
 ### Features
+
 - [2437](https://github.com/kids-first/kf-portal-ui/issues/2437) Feature (Ontology browser): Add Any Of / All Of / Not in the modal
 - [2913](https://github.com/kids-first/kf-portal-ui/issues/2913) Feature: Add banner to advertise KF Forum
 
 ## 2021-01-21 kf-portal-ui 2.33.0
+
 ### Technical / Other changes
-- [2914](https://github.com/kids-first/kf-portal-ui/issues/2914) Fix (VariantDB):  Update numbers.
+
+- [2914](https://github.com/kids-first/kf-portal-ui/issues/2914) Fix (VariantDB): Update numbers.
 
 ## 2021-01-14 kf-portal-ui 2.32.0
+
 ### Technical / Other changes
-- [2586](https://github.com/kids-first/kf-portal-ui/issues/2586) Fix (Ontology Browser):  Better display when no phenotypes for returned participants.
+
+- [2586](https://github.com/kids-first/kf-portal-ui/issues/2586) Fix (Ontology Browser): Better display when no phenotypes for returned participants.
 - [2852](https://github.com/kids-first/kf-portal-ui/issues/2852) Refactor (Dashboard, Charts, Cohort Builder): Reduce size of pie and bar charts in the KF portal.
 
 ## 2020-12-18 kf-portal-ui
 
 ### Features
+
 - [2860](https://github.com/kids-first/kf-portal-ui/issues/2860) Feature (File Repository, Search): Added a new Facet in the sidebar allowing users to search using the External Study ID.
 - [2861](https://github.com/kids-first/kf-portal-ui/issues/2861) Feature (File Repository, Table columns): Added a new column called “dbGaP” that displays the dbGaP accession number when there is one.
 - [2862](https://github.com/kids-first/kf-portal-ui/issues/2862) Feature (Participant Entity Page, dbGaP): Added a line in the table to display the dbGaP accession number when the study is a dbGaP study.
 - [2863](https://github.com/kids-first/kf-portal-ui/issues/2863) Feature (File Entity Page, dbGaP): Added a line in the table to display the dbGaP accession number when the study is a dbGaP study.
 
 ### Technical / Other changes
+
 - [2853](https://github.com/kids-first/kf-portal-ui/issues/2853) Fix (Cohort Builder, Survival Plot): Fixed an issue where refreshing the page would shrink the size of the plot in half until moving the mouse over it.
 - [2857](https://github.com/kids-first/kf-portal-ui/issues/2857) Refactor (Dashboard, Charts): Adjusted the Studies Graph so that it also gets filtered when clicking on a study in the chart or when searching for a specific study.
 - [2858](https://github.com/kids-first/kf-portal-ui/issues/2858) Refactor (Patient Entity Page, External ID): Renamed the “External ID” label to “Participant - External ID” so the field is easier to recognize for users coming from dbGaP.
@@ -125,11 +147,13 @@
 ## 2020-12-10 kf-portal-ui 2.29.0
 
 ### Features
+
 - [2643](https://github.com/kids-first/kf-portal-ui/issues/2643) Feature (Cohort Builder, HPO Sunburst): The small HPO Tree beside the sunburst is now dynamic allowing the user to click on the terms to navigate in the Sunburst.
 - [2829](https://github.com/kids-first/kf-portal-ui/issues/2829) Feature (Cohort Builder, Family ID): Made the Family ID in the Family ID column clickable to be able to add it to the active query to facilitate the process for a user to restrict his search to a specific family only.
 - [2830](https://github.com/kids-first/kf-portal-ui/issues/2830) Feature (Cohort Builder, Age_at_diagnosis): Removed the age_at_diagnosis column and added the Pedcbio one that is now also a hyperlink.
 
 ### Technical / Other changes
+
 - [2819](https://github.com/kids-first/kf-portal-ui/issues/2819) Refactor (Portal, Hotjar): Replaced the User Feedback add-on Hotjar for Usersnap.
 - [2831](https://github.com/kids-first/kf-portal-ui/issues/2831) Fix (Cohort Builder, Table view): Fixed an issue where when a user visiting a Participants page would go back to the Cohort Builder using the browser back button, the view of the results would be reset to Summary view automatically.
 - [2832](https://github.com/kids-first/kf-portal-ui/issues/2832) Refactor (Cohort Builder, HPO Sunburst): Adjusted the Sunburst to also be filtered when selecting a HPO term in the HPO Browser.
@@ -142,6 +166,7 @@
 ## 2020-11-13 kf-portal-ui 2.28.0
 
 ### Features
+
 - [2639](https://github.com/kids-first/kf-portal-ui/issues/2639) Feature (Cohort Builder, HPO Sunburst): Update the presentation of the information present in the center of the Sunburst.
 - [2640](https://github.com/kids-first/kf-portal-ui/issues/2640) Feature (Cohort Builder, HPO Sunburst): Added extra details regarding the selected HPO term beside the Sunburst.
 - [2641](https://github.com/kids-first/kf-portal-ui/issues/2641) Feature (Cohort Builder, HPO Sunburst): Added a minimalistic version of the HPO tree beside the Sunburst showing the path of the selected term.
@@ -150,6 +175,7 @@
 - [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
 
 ### Technical / Other changes
+
 - [2754](https://github.com/kids-first/kf-portal-ui/issues/2754) Refactor (Public-Stats-API): Removed duplicated code.
 - [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implemented updated grid system in dashboard allowing for 2 columns wide cards.
 - [2768](https://github.com/kids-first/kf-portal-ui/issues/2768) Refactor (Dashboard, Grid system): Converted cards to new antd design.
@@ -163,12 +189,14 @@
 ## 2020-10-28 kf-portal-ui 2.27.0
 
 ### Features
+
 - [2668](https://github.com/kids-first/kf-portal-ui/issues/2668) Feature (Cohort Builder, Participants Saved Sets): A new menu filter called “My sets” was added beside the “Search all filters” bar allowing users to use their Participants Saved Sets in their queries.
 - [2726](https://github.com/kids-first/kf-portal-ui/issues/2726) Feature (Cohort Builder, Participants Saved sets): When using a Saved set in a query in the Cohort Builder, we now see a dropdown containing all saved sets when clicking on the Saved Set name.
 - [2639](https://github.com/kids-first/kf-portal-ui/issues/2639) Feature (Summary View, Sunburst): Refactor information at middle of sunburst as per design mockup.
 - [2640](https://github.com/kids-first/kf-portal-ui/issues/2640) Feature (Summary View, Sunburst): Add details regarding the selected HPO term on the right side of the Sunburst's card.
 
 ### Technical / Other changes
+
 - [2767](https://github.com/kids-first/kf-portal-ui/issues/2767) Refactor (Dashboard, Grid system): Implement updated grid system in dashboard allowing for 2 columns wide cards.
 - [2768](https://github.com/kids-first/kf-portal-ui/issues/2768) Refactor (Dashboard, Grid system): Convert cards to new antd design.
 - [2797](https://github.com/kids-first/kf-portal-ui/issues/2797) Refactor (File Repository, Freactal): Removing Freactal code from the Browse All facets modal.
@@ -177,16 +205,18 @@
 ## 2020-10-15 kf-portal-ui 2.26.1
 
 ### Technical / Other changes
+
 - [2784](https://github.com/kids-first/kf-portal-ui/issues/2784) Fix (FileRepo, File Manifest Modal): Fix participant counts when one navigates from the cohort builder to the file repository and opens up the file manifest modal. Refactor of the modal UI with Antd components.
 - [2780](https://github.com/kids-first/kf-portal-ui/issues/2780) Refactor (Clear all queries modal): remove freactal dependency and migrate UI with Antd components.
 
 ## 2020-10-05 kf-portal-ui 2.26.0
 
 ### Features
+
 - [2755](https://github.com/kids-first/kf-portal-ui/issues/2755) Feature (Cohort Builder, Participants Sets): The participants set feature is now visible to everyone. Adding a set to the Cohort Builder from the Dashboard page now replace any existing set instead of adding a new one.
 
-
 ### Technical / Other changes
+
 - [2770](https://github.com/kids-first/kf-portal-ui/issues/2770) Fix (SqonBuilder): Make sure case range does not generate a type error (ex, age at diagnosis).
 - [2693](https://github.com/kids-first/kf-portal-ui/issues/2693) Refactor (Portal, Login): Removal of duplicate code in LoginUtils.
 - [2754](https://github.com/kids-first/kf-portal-ui/issues/2754) Refactor (Dashboard, Public-stats-api): Removal of duplicate code.
@@ -195,10 +225,12 @@
 ## 2020-10-01 kf-portal-ui
 
 ### Features
+
 - [2614](https://github.com/kids-first/kf-portal-ui/issues/2614) Feature (Cohort Builder, Participants Sets): From the card listing the saved sets on the dashboard, it is now possible to click on the number representing the number of participants in a set to be redirected to the cohort builder and view its content.
 - [2715](https://github.com/kids-first/kf-portal-ui/issues/2715) Perf (Studies Chart): Make 1 call vs many ones in order to fetch the needed data for the Studies Chart.
 
 ### Technical / Other changes
+
 - [2632](https://github.com/kids-first/kf-portal-ui/issues/2632) Refactor (Dashboard, Cards): Updated the title of the "My Saved Queries" card.
 - [2719](https://github.com/kids-first/kf-portal-ui/issues/2719) Fix (Cohort Builder, Participants sets): Make sure sets card show correct data.
 - [2722](https://github.com/kids-first/kf-portal-ui/issues/2722) Refactor (Variant Workbench, Fences): Return a 404 error instead of an error 500 when users try to launch a cluster with their fences disconnected.
@@ -210,9 +242,11 @@
 ## 2020-09-23 kf-portal-ui 2.24.0
 
 ### Features
+
 - [2687](https://github.com/kids-first/kf-portal-ui/issues/2687) Fix (Variant page): Update text on the Variant DB home page
 
 ### Technical / Other changes
+
 - [2706](https://github.com/kids-first/kf-portal-ui/issues/2706) Fix (Cohort Builder, Sets): Make sure userId is not visible on the network (sets)
 - [2558](https://github.com/kids-first/kf-portal-ui/issues/2558) Fix (File Repo, Download Manifest): Make modal readable (layout was broken)
 - [2719](https://github.com/kids-first/kf-portal-ui/issues/2719) Fix (Cohort Builder, Sets ): Make sure sets are always up-to-date
@@ -220,6 +254,7 @@
 ## 2020-09-15 kf-portal-ui 2.23.00
 
 ### Features
+
 - [2534](https://github.com/kids-first/kf-portal-ui/issues/2534) Feature (Cohort Builder, Ontology Browser): Add a link to open the browser from the queries.
 - [2573](https://github.com/kids-first/kf-portal-ui/issues/2573) Feature (Cohort Builder, Participants Saved sets): When saving a set of Participants, the textbox is now already populated with a default name to speed up the saving process.
 - [2579](https://github.com/kids-first/kf-portal-ui/issues/2579) Feature (Cohort Builder, Participants Saved sets): The “Saved Participants set” button now offers more options than just saving a new set. The button now opens a dropdown menu showing all possible options for the user.
@@ -230,6 +265,7 @@
 - [2666](https://github.com/kids-first/kf-portal-ui/issues/2666) Feature (Dashboard, Participants Saved sets): It is now possible to remove the results of the active query from an already existing set.
 
 ### Technical / Other changes
+
 - [2541](https://github.com/kids-first/kf-portal-ui/issues/2541) Refactor (UI Theme, scss): Modifications to the structure of some .scss files.
 - [2621](https://github.com/kids-first/kf-portal-ui/issues/2621) Refactor (Login, Terms and Conditions): The user now has to accept the terms and conditions on every login.
 - [2633](https://github.com/kids-first/kf-portal-ui/issues/2633) Refactor (Cohort Builder, Summary/Table view): Refactor of the Summary view, and the Table view tabs UI.
@@ -241,18 +277,23 @@
 - [2683](https://github.com/kids-first/kf-portal-ui/issues/2683) Refactor (Portal, Freactal): Remove fractal modal from the uploadIds modal in the File Repository.
 
 ## 2020-08-11 kf-portal-ui 2.22.00
+
 ### Technical / Other changes
+
 - [2581](https://github.com/kids-first/kf-portal-ui/issues/2581) Feature (Cohort Builder, Saved Sets): Unique name for participant save set
 - [2617](https://github.com/kids-first/kf-portal-ui/issues/2617) Fix (Cavatica): Change dataset payload sent to Cavatica.
 
 ## 2020-09-27 kf-portal-ui 2.21.0
+
 ### Features
+
 - [2508](https://github.com/kids-first/kf-portal-ui/issues/2508) Feature (Participant, Clinical data): In the Participant entity page, the Observed and Not observed phenotypes are now split in two different tables.
 - [2516](https://github.com/kids-first/kf-portal-ui/issues/2516) Feature (Observed Phenotype Browser): When returning into the browser, the branches to which the selected options belong to are now checked for a better user experience.
 - [2529](https://github.com/kids-first/kf-portal-ui/issues/2529) Feature (Observed Phenotype Browser): A second column was added to separate the count of Participants with the exact term only from the count of Participants with the exact term as well as their descendants.
 - [2556](https://github.com/kids-first/kf-portal-ui/issues/2556) Feature (Observed Phenotype Browser): Terms can now only be selected once, preventing redundant display for terms with multiple paths.
 
 ### Technical / Other changes
+
 - [2202](https://github.com/kids-first/kf-portal-ui/issues/2202) Fix (Cohort Builder, Reporting): The system now prevents a user to request the download of another report until the first download is completed.
 - [2332](https://github.com/kids-first/kf-portal-ui/issues/2332) Refactor (File Repository, Search): Improved the behaviour for the 'Search files by Participant ID' filter.
 - [2333](https://github.com/kids-first/kf-portal-ui/issues/2333) Fix (File Repository, Cavatica): Addresses an issue where the transfer to Cavatica occasionally returned a success message even if the transfer failed.
@@ -272,30 +313,32 @@
 ## 2020-05-15 kf-portal-ui 2.20.0
 
 ### Technical / Other changes
+
 - [2506](https://github.com/kids-first/kf-portal-ui/issues/2514) Fix (CohortBuilder, Horizontal Bar Charts): show whole text in tooltip on left axis labels
 
-
 ## 2020-05-15 kf-portal-ui 2.19.0
+
 - [2506](https://github.com/kids-first/kf-portal-ui/issues/2506) Fix (Variant Db): Improve visual of variant DB page
 - [2511](https://github.com/kids-first/kf-portal-ui/issues/2511) Fix(sunburst): Fill all space for child phenotype
 - [2383](https://github.com/kids-first/kf-portal-ui/issues/2383) Fix(sunburst): auto update on sqon changes
 
-
 ## 2020-05-12 kf-portal-ui 2.18.0
+
 - [2495](https://github.com/kids-first/kf-portal-ui/issues/2495) Fix (Cohort builder): Visual glitch with the Download menu
 - [2465](https://github.com/kids-first/kf-portal-ui/issues/2465) Feature(cohortBuilder): add saveSet Button
 - [2468](https://github.com/kids-first/kf-portal-ui/issues/2468) Feature (Variant DB) : Add new Variant Page
 - [2383](https://github.com/kids-first/kf-portal-ui/issues/2383) Feature (CohortBuilder, Dashboard): sunburst for phenotypes ontology
 
-
 ## 2020-05-06 kf-portal-ui 2.17.0
 
 ### Features
+
 - [2342](https://github.com/kids-first/kf-portal-ui/issues/2342) Feature(Ontology Browser): HPO browser to explore data conveniently.
 - [2448](https://github.com/kids-first/kf-portal-ui/issues/2448) Feature(Antd): update library to the latest version.
 - [2391](https://github.com/kids-first/kf-portal-ui/issues/2391) Feature(Profile, Edit form): improve some form fields.
 
 ### Technical / Other changes
+
 - [2432](https://github.com/kids-first/kf-portal-ui/issues/2432) Fix (CohortBuilder, Study Chart): make sure when we click a study the correct filter is added.
 - [2387](https://github.com/kids-first/kf-portal-ui/issues/2387) Fix (Profile, About Me, Edit): fix visual regression.
 - [2454](https://github.com/kids-first/kf-portal-ui/issues/2454) Refactor: remove some deprecated warnings.
@@ -305,26 +348,35 @@
 ## 2020-04-01 kf-portal-ui 2.15.0
 
 ### Features
+
 - [#2338](https://github.com/kids-first/kf-portal-ui/issues/2338) Performance/Bug fix(Cohort Builder): show summary results using cardinality.
 - [#2371](https://github.com/kids-first/kf-portal-ui/issues/2371) Performance (File Repo): show statistics results using cardinality.
 - [#2283](https://github.com/kids-first/kf-portal-ui/issues/2283) Feature (Member Page, Admin): add a button to "inactivate" a member".
 
 ### Technical / Other changes
+
 - [#2241](https://github.com/kids-first/kf-portal-ui/issues/2241) Build (App): remove unused code.
 - [#2353](https://github.com/kids-first/kf-portal-ui/issues/2353) Build (App): update arranger-components to fix some security warnings.
 - [#2379](https://github.com/kids-first/kf-portal-ui/issues/2379) Performance (App): use module-import style when using lodash for potential benefits.
 
 ## 2020-03-03 kf-portal-ui 2.14.0
+
 ​
+
 ### Features
+
 ​- [#2283](https://github.com/kids-first/kf-portal-ui/issues/2283) Admins can inactivate accounts
+
 - [#2393](https://github.com/kids-first/kf-portal-ui/issues/2293) Enable an Admin user to see all members (private or public)
 - [#2284](https://github.com/kids-first/kf-portal-ui/issues/2284) Add 'Report Member' button (under a non-dynamic feature toggle)
 - [#2277](https://github.com/kids-first/kf-portal-ui/issues/2277) Add 'Relationship' tab in clinical data xls report
   ​- [#2285](https://github.com/kids-first/kf-portal-ui/issues/2285) Improve design of result header in cohort builder
   ​
+
 ### Technical / Other changes
+
 ​- [#2334](https://github.com/kids-first/kf-portal-ui/issues/2334) Fix File Repository page truncated
+
 - [#2298](https://github.com/kids-first/kf-portal-ui/issues/2298) Fix scrolling in 'Authorized Studies' Card in Dashboard
 - [#1546](https://github.com/kids-first/kf-portal-ui/issues/1546) Change message when no access to any study
 - [#2278](https://github.com/kids-first/kf-portal-ui/issues/2278) Do not show login page when already logged in
@@ -332,25 +384,26 @@
 ## 2020-03-02 kf-portal-ui 2.13.8
 
 This feature is a hotfix for this issue :
-- [#2323](https://github.com/kids-first/kf-portal-ui/issues/2323) Change pedcbioportal link
 
+- [#2323](https://github.com/kids-first/kf-portal-ui/issues/2323) Change pedcbioportal link
 
 ## 2020-02-17 kf-portal-ui 2.13.8
 
 This feature is a hotfix for this issue :
-- [#2314](https://github.com/kids-first/kf-portal-ui/issues/2314) DCF : can not connect to the DCF fence
 
+- [#2314](https://github.com/kids-first/kf-portal-ui/issues/2314) DCF : can not connect to the DCF fence
 
 ## 2020-01-28 kf-portal-ui 2.13.7
 
 This feature is a hotfix for this issue :
+
 - [#2296](https://github.com/kids-first/kf-portal-ui/issues/2296) Participant page : cPortalBio link is broken for PNOC study
 
 ## 2020-01-27 kf-portal-ui 2.13.6
 
 This feature is a hotfix for this issue :
-- [#2275](https://github.com/kids-first/kf-portal-ui/issues/2275) Can't scroll in dashboard
 
+- [#2275](https://github.com/kids-first/kf-portal-ui/issues/2275) Can't scroll in dashboard
 
 ## 2020-01-22 kf-portal-ui 2.13.5
 
@@ -368,12 +421,12 @@ This feature includes :
 - [#2270](https://github.com/kids-first/kf-portal-ui/issues/2270) Use more concise wording for public/private tooltip in the profile page
 - [#2271](https://github.com/kids-first/kf-portal-ui/issues/2271) Make sure correct access is shown when viewing file details
 
-
 ## 2020-01-13 kf-portal-ui 2.13.4
 
 This feature includes :
 
 ### Features
+
 - [#2245](https://github.com/kids-first/kf-portal-ui/issues/2249) improve interests suggestion in member page
 - [#2252](https://github.com/kids-first/kf-portal-ui/issues/2252) Change maxlength of bio and story
 - [#2253](https://github.com/kids-first/kf-portal-ui/issues/2253) Edit Profile : Display max number characters in error message
@@ -383,9 +436,9 @@ This feature includes :
 This feature includes :
 
 ### Features
+
 - [#2245](https://github.com/kids-first/kf-portal-ui/issues/2245) Add validation to member information
 - [#2192](https://github.com/kids-first/kf-portal-ui/issues/2192) Change fence integration due to an upgrade in Gen3
-
 
 ## 2020-01-14 kf-portal-ui 2.13.2
 
@@ -394,10 +447,12 @@ This feature includes :
 This feature includes :
 
 #### kf-portal-ui
+
 - [#2233](https://github.com/kids-first/kf-portal-ui/issues/2233) Change label when disconnecting
 - [#2236](https://github.com/kids-first/kf-portal-ui/issues/2236) Enable feature toggles with url parameters
 
 #### kf-api-portal-reports
+
 - [#14](https://github.com/kids-first/kf-api-portal-reports/issues/14) Add `Method of Sample Procurement` to biospecimen report download
 
 ## 2020-01-13 kf-portal-ui 2.13.1
@@ -407,9 +462,8 @@ This feature includes :
 This release is a hot fix. We were not able to push files to Cavatica anymore, due to react-emotion removal.
 
 We also fixed this issue:
+
 - [#2232](https://github.com/kids-first/kf-portal-ui/issues/2232) Cavatica modal : Link to cavatica token page is broken
-
-
 
 ## 2020-01-09 kf-portal-ui 2.13.0
 
@@ -434,8 +488,8 @@ It also fix the data release number in the footer and the bump on the login.
 - [#2167](https://github.com/kids-first/kf-portal-ui/issues/2167) Add a loader while downloading a clinical data report
 - [#9](https://github.com/kids-first/kf-api-portal-reports/issues/9) Add and reorder columns to Diagnoses / Histological Diagnoses tabs
 
-
 ### Technical / Other changes
+
 - [#2017](https://github.com/kids-first/kf-portal-ui/issues/2017) Security : upgrade axios
 - [#2018](https://github.com/kids-first/kf-portal-ui/issues/2018) Security : upgrade eslint
 - [#2063](https://github.com/kids-first/kf-portal-ui/issues/2063) Reduce kf front-end bundle size
@@ -443,7 +497,9 @@ It also fix the data release number in the footer and the bump on the login.
 - [#2133](https://github.com/kids-first/kf-portal-ui/issues/2133) Update babel to modernize the build system
 
 ## 2019-11-27 kf-portal-ui 2.12.1
+
 Hot fix on user creation issue due to regression when working on:
+
 - [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token
   The code had been reverted, therefore issue #1042 is unresolved.
 
@@ -612,7 +668,7 @@ It also introduces improvements and bug fixes.
 ### Bug fixes
 
 - [#1962](https://github.com/kids-first/kf-portal-ui/issues/1962) Dashboard: Saved queries widget: Template file query "Female probands with cleft palate..." is invalid
-    - Note: fixes the query for new users only
+  - Note: fixes the query for new users only
 - [kf-portal-etl#90](https://github.com/kids-first/kf-portal-etl/issues/90) The phenotypes for each participant are missing
 
 ## 2019-07-26 kf-portal-ui 2.6.0
