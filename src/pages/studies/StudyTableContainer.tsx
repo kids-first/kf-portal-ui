@@ -30,6 +30,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = StudiesResults & PropsFromRedux & { total: number };
 
+type StudiesRes = StudiesResult & {
+  [dataIndex: string]: any;
+};
+
 const StudyTable = (props: Props) => {
   const tableData = generateTableData(props);
   const columns = studiesColumns(props.currentVirtualStudy, props.onClickStudyLink);
@@ -52,8 +56,8 @@ const StudyTable = (props: Props) => {
       );
     });
 
-  const getColumnTotal = (dataIndex: string, data: Array<StudiesResult>) => {
-    const result = data.map((study: StudiesResult | any) => study[dataIndex]);
+  const getColumnTotal = (dataIndex: string, data: Array<StudiesRes>) => {
+    const result = data.map((study: StudiesRes) => study[dataIndex]);
     return result.length ? result.reduce((a, b) => a + b) : 0;
   };
 
@@ -68,7 +72,7 @@ const StudyTable = (props: Props) => {
         scroll={{ x: 1500 }}
         dataSource={tableData || []}
         pagination={false}
-        summary={(data: readonly StudiesResult[]) => (
+        summary={(data: readonly StudiesRes[]) => (
           <Table.Summary.Row className={styles.studyTableFooter}>
             {renderColumnSummary(columns, data)}
           </Table.Summary.Row>
