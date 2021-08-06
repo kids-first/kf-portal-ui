@@ -5,11 +5,14 @@ import {
   IFilterRange,
   VisualType,
 } from '@ferlab/ui/core/components/filters/types';
+import { BooleanOperators, FieldOperators } from '@ferlab/ui/core/data/sqon/operators';
 import {
   ISqonGroupFilter,
+  ISyntheticSqon,
   IValueFilter,
   TSqonContent,
   TSqonGroupOp,
+  TSyntheticSqonContent,
 } from '@ferlab/ui/core/data/sqon/types';
 import { isEmpty } from 'lodash';
 import get from 'lodash/get';
@@ -47,19 +50,19 @@ const createRangeFilter = (field: string, filters: IFilter<IFilterRange>[]) => {
   if (selectedRange.data.min && selectedRange.data.max) {
     selectedFilters.push({
       content: { field, value: [selectedRange.data.min, selectedRange.data.max] },
-      op: 'between',
+      op: FieldOperators.between,
     });
   } else {
     if (selectedRange.data.max) {
       selectedFilters.push({
         content: { field, value: [selectedRange.data.max] },
-        op: '<=',
+        op: FieldOperators['<='],
       });
     }
     if (selectedRange.data.min) {
       selectedFilters.push({
         content: { field, value: [selectedRange.data.min] },
-        op: '>=',
+        op: FieldOperators['>='],
       });
     }
   }
@@ -76,7 +79,7 @@ export const createInlineFilters = (
     ? [
         {
           content: { field, value: arrayFilters },
-          op: 'in',
+          op: FieldOperators.in,
         },
       ]
     : [];
@@ -85,12 +88,12 @@ export const createInlineFilters = (
 export const updateQueryFilters = (
   history: any,
   field: string,
-  filters: TSqonContent,
-  operator: TSqonGroupOp = 'and',
+  filters: TSyntheticSqonContent,
+  operator: TSqonGroupOp = BooleanOperators.and,
 ): void => {
   const currentFilter = getFiltersQuery();
 
-  let newFilters: ISqonGroupFilter | object = { content: filters, op: operator };
+  let newFilters: ISyntheticSqon | object = { content: filters, op: operator };
 
   if (!isEmpty(currentFilter)) {
     const filterWithoutSelection = getFilterWithNoSelection(currentFilter, field);
@@ -137,7 +140,7 @@ export const readQueryParam = <T = ''>(key: string, defaultValue: T, search: any
 const getQueryParams = (search: any = null) =>
   search ? qs.parse(search) : qs.parse(window.location.search);
 
-const getFilterWithNoSelection = (filters: ISqonGroupFilter, field: string): ISqonGroupFilter => {
+const getFilterWithNoSelection = (filters: ISyntheticSqon, field: string): ISyntheticSqon => {
   const filtered = filters.content.filter((filter: any) => filter.content.field !== field);
   return {
     ...filters,
@@ -197,14 +200,14 @@ const getRangeSelection = (filters: ISqonGroupFilter, filterGroup: IFilterGroup)
   for (const filter of filters.content) {
     const filt = filter as IValueFilter;
     if (filt.content.field === filterGroup.field) {
-      if (filt.op === 'between') {
+      if (filt.op === FieldOperators.between) {
         rangeSelection = {
           ...rangeSelection,
           max: filt.content.value[1] as number,
           min: filt.content.value[0] as number,
         };
       } else {
-        const op = filt.op === '>=' ? 'min' : 'max';
+        const op = filt.op === FieldOperators['>='] ? 'min' : 'max';
         rangeSelection = { ...rangeSelection, [op]: filt.content.value[0] };
       }
     }
@@ -213,7 +216,7 @@ const getRangeSelection = (filters: ISqonGroupFilter, filterGroup: IFilterGroup)
   return rangeSelection;
 };
 
-const isFilterSelected = (filters: ISqonGroupFilter, filterGroup: IFilterGroup, key: string) => {
+const isFilterSelected = (filters: ISyntheticSqon, filterGroup: IFilterGroup, key: string) => {
   for (const filter of filters.content) {
     const filt = filter as IValueFilter;
     if (filt.content.value.includes(key) && filt.content.field === filterGroup.field) {
@@ -234,7 +237,7 @@ interface IFilterTypes {
   remapValues: TFilterType;
 }
 
-const emptySqon = { content: [], op: 'and' };
+const emptySqon = { content: [], op: BooleanOperators.and };
 
 export const useFilters = () => {
   let searchParams = new URLSearchParams(window.location.search);
