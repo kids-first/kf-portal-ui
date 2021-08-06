@@ -1,3 +1,5 @@
+// @ts-ignore
+import { addHeaders as addArrangerHeaders } from '@kfarranger/components/dist';
 import jwtDecode from 'jwt-decode';
 
 import { EGO_JWT_KEY, LOGIN_PROVIDER } from 'common/constants';
@@ -46,10 +48,6 @@ const isAdminFromRoles = (roles: string[] | null) => (roles || []).includes('ADM
 
 const isStatusApproved = (status: string | null) => !!status && status.toLowerCase() === 'approved';
 
-export const loginFailure = (): UserActionTypes => ({
-  type: UserActions.loginFailure,
-});
-
 export const logout = (): UserActionTypes => ({
   type: UserActions.logout,
 });
@@ -79,8 +77,6 @@ export const receiveUser = (user: User): ThunkActionUser => async (dispatch, get
   });
 };
 
-export const removeUser = (): UserActionTypes => ({ type: UserActions.removeUser });
-
 export const toggleIsLoadingUser = (isLoading: boolean): UserActionTypes => ({
   type: UserActions.toggleIsLoadingUser,
   isLoading,
@@ -96,14 +92,6 @@ export const receiveLoginProvider = (loginProvider: Provider): UserActionTypes =
   loginProvider,
 });
 
-export const removeLoginProvider = (): UserActionTypes => ({
-  type: UserActions.removeLoginProvider,
-});
-
-export const removeUserToken = (): UserActionTypes => ({
-  type: UserActions.removeUserToken,
-});
-
 export const subscribeUser = (): ThunkActionUser => async (dispatch, getState) => {
   dispatch(requestSubscribeUser());
   const userInMemory = selectUser(getState());
@@ -116,6 +104,7 @@ export const subscribeUser = (): ThunkActionUser => async (dispatch, getState) =
 
 const setTokenInStores = (token: JwtToken): ThunkActionUser => async (dispatch) => {
   localStorage.setItem(EGO_JWT_KEY, token);
+  addArrangerHeaders({ authorization: `Bearer ${token}` });
   dispatch(receiveUserToken(token));
 };
 
@@ -167,6 +156,7 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch, getState) =
   } finally {
     localStorage.removeItem(EGO_JWT_KEY);
     localStorage.removeItem(LOGIN_PROVIDER);
+    addArrangerHeaders({ authorization: `` });
     await dispatch(deleteCavaticaSecret());
     await dispatch(deleteAllFencesTokens());
     await dispatch(logout());

@@ -78,27 +78,19 @@ export type Profile = {
 export type LoggedInUser = Profile & { email: string };
 
 export enum UserActions {
-  loginFailure = 'loginFailure',
   logout = 'logout',
   requestSubscribeUser = 'requestSubscribeUser',
   failureSubscribeUser = 'failureSubscribeUser',
   toggleIsLoadingUser = 'toggleIsLoadingUser',
   receiveUser = 'receiveUser',
-  removeUser = 'removeUser',
   receiveLoginProvider = 'receiveLoginProvider',
   receiveUserToken = 'receiveUserToken',
-  removeLoginProvider = 'removeLoginProvider',
-  removeUserToken = 'removeUserToken',
   updateUser = 'updateUser',
 }
 
 export type UpdateUser = {
   type: UserActions.updateUser;
   updatedUser: User;
-};
-
-export type LoginFailureAction = {
-  type: UserActions.loginFailure;
 };
 
 export type LogoutAction = {
@@ -124,10 +116,6 @@ export type ReceiveUserAction = {
   payload: User;
 };
 
-export type RemoveUserAction = {
-  type: UserActions.removeUser;
-};
-
 export type ReceiveLoginProvider = {
   type: UserActions.receiveLoginProvider;
   loginProvider: string;
@@ -136,14 +124,6 @@ export type ReceiveLoginProvider = {
 export type ReceiveUserToken = {
   type: UserActions.receiveUserToken;
   userToken: string;
-};
-
-export type RemoveUserTokenUserAction = {
-  type: UserActions.removeUserToken;
-};
-
-export type RemoveUserLoginProviderUserAction = {
-  type: UserActions.removeLoginProvider;
 };
 
 export type UserState = {
@@ -167,17 +147,13 @@ export const userInitialState: UserState = {
 };
 
 export type UserActionTypes =
-  | LoginFailureAction
   | LogoutAction
   | RequestSubscribeUserAction
   | FailureSubscribeUserAction
   | ToggleIsLoadingUserAction
   | ReceiveUserAction
-  | RemoveUserAction
   | ReceiveLoginProvider
   | ReceiveUserToken
-  | RemoveUserTokenUserAction
-  | RemoveUserLoginProviderUserAction
   | UpdateUser;
 
 export type DispatchUser = ThunkDispatch<RootState, null, UserActionTypes>;
