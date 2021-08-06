@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
-import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { ISqonGroupFilter, IValueContent } from '@ferlab/ui/core/data/sqon/types';
 import { Select, Tag } from 'antd';
 
 import history from 'services/history';
@@ -16,10 +16,8 @@ type OwnProps = {
 };
 
 const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
-  const find = filters.content.find(
-    (s: { content: { field: string } }) => s.content.field === 'code',
-  );
-  return find ? find.content.value : [];
+  const find = filters.content.find((s: { content: any }) => s.content.field === 'code');
+  return find ? (find.content as IValueContent).value : [];
 };
 
 const codeFromKey = (key: string) => key.split('|')[0];

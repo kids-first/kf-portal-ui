@@ -1,4 +1,4 @@
-import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 
 import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { useLazyResultQuery } from 'store/graphql/utils/query';

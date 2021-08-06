@@ -3,7 +3,7 @@ import React from 'react';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter } from '@ferlab/ui/core/components/filters/types';
-import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Col, Row, Tooltip } from 'antd';
 
 import { MISSING_DATA } from 'services/arranger';
