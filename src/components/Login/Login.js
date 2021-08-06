@@ -1,89 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
 
-import FacebookLogin from 'components/loginButtons/FacebookLogin';
-import GoogleLogin from 'components/loginButtons/GoogleLogin';
-import OrcidLogin from 'components/loginButtons/OrcidLogin';
+import { ORCID } from 'common/constants';
+import { allRedirectUris } from 'common/injectGlobals';
 import OrcidRedirect from 'components/Login/OrcidRedirect';
-import { ModalWarning } from 'components/Modal';
-import { Box } from 'uikit/Core';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
-import ExternalLink from 'uikit/ExternalLink';
-import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessage';
 
-import { withApi } from 'services/api';
-import { logoutAll } from 'services/login';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { googleLogin, facebookLogin } from 'services/login';
+import ROUTES from '../../common/routes';
+import useUser from '../../hooks/useUser';
+import { manageUserTokenWithLoader } from '../../store/actionCreators/user';
+import { selectLoginProvider, selectUserToken } from '../../store/selectors/users';
 
-import { allRedirectUris, egoApiRoot, orcidAuthAppId } from 'common/injectGlobals';
-import { GOOGLE, FACEBOOK, ORCID, LOGIN_ERROR_DETAILS } from 'common/constants';
-
-import { handleJWT, fetchIntegrationTokens } from './utils';
+import SecurityError from './SecurityError';
+import SocialButtons from './SocialButtons';
 
 import './Login.module.css';
-import { loginContainer, loginError } from './Login.module.css';
-import { Typography } from 'antd';
+import { loginContainer } from './Login.module.css';
 
 const { Text } = Typography;
 
-class Component extends React.Component {
-  static propTypes = {
-    effects: PropTypes.object,
-    state: PropTypes.object,
-    api: PropTypes.func,
-    onFinish: PropTypes.func,
-    location: PropTypes.object.isRequired,
-    shouldNotRedirect: PropTypes.bool,
-  };
+const mapStateToProps = (state) => ({
+  userToken: selectUserToken(state),
+  loginProvider: selectLoginProvider(state),
+});
 
-  state = {
-    authorizationError: false,
-    securityError: false,
+const mapDispatchToProps = (dispatch) => ({
+  manageUserTokenWithLoader: (jwt, provider, cb) =>
+    dispatch(manageUserTokenWithLoader(jwt, provider, cb)),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const Component = (props) => {
+  // if we're redirecting from orcid oauth,
+  //  or we're on a page and we're already logged in with orcid (i.e. /join)
+  const { userToken, shouldNotRedirect, manageUserTokenWithLoader } = props;
+
+  const [securityError, setSecurityError] = useState(false);
+
+  const [errors, setError] = useState({
     thirdPartyDataError: false,
     facebookError: false,
     unknownError: false,
-  };
+  });
 
-  handleToken = async ({ provider, handler, token }) => {
-    const {
-      api,
-      onFinish,
-      effects: { setToken, setUser, setIntegrationToken },
-    } = this.props;
+  const { isAuthenticated } = useUser();
 
-    const response = await handler(token).catch((error) => {
-      if (error.message === 'Network Error') {
-        this.handleSecurityError();
-      }
-    });
+  const history = useHistory();
 
-    if ((response || {}).status === 200) {
-      return handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })
-        .then(async (success) => {
-          if (success) {
-            this.trackUserSignIn(provider);
-            fetchIntegrationTokens({ setIntegrationToken, api });
-          } else {
-            await logoutAll();
-            this.setState({ authorizationError: true });
-          }
-        })
-        .catch(async () => {
-          await logoutAll();
-          this.setState({ authorizationError: true });
-        });
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  useEffect(() => {
+    //avoid flashing the page if one is already logged
+    if (isAuthenticated) {
+      history.push(ROUTES.dashboard);
     }
-  };
+  }, [isAuthenticated, history]);
 
-  trackUserSignIn = (label) => {
-    let {
-      location: { pathname },
-    } = this.props;
-    let actionType =
+  const handleError = (errorField) =>
+    setError((prevState) => ({
+      ...prevState,
+      [errorField]: true,
+    }));
+
+  const trackUserSignIn = (label) => {
+    const actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
       label,
@@ -92,54 +78,41 @@ class Component extends React.Component {
     });
   };
 
-  handleSecurityError = () => this.setState({ securityError: true });
+  const handleToken = async ({ provider, handler, token }) => {
+    let response;
+    try {
+      response = await handler(token);
+    } catch (error) {
+      if (error.message === 'Network Error') {
+        setSecurityError(true);
+      }
+    }
 
-  handleError = (errorField) => this.setState({ [errorField]: true });
-
-  getErrorMessage = () => {
-    const { thirdPartyDataError, unknownError } = this.state;
-    if (unknownError) {
-      // [NEXT] TEST THIS (see if a space is lost around 'Contact us')
-      return (
-        <React.Fragment>
-          Uh oh, looks like something went wrong.
-          <ExternalLink
-            hasExternalIcon={false}
-            href="https://kidsfirstdrc.org/contact"
-            target="_blank"
-          >
-            &nbsp;Contact us&nbsp;
-          </ExternalLink>
-          and we will help investigate why you are unable to sign in.
-        </React.Fragment>
-      );
-    } else if (thirdPartyDataError) {
-      return LOGIN_ERROR_DETAILS.thirdPartyData;
-    } else {
-      return LOGIN_ERROR_DETAILS.facebook;
+    if ((response || {}).status === 200) {
+      const rawJwt = response.data;
+      manageUserTokenWithLoader(rawJwt, provider, () => history.push(ROUTES.dashboard));
+      await trackUserSignIn(provider);
     }
   };
 
-  renderSecurityError() {
-    return (
-      <Box style={{ maxWidth: '600px' }}>
-        Connection to ego failed, you may need to visit
-        <a target="_blank" rel="noopener noreferrer" href={egoApiRoot}>
-          {egoApiRoot}
-        </a>
-        in a new tab and accept the warning
-      </Box>
-    );
-  }
+  const renderOrcidRedirect = location.pathname === '/orcid';
 
-  renderOrcidRedirect() {
-    return (
+  const renderSocialLoginButtons =
+    shouldNotRedirect || allRedirectUris.includes(window.location.origin);
+
+  const disabled = Object.values(errors).some((err) => err);
+
+  let content;
+  if (securityError) {
+    content = <SecurityError />;
+  } else if (renderOrcidRedirect) {
+    content = (
       <OrcidRedirect
-        location={this.props.location}
-        loggedInUserToken={this.props.state.loggedInUserToken}
-        loginProvider={this.props.state.loginProvider}
+        location={location}
+        userToken={userToken}
+        loginProvider={ORCID}
         onLogin={(token) =>
-          this.handleToken({
+          handleToken({
             provider: ORCID,
             handler: () => Promise.resolve({ data: token, status: 200 }), // clean
             token,
@@ -147,92 +120,30 @@ class Component extends React.Component {
         }
       />
     );
-  }
-
-  renderSocialLoginButtons(disabled) {
-    const orcidLoginEnabled = Boolean(orcidAuthAppId);
-
-    return (
-      <div className="login-buttons-container">
-        {this.state.authorizationError && (
-          <ModalWarning>
-            The Kids First Portal is currently in early access beta, please register at{' '}
-            <ExternalLink href="https://kidsfirstdrc.org/portal/">
-              https://kidsfirstdrc.org/portal/
-            </ExternalLink>{' '}
-            if you are interested in participating. For any questions, or if you already have access
-            to Kids First datasets via dbGaP, please contact
-            <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
-          </ModalWarning>
-        )}
-
-        {disabled ? (
-          <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
-            <PromptMessageContent pt={0}>
-              <Box className={`${loginError} greyScale1`}>{this.getErrorMessage()}</Box>
-            </PromptMessageContent>
-          </PromptMessageContainer>
-        ) : null}
-
-        <GoogleLogin
-          onError={this.handleError}
-          onLogin={(id_token) =>
-            this.handleToken({
-              provider: GOOGLE,
-              handler: googleLogin,
-              token: id_token,
-            })
-          }
-        />
-
-        <FacebookLogin
-          onError={this.handleError}
-          onLogin={(r) =>
-            this.handleToken({
-              provider: FACEBOOK,
-              handler: facebookLogin,
-              token: r.authResponse.accessToken,
-            })
-          }
-        />
-
-        {orcidLoginEnabled ? <OrcidLogin /> : null}
-      </div>
+  } else if (renderSocialLoginButtons) {
+    content = (
+      <SocialButtons
+        disabled={disabled}
+        handleToken={handleToken}
+        handleError={handleError}
+        thirdPartyDataError={errors.thirdPartyDataError}
+        unknownError={errors.unknownError}
+      />
     );
+  } else {
+    content = <Text>An error occurred. Please refresh and try again or contact our support.</Text>;
   }
 
-  render() {
-    // if we're redirecting from orcid oauth,
-    //  or we're on a page and we're already logged in with orcid (i.e. /join)
-    const renderOrcidRedirect =
-      this.props.location.pathname === '/orcid' ||
-      (this.props.state.loggedInUserToken && this.props.state.loginProvider === ORCID);
+  return (
+    <Column className={`${loginContainer} ${disabled ? 'disabled' : ''}`} disabled={disabled}>
+      {content}
+    </Column>
+  );
+};
 
-    const renderSocialLoginButtons =
-      this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
-
-    const { thirdPartyDataError, facebookError, unknownError } = this.state;
-    const disabled = thirdPartyDataError || facebookError || unknownError;
-
-    let content;
-    if (this.state.securityError) {
-      content = this.renderSecurityError();
-    } else if (renderOrcidRedirect) {
-      content = this.renderOrcidRedirect();
-    } else if (renderSocialLoginButtons) {
-      content = this.renderSocialLoginButtons(disabled);
-    } else {
-      content = (
-        <Text>An error occurred. Please refresh and try again or contact our support.</Text>
-      );
-    }
-
-    return (
-      <Column className={`${loginContainer} ${disabled ? 'disabled' : ''}`} disabled={disabled}>
-        {content}
-      </Column>
-    );
-  }
-}
-
-export default compose(injectState, withRouter, withApi)(Component);
+Component.propTypes = {
+  shouldNotRedirect: PropTypes.bool,
+  userToken: PropTypes.string,
+  manageUserTokenWithLoader: PropTypes.func,
+};
+export default connector(Component);

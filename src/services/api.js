@@ -5,6 +5,28 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 
 import ajax from './ajax';
 
+const sendRequest = (defaultHeaders, method, body, headers, uri) => {
+  const requestHeaders = {
+    'Content-Type': 'application/json',
+    ...(defaultHeaders || {}),
+    ...headers,
+  };
+  switch (method) {
+    case 'delete':
+    case 'get':
+    case 'head':
+    case 'options':
+      return ajax[method](uri, {
+        headers: requestHeaders,
+        data: body,
+      });
+    default:
+      return ajax[method](uri, body, {
+        headers: requestHeaders,
+      });
+  }
+};
+
 export const initializeApi = ({
   onError = (err) => Promise.reject(err),
   onUnauthorized = () => {},
@@ -28,28 +50,6 @@ export const initializeApi = ({
       }
       return onError(err);
     });
-};
-
-const sendRequest = (defaultHeaders, method, body, headers, uri) => {
-  const requestHeaders = {
-    'Content-Type': 'application/json',
-    ...(defaultHeaders || {}),
-    ...headers,
-  };
-  switch (method) {
-    case 'delete':
-    case 'get':
-    case 'head':
-    case 'options':
-      return ajax[method](uri, {
-        headers: requestHeaders,
-        data: body,
-      });
-    default:
-      return ajax[method](uri, body, {
-        headers: requestHeaders,
-      });
-  }
 };
 
 export const ApiContext = React.createContext(null);

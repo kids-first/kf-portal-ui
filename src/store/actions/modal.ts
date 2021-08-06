@@ -1,9 +1,10 @@
 import { ThunkDispatch } from 'redux-thunk';
+
 import { RootState } from '../rootState';
 
 export enum ActionTypes {
-  OPEN_MODAL,
-  CLOSE_MODAL,
+  OPEN_MODAL = 'OPEN_MODAL',
+  CLOSE_MODAL = 'CLOSE_MODAL',
 }
 
 export type ActionResponseType = {

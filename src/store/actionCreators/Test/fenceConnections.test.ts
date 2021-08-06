@@ -2,12 +2,14 @@ import { AnyAction } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { DCF, GEN3 } from 'common/constants';
 import { getFenceUser } from 'services/fence';
-import { DispatchFenceConnections, FenceConnectionsActions } from 'store/fenceConnectionsTypes';
+import {
+  DispatchFenceConnections,
+  FenceConnectionsActions,
+  FenceName,
+} from 'store/fenceConnectionsTypes';
 
 import {
-  addFenceConnection,
   computeAclsByFence,
   computeAclsForConnection,
   concatAllFencesAcls,
@@ -19,6 +21,9 @@ import {
 } from '../fenceConnections';
 
 import { MOCK_FENCE_CONNECTIONS, MOCK_GEN3_CONNECTION, mockApi } from './mockDataFence';
+
+const DCF = FenceName.dcf;
+const GEN3 = FenceName.gen3;
 
 const NO_ACTIONS: AnyAction[] = [];
 
@@ -59,16 +64,6 @@ describe('Fence Connections actions', () => {
       [GEN3]: ['a', 'b', 'c'],
       [DCF]: ['x', 'y', 'z'],
     });
-  });
-
-  it('should create an action to add a fence connection', () => {
-    const expectedAction = {
-      type: FenceConnectionsActions.addFenceConnection,
-      fenceName: GEN3,
-      connection: MOCK_GEN3_CONNECTION,
-    };
-
-    expect(addFenceConnection(GEN3, MOCK_GEN3_CONNECTION)).toEqual(expectedAction);
   });
 
   it('should fetch fence connections when user is adequately connected to a data repository', async () => {

@@ -10,12 +10,14 @@ import { Api } from 'store/apiTypes';
 import { DispatchFenceStudies, FenceStudies, FenceStudy } from 'store/fenceStudiesTypes';
 import { RootState } from 'store/rootState';
 import { selectFenceConnections } from 'store/selectors/fenceConnections';
-import { selectFenceStudies, selectIsFetchingAllFenceStudies } from 'store/selectors/fenceStudies';
+import { selectFenceStudies, selectLoadingStudiesForFences } from 'store/selectors/fenceStudies';
+
+import { FenceName } from '../store/fenceTypes';
 
 const { keys } = Object;
 
 type Output = {
-  isFetchingAllFenceStudies: boolean;
+  loadingStudiesForFences: FenceName[];
   fenceStudies: FenceStudies;
   fenceAuthStudies: FenceStudy[];
 };
@@ -23,20 +25,20 @@ type Output = {
 const useFenceStudies = (api: Api): Output => {
   const dispatch: DispatchFenceStudies = useDispatch();
 
-  const isFetchingAllFenceStudies = useSelector((state: RootState) =>
-    selectIsFetchingAllFenceStudies(state),
+  const loadingStudiesForFences = useSelector((state: RootState) =>
+    selectLoadingStudiesForFences(state),
   );
   const fenceStudies = useSelector((state: RootState) => selectFenceStudies(state));
   const fenceConnections = useSelector((state: RootState) => selectFenceConnections(state));
 
   useEffect(() => {
-    const fences = keys(fenceConnections);
+    const fences = keys(fenceConnections) as FenceName[];
     const aclsByFence = computeAclsByFence(fenceConnections);
     dispatch(fetchAllFenceStudiesIfNeeded(api, fences, aclsByFence));
   }, [fenceConnections, dispatch, api]);
 
   return {
-    isFetchingAllFenceStudies,
+    loadingStudiesForFences,
     fenceStudies,
     fenceAuthStudies: computeAllFencesAuthStudies(fenceStudies),
   };

@@ -1,5 +1,6 @@
 import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-import { FENCES } from 'common/constants';
+
+import { AllFencesNames } from '../../store/fenceTypes';
 
 export const isEveryFileTransferred = (inputLength, outputLength) => inputLength === outputLength;
 
@@ -26,7 +27,8 @@ export const sumFilesTransfers = (copyResults = []) =>
 export const copyToProject = async ({ selectedFiles, selectedProject }) => {
   const promises = Object.keys(selectedFiles)
     .filter(
-      (fence) => FENCES.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0,
+      (fence) =>
+        AllFencesNames.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0,
     )
     .map(async (fence) => {
       const convertedFence = await convertFenceUuids({

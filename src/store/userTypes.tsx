@@ -1,12 +1,45 @@
-//  Fill up when going from Js to Typescript...
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from './rootState';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-export type LoggedInUser = {
+import { RootState } from './rootState';
+import { Nullable } from './utilityTypes';
+
+export type Groups = string[];
+
+export enum Providers {
+  google = 'google',
+  facebook = 'facebook',
+  orcid = 'orcid',
+}
+
+export type Provider = string;
+
+export type User = {
   _id: string;
   roles: Array<string>;
   egoId: string;
+  acceptedDatasetSubscriptionKfOptIn: boolean;
+  acceptedKfOptIn: boolean;
+  acceptedNihOptIn: boolean;
+  acceptedTerms: boolean;
+  hashedEmail?: string;
   email: string;
+  firstName: string;
+  lastName: string;
+  groups: Groups;
+  isAdmin: boolean;
+  isPublic: boolean;
+  [index: string]: any;
+};
+
+export type UserInfo = {
+  userID: string;
+  isSelf: boolean;
+};
+
+export type Profile = {
+  _id: string;
+  roles: Array<string>;
+  egoId: string;
   acceptedDatasetSubscriptionKfOptIn: boolean;
   acceptedKfOptIn: boolean;
   acceptedNihOptIn: boolean;
@@ -42,18 +75,110 @@ export type LoggedInUser = {
   zip?: string;
 };
 
-export type UserState = {
-  loggedInUser: LoggedInUser;
-  uid: string;
-  isProfileLoading: boolean;
-  profile: any;
-  errorProfile: Error | null;
-  isTogglingProfileStatus: boolean;
-  isTogglingProfileStatusInError: Error | null;
-  isProfileUpdating: boolean;
-  errorSubscribing: Error | null;
+export type LoggedInUser = Profile & { email: string };
+
+export enum UserActions {
+  loginFailure = 'loginFailure',
+  logout = 'logout',
+  requestSubscribeUser = 'requestSubscribeUser',
+  failureSubscribeUser = 'failureSubscribeUser',
+  toggleIsLoadingUser = 'toggleIsLoadingUser',
+  receiveUser = 'receiveUser',
+  removeUser = 'removeUser',
+  receiveLoginProvider = 'receiveLoginProvider',
+  receiveUserToken = 'receiveUserToken',
+  removeLoginProvider = 'removeLoginProvider',
+  removeUserToken = 'removeUserToken',
+  updateUser = 'updateUser',
+}
+
+export type UpdateUser = {
+  type: UserActions.updateUser;
+  updatedUser: User;
 };
 
-export type EgoGroups = string[] | undefined | null;
+export type LoginFailureAction = {
+  type: UserActions.loginFailure;
+};
 
-export type DispatchUser = ThunkDispatch<RootState, null, any>;
+export type LogoutAction = {
+  type: UserActions.logout;
+};
+
+export type RequestSubscribeUserAction = {
+  type: UserActions.requestSubscribeUser;
+};
+
+export type FailureSubscribeUserAction = {
+  type: UserActions.failureSubscribeUser;
+  payload: Error;
+};
+
+export type ToggleIsLoadingUserAction = {
+  type: UserActions.toggleIsLoadingUser;
+  isLoading: boolean;
+};
+
+export type ReceiveUserAction = {
+  type: UserActions.receiveUser;
+  payload: User;
+};
+
+export type RemoveUserAction = {
+  type: UserActions.removeUser;
+};
+
+export type ReceiveLoginProvider = {
+  type: UserActions.receiveLoginProvider;
+  loginProvider: string;
+};
+
+export type ReceiveUserToken = {
+  type: UserActions.receiveUserToken;
+  userToken: string;
+};
+
+export type RemoveUserTokenUserAction = {
+  type: UserActions.removeUserToken;
+};
+
+export type RemoveUserLoginProviderUserAction = {
+  type: UserActions.removeLoginProvider;
+};
+
+export type UserState = {
+  isLoadingUser: boolean;
+  uid: Nullable<string>;
+  errorSubscribing: Nullable<Error>;
+  user: User | null;
+  isAuthenticated: boolean;
+  loginProvider: Nullable<string>;
+  userToken: Nullable<string>;
+};
+
+export const userInitialState: UserState = {
+  isLoadingUser: false,
+  uid: null,
+  errorSubscribing: null,
+  user: null,
+  isAuthenticated: false,
+  loginProvider: null,
+  userToken: null,
+};
+
+export type UserActionTypes =
+  | LoginFailureAction
+  | LogoutAction
+  | RequestSubscribeUserAction
+  | FailureSubscribeUserAction
+  | ToggleIsLoadingUserAction
+  | ReceiveUserAction
+  | RemoveUserAction
+  | ReceiveLoginProvider
+  | ReceiveUserToken
+  | RemoveUserTokenUserAction
+  | RemoveUserLoginProviderUserAction
+  | UpdateUser;
+
+export type DispatchUser = ThunkDispatch<RootState, null, UserActionTypes>;
+export type ThunkActionUser = ThunkAction<void, RootState, null, UserActionTypes>;

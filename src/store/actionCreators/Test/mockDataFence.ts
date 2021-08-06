@@ -1,6 +1,10 @@
-import { DCF, GEN3 } from 'common/constants';
 import { Api } from 'store/apiTypes';
 import { FenceStudies } from 'store/fenceStudiesTypes';
+
+import { FenceName } from '../../fenceTypes';
+
+const DCF = FenceName.dcf;
+const GEN3 = FenceName.gen3;
 
 export const mockApi: jest.Mocked<Api> = {
   api: () => {},

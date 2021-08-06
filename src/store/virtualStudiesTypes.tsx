@@ -1,8 +1,8 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './actionTypes';
 import { RootState } from './rootState';
 import { Sqon } from './sqon';
+import { ADD_TERM_TO_CURRENT_VIRTUAL_STUDY } from './virtualStudiesActionTypes';
 
 export type VirtualStudy = {
   activeIndex: number;

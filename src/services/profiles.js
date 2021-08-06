@@ -1,7 +1,8 @@
+import omit from 'lodash/omit';
 import urlJoin from 'url-join';
+
 import { personaApiRoot } from 'common/injectGlobals';
 import { apiInitialized } from 'services/api';
-
 const DEFAULT_FIELDS_SELF = `
   _id
   title
@@ -91,10 +92,10 @@ const DEFAULT_FIELDS_OTHER_USER = `
 
 const url = urlJoin(personaApiRoot, 'graphql');
 
-export const getProfile = (api) => async () => {
+export const getProfile = async () => {
   const {
     data: { self },
-  } = await api({
+  } = await apiInitialized({
     url,
     body: {
       query: `
@@ -125,22 +126,6 @@ export const getOtherUserProfile = async (id) => {
     },
   });
   return response.data.user;
-};
-
-export const getUserLoggedInProfile = async () => {
-  const response = await apiInitialized({
-    url,
-    body: {
-      query: `
-        query {
-          self {
-            ${DEFAULT_FIELDS_SELF}
-          }
-        }
-      `,
-    },
-  });
-  return response.data.self;
 };
 
 export const createProfile = (api) => async ({ egoId, lastName, firstName, email }) => {
@@ -174,7 +159,7 @@ export const updateProfile = (api) => async ({ user }) => {
   } = await api({
     url,
     body: {
-      variables: { record: user },
+      variables: { record: omit(user, ['groups', 'isAdmin']) },
       query: `
         mutation($record: UpdateByIdUserModelInput!) {
           userUpdate(record: $record) {
@@ -248,28 +233,16 @@ export const getTags = (api) => async ({ filter, size }) => {
   return tags;
 };
 
-export const getAllFieldNamesPromise = (api) =>
-  api({
-    url: urlJoin(personaApiRoot, 'graphql'),
-    body: {
-      query: `
-        query {
-        __type(name: "UserModel") {
-          fields {
-            name
-            type {
-              name
-            }
-          }
-        }
-      }`,
-    },
-  });
-
-export const subscribeUser = async (loggedInUser) =>
+export const subscribeUser = async (user) =>
   await apiInitialized({
     url: urlJoin(personaApiRoot, 'subscribe'),
     body: {
-      user: loggedInUser,
+      user,
     },
   });
+
+export const initProfile = async (api, user, egoId) => {
+  const profileCreation = createProfile(api)({ ...user, egoId });
+  const [x] = await Promise.all([profileCreation]);
+  return x;
+};

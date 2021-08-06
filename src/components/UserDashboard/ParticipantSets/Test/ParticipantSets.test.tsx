@@ -1,14 +1,15 @@
 import React from 'react';
-import ParticipantSets from '../index';
+import { Provider } from 'react-redux';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { LoggedInUser } from 'store/userTypes';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+import { getSetAndParticipantsCountByUser } from 'services/sets';
 import { SaveSetState, UserSet } from 'store/saveSetTypes';
 import { jestPatchMatchMedia } from 'utils';
-import { getSetAndParticipantsCountByUser } from 'services/sets';
+
+import ParticipantSets from '../index';
 
 jest.mock('services/sets');
 
@@ -41,7 +42,7 @@ const user = {
   acceptedKfOptIn: true,
   acceptedNihOptIn: true,
   acceptedTerms: true,
-} as LoggedInUser;
+};
 
 describe('ParticipantSets', () => {
   const props = {

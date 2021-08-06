@@ -8,9 +8,10 @@ import {
 } from 'common/sqonUtils';
 import { addFieldToActiveQuery } from 'common/sqonUtils';
 
+import { ADD_SET_TO_CURRENT_QUERY, CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
+import { UserActions } from '../userTypes';
 import {
   ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
-  LOGOUT,
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
@@ -25,8 +26,7 @@ import {
   VIRTUAL_STUDY_SAVE_FAILURE,
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
-} from '../actionTypes';
-import { ADD_SET_TO_CURRENT_QUERY, CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
+} from '../virtualStudiesActionTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -127,7 +127,7 @@ export default (state = initialState, action) => {
         activeIndex: newSqons.length - 1,
       });
     }
-    case LOGOUT:
+    case UserActions.logout:
       return cloneDeep(initialState);
 
     case VIRTUAL_STUDY_CLEAN_ERROR:

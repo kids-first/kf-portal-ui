@@ -1,58 +1,20 @@
-//FIXME slowly removing freactal (effects.setModal, ...) CavaticaConnectModal is used elsewhere and it's too complicated to do in 1 PR
-//FIXME use redux store redux + clean
 import React, { useState } from 'react';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
+import { useDispatch } from 'react-redux';
 import { Button, Modal, notification } from 'antd';
-import { injectState } from 'freactal';
 import PropTypes from 'prop-types';
-import { compose } from 'recompose';
 
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
-import { CAVATICA } from 'common/constants';
 import { cavaticaWebRegistrationRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import { ModalWarning } from 'components/Modal/index.js';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
-import { isValidKey } from 'services/cavatica';
-import { getUser as getCavaticaUser } from 'services/cavatica';
-import { deleteSecret, setSecret } from 'services/secrets';
 import { Paragraph } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 import Input from 'uikit/Input';
 
+import { submitToken } from '../../store/actionCreators/cavatica';
+
 import './cavatica.css';
-
-const enhance = compose(injectState);
-
-const onCavaticaUserFailure = async ({ setIntegrationToken, onFail }) => {
-  setIntegrationToken(CAVATICA, null);
-  await deleteSecret({ service: CAVATICA });
-  await trackUserInteraction({
-    category: TRACKING_EVENTS.categories.user.profile,
-    action: TRACKING_EVENTS.actions.integration.failed,
-    label: TRACKING_EVENTS.labels.cavatica,
-  });
-  onFail();
-};
-
-const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
-  await setSecret({ service: CAVATICA, secret: token });
-  try {
-    const userData = await getCavaticaUser(token);
-    if (userData) {
-      setIntegrationToken(CAVATICA, JSON.stringify(userData));
-      await trackUserInteraction({
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.connected,
-        label: TRACKING_EVENTS.labels.cavatica,
-      });
-      onSuccess();
-    } else {
-      await onCavaticaUserFailure({ setIntegrationToken, onFail });
-    }
-  } catch (error) {
-    await onCavaticaUserFailure({ setIntegrationToken, onFail });
-  }
-};
 
 const NumberBullet = ({ children }) => <span className="numberBullet">{children}</span>;
 
@@ -60,19 +22,25 @@ NumberBullet.propTypes = {
   children: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
-const CavaticaConnectModal = ({
-  effects,
-  withWarning,
-  onComplete,
-  isVisible,
-  onCancelCB = () => {},
-}) => {
+const CavaticaConnectModal = ({ withWarning, onComplete, isVisible, onCancelCB = () => {} }) => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [cavaticaKey, setCavaticaKey] = useState('');
   const [invalidToken, setInvalidToken] = useState(false);
 
+  const onSubmitFail = () => {
+    setInvalidToken(true);
+    notification.error({
+      message: 'Cavatica',
+      description: 'Could not connect to Cavatica, please try again',
+      duration: 10,
+    });
+  };
+
   return (
     <Modal
+      destroyOnClose
       width={'65%'}
       visible={isVisible}
       title={'How to Connect to Cavatica'}
@@ -85,22 +53,10 @@ const CavaticaConnectModal = ({
           key="connect"
           type="primary"
           loading={isLoading}
-          disabled={invalidToken || !isValidKey(cavaticaKey)}
+          disabled={invalidToken || !cavaticaKey}
           onClick={async () => {
             setIsLoading(true);
-            await submitCavaticaToken({
-              token: cavaticaKey,
-              setIntegrationToken: effects.setIntegrationToken,
-              onSuccess: onComplete,
-              onFail: () => {
-                setInvalidToken(true);
-                notification.error({
-                  message: 'Cavatica',
-                  description: 'Could not connect to Cavatica, please try again',
-                  duration: 10,
-                });
-              },
-            });
+            await dispatch(submitToken(cavaticaKey, onComplete, onSubmitFail));
             setIsLoading(false);
             onCancelCB();
           }}
@@ -169,11 +125,11 @@ const CavaticaConnectModal = ({
               name="cavatica"
               placeholder="Cavatica Key"
               className="tokenInput"
-              onChange={(e) => {
+              onChange={async (e) => {
                 setCavaticaKey(e.target.value);
                 setInvalidToken(false);
 
-                trackUserInteraction({
+                await trackUserInteraction({
                   category: TRACKING_EVENTS.categories.user.profile,
                   action: 'Integration Credentials Updated ',
                   label: TRACKING_EVENTS.labels.cavatica,
@@ -191,11 +147,10 @@ const CavaticaConnectModal = ({
 };
 
 CavaticaConnectModal.propTypes = {
-  effects: PropTypes.object.isRequired,
   withWarning: PropTypes.bool,
   onComplete: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,
   onCancelCB: PropTypes.func.isRequired,
 };
 
-export default enhance(CavaticaConnectModal);
+export default CavaticaConnectModal;

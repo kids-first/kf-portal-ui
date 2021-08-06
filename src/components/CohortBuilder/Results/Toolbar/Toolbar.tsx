@@ -1,26 +1,27 @@
 import React from 'react';
-import get from 'lodash/get';
-import capitalize from 'lodash/capitalize';
-import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
-import { roundIntToChosenPowerOfTen } from 'utils';
-import { notification, Spin } from 'antd';
-import DemographicIcon from 'icons/DemographicIcon';
-import FamilyMembersIcon from 'icons/FamilyMembersIcon';
-
 import { ArrowRightOutlined, FileFilled } from '@ant-design/icons';
-
-import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
+import { notification, Spin } from 'antd';
+import capitalize from 'lodash/capitalize';
+import get from 'lodash/get';
+
+import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
+import DemographicIcon from 'icons/DemographicIcon';
+import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 import graphql from 'services/arranger';
-import { createFileRepoLink } from '../../util';
+import { Sqon } from 'store/sqon';
+import { User } from 'store/userTypes';
+import colors from 'style/themes/default/_colors.scss';
+import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
+import { roundIntToChosenPowerOfTen } from 'utils';
+
+import useUser from '../../../../hooks/useUser';
 import DownloadButton from '../../ParticipantsTableView/DownloadButton';
 import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
-import { Sqon } from 'store/sqon';
-import { LoggedInUser } from 'store/userTypes';
+import { createFileRepoLink } from '../../util';
 
 import './Toolbar.scss';
-import colors from 'style/themes/default/_colors.scss';
 
 enum ToolbarLabels {
   participant,
@@ -55,7 +56,7 @@ const showErrorNotification = () =>
 type generateAllFilesLinkFn = (user: any, api: any, originalSqon: any) => Promise<string>;
 
 const generateAllFilesLink: generateAllFilesLinkFn = async (
-  user: LoggedInUser,
+  user: User,
   api: Function,
   originalSqon: Sqon,
 ) => {
@@ -149,8 +150,6 @@ type ToolbarProps = {
   activeSqonIndex: number;
   api: object;
   sqon: Sqon;
-  egoGroups: any;
-  loggedInUser: LoggedInUser;
 };
 
 const Toolbar = ({
@@ -159,10 +158,10 @@ const Toolbar = ({
   isFiltered,
   participantCount,
   activeSqonIndex,
-  loggedInUser,
   api,
   sqon,
 }: ToolbarProps) => {
+  const { user } = useUser();
   const familiesCount = get(data, 'familiesCountCardinality', null);
   const filesCount = get(data, 'filesCardinality', 0) as number;
   return (
@@ -183,7 +182,7 @@ const Toolbar = ({
               type="link"
               getLink={
                 isFiltered
-                  ? () => generateAllFilesLink(loggedInUser, api, sqon)
+                  ? () => generateAllFilesLink(user, api, sqon)
                   : () => Promise.resolve('/search/file')
               }
             >
@@ -192,7 +191,7 @@ const Toolbar = ({
           )}
         </div>
       )}
-      <ParticipantSetDropdown user={loggedInUser} sqon={sqon} />
+      <ParticipantSetDropdown user={user} sqon={sqon} />
       <DownloadButton sqon={sqon} />
     </div>
   );

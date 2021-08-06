@@ -1,21 +1,28 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Layout, Row } from 'antd';
 import PropTypes from 'prop-types';
-import RepositoryIntegration from './RepositoryIntegration';
+
+import DeleteAccount from 'components/UserProfile/DeleteAccount';
+import { clearClusterError } from 'store/actionCreators/workBench';
+
+import { selectUser } from '../../store/selectors/users';
+
 import ApplicationIntegration from './ApplicationIntegration';
 import ConnectionProvider from './ConnectionProvider';
-import DeleteAccount from 'components/UserProfile/DeleteAccount';
-
-import { connect } from 'react-redux';
-import { clearClusterError } from 'store/actionCreators/workBench';
+import RepositoryIntegration from './RepositoryIntegration';
 
 const mapDispatch = (dispatch) => ({
   onClearClusterError: () => dispatch(clearClusterError()),
 });
 
+const mapStateToProps = (state) => ({
+  user: selectUser(state),
+});
+
 const { Content } = Layout;
 
-const connector = connect(null, mapDispatch);
+const connector = connect(mapStateToProps, mapDispatch);
 
 const Settings = (props) => {
   const { userEmail, onClearClusterError } = props;
@@ -48,6 +55,7 @@ const Settings = (props) => {
 
 Settings.propTypes = {
   userEmail: PropTypes.string.isRequired,
+  onClearClusterError: PropTypes.func.isRequired,
 };
 
 export default connector(Settings);

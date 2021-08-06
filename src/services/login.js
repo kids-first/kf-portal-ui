@@ -1,39 +1,22 @@
-import urlJoin from 'url-join';
-import ajax from 'services/ajax';
+/* eslint-disable no-undef */
 import queryString from 'query-string';
-
-import { egoAppId, egoApiRoot } from 'common/injectGlobals';
-import { EGO_JWT_KEY, GOOGLE, FACEBOOK, ORCID } from 'common/constants';
-import { removeCookie } from './cookie';
-import { store } from '../store';
-import { logout } from '../store/actionCreators/user';
-import { orcidLogout } from 'services/ego/auth';
-import googleSDK from 'services/googleSDK';
-import facebookSDK from 'services/facebookSDK';
+import urlJoin from 'url-join';
 
 import {
-  orcidAuthAppId,
+  egoApiRoot,
+  egoAppId,
   orcidAuthApiBaseUri,
-  orcidAuthScope,
+  orcidAuthAppId,
   orcidAuthRedirectUri,
+  orcidAuthScope,
 } from 'common/injectGlobals';
+import ajax from 'services/ajax';
+import facebookSDK from 'services/facebookSDK';
+import googleSDK from 'services/googleSDK';
 
 const gapi = global.gapi;
 
-export const refreshToken = async provider => {
-  switch (provider) {
-    case GOOGLE:
-      return googleRefrestToken();
-    case FACEBOOK:
-      return facebookRefreshToken();
-    case ORCID:
-      return orcidRefreshToken();
-    default:
-      return null;
-  }
-};
-
-export const googleLogin = token =>
+export const googleLogin = (token) =>
   ajax.get(urlJoin(egoApiRoot, 'oauth/google/token'), {
     headers: { token },
     params: {
@@ -41,8 +24,10 @@ export const googleLogin = token =>
     },
   });
 
-export const googleRefrestToken = async () => {
-  return googleLogin((await googleReloadAuthResponse()).id_token);
+export const googleRefreshToken = async () => {
+  const reloadResponse = await googleReloadAuthResponse();
+  const token = reloadResponse.id_token;
+  return googleLogin(token);
 };
 
 export const googleReloadAuthResponse = async () => {
@@ -53,14 +38,14 @@ export const googleReloadAuthResponse = async () => {
   return instance.currentUser.get().reloadAuthResponse();
 };
 
-const wait = s => new Promise(r => setTimeout(r, s * 1000));
+const wait = (s) => new Promise((r) => setTimeout(r, s * 1000));
 
 export const googleLogout = () => {
   const authInstance = gapi.auth2.getAuthInstance();
   return authInstance ? authInstance.signOut() : Promise.resolve();
 };
 
-export const facebookLogin = token =>
+export const facebookLogin = (token) =>
   ajax.get(urlJoin(egoApiRoot, '/oauth/facebook/token'), {
     headers: { token },
     params: {
@@ -68,8 +53,11 @@ export const facebookLogin = token =>
     },
   });
 
-export const facebookRefreshToken = async () =>
-  facebookLogin((await facebookStatus()).authResponse.accessToken);
+export const facebookRefreshToken = async () => {
+  const fbResponseStatus = await facebookStatus();
+  const token = fbResponseStatus.authResponse.accessToken;
+  return facebookLogin(token);
+};
 
 export const facebookStatus = async () => {
   if (!global.FB) {
@@ -77,7 +65,7 @@ export const facebookStatus = async () => {
   }
   return new Promise((resolve, reject) => {
     try {
-      global.FB.getLoginStatus(response => {
+      global.FB.getLoginStatus((response) => {
         resolve(response);
       });
     } catch (e) {
@@ -88,10 +76,10 @@ export const facebookStatus = async () => {
 
 export const facebookLogout = () =>
   Promise.race([
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       try {
-        global.FB.getLoginStatus(response =>
-          response.authResponse ? global.FB.logout(r => resolve(r)) : resolve(),
+        global.FB.getLoginStatus((response) =>
+          response.authResponse ? global.FB.logout((r) => resolve(r)) : resolve(),
         );
       } catch (err) {
         console.warn('failed to get fb login status: ', err);
@@ -109,16 +97,9 @@ export const orcidRefreshToken = () => {
     scope: orcidAuthScope,
     redirect_uri: urlJoin(window.location.origin, orcidAuthRedirectUri),
   });
-  const url = urlJoin(orcidAuthApiBaseUri, `/oauth/authorize?${search}`);
-  window.location = url;
+
+  window.location = urlJoin(orcidAuthApiBaseUri, `/oauth/authorize?${search}`);
   return Promise.resolve({
     type: 'redirect',
   });
-};
-
-export const logoutAll = () => {
-  removeCookie(EGO_JWT_KEY);
-  // discard the user/session details
-  store.dispatch(logout());
-  return Promise.all([googleLogout(), facebookLogout(), orcidLogout()]);
 };

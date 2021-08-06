@@ -1,22 +1,20 @@
-/* eslint-disable react/prop-types */
-import React, { FunctionComponent, useState } from 'react';
-import { withApi } from 'services/api';
-// @ts-ignore
-import { compose } from 'recompose';
-// @ts-ignore
-import { injectState } from 'freactal';
-import { InjectStateProps } from 'store/freactalStateTypes';
-import { Api } from 'store/apiTypes';
-import { Form, Input, Checkbox, Typography, Row, Col, Card, Avatar } from 'antd';
-import './roleForm.css';
+import React, { useState } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { Avatar, Card, Checkbox, Col, Form, Input, Row, Typography } from 'antd';
+
 import { ROLES } from 'common/constants';
-import { updateProfile } from 'services/profiles';
 import {
-  trackUserInteraction,
-  TRACKING_EVENTS,
   addStateInfo as updateTrackingDimension,
+  TRACKING_EVENTS,
+  trackUserInteraction,
 } from 'services/analyticsTracking';
-import { LoggedInUser } from 'store/userTypes';
+import { DispatchUser, User } from 'store/userTypes';
+
+import { updateUser } from '../../store/actionCreators/user';
+import { RootState } from '../../store/rootState';
+import { selectUser } from '../../store/selectors/users';
+
+import './roleForm.css';
 
 const { Paragraph, Text } = Typography;
 
@@ -26,46 +24,47 @@ export const ROLE_FORM_NAME = 'formRole';
 
 type OwnProps = {
   submitExtraCB: () => void;
-  setIsSubmittingRoleFormCB: (isLoading: boolean) => void;
 };
 
-type Props = OwnProps & InjectStateProps & Api;
+const mapState = (state: RootState) => ({
+  user: selectUser(state) as User,
+});
+
+const mapDispatch = (dispatch: DispatchUser) => ({
+  updateUser: (user: User) => dispatch(updateUser(user)),
+});
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = OwnProps & PropsFromRedux;
 
 const generateRoleTypes = () => ROLES.map((r) => r.type);
 
-const getExistingRoleOrElse = (user: LoggedInUser) => (user?.roles || [])[0] || ROLES[0].type;
+const getExistingRoleOrElse = (user: User) => (user?.roles || [])[0] || ROLES[0].type;
 
-const RoleForm: FunctionComponent<Props> = ({
-  submitExtraCB,
-  setIsSubmittingRoleFormCB,
-  api,
-  state: { loggedInUser },
-  effects: { setUser },
-}) => {
-  const existingRoleOrElse = getExistingRoleOrElse(loggedInUser);
+const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
+  const existingRoleOrElse = getExistingRoleOrElse(user);
   const [activeRole, setActiveRole] = useState(existingRoleOrElse);
 
   const onFinish = async (values: any) => {
-    //FIXME redux when fractal is removed...
-    setIsSubmittingRoleFormCB(true);
     const subscribing: Array<string> = values.subscribing;
-    const { email, ...rest } = loggedInUser;
-    const profile = await updateProfile(api)({
-      user: {
-        ...rest,
-        acceptedTerms: false,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        roles: [activeRole],
-        acceptedKfOptIn: subscribing.some((s) => s === 'acceptedKfOptIn'),
-        acceptedDatasetSubscriptionKfOptIn: subscribing.some(
-          (s) => s === 'acceptedDatasetSubscriptionKfOptIn',
-        ),
-      },
+
+    await updateUser({
+      ...user,
+      acceptedTerms: false,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      roles: [activeRole],
+      acceptedKfOptIn: subscribing.some((s) => s === 'acceptedKfOptIn'),
+      acceptedDatasetSubscriptionKfOptIn: subscribing.some(
+        (s) => s === 'acceptedDatasetSubscriptionKfOptIn',
+      ),
     });
-    await setUser({ ...profile, email, api, isJoining: true });
-    updateTrackingDimension({ userRoles: profile.roles });
-    setIsSubmittingRoleFormCB(false);
+
+    updateTrackingDimension({ userRoles: user.roles });
+
     submitExtraCB();
   };
 
@@ -76,9 +75,9 @@ const RoleForm: FunctionComponent<Props> = ({
       wrapperCol={{ span: 10 }}
       name={ROLE_FORM_NAME}
       initialValues={{
-        firstName: loggedInUser.firstName || '',
-        lastName: loggedInUser.lastName || '',
-        email: loggedInUser.email,
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email,
         roleTypes: generateRoleTypes(),
         subscribing: [],
       }}
@@ -190,4 +189,4 @@ const RoleForm: FunctionComponent<Props> = ({
   );
 };
 
-export default compose(injectState, withApi)(RoleForm);
+export default connector(RoleForm);

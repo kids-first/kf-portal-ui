@@ -26,7 +26,7 @@ import {
   VIRTUAL_STUDY_SAVE_FAILURE,
   VIRTUAL_STUDY_SAVE_REQUESTED,
   VIRTUAL_STUDY_SAVE_SUCCESS,
-} from '../actionTypes';
+} from '../virtualStudiesActionTypes';
 
 const api = apiInitialized;
 
@@ -97,10 +97,10 @@ export const loadSavedVirtualStudy = (virtualStudyId) => (dispatch) => {
     });
 };
 
-export const saveVirtualStudy = (loggedInUser, study) => (dispatch) => {
+export const saveVirtualStudy = (user, study) => (dispatch) => {
   try {
     assertStudyName(study.name);
-    assertUser(loggedInUser);
+    assertUser(user);
   } catch (err) {
     return Promise.reject(err);
   }
@@ -111,7 +111,7 @@ export const saveVirtualStudy = (loggedInUser, study) => (dispatch) => {
   });
 
   const saveDelegate = study.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
-  return saveDelegate(api, loggedInUser, study)
+  return saveDelegate(api, user, study)
     .then(([newStudy, updatedStudies]) => {
       dispatch({
         type: VIRTUAL_STUDY_SAVE_SUCCESS,
@@ -135,17 +135,17 @@ export const saveVirtualStudy = (loggedInUser, study) => (dispatch) => {
     });
 };
 
-export const deleteVirtualStudy = ({ virtualStudyId, loggedInUser }) => async (dispatch) => {
+export const deleteVirtualStudy = ({ virtualStudyId, user }) => async (dispatch) => {
   assertStudyId(virtualStudyId);
-  assertUser(loggedInUser);
+  assertUser(user);
 
   dispatch({
     type: VIRTUAL_STUDY_DELETE_REQUESTED,
     payload: virtualStudyId,
   });
 
-  return deleteVirtualStudyApi({ virtualStudyId, api, loggedInUser })
-    .then(() => dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId)))
+  return deleteVirtualStudyApi({ virtualStudyId, api, user })
+    .then(() => dispatch(fetchVirtualStudiesCollection(user.egoId)))
     .then(() => {
       dispatch({
         type: VIRTUAL_STUDY_DELETE_SUCCESS,

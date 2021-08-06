@@ -143,9 +143,9 @@ const getVirtualStudiesFromPersona = async (api) =>
     },
   }).then((personaData) => get(personaData, 'data.self.virtualStudies', []));
 
-const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
+const updateStudiesInPersona = async (api, user, newVirtualStudy) => {
   const { virtualStudyId: id, name } = newVirtualStudy;
-  const { egoId, _id: personaRecordId } = loggedInUser;
+  const { egoId, _id: personaRecordId } = user;
 
   const currentVirtualStudies = await getVirtualStudiesFromPersona(api);
 
@@ -194,10 +194,10 @@ const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
   });
 };
 
-export const createNewVirtualStudy = async (api, loggedInUser, study) => {
+export const createNewVirtualStudy = async (api, user, study) => {
   const validatedStudy = validateStudy(study);
   const { sqons, activeIndex, name, description } = validatedStudy;
-  const { egoId } = loggedInUser;
+  const { egoId } = user;
 
   const newVirtualStudy = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
@@ -230,7 +230,7 @@ export const createNewVirtualStudy = async (api, loggedInUser, study) => {
     label: JSON.stringify(normalizedStudy),
   });
 
-  await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+  await updateStudiesInPersona(api, user, normalizedStudy);
 
   const updatedStudies = await getVirtualStudies(api, egoId);
 
@@ -253,8 +253,8 @@ export const getVirtualStudy = (api) => (virtualStudyId) => {
     });
 };
 
-export const updateVirtualStudy = async (api, loggedInUser, study) => {
-  const { egoId } = loggedInUser;
+export const updateVirtualStudy = async (api, user, study) => {
+  const { egoId } = user;
   let existingVirtualStudy = null;
 
   try {
@@ -297,18 +297,18 @@ export const updateVirtualStudy = async (api, loggedInUser, study) => {
     label: JSON.stringify(normalizedStudy),
   });
 
-  await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+  await updateStudiesInPersona(api, user, normalizedStudy);
 
   const updatedStudies = await getVirtualStudies(api, egoId);
 
   return [normalizedStudy, updatedStudies];
 };
 
-export const deleteVirtualStudy = async ({ loggedInUser, api, virtualStudyId }) => {
+export const deleteVirtualStudy = async ({ user, api, virtualStudyId }) => {
   if (!virtualStudyId.length) {
     throw new Error('Study must have name');
   }
-  const { egoId, _id: personaRecordId } = loggedInUser;
+  const { egoId, _id: personaRecordId } = user;
   const virtualStudies = await getVirtualStudiesFromPersona(api);
   await api({
     url: urlJoin(shortUrlApi, virtualStudyId),

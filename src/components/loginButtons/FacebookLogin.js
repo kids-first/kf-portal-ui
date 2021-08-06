@@ -1,16 +1,24 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import DisabledFacebookLogin from './DisabledFacebookLogin';
 import { facebookStatus } from 'services/login';
 
-export default class extends Component {
+import DisabledFacebookLogin from './DisabledFacebookLogin';
+
+class FacebookLogin extends Component {
+  static propTypes = {
+    onLogin: PropTypes.func,
+    onError: PropTypes.func,
+  };
+
   state = {
     disabled: false,
   };
 
-  componentDidMount() {
+  onClick = () => {
     facebookStatus()
-      .then(response => {
+      .then((response) => {
         if (response.authResponse) {
           this.props.onLogin(response);
         } else {
@@ -18,12 +26,12 @@ export default class extends Component {
           global.FB.Event.subscribe('auth.login', this.props.onLogin);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn('unable to get fb login status: ', err);
         this.props.onError('facebookError');
         this.setState({ disabled: true });
       });
-  }
+  };
 
   componentWillUnmount() {
     try {
@@ -38,6 +46,7 @@ export default class extends Component {
       <DisabledFacebookLogin />
     ) : (
       <div
+        onClick={this.onClick}
         className="fb-login-button login-button"
         style={{ height: '40px' }}
         data-max-rows="1"
@@ -52,3 +61,5 @@ export default class extends Component {
     );
   }
 }
+
+export default FacebookLogin;

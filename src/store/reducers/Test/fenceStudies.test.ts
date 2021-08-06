@@ -1,15 +1,20 @@
 import { Action } from 'redux';
 
-import { GEN3 } from 'common/constants';
 import {
   addFenceStudies,
+  removeAllFencesStudies,
   removeFenceStudies,
   toggleIsFetchingAllFenceStudies,
 } from 'store/actionCreators/fenceStudies';
 import { MOCK_GEN3_STUDY_PHS_001436 } from 'store/actionCreators/Test/mockDataFence';
 
+import { logout } from '../../actionCreators/user';
 import { FenceStudiesState } from '../../fenceStudiesTypes';
+import { FenceName } from '../../fenceTypes';
+import { LogoutAction } from '../../userTypes';
 import reducer from '../fenceStudies';
+
+const GEN3 = FenceName.gen3;
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -66,6 +71,36 @@ describe('Fence Studies Reducer', () => {
           authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
         },
       },
+      isFetchingAllFenceStudies: false,
+    });
+  });
+
+  it('should handle removeAllFencesStudies', () => {
+    const state: FenceStudiesState = {
+      fenceStudies: {
+        [GEN3]: {
+          authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
+        },
+      },
+      isFetchingAllFenceStudies: false,
+    };
+    expect(reducer(state, removeAllFencesStudies())).toEqual({
+      fenceStudies: {},
+      isFetchingAllFenceStudies: false,
+    });
+  });
+
+  it('should handle logout', () => {
+    const state: FenceStudiesState = {
+      fenceStudies: {
+        [GEN3]: {
+          authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
+        },
+      },
+      isFetchingAllFenceStudies: false,
+    };
+    expect(reducer(state, logout() as LogoutAction)).toEqual({
+      fenceStudies: {},
       isFetchingAllFenceStudies: false,
     });
   });

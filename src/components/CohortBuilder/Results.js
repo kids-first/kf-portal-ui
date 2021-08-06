@@ -1,25 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { compose } from 'recompose';
-import isEmpty from 'lodash/isEmpty';
-import get from 'lodash/get';
-import { injectState } from 'freactal';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
+import { Empty, Tabs } from 'antd';
+import gql from 'graphql-tag';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+import { compose } from 'recompose';
 
-import { Tabs, Empty } from 'antd';
-
+import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
+import useTab from 'hooks/useTab';
 import { withApi } from 'services/api';
 
 import TableErrorView from './ParticipantsTableView/TableErrorView';
+import Toolbar from './Results/Toolbar/Toolbar';
 import ParticipantsTableView from './ParticipantsTableView';
 import QueriesResolver from './QueriesResolver';
 import Summary from './Summary';
 
-import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
-import Toolbar from './Results/Toolbar/Toolbar';
 import './Results.css';
-import useTab from 'hooks/useTab';
 
 const { TabPane } = Tabs;
 
@@ -60,7 +58,7 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => {
+const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api }) => {
   const [tabKey, setTabKey] = useTab([SUMMARY, TABLE], SUMMARY);
   return (
     <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
@@ -83,9 +81,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
               participantCount,
               isFiltered,
               activeSqonIndex,
-              egoGroups: state.egoGroups,
               sqon,
-              loggedInUser: state.loggedInUser,
             }}
           />
         );
@@ -149,7 +145,6 @@ Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object,
   api: PropTypes.func.isRequired,
-  state: PropTypes.object.isRequired,
 };
 
-export default compose(withApi, injectState)(Results);
+export default compose(withApi)(Results);

@@ -1,23 +1,26 @@
 import React from 'react';
-import memoize from 'lodash/memoize';
-import isEmpty from 'lodash/isEmpty';
+import { connect } from 'react-redux';
 import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
-import { arrangerProjectId } from 'common/injectGlobals';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import { FieldFilterContainer } from '../FieldFilterContainer';
-import { SQONdiff } from '../../Utils';
 import { Button, Modal, Spin, Typography } from 'antd';
-import { selectModalId } from 'store/selectors/modal';
-import { closeModal, openModal } from 'store/actions/modal';
-import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
+
+import { arrangerProjectId } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
-import './SqonBuilder.css';
-import { selectLoggedInUser } from 'store/selectors/users';
 import { queryBodySets } from 'services/sets';
+import { closeModal, openModal } from 'store/actions/modal';
+import { selectModalId } from 'store/selectors/modal';
+
+import { selectUser } from '../../../store/selectors/users';
+import { SQONdiff } from '../../Utils';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { FieldFilterContainer } from '../FieldFilterContainer';
+
+import './SqonBuilder.css';
 
 const { Paragraph } = Typography;
 
@@ -69,8 +72,8 @@ const setQueryVariables = (userId) => ({
 });
 
 const mapStateToProps = (state) => ({
+  user: selectUser(state),
   openModalId: selectModalId(state),
-  loggedInUser: selectLoggedInUser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -98,9 +101,9 @@ const SqonBuilder = ({
   actionsProvider,
   ResultCountIcon,
   activeSqonIndex,
-  loggedInUser,
+  user,
 }) => {
-  if (isEmpty(loggedInUser)) {
+  if (isEmpty(user)) {
     return null;
   }
   const handleAction = async (action) => {
@@ -177,7 +180,7 @@ const SqonBuilder = ({
               activeSqonIndex={activeSqonIndex}
               customQuery={{
                 body: queryBodySets('tag setId size'),
-                variables: setQueryVariables(loggedInUser.egoId),
+                variables: setQueryVariables(user.egoId),
                 mapResultData: (rawData) =>
                   rawData.sets.hits.edges.map(({ node }) => ({
                     key: `set_id:${node.setId}`,
@@ -207,7 +210,7 @@ SqonBuilder.propTypes = {
   actionsProvider: PropTypes.object,
   ResultCountIcon: PropTypes.any.isRequired,
   activeSqonIndex: PropTypes.number.isRequired,
-  loggedInUser: PropTypes.object,
+  user: PropTypes.object,
 };
 
 const enhanced = compose(withApi, connector);

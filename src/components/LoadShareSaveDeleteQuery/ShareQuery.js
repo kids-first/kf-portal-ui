@@ -1,23 +1,26 @@
 import React from 'react';
-import urlJoin from 'url-join';
-import { Spinner } from 'uikit/Spinner';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ChainIcon from 'react-icons/lib/fa/chain';
 import FBIcon from 'react-icons/lib/fa/facebook';
-import TwitterIcon from 'react-icons/lib/fa/twitter';
 import LIIcon from 'react-icons/lib/fa/linkedin';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import TwitterIcon from 'react-icons/lib/fa/twitter';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
-import Tooltip from 'uikit/Tooltip';
-import { shortUrlResolveRoot } from 'common/injectGlobals';
-import shortenApi from './shortenApi';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { styleComponent } from 'components/Utils';
-import { Button } from 'antd';
-import './LoadShareSaveDeleteQuery.css';
 import { ShareAltOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import PropTypes from 'prop-types';
-import { withApi } from 'services/api';
 import { compose } from 'recompose';
+import urlJoin from 'url-join';
+
+import { shortUrlResolveRoot } from 'common/injectGlobals';
+import { styleComponent } from 'components/Utils';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
+import { Spinner } from 'uikit/Spinner';
+import Tooltip from 'uikit/Tooltip';
+
+import shortenApi from './shortenApi';
+
+import './LoadShareSaveDeleteQuery.css';
 
 const trackQueryShare = async (channel) => {
   await trackUserInteraction({
@@ -37,18 +40,18 @@ class ShareQuery extends React.Component {
     api: PropTypes.func.isRequired,
     getSharableUrl: PropTypes.func,
     handleShare: PropTypes.func,
-    loggedInUser: PropTypes.object,
+    user: PropTypes.object,
     disabled: PropTypes.bool,
   };
 
   state = { link: null, copied: false, error: null, open: false };
 
   share = async () => {
-    const { stats, sqon, api, getSharableUrl, handleShare, loggedInUser } = this.props;
+    const { stats, sqon, api, getSharableUrl, handleShare, user } = this.props;
     try {
       const data = await (handleShare
         ? handleShare()
-        : shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true }));
+        : shortenApi({ stats, sqon, user, api, sharedPublicly: true }));
       this.setState({
         link: getSharableUrl
           ? getSharableUrl({ id: data.id })
@@ -173,4 +176,4 @@ class ShareQuery extends React.Component {
   }
 }
 
-export default compose(withApi)(ShareQuery)
+export default compose(withApi)(ShareQuery);

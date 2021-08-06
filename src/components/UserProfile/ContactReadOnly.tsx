@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 
-import { LoggedInUser } from 'store/userTypes';
+import { ProfileTodo } from '../../store/profileTypes';
 
 import CardNoDataReadOnly from './CardNoDataReadOnly';
 import ContactReadInformation from './ContactReadInformation';
@@ -18,13 +18,13 @@ import {
 import './style.css';
 
 type Props = {
-  data: LoggedInUser;
+  data: ProfileTodo;
   canEdit: boolean;
   isProfileUpdating: boolean;
   onClickEditCb: () => void;
 };
 
-const getInstitutionLabelGivenRole = (data: LoggedInUser) => {
+const getInstitutionLabelGivenRole = (data: ProfileTodo) => {
   const role = extractRoleFromProfile(data);
   if (role === 'research') {
     return 'Institution';
@@ -53,7 +53,7 @@ const COMMON_PROPERTIES = [
   'country',
 ];
 
-const hasData = (data: LoggedInUser) => {
+const hasData = (data: ProfileTodo) => {
   if (!data) {
     return false;
   }
@@ -66,7 +66,7 @@ const hasData = (data: LoggedInUser) => {
   } else if (role === 'community') {
     fieldsToCheckFor = [...fieldsToCheckFor, ...COMMUNITY_SPECIFIC_PROPERTIES];
   }
-  return fieldsToCheckFor.some((f) => data[f as keyof LoggedInUser]);
+  return fieldsToCheckFor.some((f) => data[f as keyof ProfileTodo]);
 };
 
 const ContactReadOnly = (props: Props) => {

@@ -1,15 +1,13 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
-import { injectState } from 'freactal';
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
 
 import ROUTES from 'common/routes';
-import { uiLogout } from 'components/LogoutButton';
-import { withApi } from 'services/api';
-import { effectsShape, historyShape } from 'shapes';
 import Gravatar from 'uikit/Gravatar';
+
+import useUser from '../../hooks/useUser';
+import { revertAcceptedTermsThenLogoutCleanly } from '../../store/actionCreators/user';
 
 import HeaderMenu from './HeaderMenu';
 
@@ -24,58 +22,36 @@ const menuItems = [
   <Menu.Item key="logout">Logout</Menu.Item>,
 ];
 
-const UserMenu = (props) => {
-  const {
-    state: { loggedInUser },
-    effects: { setToken, setUser, clearIntegrationTokens, setIsLoadingUser },
-    history,
-    api,
-  } = props;
+const UserMenu = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
 
+  const { user } = useUser();
   // Menu is not displayed if no user is connected, or if we don't have the user profile yet
-  if (!loggedInUser) {
+  if (!user) {
     return null;
   }
 
   const handleMenuClick = ({ key }) => {
     switch (key) {
       case 'profile':
-        history.push(getUrlForUser(loggedInUser, '#aboutMe'));
+        history.push(getUrlForUser(user, '#aboutMe'));
         break;
       case 'settings':
-        history.push(getUrlForUser(loggedInUser, '#settings'));
+        history.push(getUrlForUser(user, '#settings'));
         break;
       case 'logout':
-        uiLogout({
-          loggedInUser,
-          setToken,
-          setUser,
-          clearIntegrationTokens,
-          api,
-          history,
-          setIsLoadingUser,
-        });
+        dispatch(revertAcceptedTermsThenLogoutCleanly());
         break;
-      default:
-        console.warn(`Unhandled menu item with key "${key}"`);
     }
   };
 
   return (
     <HeaderMenu onClick={handleMenuClick} menuItems={menuItems}>
-      <Gravatar className="headerProfilePicture" email={loggedInUser.email || ''} size={39} />
-      <span className="userName">{loggedInUser.firstName}</span>
+      <Gravatar className="headerProfilePicture" email={user.email || ''} size={39} />
+      <span className="userName">{user.firstName}</span>
     </HeaderMenu>
   );
 };
 
-UserMenu.propTypes = {
-  effects: effectsShape.isRequired,
-  history: historyShape.isRequired,
-  api: PropTypes.func.isRequired,
-  state: PropTypes.shape({
-    loggedInUser: PropTypes.object,
-  }).isRequired,
-};
-
-export default compose(injectState, withRouter, withApi)(UserMenu);
+export default UserMenu;

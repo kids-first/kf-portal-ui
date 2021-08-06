@@ -1,15 +1,18 @@
 import React from 'react';
+import { notification, Spin } from 'antd';
 import { compose } from 'recompose';
 
-import theme from 'theme/defaultTheme';
-import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
-import { GEN3 } from 'common/constants';
-import { downloadFileFromFence } from 'services/fence';
-import { getFilesById } from 'services/arranger';
+import DownloadIcon from 'icons/DownloadIcon';
 import { withApi } from 'services/api';
+import { getFilesById } from 'services/arranger';
+import { downloadFileFromFence } from 'services/fence';
 import { getAppElement } from 'services/globalDomNodes';
-import { notification, Spin } from 'antd';
+import theme from 'theme/defaultTheme';
+
+import { FenceName } from '../../store/fenceTypes';
+
+const GEN3 = FenceName.gen3;
 
 const getGen3UUIDs = async (kfId) => {
   const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });

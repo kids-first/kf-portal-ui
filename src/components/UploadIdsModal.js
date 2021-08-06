@@ -1,22 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
 import { MatchBox } from '@kfarranger/components/dist/Arranger';
+import { Button, Modal, notification, Typography } from 'antd';
+import PropTypes from 'prop-types';
+
 import graphql from 'services/arranger';
 import { TableHeader } from 'uikit/Headings';
-import { withApi } from 'services/api';
-import { Button, Modal, notification, Typography } from 'antd';
+
+import useUser from '../hooks/useUser';
+
 import LoadingOnClick from './LoadingOnClick';
+
 import './uploadIdsModal.css';
 
 const { Title, Paragraph } = Typography;
 
 const UploadIdsModal = (props) => {
   const {
-    api,
-    state: { loggedInUser },
-    effects: { addUserSet },
     setSQON,
     uploadableFields,
     placeholderText,
@@ -28,6 +27,8 @@ const UploadIdsModal = (props) => {
     whitelist,
     isVisible,
   } = props;
+
+  const { user } = useUser();
 
   return (
     <Modal
@@ -71,11 +72,10 @@ const UploadIdsModal = (props) => {
             <LoadingOnClick
               onClick={async () => {
                 try {
-                  const { type, setId, size, nextSQON } = await saveSet({
-                    userId: loggedInUser.egoId,
+                  const { nextSQON } = await saveSet({
+                    userId: user.egoId,
                     api: graphql(),
                   });
-                  await addUserSet({ type, setId, size, api });
                   setSQON(nextSQON);
                 } catch (e) {
                   notification.error({
@@ -110,7 +110,6 @@ const UploadIdsModal = (props) => {
 UploadIdsModal.defaultProps = { uploadableFields: null };
 
 UploadIdsModal.propTypes = {
-  api: PropTypes.func.isRequired,
   setSQON: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
   whitelist: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -120,9 +119,7 @@ UploadIdsModal.propTypes = {
   index: PropTypes.string,
   graphqlField: PropTypes.string,
   placeholderText: PropTypes.string,
-  state: PropTypes.object.isRequired,
-  effects: PropTypes.object.isRequired,
   isVisible: PropTypes.bool.isRequired,
 };
 
-export default compose(injectState, withApi)(UploadIdsModal);
+export default UploadIdsModal;

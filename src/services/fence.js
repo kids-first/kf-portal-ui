@@ -1,15 +1,21 @@
 import jwtDecode from 'jwt-decode';
 import uniq from 'lodash/uniq';
-import { FENCES, GEN3, DCF } from 'common/constants';
-import ajax from 'services/ajax';
+
 import {
+  dcfApiRoot,
   fenceAuthClientUri,
   fenceRefreshUri,
   fenceTokensUri,
   gen3ApiRoot,
-  dcfApiRoot,
   idp,
 } from 'common/injectGlobals';
+import ajax from 'services/ajax';
+
+import { FenceName } from '../store/fenceTypes';
+import { isDecodedJwtExpired } from '../store/tokenUtils';
+
+const DCF = FenceName.dcf;
+const GEN3 = FenceName.gen3;
 
 const RESPONSE_TYPE = 'code';
 
@@ -34,15 +40,6 @@ const PROVIDERS = {
   gen3: { fenceUri: gen3ApiRoot },
   dcf: { fenceUri: dcfApiRoot },
 };
-FENCES.forEach((fence) => {
-  const authCliUri = `${fenceAuthClientUri}?fence=${fence}`;
-  fetch(authCliUri)
-    .then((res) => res.json())
-    .then(({ client_id, redirect_uri }) => {
-      PROVIDERS[fence].clientId = client_id;
-      PROVIDERS[fence].redirectUri = redirect_uri;
-    });
-});
 
 /*
  * Connect To A Fence
@@ -50,78 +47,73 @@ FENCES.forEach((fence) => {
  *  Then this starts a 1 second repeating interval that checks for a new api token in the key manager
  *  This lasts for 1 Minute before failing outright (no effect or state change)
  */
-export const fenceConnect = (api, fence) => {
-  const { clientId, redirectUri, fenceUri } = PROVIDERS[fence];
+const TEN_MINUTES_IN_MS = 1000 * 60 * 10;
+
+export const fenceConnect = async (api, fence) => {
+  const authCliUri = `${fenceAuthClientUri}?fence=${fence}`;
+  const authCliRawResponse = await fetch(authCliUri);
+  const authCliResponse = await authCliRawResponse.json();
+  const redirectUri = authCliResponse.redirect_uri;
+  const clientId = authCliResponse.client_id;
+
+  const { fenceUri } = PROVIDERS[fence];
   const scope = getScope(fence);
   // eslint-disable-next-line max-len
   const url = `${fenceUri}user/oauth2/authorize?client_id=${clientId}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${redirectUri}&idp=${idp}`;
   const authWindow = window.open(url);
   return new Promise((resolve, reject) => {
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       if (authWindow.closed) {
-        getAccessToken(api, fence)
-          .then((access_token) => {
-            if (access_token) {
-              clearInterval(interval);
-              resolve(access_token);
-            }
-          })
-          .catch(() => {
-            clearInterval(interval);
-            reject({ msg: 'Error occurred while fetching Fence Access Token.' });
-          });
+        try {
+          const token = await fetchTokenThenRefreshIfNeeded(api, fence);
+          clearInterval(interval);
+          resolve(token);
+        } catch (e) {
+          clearInterval(interval);
+          reject({ msg: 'Error occurred while fetching Fence Access Token.' });
+        }
       }
     }, 1000);
     setTimeout(() => {
       clearInterval(interval);
       reject('nothing');
-    }, 1000 * 60 * 10);
+    }, TEN_MINUTES_IN_MS);
   });
 };
 
-/*
- * Fetch Access Token
- *  If access token is expired, call the refresh token method
- */
-const getRefreshedToken = async (api, fence) =>
-  api({
-    method: 'POST',
-    url: `${fenceRefreshUri}?fence=${fence}`,
-  })
-    .then((data) => {
-      if (data.access_token) {
-        return data;
-      } else {
-        return fenceConnect(api, fence);
-      }
-    })
-    .then(({ access_token }) => access_token);
-
-export const getAccessToken = async (api, fence) => {
-  const currentToken = await api({
+export const fetchAccessToken = async (api, fenceName) => {
+  const data = await api({
     method: 'GET',
-    url: `${fenceTokensUri}?fence=${fence}`,
-  }).then(({ access_token }) => access_token);
-  const { exp } = jwtDecode(currentToken);
-  return exp * 1000 > Date.now() ? currentToken : await getRefreshedToken(api, fence);
-};
-
-export const convertTokenToUser = (accessToken) => {
-  const {
-    context: { user },
-  } = jwtDecode(accessToken);
-  return user;
-};
-
-/*
- * Get User
- */
-export const getFenceUser = async (api, fence) => {
-  const accessToken = await getAccessToken(api, fence);
-  const { fenceUri } = PROVIDERS[fence];
-  const response = await ajax.get(`${fenceUri}user/user`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+    url: `${fenceTokensUri}?fence=${fenceName}`,
   });
+  return data.access_token;
+};
+
+export const fetchRefreshedAccessToken = async (api, fenceName) => {
+  const data = await api({
+    method: 'POST',
+    url: `${fenceRefreshUri}?fence=${fenceName}`,
+  });
+  return data.access_token;
+};
+
+const fetchTokenThenRefreshIfNeeded = async (api, fenceName) => {
+  let token = await fetchAccessToken(api, fenceName);
+  const decodedToken = jwtDecode(token);
+  if (isDecodedJwtExpired(decodedToken)) {
+    token = await fetchRefreshedAccessToken(api, fenceName);
+  }
+  return token;
+};
+
+export const fetchFenceConnection = async (api, fenceName) => {
+  const token = await fetchTokenThenRefreshIfNeeded(api, fenceName);
+  const { fenceUri } = PROVIDERS[fenceName];
+  const response = await ajax.get(`${fenceUri}user/user`, {
+    //TODO not sure it s needed, interceptor
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
   /** @namespace data.project_access*/
   const data = response.data;
   return { ...data, projects: data.project_access }; //Backward compatibility.
@@ -143,7 +135,7 @@ export const deleteFenceTokens = async (api, fence) => {
 export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
   let accessToken = null;
   try {
-    accessToken = await getAccessToken(api, fence);
+    accessToken = await fetchTokenThenRefreshIfNeeded(api, fence);
   } catch (err) {
     // Open access files are accessible even when not logged with a fence, so assume access and let the download fail.
     console.warn(`[Fence] no access token for file ${fileUuid}, assuming open access`);
@@ -152,7 +144,7 @@ export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
   const { fenceUri } = PROVIDERS[fence];
   const headers = accessToken
     ? {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`, //TODO can remove because of interceptor??
       }
     : {};
   const { url } = await fetch(`${fenceUri}user/data/download/${fileUuid}`, {

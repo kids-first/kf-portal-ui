@@ -13,7 +13,6 @@ class EditToggle extends Component {
     EditableComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
     updateProfileCb: PropTypes.func.isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
-    loggedInUser: PropTypes.object.isRequired,
   };
 
   state = {
@@ -40,7 +39,6 @@ class EditToggle extends Component {
       canEdit,
       updateProfileCb,
       isProfileUpdating,
-      loggedInUser
     } = this.props;
     const { viewType } = this.state;
     if (viewType === VIEW_TYPE_READ_ONLY) {
@@ -50,7 +48,6 @@ class EditToggle extends Component {
           canEdit={canEdit}
           onClickEditCb={this.onClickEdit}
           isProfileUpdating={isProfileUpdating}
-          loggedInUser={loggedInUser}
         />
       );
     } else if (viewType === VIEW_TYPE_EDITING) {
@@ -61,7 +58,6 @@ class EditToggle extends Component {
           onClickSaveCb={this.onClickSave}
           updateProfileCb={updateProfileCb}
           isProfileUpdating={isProfileUpdating}
-          loggedInUser={loggedInUser}
         />
       );
     }

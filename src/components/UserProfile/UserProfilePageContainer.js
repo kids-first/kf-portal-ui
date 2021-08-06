@@ -1,34 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import {
-  selectProfile,
-  selectIsProfileLoading,
-  selectErrorProfile,
-  selectIsProfileUpdating,
-  selectLoggedInUser,
-} from 'store/selectors/users';
-import {
-  fetchProfileIfNeeded,
-  updateUserProfile,
-  deleteProfile,
-  cleanErrors,
-} from 'store/actionCreators/user';
-import Error from '../Error';
-import isEmpty from 'lodash/isEmpty';
-import UserProfilePage from './UserProfilePage';
 import { withRouter } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Layout, Spin } from 'antd';
+import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+
 import {
   addStateInfo as updateTrackingInfo,
   TRACKING_EVENTS,
   trackProfileInteraction,
   trackUserInteraction,
 } from 'services/analyticsTracking';
-import './style.css';
+import {
+  cleanProfileErrors,
+  deleteProfile,
+  fetchProfileIfNeeded,
+  updateUserProfile,
+} from 'store/actionCreators/profile';
+import {
+  selectErrorProfile,
+  selectIsProfileLoading,
+  selectIsProfileUpdating,
+  selectProfile,
+} from 'store/selectors/profile';
+
+import { selectIsUserAdmin, selectUser } from '../../store/selectors/users';
+import { isSelfInUrlWhenLoggedIn } from '../../utils';
+import Error from '../Error';
+
 import { KEY_ABOUT_ME } from './constants';
+import UserProfilePage from './UserProfilePage';
+
+import './style.css';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
@@ -41,27 +46,23 @@ class UserProfilePageContainer extends React.Component {
       lastName: PropTypes.string,
       email: PropTypes.string,
     }),
+    user: PropTypes.object.isRequired,
     onFetchProfile: PropTypes.func.isRequired,
     onUpdateProfile: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
-    userID: PropTypes.string,
-    userInfo: PropTypes.exact({
-      userID: PropTypes.string,
-      isSelf: PropTypes.bool,
-    }).isRequired,
+
     onDeleteProfile: PropTypes.func.isRequired,
     location: PropTypes.shape({
       hash: PropTypes.string.isRequired,
     }).isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
-    loggedInUser: PropTypes.object,
     onCleanErrors: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool,
+    userIdFromUrl: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
-    loggedInUser: {},
     isAdmin: false,
   };
 
@@ -71,18 +72,25 @@ class UserProfilePageContainer extends React.Component {
   };
 
   componentDidMount() {
-    const { onFetchProfile, userInfo } = this.props;
-    onFetchProfile(userInfo);
+    const { onFetchProfile, userIdFromUrl, user } = this.props;
+    onFetchProfile({
+      userID: userIdFromUrl,
+      isSelf: isSelfInUrlWhenLoggedIn(userIdFromUrl, user),
+    });
   }
 
   componentDidUpdate(prevProps) {
     const {
       onFetchProfile,
-      userInfo,
       location: { hash },
+      userIdFromUrl,
+      user,
     } = this.props;
-    if (prevProps.userInfo.userID !== userInfo.userID) {
-      onFetchProfile(userInfo);
+    if (prevProps.userIdFromUrl !== userIdFromUrl) {
+      onFetchProfile({
+        userID: userIdFromUrl,
+        isSelf: isSelfInUrlWhenLoggedIn(userIdFromUrl, user),
+      });
     }
 
     const hasHashChanged = prevProps.location.hash !== hash;
@@ -138,10 +146,10 @@ class UserProfilePageContainer extends React.Component {
       isLoading,
       error,
       profile,
-      userInfo,
+      user,
+      userIdFromUrl,
       location: { hash },
       isProfileUpdating,
-      loggedInUser,
       isAdmin,
     } = this.props;
 
@@ -154,7 +162,11 @@ class UserProfilePageContainer extends React.Component {
         </Layout>
       );
     } else if (error) {
-      return <Error />;
+      return (
+        <Layout className={'up-is-loading-layout'}>
+          <Error />{' '}
+        </Layout>
+      );
     } else if (isEmpty(profile)) {
       return (
         <Layout className={'up-is-loading-layout'}>
@@ -167,7 +179,7 @@ class UserProfilePageContainer extends React.Component {
       <UserProfilePage
         profile={profile}
         updateProfileCb={this.submit}
-        canEdit={userInfo.isSelf}
+        canEdit={isSelfInUrlWhenLoggedIn(userIdFromUrl, user)}
         hash={hash}
         key={currentMenuItem} // Allows to create a new component instance when hash is changed.
         handleMenuClickCb={this.handleMenuClick}
@@ -175,7 +187,6 @@ class UserProfilePageContainer extends React.Component {
         isProfileUpdating={isProfileUpdating}
         collapsed={collapsed}
         onBreakPointCb={this.onBreakPoint}
-        loggedInUser={loggedInUser}
         isAdmin={isAdmin}
       />
     );
@@ -187,14 +198,15 @@ const mapStateToProps = (state) => ({
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
   isProfileUpdating: selectIsProfileUpdating(state),
-  loggedInUser: selectLoggedInUser(state),
+  isAdmin: selectIsUserAdmin(state),
+  user: selectUser(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onFetchProfile: (userInfo) => dispatch(fetchProfileIfNeeded(userInfo)),
   onUpdateProfile: (user) => dispatch(updateUserProfile(user)),
   onDeleteProfile: () => dispatch(deleteProfile()),
-  onCleanErrors: () => dispatch(cleanErrors()),
+  onCleanErrors: () => dispatch(cleanProfileErrors()),
 });
 
 export default compose(

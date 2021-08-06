@@ -2,10 +2,10 @@ import { AnyAction } from 'redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { DCF, GEN3 } from 'common/constants';
 import { getAuthStudiesIdAndCount, getStudiesCountByNameAndAcl } from 'services/fenceStudies';
 import { DispatchFenceStudies, FenceStudiesActions } from 'store/fenceStudiesTypes';
 
+import { FenceName } from '../../fenceTypes';
 import {
   addFenceStudies,
   computeAllFencesAuthStudies,
@@ -21,6 +21,9 @@ import {
   MOCK_STUDIES_IDS_AND_COUNTS,
   mockApi,
 } from './mockDataFence';
+
+const DCF = FenceName.dcf;
+const GEN3 = FenceName.gen3;
 
 const NO_ACTIONS: AnyAction[] = [];
 
