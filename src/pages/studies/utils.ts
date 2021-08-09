@@ -9,11 +9,13 @@ import { BooleanOperators, FieldOperators } from '@ferlab/ui/core/data/sqon/oper
 import {
   ISqonGroupFilter,
   ISyntheticSqon,
+  IValueContent,
   IValueFilter,
   TSqonContent,
   TSqonGroupOp,
   TSyntheticSqonContent,
 } from '@ferlab/ui/core/data/sqon/types';
+import { isFieldOperator, isNotReference, isReference } from '@ferlab/ui/core/data/sqon/utils';
 import { isEmpty } from 'lodash';
 import get from 'lodash/get';
 import qs from 'query-string';
@@ -141,7 +143,10 @@ const getQueryParams = (search: any = null) =>
   search ? qs.parse(search) : qs.parse(window.location.search);
 
 const getFilterWithNoSelection = (filters: ISyntheticSqon, field: string): ISyntheticSqon => {
-  const filtered = filters.content.filter((filter: any) => filter.content.field !== field);
+  const filtered = filters.content.filter((filter: any) =>
+    isNotReference(filter) ? filter.content.field !== field : true,
+  );
+
   return {
     ...filters,
     content: filtered,
@@ -170,7 +175,7 @@ const getSelectedFiltersForRange = (
 const getSelectedFiltersOther = (
   filters: IFilter[],
   filterGroup: IFilterGroup,
-  selectedFilters: ISqonGroupFilter,
+  selectedFilters: ISyntheticSqon,
 ) => {
   const currentFilters = filters as IFilter<IFilterCount>[];
   return currentFilters.reduce<IFilter<IFilterCount>[]>((acc, filter) => {
@@ -195,7 +200,7 @@ export const getSelectedFilters = (filters: IFilter[], filterGroup: IFilterGroup
   }
 };
 
-const getRangeSelection = (filters: ISqonGroupFilter, filterGroup: IFilterGroup) => {
+const getRangeSelection = (filters: ISyntheticSqon, filterGroup: IFilterGroup) => {
   let rangeSelection: IFilterRange = { max: undefined, min: undefined, rangeType: undefined };
   for (const filter of filters.content) {
     const filt = filter as IValueFilter;
@@ -217,13 +222,21 @@ const getRangeSelection = (filters: ISqonGroupFilter, filterGroup: IFilterGroup)
 };
 
 const isFilterSelected = (filters: ISyntheticSqon, filterGroup: IFilterGroup, key: string) => {
-  for (const filter of filters.content) {
-    const filt = filter as IValueFilter;
-    if (filt.content.value.includes(key) && filt.content.field === filterGroup.field) {
-      return true;
+  const isFilterFound = (sqon: ISyntheticSqon, filterGroup: IFilterGroup, key: string): boolean => {
+    if (isReference(sqon)) {
+      return false;
+    } else if (isFieldOperator(sqon)) {
+      const valueContent = (sqon.content as unknown) as IValueContent;
+      return valueContent.value.includes(key) && valueContent.field === filterGroup.field;
+    } else {
+      return sqon.content.reduce(
+        (acc: any, contentSqon: any) => acc || isFilterFound(contentSqon, filterGroup, key),
+        false,
+      );
     }
-  }
-  return false;
+  };
+
+  return isFilterFound(filters, filterGroup, key);
 };
 
 interface IMapFilters {

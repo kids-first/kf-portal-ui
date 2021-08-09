@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
-import { ISqonGroupFilter, IValueContent } from '@ferlab/ui/core/data/sqon/types';
+import { ISqonGroupFilter, ISyntheticSqon, IValueContent } from '@ferlab/ui/core/data/sqon/types';
+import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Select, Tag } from 'antd';
 
 import history from 'services/history';
 
 import { ItemProps } from './SidebarFilters';
-import { updateFilters } from './utils';
+import { getQueryBuilderCache, updateFilters } from './utils';
 
 import styles from './SearchBar.module.scss';
 
@@ -15,8 +16,11 @@ type OwnProps = {
   filters: ISqonGroupFilter;
 };
 
-const extractCodesFromFilter = (filters: ISqonGroupFilter) => {
-  const find = filters.content.find((s: { content: any }) => s.content.field === 'code');
+const extractCodesFromFilter = (filters: ISyntheticSqon) => {
+  const allSqons = getQueryBuilderCache('study-repo').state;
+  const resolvedSqon = resolveSyntheticSqon(allSqons, filters);
+
+  const find = resolvedSqon.content.find((s: { content: any }) => s.content.field === 'code');
   return find ? (find.content as IValueContent).value : [];
 };
 

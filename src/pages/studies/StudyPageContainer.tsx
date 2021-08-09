@@ -8,12 +8,7 @@ import history from 'services/history';
 import { StudiesPageContainerData } from 'store/graphql/studies/actions';
 
 import StudyTableContainer from './StudyTableContainer';
-import {
-  getQueryBuilderCache,
-  setQueryBuilderCache,
-  updateQueryFilters,
-  updateQueryParam,
-} from './utils';
+import { getQueryBuilderCache, setQueryBuilderCache, updateQueryParam } from './utils';
 
 import styles from './StudiesPageContainer.module.scss';
 
@@ -34,9 +29,6 @@ const StudyPageContainer = ({
     },
   };
 
-  //console.log(filters);
-  //console.log(getQueryBuilderCache('study-repo'));
-
   return (
     <StackLayout vertical>
       <QueryBuilder
@@ -46,16 +38,11 @@ const StudyPageContainer = ({
         initialState={getQueryBuilderCache('study-repo')}
         loading={studiesResults?.loading}
         onChangeQuery={(_, query) => {
-          //console.log('On CHANGE QUERY');
           //console.log(query);
           updateQueryParam(history, 'filters', query);
         }}
-        onRemoveFacet={(query) => {
-          //console.log('FACET TO REMOVE');
-          //console.log(query);
-          updateQueryFilters(history, query.content.field, []);
-        }}
         onUpdate={(state) => {
+          //console.log(state);
           setQueryBuilderCache('study-repo', state);
         }}
         total={total}
