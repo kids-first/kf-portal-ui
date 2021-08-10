@@ -1,4 +1,5 @@
 import React from 'react';
+import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Layout } from 'antd';
@@ -8,7 +9,6 @@ import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/stu
 
 import Sidebar from './Sidebar';
 import StudyPageContainer from './StudyPageContainer';
-import { getQueryBuilderCache, useFilters } from './utils';
 
 import styles from './studies.module.scss';
 

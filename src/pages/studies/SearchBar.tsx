@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
+import { getQueryBuilderCache, updateFilters } from '@ferlab/ui/core/data/filters/utils';
 import { ISqonGroupFilter, ISyntheticSqon, IValueContent } from '@ferlab/ui/core/data/sqon/types';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Select, Tag } from 'antd';
@@ -7,7 +8,6 @@ import { Select, Tag } from 'antd';
 import history from 'services/history';
 
 import { ItemProps } from './SidebarFilters';
-import { getQueryBuilderCache, updateFilters } from './utils';
 
 import styles from './SearchBar.module.scss';
 

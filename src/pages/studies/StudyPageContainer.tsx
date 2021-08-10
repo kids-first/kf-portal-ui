@@ -8,7 +8,6 @@ import history from 'services/history';
 import { StudiesPageContainerData } from 'store/graphql/studies/actions';
 
 import StudyTableContainer from './StudyTableContainer';
-import { getQueryBuilderCache, setQueryBuilderCache, updateQueryParam } from './utils';
 
 import styles from './StudiesPageContainer.module.scss';
 
@@ -32,19 +31,13 @@ const StudyPageContainer = ({
   return (
     <StackLayout vertical>
       <QueryBuilder
+        cacheKey="study-repo"
+        history={history}
         className="file-repo__query-builder"
         currentQuery={filters?.content?.length ? filters : {}}
         enableCombine={true}
-        initialState={getQueryBuilderCache('study-repo')}
         loading={studiesResults?.loading}
-        onChangeQuery={(_, query) => {
-          //console.log(query);
-          updateQueryParam(history, 'filters', query);
-        }}
-        onUpdate={(state) => {
-          //console.log(state);
-          setQueryBuilderCache('study-repo', state);
-        }}
+        enableShowHideLabels
         total={total}
         IconTotal={<StudyIcon className={styles.queryBuilderIcon} />}
         dictionary={dictionary}
