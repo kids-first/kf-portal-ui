@@ -1,5 +1,5 @@
 import React from 'react';
-import CountWithIcon from '@ferlab/ui/core/components/labels/CountWithIcon';
+import MultiLabel from '@ferlab/ui/core/components/labels/MultiLabel';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Card } from 'antd';
 import Title from 'antd/es/typography/Title';
@@ -33,25 +33,25 @@ const VariantStatsContainer = () => {
       }
     >
       <StackLayout className={style.variantStatsContainer}>
-        <CountWithIcon
-          total={formatCounts(result?.stats?.studiesCount)}
+        <MultiLabel
+          label={formatCounts(result?.stats?.studiesCount)}
           Icon={<StudyIcon className={style.variantPageIconColor} {...iconSize} />}
-          label={'Studies'}
+          subLabel={'Studies'}
         />
-        <CountWithIcon
-          total={formatCounts(result?.stats?.participantsCount)}
+        <MultiLabel
+          label={formatCounts(result?.stats?.participantsCount)}
           Icon={<ParticipantIcon className={style.variantPageIconColor} {...iconSize} />}
-          label={'Participants'}
+          subLabel={'Participants'}
         />
-        <CountWithIcon
-          total={formatCounts(result.stats.distinctVariantsCount)}
+        <MultiLabel
+          label={formatCounts(result.stats.distinctVariantsCount)}
           Icon={<VariantIcon className={style.variantPageIconColor} {...iconSize} />}
-          label={'Unique Variants'}
+          subLabel={'Unique Variants'}
         />
-        <CountWithIcon
-          total={formatCounts(result.stats.occurrencesCount)}
+        <MultiLabel
+          label={formatCounts(result.stats.occurrencesCount)}
           Icon={<OccurencesIcon className={style.variantPageIconColor} {...iconSize} />}
-          label={'Occurences'}
+          subLabel={'Occurences'}
         />
       </StackLayout>
     </Card>

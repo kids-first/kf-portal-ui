@@ -1,17 +1,17 @@
 import React from 'react';
-import { Card } from 'antd';
 import { RiseOutlined } from '@ant-design/icons';
-
-import CountWithIcon from '@ferlab/ui/core/components/labels/CountWithIcon';
+import MultiLabel from '@ferlab/ui/core/components/labels/MultiLabel';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import StudyIcon from 'icons/StudyIconSvg';
-import ParticipantIcon from 'icons/ParticipantIcon';
+import { Card } from 'antd';
 
+import ParticipantIcon from 'icons/ParticipantIcon';
+import StudyIcon from 'icons/StudyIconSvg';
 import { VariantEntity } from 'store/graphql/variants/models';
+import { toExponentialNotation } from 'utils';
+
+import ClinVarExternalLink from './ClinVarExternalLink';
 
 import styles from './Summary.module.scss';
-import { toExponentialNotation } from 'utils';
-import ClinVarExternalLink from './ClinVarExternalLink';
 
 type SummaryItemProps = {
   field: string;
@@ -53,20 +53,20 @@ const Summary = ({ variant }: SummaryProps) => {
         </div>
         <div>
           <StackLayout className={styles.topLeftContainer}>
-            <CountWithIcon
+            <MultiLabel
               Icon={<StudyIcon />}
-              label={'Studies'}
-              total={variant.studies.hits.total}
+              subLabel={'Studies'}
+              label={variant.studies.hits.total}
             />
-            <CountWithIcon
+            <MultiLabel
               Icon={<ParticipantIcon />}
-              label={'Participants'}
-              total={variant.participant_number}
+              subLabel={'Participants'}
+              label={variant.participant_number}
             />
-            <CountWithIcon
+            <MultiLabel
               Icon={<RiseOutlined />}
-              label={'Frequency'}
-              total={toExponentialNotation(variant.participant_frequency)}
+              subLabel={'Frequency'}
+              label={toExponentialNotation(variant.participant_frequency)}
             />
           </StackLayout>
           <StackLayout className={styles.buttomLeftContainer}>
