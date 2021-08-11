@@ -6,7 +6,7 @@ export enum QueryResolverActions {
 
 type RemoveFromCacheAction = {
   type: QueryResolverActions.removeFromCache;
-  queryBody: any;
+  queryBody: string;
 };
 
 export type QueryType = {

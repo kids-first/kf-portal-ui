@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ASTNode } from 'graphql';
 import { print } from 'graphql/language/printer';
 import urlJoin from 'url-join';
 
@@ -11,11 +12,15 @@ type Payload = {
   error: any;
 };
 
-type Output = {
+type Output = Payload & {
   isLoading: boolean;
   updateQueries: Function;
-  data: Array<any>;
-  error: any;
+};
+
+type Query = {
+  query: object | string;
+  variables: object;
+  transform: Function;
 };
 
 var loadingQueries: { [index: string]: Array<any> } = {};
@@ -23,11 +28,7 @@ var loadingQueries: { [index: string]: Array<any> } = {};
 const useQueryResolver = (
   api: Function,
   name: string = 'GQL_QUERIES_RESOLVER',
-  queries: Array<{
-    query: object | string;
-    variables: object;
-    transform: Function;
-  }> = [],
+  queries: Array<Query> = [],
   useCache: boolean = true,
 ): Output => {
   const [payload, setPayload] = useState<Payload>({
@@ -64,8 +65,8 @@ const useQueryResolver = (
   const update = async () => {
     if (queryList.length) {
       const body = JSON.stringify(
-        queryList.map((q: any) => ({
-          query: typeof q.query === 'string' ? q.query : print(q.query),
+        queryList.map((q: Query) => ({
+          query: typeof q.query === 'string' ? q.query : print(q.query as ASTNode),
           variables: q.variables,
         })),
       );
@@ -102,7 +103,7 @@ const useQueryResolver = (
     return result;
   };
 
-  const cachedFetchData = (body: any) => cache[body] || fetchData(body);
+  const cachedFetchData = (body: string) => cache[body] || fetchData(body);
 
   return {
     data: payload.data,
