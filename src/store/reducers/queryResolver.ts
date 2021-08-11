@@ -1,3 +1,5 @@
+import { omit } from 'lodash';
+
 import {
   QueryResolverActions,
   QueryResolverActionTypes,
@@ -11,12 +13,9 @@ const initialState: QueryResolverState = {
 export default (state = initialState, action: QueryResolverActionTypes): QueryResolverState => {
   switch (action.type) {
     case QueryResolverActions.removeFromCache: {
-      if (action.queryBody in state.cache) {
-        delete state.cache[action.queryBody];
-      }
       return {
         ...state,
-        cache: state.cache,
+        cache: omit(state.cache, action.queryBody),
       };
     }
     case QueryResolverActions.addToCache: {
