@@ -36,10 +36,10 @@ type StudiesRes = StudiesResult & {
 
 const StudyTable = (props: Props) => {
   const tableData = generateTableData(props);
-  const columns = studiesColumns(props.currentVirtualStudy, props.onClickStudyLink);
-  const { total } = props;
+  const { total, currentVirtualStudy, onClickStudyLink } = props;
+  const columns = studiesColumns(currentVirtualStudy, onClickStudyLink);
 
-  const renderColumnSummary = (columns: any, data: any): Array<ReactNode> =>
+  const renderColumnSummary = (columns: any, data: any): ReactNode[] =>
     columns.map((column: any) =>
       column.children ? (
         renderColumnSummary(column.children, data)
@@ -54,10 +54,8 @@ const StudyTable = (props: Props) => {
       ),
     );
 
-  const getColumnTotal = (dataIndex: string, data: Array<StudiesRes>) => {
-    const result = data.map((study: StudiesRes) => study[dataIndex]);
-    return result.length ? result.reduce((a, b) => a + b) : 0;
-  };
+  const getColumnTotal = (dataIndex: string, data: StudiesRes[]) =>
+    data.length ? data.map((study: StudiesRes) => study[dataIndex]).reduce((a, b) => a + b) : 0;
 
   return (
     <div>
