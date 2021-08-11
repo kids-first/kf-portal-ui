@@ -40,12 +40,10 @@ const StudyTable = (props: Props) => {
   const { total } = props;
 
   const renderColumnSummary = (columns: any, data: any): Array<ReactNode> =>
-    columns.map((column: any) => {
-      if (column.children) {
-        return renderColumnSummary(column.children, data);
-      }
-
-      return (
+    columns.map((column: any) =>
+      column.children ? (
+        renderColumnSummary(column.children, data)
+      ) : (
         <Table.Summary.Cell
           key={column.dataIndex}
           index={column.dataIndex}
@@ -53,8 +51,8 @@ const StudyTable = (props: Props) => {
         >
           <strong>{column.summary ? getColumnTotal(column.dataIndex, data) : ''}</strong>
         </Table.Summary.Cell>
-      );
-    });
+      ),
+    );
 
   const getColumnTotal = (dataIndex: string, data: Array<StudiesRes>) => {
     const result = data.map((study: StudiesRes) => study[dataIndex]);
