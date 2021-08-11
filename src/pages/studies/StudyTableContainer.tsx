@@ -2,12 +2,13 @@ import React, { ReactNode } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Table, Typography } from 'antd';
 
-import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
+import { createQueryInCohortBuilder } from 'store/actionCreators/virtualStudies';
 import { StudiesResults } from 'store/graphql/studies/actions';
 import { generateTableData, StudiesResult } from 'store/graphql/studies/models';
 import { studiesColumns, TStudyColumn } from 'store/graphql/studies/tableColumns';
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
+import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
 
 import styles from './StudiesPageContainer.module.scss';
 
@@ -16,7 +17,7 @@ type StudyTableContainerState = {
   currentVirtualStudy: Sqon[];
 };
 
-const mapDispatch = (dispatch: DispatchStoryPage) => ({
+const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
   onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
 });
 

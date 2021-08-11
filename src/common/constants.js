@@ -197,3 +197,5 @@ export const generateUrlForDbGap = (dbGaPStudyId) =>
 export const INTEGRATION_PREFIX = 'integration_';
 
 export const LOGIN_PROVIDER = 'LOGIN_PROVIDER';
+
+export const SHOW_DELETE_ACCOUNT = 'SHOW_DELETE_ACCOUNT';

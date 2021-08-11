@@ -9,29 +9,19 @@ import {
   updateSet,
 } from 'services/sets';
 import {
-  ADD_SET_TO_CURRENT_QUERY,
-  CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
-  EDIT_SAVE_SET_TAG,
   EditSetTagParams,
-  FAILURE_CREATE,
-  RE_INITIALIZE_STATE,
-  REMOVE_USER_SAVE_SETS,
   SetNameConflictError,
+  SetsActions,
   SetSubActionTypes,
-  TOGGLE_IS_ADD_DELETE_TO_SET,
-  TOGGLE_IS_DELETING_SAVE_SETS,
-  TOGGLE_LOADING_SAVE_SETS,
-  TOGGLE_PENDING_CREATE,
-  USER_SAVE_SETS,
 } from 'store/saveSetTypes';
 import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
 
 import {
   addRemoveSetIds,
   addSetToCurrentQuery,
-  createQueryInCohortBuilder,
   createSetIfUnique,
+  createSetQueryInCohortBuilder,
   deleteUserSets,
   editSetTag,
   failureCreate,
@@ -52,7 +42,7 @@ describe('Save Sets actions', () => {
     const error = new Error('a network error');
 
     const expectedAction = {
-      type: FAILURE_CREATE,
+      type: SetsActions.FAILURE_CREATE,
       error,
     };
     expect(failureCreate(error)).toEqual(expectedAction);
@@ -62,7 +52,7 @@ describe('Save Sets actions', () => {
     const isPending = true;
 
     const expectedAction = {
-      type: TOGGLE_PENDING_CREATE,
+      type: SetsActions.TOGGLE_PENDING_CREATE,
       isPending,
     };
     expect(isLoadingCreateSet(isPending)).toEqual(expectedAction);
@@ -70,7 +60,7 @@ describe('Save Sets actions', () => {
 
   it('should create an action to re initialize state', () => {
     const expectedAction = {
-      type: RE_INITIALIZE_STATE,
+      type: SetsActions.RE_INITIALIZE_STATE,
     };
     expect(reInitializeSetsState()).toEqual(expectedAction);
   });
@@ -102,11 +92,11 @@ describe('createSaveSet', () => {
     );
 
     const expectedActions = [
-      { type: TOGGLE_PENDING_CREATE, isPending: true },
-      { type: TOGGLE_PENDING_CREATE, isPending: false },
-      { type: TOGGLE_PENDING_CREATE, isPending: true },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
       {
-        type: USER_SAVE_SETS,
+        type: SetsActions.USER_SAVE_SETS,
         payload: [
           {
             setId: 'set1',
@@ -120,7 +110,7 @@ describe('createSaveSet', () => {
           },
         ],
       },
-      { type: TOGGLE_PENDING_CREATE, isPending: false },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -147,12 +137,12 @@ describe('createSaveSet', () => {
   it('should generate the correct flow when creating a saveSet and has a name conflict', async () => {
     (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
-      { type: TOGGLE_PENDING_CREATE, isPending: true },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
       {
-        type: FAILURE_CREATE,
+        type: SetsActions.FAILURE_CREATE,
         error: new SetNameConflictError('A set with this name already exists'),
       },
-      { type: TOGGLE_PENDING_CREATE, isPending: false },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -174,9 +164,9 @@ describe('createSaveSet', () => {
       throw new Error('error');
     });
     const expectedActions = [
-      { type: TOGGLE_PENDING_CREATE, isPending: true },
-      { type: FAILURE_CREATE, error: new Error('error') },
-      { type: TOGGLE_PENDING_CREATE, isPending: false },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
+      { type: SetsActions.FAILURE_CREATE, error: new Error('error') },
+      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -198,9 +188,9 @@ describe('createSaveSet', () => {
       Promise.resolve([]),
     );
     const expectedActions = [
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
-      { type: USER_SAVE_SETS, payload: [] },
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
+      { type: SetsActions.TOGGLE_LOADING_SAVE_SETS, isLoading: true },
+      { type: SetsActions.USER_SAVE_SETS, payload: [] },
+      { type: SetsActions.TOGGLE_LOADING_SAVE_SETS, isLoading: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -225,9 +215,9 @@ describe('createSaveSet', () => {
   it('should generate the correct flow deleting save sets', async () => {
     (deleteSets as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
-      { type: REMOVE_USER_SAVE_SETS, sets: ['setId1'] },
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
+      { type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
+      { type: SetsActions.REMOVE_USER_SAVE_SETS, sets: ['setId1'] },
+      { type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -258,7 +248,7 @@ describe('createSaveSet', () => {
       Promise.resolve({ updatedResults: 1, setSize: 12 }),
     );
     const set = { key: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SetInfo;
-    const expectedActions = [{ type: EDIT_SAVE_SET_TAG, set: set }];
+    const expectedActions = [{ type: SetsActions.EDIT_SAVE_SET_TAG, set: set }];
 
     const store = mockStore({
       saveSets: {
@@ -294,15 +284,15 @@ describe('createSaveSet', () => {
       Promise.resolve({ updatedResults: 1, setSize: 12 }),
     );
     const expectedActions = [
-      { type: TOGGLE_IS_ADD_DELETE_TO_SET, isEditing: true },
+      { type: SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET, isEditing: true },
       {
-        type: USER_SAVE_SETS,
+        type: SetsActions.USER_SAVE_SETS,
         payload: [
           { setId: 'set1', size: 12, tag: 'set1' },
           { setId: 'set2', size: 5, tag: 'set2' },
         ],
       },
-      { type: TOGGLE_IS_ADD_DELETE_TO_SET, isEditing: false },
+      { type: SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET, isEditing: false },
     ];
 
     const store = mockStore({
@@ -373,9 +363,9 @@ describe('createSaveSet', () => {
       Promise.resolve([]),
     );
     const expectedActions = [
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
-      { type: USER_SAVE_SETS, payload: [] },
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
+      { type: SetsActions.TOGGLE_LOADING_SAVE_SETS, isLoading: true },
+      { type: SetsActions.USER_SAVE_SETS, payload: [] },
+      { type: SetsActions.TOGGLE_LOADING_SAVE_SETS, isLoading: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -401,7 +391,7 @@ describe('createSaveSet', () => {
 
   it('should generate the correct flow when request to create query in cohort ', async () => {
     const setId = '1234';
-    const expectedActions = [{ type: CREATE_SET_QUERY_REQUEST, setId }];
+    const expectedActions = [{ type: SetsActions.CREATE_SET_QUERY_REQUEST, setId }];
     const store = mockStore({
       sqons: [
         {
@@ -421,13 +411,13 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createQueryInCohortBuilder(setId));
+    await store.dispatch(createSetQueryInCohortBuilder(setId));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow when request to add set sqon query in cohort ', async () => {
     const setId = '1234';
-    const expectedActions = [{ type: ADD_SET_TO_CURRENT_QUERY, setId }];
+    const expectedActions = [{ type: SetsActions.ADD_SET_TO_CURRENT_QUERY, setId }];
     const store = mockStore({
       sqons: [
         {

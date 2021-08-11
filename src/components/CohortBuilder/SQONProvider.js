@@ -30,10 +30,10 @@ class SQONProvider extends React.Component {
     virtualStudyId: PropTypes.string,
     sqons: PropTypes.array,
     activeIndex: PropTypes.number,
-    children: PropTypes.node,
+    children: PropTypes.any,
     setActiveSqonIndex: PropTypes.func,
     setSqons: PropTypes.func,
-    sqonDictionary: PropTypes.object,
+    sqonDictionary: PropTypes.any,
   };
 
   loadVirtualStudy(virtualStudyId) {

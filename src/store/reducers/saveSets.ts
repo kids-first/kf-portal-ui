@@ -1,18 +1,5 @@
-import {
-  EDIT_SAVE_SET_TAG,
-  FAILURE_CREATE,
-  FAILURE_LOAD_SAVE_SETS,
-  RE_INITIALIZE_STATE,
-  REMOVE_USER_SAVE_SETS,
-  SaveSetState,
-  SetsActionTypes,
-  TOGGLE_IS_ADD_DELETE_TO_SET,
-  TOGGLE_IS_DELETING_SAVE_SETS,
-  TOGGLE_LOADING_SAVE_SETS,
-  TOGGLE_PENDING_CREATE,
-  USER_SAVE_SETS,
-  UserSet,
-} from '../saveSetTypes';
+import { SaveSetState, SetsActions, SetsActionTypes, UserSet } from '../saveSetTypes';
+import { LogoutAction, UserActions } from '../userTypes';
 
 const initialState: SaveSetState = {
   create: {
@@ -28,36 +15,42 @@ const initialState: SaveSetState = {
   },
 };
 
-export default (state = initialState, action: SetsActionTypes): SaveSetState => {
+const removeSets = (currentSets: UserSet[], setIdsToRemove: string[]) =>
+  currentSets.filter((set) => !setIdsToRemove.includes(set.setId));
+
+const editSaveSetTag = (currentSets: UserSet[], setId: string, tag: string) =>
+  currentSets.map((s) => (s.setId === setId ? { ...s, tag: tag } : s));
+
+export default (state = initialState, action: SetsActionTypes | LogoutAction): SaveSetState => {
   switch (action.type) {
-    case TOGGLE_PENDING_CREATE: {
+    case SetsActions.TOGGLE_PENDING_CREATE: {
       return {
         ...state,
         create: { ...state.create, isLoading: action.isPending },
       };
     }
-    case FAILURE_CREATE: {
+    case SetsActions.FAILURE_CREATE: {
       return {
         ...state,
         create: { ...state.create, error: action.error },
       };
     }
-    case RE_INITIALIZE_STATE: {
+    case SetsActions.RE_INITIALIZE_STATE: {
       return { ...state, create: initialState.create };
     }
-    case TOGGLE_LOADING_SAVE_SETS: {
+    case SetsActions.TOGGLE_LOADING_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, isLoading: action.isLoading } };
     }
-    case FAILURE_LOAD_SAVE_SETS: {
+    case SetsActions.FAILURE_LOAD_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, error: action.error } };
     }
-    case USER_SAVE_SETS: {
+    case SetsActions.USER_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, sets: action.payload } };
     }
-    case TOGGLE_IS_DELETING_SAVE_SETS: {
+    case SetsActions.TOGGLE_IS_DELETING_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, isDeleting: action.isDeleting } };
     }
-    case EDIT_SAVE_SET_TAG: {
+    case SetsActions.EDIT_SAVE_SET_TAG: {
       return {
         ...state,
         userSets: {
@@ -66,22 +59,19 @@ export default (state = initialState, action: SetsActionTypes): SaveSetState => 
         },
       };
     }
-    case TOGGLE_IS_ADD_DELETE_TO_SET: {
+    case SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET: {
       return { ...state, userSets: { ...state.userSets, isEditing: action.isEditing } };
     }
-    case REMOVE_USER_SAVE_SETS: {
+    case SetsActions.REMOVE_USER_SAVE_SETS: {
       return {
         ...state,
         userSets: { ...state.userSets, sets: removeSets(state.userSets.sets, action.sets) },
       };
     }
+    case UserActions.logout: {
+      return { ...initialState };
+    }
     default:
       return state;
   }
 };
-
-const removeSets = (currentSets: UserSet[], setIdsToRemove: string[]) =>
-  currentSets.filter((set) => !setIdsToRemove.includes(set.setId));
-
-const editSaveSetTag = (currentSets: UserSet[], setId: string, tag: string) =>
-  currentSets.map((s) => (s.setId === setId ? { ...s, tag: tag } : s));

@@ -1,4 +1,5 @@
-import { MembersActions } from '../membersTypes';
+import { MembersActions } from 'store/membersTypes';
+import { UserActions } from 'store/userTypes';
 
 const initialState = {
   members: [],
@@ -38,6 +39,7 @@ export default function memberSearchPageReducer(state = initialState, action) {
       return { ...state, currentPage: action.payload };
     case MembersActions.REQUEST_MEMBER_PER_PAGE_UPDATE:
       return { ...state, membersPerPage: action.payload };
+    case UserActions.logout:
     case MembersActions.REQUEST_STORE_RESET:
       return initialState;
     default:

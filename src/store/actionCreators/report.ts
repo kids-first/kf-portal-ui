@@ -1,39 +1,36 @@
+import { ThunkAction } from 'redux-thunk';
+
+import generateReport, { checkAvailability, shouldCheckAvailability } from '../../services/report';
 import {
-  CLEAR_MESSAGE,
-  FAILURE,
   Message,
   MessageType,
-  RE_INITIALIZE_STATE,
+  ReportActions,
   ReportActionTypes,
   ReportConfig,
-  REQUEST_MESSAGE,
-  TOGGLE_LOADING,
 } from '../reportTypes';
-import generateReport, { checkAvailability, shouldCheckAvailability } from '../../services/report';
-import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootState';
 
 export const requestMessage = (message: Message): ReportActionTypes => ({
-  type: REQUEST_MESSAGE,
+  type: ReportActions.REQUEST_MESSAGE,
   message,
 });
 
 export const failure = (error: Error): ReportActionTypes => ({
-  type: FAILURE,
+  type: ReportActions.FAILURE,
   error,
 });
 
 export const toggleLoading = (isLoading: boolean): ReportActionTypes => ({
-  type: TOGGLE_LOADING,
+  type: ReportActions.TOGGLE_LOADING,
   isLoading,
 });
 
 export const reInitializeState = (): ReportActionTypes => ({
-  type: RE_INITIALIZE_STATE,
+  type: ReportActions.RE_INITIALIZE_STATE,
 });
 
 export const clearMessage = (): ReportActionTypes => ({
-  type: CLEAR_MESSAGE,
+  type: ReportActions.CLEAR_MESSAGE,
 });
 
 export const fetchReport = (

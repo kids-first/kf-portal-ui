@@ -1,8 +1,9 @@
 import {
+  GenomicActionTypes,
   GenomicSuggesterState,
   GenomicSuggesterTypes,
-  GenomicActionTypes,
-} from '../genomicSuggesterTypes';
+} from 'store/genomicSuggesterTypes';
+import { LogoutAction, UserActions } from 'store/userTypes';
 
 const initialState: GenomicSuggesterState = {
   searchText: '',
@@ -12,7 +13,10 @@ const initialState: GenomicSuggesterState = {
   selectedSuggestion: null,
 };
 
-export default (state = initialState, action: GenomicSuggesterTypes): GenomicSuggesterState => {
+export default (
+  state = initialState,
+  action: GenomicSuggesterTypes | LogoutAction,
+): GenomicSuggesterState => {
   switch (action.type) {
     case GenomicActionTypes.TOGGLE_LOADING: {
       return { ...state, isLoading: action.isLoading };
@@ -29,6 +33,7 @@ export default (state = initialState, action: GenomicSuggesterTypes): GenomicSug
     case GenomicActionTypes.CLEAR_SUGGESTIONS: {
       return { ...state, suggestions: [], searchText: '' };
     }
+    case UserActions.logout:
     case GenomicActionTypes.RE_INITIALIZE_STATE: {
       return { ...initialState };
     }

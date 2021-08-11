@@ -1,9 +1,5 @@
-import { UserActions } from '../userTypes';
-import {
-  FETCH_VIRTUAL_STUDIES_FAILURE,
-  FETCH_VIRTUAL_STUDIES_REQUESTED,
-  FETCH_VIRTUAL_STUDIES_SUCCESS,
-} from '../virtualStudiesActionTypes';
+import { UserActions } from 'store/userTypes';
+import { VirtualStudiesActions } from 'store/virtualStudiesTypes';
 
 const initialState = {
   studies: [],
@@ -13,20 +9,20 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_VIRTUAL_STUDIES_REQUESTED:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_REQUESTED:
       return {
         ...state,
         isLoading: true,
       };
 
-    case FETCH_VIRTUAL_STUDIES_SUCCESS:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_SUCCESS:
       return {
         ...state,
         studies: action.payload,
         isLoading: false,
       };
 
-    case FETCH_VIRTUAL_STUDIES_FAILURE:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_FAILURE:
       return {
         ...state,
         isLoading: false,

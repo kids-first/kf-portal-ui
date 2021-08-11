@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'antd';
 import { compose } from 'recompose';
 
+import useUser from 'hooks/useUser';
 import { withApi } from 'services/api';
 import { deleteAccount } from 'store/actionCreators/user';
 
-export default compose(withApi)(({ api, label = 'Cancel', onClickCB, user }) => {
+export default compose(withApi)(({ api, label = 'Cancel', onClickCB }) => {
   const dispatch = useDispatch();
+  const { user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   return (
     <Button

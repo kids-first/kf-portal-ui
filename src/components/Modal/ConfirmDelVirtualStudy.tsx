@@ -7,12 +7,13 @@ import { cleanError, deleteVirtualStudy } from 'store/actionCreators/virtualStud
 import { RootState } from 'store/rootState';
 import { selectCurrentVSError, selectICurrentVSLoading } from 'store/selectors/currentStudy';
 import { selectUser } from 'store/selectors/users';
+import { User } from 'store/userTypes';
 import { VirtualStudy } from 'store/virtualStudiesTypes';
 
 const mapState = (state: RootState) => ({
   isLoading: selectICurrentVSLoading(state),
   error: selectCurrentVSError(state),
-  user: selectUser(state),
+  user: selectUser(state) as User,
 });
 
 const mapDispatch = {

@@ -1,14 +1,18 @@
-import reducer from '../saveSets';
 import { Action } from 'redux';
+
 import {
   failureCreate,
-  reInitializeSetsState,
-  isLoadingCreateSet,
-  isLoadingSets,
   isDeletingSets,
   isEditingTag,
+  isLoadingCreateSet,
+  isLoadingSets,
+  reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
+import { logout } from 'store/actionCreators/user';
 import { SetInfo } from 'store/saveSetTypes';
+import { LogoutAction } from 'store/userTypes';
+
+import reducer from '../saveSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -132,5 +136,22 @@ describe('Save Sets Reducer', () => {
         isEditing: false,
       },
     });
+  });
+
+  it('should handle logout', () => {
+    const state = {
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [{ size: 1, tag: 'tag', setId: 'name' }],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
+        isEditing: false,
+      },
+    };
+    expect(reducer(state, logout() as LogoutAction)).toEqual(initialState);
   });
 });

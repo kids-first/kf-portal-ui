@@ -109,7 +109,7 @@ const Join = () => {
             <Button onClick={() => prev()}>Back</Button>
           </div>
           <div>
-            <DeleteButton user={user} />
+            <DeleteButton />
             <TermsConditionsAcceptButton isNewUser={true} />
           </div>
         </div>

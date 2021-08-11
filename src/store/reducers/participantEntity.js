@@ -1,4 +1,5 @@
-import { ParticipantEntityActions } from '../participantEntityTypes';
+import { ParticipantEntityActions } from 'store/participantEntityTypes';
+import { UserActions } from 'store/userTypes';
 
 const initialState = {
   isLoading: false,
@@ -30,6 +31,9 @@ export default (state = initialState, action) => {
         isLoading: false,
         error: action.payload,
       };
+    case UserActions.logout: {
+      return { ...initialState };
+    }
     default:
       return state;
   }

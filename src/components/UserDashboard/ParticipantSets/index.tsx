@@ -8,7 +8,7 @@ import { AlignType } from 'rc-table/lib/interface';
 
 import participantMagenta from 'assets/icon-participants-magenta.svg';
 import {
-  createQueryInCohortBuilder,
+  createSetQueryInCohortBuilder,
   deleteUserSets,
   fetchSetsIfNeeded,
 } from 'store/actionCreators/saveSets';
@@ -40,7 +40,7 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onClickParticipantsLink: (setId: string) => dispatch(createQueryInCohortBuilder(setId)),
+  onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
   fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
 });

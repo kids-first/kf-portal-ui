@@ -2,7 +2,7 @@
 import { addHeaders as addArrangerHeaders } from '@kfarranger/components/dist';
 import jwtDecode from 'jwt-decode';
 
-import { EGO_JWT_KEY, LOGIN_PROVIDER } from 'common/constants';
+import { EGO_JWT_KEY, LOGIN_PROVIDER, SHOW_DELETE_ACCOUNT } from 'common/constants';
 import { trackUserSession } from 'services/analyticsTracking';
 import { apiUser } from 'services/api';
 import history from 'services/history';
@@ -159,6 +159,7 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch, getState) =
   } finally {
     localStorage.removeItem(EGO_JWT_KEY);
     localStorage.removeItem(LOGIN_PROVIDER);
+    localStorage.removeItem(SHOW_DELETE_ACCOUNT);
     addArrangerHeaders({ authorization: `` });
     await dispatch(deleteCavaticaSecret());
     await dispatch(deleteAllFencesTokens());

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Typography } from 'antd';
+import { Spin, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
 import { ORCID } from 'common/constants';
@@ -39,6 +39,7 @@ const Component = (props) => {
   //  or we're on a page and we're already logged in with orcid (i.e. /join)
   const { userToken, shouldNotRedirect, manageUserTokenWithLoader } = props;
 
+  const [isHandlingToken, setIsHandlingToken] = useState(false);
   const [securityError, setSecurityError] = useState(false);
 
   const [errors, setError] = useState({
@@ -78,6 +79,7 @@ const Component = (props) => {
   };
 
   const handleToken = async ({ provider, handler, token }) => {
+    setIsHandlingToken(true);
     let response;
     try {
       response = await handler(token);
@@ -89,8 +91,13 @@ const Component = (props) => {
 
     if ((response || {}).status === 200) {
       const rawJwt = response.data;
-      manageUserTokenWithLoader(rawJwt, provider, () => history.push(ROUTES.dashboard));
+      manageUserTokenWithLoader(rawJwt, provider, () => {
+        setIsHandlingToken(false);
+        history.push(ROUTES.dashboard);
+      });
       await trackUserSignIn(provider);
+    } else {
+      setIsHandlingToken(false);
     }
   };
 
@@ -121,13 +128,15 @@ const Component = (props) => {
     );
   } else if (renderSocialLoginButtons) {
     content = (
-      <SocialButtons
-        disabled={disabled}
-        handleToken={handleToken}
-        handleError={handleError}
-        thirdPartyDataError={errors.thirdPartyDataError}
-        unknownError={errors.unknownError}
-      />
+      <Spin spinning={isHandlingToken}>
+        <SocialButtons
+          disabled={disabled}
+          handleToken={handleToken}
+          handleError={handleError}
+          thirdPartyDataError={errors.thirdPartyDataError}
+          unknownError={errors.unknownError}
+        />
+      </Spin>
     );
   } else {
     content = <Text>An error occurred. Please refresh and try again or contact our support.</Text>;

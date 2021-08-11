@@ -1,23 +1,18 @@
-import {
-  requestMessage,
-  failure,
-  toggleLoading,
-  reInitializeState,
-  clearMessage,
-  fetchReport,
-  fetchReportIfNeeded,
-} from '../report';
-import {
-  CLEAR_MESSAGE,
-  FAILURE,
-  MessageType,
-  RE_INITIALIZE_STATE,
-  REQUEST_MESSAGE,
-  TOGGLE_LOADING,
-} from '../../reportTypes';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import generateReport, { checkAvailability, shouldCheckAvailability } from 'services/report';
+import { MessageType, ReportActions } from 'store/reportTypes';
+
+import {
+  clearMessage,
+  failure,
+  fetchReport,
+  fetchReportIfNeeded,
+  reInitializeState,
+  requestMessage,
+  toggleLoading,
+} from '../report';
 
 describe('Report actions', () => {
   it('should create an action to request a message', () => {
@@ -28,7 +23,7 @@ describe('Report actions', () => {
     };
 
     const expectedAction = {
-      type: REQUEST_MESSAGE,
+      type: ReportActions.REQUEST_MESSAGE,
       message,
     };
     expect(requestMessage(message)).toEqual(expectedAction);
@@ -38,7 +33,7 @@ describe('Report actions', () => {
     const error = new Error('a network error');
 
     const expectedAction = {
-      type: FAILURE,
+      type: ReportActions.FAILURE,
       error,
     };
     expect(failure(error)).toEqual(expectedAction);
@@ -48,7 +43,7 @@ describe('Report actions', () => {
     const isLoading = true;
 
     const expectedAction = {
-      type: TOGGLE_LOADING,
+      type: ReportActions.TOGGLE_LOADING,
       isLoading,
     };
     expect(toggleLoading(isLoading)).toEqual(expectedAction);
@@ -56,14 +51,14 @@ describe('Report actions', () => {
 
   it('should create an action to re initialize state', () => {
     const expectedAction = {
-      type: RE_INITIALIZE_STATE,
+      type: ReportActions.RE_INITIALIZE_STATE,
     };
     expect(reInitializeState()).toEqual(expectedAction);
   });
 
   it('should create an action to clear a message', () => {
     const expectedAction = {
-      type: CLEAR_MESSAGE,
+      type: ReportActions.CLEAR_MESSAGE,
     };
     expect(clearMessage()).toEqual(expectedAction);
   });
@@ -82,17 +77,17 @@ describe('fetchReport', () => {
   it('should generate the correct flow when successfully generating a report', async () => {
     (generateReport as jest.Mock).mockImplementation(() => Promise.resolve());
     const expectedActions = [
-      { type: TOGGLE_LOADING, isLoading: true },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: true },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: 'Please wait while we generate your report',
           duration: 0,
           type: MessageType.LOADING,
         },
       },
-      { type: CLEAR_MESSAGE },
-      { type: TOGGLE_LOADING, isLoading: false },
+      { type: ReportActions.CLEAR_MESSAGE },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: false },
     ];
     const store = mockStore({
       report: {
@@ -110,18 +105,18 @@ describe('fetchReport', () => {
   it('should generate an error when unsuccessfully generating a report', async () => {
     (generateReport as jest.Mock).mockImplementation(() => Promise.reject('error'));
     const expectedActions = [
-      { type: TOGGLE_LOADING, isLoading: true },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: true },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: 'Please wait while we generate your report',
           duration: 0,
           type: MessageType.LOADING,
         },
       },
-      { type: CLEAR_MESSAGE },
-      { type: FAILURE, error: 'error' },
-      { type: TOGGLE_LOADING, isLoading: false },
+      { type: ReportActions.CLEAR_MESSAGE },
+      { type: ReportActions.FAILURE, error: 'error' },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: false },
     ];
     const store = mockStore({
       report: {
@@ -148,25 +143,25 @@ describe('fetchReportIfNeeded', () => {
     (shouldCheckAvailability as jest.Mock).mockImplementation(() => true);
     (checkAvailability as jest.Mock).mockImplementation(() => false);
     const expectedActions = [
-      { type: TOGGLE_LOADING, isLoading: true },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: true },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: 'Checking for availability',
           duration: 0,
           type: MessageType.LOADING,
         },
       },
-      { type: CLEAR_MESSAGE },
+      { type: ReportActions.CLEAR_MESSAGE },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: `This report is not available`,
           duration: 3.5,
           type: MessageType.WARN,
         },
       },
-      { type: TOGGLE_LOADING, isLoading: false },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: false },
     ];
     const store = mockStore({
       report: {
@@ -185,28 +180,28 @@ describe('fetchReportIfNeeded', () => {
     (shouldCheckAvailability as jest.Mock).mockImplementation(() => true);
     (checkAvailability as jest.Mock).mockImplementation(() => true);
     const expectedActions = [
-      { type: TOGGLE_LOADING, isLoading: true },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: true },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: 'Checking for availability',
           duration: 0,
           type: MessageType.LOADING,
         },
       },
-      { type: CLEAR_MESSAGE },
-      { type: TOGGLE_LOADING, isLoading: false },
-      { type: TOGGLE_LOADING, isLoading: true },
+      { type: ReportActions.CLEAR_MESSAGE },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: false },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: true },
       {
-        type: REQUEST_MESSAGE,
+        type: ReportActions.REQUEST_MESSAGE,
         message: {
           content: 'Please wait while we generate your report',
           duration: 0,
           type: MessageType.LOADING,
         },
       },
-      { type: CLEAR_MESSAGE },
-      { type: TOGGLE_LOADING, isLoading: false },
+      { type: ReportActions.CLEAR_MESSAGE },
+      { type: ReportActions.TOGGLE_LOADING, isLoading: false },
     ];
     const store = mockStore({
       report: {
