@@ -1,11 +1,16 @@
 import { AnyAction } from 'redux';
-import configureMockStore from 'redux-mock-store';
+import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { getAuthStudiesIdAndCount, getStudiesCountByNameAndAcl } from 'services/fenceStudies';
-import { DispatchFenceStudies, FenceStudiesActions } from 'store/fenceStudiesTypes';
+import { ConnectionStatus } from 'store/connectionTypes';
+import {
+  DispatchFenceStudies,
+  FenceStudiesActions,
+  FenceStudiesState,
+} from 'store/fenceStudiesTypes';
+import { FenceName } from 'store/fenceTypes';
 
-import { FenceName } from '../../fenceTypes';
 import {
   addFenceStudies,
   computeAllFencesAuthStudies,
@@ -22,18 +27,32 @@ import {
   mockApi,
 } from './mockDataFence';
 
-const DCF = FenceName.dcf;
-const GEN3 = FenceName.gen3;
-
 const NO_ACTIONS: AnyAction[] = [];
 
 const middleware = [thunk];
-const mockStore = configureMockStore(middleware);
+
+type StateSliceNeeded = {
+  fenceStudies: FenceStudiesState;
+};
+
+const mockStore = createMockStore<StateSliceNeeded, DispatchFenceStudies>(middleware);
 
 jest.mock('services/fenceStudies');
 
+const initialState = {
+  fenceStudies: {
+    fenceStudies: {},
+    loadingStudiesForFences: [],
+    statuses: {
+      [FenceName.gen3]: ConnectionStatus.unknown,
+      [FenceName.dcf]: ConnectionStatus.unknown,
+    },
+  },
+};
+
 describe('Fence Studies actions', () => {
   beforeEach(() => {
+    console.error = jest.fn();
     (getAuthStudiesIdAndCount as jest.Mock).mockReset();
     (getStudiesCountByNameAndAcl as jest.Mock).mockReset();
   });
@@ -53,9 +72,9 @@ describe('Fence Studies actions', () => {
   it('should create an action when removing a fence studies', () => {
     const expectedAction = {
       type: FenceStudiesActions.removeFenceStudies,
-      fenceName: DCF,
+      fenceName: FenceName.dcf,
     };
-    expect(removeFenceStudies(DCF)).toEqual(expectedAction);
+    expect(removeFenceStudies(FenceName.dcf)).toEqual(expectedAction);
   });
 
   it('should transform auth studies adequately', () => {
@@ -63,15 +82,15 @@ describe('Fence Studies actions', () => {
       {
         acl: ['*'],
         authorizedFiles: 5239,
-        id: `${GEN3}_1`,
-        studyShortName: `studyShortName_${GEN3}_1`,
+        id: `${FenceName.gen3}_1`,
+        studyShortName: `studyShortName_${FenceName.gen3}_1`,
         totalFiles: 19791,
       },
       {
         acl: ['*'],
         authorizedFiles: 5239,
-        id: `${DCF}_1`,
-        studyShortName: `studyShortName_${DCF}_1`,
+        id: `${FenceName.dcf}_1`,
+        studyShortName: `studyShortName_${FenceName.dcf}_1`,
         totalFiles: 19791,
       },
     ]);
@@ -92,44 +111,83 @@ describe('Fence Studies actions', () => {
     (getStudiesCountByNameAndAcl as jest.Mock).mockImplementation(() =>
       Promise.resolve(MOCK_AUTH_STUDIES_FROM_GEN3),
     );
-    const store = mockStore({
-      fenceStudies: {
-        fenceStudies: {},
-        isFetchingAllFenceStudies: false,
-      },
-    });
+    const store = mockStore(initialState);
 
     const dispatch: DispatchFenceStudies = store.dispatch;
 
-    await dispatch(fetchFenceStudies(mockApi, GEN3, []));
+    await dispatch(fetchFenceStudies(mockApi, FenceName.gen3, []));
 
     const expectedActions = [
       {
+        type: FenceStudiesActions.toggleIsFetchingOneFenceStudies,
+        isLoading: true,
+        fenceName: FenceName.gen3,
+      },
+      {
         type: FenceStudiesActions.addFenceStudies,
-        fenceAuthorizedStudies: { [GEN3]: { authorizedStudies: MOCK_AUTH_STUDIES_FROM_GEN3 } },
+        fenceAuthorizedStudies: {
+          [FenceName.gen3]: { authorizedStudies: MOCK_AUTH_STUDIES_FROM_GEN3 },
+        },
+      },
+      {
+        type: FenceStudiesActions.addStudiesConnectionStatus,
+        fenceName: FenceName.gen3,
+        newStatus: ConnectionStatus.connected,
+      },
+      {
+        type: FenceStudiesActions.toggleIsFetchingOneFenceStudies,
+        isLoading: false,
+        fenceName: FenceName.gen3,
       },
     ];
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should  fetch fence studies if user has already has connection for particular fence', async () => {
-    (getAuthStudiesIdAndCount as jest.Mock).mockImplementation(() =>
-      Promise.resolve(MOCK_STUDIES_IDS_AND_COUNTS),
-    );
-    (getStudiesCountByNameAndAcl as jest.Mock).mockImplementation(() =>
-      Promise.resolve(MOCK_AUTH_STUDIES_FROM_GEN3),
-    );
+  it('should add a disconnected status if an error occurred while fetching studies', async () => {
+    (getAuthStudiesIdAndCount as jest.Mock).mockImplementation(() => Promise.reject('Bam!'));
+    const store = mockStore(initialState);
 
+    const dispatch: DispatchFenceStudies = store.dispatch;
+
+    await dispatch(fetchFenceStudies(mockApi, FenceName.gen3, []));
+
+    const expectedActions = [
+      {
+        type: FenceStudiesActions.toggleIsFetchingOneFenceStudies,
+        isLoading: true,
+        fenceName: FenceName.gen3,
+      },
+      {
+        type: FenceStudiesActions.addStudiesConnectionStatus,
+        fenceName: FenceName.gen3,
+        newStatus: ConnectionStatus.disconnected,
+      },
+      {
+        type: FenceStudiesActions.toggleIsFetchingOneFenceStudies,
+        isLoading: false,
+        fenceName: FenceName.gen3,
+      },
+    ];
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should not fetch fence studies if user has already has connection for particular fence', async () => {
     const store = mockStore({
       fenceStudies: {
         fenceStudies: MOCK_AUTH_STUDIES_WITH_2_FENCES,
-        isFetchingAllFenceStudies: false,
+        loadingStudiesForFences: [],
+        statuses: {
+          [FenceName.gen3]: ConnectionStatus.connected,
+          [FenceName.dcf]: ConnectionStatus.connected,
+        },
       },
     });
 
     const dispatch: DispatchFenceStudies = store.dispatch;
 
-    await dispatch(fetchFenceStudiesIfNeeded(mockApi, GEN3, { [GEN3]: ['phs'] }));
+    await dispatch(
+      fetchFenceStudiesIfNeeded(mockApi, FenceName.gen3, { [FenceName.gen3]: ['phs'] }),
+    );
 
     expect(store.getActions()).toEqual(NO_ACTIONS);
   });

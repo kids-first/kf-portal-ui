@@ -15,7 +15,7 @@ export default (state = initialState, action: UserActionTypes): UserState => {
         errorSubscribing: action.payload,
       };
     }
-    case UserActions.receiveUser: {
+    case UserActions.receiveUserWithComputedValues: {
       return { ...state, user: action.payload, isAuthenticated: true, uid: action.payload.egoId };
     }
     case UserActions.toggleIsLoadingUser: {

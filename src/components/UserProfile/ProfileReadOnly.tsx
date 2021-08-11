@@ -2,8 +2,7 @@ import React from 'react';
 import { Card, Col, Divider, Row, Typography } from 'antd';
 
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
-
-import { ProfileTodo } from '../../store/profileTypes';
+import { ProfileTodo } from 'store/profileTypes';
 
 import CardNoDataReadOnly from './CardNoDataReadOnly';
 import ResearchInterest from './ResearchInterests';

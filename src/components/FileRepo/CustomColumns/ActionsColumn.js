@@ -12,11 +12,11 @@ import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { arrangerGqlRecompose } from 'services/arranger';
+import { FenceName } from 'store/fenceTypes';
 import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
 
-import { FenceName } from '../../../store/fenceTypes';
 import { ControlledIcon } from '../ui';
 
 import './customColumns.css';

@@ -2,15 +2,18 @@ import { Action } from 'redux';
 
 import {
   addFenceStudies,
+  addStudiesConnectionStatus,
   removeAllFencesStudies,
   removeFenceStudies,
   toggleIsFetchingAllFenceStudies,
+  toggleIsFetchingOneFenceStudies,
 } from 'store/actionCreators/fenceStudies';
 import { MOCK_GEN3_STUDY_PHS_001436 } from 'store/actionCreators/Test/mockDataFence';
 
 import { logout } from '../../actionCreators/user';
+import { ConnectionStatus } from '../../connectionTypes';
 import { FenceStudiesState } from '../../fenceStudiesTypes';
-import { FenceName } from '../../fenceTypes';
+import { AllFencesNames, FenceName } from '../../fenceTypes';
 import { LogoutAction } from '../../userTypes';
 import reducer from '../fenceStudies';
 
@@ -20,7 +23,11 @@ const unknownAction: Action = { type: 'NO_EXISTS' };
 
 const initialState: FenceStudiesState = {
   fenceStudies: {},
-  isFetchingAllFenceStudies: false,
+  loadingStudiesForFences: [],
+  statuses: {
+    [FenceName.gen3]: ConnectionStatus.unknown,
+    [FenceName.dcf]: ConnectionStatus.unknown,
+  },
 };
 
 describe('Fence Studies Reducer', () => {
@@ -31,77 +38,90 @@ describe('Fence Studies Reducer', () => {
 
   it('should handle toggleIsFetchingAllFenceStudies', () => {
     expect(reducer(initialState, toggleIsFetchingAllFenceStudies(true))).toEqual({
-      fenceStudies: {},
-      isFetchingAllFenceStudies: true,
+      ...initialState,
+      loadingStudiesForFences: [...AllFencesNames],
+    });
+  });
+
+  it('should handle toggleIsFetchingOneFenceStudies', () => {
+    expect(reducer(initialState, toggleIsFetchingOneFenceStudies(true, FenceName.gen3))).toEqual({
+      ...initialState,
+      loadingStudiesForFences: [FenceName.gen3],
     });
   });
 
   it('should handle removeFenceStudies', () => {
     const state: FenceStudiesState = {
+      ...initialState,
       fenceStudies: {
-        [GEN3]: {
+        [FenceName.gen3]: {
           authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
         },
       },
-      isFetchingAllFenceStudies: false,
     };
-    expect(reducer(state, removeFenceStudies(GEN3))).toEqual({
+    expect(reducer(state, removeFenceStudies(FenceName.gen3))).toEqual({
+      ...state,
       fenceStudies: {},
-      isFetchingAllFenceStudies: false,
     });
   });
 
   it('should handle addFenceStudies', () => {
-    const state: FenceStudiesState = {
-      fenceStudies: {},
-      isFetchingAllFenceStudies: false,
-    };
     expect(
       reducer(
-        state,
+        initialState,
         addFenceStudies({
-          [GEN3]: {
+          [FenceName.gen3]: {
             authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
           },
         }),
       ),
     ).toEqual({
+      ...initialState,
       fenceStudies: {
-        [GEN3]: {
+        [FenceName.gen3]: {
           authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
         },
       },
-      isFetchingAllFenceStudies: false,
     });
   });
 
   it('should handle removeAllFencesStudies', () => {
     const state: FenceStudiesState = {
+      ...initialState,
       fenceStudies: {
         [GEN3]: {
           authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
         },
       },
-      isFetchingAllFenceStudies: false,
     };
     expect(reducer(state, removeAllFencesStudies())).toEqual({
-      fenceStudies: {},
-      isFetchingAllFenceStudies: false,
+      ...initialState,
+    });
+  });
+
+  it('should handle addStudiesConnectionStatus', () => {
+    expect(
+      reducer(initialState, addStudiesConnectionStatus(FenceName.gen3, ConnectionStatus.connected)),
+    ).toEqual({
+      ...initialState,
+      statuses: {
+        [FenceName.gen3]: ConnectionStatus.connected,
+        [FenceName.dcf]: ConnectionStatus.unknown,
+      },
     });
   });
 
   it('should handle logout', () => {
     const state: FenceStudiesState = {
+      ...initialState,
       fenceStudies: {
-        [GEN3]: {
+        [FenceName.gen3]: {
           authorizedStudies: [MOCK_GEN3_STUDY_PHS_001436],
         },
       },
-      isFetchingAllFenceStudies: false,
     };
     expect(reducer(state, logout() as LogoutAction)).toEqual({
-      fenceStudies: {},
-      isFetchingAllFenceStudies: false,
+      ...initialState,
     });
   });
 });

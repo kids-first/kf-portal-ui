@@ -1,26 +1,29 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { AutoComplete, Badge, Form, Input, notification, Spin } from 'antd';
-import style from './Suggester.module.scss';
-import { SearchOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { RootState } from 'store/rootState';
-import {
-  selectError,
-  selectIsLoading,
-  selectSuggestions,
-  selectSearchTextSuggestion,
-  selectChosenSuggestion as selectorChosenSuggestion,
-} from 'store/selectors/genomicSuggester';
-import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
+import { SearchOutlined } from '@ant-design/icons';
+import { AutoComplete, Badge, Form, Input, notification, Spin } from 'antd';
+import debounce from 'lodash/debounce';
+
 import {
   clearSuggestions,
   fetchSuggestions,
   reInitializeState,
   selectChosenSuggestion,
 } from 'store/actionCreators/genomicSuggester';
-import debounce from 'lodash/debounce';
-import generateSuggestionOptions from './SuggestionOptions';
+import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
 import { SearchText, SelectedSuggestion } from 'store/graphql/variants/models';
+import { RootState } from 'store/rootState';
+import {
+  selectChosenSuggestion as selectorChosenSuggestion,
+  selectError,
+  selectIsLoading,
+  selectSearchTextSuggestion,
+  selectSuggestions,
+} from 'store/selectors/genomicSuggester';
+
+import generateSuggestionOptions from './SuggestionOptions';
+
+import style from './Suggester.module.scss';
 
 const WAIT_IN_MS = 100;
 
@@ -49,7 +52,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux;
 
-const Suggester: FunctionComponent<Props> = (props) => {
+const Suggester = (props: Props) => {
   const {
     isLoading,
     error,

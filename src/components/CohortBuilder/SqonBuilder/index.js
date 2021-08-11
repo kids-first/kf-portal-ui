@@ -14,8 +14,8 @@ import { withApi } from 'services/api';
 import { queryBodySets } from 'services/sets';
 import { closeModal, openModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
+import { selectUser } from 'store/selectors/users';
 
-import { selectUser } from '../../../store/selectors/users';
 import { SQONdiff } from '../../Utils';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { FieldFilterContainer } from '../FieldFilterContainer';

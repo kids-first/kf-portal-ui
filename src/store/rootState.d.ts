@@ -5,6 +5,8 @@ import { FenceConnectionsState } from './fenceConnectionsTypes';
 import { FenceStudiesState } from './fenceStudiesTypes';
 import { FileSearchFiltersState } from './fileSearchFiltersTypes';
 import { GenomicSuggesterState } from './genomicSuggesterTypes';
+import { MembersState } from './membersTypes';
+import { ParticipantEntityState } from './participantEntityTypes';
 import { ProfileState } from './profileTypes';
 import { ReportState } from './reportTypes';
 import { SavedQueriesState } from './SavedQueriesTypes';
@@ -30,4 +32,6 @@ export interface RootState {
   fenceConnections: FenceConnectionsState;
   fenceStudies: FenceStudiesState;
   cavatica: CavaticaState;
+  members: MembersState;
+  participantEntity: ParticipantEntityState;
 }

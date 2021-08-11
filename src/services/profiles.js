@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import urlJoin from 'url-join';
 
 import { personaApiRoot } from 'common/injectGlobals';
-import { apiInitialized } from 'services/api';
+import { apiUser } from 'services/api';
 const DEFAULT_FIELDS_SELF = `
   _id
   title
@@ -95,7 +95,7 @@ const url = urlJoin(personaApiRoot, 'graphql');
 export const getProfile = async () => {
   const {
     data: { self },
-  } = await apiInitialized({
+  } = await apiUser({
     url,
     body: {
       query: `
@@ -112,7 +112,7 @@ export const getProfile = async () => {
 };
 
 export const getOtherUserProfile = async (id) => {
-  const response = await apiInitialized({
+  const response = await apiUser({
     url,
     body: {
       variables: { _id: id },
@@ -234,7 +234,7 @@ export const getTags = (api) => async ({ filter, size }) => {
 };
 
 export const subscribeUser = async (user) =>
-  await apiInitialized({
+  await apiUser({
     url: urlJoin(personaApiRoot, 'subscribe'),
     body: {
       user,

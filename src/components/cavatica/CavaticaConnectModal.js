@@ -8,11 +8,10 @@ import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { cavaticaWebRegistrationRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import { ModalWarning } from 'components/Modal/index.js';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { submitToken } from 'store/actionCreators/cavatica';
 import { Paragraph } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 import Input from 'uikit/Input';
-
-import { submitToken } from '../../store/actionCreators/cavatica';
 
 import './cavatica.css';
 

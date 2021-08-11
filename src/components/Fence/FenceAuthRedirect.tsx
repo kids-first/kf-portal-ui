@@ -5,10 +5,9 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { fenceTokensUri } from 'common/injectGlobals';
 import { withApi } from 'services/api';
-
-import { FenceName } from '../../store/fenceTypes';
-import { RootState } from '../../store/rootState';
-import { selectUserToken } from '../../store/selectors/users';
+import { FenceName } from 'store/fenceTypes';
+import { RootState } from 'store/rootState';
+import { selectUserToken } from 'store/selectors/users';
 
 type OwnProps = {
   api: (config: AxiosRequestConfig) => Promise<AxiosResponse>;

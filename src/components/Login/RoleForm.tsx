@@ -8,11 +8,10 @@ import {
   TRACKING_EVENTS,
   trackUserInteraction,
 } from 'services/analyticsTracking';
+import { updateUser } from 'store/actionCreators/user';
+import { RootState } from 'store/rootState';
+import { selectUser } from 'store/selectors/users';
 import { DispatchUser, User } from 'store/userTypes';
-
-import { updateUser } from '../../store/actionCreators/user';
-import { RootState } from '../../store/rootState';
-import { selectUser } from '../../store/selectors/users';
 
 import './roleForm.css';
 

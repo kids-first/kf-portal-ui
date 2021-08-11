@@ -8,7 +8,7 @@ import {
   FenceConnectionsState,
 } from '../fenceConnectionsTypes';
 import { AllFencesNames } from '../fenceTypes';
-import { LogoutAction } from '../userTypes';
+import { LogoutAction, UserActions } from '../userTypes';
 
 const initialState: FenceConnectionsState = {
   ...fenceConnectionsInitialState,
@@ -88,6 +88,9 @@ export default (
           (fName) => fName !== action.fenceName,
         ),
       };
+    }
+    case UserActions.logout: {
+      return { ...initialState };
     }
     default:
       return state;

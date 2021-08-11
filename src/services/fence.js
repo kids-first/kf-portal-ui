@@ -10,9 +10,8 @@ import {
   idp,
 } from 'common/injectGlobals';
 import ajax from 'services/ajax';
-
-import { FenceName } from '../store/fenceTypes';
-import { isDecodedJwtExpired } from '../store/tokenUtils';
+import { FenceName } from 'store/fenceTypes';
+import { isDecodedJwtExpired } from 'store/tokenUtils';
 
 const DCF = FenceName.dcf;
 const GEN3 = FenceName.gen3;
@@ -110,7 +109,6 @@ export const fetchFenceConnection = async (api, fenceName) => {
   const token = await fetchTokenThenRefreshIfNeeded(api, fenceName);
   const { fenceUri } = PROVIDERS[fenceName];
   const response = await ajax.get(`${fenceUri}user/user`, {
-    //TODO not sure it s needed, interceptor
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -144,7 +142,7 @@ export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
   const { fenceUri } = PROVIDERS[fence];
   const headers = accessToken
     ? {
-        Authorization: `Bearer ${accessToken}`, //TODO can remove because of interceptor??
+        Authorization: `Bearer ${accessToken}`,
       }
     : {};
   const { url } = await fetch(`${fenceUri}user/data/download/${fileUuid}`, {

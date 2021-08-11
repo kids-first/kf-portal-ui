@@ -3,13 +3,13 @@ import Card from '@ferlab/ui/core/view/GridCard';
 import { Badge, Button } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
+import AccessGate from 'components/AccessGate';
 import useFenceConnections from 'hooks/useFenceConnections';
 import useFenceStudies from 'hooks/useFenceStudies';
+import useUser from 'hooks/useUser';
 import DownloadController from 'icons/DownloadController';
+import { AllFencesNames } from 'store/fenceTypes';
 
-import useUser from '../../../hooks/useUser';
-import { AllFencesNames } from '../../../store/fenceTypes';
-import AccessGate from '../../AccessGate';
 import Info from '../Info';
 
 import StudiesConnected from './StudiesConnected';

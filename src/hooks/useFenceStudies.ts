@@ -8,11 +8,10 @@ import {
 } from 'store/actionCreators/fenceStudies';
 import { Api } from 'store/apiTypes';
 import { DispatchFenceStudies, FenceStudies, FenceStudy } from 'store/fenceStudiesTypes';
+import { FenceName } from 'store/fenceTypes';
 import { RootState } from 'store/rootState';
 import { selectFenceConnections } from 'store/selectors/fenceConnections';
 import { selectFenceStudies, selectLoadingStudiesForFences } from 'store/selectors/fenceStudies';
-
-import { FenceName } from '../store/fenceTypes';
 
 const { keys } = Object;
 

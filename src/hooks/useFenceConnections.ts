@@ -6,6 +6,7 @@ import {
   fetchAllFencesConnectionsIfNeeded,
 } from 'store/actionCreators/fenceConnections';
 import { Api } from 'store/apiTypes';
+import { ConnectionStatus } from 'store/connectionTypes';
 import { DispatchFenceConnections, FenceConnections } from 'store/fenceConnectionsTypes';
 import { FenceName, FencesAllConcatenatedAcls } from 'store/fenceTypes';
 import { RootState } from 'store/rootState';
@@ -14,8 +15,6 @@ import {
   selectFenceStatuses,
   selectLoadingFences,
 } from 'store/selectors/fenceConnections';
-
-import { ConnectionStatus } from '../store/connectionTypes';
 
 type Output = {
   fenceConnections: FenceConnections;

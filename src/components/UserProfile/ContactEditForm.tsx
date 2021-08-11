@@ -4,8 +4,7 @@ import { Card, Col, Form, Row } from 'antd';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import { extractRoleFromProfile, makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 import { socialItems } from 'components/UserProfile/utils';
-
-import { ProfileTodo } from '../../store/profileTypes';
+import { ProfileTodo } from 'store/profileTypes';
 
 import { findMeFields } from './constants';
 import FindMeEditable from './FindMeEditable';

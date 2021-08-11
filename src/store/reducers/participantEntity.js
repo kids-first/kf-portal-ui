@@ -1,4 +1,4 @@
-import { actionTypes } from 'components/EntityPage/Participant/actionCreators';
+import { ParticipantEntityActions } from '../participantEntityTypes';
 
 const initialState = {
   isLoading: false,
@@ -9,7 +9,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.FETCH_PARTICIPANT_REQUESTED:
+    case ParticipantEntityActions.FETCH_PARTICIPANT_REQUESTED:
       return {
         ...state,
         isLoading: true,
@@ -17,14 +17,14 @@ export default (state = initialState, action) => {
         participant: null,
         participantId: action.payload,
       };
-    case actionTypes.FETCH_PARTICIPANT_SUCCESS:
+    case ParticipantEntityActions.FETCH_PARTICIPANT_SUCCESS:
       return {
         ...state,
         isLoading: false,
         error: null,
         participant: action.payload,
       };
-    case actionTypes.FETCH_PARTICIPANT_FAILURE:
+    case ParticipantEntityActions.FETCH_PARTICIPANT_FAILURE:
       return {
         ...state,
         isLoading: false,

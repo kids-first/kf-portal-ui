@@ -1,27 +1,35 @@
 import { Action } from 'redux';
 
 import {
+  addFenceConnectError,
   addFenceConnection,
+  addFenceDisconnectError,
   addFenceStatus,
+  removeFenceConnectError,
   removeFenceConnection,
+  removeFenceDisconnectError,
   toggleIsFetchingAllFenceConnections,
+  toggleIsFetchingOneFenceConnection,
 } from 'store/actionCreators/fenceConnections';
 import { MOCK_GEN3_CONNECTION } from 'store/actionCreators/Test/mockDataFence';
+import { logout } from 'store/actionCreators/user';
+import { ConnectionStatus } from 'store/connectionTypes';
 import { FenceConnectionsState } from 'store/fenceConnectionsTypes';
-import { FenceName } from 'store/fenceTypes';
+import { AllFencesNames, FenceName } from 'store/fenceTypes';
 import reducer from 'store/reducers/fenceConnections';
-
-import { ConnectionStatus } from '../../connectionTypes';
-
-const DCF = FenceName.dcf;
-const GEN3 = FenceName.gen3;
+import { LogoutAction } from 'store/userTypes';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
 const initialState: FenceConnectionsState = {
   fenceConnections: {},
-  statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
-  isFetchingAllFenceConnections: false,
+  statuses: {
+    [FenceName.gen3]: ConnectionStatus.unknown,
+    [FenceName.dcf]: ConnectionStatus.unknown,
+  },
+  loadingFences: [],
+  fencesConnectError: [],
+  fencesDisConnectError: [],
 };
 
 describe('Fence Connections Reducer', () => {
@@ -31,48 +39,112 @@ describe('Fence Connections Reducer', () => {
 
   it('should handle toggleIsFetchingAllFenceConnections', () => {
     expect(reducer(initialState, toggleIsFetchingAllFenceConnections(true))).toEqual({
-      fenceConnections: {},
-      isFetchingAllFenceConnections: true,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
+      ...initialState,
+      loadingFences: [...AllFencesNames],
     });
+  });
+
+  it('should handle toggleIsFetchingOneFenceConnection', () => {
+    expect(reducer(initialState, toggleIsFetchingOneFenceConnection(true, FenceName.gen3))).toEqual(
+      {
+        ...initialState,
+        loadingFences: [FenceName.gen3],
+      },
+    );
   });
 
   it('should handle removeFenceConnection', () => {
     const state = {
-      fenceConnections: { [GEN3]: MOCK_GEN3_CONNECTION },
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
+      ...initialState,
+      fenceConnections: { [FenceName.gen3]: MOCK_GEN3_CONNECTION },
     };
-    expect(reducer(state, removeFenceConnection(GEN3))).toEqual({
+    expect(reducer(state, removeFenceConnection(FenceName.gen3))).toEqual({
+      ...initialState,
       fenceConnections: {},
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
     });
   });
 
   it('should handle addFenceConnection', () => {
-    const state = {
-      fenceConnections: {},
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
-    };
-    expect(reducer(state, addFenceConnection(GEN3, MOCK_GEN3_CONNECTION))).toEqual({
-      fenceConnections: { [GEN3]: MOCK_GEN3_CONNECTION },
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
-    });
+    expect(reducer(initialState, addFenceConnection(FenceName.gen3, MOCK_GEN3_CONNECTION))).toEqual(
+      {
+        ...initialState,
+        fenceConnections: { [FenceName.gen3]: MOCK_GEN3_CONNECTION },
+      },
+    );
   });
 
   it('should handle addConnectionStatus', () => {
     const state = {
-      fenceConnections: { [GEN3]: MOCK_GEN3_CONNECTION },
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.unknown, [DCF]: ConnectionStatus.unknown },
+      ...initialState,
+      fenceConnections: { [FenceName.gen3]: MOCK_GEN3_CONNECTION },
     };
-    expect(reducer(state, addFenceStatus(GEN3, ConnectionStatus.connected))).toEqual({
-      fenceConnections: { [GEN3]: MOCK_GEN3_CONNECTION },
-      isFetchingAllFenceConnections: false,
-      statuses: { [GEN3]: ConnectionStatus.connected, [DCF]: ConnectionStatus.unknown },
+    expect(reducer(state, addFenceStatus(FenceName.gen3, ConnectionStatus.connected))).toEqual({
+      ...initialState,
+      fenceConnections: { [FenceName.gen3]: MOCK_GEN3_CONNECTION },
+      statuses: {
+        [FenceName.gen3]: ConnectionStatus.connected,
+        [FenceName.dcf]: ConnectionStatus.unknown,
+      },
+    });
+  });
+
+  it('should handle addFenceConnectError', () => {
+    expect(reducer(initialState, addFenceConnectError(FenceName.gen3))).toEqual({
+      ...initialState,
+      fencesConnectError: [FenceName.gen3],
+    });
+    const state = {
+      ...initialState,
+      fencesConnectError: [FenceName.gen3],
+    };
+    expect(reducer(state, addFenceConnectError(FenceName.gen3))).toEqual({
+      ...state,
+    });
+  });
+
+  it('should handle removeFenceConnectError', () => {
+    const state = {
+      ...initialState,
+      fencesConnectError: [FenceName.gen3, FenceName.dcf],
+    };
+    expect(reducer(state, removeFenceConnectError(FenceName.gen3))).toEqual({
+      ...initialState,
+      fencesConnectError: [FenceName.dcf],
+    });
+  });
+
+  it('should handle addFenceDisconnectError', () => {
+    expect(reducer(initialState, addFenceDisconnectError(FenceName.gen3))).toEqual({
+      ...initialState,
+      fencesDisConnectError: [FenceName.gen3],
+    });
+    const state = {
+      ...initialState,
+      fencesDisConnectError: [FenceName.gen3],
+    };
+    expect(reducer(state, addFenceDisconnectError(FenceName.gen3))).toEqual({
+      ...state,
+    });
+  });
+
+  it('should handle removeFenceDisconnectError', () => {
+    const state = {
+      ...initialState,
+      fencesDisConnectError: [FenceName.gen3, FenceName.dcf],
+    };
+    expect(reducer(state, removeFenceDisconnectError(FenceName.gen3))).toEqual({
+      ...initialState,
+      fencesDisConnectError: [FenceName.dcf],
+    });
+  });
+
+  it('should handle logout', () => {
+    const state = {
+      ...initialState,
+      fenceConnections: { [FenceName.gen3]: MOCK_GEN3_CONNECTION },
+    };
+    expect(reducer(state, logout() as LogoutAction)).toEqual({
+      ...initialState,
     });
   });
 });

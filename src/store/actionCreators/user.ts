@@ -4,6 +4,7 @@ import jwtDecode from 'jwt-decode';
 
 import { EGO_JWT_KEY, LOGIN_PROVIDER } from 'common/constants';
 import { trackUserSession } from 'services/analyticsTracking';
+import { apiUser } from 'services/api';
 import history from 'services/history';
 import {
   facebookLogout,
@@ -18,18 +19,18 @@ import {
   subscribeUser as subscribeUserService,
   updateProfile,
 } from 'services/profiles';
+import { Api } from 'store/apiTypes';
+import { RootState } from 'store/rootState';
+import { selectLoginProvider, selectUser } from 'store/selectors/users';
+import { DecodedJwt, JwtToken } from 'store/tokenTypes';
+import { extractGroupsFromToken, isDecodedJwtExpired } from 'store/tokenUtils';
 
 import ROUTES from '../../common/routes';
 import { removeForumBanner } from '../../ForumBanner';
-import { apiInitialized } from '../../services/api';
-import { Api } from '../apiTypes';
-import { RootState } from '../rootState';
-import { selectLoginProvider, selectUser } from '../selectors/users';
-import { DecodedJwt, JwtToken } from '../tokenTypes';
-import { extractGroupsFromToken, isDecodedJwtExpired } from '../tokenUtils';
 import {
   Provider,
   Providers,
+  RawUser,
   ThunkActionUser,
   User,
   UserActions,
@@ -41,8 +42,8 @@ import { deleteCavaticaSecret } from './cavatica';
 import { deleteAllFencesTokens } from './fenceConnections';
 import { deleteAllSaveQueriesFromRiffForUser } from './SavedQueries';
 
-const updateUserProfile = updateProfile(apiInitialized);
-const deleteUserProfile = deleteProfile(apiInitialized);
+const updateUserProfile = updateProfile(apiUser);
+const deleteUserProfile = deleteProfile(apiUser);
 
 const isAdminFromRoles = (roles: string[] | null) => (roles || []).includes('ADMIN');
 
@@ -61,20 +62,22 @@ export const failureSubscribeUser = (error: Error): UserActionTypes => ({
   payload: error,
 });
 
-export const receiveUser = (user: User): ThunkActionUser => async (dispatch, getState) => {
+export const receiveUserWithComputedValues = (user: User): UserActionTypes => ({
+  type: UserActions.receiveUserWithComputedValues,
+  payload: user,
+});
+
+export const receiveUser = (user: RawUser): ThunkActionUser => async (dispatch, getState) => {
   const currentState = getState();
   //expect to always receive a token before accepting a user
   const userToken = currentState.user.userToken;
-  const enhancedUser = {
+  const enhancedUser: User = {
     ...user,
     isAdmin: isAdminFromRoles(user.roles),
     groups: extractGroupsFromToken(userToken),
   };
   await trackUserSession({ ...enhancedUser });
-  dispatch({
-    type: UserActions.receiveUser,
-    payload: enhancedUser,
-  });
+  dispatch(receiveUserWithComputedValues(enhancedUser));
 };
 
 export const toggleIsLoadingUser = (isLoading: boolean): UserActionTypes => ({
@@ -196,7 +199,7 @@ export const fetchUserFromJwt = (validDecodedJwt: DecodedJwt): ThunkActionUser =
     const existingProfile = await getProfile();
     let profile = existingProfile;
     if (!existingProfile) {
-      profile = await initProfile(apiInitialized, userPayload, sub);
+      profile = await initProfile(apiUser, userPayload, sub);
     }
     dispatch(receiveUser(profile));
   } catch (error) {

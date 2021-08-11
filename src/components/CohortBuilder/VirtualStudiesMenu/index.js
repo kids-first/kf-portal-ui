@@ -22,10 +22,10 @@ import {
   saveVirtualStudy,
 } from 'store/actionCreators/virtualStudies';
 import { closeModal, openModal } from 'store/actions/modal';
+import { selectUser } from 'store/selectors/users';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 import Row from 'uikit/Row';
 
-import { selectUser } from '../../../store/selectors/users';
 import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
 
 import LoadQuery from './LoadQuery';

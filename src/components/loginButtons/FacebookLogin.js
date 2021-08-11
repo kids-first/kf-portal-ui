@@ -1,22 +1,19 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Spin } from 'antd';
 
 import { facebookStatus } from 'services/login';
 
 import DisabledFacebookLogin from './DisabledFacebookLogin';
 
-class FacebookLogin extends Component {
-  static propTypes = {
-    onLogin: PropTypes.func,
-    onError: PropTypes.func,
-  };
-
+export default class FacebookLogin extends Component {
   state = {
     disabled: false,
+    isLoading: false,
   };
 
-  onClick = () => {
+  componentDidMount() {
+    this.setState({ isLoading: true });
     facebookStatus()
       .then((response) => {
         if (response.authResponse) {
@@ -30,8 +27,9 @@ class FacebookLogin extends Component {
         console.warn('unable to get fb login status: ', err);
         this.props.onError('facebookError');
         this.setState({ disabled: true });
-      });
-  };
+      })
+      .finally(() => this.setState({ isLoading: false }));
+  }
 
   componentWillUnmount() {
     try {
@@ -42,24 +40,25 @@ class FacebookLogin extends Component {
   }
 
   render() {
-    return this.state.disabled ? (
-      <DisabledFacebookLogin />
-    ) : (
-      <div
-        onClick={this.onClick}
-        className="fb-login-button login-button"
-        style={{ height: '40px' }}
-        data-max-rows="1"
-        data-size="large"
-        data-width="240"
-        data-button-type="login_with"
-        data-show-faces="false"
-        data-auto-logout-link="false"
-        data-use-continue-as="false"
-        data-scope="public_profile,email"
-      />
+    return (
+      <Spin spinning={this.state.isLoading}>
+        {this.state.disabled ? (
+          <DisabledFacebookLogin />
+        ) : (
+          <div
+            className="fb-login-button login-button"
+            style={{ height: '40px' }}
+            data-max-rows="1"
+            data-size="large"
+            data-width="240"
+            data-button-type="login_with"
+            data-show-faces="false"
+            data-auto-logout-link="false"
+            data-use-continue-as="false"
+            data-scope="public_profile,email"
+          />
+        )}
+      </Spin>
     );
   }
 }
-
-export default FacebookLogin;

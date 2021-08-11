@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 
 import DeleteAccount from 'components/UserProfile/DeleteAccount';
 import { clearClusterError } from 'store/actionCreators/workBench';
-
-import { selectUser } from '../../store/selectors/users';
+import { selectUser } from 'store/selectors/users';
 
 import ApplicationIntegration from './ApplicationIntegration';
 import ConnectionProvider from './ConnectionProvider';

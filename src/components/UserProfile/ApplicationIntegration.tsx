@@ -5,14 +5,13 @@ import { Button, Card, notification, Row, Typography } from 'antd';
 
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { cavaticaWebRoot } from 'common/injectGlobals';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import { makeCommonCardPropsReadOnly } from 'components/UserProfile/utils';
-
-import useCavatica from '../../hooks/useCavatica';
-import { disconnect } from '../../store/actionCreators/cavatica';
-import { closeModal, openModal } from '../../store/actions/modal';
-import { RootState } from '../../store/rootState';
-import { selectModalId } from '../../store/selectors/modal';
-import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
+import useCavatica from 'hooks/useCavatica';
+import { disconnect } from 'store/actionCreators/cavatica';
+import { closeModal, openModal } from 'store/actions/modal';
+import { RootState } from 'store/rootState';
+import { selectModalId } from 'store/selectors/modal';
 
 import { CAVATICA_INTEGRATION_MODAL_ID } from './constants';
 

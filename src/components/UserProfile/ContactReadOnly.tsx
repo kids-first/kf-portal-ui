@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 
-import { ProfileTodo } from '../../store/profileTypes';
+import { ProfileTodo } from 'store/profileTypes';
 
 import CardNoDataReadOnly from './CardNoDataReadOnly';
 import ContactReadInformation from './ContactReadInformation';

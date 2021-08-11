@@ -6,14 +6,13 @@ import PropTypes from 'prop-types';
 
 import { ORCID } from 'common/constants';
 import { allRedirectUris } from 'common/injectGlobals';
+import ROUTES from 'common/routes';
 import OrcidRedirect from 'components/Login/OrcidRedirect';
+import useUser from 'hooks/useUser';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { manageUserTokenWithLoader } from 'store/actionCreators/user';
+import { selectLoginProvider, selectUserToken } from 'store/selectors/users';
 import Column from 'uikit/Column';
-
-import ROUTES from '../../common/routes';
-import useUser from '../../hooks/useUser';
-import { manageUserTokenWithLoader } from '../../store/actionCreators/user';
-import { selectLoginProvider, selectUserToken } from '../../store/selectors/users';
 
 import SecurityError from './SecurityError';
 import SocialButtons from './SocialButtons';

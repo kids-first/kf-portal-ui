@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
-import './DownloadButton.css';
-import { Button, Modal } from 'antd';
-import { Sqon } from 'store/sqon';
-import { DownloadOutlined } from '@ant-design/icons';
-import FamilyManifestModalContent from '../FamilyManifestModal/FamilyManifestModalContent';
-import { RootState } from '../../store/rootState';
-import { selectModalId } from '../../store/selectors/modal';
-import { closeModal, DispatchModal, openModal } from '../../store/actions/modal';
 import { connect, ConnectedProps } from 'react-redux';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Button, Modal } from 'antd';
+
+import { closeModal, DispatchModal, openModal } from 'store/actions/modal';
+import { RootState } from 'store/rootState';
+import { selectModalId } from 'store/selectors/modal';
+import { Sqon } from 'store/sqon';
+
+import FamilyManifestModalContent from '../FamilyManifestModal/FamilyManifestModalContent';
+
+import './DownloadButton.css';
 
 type OwnProps = {
   sqon: Sqon;

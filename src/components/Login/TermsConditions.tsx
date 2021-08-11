@@ -2,8 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'antd';
 
-import { revertAcceptedTermsThenLogoutCleanly } from '../../store/actionCreators/user';
-import { DispatchUser } from '../../store/userTypes';
+import { revertAcceptedTermsThenLogoutCleanly } from 'store/actionCreators/user';
+import { DispatchUser } from 'store/userTypes';
+
 import SplashPage from '../SplashPage';
 
 import TermsConditionsAcceptButton from './TermsConditionsAcceptButton';

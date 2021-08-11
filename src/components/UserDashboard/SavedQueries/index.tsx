@@ -13,10 +13,9 @@ import {
   selectSavedQueries,
   selectSavedQueryIdToStatus,
 } from 'store/selectors/savedQueries';
+import { selectUser } from 'store/selectors/users';
 import { User } from 'store/userTypes';
 import { Spinner } from 'uikit/Spinner';
-
-import { selectUser } from '../../../store/selectors/users';
 
 import CohortTab from './CohortTab';
 import FileTab from './FileTab';

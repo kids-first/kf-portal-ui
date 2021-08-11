@@ -8,9 +8,8 @@ import { withApi } from 'services/api';
 import { getFilesById } from 'services/arranger';
 import { downloadFileFromFence } from 'services/fence';
 import { getAppElement } from 'services/globalDomNodes';
+import { FenceName } from 'store/fenceTypes';
 import theme from 'theme/defaultTheme';
-
-import { FenceName } from '../../store/fenceTypes';
 
 const GEN3 = FenceName.gen3;
 

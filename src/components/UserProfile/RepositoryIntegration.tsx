@@ -5,28 +5,27 @@ import { Button, Card, Divider, Modal, notification, Row, Typography } from 'ant
 import kfFrameworkServicesLogo from 'assets/kids-first-framework-services.svg';
 import dcfLogo from 'assets/logo-dcf.svg';
 import { dcfWebRoot, gen3WebRoot } from 'common/injectGlobals';
+import FenceAuthorizedStudies from 'components/Fence/FenceAuthorizedStudies';
 import { makeCommonCardPropsReadOnly } from 'components/UserProfile/utils';
+import useFenceConnections from 'hooks/useFenceConnections';
 import { withApi } from 'services/api';
-
-import useFenceConnections from '../../hooks/useFenceConnections';
 import {
   connectFence,
   disconnectFence,
   removeFenceConnectError,
   removeFenceDisconnectError,
-} from '../../store/actionCreators/fenceConnections';
-import { closeModal, DispatchModal, openModal } from '../../store/actions/modal';
-import { Api } from '../../store/apiTypes';
-import { ConnectionStatus } from '../../store/connectionTypes';
-import { DispatchFenceConnections } from '../../store/fenceConnectionsTypes';
-import { AllFencesNames, FenceName } from '../../store/fenceTypes';
-import { RootState } from '../../store/rootState';
+} from 'store/actionCreators/fenceConnections';
+import { closeModal, DispatchModal, openModal } from 'store/actions/modal';
+import { Api } from 'store/apiTypes';
+import { ConnectionStatus } from 'store/connectionTypes';
+import { DispatchFenceConnections } from 'store/fenceConnectionsTypes';
+import { AllFencesNames, FenceName } from 'store/fenceTypes';
+import { RootState } from 'store/rootState';
 import {
   selectFencesConnectError,
   selectFencesDisconnectError,
-} from '../../store/selectors/fenceConnections';
-import { selectModalId } from '../../store/selectors/modal';
-import FenceAuthorizedStudies from '../Fence/FenceAuthorizedStudies';
+} from 'store/selectors/fenceConnections';
+import { selectModalId } from 'store/selectors/modal';
 
 import FenceActionButtons from './FenceActionButtons';
 

@@ -5,17 +5,12 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
 import HeaderBanner from 'components/UserProfile/HeaderBanner';
-
-import {
-  cleanProfileErrors,
-  toggleIsActive,
-  toggleIsPublic,
-} from '../../store/actionCreators/profile';
+import { cleanProfileErrors, toggleIsActive, toggleIsPublic } from 'store/actionCreators/profile';
 import {
   selectErrorIsToggleProfileStatus,
   selectIsLoadingProfileStatus,
   selectProfile,
-} from '../../store/selectors/profile';
+} from 'store/selectors/profile';
 
 import { getMsgFromAccessError } from './utils';
 

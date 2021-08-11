@@ -11,17 +11,23 @@ import { compose } from 'recompose';
 
 import { arrangerProjectId } from 'common/injectGlobals';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import CavaticaCopyMultipleFilesModal from 'components/cavatica/CavaticaCopyMultipleFilesModal';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import SQONURL from 'components/SQONURL';
 import { FileRepoStatsQuery } from 'components/Stats';
+import useCavatica from 'hooks/useCavatica';
 import useFenceConnections from 'hooks/useFenceConnections';
+import useUser from 'hooks/useUser';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { closeModal, openModal } from 'store/actions/modal';
+import { AllFencesNames } from 'store/fenceTypes';
 import { selectModalId } from 'store/selectors/modal';
+import { selectUser } from 'store/selectors/users';
 import theme from 'theme/defaultTheme';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import Column from 'uikit/Column';
@@ -29,13 +35,6 @@ import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 import { Spinner } from 'uikit/Spinner';
 import Tooltip from 'uikit/Tooltip';
-
-import useCavatica from '../../hooks/useCavatica';
-import useUser from '../../hooks/useUser';
-import { AllFencesNames } from '../../store/fenceTypes';
-import { selectUser } from '../../store/selectors/users';
-import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
-import CavaticaCopyMultipleFilesModal from '../cavatica/CavaticaCopyMultipleFilesModal';
 
 import customTableColumns from './customTableColumns';
 import DownloadButton from './DownloadButton';

@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
 
 import ROUTES from 'common/routes';
+import useUser from 'hooks/useUser';
+import { revertAcceptedTermsThenLogoutCleanly } from 'store/actionCreators/user';
 import Gravatar from 'uikit/Gravatar';
-
-import useUser from '../../hooks/useUser';
-import { revertAcceptedTermsThenLogoutCleanly } from '../../store/actionCreators/user';
 
 import HeaderMenu from './HeaderMenu';
 

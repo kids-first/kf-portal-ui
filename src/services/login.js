@@ -41,7 +41,7 @@ export const googleReloadAuthResponse = async () => {
 const wait = (s) => new Promise((r) => setTimeout(r, s * 1000));
 
 export const googleLogout = () => {
-  const authInstance = gapi.auth2.getAuthInstance();
+  const authInstance = gapi?.auth2?.getAuthInstance();
   return authInstance ? authInstance.signOut() : Promise.resolve();
 };
 

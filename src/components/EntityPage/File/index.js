@@ -10,6 +10,8 @@ import { compose } from 'recompose';
 
 import { kfWebRoot } from 'common/injectGlobals';
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import CavaticaCopyOpenAccessFileModal from 'components/cavatica/CavaticaCopyOpenAccessFileModal';
 import {
   EntityActionBar,
   EntityContent,
@@ -19,9 +21,12 @@ import {
   EntityTitleBar,
 } from 'components/EntityPage';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import { buildSqonForIds } from 'services/arranger';
 import { checkUserFilePermission } from 'services/fileAccessControl';
 import { closeModal, openModal } from 'store/actions/modal';
+import { AllFencesNames } from 'store/fenceTypes';
+import { selectIsConnected } from 'store/selectors/cavatica';
 import { selectModalId } from 'store/selectors/modal';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import Column from 'uikit/Column';
@@ -34,12 +39,6 @@ import Row from 'uikit/Row';
 import ShareButton from 'uikit/ShareButton';
 import { Spinner } from 'uikit/Spinner';
 import SummaryTable from 'uikit/SummaryTable';
-
-import { withApi } from '../../../services/api';
-import { AllFencesNames } from '../../../store/fenceTypes';
-import { selectIsConnected } from '../../../store/selectors/cavatica';
-import CavaticaConnectModal from '../../cavatica/CavaticaConnectModal';
-import CavaticaCopyOpenAccessFileModal from '../../cavatica/CavaticaCopyOpenAccessFileModal';
 
 import Download from './Download';
 import {
@@ -291,7 +290,7 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
 FileEntity.propTypes = {
   api: PropTypes.func,
   fileId: PropTypes.string,
-  openModalId: PropTypes.func,
+  openModalId: PropTypes.string,
   closeModal: PropTypes.func,
   openModal: PropTypes.func,
   isConnectedToCavatica: PropTypes.bool,

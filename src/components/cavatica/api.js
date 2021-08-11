@@ -1,6 +1,5 @@
 import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-
-import { AllFencesNames } from '../../store/fenceTypes';
+import { AllFencesNames } from 'store/fenceTypes';
 
 export const isEveryFileTransferred = (inputLength, outputLength) => inputLength === outputLength;
 

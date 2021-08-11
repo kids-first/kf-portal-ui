@@ -4,8 +4,7 @@ import { Button } from 'antd';
 import { compose } from 'recompose';
 
 import { withApi } from 'services/api';
-
-import { deleteAccount } from '../../store/actionCreators/user';
+import { deleteAccount } from 'store/actionCreators/user';
 
 export default compose(withApi)(({ api, label = 'Cancel', onClickCB, user }) => {
   const dispatch = useDispatch();

@@ -25,9 +25,9 @@ import {
   selectIsProfileUpdating,
   selectProfile,
 } from 'store/selectors/profile';
+import { selectIsUserAdmin, selectUser } from 'store/selectors/users';
+import { isSelfInUrlWhenLoggedIn } from 'utils';
 
-import { selectIsUserAdmin, selectUser } from '../../store/selectors/users';
-import { isSelfInUrlWhenLoggedIn } from '../../utils';
 import Error from '../Error';
 
 import { KEY_ABOUT_ME } from './constants';

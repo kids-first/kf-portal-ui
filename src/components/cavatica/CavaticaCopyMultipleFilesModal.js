@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { graphql } from 'services/arranger';
 import { getUserStudyPermission } from 'services/fileAccessControl';
+import { AllFencesNames } from 'store/fenceTypes';
 
-import { AllFencesNames } from '../../store/fenceTypes';
 import LoadingOnClick from '../LoadingOnClick';
 
 import { copyToProject, isEveryFileTransferred, sumFilesTransfers } from './api';

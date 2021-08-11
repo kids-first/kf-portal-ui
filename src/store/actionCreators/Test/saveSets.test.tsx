@@ -1,19 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import {
-  addRemoveSetIds,
-  createQueryInCohortBuilder,
-  createSetIfUnique,
-  deleteUserSets,
-  editSetTag,
-  failureCreate,
-  fetchSetsIfNeeded,
-  getUserSets,
-  isLoadingCreateSet,
-  reInitializeSetsState,
-  addSetToCurrentQuery,
-} from '../saveSets';
+  createSet,
+  deleteSets,
+  getSetAndParticipantsCountByUser,
+  setCountForTag,
+  updateSet,
+} from 'services/sets';
 import {
+  ADD_SET_TO_CURRENT_QUERY,
   CREATE_SET_QUERY_REQUEST,
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
@@ -28,18 +24,28 @@ import {
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
-  ADD_SET_TO_CURRENT_QUERY,
 } from 'store/saveSetTypes';
+import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
+
 import {
-  createSet,
-  deleteSets,
-  getSetAndParticipantsCountByUser,
-  setCountForTag,
-  updateSet,
-} from 'services/sets';
-import { SetInfo, AddRemoveSetParams } from 'store/saveSetTypes';
+  addRemoveSetIds,
+  addSetToCurrentQuery,
+  createQueryInCohortBuilder,
+  createSetIfUnique,
+  deleteUserSets,
+  editSetTag,
+  failureCreate,
+  fetchSetsIfNeeded,
+  getUserSets,
+  isLoadingCreateSet,
+  reInitializeSetsState,
+} from '../saveSets';
 
 console.error = jest.fn();
+
+jest.mock('services/api');
+jest.mock('services/sets');
+jest.mock('@kfarranger/components/dist/utils/saveSet');
 
 describe('Save Sets actions', () => {
   it('should create an action when error', () => {
@@ -72,9 +78,6 @@ describe('Save Sets actions', () => {
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
-
-jest.mock('services/sets');
-jest.mock('@kfarranger/components/dist/utils/saveSet');
 
 const payload = {
   onSuccess: () => {},

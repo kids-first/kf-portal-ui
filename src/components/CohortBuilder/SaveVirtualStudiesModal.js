@@ -6,9 +6,8 @@ import { compose } from 'redux';
 
 import { createVirtualStudy } from 'services/virtualStudies';
 import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
+import { selectUser } from 'store/selectors/users';
 import PromptMessage from 'uikit/PromptMessage';
-
-import { selectUser } from '../../store/selectors/users';
 
 const { TextArea } = Input;
 

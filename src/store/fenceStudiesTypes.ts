@@ -57,8 +57,8 @@ export type FenceStudiesState = {
   fenceStudies: FenceStudies;
   loadingStudiesForFences: FenceName[];
   statuses: {
-    [FenceName.gen3]: ConnectionStatus.unknown;
-    [FenceName.dcf]: ConnectionStatus.unknown;
+    [FenceName.gen3]: ConnectionStatus;
+    [FenceName.dcf]: ConnectionStatus;
   };
 };
 

@@ -5,7 +5,11 @@ import { Input, Layout } from 'antd';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 
+import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
+import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
+import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import {
+  fetchListOfMembers,
   requestADMINOptionsUpdate,
   requestCurrentPageUpdate,
   requestInterestsFilterUpdate,
@@ -13,13 +17,20 @@ import {
   requestQueryStringUpdate,
   requestResetStore,
   requestRolesFilterUpdate,
-} from 'components/MemberSearchPage/actions';
-import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
-import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
-import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
-
-import { selectIsUserAdmin, selectUserToken } from '../../store/selectors/users';
+} from 'store/actionCreators/members';
+import {
+  selectAdminOptionsFilter,
+  selectCounts,
+  selectCurrentPage,
+  selectInterestsFilter,
+  selectIsPending,
+  selectMemberErrors,
+  selectMembers,
+  selectMembersPerPage,
+  selectQueryString,
+  selectRolesFilter,
+} from 'store/selectors/members';
+import { selectIsUserAdmin, selectUserToken } from 'store/selectors/users';
 
 import MemberTable from './MemberTable';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
@@ -234,16 +245,16 @@ class MemberSearchContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  error: state.ui.memberSearchPageReducer.errors,
-  members: state.ui.memberSearchPageReducer.members,
-  count: state.ui.memberSearchPageReducer.count,
-  pending: state.ui.memberSearchPageReducer.pending,
-  queryString: state.ui.memberSearchPageReducer.queryString,
-  currentPage: state.ui.memberSearchPageReducer.currentPage,
-  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
-  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
-  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
-  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
+  error: selectMemberErrors(state),
+  members: selectMembers(state),
+  count: selectCounts(state),
+  pending: selectIsPending(state),
+  queryString: selectQueryString(state),
+  currentPage: selectCurrentPage(state),
+  membersPerPage: selectMembersPerPage(state),
+  rolesFilter: selectRolesFilter(state),
+  interestsFilter: selectInterestsFilter(state),
+  adminOptionsFilter: selectAdminOptionsFilter(state),
   userToken: selectUserToken(state),
   isAdmin: selectIsUserAdmin(state),
 });
@@ -251,7 +262,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchListOfMembers: fetchListOfMembersAction,
+      fetchListOfMembers: fetchListOfMembers,
       queryStringUpdate: (queryString) => dispatch(requestQueryStringUpdate(queryString)),
       currentPageUpdate: (currentPage) => dispatch(requestCurrentPageUpdate(currentPage)),
       membersPerPageUpdate: (membersPerPage) =>

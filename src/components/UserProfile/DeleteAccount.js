@@ -4,10 +4,9 @@ import { Button, Card, Col, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
+import useUser from 'hooks/useUser';
 import { withApi } from 'services/api';
-
-import useUser from '../../hooks/useUser';
-import { deleteAccount } from '../../store/actionCreators/user';
+import { deleteAccount } from 'store/actionCreators/user';
 
 import './style.css';
 

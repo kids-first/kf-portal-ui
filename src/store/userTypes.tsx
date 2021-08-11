@@ -13,7 +13,7 @@ export enum Providers {
 
 export type Provider = string;
 
-export type User = {
+export type RawUser = {
   _id: string;
   roles: Array<string>;
   egoId: string;
@@ -25,10 +25,13 @@ export type User = {
   email: string;
   firstName: string;
   lastName: string;
-  groups: Groups;
-  isAdmin: boolean;
   isPublic: boolean;
   [index: string]: any;
+};
+
+export type User = RawUser & {
+  groups: Groups;
+  isAdmin: boolean;
 };
 
 export type UserInfo = {
@@ -75,8 +78,6 @@ export type Profile = {
   zip?: string;
 };
 
-export type LoggedInUser = Profile & { email: string };
-
 export enum UserActions {
   logout = 'logout',
   requestSubscribeUser = 'requestSubscribeUser',
@@ -86,7 +87,13 @@ export enum UserActions {
   receiveLoginProvider = 'receiveLoginProvider',
   receiveUserToken = 'receiveUserToken',
   updateUser = 'updateUser',
+  receiveUserWithComputedValues = 'receiveUserWithComputedValues',
 }
+
+export type ReceiveUserWithComputedValuesAction = {
+  type: UserActions.receiveUserWithComputedValues;
+  payload: User;
+};
 
 export type UpdateUser = {
   type: UserActions.updateUser;
@@ -154,7 +161,8 @@ export type UserActionTypes =
   | ReceiveUserAction
   | ReceiveLoginProvider
   | ReceiveUserToken
-  | UpdateUser;
+  | UpdateUser
+  | ReceiveUserWithComputedValuesAction;
 
 export type DispatchUser = ThunkDispatch<RootState, null, UserActionTypes>;
 export type ThunkActionUser = ThunkAction<void, RootState, null, UserActionTypes>;
