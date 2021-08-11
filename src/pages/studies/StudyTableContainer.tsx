@@ -49,7 +49,7 @@ const StudyTable = (props: Props) => {
           index={column.dataIndex}
           className={styles.studyTableFooterCell}
         >
-          <strong>{column.summary ? getColumnTotal(column.dataIndex, data) : ''}</strong>
+          <strong>{column.summary && getColumnTotal(column.dataIndex, data)}</strong>
         </Table.Summary.Cell>
       ),
     );
