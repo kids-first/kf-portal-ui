@@ -35,28 +35,28 @@ type StudiesRes = StudiesResult & {
   [dataIndex: string]: any;
 };
 
+const getColumnTotal = (dataIndex: string, data: readonly StudiesRes[]) =>
+  data.length ? data.reduce((sum, studyResult) => sum + studyResult[dataIndex], 0) : 0;
+
+const renderColumnSummary = (columns: TStudyColumn[], data: readonly StudiesRes[]): ReactNode[] =>
+  columns.map((column: TStudyColumn, index: number) =>
+    column.children ? (
+      renderColumnSummary(column.children, data)
+    ) : (
+      <Table.Summary.Cell
+        key={column.dataIndex!}
+        index={index}
+        className={styles.studyTableFooterCell}
+      >
+        <strong>{column.summary && getColumnTotal(column?.dataIndex!, data)}</strong>
+      </Table.Summary.Cell>
+    ),
+  );
+
 const StudyTable = (props: Props) => {
   const tableData = generateTableData(props);
   const { total, currentVirtualStudy, onClickStudyLink } = props;
   const columns = studiesColumns(currentVirtualStudy, onClickStudyLink);
-
-  const renderColumnSummary = (columns: TStudyColumn[], data: readonly StudiesRes[]): ReactNode[] =>
-    columns.map((column: TStudyColumn, index: number) =>
-      column.children ? (
-        renderColumnSummary(column.children, data)
-      ) : (
-        <Table.Summary.Cell
-          key={column.dataIndex!}
-          index={index}
-          className={styles.studyTableFooterCell}
-        >
-          <strong>{column.summary && getColumnTotal(column?.dataIndex!, data)}</strong>
-        </Table.Summary.Cell>
-      ),
-    );
-
-  const getColumnTotal = (dataIndex: string, data: readonly StudiesRes[]) =>
-    data.length ? data.reduce((sum, studyResult) => sum + studyResult[dataIndex], 0) : 0;
 
   return (
     <div>
