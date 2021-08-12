@@ -11,7 +11,20 @@ import { StudiesResult } from './models';
 
 import './tableColumn.scss';
 
-export const studiesColumns = (sqons: Sqon[], onLinkClick: (sqons: Sqon[]) => void) =>
+export type TStudyColumn = {
+  title: string | JSX.Element;
+  dataIndex?: string;
+  name?: string;
+  width?: number;
+  summary?: boolean;
+  render?: (arg1: any, arg2?: any) => JSX.Element | string;
+  children?: TStudyColumn[];
+};
+
+export const studiesColumns = (
+  sqons: Sqon[],
+  onLinkClick: (sqons: Sqon[]) => void,
+): TStudyColumn[] =>
   [
     {
       title: 'Code',

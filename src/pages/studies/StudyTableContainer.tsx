@@ -5,7 +5,7 @@ import { Table, Typography } from 'antd';
 import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import { StudiesResults } from 'store/graphql/studies/actions';
 import { generateTableData, StudiesResult } from 'store/graphql/studies/models';
-import { studiesColumns } from 'store/graphql/studies/tableColumns';
+import { studiesColumns, TStudyColumn } from 'store/graphql/studies/tableColumns';
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
 
@@ -39,23 +39,23 @@ const StudyTable = (props: Props) => {
   const { total, currentVirtualStudy, onClickStudyLink } = props;
   const columns = studiesColumns(currentVirtualStudy, onClickStudyLink);
 
-  const renderColumnSummary = (columns: any, data: any): ReactNode[] =>
-    columns.map((column: any) =>
+  const renderColumnSummary = (columns: TStudyColumn[], data: readonly StudiesRes[]): ReactNode[] =>
+    columns.map((column: TStudyColumn, index: number) =>
       column.children ? (
         renderColumnSummary(column.children, data)
       ) : (
         <Table.Summary.Cell
-          key={column.dataIndex}
-          index={column.dataIndex}
+          key={column.dataIndex!}
+          index={index}
           className={styles.studyTableFooterCell}
         >
-          <strong>{column.summary && getColumnTotal(column.dataIndex, data)}</strong>
+          <strong>{column.summary && getColumnTotal(column?.dataIndex!, data)}</strong>
         </Table.Summary.Cell>
       ),
     );
 
-  const getColumnTotal = (dataIndex: string, data: StudiesRes[]) =>
-    data.length ? data.map((study: StudiesRes) => study[dataIndex]).reduce((a, b) => a + b) : 0;
+  const getColumnTotal = (dataIndex: string, data: readonly StudiesRes[]) =>
+    data.length ? data.reduce((sum, studyResult) => sum + studyResult[dataIndex], 0) : 0;
 
   return (
     <div>
