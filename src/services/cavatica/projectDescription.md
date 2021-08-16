@@ -1,6 +1,6 @@
 ### Welcome to your new Kids-First Cavatica project!
 
-The Kids-First DRP has partnered with Cavatica to bring easy and collaborative cloud computing to the Kids-Fisrt datasets.
+The Kids-First DRC has partnered with Cavatica to bring easy and collaborative cloud computing to the Kids-First datasets.
 
 Projects are the core building blocks of the Cavatica Platform. Each project corresponds to a distinct scientific investigation, serving as a container for its data, analysis pipelines, and results. Projects can be shared with designated project members.
 
