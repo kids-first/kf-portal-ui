@@ -38,8 +38,6 @@ import {
 } from '../userTypes';
 import { Nullable } from '../utilityTypes';
 
-import { deleteCavaticaSecret } from './cavatica';
-import { deleteAllFencesTokens } from './fenceConnections';
 import { deleteAllSaveQueriesFromRiffForUser } from './SavedQueries';
 
 const updateUserProfile = updateProfile(apiUser);
@@ -161,8 +159,6 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch, getState) =
     localStorage.removeItem(LOGIN_PROVIDER);
     localStorage.removeItem(SHOW_DELETE_ACCOUNT);
     addArrangerHeaders({ authorization: `` });
-    await dispatch(deleteCavaticaSecret());
-    await dispatch(deleteAllFencesTokens());
     await dispatch(logout());
     removeForumBanner();
     history.push(ROUTES.login);
@@ -205,7 +201,7 @@ export const fetchUserFromJwt = (validDecodedJwt: DecodedJwt): ThunkActionUser =
     dispatch(receiveUser(profile));
   } catch (error) {
     console.error(error);
-    dispatch(revertAcceptedTermsThenLogoutCleanly());
+    dispatch(cleanlyLogout());
   }
 };
 
