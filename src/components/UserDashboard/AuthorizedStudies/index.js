@@ -1,27 +1,28 @@
 import React from 'react';
 import Card from '@ferlab/ui/core/view/GridCard';
 import { Badge, Button } from 'antd';
-import { injectState } from 'freactal';
 import isEmpty from 'lodash/isEmpty';
-import { compose } from 'recompose';
 
-import { FENCES } from 'common/constants';
+import AccessGate from 'components/AccessGate';
 import useFenceConnections from 'hooks/useFenceConnections';
 import useFenceStudies from 'hooks/useFenceStudies';
+import useUser from 'hooks/useUser';
 import DownloadController from 'icons/DownloadController';
+import { AllFencesNames } from 'store/fenceTypes';
 
-import AccessGate from '../../AccessGate';
 import Info from '../Info';
 
 import StudiesConnected from './StudiesConnected';
 
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
-const AuthorizedStudies = compose(injectState)(({ loggedInUser, api }) => {
-  const { isFetchingAllFenceConnections, fenceConnections } = useFenceConnections(api, FENCES);
-  const { isFetchingAllFenceStudies, fenceAuthStudies } = useFenceStudies(api);
+const AuthorizedStudies = ({ api }) => {
+  const { user } = useUser();
+  const { loadingFences, fenceConnections } = useFenceConnections(api, AllFencesNames);
+  const { loadingStudiesForFences, fenceAuthStudies } = useFenceStudies(api);
 
-  const isLoadingData = isFetchingAllFenceConnections || isFetchingAllFenceStudies;
+  const isLoadingDataFromFencesOrStudies =
+    loadingFences.length > 0 || loadingStudiesForFences.length > 0;
   const hasNoFenceConnections = isEmpty(fenceConnections);
 
   return (
@@ -33,7 +34,7 @@ const AuthorizedStudies = compose(injectState)(({ loggedInUser, api }) => {
           <Badge count={fenceAuthStudies.length || 0} showZero={!hasNoFenceConnections} />
         </div>
       }
-      loading={isLoadingData}
+      loading={isLoadingDataFromFencesOrStudies}
     >
       {hasNoFenceConnections ? (
         <>
@@ -48,7 +49,7 @@ const AuthorizedStudies = compose(injectState)(({ loggedInUser, api }) => {
               </span>
             }
           >
-            <Button type={'primary'} shape={'round'} href={`/user/${loggedInUser._id}#settings`}>
+            <Button type={'primary'} shape={'round'} href={`/user/${user._id}#settings`}>
               SETTINGS
             </Button>
           </AccessGate>
@@ -60,10 +61,10 @@ const AuthorizedStudies = compose(injectState)(({ loggedInUser, api }) => {
           />
         </>
       ) : (
-        <StudiesConnected loggedInUser={loggedInUser} fenceAuthStudies={fenceAuthStudies} />
+        <StudiesConnected user={user} fenceAuthStudies={fenceAuthStudies} />
       )}
     </Card>
   );
-});
+};
 
 export default AuthorizedStudies;

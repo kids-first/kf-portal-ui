@@ -8,7 +8,7 @@ import ROUTES from 'common/routes';
 import { addToSqons } from 'common/sqonUtils';
 import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
-import { createQueryInCohortBuilder } from 'store/actionCreators/studyPage';
+import { createQueryInCohortBuilder } from 'store/actionCreators/virtualStudies';
 import {
   ClinVar,
   Consequence,

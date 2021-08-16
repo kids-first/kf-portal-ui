@@ -1,7 +1,7 @@
-import graphql from 'services/arranger';
 import { initializeApi } from 'services/api';
-import { Sqon } from '../store/sqon';
-import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from '../store/saveSetTypes';
+import graphql from 'services/arranger';
+import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from 'store/saveSetTypes';
+import { Sqon } from 'store/sqon';
 
 type CreateSetParams = {
   type: string;

@@ -3,11 +3,11 @@ export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred'
     ? error.message
     : defaultIfNone;
 
-export const isSelfInUrlWhenLoggedIn = (userIdFromUrl, loggedInUser) => {
-  if (!loggedInUser || Object.keys(loggedInUser).length === 0) {
+export const isSelfInUrlWhenLoggedIn = (userIdFromUrl, user) => {
+  if (!user || Object.keys(user).length === 0) {
     return true;
   }
-  return loggedInUser._id === userIdFromUrl;
+  return user._id === userIdFromUrl;
 };
 
 //#Source https://bit.ly/2neWfJ2

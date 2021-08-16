@@ -1,13 +1,15 @@
-import reducer from '../report';
 import { Action } from 'redux';
+
 import {
-  toggleLoading,
-  requestMessage,
-  failure,
   clearMessage,
+  failure,
   reInitializeState,
-} from '../../actionCreators/report';
-import { MessageType } from '../../reportTypes';
+  requestMessage,
+  toggleLoading,
+} from 'store/actionCreators/report';
+import { MessageType } from 'store/reportTypes';
+
+import reducer from '../report';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 

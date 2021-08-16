@@ -6,13 +6,13 @@ import intersection from 'lodash/intersection';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { DCF } from 'common/constants';
 import { arrangerProjectId } from 'common/injectGlobals';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { arrangerGqlRecompose } from 'services/arranger';
+import { FenceName } from 'store/fenceTypes';
 import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
@@ -23,7 +23,7 @@ import './customColumns.css';
 
 const FenceDownloadButton = ({ fence, kfId }) =>
   // DCF files currently aren't available to download, so we show tooltip and grey out button
-  fence === DCF ? (
+  fence === FenceName.dcf ? (
     <Tooltip
       position="bottom"
       interactive

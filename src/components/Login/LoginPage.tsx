@@ -1,41 +1,25 @@
-/* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-
-import Login from 'components/Login/Login';
-import SplashPage from 'components/SplashPage';
+import React from 'react';
 import { RightOutlined } from '@ant-design/icons';
 
-import './index.css';
-import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
-import { LoggedInUser } from 'store/userTypes';
 import ROUTES from 'common/routes';
-import { hasUserRole } from 'utils';
+import Login from 'components/Login/Login';
+import SplashPage from 'components/SplashPage';
+import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
+
+import './index.css';
 
 type OwnProps = {
   stealth: boolean;
 };
 
-type Props = OwnProps & RouteComponentProps;
+type Props = OwnProps;
 
-const LoginPage: FunctionComponent<Props> = ({ history, stealth = false }) => (
+const LoginPage = ({ stealth = false }: Props) => (
   <SplashPage
     stealth={stealth}
     title={stealth ? null : 'Log in'}
     mainTitle={'Kids First Data Resource Portal'}
-    content={
-      <Login
-        shouldNotRedirect={true}
-        onFinish={(user: LoggedInUser) => {
-          const showJoin = !hasUserRole(user);
-          if (showJoin) {
-            history.push(ROUTES.join);
-          } else {
-            history.push(ROUTES.termsConditions);
-          }
-        }}
-      />
-    }
+    content={<Login shouldNotRedirect={true} />}
     footerContent={
       stealth ? null : (
         <div className={'text-align-center'}>
@@ -50,4 +34,4 @@ const LoginPage: FunctionComponent<Props> = ({ history, stealth = false }) => (
   />
 );
 
-export default withRouter(LoginPage);
+export default LoginPage;

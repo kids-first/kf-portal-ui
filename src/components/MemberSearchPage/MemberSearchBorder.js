@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button, Col, Row, Typography } from 'antd';
-import './MemberSearchPage.css';
-import { getAllMembers } from 'services/members/search';
-import PropTypes from 'prop-types';
 import { DownloadOutlined } from '@ant-design/icons';
+import { Button, Col, Row, Typography } from 'antd';
+import PropTypes from 'prop-types';
+
+import { getAllMembers } from 'services/members/search';
+
+import './MemberSearchPage.css';
 
 const { Title } = Typography;
 
@@ -21,7 +23,7 @@ const MemberSearchBorder = (props) => (
             type={'primary'}
             icon={<DownloadOutlined />}
             style={{ marginBottom: 14 }}
-            onClick={() => getAllMembers(props.loggedInUserToken)}
+            onClick={() => getAllMembers(props.userToken)}
           >
             All Members
           </Button>
@@ -38,7 +40,7 @@ const MemberSearchBorder = (props) => (
 
 MemberSearchBorder.propTypes = {
   isAdmin: PropTypes.bool,
-  loggedInUserToken: PropTypes.string.isRequired,
+  userToken: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 

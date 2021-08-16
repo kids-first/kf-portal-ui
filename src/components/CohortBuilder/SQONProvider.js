@@ -1,21 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-import autobind from 'auto-bind-es5';
-import { parse as parseQueryString, stringify } from 'query-string';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import {
-  resolveSyntheticSqon,
   isReference,
+  resolveSyntheticSqon,
 } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+import autobind from 'auto-bind-es5';
+import PropTypes from 'prop-types';
+import { parse as parseQueryString, stringify } from 'query-string';
+import { compose } from 'recompose';
 
 import {
   loadSavedVirtualStudy,
+  resetVirtualStudy,
   setActiveSqonIndex,
   setSqons,
-  resetVirtualStudy,
-} from '../../store/actionCreators/virtualStudies';
+} from 'store/actionCreators/virtualStudies';
 
 class SQONProvider extends React.Component {
   constructor(props) {
@@ -25,6 +25,15 @@ class SQONProvider extends React.Component {
 
   static propTypes = {
     history: PropTypes.object.isRequired,
+    resetVirtualStudy: PropTypes.func,
+    loadSavedVirtualStudy: PropTypes.func,
+    virtualStudyId: PropTypes.string,
+    sqons: PropTypes.array,
+    activeIndex: PropTypes.number,
+    children: PropTypes.any,
+    setActiveSqonIndex: PropTypes.func,
+    setSqons: PropTypes.func,
+    sqonDictionary: PropTypes.any,
   };
 
   loadVirtualStudy(virtualStudyId) {
@@ -48,7 +57,6 @@ class SQONProvider extends React.Component {
     // add the id of the study to the url if it is not set, yet
     if (!urlVirtualStudyId && virtualStudyId) {
       this.setStudyInUrl(virtualStudyId);
-      return;
     }
   }
 
@@ -67,7 +75,6 @@ class SQONProvider extends React.Component {
     // update url when current virtual study change
     if (virtualStudyId !== prevVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
       this.setStudyInUrl(virtualStudyId);
-      return;
     }
   }
 

@@ -36,15 +36,15 @@ const NotConnected: FunctionComponent<PropsFromRedux> = ({
   openModal,
   closeModal,
 }) => {
+  const showConnectModal = openModalId === CAVATICA_CONNECT_MODAL_ID;
   const onClose = () => closeModal(CAVATICA_CONNECT_MODAL_ID);
 
   return (
     <>
-      <CavaticaConnectModal
-        isVisible={openModalId === CAVATICA_CONNECT_MODAL_ID}
-        onComplete={onClose}
-        onCancelCB={onClose}
-      />
+      {showConnectModal && (
+        <CavaticaConnectModal isVisible onComplete={onClose} onCancelCB={onClose} />
+      )}
+
       <AccessGate
         mt={'40px'}
         Icon={Cavatica}

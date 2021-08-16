@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Result, Spin } from 'antd';
-import { injectState } from 'freactal';
 import { compose, lifecycle, withState } from 'recompose';
 
 import CheckIcon from 'icons/CircleCheckIcon';
@@ -16,7 +15,6 @@ import CavaticaAddProject from './CavaticaAddProject';
 import './cavatica.css';
 
 const enhance = compose(
-  injectState,
   withState('isLoadingProjects', 'setIsLoadingProject', false),
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),

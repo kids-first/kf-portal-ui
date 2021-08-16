@@ -1,10 +1,13 @@
 import React from 'react';
-import { InfoCircleOutlined, EditTwoTone } from '@ant-design/icons';
+import { EditTwoTone, InfoCircleOutlined } from '@ant-design/icons';
 import { Avatar, Button, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
-import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
-import { computeGravatarSrcFromEmail } from 'utils';
+
 import ProfilePill from 'uikit/ProfilePill';
+import { computeGravatarSrcFromEmail } from 'utils';
+
+import { userProfileBackground } from './utils';
+
 import './style.css';
 
 const { Title, Text } = Typography;
@@ -75,7 +78,11 @@ const HeaderBanner = ({
           <span className={'hd-tooltip-wrapper'}>
             <Tooltip
               placement="topLeft"
-              title="When your profile is public, other members can see information about you that includes your bio, story, research interests and contact information."
+              title={
+                'When your profile is public,' +
+                ' other members can see information about you' +
+                ' that includes your bio, story, research interests and contact information.'
+              }
             >
               <InfoCircleOutlined style={{ color: 'white' }} />
             </Tooltip>
@@ -91,6 +98,7 @@ const HeaderBanner = ({
             defaultChecked
             onChange={onChangePrivacyStatusCb}
             checked={profile.isPublic}
+            disabled={!profile.isActive}
           />
           <Text className={'hd-text'}>Public</Text>
         </Row>

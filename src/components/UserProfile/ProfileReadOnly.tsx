@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Col, Divider, Row, Typography } from 'antd';
 
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
-import { LoggedInUser } from 'store/userTypes';
+import { ProfileTodo } from 'store/profileTypes';
 
 import CardNoDataReadOnly from './CardNoDataReadOnly';
 import ResearchInterest from './ResearchInterests';
@@ -11,16 +11,16 @@ import { makeCommonCardPropsReadOnly, showWhenHasDataOrCanEdit } from './utils';
 import './style.css';
 
 type Props = {
-  data: LoggedInUser;
+  data: ProfileTodo;
   canEdit: boolean;
   isProfileUpdating: boolean;
   onClickEditCb: () => void;
 };
 
-const hasInterests = (data: LoggedInUser) =>
+const hasInterests = (data: ProfileTodo) =>
   Array.isArray(data.interests) && data.interests.length > 0;
 
-const hasData = (data: LoggedInUser) => data.bio || data.story || hasInterests(data);
+const hasData = (data: ProfileTodo) => data.bio || data.story || hasInterests(data);
 
 const { Text, Paragraph } = Typography;
 

@@ -1,8 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
-import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
+import { AlignType } from 'rc-table/lib/interface';
+
+import participantMagenta from 'assets/icon-participants-magenta.svg';
+import {
+  createSetQueryInCohortBuilder,
+  deleteUserSets,
+  fetchSetsIfNeeded,
+} from 'store/actionCreators/saveSets';
 import { RootState } from 'store/rootState';
 import {
   DeleteSetParams,
@@ -12,22 +21,14 @@ import {
   SetInfo,
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
-import {
-  createQueryInCohortBuilder,
-  deleteUserSets,
-  fetchSetsIfNeeded,
-} from 'store/actionCreators/saveSets';
+import { User } from 'store/userTypes';
 
-import { AlignType } from 'rc-table/lib/interface';
+import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
 
 import './ParticipantSets.scss';
-import { LoggedInUser } from 'store/userTypes';
-import participantMagenta from 'assets/icon-participants-magenta.svg';
-import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
-import { Link } from 'react-router-dom';
 
 type OwnProps = {
-  user: LoggedInUser;
+  user: User;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -39,7 +40,7 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onClickParticipantsLink: (setId: string) => dispatch(createQueryInCohortBuilder(setId)),
+  onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
   fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
 });

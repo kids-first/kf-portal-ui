@@ -1,29 +1,26 @@
-/* eslint-disable react/prop-types */
-import React, { FunctionComponent, useState } from 'react';
-import { Steps, Button, Typography } from 'antd';
-import SplashPage from '../SplashPage';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import Login from './Login';
-import { LoggedInUser } from 'store/userTypes';
-import './join.css';
-// @ts-ignore
-import { compose } from 'recompose';
-import TermsConditionsAcceptButton from './TermsConditionsAcceptButton';
-import DeleteButton from '../loginButtons/DeleteButton';
-import TermsConditionsBody from './TermsConditionsBody';
-import RoleForm, { ROLE_FORM_NAME } from './RoleForm';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button, Steps, Typography } from 'antd';
 import isEmpty from 'lodash/isEmpty';
-import { InjectStateProps } from 'store/freactalStateTypes';
-// @ts-ignore
-import { injectState } from 'freactal';
-import ROUTES from 'common/routes';
+
+import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
+
+import ROUTES from '../../common/routes';
+import useUser from '../../hooks/useUser';
+import DeleteButton from '../loginButtons/DeleteButton';
+import SplashPage from '../SplashPage';
+
+import Login from './Login';
+import RoleForm, { ROLE_FORM_NAME } from './RoleForm';
+import TermsConditionsAcceptButton from './TermsConditionsAcceptButton';
+import TermsConditionsBody from './TermsConditionsBody';
+
+import './join.css';
 
 const { Step } = Steps;
 
 const { Paragraph, Title } = Typography;
-
-type Props = RouteComponentProps & InjectStateProps;
 
 enum JoinSteps {
   LOGIN,
@@ -32,7 +29,7 @@ enum JoinSteps {
 }
 
 // Avoid showing first step when refreshing from step 1 or 2;
-const computeInitialStep = (user: LoggedInUser) => {
+const computeInitialStep = (user: User | null) => {
   if (!user || isEmpty(user)) {
     return JoinSteps.LOGIN;
   }
@@ -42,10 +39,18 @@ const computeInitialStep = (user: LoggedInUser) => {
   return JoinSteps.TERMS;
 };
 
-const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) => {
-  const [current, setNextStep] = useState(computeInitialStep(loggedInUser));
-  //FIXME replace with redux props when freactal is removed
-  const [isSubmittingRoleForm, setIsSubmittingRoleForm] = useState(false);
+const Join = () => {
+  const history = useHistory();
+  const { user, isLoadingUser } = useUser();
+  const [current, setNextStep] = useState(computeInitialStep(user));
+
+  useEffect(() => {
+    const hasAlreadyJoinedButRoutedToThisPage = user && hasUserRole(user);
+    if (hasAlreadyJoinedButRoutedToThisPage) {
+      history.push(user!.acceptedTerms ? ROUTES.dashboard : ROUTES.termsConditions);
+    }
+  }, [history, user]);
+
   const next = () => setNextStep(current + 1);
   const prev = () => setNextStep(current - 1);
 
@@ -59,17 +64,7 @@ const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) =>
             Your information will be kept confidential and secure and is not shared with any of
             these providers.
           </Paragraph>
-          <Login
-            shouldNotRedirect={true}
-            onFinish={(user: LoggedInUser) => {
-              const showForm = !hasUserRole(user);
-              if (showForm) {
-                next();
-              } else {
-                history.push(ROUTES.termsConditions);
-              }
-            }}
-          />
+          <Login shouldNotRedirect={true} />
         </>
       ),
     },
@@ -80,10 +75,7 @@ const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) =>
           <Paragraph className={'step-basic-info-paragraph'}>
             Please provide information about yourself to help us personalize your experience.
           </Paragraph>
-          <RoleForm
-            submitExtraCB={() => next()}
-            setIsSubmittingRoleFormCB={setIsSubmittingRoleForm}
-          />
+          <RoleForm submitExtraCB={() => next()} />
         </>
       ),
       footer: (
@@ -94,7 +86,8 @@ const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) =>
           <div>
             <DeleteButton />
             <Button
-              loading={isSubmittingRoleForm}
+              loading={isLoadingUser}
+              disabled={isLoadingUser}
               className={'submit-btn'}
               type={'primary'}
               form={ROLE_FORM_NAME}
@@ -117,7 +110,7 @@ const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) =>
           </div>
           <div>
             <DeleteButton />
-            <TermsConditionsAcceptButton isNewUser={true} type={'primary'} />
+            <TermsConditionsAcceptButton isNewUser={true} />
           </div>
         </div>
       ),
@@ -142,4 +135,4 @@ const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) =>
   );
 };
 
-export default compose(injectState, withRouter)(Join);
+export default Join;

@@ -1,8 +1,9 @@
-import { setSqonArrangerCB } from '../store/sqon';
-import { resolvePtIdToKfId } from './participants';
-import { EntityName } from '../store/fileSearchFiltersTypes';
+import { EntityName } from 'store/fileSearchFiltersTypes';
+import { setSqonArrangerCB } from 'store/sqon';
+
 import { resolveBSIdToKfId } from './biospecimen';
 import { resolveFileIdToKfId } from './files';
+import { resolvePtIdToKfId } from './participants';
 
 type Params = {
   kfId: string;

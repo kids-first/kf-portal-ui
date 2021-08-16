@@ -1,12 +1,4 @@
-import {
-  RE_INITIALIZE_STATE,
-  CLEAR_MESSAGE,
-  FAILURE,
-  ReportActionTypes,
-  ReportState,
-  REQUEST_MESSAGE,
-  TOGGLE_LOADING,
-} from '../reportTypes';
+import { ReportActions, ReportActionTypes, ReportState } from '../reportTypes';
 
 const initialState: ReportState = {
   isLoading: false,
@@ -16,19 +8,19 @@ const initialState: ReportState = {
 
 export default (state = initialState, action: ReportActionTypes): ReportState => {
   switch (action.type) {
-    case TOGGLE_LOADING: {
+    case ReportActions.TOGGLE_LOADING: {
       return { ...state, isLoading: action.isLoading };
     }
-    case REQUEST_MESSAGE: {
+    case ReportActions.REQUEST_MESSAGE: {
       return { ...state, message: action.message };
     }
-    case FAILURE: {
+    case ReportActions.FAILURE: {
       return { ...initialState, error: action.error };
     }
-    case CLEAR_MESSAGE: {
+    case ReportActions.CLEAR_MESSAGE: {
       return { ...state, message: null };
     }
-    case RE_INITIALIZE_STATE: {
+    case ReportActions.RE_INITIALIZE_STATE: {
       return initialState;
     }
     default:

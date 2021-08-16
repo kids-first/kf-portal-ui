@@ -5,26 +5,29 @@ import { BarChartOutlined } from '@ant-design/icons';
 import { Arranger, CurrentSQON, Table } from '@kfarranger/components/dist/Arranger';
 import { replaceSQON } from '@kfarranger/components/dist/SQONView/utils';
 import { Button, Layout, Spin } from 'antd';
-import { injectState } from 'freactal';
 import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { FENCES } from 'common/constants';
 import { arrangerProjectId } from 'common/injectGlobals';
-import translateSQON from 'common/translateSQONValue';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import CavaticaCopyMultipleFilesModal from 'components/cavatica/CavaticaCopyMultipleFilesModal';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import SQONURL from 'components/SQONURL';
 import { FileRepoStatsQuery } from 'components/Stats';
+import useCavatica from 'hooks/useCavatica';
 import useFenceConnections from 'hooks/useFenceConnections';
+import useUser from 'hooks/useUser';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { closeModal, openModal } from 'store/actions/modal';
+import { AllFencesNames } from 'store/fenceTypes';
 import { selectModalId } from 'store/selectors/modal';
+import { selectUser } from 'store/selectors/users';
 import theme from 'theme/defaultTheme';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import Column from 'uikit/Column';
@@ -32,9 +35,6 @@ import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 import { Spinner } from 'uikit/Spinner';
 import Tooltip from 'uikit/Tooltip';
-
-import CavaticaConnectModal from '../cavatica/CavaticaConnectModal';
-import CavaticaCopyMultipleFilesModal from '../cavatica/CavaticaCopyMultipleFilesModal';
 
 import customTableColumns from './customTableColumns';
 import DownloadButton from './DownloadButton';
@@ -56,6 +56,7 @@ const CAVATICA_CONNECT_FILE_REPO_MODAL_ID = 'CAVATICA_CONNECT_FILE_REPO_MODAL_ID
 const CAVATICA_COPY_FILE_REPO_MODAL_ID = 'CAVATICA_COPY_FILE_REPO_MODAL_ID';
 
 const mapStateToProps = (state) => ({
+  user: selectUser(state),
   openModalId: selectModalId(state),
 });
 
@@ -66,37 +67,34 @@ const mapDispatchToProps = (dispatch) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-const enhance = compose(connector, injectState, withApi);
+const enhance = compose(connector, withApi);
 
 const FileRepo = ({
-  state,
-  effects,
   gen3User,
-  translateSQONValue = translateSQON({
-    sets: (state.loggedInUser || {}).sets || [],
-  }),
+  translateSQONValue = () => 'Uploaded List',
   userProjectIds = gen3User ? Object.keys(gen3User.projects) : [],
-  isConnectedToCavatica,
   openModalId,
   closeModal,
   openModal,
   ...props
 }) => {
+  const { user } = useUser();
+  const { isConnected: isConnectedToCavatica } = useCavatica();
   const {
     //needed in order to avoid rendering the main component on mount before fetching fences.
-    isCheckingIfFenceConnectionsFetchIsNeeded,
-    isFetchingAllFenceConnections,
+    loadingFences,
     fenceConnections,
     fencesAllAcls,
-  } = useFenceConnections(props.api, FENCES);
+  } = useFenceConnections(props.api, AllFencesNames);
 
-  if (isCheckingIfFenceConnectionsFetchIsNeeded || isFetchingAllFenceConnections) {
+  if (loadingFences.length > 0) {
     return <Spinner size={'large'} />;
   }
   return (
     <SQONURL
       render={(url) => (
         <ArrangerConnectionGuard
+          api={props.api}
           graphqlField={props.graphqlField}
           render={({ connecting, connectionError }) =>
             connecting || connectionError ? (
@@ -110,6 +108,7 @@ const FileRepo = ({
             ) : (
               <Arranger
                 {...props}
+                api={props.api}
                 projectId={arrangerProjectId}
                 render={(props) => {
                   const selectionSQON = props.selectedTableRows.length
@@ -147,14 +146,14 @@ const FileRepo = ({
                           onComplete={closeCopyCavaticaModal}
                           onCancel={closeCopyCavaticaModal}
                           sqon={selectionSQON}
-                          loggedInUser={state.loggedInUser}
+                          user={user}
                           fenceConnections={fenceConnections}
                           api={props.api}
                         />
                       )}
                       <Layout className="arranger-container">
                         <AggregationSidebar
-                          {...{ ...props, ...url, translateSQONValue, effects }}
+                          {...{ ...props, ...url, translateSQONValue }}
                           trackFileRepoInteraction={trackFileRepoInteraction}
                         />
                         <Column className="arranger-table-container">
@@ -163,6 +162,7 @@ const FileRepo = ({
                               {...props}
                               {...url}
                               {...{ translateSQONValue }}
+                              api={props.api}
                               onClear={() => {
                                 trackFileRepoInteraction({
                                   category: TRACKING_EVENTS.categories.fileRepo.dataTable,
@@ -180,6 +180,7 @@ const FileRepo = ({
                               <FileRepoStatsQuery
                                 {...props}
                                 {...url}
+                                api={props.api}
                                 render={({ data: stats, loading: disabled }) => (
                                   <Row className="querySharing-container">
                                     <SaveShareButtonContainer>
@@ -188,7 +189,7 @@ const FileRepo = ({
                                         url={url}
                                         stats={stats}
                                         disabled={!!disabled}
-                                        loggedInUser={state.loggedInUser}
+                                        user={user}
                                         sqon={url.sqon}
                                       />
                                     </SaveShareButtonContainer>
@@ -198,7 +199,7 @@ const FileRepo = ({
                                         url={url}
                                         stats={stats}
                                         disabled={!!disabled}
-                                        loggedInUser={state.loggedInUser}
+                                        user={user}
                                         sqon={url.sqon}
                                       />
                                     </SaveShareButtonContainer>
@@ -322,12 +323,9 @@ const FileRepo = ({
 };
 
 FileRepo.propTypes = {
-  state: PropTypes.object.isRequired,
-  effects: PropTypes.object.isRequired,
   gen3User: PropTypes.object,
   openModalId: PropTypes.string,
   userProjectIds: PropTypes.array,
-  isConnectedToCavatica: PropTypes.bool.isRequired,
   translateSQONValue: PropTypes.func,
   closeModal: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired,
@@ -335,6 +333,7 @@ FileRepo.propTypes = {
   selectedTableRows: PropTypes.array,
   api: PropTypes.func,
   onFilterChange: PropTypes.func,
+  user: PropTypes.object,
 };
 
 export default enhance(FileRepo);

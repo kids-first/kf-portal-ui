@@ -1,16 +1,17 @@
 import React from 'react';
-import { injectState } from 'freactal';
-import PropTypes from 'prop-types';
+import FBIcon from 'react-icons/lib/fa/facebook';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { Card, Typography } from 'antd';
-import { compose, setPropTypes } from 'recompose';
-import FBIcon from 'react-icons/lib/fa/facebook';
+import capitalize from 'lodash/capitalize';
+import PropTypes from 'prop-types';
+
+import gicon from 'assets/google-icon.png';
+import { FACEBOOK, GOOGLE, ORCID } from 'common/constants';
 import OrcidIcon from 'icons/OrcidIcon';
 
-import { FACEBOOK, GOOGLE, ORCID } from 'common/constants';
-import gicon from 'assets/google-icon.png';
+import useUser from '../../hooks/useUser';
+
 import './style.css';
-import capitalize from 'lodash/capitalize';
 
 const { Text } = Typography;
 
@@ -22,37 +23,29 @@ const icons = {
   [ORCID]: <OrcidIcon size={20} />,
 };
 
-const isConnectedWithKnownProvider = provider => KNOWN_PROVIDERS.includes(provider);
+const isConnectedWithKnownProvider = (provider) => KNOWN_PROVIDERS.includes(provider);
 
-const ConnectionProvider = props => {
-  const {
-    userEmail,
-    state: { loginProvider },
-  } = props;
+const ConnectionProvider = (props) => {
+  const { userEmail } = props;
 
+  const { loginProvider } = useUser();
   if (!isConnectedWithKnownProvider(loginProvider)) {
     return null;
   }
   return (
     <Card className={'card'}>
-      <React.Fragment>
+      <>
         <CheckCircleTwoTone twoToneColor="#52c41a" />
         <Text> {`You are connected with ${capitalize(loginProvider)}`} </Text>
         {icons[loginProvider]}
         <Text> {` using this email address : ${userEmail}`} </Text>
-      </React.Fragment>
+      </>
     </Card>
   );
 };
 
-const Enhanced = compose(
-  injectState,
-  setPropTypes({
-    state: PropTypes.shape({
-      loginProvider: PropTypes.string,
-    }).isRequired,
-    userEmail: PropTypes.string.isRequired,
-  }),
-)(ConnectionProvider);
+ConnectionProvider.propTypes = {
+  userEmail: PropTypes.string.isRequired,
+};
 
-export default Enhanced;
+export default ConnectionProvider;

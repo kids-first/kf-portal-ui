@@ -4,10 +4,10 @@ import { Alert, Button, Modal, notification, Spin, Typography } from 'antd';
 import flatten from 'lodash/flatten';
 import PropTypes from 'prop-types';
 
-import { FENCES } from 'common/constants';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { graphql } from 'services/arranger';
 import { getUserStudyPermission } from 'services/fileAccessControl';
+import { AllFencesNames } from 'store/fenceTypes';
 
 import LoadingOnClick from '../LoadingOnClick';
 
@@ -18,6 +18,8 @@ import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificatio
 
 import './cavatica.css';
 import './CavaticaCopyMultipleFilesModal.css';
+
+const SHOW_SUCCESS_DURATION_IN_SEC = 10;
 
 const { Text, Paragraph } = Typography;
 
@@ -37,6 +39,8 @@ const getSqonOrDefault = (
     content: [],
   },
 ) => sqon || defaultVal;
+
+const SHOW_UNTIL_MANUALLY_CLOSED = 0;
 
 class CavaticaCopyMultipleFilesModal extends React.Component {
   state = {
@@ -58,7 +62,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     fenceConnections: PropTypes.object,
-    loggedInUser: PropTypes.object,
+    user: PropTypes.object,
   };
 
   async componentDidMount() {
@@ -95,7 +99,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     // Authorized files needs to be broken down by repository, so lets dig deeper
     const authFiles = {};
     const fencePromises = [];
-    FENCES.forEach((fence) => {
+    AllFencesNames.forEach((fence) => {
       const fenceSqon = {
         op: 'and',
         content: [
@@ -145,7 +149,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
   }
 
   render() {
-    const { onComplete, onCancel, loggedInUser, fenceConnections } = this.props;
+    const { onComplete, onCancel, user, fenceConnections } = this.props;
 
     const {
       addingProject,
@@ -190,13 +194,13 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                     description:
                       `Some files could not be copied` +
                       ` (${numOfIdsCopied} file(s) copied out of ${numOfIdsToBeCopied})`,
-                    duration: 0,
+                    duration: SHOW_UNTIL_MANUALLY_CLOSED,
                   });
                 } else {
                   notification.success({
                     message: 'Success',
                     description: CavaticaSuccessNotificationContent({ selectedProjectData }),
-                    duration: 10,
+                    duration: SHOW_SUCCESS_DURATION_IN_SEC,
                   });
                 }
 
@@ -215,7 +219,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                 notification.error({
                   message: 'Error',
                   description: 'An error occurred. Please try again or contact our support.',
-                  duration: 0,
+                  duration: SHOW_UNTIL_MANUALLY_CLOSED,
                 });
               } finally {
                 onComplete();
@@ -252,7 +256,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                   {!hasFenceConnection && (
                     <Paragraph>
                       Please{' '}
-                      <Link to={`/user/${loggedInUser.egoId}#settings`} onClick={onCancel}>
+                      <Link to={`/user/${user.egoId}#settings`} onClick={onCancel}>
                         connect to data repositories
                       </Link>{' '}
                       to lookup which files you are authorized to copy.

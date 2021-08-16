@@ -1,17 +1,19 @@
 /* eslint-disable react/prop-types */
-import { deleteVirtualStudy, cleanError } from 'store/actionCreators/virtualStudies';
+import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { Button, Modal } from 'antd';
+
+import { cleanError, deleteVirtualStudy } from 'store/actionCreators/virtualStudies';
 import { RootState } from 'store/rootState';
-import React, { FunctionComponent, useEffect } from 'react';
-import { Modal, Button } from 'antd';
 import { selectCurrentVSError, selectICurrentVSLoading } from 'store/selectors/currentStudy';
+import { selectUser } from 'store/selectors/users';
+import { User } from 'store/userTypes';
 import { VirtualStudy } from 'store/virtualStudiesTypes';
-import { selectLoggedInUser } from 'store/selectors/users';
 
 const mapState = (state: RootState) => ({
   isLoading: selectICurrentVSLoading(state),
   error: selectCurrentVSError(state),
-  loggedInUser: selectLoggedInUser(state),
+  user: selectUser(state) as User,
 });
 
 const mapDispatch = {
@@ -30,16 +32,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & OwnProps;
 
-const ConfirmDelVirtualStudy: FunctionComponent<Props> = (props) => {
-  const {
-    isLoading,
-    error,
-    cleanError,
-    onCloseCb,
-    deleteVirtualStudy,
-    virtualStudy,
-    loggedInUser,
-  } = props;
+const ConfirmDelVirtualStudy = (props: Props) => {
+  const { isLoading, error, cleanError, onCloseCb, deleteVirtualStudy, virtualStudy, user } = props;
 
   useEffect(() => {
     if (error) {
@@ -79,7 +73,7 @@ const ConfirmDelVirtualStudy: FunctionComponent<Props> = (props) => {
           loading={isLoading}
           onClick={async () => {
             const { virtualStudyId } = virtualStudy;
-            await deleteVirtualStudy({ virtualStudyId, loggedInUser });
+            await deleteVirtualStudy({ virtualStudyId, user });
             onCloseCb();
           }}
         >
