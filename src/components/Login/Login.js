@@ -92,7 +92,8 @@ const Component = (props) => {
     if ((response || {}).status === 200) {
       const rawJwt = response.data;
       manageUserTokenWithLoader(rawJwt, provider, () => {
-        setIsHandlingToken(false);
+        // Note: no need to use setIsHandlingToken(false);
+        // When changing page this component (login) will unmount.
         history.push(ROUTES.dashboard);
       });
       await trackUserSignIn(provider);

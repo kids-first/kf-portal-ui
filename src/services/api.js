@@ -4,7 +4,6 @@ import urlJoin from 'url-join';
 import { arrangerApiRoot } from 'common/injectGlobals';
 import { store } from 'store';
 
-import { EGO_JWT_KEY } from '../common/constants';
 import { cleanlyLogout } from '../store/actionCreators/user';
 
 import ajax from './ajax';
@@ -64,9 +63,7 @@ export const withApi = (WrappedComponent) => (props) => (
 );
 
 export const onUnauthorizedWhenTokenInLs = async () => {
-  if (localStorage.getItem(EGO_JWT_KEY)) {
-    await store.dispatch(cleanlyLogout());
-  }
+  await store.dispatch(cleanlyLogout());
 };
 
 export const apiUser = initializeApi({
