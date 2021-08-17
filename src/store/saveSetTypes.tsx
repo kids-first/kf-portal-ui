@@ -1,20 +1,23 @@
 import { ThunkDispatch } from 'redux-thunk';
-import { Sqon } from './sqon';
-import { RootState } from './rootState';
 
-export const TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET';
-export const FAILURE_CREATE = 'FAILURE_CREATE_SAVE_SETS';
-export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_SAVE_SET';
-export const TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS';
-export const USER_SAVE_SETS = 'USER_SAVE_SETS';
-export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
-export const TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS';
-export const TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET';
-export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
-export const EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG';
-export const CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST';
-export const DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST';
-export const ADD_SET_TO_CURRENT_QUERY = 'ADD_SET_TO_CURRENT_QUERY';
+import { RootState } from './rootState';
+import { Sqon } from './sqon';
+
+export enum SetsActions {
+  TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET',
+  FAILURE_CREATE = 'FAILURE_CREATE_SAVE_SETS',
+  RE_INITIALIZE_STATE = 'RE_INITIALIZE_SAVE_SET',
+  TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS',
+  USER_SAVE_SETS = 'USER_SAVE_SETS',
+  FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS',
+  TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS',
+  TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET',
+  REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS',
+  EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG',
+  CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST',
+  DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST',
+  ADD_SET_TO_CURRENT_QUERY = 'ADD_SET_TO_CURRENT_QUERY',
+}
 
 export type SetInfo = {
   key: string;
@@ -35,61 +38,61 @@ export type AddRemoveSetParams = {
 };
 
 interface TogglePendingCreate {
-  type: typeof TOGGLE_PENDING_CREATE;
+  type: SetsActions.TOGGLE_PENDING_CREATE;
   isPending: boolean;
 }
 
 interface FailureCreate {
-  type: typeof FAILURE_CREATE;
+  type: SetsActions.FAILURE_CREATE;
   error: Error | null;
 }
 
 interface ReInitializedState {
-  type: typeof RE_INITIALIZE_STATE;
+  type: SetsActions.RE_INITIALIZE_STATE;
 }
 
 interface IsLoadingSaveSets {
-  type: typeof TOGGLE_LOADING_SAVE_SETS;
+  type: SetsActions.TOGGLE_LOADING_SAVE_SETS;
   isLoading: boolean;
 }
 
 interface DisplayUserSaveSets {
-  type: typeof USER_SAVE_SETS;
+  type: SetsActions.USER_SAVE_SETS;
   payload: UserSet[];
 }
 
 interface FailureLoadSaveSets {
-  type: typeof FAILURE_LOAD_SAVE_SETS;
+  type: SetsActions.FAILURE_LOAD_SAVE_SETS;
   error: Error | null;
 }
 
 interface IsDeletingSaveSets {
-  type: typeof TOGGLE_IS_DELETING_SAVE_SETS;
+  type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS;
   isDeleting: boolean;
 }
 
 interface isAddingOrRemovingToSet {
-  type: typeof TOGGLE_IS_ADD_DELETE_TO_SET;
+  type: SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET;
   isEditing: boolean;
 }
 
 interface RemoveUserSets {
-  type: typeof REMOVE_USER_SAVE_SETS;
+  type: SetsActions.REMOVE_USER_SAVE_SETS;
   sets: string[];
 }
 
 interface EditSetTag {
-  type: typeof EDIT_SAVE_SET_TAG;
+  type: SetsActions.EDIT_SAVE_SET_TAG;
   set: SetInfo;
 }
 
 interface CreateQueryInCohortBuilder {
-  type: typeof CREATE_SET_QUERY_REQUEST;
+  type: SetsActions.CREATE_SET_QUERY_REQUEST;
   setId: string;
 }
 
 interface AddSetToCurrentQuery {
-  type: typeof ADD_SET_TO_CURRENT_QUERY;
+  type: SetsActions.ADD_SET_TO_CURRENT_QUERY;
   setId: string;
 }
 

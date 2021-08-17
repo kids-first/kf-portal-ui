@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 
 import { withApi } from 'services/api';
-import { participantsQuery, SORTABLE_FIELDS_MAPPING } from './queries';
 
 import QueriesResolver from '../QueriesResolver';
+
 import ParticipantsTable from './ParticipantsTable';
+import { participantsQuery, SORTABLE_FIELDS_MAPPING } from './queries';
 import TableErrorView from './TableErrorView';
 
 import './index.scss';
@@ -24,7 +25,6 @@ const ParticipantsTableView = ({
   setAllRowsSelected,
   sort,
   setSort,
-  loggedInUser,
 }) => (
   <QueriesResolver
     name="GQL_PARTICIPANTS_TABLE"
@@ -92,7 +92,6 @@ const ParticipantsTableView = ({
           }}
           selectedRows={selectedRows}
           allRowsSelected={allRowsSelected}
-          loggedInUser={loggedInUser}
         />
       );
     }}
@@ -101,7 +100,6 @@ const ParticipantsTableView = ({
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
-  loggedInUser: PropTypes.object,
 };
 
 export default compose(

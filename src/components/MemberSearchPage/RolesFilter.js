@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
+
+import { ROLES } from 'common/constants';
 import {
+  fetchListOfMembers,
   requestCurrentPageUpdate,
   requestRolesFilterUpdate,
-} from 'components/MemberSearchPage/actions';
-import { ROLES } from 'common/constants';
-import PropTypes from 'prop-types';
+} from 'store/actionCreators/members';
+
+import {
+  selectAdminOptionsFilter,
+  selectCounts,
+  selectCurrentPage,
+  selectInterestsFilter,
+  selectMembersPerPage,
+  selectQueryString,
+  selectRolesFilter,
+} from '../../store/selectors/members';
+
 import FilterContainer from './FilterContainer';
 
-const getKeyDisplayNames = originalObjectFromES =>
+const getKeyDisplayNames = (originalObjectFromES) =>
   Object.entries(originalObjectFromES).reduce((acc, [keyEs]) => {
-    const translation = ROLES.find(r => r.type === keyEs);
+    const translation = ROLES.find((r) => r.type === keyEs);
     if (translation) {
       return {
         ...acc,
@@ -67,22 +79,22 @@ class RolesFilter extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  count: state.ui.memberSearchPageReducer.count,
-  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
-  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
-  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
-  queryString: state.ui.memberSearchPageReducer.queryString,
-  currentPage: state.ui.memberSearchPageReducer.currentPage,
-  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
+const mapStateToProps = (state) => ({
+  count: selectCounts(state),
+  rolesFilter: selectRolesFilter(state),
+  interestsFilter: selectInterestsFilter(state),
+  adminOptionsFilter: selectAdminOptionsFilter(state),
+  queryString: selectQueryString(state),
+  currentPage: selectCurrentPage(state),
+  membersPerPage: selectMembersPerPage(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchListOfMembers: fetchListOfMembersAction,
-      updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
-      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
+      fetchListOfMembers: fetchListOfMembers,
+      updateRolesFilter: (roleFilter) => dispatch(requestRolesFilterUpdate(roleFilter)),
+      currentPageUpdate: (currentPage) => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );

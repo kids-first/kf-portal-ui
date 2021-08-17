@@ -7,26 +7,10 @@ import {
   isDefaultSqon,
 } from 'common/sqonUtils';
 import { addFieldToActiveQuery } from 'common/sqonUtils';
+import { SetsActions } from 'store/saveSetTypes';
+import { UserActions } from 'store/userTypes';
 
-import {
-  ADD_TERM_TO_CURRENT_VIRTUAL_STUDY,
-  LOGOUT,
-  SET_ACTIVE_INDEX,
-  SET_SQONS,
-  SET_VIRTUAL_STUDY_ID,
-  VIRTUAL_STUDY_CLEAN_ERROR,
-  VIRTUAL_STUDY_DELETE_FAILURE,
-  VIRTUAL_STUDY_DELETE_REQUESTED,
-  VIRTUAL_STUDY_DELETE_SUCCESS,
-  VIRTUAL_STUDY_LOAD_FAILURE,
-  VIRTUAL_STUDY_LOAD_REQUESTED,
-  VIRTUAL_STUDY_LOAD_SUCCESS,
-  VIRTUAL_STUDY_RESET,
-  VIRTUAL_STUDY_SAVE_FAILURE,
-  VIRTUAL_STUDY_SAVE_REQUESTED,
-  VIRTUAL_STUDY_SAVE_SUCCESS,
-} from '../actionTypes';
-import { ADD_SET_TO_CURRENT_QUERY, CREATE_SET_QUERY_REQUEST } from '../saveSetTypes';
+import { VirtualStudiesActions } from '../virtualStudiesTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
@@ -59,83 +43,83 @@ const resetState = (diff = {}) => {
 export default (state = initialState, action) => {
   const setState = currySetState(state);
   switch (action.type) {
-    case VIRTUAL_STUDY_LOAD_REQUESTED:
+    case VirtualStudiesActions.VIRTUAL_STUDY_LOAD_REQUESTED:
       return resetState({
         isLoading: true,
       });
-    case VIRTUAL_STUDY_LOAD_SUCCESS:
+    case VirtualStudiesActions.VIRTUAL_STUDY_LOAD_SUCCESS:
       return resetState({
         ...action.payload,
         isLoading: false,
       });
-    case VIRTUAL_STUDY_LOAD_FAILURE:
+    case VirtualStudiesActions.VIRTUAL_STUDY_LOAD_FAILURE:
       return setState({
         error: action.payload,
         isLoading: false,
       });
 
-    case VIRTUAL_STUDY_RESET:
+    case VirtualStudiesActions.VIRTUAL_STUDY_RESET:
       return resetState();
 
-    case VIRTUAL_STUDY_SAVE_REQUESTED:
+    case VirtualStudiesActions.VIRTUAL_STUDY_SAVE_REQUESTED:
       return state;
-    case VIRTUAL_STUDY_SAVE_SUCCESS:
+    case VirtualStudiesActions.VIRTUAL_STUDY_SAVE_SUCCESS:
       return setState({
         ...action.payload,
         dirty: false,
         areSqonsEmpty: false,
       });
-    case VIRTUAL_STUDY_SAVE_FAILURE:
+    case VirtualStudiesActions.VIRTUAL_STUDY_SAVE_FAILURE:
       return setState({
         error: action.payload,
       });
 
-    case VIRTUAL_STUDY_DELETE_REQUESTED:
+    case VirtualStudiesActions.VIRTUAL_STUDY_DELETE_REQUESTED:
       return setState({
         isLoading: true,
       });
-    case VIRTUAL_STUDY_DELETE_SUCCESS:
+    case VirtualStudiesActions.VIRTUAL_STUDY_DELETE_SUCCESS:
       return resetState();
-    case VIRTUAL_STUDY_DELETE_FAILURE:
+    case VirtualStudiesActions.VIRTUAL_STUDY_DELETE_FAILURE:
       return setState({
         error: action.payload,
         isLoading: false,
       });
 
-    case SET_ACTIVE_INDEX:
+    case VirtualStudiesActions.SET_ACTIVE_INDEX:
       return setState({
         dirty: true,
         activeIndex: action.payload,
       });
 
-    case SET_SQONS:
+    case VirtualStudiesActions.SET_SQONS:
       return setState({
         dirty: true,
         sqons: action.payload,
       });
 
-    case SET_VIRTUAL_STUDY_ID:
+    case VirtualStudiesActions.SET_VIRTUAL_STUDY_ID:
       return setState({
         dirty: true,
         virtualStudyId: action.payload,
       });
 
-    case CREATE_SET_QUERY_REQUEST: {
+    case SetsActions.CREATE_SET_QUERY_REQUEST: {
       const newSqons = createNewQueryFromSetId(action.setId, state.sqons);
       return setState({
         sqons: newSqons,
         activeIndex: newSqons.length - 1,
       });
     }
-    case LOGOUT:
+    case UserActions.logout:
       return cloneDeep(initialState);
 
-    case VIRTUAL_STUDY_CLEAN_ERROR:
+    case VirtualStudiesActions.VIRTUAL_STUDY_CLEAN_ERROR:
       return setState({
         error: null,
       });
 
-    case ADD_SET_TO_CURRENT_QUERY: {
+    case SetsActions.ADD_SET_TO_CURRENT_QUERY: {
       const { activeIndex, sqons } = state;
       const newSqons = addSetToActiveQuery({
         setId: action.setId,
@@ -145,7 +129,7 @@ export default (state = initialState, action) => {
       return setState({ sqons: newSqons, activeIndex });
     }
 
-    case ADD_TERM_TO_CURRENT_VIRTUAL_STUDY: {
+    case VirtualStudiesActions.ADD_TERM_TO_CURRENT_VIRTUAL_STUDY: {
       const { activeIndex, sqons } = state;
       const newSqons = addFieldToActiveQuery({
         term: action.payload.term,

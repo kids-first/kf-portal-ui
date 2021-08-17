@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { notification } from 'antd';
+import PropTypes from 'prop-types';
 import { compose } from 'redux';
+
+import HeaderBanner from 'components/UserProfile/HeaderBanner';
+import { cleanProfileErrors, toggleIsActive, toggleIsPublic } from 'store/actionCreators/profile';
 import {
   selectErrorIsToggleProfileStatus,
   selectIsLoadingProfileStatus,
   selectProfile,
-} from '../../store/selectors/users';
-import { cleanErrors, toggleIsActive, toggleIsPublic } from '../../store/actionCreators/user';
-import HeaderBanner from 'components/UserProfile/HeaderBanner';
-import { notification } from 'antd';
+} from 'store/selectors/profile';
+
 import { getMsgFromAccessError } from './utils';
 
-const HeaderBannerContainer = props => {
+const HeaderBannerContainer = (props) => {
   const {
     isLoading,
     error,
@@ -25,12 +27,6 @@ const HeaderBannerContainer = props => {
   } = props;
   useEffect(() => {
     if (error) {
-      /**
-       * FIXME:
-       *  This notification should not be the responsibility of this component.
-       *  When a global notification system will be implemented remove this effect from this component
-       *  and let it manage this notification.
-       * */
       notification.error({
         message: 'Error',
         description: getMsgFromAccessError(error, 'An error occurred while updating the profile'),
@@ -75,18 +71,16 @@ HeaderBannerContainer.propTypes = {
   onCleanErrors: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   profile: selectProfile(state),
   isLoading: selectIsLoadingProfileStatus(state),
   error: selectErrorIsToggleProfileStatus(state),
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onToggleIsPublic: profile => dispatch(toggleIsPublic(profile)),
-    onToggleIsActive: profile => dispatch(toggleIsActive(profile)),
-    onCleanErrors: () => dispatch(cleanErrors()),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  onToggleIsPublic: (profile) => dispatch(toggleIsPublic(profile)),
+  onToggleIsActive: (profile) => dispatch(toggleIsActive(profile)),
+  onCleanErrors: () => dispatch(cleanProfileErrors()),
+});
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(HeaderBannerContainer);

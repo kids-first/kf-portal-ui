@@ -1,13 +1,16 @@
 import React from 'react';
-import sqonToName from 'common/sqonToName';
-import shortenApi from './shortenApi';
-import { Button, Modal, notification } from 'antd';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import './LoadShareSaveDeleteQuery.css';
-import { SaveOutlined } from '@ant-design/icons';
-import PropTypes from 'prop-types';
-import { Input, Typography } from 'antd';
 import { withRouter } from 'react-router-dom';
+import { SaveOutlined } from '@ant-design/icons';
+import { Button, Modal, notification } from 'antd';
+import { Input, Typography } from 'antd';
+import PropTypes from 'prop-types';
+
+import sqonToName from 'common/sqonToName';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+
+import shortenApi from './shortenApi';
+
+import './LoadShareSaveDeleteQuery.css';
 
 const { Text } = Typography;
 
@@ -21,7 +24,7 @@ class SaveQuery extends React.Component {
 
   static propTypes = {
     stats: PropTypes.object,
-    loggedInUser: PropTypes.object,
+    user: PropTypes.object,
     disabled: PropTypes.bool,
     sqon: PropTypes.object,
     api: PropTypes.func.isRequired,
@@ -40,7 +43,7 @@ class SaveQuery extends React.Component {
   onOpenModal = () => this.setState({ openModal: true });
 
   save = async () => {
-    const { stats, sqon, api, loggedInUser, history } = this.props;
+    const { stats, sqon, api, user, history } = this.props;
     const { queryName } = this.state;
 
     this.setState({ loading: true });
@@ -49,7 +52,7 @@ class SaveQuery extends React.Component {
         stats,
         sqon,
         queryName,
-        loggedInUser,
+        user,
         api,
         sharedPublicly: false,
       });
@@ -105,10 +108,10 @@ class SaveQuery extends React.Component {
   onChange = (e) => this.setState({ queryName: e.target.value });
 
   render() {
-    const { disabled, loggedInUser } = this.props;
+    const { disabled, user } = this.props;
     const { openModal, loading, queryName } = this.state;
 
-    if (!loggedInUser) {
+    if (!user) {
       return null;
     }
 

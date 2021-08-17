@@ -8,6 +8,7 @@ import {
   SavedQueriesStatuses,
   SplitSavedQueries,
 } from '../SavedQueriesTypes';
+import { LogoutAction, UserActions } from '../userTypes';
 
 const initialState: SavedQueriesState = {
   isLoadingAllQueries: false,
@@ -25,7 +26,10 @@ const removeGivenQueryFromQueries = (
   return { [QueryType.file]: fileQueries, [QueryType.cohort]: cohortQueries };
 };
 
-export default (state = initialState, action: SavedQueriesActionTypes): SavedQueriesState => {
+export default (
+  state = initialState,
+  action: SavedQueriesActionTypes | LogoutAction,
+): SavedQueriesState => {
   switch (action.type) {
     case SavedQueriesActions.toggleFetchAllSavedQueries: {
       return { ...state, isLoadingAllQueries: action.isLoadingAllQueries };
@@ -64,6 +68,9 @@ export default (state = initialState, action: SavedQueriesActionTypes): SavedQue
           [action.queryId]: SavedQueriesStatuses.error,
         },
       };
+    }
+    case UserActions.logout: {
+      return { ...initialState };
     }
     default:
       return state;

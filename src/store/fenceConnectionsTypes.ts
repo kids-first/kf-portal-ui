@@ -1,5 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 
+import { ConnectionStatus } from './connectionTypes';
 import { FenceName } from './fenceTypes';
 import { RootState } from './rootState';
 import { Nullable } from './utilityTypes';
@@ -29,7 +30,7 @@ export type Connection = {
   username: string;
 };
 
-export type FenceConnections = { [fenceName: string]: Connection };
+export type FenceConnections = { [FenceName.gen3]?: Connection; [FenceName.dcf]?: Connection };
 
 export enum FenceConnectionsActions {
   requestFetchFenceConnections = 'requestFetchFenceConnections',
@@ -41,7 +42,47 @@ export enum FenceConnectionsActions {
   fetchFenceStudies = 'fetchFenceStudies',
   failureFetchingFenceStudies = 'failureFetchingFenceStudies',
   removeFenceConnection = 'removeFenceConnection',
+  removeAllFencesConnection = 'removeAllFencesConnection',
+  addConnectionStatus = 'addFenceConnectionStatus',
+  removeConnectionStatus = 'removeConnectionStatus',
+  toggleIsFetchingOneFenceConnection = 'toggleIsFetchingOneFenceConnection',
+  addFenceConnectError = 'addFenceConnectError',
+  removeFenceConnectError = 'removeFenceConnectError',
+  addFenceDisconnectError = 'addFenceDisconnectError',
+  removeFenceDisconnectError = 'removeFenceDisconnectError',
 }
+
+export type AddFenceConnectError = {
+  type: FenceConnectionsActions.addFenceConnectError;
+  fenceName: FenceName;
+};
+
+export type RemoveFenceConnectError = {
+  type: FenceConnectionsActions.removeFenceConnectError;
+  fenceName: FenceName;
+};
+
+export type AddFenceDisconnectError = {
+  type: FenceConnectionsActions.addFenceDisconnectError;
+  fenceName: FenceName;
+};
+
+export type RemoveFenceDisconnectError = {
+  type: FenceConnectionsActions.removeFenceDisconnectError;
+  fenceName: FenceName;
+};
+
+export type ToggleIsFetchingOneFenceConnectionsAction = {
+  type: FenceConnectionsActions.toggleIsFetchingOneFenceConnection;
+  isLoading: boolean;
+  fenceName: FenceName;
+};
+
+export type AddConnectionStatusAction = {
+  type: FenceConnectionsActions.addConnectionStatus;
+  fenceName: FenceName;
+  newStatus: ConnectionStatus;
+};
 
 export type RequestFetchFenceStudiesAction = {
   type: FenceConnectionsActions.requestFetchFenceStudies;
@@ -74,14 +115,32 @@ export type FetchFenceConnectionsAction = {
   type: FenceConnectionsActions.fetchFenceConnections;
 };
 
-export type FenceConnectionsState = {
-  fenceConnections: { [fenceName: string]: Connection };
-  isFetchingAllFenceConnections: boolean;
-};
-
 export type RemoveFenceConnection = {
   type: FenceConnectionsActions.removeFenceConnection;
   fenceName: FenceName;
+};
+
+export type RemoveAllFencesConnection = {
+  type: FenceConnectionsActions.removeAllFencesConnection;
+};
+
+export type FenceConnectionsState = {
+  fenceConnections: FenceConnections;
+  statuses: { [FenceName.gen3]: ConnectionStatus; [FenceName.dcf]: ConnectionStatus };
+  loadingFences: FenceName[];
+  fencesConnectError: FenceName[];
+  fencesDisConnectError: FenceName[];
+};
+
+export const fenceConnectionsInitialState: FenceConnectionsState = {
+  fenceConnections: {},
+  statuses: {
+    [FenceName.gen3]: ConnectionStatus.unknown,
+    [FenceName.dcf]: ConnectionStatus.unknown,
+  },
+  loadingFences: [],
+  fencesConnectError: [],
+  fencesDisConnectError: [],
 };
 
 export type FenceConnectionsActionTypes =
@@ -92,6 +151,13 @@ export type FenceConnectionsActionTypes =
   | RequestFetchFenceStudiesAction
   | FetchFenceStudiesAction
   | FailureFetchingFenceStudiesAction
-  | RemoveFenceConnection;
+  | RemoveFenceConnection
+  | RemoveAllFencesConnection
+  | AddConnectionStatusAction
+  | ToggleIsFetchingOneFenceConnectionsAction
+  | AddFenceConnectError
+  | RemoveFenceConnectError
+  | AddFenceDisconnectError
+  | RemoveFenceDisconnectError;
 
 export type DispatchFenceConnections = ThunkDispatch<RootState, null, FenceConnectionsActionTypes>;

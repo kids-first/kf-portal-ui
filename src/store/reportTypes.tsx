@@ -1,12 +1,15 @@
-import { Sqon } from './sqon';
 import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from './rootState';
 
-export const TOGGLE_LOADING = 'TOGGLE_LOADING_RP';
-export const REQUEST_MESSAGE = 'REQUEST_MESSAGE_RP';
-export const FAILURE = 'FAILURE_RP';
-export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_RP';
-export const CLEAR_MESSAGE = 'CLEAR_MESSAGE_RP';
+import { RootState } from './rootState';
+import { Sqon } from './sqon';
+
+export enum ReportActions {
+  TOGGLE_LOADING = 'TOGGLE_LOADING_RP',
+  REQUEST_MESSAGE = 'REQUEST_MESSAGE_RP',
+  FAILURE = 'FAILURE_RP',
+  RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_RP',
+  CLEAR_MESSAGE = 'CLEAR_MESSAGE_RP',
+}
 
 export enum MessageType {
   INFO = 'info',
@@ -32,25 +35,25 @@ export interface ReportConfig {
 }
 
 interface RequestMessage {
-  type: typeof REQUEST_MESSAGE;
+  type: ReportActions.REQUEST_MESSAGE;
   message: Message | null;
 }
 
 interface Failure {
-  type: typeof FAILURE;
+  type: ReportActions.FAILURE;
   error: Error | null;
 }
 
 interface ReInitializedState {
-  type: typeof RE_INITIALIZE_STATE;
+  type: ReportActions.RE_INITIALIZE_STATE;
 }
 
 interface ClearMessage {
-  type: typeof CLEAR_MESSAGE;
+  type: ReportActions.CLEAR_MESSAGE;
 }
 
 interface ToggleLoading {
-  type: typeof TOGGLE_LOADING;
+  type: ReportActions.TOGGLE_LOADING;
   isLoading: boolean;
 }
 

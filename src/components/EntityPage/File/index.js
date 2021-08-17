@@ -6,10 +6,12 @@ import get from 'lodash/get';
 import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
 
-import { FENCES } from 'common/constants';
 import { kfWebRoot } from 'common/injectGlobals';
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import CavaticaCopyOpenAccessFileModal from 'components/cavatica/CavaticaCopyOpenAccessFileModal';
 import {
   EntityActionBar,
   EntityContent,
@@ -19,9 +21,12 @@ import {
   EntityTitleBar,
 } from 'components/EntityPage';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import { buildSqonForIds } from 'services/arranger';
 import { checkUserFilePermission } from 'services/fileAccessControl';
 import { closeModal, openModal } from 'store/actions/modal';
+import { AllFencesNames } from 'store/fenceTypes';
+import { selectIsConnected } from 'store/selectors/cavatica';
 import { selectModalId } from 'store/selectors/modal';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import Column from 'uikit/Column';
@@ -34,9 +39,6 @@ import Row from 'uikit/Row';
 import ShareButton from 'uikit/ShareButton';
 import { Spinner } from 'uikit/Spinner';
 import SummaryTable from 'uikit/SummaryTable';
-
-import CavaticaConnectModal from '../../cavatica/CavaticaConnectModal';
-import CavaticaCopyOpenAccessFileModal from '../../cavatica/CavaticaCopyOpenAccessFileModal';
 
 import Download from './Download';
 import {
@@ -54,6 +56,7 @@ import '../EntityPage.css';
 
 const mapStateToProps = (state) => ({
   openModalId: selectModalId(state),
+  isConnectedToCavatica: selectIsConnected(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -84,7 +87,7 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
 
   useEffect(() => {
     // Need to check all fences
-    const hasUserPermissionPromises = FENCES.map((fence) =>
+    const hasUserPermissionPromises = AllFencesNames.map((fence) =>
       checkUserFilePermission(api)({ fileId, fence }),
     );
     // A user has access if at least one fence grants us access
@@ -287,10 +290,10 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
 FileEntity.propTypes = {
   api: PropTypes.func,
   fileId: PropTypes.string,
-  openModalId: PropTypes.func,
+  openModalId: PropTypes.string,
   closeModal: PropTypes.func,
   openModal: PropTypes.func,
   isConnectedToCavatica: PropTypes.bool,
 };
 
-export default connector(FileEntity);
+export default compose(withApi, connector)(FileEntity);

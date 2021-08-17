@@ -4,7 +4,7 @@ import { Card, Col, Form, Row } from 'antd';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import { extractRoleFromProfile, makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 import { socialItems } from 'components/UserProfile/utils';
-import { LoggedInUser } from 'store/userTypes';
+import { ProfileTodo } from 'store/profileTypes';
 
 import { findMeFields } from './constants';
 import FindMeEditable from './FindMeEditable';
@@ -33,8 +33,8 @@ type FindMeInput = {
   facebook: { inputVal: string };
 };
 
-type SubLoggedInUser = Pick<
-  LoggedInUser,
+type SubProfile = Pick<
+  ProfileTodo,
   | 'addressLine1'
   | 'addressLine2'
   | 'city'
@@ -53,9 +53,9 @@ type SubLoggedInUser = Pick<
   | 'zip'
 >;
 
-type FormFields = SubLoggedInUser | FindMeInput;
+type FormFields = SubProfile | FindMeInput;
 
-const buildInitialValuesForFindMe = (profile: LoggedInUser) =>
+const buildInitialValuesForFindMe = (profile: ProfileTodo) =>
   entries(socialItems()).reduce(
     (acc, [serviceName]) => ({
       ...acc,
@@ -86,8 +86,8 @@ const reshapeForProfile = (fields: FormFields) =>
 
 type Props = {
   onClickSaveCb: () => void;
-  updateProfileCb: (profile: LoggedInUser) => void;
-  data: LoggedInUser;
+  updateProfileCb: (profile: ProfileTodo) => void;
+  data: ProfileTodo;
   onClickCancelCb: () => void;
   isProfileUpdating: boolean;
 };

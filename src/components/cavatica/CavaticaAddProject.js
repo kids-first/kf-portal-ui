@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
+import { Button, Result } from 'antd';
+import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
-import { injectState } from 'freactal';
-import { Result, Button } from 'antd';
 
-import Row from 'uikit/Row';
-import Input from 'uikit/Input';
-import { WhiteButton, TealActionButton } from 'uikit/Button';
-import Select from 'uikit/Select';
-import { getBillingGroups, saveProject } from 'services/cavatica';
 import PlusIcon from 'icons/PlusCircleIcon';
+import { getBillingGroups, saveProject } from 'services/cavatica';
+import { TealActionButton, WhiteButton } from 'uikit/Button';
+import Input from 'uikit/Input';
+import Row from 'uikit/Row';
+import Select from 'uikit/Select';
 import { getMsgFromErrorOrElse } from 'utils';
 
 import './CavaticaAddProject.css';
 
-const enhance = compose(injectState, withState('billingGroup', 'selectBillingGroup', null));
+const enhance = compose(withState('billingGroup', 'selectBillingGroup', null));
 
 const defaultState = {
   projectName: '',
@@ -63,11 +63,11 @@ class CavaticaAddProject extends Component {
     }
   };
 
-  onProjectNameChange = e => {
+  onProjectNameChange = (e) => {
     this.setState({ projectName: e.target.value });
   };
 
-  onBillingGroupSelect = e => {
+  onBillingGroupSelect = (e) => {
     this.setState({ selectedBillingGroup: e.target.value });
   };
 
@@ -145,5 +145,10 @@ class CavaticaAddProject extends Component {
     return null;
   }
 }
+
+CavaticaAddProject.propTypes = {
+  onSuccess: PropTypes.func,
+  setSelectedProject: PropTypes.func,
+};
 
 export default enhance(CavaticaAddProject);

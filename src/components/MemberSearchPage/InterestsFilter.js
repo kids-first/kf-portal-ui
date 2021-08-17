@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
+
 import {
+  fetchListOfMembers,
   requestCurrentPageUpdate,
   requestInterestsFilterUpdate,
-} from 'components/MemberSearchPage/actions';
-import PropTypes from 'prop-types';
+} from 'store/actionCreators/members';
+
+import {
+  selectAdminOptionsFilter,
+  selectCounts,
+  selectCurrentPage,
+  selectInterestsFilter,
+  selectMembersPerPage,
+  selectQueryString,
+  selectRolesFilter,
+} from '../../store/selectors/members';
+
 import FilterContainer from './FilterContainer';
 
 class InterestsFilter extends Component {
@@ -28,7 +40,7 @@ class InterestsFilter extends Component {
     updateInterestsFilter: PropTypes.func.isRequired,
   };
 
-  handleChangeFilterString = event => {
+  handleChangeFilterString = (event) => {
     this.setState({ filterSearchString: event.target.value });
   };
 
@@ -60,23 +72,23 @@ class InterestsFilter extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  count: state.ui.memberSearchPageReducer.count,
-  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
-  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
-  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
-  queryString: state.ui.memberSearchPageReducer.queryString,
-  currentPage: state.ui.memberSearchPageReducer.currentPage,
-  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
+const mapStateToProps = (state) => ({
+  count: selectCounts(state),
+  rolesFilter: selectRolesFilter(state),
+  interestsFilter: selectInterestsFilter(state),
+  adminOptionsFilter: selectAdminOptionsFilter(state),
+  queryString: selectQueryString(state),
+  currentPage: selectCurrentPage(state),
+  membersPerPage: selectMembersPerPage(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchListOfMembers: fetchListOfMembersAction,
-      updateInterestsFilter: interestsFilter =>
+      fetchListOfMembers: fetchListOfMembers,
+      updateInterestsFilter: (interestsFilter) =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
-      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
+      currentPageUpdate: (currentPage) => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );

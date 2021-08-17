@@ -1,5 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 
+import { ConnectionStatus } from './connectionTypes';
 import { FenceName, UserAcls } from './fenceTypes';
 import { RootState } from './rootState';
 
@@ -22,7 +23,16 @@ export enum FenceStudiesActions {
   fetchFenceStudies = 'fetchFenceStudies',
   addFenceStudies = 'addFenceStudies',
   removeFenceStudies = 'removeFenceStudies',
+  removeAllFenceStudies = 'removeAllFenceStudies',
+  addStudiesConnectionStatus = 'addStudiesConnectionStatus',
+  toggleIsFetchingOneFenceStudies = 'toggleIsFetchingOneFenceStudies',
 }
+
+export type ToggleIsFetchingOneFenceStudiesAction = {
+  type: FenceStudiesActions.toggleIsFetchingOneFenceStudies;
+  isLoading: boolean;
+  fenceName: FenceName;
+};
 
 export type ToggleIsFetchingAllFenceStudiesAction = {
   type: FenceStudiesActions.toggleIsFetchingAllFenceStudies;
@@ -39,14 +49,31 @@ export type RemoveFenceStudies = {
   fenceName: FenceName;
 };
 
+export type RemoveAllFenceStudies = {
+  type: FenceStudiesActions.removeAllFenceStudies;
+};
+
 export type FenceStudiesState = {
   fenceStudies: FenceStudies;
-  isFetchingAllFenceStudies: boolean;
+  loadingStudiesForFences: FenceName[];
+  statuses: {
+    [FenceName.gen3]: ConnectionStatus;
+    [FenceName.dcf]: ConnectionStatus;
+  };
+};
+
+export type AddStudiesConnectionStatusAction = {
+  type: FenceStudiesActions.addStudiesConnectionStatus;
+  fenceName: FenceName;
+  newStatus: ConnectionStatus;
 };
 
 export type FenceStudiesActionTypes =
   | ToggleIsFetchingAllFenceStudiesAction
   | AddFenceStudiesAction
-  | RemoveFenceStudies;
+  | RemoveFenceStudies
+  | RemoveAllFenceStudies
+  | AddStudiesConnectionStatusAction
+  | ToggleIsFetchingOneFenceStudiesAction;
 
 export type DispatchFenceStudies = ThunkDispatch<RootState, null, FenceStudiesActionTypes>;

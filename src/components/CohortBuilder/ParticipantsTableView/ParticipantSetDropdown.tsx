@@ -1,29 +1,30 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { selectSets } from 'store/selectors/saveSetsSelectors';
-import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
-
-import { Button, Dropdown, Menu } from 'antd';
-import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import {
   DownOutlined,
   PlusOutlined,
   UsergroupAddOutlined,
   UsergroupDeleteOutlined,
 } from '@ant-design/icons';
-import { ApiContext } from 'services/api';
+import { Button, Dropdown, Menu } from 'antd';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
-import { Sqon } from 'store/sqon';
-import './ParticipantSetDropdown.css';
-import SaveSetModal from './SaveSetModal';
-import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
+import { ApiContext } from 'services/api';
 import { fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
-import { LoggedInUser } from 'store/userTypes';
+import { RootState } from 'store/rootState';
+import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
+import { Sqon } from 'store/sqon';
+import { User } from 'store/userTypes';
+
+import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
+import SaveSetModal from './SaveSetModal';
+
+import './ParticipantSetDropdown.css';
 
 type ParticipantSetDropdownProps = {
-  user: LoggedInUser;
+  user: User;
   sqon: Sqon;
 };
 

@@ -13,7 +13,8 @@ import {
   selectSavedQueries,
   selectSavedQueryIdToStatus,
 } from 'store/selectors/savedQueries';
-import { LoggedInUser } from 'store/userTypes';
+import { selectUser } from 'store/selectors/users';
+import { User } from 'store/userTypes';
 import { Spinner } from 'uikit/Spinner';
 
 import CohortTab from './CohortTab';
@@ -27,22 +28,17 @@ const TAB_KEY_COHORT_QUERIES = `${QueryType.cohort}Tab`;
 const TAB_KEY_FILES_QUERIES = `${QueryType.file}Tab`;
 
 type OwnProps = {
-  loggedInUser: LoggedInUser;
   api: Api;
 };
 
 const mapDispatchToProps = (dispatch: DispatchSavedQueries) => ({
-  fetchSavedQueries: (api: Api, loggedInUser: LoggedInUser) =>
-    dispatch(fetchSavedQueries(api, loggedInUser)),
-  deleteParticularSavedQuery: (
-    api: Api,
-    queryId: string,
-    loggedInUser: LoggedInUser,
-    queryType: QueryType,
-  ) => dispatch(deleteParticularSavedQuery(api, queryId, loggedInUser, queryType)),
+  fetchSavedQueries: (api: Api, user: User) => dispatch(fetchSavedQueries(api, user)),
+  deleteParticularSavedQuery: (api: Api, queryId: string, user: User, queryType: QueryType) =>
+    dispatch(deleteParticularSavedQuery(api, queryId, user, queryType)),
 });
 
 const mapStateToProps = (state: RootState) => ({
+  user: selectUser(state) as User, // user must never null at this point
   queries: selectSavedQueries(state),
   queryIdToStatus: selectSavedQueryIdToStatus(state),
   errorFetchAllQueries: selectErrorFetchAllSavedQueries(state),
@@ -60,7 +56,7 @@ const SavedQueries = (props: Props) => {
     errorFetchAllQueries,
     queries,
     queryIdToStatus,
-    loggedInUser,
+    user,
     deleteParticularSavedQuery,
     isLoadingAllQueries,
     fetchSavedQueries,
@@ -69,8 +65,8 @@ const SavedQueries = (props: Props) => {
   const [activeTab, setActiveTab] = useState(TAB_KEY_COHORT_QUERIES);
 
   useEffect(() => {
-    fetchSavedQueries(api, loggedInUser);
-  }, [api, loggedInUser, fetchSavedQueries]);
+    fetchSavedQueries(api, user);
+  }, [api, user, fetchSavedQueries]);
 
   if (isLoadingAllQueries) {
     return (
@@ -127,7 +123,7 @@ const SavedQueries = (props: Props) => {
       >
         {activeTab === TAB_KEY_COHORT_QUERIES && (
           <CohortTab
-            loggedInUser={loggedInUser}
+            user={user}
             api={api}
             deleteParticularSavedQuery={deleteParticularSavedQuery}
             queries={queries}
@@ -136,7 +132,7 @@ const SavedQueries = (props: Props) => {
         )}
         {activeTab === TAB_KEY_FILES_QUERIES && (
           <FileTab
-            loggedInUser={loggedInUser}
+            user={user}
             api={api}
             deleteParticularSavedQuery={deleteParticularSavedQuery}
             queries={queries}

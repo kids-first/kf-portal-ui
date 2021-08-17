@@ -1,6 +1,7 @@
-import { DCF, GEN3 } from 'common/constants';
 import { Api } from 'store/apiTypes';
 import { FenceStudies } from 'store/fenceStudiesTypes';
+
+import { FenceName } from '../../fenceTypes';
 
 export const mockApi: jest.Mocked<Api> = {
   api: () => {},
@@ -61,8 +62,8 @@ export const MOCK_DCF_CONNECTION = {
 };
 
 export const MOCK_FENCE_CONNECTIONS = {
-  [GEN3]: MOCK_GEN3_CONNECTION,
-  [DCF]: MOCK_DCF_CONNECTION,
+  [FenceName.gen3]: MOCK_GEN3_CONNECTION,
+  [FenceName.dcf]: MOCK_DCF_CONNECTION,
 };
 
 export const MOCK_STUDIES_IDS_AND_COUNTS = {
@@ -75,8 +76,8 @@ export const MOCK_AUTH_STUDIES_GEN3 = [
   {
     acl: ['*'],
     authorizedFiles: 5239,
-    id: `${GEN3}_1`,
-    studyShortName: `studyShortName_${GEN3}_1`,
+    id: `${FenceName.gen3}_1`,
+    studyShortName: `studyShortName_${FenceName.gen3}_1`,
     totalFiles: 19791,
   },
 ];
@@ -85,17 +86,17 @@ export const MOCK_AUTH_STUDIES_DCF = [
   {
     acl: ['*'],
     authorizedFiles: 5239,
-    id: `${DCF}_1`,
-    studyShortName: `studyShortName_${DCF}_1`,
+    id: `${FenceName.dcf}_1`,
+    studyShortName: `studyShortName_${FenceName.dcf}_1`,
     totalFiles: 19791,
   },
 ];
 
 export const MOCK_AUTH_STUDIES_WITH_2_FENCES: FenceStudies = {
-  [GEN3]: {
+  [FenceName.gen3]: {
     authorizedStudies: MOCK_AUTH_STUDIES_GEN3,
   },
-  [DCF]: {
+  [FenceName.dcf]: {
     authorizedStudies: MOCK_AUTH_STUDIES_DCF,
   },
 };

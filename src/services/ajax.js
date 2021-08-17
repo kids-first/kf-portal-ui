@@ -1,24 +1,22 @@
 import axios from 'axios';
 
-let token;
+import { store } from 'store';
+import { selectUserToken } from 'store/selectors/users';
 
 const ajax = axios.create();
 
 ajax.interceptors.request.use(
-    config => {
-        // set Authorization headers on a per request basis
-        // setting headers on axios get/put/post or common seems to be shared accross all axios instances
-        config.headers = {
-            ...(token && { Authorization: `Bearer ${token}` }),
-            ...config.headers,
-        };
-        return config;
-    },
-    err => {
-        return Promise.reject(err);
-    },
+  (config) => {
+    // set Authorization headers on a per request basis
+    // setting headers on axios get/put/post or common seems to be shared across all axios instances
+    const token = selectUserToken(store.getState());
+    config.headers = {
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...config.headers,
+    };
+    return config;
+  },
+  (err) => Promise.reject(err),
 );
-
-export const setToken = t => (token = t);
 
 export default ajax;

@@ -1,8 +1,10 @@
-import ajax from 'services/ajax';
-import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import makeChunks from 'lodash/chunk';
-import projectDescriptionPath from './projectDescription.md';
 import memoize from 'lodash/memoize';
+
+import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
+import ajax from 'services/ajax';
+
+import projectDescriptionPath from './projectDescription.md';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -219,5 +221,3 @@ export const saveProject = async ({ projectName, billingGroupId }) => {
     description: projectDescription,
   });
 };
-
-export const isValidKey = (key) => key && key.length > 0;

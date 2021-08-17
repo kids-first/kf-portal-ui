@@ -22,7 +22,7 @@ const groupStudiesById = (fenceAuthStudies) =>
     return obj;
   }, {});
 
-const StudiesConnected = compose(withHistory)(({ loggedInUser, fenceAuthStudies, history }) => {
+const StudiesConnected = compose(withHistory)(({ user, fenceAuthStudies, history }) => {
   const hasAuthorizedStudies = fenceAuthStudies && fenceAuthStudies.length > 0;
   if (hasAuthorizedStudies) {
     const studiesById = groupStudiesById(fenceAuthStudies);
@@ -82,7 +82,7 @@ const StudiesConnected = compose(withHistory)(({ loggedInUser, fenceAuthStudies,
               <Link
                 className="color-primary"
                 to={{
-                  pathname: `/user/${loggedInUser._id}`,
+                  pathname: `/user/${user._id}`,
                   hash: '#settings',
                 }}
               >
@@ -103,7 +103,6 @@ const StudiesConnected = compose(withHistory)(({ loggedInUser, fenceAuthStudies,
 });
 
 StudiesConnected.propTypes = {
-  loggedInUser: PropTypes.object,
   fenceAuthStudies: PropTypes.array,
   history: PropTypes.shape({
     push: PropTypes.func,

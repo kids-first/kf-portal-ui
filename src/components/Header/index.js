@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-import { Alert, Layout } from 'antd';
 import {
   DatabaseOutlined,
   FolderOutlined,
@@ -11,22 +8,27 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Alert, Layout } from 'antd';
+import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
-import { LinkAsButton, NavBarList, NavLink } from './ui';
-import AppsMenu from './AppsMenu';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
+import useUser from '../../hooks/useUser';
+
+import AppsMenu from './AppsMenu';
+import { LinkAsButton, NavBarList, NavLink } from './ui';
 import UserMenu from './UserMenu';
 
 import './Header.css';
-import { injectState } from 'freactal';
 
 const { Header } = Layout;
 
 const showPublicProfileInvite = (user = {}) =>
-  Boolean(user) && !user.isPublic && !localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN);
+  user && !user.isPublic && !localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN);
 
 const onClosePublicProfileInviteAlert = () =>
   localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, 'true');
@@ -37,8 +39,8 @@ const NavigationToolBar = (props) => {
   const {
     history,
     match: { path },
-    state: { loggedInUser },
   } = props;
+  const { user } = useUser();
 
   const currentPathName = history.location.pathname;
 
@@ -46,11 +48,11 @@ const NavigationToolBar = (props) => {
 
   return (
     <Header className="headerContainer">
-      {showPublicProfileInvite(loggedInUser) && (
+      {showPublicProfileInvite(user) && (
         <Alert
           message={
             <>
-              <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
+              <Link to={getUrlForUser(user, '#settings')}>Make your profile public</Link>
               {' so that other members can view it!'}
             </>
           }
@@ -103,7 +105,7 @@ const NavigationToolBar = (props) => {
           )}
         </StackLayout>
         <NavBarList style={{ justifyContent: 'flex-end' }}>
-          {!loggedInUser && (
+          {!user && (
             <li>
               {path === '/' ? (
                 <LinkAsButton to={ROUTES.join}>Join now</LinkAsButton>
@@ -131,11 +133,6 @@ NavigationToolBar.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,
   }).isRequired,
-  enabledFeatures: PropTypes.object,
-  state: PropTypes.shape({
-    loggedInUser: PropTypes.object.isRequired,
-    egoGroups: PropTypes.array,
-  }).isRequired,
 };
 
-export default compose(injectState, withRouter)(NavigationToolBar);
+export default compose(withRouter)(NavigationToolBar);

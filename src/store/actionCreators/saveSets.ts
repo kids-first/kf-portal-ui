@@ -1,29 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import {
-  ADD_SET_TO_CURRENT_QUERY,
-  AddRemoveSetParams,
-  CREATE_SET_QUERY_REQUEST,
-  DeleteSetParams,
-  EDIT_SAVE_SET_TAG,
-  EditSetTagParams,
-  FAILURE_CREATE,
-  FAILURE_LOAD_SAVE_SETS,
-  RE_INITIALIZE_STATE,
-  REMOVE_USER_SAVE_SETS,
-  SaveSetParams,
-  SetInfo,
-  SetNameConflictError,
-  SetsActionTypes,
-  SetSourceType,
-  SetSubActionTypes,
-  SetUpdateInputData,
-  TOGGLE_IS_ADD_DELETE_TO_SET,
-  TOGGLE_IS_DELETING_SAVE_SETS,
-  TOGGLE_LOADING_SAVE_SETS,
-  TOGGLE_PENDING_CREATE,
-  USER_SAVE_SETS,
-  UserSet,
-} from '../saveSetTypes';
+
 import {
   createSet as saveSet,
   deleteSets,
@@ -31,7 +7,22 @@ import {
   setCountForTag,
   updateSet,
 } from 'services/sets';
+
 import { RootState } from '../rootState';
+import {
+  AddRemoveSetParams,
+  DeleteSetParams,
+  EditSetTagParams,
+  SaveSetParams,
+  SetInfo,
+  SetNameConflictError,
+  SetsActions,
+  SetsActionTypes,
+  SetSourceType,
+  SetSubActionTypes,
+  SetUpdateInputData,
+  UserSet,
+} from '../saveSetTypes';
 import { selectSets } from '../selectors/saveSetsSelectors';
 
 export const createSet = (
@@ -233,67 +224,67 @@ export const deleteUserSets = (
   }
 };
 
-export const createQueryInCohortBuilder = (
+export const createSetQueryInCohortBuilder = (
   setId: string,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   dispatch(requestCreateQueryInCohort(setId));
 };
 
 export const isLoadingCreateSet = (isPending: boolean): SetsActionTypes => ({
-  type: TOGGLE_PENDING_CREATE,
+  type: SetsActions.TOGGLE_PENDING_CREATE,
   isPending,
 });
 
 export const failureCreate = (error: Error): SetsActionTypes => ({
-  type: FAILURE_CREATE,
+  type: SetsActions.FAILURE_CREATE,
   error,
 });
 
 export const reInitializeSetsState = (): SetsActionTypes => ({
-  type: RE_INITIALIZE_STATE,
+  type: SetsActions.RE_INITIALIZE_STATE,
 });
 
 export const isLoadingSets = (isLoading: boolean): SetsActionTypes => ({
-  type: TOGGLE_LOADING_SAVE_SETS,
+  type: SetsActions.TOGGLE_LOADING_SAVE_SETS,
   isLoading,
 });
 
 export const isDeletingSets = (isDeleting: boolean): SetsActionTypes => ({
-  type: TOGGLE_IS_DELETING_SAVE_SETS,
+  type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS,
   isDeleting,
 });
 
 export const isAddingOrRemovingToSet = (isEditing: boolean): SetsActionTypes => ({
-  type: TOGGLE_IS_ADD_DELETE_TO_SET,
+  type: SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET,
   isEditing,
 });
 
 export const displayUserSets = (payload: UserSet[]): SetsActionTypes => ({
-  type: USER_SAVE_SETS,
+  type: SetsActions.USER_SAVE_SETS,
   payload,
 });
 
 export const failureLoadSets = (error: Error): SetsActionTypes => ({
-  type: FAILURE_LOAD_SAVE_SETS,
+  type: SetsActions.FAILURE_LOAD_SAVE_SETS,
   error,
 });
 
 export const removeUserSets = (sets: string[]): SetsActionTypes => ({
-  type: REMOVE_USER_SAVE_SETS,
+  type: SetsActions.REMOVE_USER_SAVE_SETS,
   sets,
 });
 
 export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
-  type: EDIT_SAVE_SET_TAG,
+  type: SetsActions.EDIT_SAVE_SET_TAG,
   set: set,
 });
 
 export const requestCreateQueryInCohort = (setId: string): SetsActionTypes => ({
-  type: CREATE_SET_QUERY_REQUEST,
+  type: SetsActions.CREATE_SET_QUERY_REQUEST,
   setId,
 });
 
 export const addSetToCurrentQuery = (setId: string): SetsActionTypes => ({
-  type: ADD_SET_TO_CURRENT_QUERY,
+  type: SetsActions.ADD_SET_TO_CURRENT_QUERY,
   setId,
 });

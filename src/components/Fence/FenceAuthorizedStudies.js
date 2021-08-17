@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 
-import useFenceConnections from 'hooks/useFenceConnections';
 import useFenceStudies from 'hooks/useFenceStudies';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
@@ -33,10 +32,9 @@ const FenceAuthorizedStudies = compose(
   withApi,
   withHistory,
 )(({ onCloseModalCb, api, fence, history }) => {
-  const { isFetchingAllFenceConnections } = useFenceConnections(api, [fence]);
-  const { isFetchingAllFenceStudies, fenceAuthStudies } = useFenceStudies(api);
+  const { fenceAuthStudies, loadingStudiesForFences } = useFenceStudies(api);
 
-  const isLoadingStudies = isFetchingAllFenceConnections || isFetchingAllFenceStudies;
+  const isLoadingStudies = loadingStudiesForFences.includes(fence);
   if (isLoadingStudies) {
     return <Spinner />;
   }

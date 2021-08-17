@@ -1,10 +1,5 @@
-import cloneDeep from 'lodash/cloneDeep';
-import {
-  FETCH_VIRTUAL_STUDIES_REQUESTED,
-  FETCH_VIRTUAL_STUDIES_SUCCESS,
-  FETCH_VIRTUAL_STUDIES_FAILURE,
-  LOGOUT,
-} from '../actionTypes';
+import { UserActions } from 'store/userTypes';
+import { VirtualStudiesActions } from 'store/virtualStudiesTypes';
 
 const initialState = {
   studies: [],
@@ -14,28 +9,28 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_VIRTUAL_STUDIES_REQUESTED:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_REQUESTED:
       return {
         ...state,
         isLoading: true,
       };
 
-    case FETCH_VIRTUAL_STUDIES_SUCCESS:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_SUCCESS:
       return {
         ...state,
         studies: action.payload,
         isLoading: false,
       };
 
-    case FETCH_VIRTUAL_STUDIES_FAILURE:
+    case VirtualStudiesActions.FETCH_VIRTUAL_STUDIES_FAILURE:
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
 
-    case LOGOUT:
-      return cloneDeep(initialState);
+    case UserActions.logout:
+      return { ...initialState };
 
     default:
       return state;

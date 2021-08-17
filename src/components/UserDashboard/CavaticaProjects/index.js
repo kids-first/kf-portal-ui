@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
+import Card from '@ferlab/ui/core/view/GridCard';
+import { Badge, Result } from 'antd';
 
-import { CAVATICA } from 'common/constants';
-import Create from './Create';
-import NotConnected from './NotConnected';
-import CavaticaProvider from './CavaticaProvider';
-import Connected from './Connected';
 import {
-  trackUserInteraction,
   setUserDimension,
   TRACKING_EVENTS,
+  trackUserInteraction,
 } from 'services/analyticsTracking';
-
-import { Badge, Result } from 'antd';
-import Card from '@ferlab/ui/core/view/GridCard';
 import { getMsgFromErrorOrElse } from 'utils';
-import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
-const isValidKey = (key) => key && key.length > 0;
+import useCavatica from '../../../hooks/useCavatica';
+
+import CavaticaProvider from './CavaticaProvider';
+import Connected from './Connected';
+import Create from './Create';
+import NotConnected from './NotConnected';
+
+import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
 const tabList = [
   {
@@ -81,8 +79,8 @@ const generateTabsContent = ({
   };
 };
 
-const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
-  const isConnected = isValidKey(integrationTokens[CAVATICA]);
+const CavaticaProjects = () => {
+  const { isConnected, isCheckingIfConnected } = useCavatica();
 
   const [activeTab, setActiveTab] = useState('Projects');
 
@@ -119,7 +117,16 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
     cardProps.setIndex(1);
   };
 
-  return (
+  return isCheckingIfConnected ? (
+    <Card
+      loading
+      title={
+        <div className={antCardHeader}>
+          <span className={'title-dashboard-card'}>Cavatica Projects&nbsp;</span>
+        </div>
+      }
+    />
+  ) : (
     <CavaticaProvider isConnected={isConnected}>
       {({ projects, loading, refresh, projectsError }) => {
         setUserDimension('dimension6', JSON.stringify(projects));
@@ -157,6 +164,6 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       }}
     </CavaticaProvider>
   );
-});
+};
 
 export default CavaticaProjects;
