@@ -37,7 +37,6 @@ const StudyPageContainer = ({
         currentQuery={filters?.content?.length ? filters : {}}
         enableCombine={true}
         loading={studiesResults?.loading}
-        enableShowHideLabels
         total={total}
         IconTotal={<StudyIcon className={styles.queryBuilderIcon} />}
         dictionary={dictionary}
