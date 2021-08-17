@@ -1795,7 +1795,7 @@ html {
   background: #faad14;
 }
 .ant-badge-status-cyan {
-  background: #007694;
+  background: #009bba;
 }
 .ant-badge-status-lime {
   background: #a0d911;
@@ -1990,8 +1990,8 @@ html {
   background: #faad14;
 }
 .ant-ribbon-color-cyan {
-  color: #007694;
-  background: #007694;
+  color: #009bba;
+  background: #009bba;
 }
 .ant-ribbon-color-lime {
   color: #a0d911;
@@ -2254,9 +2254,9 @@ html {
 }
 .ant-btn:hover,
 .ant-btn:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: #ffffff;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn:hover > a:only-child,
 .ant-btn:focus > a:only-child {
@@ -2273,9 +2273,9 @@ html {
   content: '';
 }
 .ant-btn:active {
-  color: #007694;
+  color: #00546e;
   background: #ffffff;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn:active > a:only-child {
   color: currentColor;
@@ -2330,6 +2330,8 @@ html {
   color: #ffffff;
   background: #007694;
   border-color: #007694;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
 .ant-btn-primary > a:only-child {
   color: currentColor;
@@ -2346,8 +2348,8 @@ html {
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
   color: #ffffff;
-  background: #20b1c7;
-  border-color: #20b1c7;
+  background: #1a8aa1;
+  border-color: #1a8aa1;
 }
 .ant-btn-primary:hover > a:only-child,
 .ant-btn-primary:focus > a:only-child {
@@ -2365,8 +2367,8 @@ html {
 }
 .ant-btn-primary:active {
   color: #ffffff;
-  background: #007694;
-  border-color: #007694;
+  background: #00546e;
+  border-color: #00546e;
 }
 .ant-btn-primary:active > a:only-child {
   color: currentColor;
@@ -2423,7 +2425,7 @@ html {
 }
 .ant-btn-group .ant-btn-primary:last-child:not(:first-child),
 .ant-btn-group .ant-btn-primary + .ant-btn-primary {
-  border-left-color: #00546E;
+  border-left-color: #535a80;
 }
 .ant-btn-group .ant-btn-primary:last-child:not(:first-child)[disabled],
 .ant-btn-group .ant-btn-primary + .ant-btn-primary[disabled] {
@@ -2448,9 +2450,9 @@ html {
 }
 .ant-btn-ghost:hover,
 .ant-btn-ghost:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-ghost:hover > a:only-child,
 .ant-btn-ghost:focus > a:only-child {
@@ -2467,9 +2469,9 @@ html {
   content: '';
 }
 .ant-btn-ghost:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-ghost:active > a:only-child {
   color: currentColor;
@@ -2531,9 +2533,9 @@ html {
 }
 .ant-btn-dashed:hover,
 .ant-btn-dashed:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: #ffffff;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-dashed:hover > a:only-child,
 .ant-btn-dashed:focus > a:only-child {
@@ -2550,9 +2552,9 @@ html {
   content: '';
 }
 .ant-btn-dashed:active {
-  color: #007694;
+  color: #00546e;
   background: #ffffff;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-dashed:active > a:only-child {
   color: currentColor;
@@ -2698,9 +2700,9 @@ html {
 }
 .ant-btn-link:hover,
 .ant-btn-link:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-link:hover > a:only-child,
 .ant-btn-link:focus > a:only-child {
@@ -2717,9 +2719,9 @@ html {
   content: '';
 }
 .ant-btn-link:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-link:active > a:only-child {
   color: currentColor;
@@ -2817,9 +2819,9 @@ html {
 }
 .ant-btn-text:hover,
 .ant-btn-text:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-text:hover > a:only-child,
 .ant-btn-text:focus > a:only-child {
@@ -2836,9 +2838,9 @@ html {
   content: '';
 }
 .ant-btn-text:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-text:active > a:only-child {
   color: currentColor;
@@ -3105,9 +3107,9 @@ html {
 }
 .ant-btn-dangerous.ant-btn-link:hover,
 .ant-btn-dangerous.ant-btn-link:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-dangerous.ant-btn-link:hover > a:only-child,
 .ant-btn-dangerous.ant-btn-link:focus > a:only-child {
@@ -3124,9 +3126,9 @@ html {
   content: '';
 }
 .ant-btn-dangerous.ant-btn-link:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-dangerous.ant-btn-link:active > a:only-child {
   color: currentColor;
@@ -3253,9 +3255,9 @@ html {
 }
 .ant-btn-dangerous.ant-btn-text:hover,
 .ant-btn-dangerous.ant-btn-text:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-dangerous.ant-btn-text:hover > a:only-child,
 .ant-btn-dangerous.ant-btn-text:focus > a:only-child {
@@ -3272,9 +3274,9 @@ html {
   content: '';
 }
 .ant-btn-dangerous.ant-btn-text:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-dangerous.ant-btn-text:active > a:only-child {
   color: currentColor;
@@ -3693,9 +3695,9 @@ html {
 }
 .ant-btn-background-ghost.ant-btn-primary:hover,
 .ant-btn-background-ghost.ant-btn-primary:focus {
-  color: #20b1c7;
+  color: #1a8aa1;
   background: transparent;
-  border-color: #20b1c7;
+  border-color: #1a8aa1;
 }
 .ant-btn-background-ghost.ant-btn-primary:hover > a:only-child,
 .ant-btn-background-ghost.ant-btn-primary:focus > a:only-child {
@@ -3712,9 +3714,9 @@ html {
   content: '';
 }
 .ant-btn-background-ghost.ant-btn-primary:active {
-  color: #007694;
+  color: #00546e;
   background: transparent;
-  border-color: #007694;
+  border-color: #00546e;
 }
 .ant-btn-background-ghost.ant-btn-primary:active > a:only-child {
   color: currentColor;
@@ -22146,8 +22148,8 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 }
 .ant-tag-cyan-inverse {
   color: #fff;
-  background: #007694;
-  border-color: #007694;
+  background: #009bba;
+  border-color: #009bba;
 }
 .ant-tag-lime {
   color: #7cb305;
@@ -22671,10 +22673,10 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   background-color: #faad14;
 }
 .ant-tooltip-cyan .ant-tooltip-inner {
-  background-color: #007694;
+  background-color: #009bba;
 }
 .ant-tooltip-cyan .ant-tooltip-arrow-content {
-  background-color: #007694;
+  background-color: #009bba;
 }
 .ant-tooltip-lime .ant-tooltip-inner {
   background-color: #a0d911;
@@ -24874,25 +24876,61 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table-cell > a {
   color: #383f72;
 }
-.ant-btn:disabled {
+.ant-btn-default:disabled {
   background-color: #f3f4f6;
   border-color: #d7d8db;
   color: #8a8da8;
 }
-.ant-btn:focus {
-  background-color: #ffffff;
+.ant-btn-default:focus {
+  background-color: white;
   border-color: #007694;
   color: #007694;
 }
-.ant-btn:active {
+.ant-btn-default:active {
   background-color: #f3f4f6;
   border-color: #d7d8db;
   color: #007694;
 }
-.ant-btn:hover {
+.ant-btn-default:hover {
   background-color: #f9f9fb;
   border-color: #d7d8db;
   color: #007694;
+}
+.ant-btn-primary {
+  color: #ffffff;
+}
+.ant-btn-primary.ant-btn-dangerous {
+  background-color: #dd1f2a;
+  border-color: #dd1f2a;
+}
+.ant-btn-primary.ant-btn-dangerous:focus {
+  background-color: #910616;
+  border-color: #910616;
+}
+.ant-btn-primary.ant-btn-dangerous:active {
+  background-color: #910616;
+  border-color: #910616;
+}
+.ant-btn-primary.ant-btn-dangerous:hover {
+  background-color: #cf1322;
+  border-color: #cf1322;
+}
+.ant-btn-primary:disabled {
+  background-color: #f3f4f6;
+  border-color: #d7d8db;
+  color: #8a8da8;
+}
+.ant-btn-primary:focus {
+  background-color: #00546e;
+  border-color: #00546e;
+}
+.ant-btn-primary:active {
+  background-color: #007694;
+  border-color: #007694;
+}
+.ant-btn-primary:hover {
+  background-color: #009bba;
+  border-color: #009bba;
 }
 .ant-btn-link,
 .ant-btn-text {
@@ -25033,7 +25071,7 @@ h3.ant-typography {
   color: #383f72;
 }
 .ant-switch-checked {
-  background-color: #007694;
+  background-color: #009bba;
 }
 .ant-alert-message {
   color: #910616;
