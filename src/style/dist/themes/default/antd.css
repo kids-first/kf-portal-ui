@@ -24876,6 +24876,23 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table-cell > a {
   color: #383f72;
 }
+.ant-btn-default.ant-btn-dangerous {
+  background-color: #ffffff;
+  border-color: #dd1f2a;
+  color: #f5222d;
+}
+.ant-btn-default.ant-btn-dangerous:focus {
+  background-color: #ffffff;
+  color: #910616;
+  border-color: #910616;
+  border-width: 2px;
+}
+.ant-btn-default.ant-btn-dangerous:active {
+  background-color: #f3f4f6;
+}
+.ant-btn-default.ant-btn-dangerous:hover {
+  background-color: #f9f9fb;
+}
 .ant-btn-default:disabled {
   background-color: #f3f4f6;
   border-color: #d7d8db;
@@ -24898,6 +24915,13 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-btn-primary {
   color: #ffffff;
+}
+.ant-btn-group .ant-btn-primary:last-child:not(:first-child),
+.ant-btn-group .ant-btn-primary + .ant-btn-primary {
+  border-left-color: #00546e;
+}
+.ant-btn-group .ant-btn-primary:first-child:not(:last-child) {
+  border-right-color: #00546e;
 }
 .ant-btn-primary.ant-btn-dangerous {
   background-color: #dd1f2a;
