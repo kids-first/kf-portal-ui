@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
 import { getQueryBuilderCache, updateFilters } from '@ferlab/ui/core/data/filters/utils';
-import { ISqonGroupFilter, ISyntheticSqon, IValueContent } from '@ferlab/ui/core/data/sqon/types';
+import {
+  ISqonGroupFilter,
+  ISyntheticSqon,
+  IValueContent,
+  TSqonContentValue,
+} from '@ferlab/ui/core/data/sqon/types';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Select, Tag } from 'antd';
 
@@ -20,7 +25,9 @@ const extractCodesFromFilter = (filters: ISyntheticSqon) => {
   const allSqons = getQueryBuilderCache('study-repo').state;
   const resolvedSqon = resolveSyntheticSqon(allSqons, filters);
 
-  const find = resolvedSqon.content.find((s: { content: any }) => s.content.field === 'code');
+  const find = resolvedSqon.content.find(
+    (s: TSqonContentValue) => (s.content as IValueContent)?.field === 'code',
+  );
   return find ? (find.content as IValueContent).value : [];
 };
 
