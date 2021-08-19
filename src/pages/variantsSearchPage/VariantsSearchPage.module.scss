@@ -1,5 +1,15 @@
 @import 'style/themes/default/_colors';
 
+.layout {
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden;
+}
+
+.scrollContent {
+  width: 100%;
+}
+
 .variantPageGrid {
   display: grid;
   grid-gap: 24px;

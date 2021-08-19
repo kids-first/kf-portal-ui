@@ -1,29 +1,29 @@
 import React from 'react';
+import ScrollView from '@ferlab/ui/core/layout/ScrollView';
+import { Layout } from 'antd';
 
-import { isKfInvestigator } from 'common/profile';
 import PageContent from 'components/Layout/PageContent';
 
-import WorkBench from '../../components/UserDashboard/WorkBench';
-import useUser from '../../hooks/useUser';
+//import useUser from '../../hooks/useUser';
+import Sidebar from './Sidebar';
 
-import SearchView from './SearchView';
-import VariantStats from './VariantStats';
+import styles from './VariantsSearchPage.module.scss';
 
-import style from './VariantsSearchPage.module.scss';
+// <VariantStats />
+// <SearchView />
+// <WorkBench isAllowed={isKfInvestigator(groups)} />
 
-const VariantPage = () => {
-  const { groups } = useUser();
-  return (
-    <PageContent title={'The Kids First Variant Database'}>
-      <div className={style.variantPageGrid}>
-        <VariantStats />
-        <WorkBench isAllowed={isKfInvestigator(groups)} />
-        <div className={style.variantPageGridItemTable}>
-          <SearchView />
+const VariantPage = () => (
+  // const { groups } = useUser();
+  <Layout className={styles.layout}>
+    <Sidebar /*filters={{}}*/ />
+    <ScrollView className={styles.scrollContent}>
+      <PageContent title={'Kids First Variants'}>
+        <div className={styles.variantPageGrid}>
+          <div className={styles.variantPageGridItemTable}></div>
         </div>
-      </div>
-    </PageContent>
-  );
-};
-
+      </PageContent>
+    </ScrollView>
+  </Layout>
+);
 export default VariantPage;
