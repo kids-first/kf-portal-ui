@@ -5,7 +5,7 @@ import {
   MenuUnfoldOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Input, Menu } from 'antd';
