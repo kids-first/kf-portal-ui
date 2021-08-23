@@ -6,6 +6,7 @@ import PageContent from 'components/Layout/PageContent';
 
 //import useUser from '../../hooks/useUser';
 import Sidebar from './Sidebar';
+import VariantPageContainer from './VariantPageContainer';
 
 import styles from './VariantsSearchPage.module.scss';
 
@@ -19,9 +20,7 @@ const VariantPage = () => (
     <Sidebar /*filters={{}}*/ />
     <ScrollView className={styles.scrollContent}>
       <PageContent title={'Kids First Variants'}>
-        <div className={styles.variantPageGrid}>
-          <div className={styles.variantPageGridItemTable}></div>
-        </div>
+        <VariantPageContainer></VariantPageContainer>
       </PageContent>
     </ScrollView>
   </Layout>

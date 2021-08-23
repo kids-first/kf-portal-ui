@@ -1,0 +1,39 @@
+
+.queryBuilderTogglerContainer {
+  background-color: white;
+
+  .queryBuilder {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .queryBuilderToggler {
+    display: flex;
+    align-items: center;
+    padding: 2.4rem;
+    border: 1px solid $gray-4;
+    border-bottom: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+
+    &.togglerClosed {
+      border-bottom: 1px solid $gray-4;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+
+    .togglerIcon {
+      display: flex;
+      margin-right: 1rem;
+    }
+
+    .togglerTitle {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+}
