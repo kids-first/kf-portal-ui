@@ -113,7 +113,9 @@ const VariantFiltersSider = (/*props: OwnProps*/) => {
               selectedKeys={[selectedKey]}
             >
               {collapsed ? (
-                <Menu.Item key="search" icon={<SearchIcon />}></Menu.Item>
+                <Menu.Item key="search" icon={<SearchIcon />}>
+                  Quick Filter
+                </Menu.Item>
               ) : (
                 <div className={`${styles.searchMenuItem}`}>
                   <Input
