@@ -1,6 +1,9 @@
 @import 'style/themes/default/_colors';
 
+$input-prefix: 'ant-input';
+$input-wrapper-prefix: $input-prefix + '-affix-wrapper';
 $menu-prefix: 'ant-menu';
+$menu-inline-prefix: 'ant-menu-inline';
 $menu-item-prefix: $menu-prefix + '-item';
 
 .siderContainer {
@@ -8,24 +11,29 @@ $menu-item-prefix: $menu-prefix + '-item';
   flex-direction: row;
 
   .sider {
-    min-width: 220px;
+    z-index: 1;
     width: 220px;
-    max-width: 220px;
     background-color: $cyan-7;
+    transition: width 0.3s;
+
+    :global(.#{$menu-inline-prefix}) {
+      &-collapsed {
+        width: 50px;
+
+        :global(.#{$menu-item-prefix}) {
+          padding: 0 !important;
+          width: 100%;
+        }
+      }
+    }
 
     &[data-collapsed='true'] {
-      min-width: 50px;
-      max-width: 50px;
       width: 50px;
 
       .sidebarMenu {
         .searchMenuItem {
           padding: 0 1rem;
           margin-bottom: 1rem;
-          *,
-          ::placeholder {
-            color: $body-3;
-          }
         }
 
         :global(.#{$menu-item-prefix}) {
@@ -43,15 +51,16 @@ $menu-item-prefix: $menu-prefix + '-item';
     }
 
     .sidebarToggleIconContainer {
-      margin: 1rem 1.5rem 1rem 1.5rem;
+      margin: 1rem 1.4rem 1rem 1.4rem;
 
       .sidebarToggleIcon {
-        font-size: 17px;
+        font-size: 22px;
         color: white;
       }
     }
 
     .sidebarMenu {
+      transition: background 0s;
       background-color: transparent;
       border: none;
       color: $gray-1;
@@ -59,12 +68,32 @@ $menu-item-prefix: $menu-prefix + '-item';
       font-size: 14px;
 
       .searchMenuItem {
-        padding: 0 1rem;
+        margin: 0 1rem;
+        padding: 2px;
+        border-radius: 4px;
         margin-bottom: 1rem;
         margin-top: 0.5rem;
+        border: 1px solid transparent;
         *,
         ::placeholder {
           color: $body-3;
+        }
+        .searchInput {
+          :global(.#{$input-prefix}) {
+            color: $body-1;
+          }
+
+          &:hover {
+            box-shadow: 0 0 0 2px $cyan-8;
+            border-color: transparent;
+          }
+
+          &:global(.#{$input-wrapper-prefix}) {
+            &-focused {
+              box-shadow: 0 0 0 2px $cyan-7, 0 0 0 3px white;
+              border-color: transparent;
+            }
+          }
         }
       }
 
@@ -74,14 +103,24 @@ $menu-item-prefix: $menu-prefix + '-item';
         line-height: 48px;
         display: flex;
         align-items: center;
+        padding: 0 1.3rem !important;
 
         img {
           margin-right: 12px;
         }
 
-        &-selected,
-        &:active,
         &:hover {
+          color: $gray-1;
+          opacity: 0.8;
+        }
+
+        &::after {
+          border-right: none;
+        }
+
+        &-selected,
+        &:active {
+          opacity: 1 !important;
           color: $gray-1;
           background-color: $cyan-8;
         }

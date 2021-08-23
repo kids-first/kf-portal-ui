@@ -1,11 +1,16 @@
 .rightPanel {
   background-color: #f4f5f8;
   border-right: 1px solid #d7d8db;
+  width: 320px;
+  margin-left: -320px;
   padding: 2rem;
-  min-width: 320px;
-  max-width: 320px;
   display: flex;
   flex-flow: column;
+  transition: margin-left 0.3s;
+
+  &.opened {
+    margin-left: 0;
+  }
 
   .rightPanelHeader {
     display: flex;

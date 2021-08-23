@@ -16,7 +16,7 @@ const VariantFiltersSiderRightPanel = ({
   isOpen = false,
   children,
 }: OwnProps) => (
-  <div className={styles.rightPanel} style={{ display: isOpen ? 'block' : 'none' }}>
+  <div className={`${styles.rightPanel} ${isOpen && styles.opened}`}>
     <div className={styles.rightPanelHeader}>
       <a
         onClick={() => {

@@ -37,31 +37,31 @@ const menuFilters = [
   {
     key: '1',
     title: 'Variant',
-    icon: VariantIcon2,
+    icon: <VariantIcon2 />,
     filters: VariantFilters,
   },
   {
     key: '2',
     title: 'Gene',
-    icon: GeneIcon,
+    icon: <GeneIcon />,
     filters: GeneFilters,
   },
   {
     key: '3',
     title: 'Pathogenicity',
-    icon: DiseaseIcon,
+    icon: <DiseaseIcon />,
     filters: PathogenicityFilters,
   },
   {
     key: '4',
     title: 'Frequency',
-    icon: FrequencyIcon,
+    icon: <FrequencyIcon />,
     filters: FrequencyFilters,
   },
   {
     key: '5',
     title: 'Occurence',
-    icon: OccurenceIcon,
+    icon: <OccurenceIcon />,
     filters: OccurenceFilters,
   },
 ];
@@ -69,14 +69,14 @@ const menuFilters = [
 const VariantFiltersSider = (/*props: OwnProps*/) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [selectedKey, setSelectedKey] = useState<string>('');
-  const searchInputRed = useRef<Input>(null);
+  const searchInputRef = useRef<Input>(null);
   const selectedFilterComponent = menuFilters.filter(
     (menuFilter) => menuFilter.key == selectedKey,
   )[0];
 
   useEffect(() => {
     if (!collapsed && selectedKey == 'search') {
-      searchInputRed.current?.focus();
+      searchInputRef.current?.focus();
     }
   }, [collapsed, selectedKey]);
 
@@ -95,28 +95,30 @@ const VariantFiltersSider = (/*props: OwnProps*/) => {
                 className={styles.sidebarToggleIcon}
                 onClick={() => {
                   setCollapsed(true);
-                  setSelectedKey('');
                 }}
               />
             )}
           </div>
           <ScrollView>
             <Menu
+              mode="inline"
+              inlineCollapsed={collapsed}
               className={styles.sidebarMenu}
-              onSelect={(item) => {
-                setSelectedKey(item.key.toString());
+              onClick={(item) => {
                 if (item.key.toString() == 'search') {
                   setCollapsed(false);
                 }
+                setSelectedKey(selectedKey !== item.key.toString() ? item.key.toString() : '');
               }}
               selectedKeys={[selectedKey]}
             >
               {collapsed ? (
                 <Menu.Item key="search" icon={<SearchIcon />}></Menu.Item>
               ) : (
-                <div className={styles.searchMenuItem}>
+                <div className={`${styles.searchMenuItem}`}>
                   <Input
-                    ref={searchInputRed}
+                    className={styles.searchInput}
+                    ref={searchInputRef}
                     placeholder="Quick filter..."
                     prefix={<SearchOutlined />}
                     suffix={<InfoCircleOutlined></InfoCircleOutlined>}
@@ -124,7 +126,7 @@ const VariantFiltersSider = (/*props: OwnProps*/) => {
                 </div>
               )}
               {menuFilters.map((menuFilter) => (
-                <Menu.Item key={menuFilter.key} icon={<menuFilter.icon />}>
+                <Menu.Item key={menuFilter.key} icon={menuFilter.icon}>
                   {menuFilter.title}
                 </Menu.Item>
               ))}
