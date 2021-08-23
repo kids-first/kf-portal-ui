@@ -1,24 +1,20 @@
 import React from 'react';
-import { Tabs, Tag, Typography } from 'antd';
+import { useLocation, useParams } from 'react-router-dom';
 import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
-
-import TabSummary from './TabSummary';
-import PageContent from 'components/Layout/PageContent';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import TabFrequencies from './TabFrequencies';
-import TabClinical from './TabClinical';
+import { Tabs, Tag, Typography } from 'antd';
+
+import PageContent from 'components/Layout/PageContent';
 import useTab from 'hooks/useTab';
 
-import styles from './VariantEntity.module.scss';
+import TabClinical from './TabClinical';
+import TabFrequencies from './TabFrequencies';
+import TabSummary from './TabSummary';
 
+import styles from './VariantEntity.module.scss';
 const { TabPane } = Tabs;
 
 const { Title } = Typography;
-
-type OwnProps = {
-  variantId: string;
-  hash: string;
-};
 
 const mTabKeys = {
   clinical: 'clinical',
@@ -28,10 +24,10 @@ const mTabKeys = {
 
 const tabKeyValues = Object.keys(mTabKeys);
 
-const VariantEntity = (props: OwnProps) => {
-  const { hash } = props;
-
-  const hgvsg = new URLSearchParams(window.location.search).get('hgvsg');
+const VariantEntity = () => {
+  const { hash } = useParams();
+  const location = useLocation();
+  const hgvsg = new URLSearchParams(location.search).get('hgvsg');
 
   const [tabKey, setTabKey] = useTab(tabKeyValues, mTabKeys.summary);
 

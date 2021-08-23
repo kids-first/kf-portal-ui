@@ -1,26 +1,29 @@
-import React, { FC } from 'react';
-import SearchView from './SearchView';
-import PageContent from 'components/Layout/PageContent';
-import WorkBench from './WorkBench';
+import React from 'react';
+
 import { isKfInvestigator } from 'common/profile';
-import { EgoGroups } from 'store/userTypes';
+import PageContent from 'components/Layout/PageContent';
+
+import useUser from '../../hooks/useUser';
+
+import SearchView from './SearchView';
 import VariantStats from './VariantStats';
+import WorkBench from './WorkBench';
+
 import style from './VariantsSearchPage.module.scss';
 
-type OwnProps = {
-  egoGroups: EgoGroups;
-};
-
-const VariantPage: FC<OwnProps> = ({ egoGroups }) => (
-  <PageContent title={'The Kids First Variant Database'}>
-    <div className={style.variantPageGrid}>
-      <VariantStats />
-      <WorkBench isAllowed={isKfInvestigator(egoGroups)} />
-      <div className={style.variantPageGridItemTable}>
-        <SearchView />
+const VariantPage = () => {
+  const { groups } = useUser();
+  return (
+    <PageContent title={'The Kids First Variant Database'}>
+      <div className={style.variantPageGrid}>
+        <VariantStats />
+        <WorkBench isAllowed={isKfInvestigator(groups)} />
+        <div className={style.variantPageGridItemTable}>
+          <SearchView />
+        </div>
       </div>
-    </div>
-  </PageContent>
-);
+    </PageContent>
+  );
+};
 
 export default VariantPage;

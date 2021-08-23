@@ -11,7 +11,7 @@ import { RegexExtractPhenotype } from 'components/OntologyBrowser/store';
 import { addTermToActiveIndex } from 'store/actionCreators/virtualStudies';
 import { RootState } from 'store/rootState';
 import { generatePhenotypeByTitle, Phenotype } from 'store/sunburstTypes';
-import { AddTermToActiveIndex, Term } from 'store/virtualStudiesTypes';
+import { AddTermToActiveIndexAction, Term } from 'store/virtualStudiesTypes';
 
 import './sunburst.css';
 
@@ -25,7 +25,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = OwnProps & PropsFromRedux;
 
-const mapDispatch = (dispatch: ThunkDispatch<RootState, null, AddTermToActiveIndex>) => ({
+const mapDispatch = (dispatch: ThunkDispatch<RootState, null, AddTermToActiveIndexAction>) => ({
   onClickAddTermToActiveIndex: (term: Term) => dispatch(addTermToActiveIndex(term, ALL_OP)),
 });
 

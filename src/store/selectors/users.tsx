@@ -1,12 +1,10 @@
 import { RootState } from '../rootState';
 
-export const selectProfile = (state: RootState) => state.user.profile;
-export const selectLoggedInUser = (state: RootState) => state.user.loggedInUser;
-export const selectIsProfileLoading = (state: RootState) => state.user.isProfileLoading;
-export const selectErrorProfile = (state: RootState) => state.user.errorProfile;
-export const selectIsLoadingProfileStatus = (state: RootState) =>
-  state.user.isTogglingProfileStatus;
-export const selectErrorIsToggleProfileStatus = (state: RootState) =>
-  state.user.isTogglingProfileStatusInError;
-export const selectIsProfileUpdating = (state: RootState) => state.user.isProfileUpdating;
 export const selectErrorSubscribeUser = (state: RootState) => state.user.errorSubscribing;
+export const selectIsLoadingUser = (state: RootState) => state.user.isLoadingUser;
+export const selectUser = (state: RootState) => state.user.user;
+export const selectLoginProvider = (state: RootState) => state.user.loginProvider;
+export const selectUserToken = (state: RootState) => state.user.userToken;
+export const selectIsUserAdmin = (state: RootState) => state.user.user?.isAdmin || false;
+export const selectUserGroups = (state: RootState) => state.user.user?.groups || [];
+export const selectIsUserAuthenticated = (state: RootState) => state.user.isAuthenticated;

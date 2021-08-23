@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 import { Empty, Tabs } from 'antd';
-import { injectState } from 'freactal';
 import gql from 'graphql-tag';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -59,7 +58,7 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => {
+const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api }) => {
   const [tabKey, setTabKey] = useTab([SUMMARY, TABLE], SUMMARY);
   const { isLoading, data, error, updateQueries } = useQueryResolver(api, 'GQL_RESULT_QUERIES');
 
@@ -85,9 +84,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
         participantCount,
         isFiltered,
         activeSqonIndex,
-        egoGroups: state.egoGroups,
         sqon,
-        loggedInUser: state.loggedInUser,
       }}
     />
   );
@@ -135,7 +132,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, stat
                 }
               />
             ) : (
-              <ParticipantsTableView sqon={sqon} loggedInUser={state.loggedInUser} />
+              <ParticipantsTableView sqon={sqon} />
             )}
           </TabPane>
         </Tabs>
@@ -148,7 +145,6 @@ Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object,
   api: PropTypes.func.isRequired,
-  state: PropTypes.object.isRequired,
 };
 
-export default compose(withApi, injectState)(Results);
+export default compose(withApi)(Results);

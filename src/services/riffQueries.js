@@ -7,7 +7,7 @@ const riffQuery = ({
   stats,
   queryName,
   sqon,
-  loggedInUser,
+  user,
   api,
   url,
   sharedPublicly = false,
@@ -19,7 +19,7 @@ const riffQuery = ({
   return api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
-      userid: (loggedInUser || {}).egoId || 'anonymous',
+      userid: (user || {}).egoId || 'anonymous',
       alias,
       sharedPublicly,
       content: {
@@ -39,9 +39,9 @@ const riffQuery = ({
 
 export default riffQuery;
 
-export const fetchAllSavedQueries = (api, loggedInUser) =>
+export const fetchAllSavedQueries = (api, user) =>
   api({
-    url: urlJoin(shortUrlApi, 'user', loggedInUser.egoId),
+    url: urlJoin(shortUrlApi, 'user', user.egoId),
     method: 'GET',
   });
 

@@ -1,34 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
+import PropTypes from 'prop-types';
+
 import AboutMe from './AboutMe';
+import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 import HeaderBannerContainer from './HeaderBannerContainer';
 import Settings from './Settings';
+
 import './style.css';
-import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
-
-const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating, loggedInUser, isAdmin }) => {
-  return (
-    <Layout>
-      <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={false} isAdmin={isAdmin}/>
-      </Header>
-      <Layout className={'main-layout'}>
-        <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
-          <AboutMe
-            canEdit={false}
-            profile={profile}
-            updateProfileCb={updateProfileCb}
-            isProfileUpdating={isProfileUpdating}
-            loggedInUser={loggedInUser}
-          />
-        </Content>
-      </Layout>
-    </Layout>
-  );
-};
 
 function UserProfilePage(props) {
   const {
@@ -40,20 +21,26 @@ function UserProfilePage(props) {
     isProfileUpdating,
     collapsed,
     onBreakPointCb,
-    loggedInUser,
     isAdmin,
   } = props;
 
   if (!canEdit) {
     return (
-      <ShowOtherUserProfile
-        canEdit={canEdit}
-        profile={profile}
-        updateProfileCb={updateProfileCb}
-        isProfileUpdating={isProfileUpdating}
-        loggedInUser={loggedInUser}
-        isAdmin={isAdmin}
-      />
+      <Layout>
+        <Header className={'up-header'}>
+          <HeaderBannerContainer canEdit={false} isAdmin={isAdmin} />
+        </Header>
+        <Layout className={'main-layout'}>
+          <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
+            <AboutMe
+              canEdit={false}
+              profile={profile}
+              updateProfileCb={updateProfileCb}
+              isProfileUpdating={isProfileUpdating}
+            />
+          </Content>
+        </Layout>
+      </Layout>
     );
   }
 
@@ -62,7 +49,7 @@ function UserProfilePage(props) {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={canEdit} isAdmin={isAdmin}/>
+        <HeaderBannerContainer canEdit={canEdit} isAdmin={isAdmin} />
       </Header>
       <Layout className={'main-layout'}>
         <Sider
@@ -127,7 +114,6 @@ function UserProfilePage(props) {
               profile={profile}
               updateProfileCb={updateProfileCb}
               isProfileUpdating={isProfileUpdating}
-              loggedInUser={loggedInUser}
             />
           )}
         </Content>
@@ -146,7 +132,11 @@ UserProfilePage.propTypes = {
   isProfileUpdating: PropTypes.bool.isRequired,
   collapsed: PropTypes.bool.isRequired,
   onBreakPointCb: PropTypes.func.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
+  isAdmin: PropTypes.bool,
+};
+
+UserProfilePage.defaultPropTypes = {
+  isAdmin: false,
 };
 
 export default UserProfilePage;

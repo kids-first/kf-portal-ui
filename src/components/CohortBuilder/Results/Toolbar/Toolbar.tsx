@@ -11,11 +11,12 @@ import DemographicIcon from 'icons/DemographicIcon';
 import FamilyMembersIcon from 'icons/FamilyMembersIcon';
 import graphql from 'services/arranger';
 import { Sqon } from 'store/sqon';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 import colors from 'style/themes/default/_colors.scss';
 import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 import { roundIntToChosenPowerOfTen } from 'utils';
 
+import useUser from '../../../../hooks/useUser';
 import DownloadButton from '../../ParticipantsTableView/DownloadButton';
 import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
 import { createFileRepoLink } from '../../util';
@@ -55,7 +56,7 @@ const showErrorNotification = () =>
 type generateAllFilesLinkFn = (user: any, api: any, originalSqon: any) => Promise<string>;
 
 const generateAllFilesLink: generateAllFilesLinkFn = async (
-  user: LoggedInUser,
+  user: User,
   api: Function,
   originalSqon: Sqon,
 ) => {
@@ -149,8 +150,6 @@ type ToolbarProps = {
   activeSqonIndex: number;
   api: object;
   sqon: Sqon;
-  egoGroups: any;
-  loggedInUser: LoggedInUser;
 };
 
 const Toolbar = ({
@@ -159,10 +158,10 @@ const Toolbar = ({
   isFiltered,
   participantCount,
   activeSqonIndex,
-  loggedInUser,
   api,
   sqon,
 }: ToolbarProps) => {
+  const { user } = useUser();
   const familiesCount = get(data, 'familiesCountCardinality', null);
   const filesCount = get(data, 'filesCardinality', 0) as number;
   return (
@@ -183,7 +182,7 @@ const Toolbar = ({
               type="link"
               getLink={
                 isFiltered
-                  ? () => generateAllFilesLink(loggedInUser, api, sqon)
+                  ? () => generateAllFilesLink(user, api, sqon)
                   : () => Promise.resolve('/search/file')
               }
             >
@@ -192,7 +191,7 @@ const Toolbar = ({
           )}
         </div>
       )}
-      <ParticipantSetDropdown user={loggedInUser} sqon={sqon} participantCount={participantCount} />
+      <ParticipantSetDropdown user={user} sqon={sqon} participantCount={participantCount} />
       <DownloadButton sqon={sqon} />
     </div>
   );

@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
+import React from 'react';
+
 import SplashPage from 'components/SplashPage';
 
 type OwnProps = {
   text?: string;
 };
 
-const Error: FunctionComponent<OwnProps> = ({
-  text = 'An error has occurred, please try again later',
-}) => (
+const Error = ({ text = 'An error has occurred, please try again later' }: OwnProps) => (
   <SplashPage
     title={'Error'}
     mainTitle={'Kids First Data Resource Portal'}

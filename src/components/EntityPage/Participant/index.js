@@ -4,6 +4,8 @@ import get from 'lodash/get';
 import isNull from 'lodash/isNull';
 import PropTypes from 'prop-types';
 
+import { fetchParticipant } from 'store/actionCreators/participantEntity';
+import { selectError, selectIsLoading, selectParticipant } from 'store/selectors/participantEntity';
 import Column from 'uikit/Column';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 import { SecondaryNavContent, SecondaryNavMenu } from 'uikit/SecondaryNav';
@@ -11,7 +13,6 @@ import { Spinner } from 'uikit/Spinner';
 
 import { EntityActionBar, EntityContent, EntityTitle, EntityTitleBar } from '../';
 
-import { fetchParticipant } from './actionCreators';
 import ParticipantClinical from './ParticipantClinical';
 import ParticipantSummary from './ParticipantSummary';
 
@@ -105,14 +106,11 @@ class ParticipantEntity extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { isLoading, error, participant } = state.ui.participantEntityPage;
-  return {
-    isLoading,
-    error,
-    participant,
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoading: selectIsLoading(state),
+  error: selectError(state),
+  participant: selectParticipant(state),
+});
 
 const mapDispatchToProps = {
   fetchParticipant,

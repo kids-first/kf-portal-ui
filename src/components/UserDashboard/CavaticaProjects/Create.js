@@ -1,20 +1,16 @@
 import React from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-
-import Column from 'uikit/Column';
-import Row from 'uikit/Row';
-import { WhiteButton, TealActionButton } from 'uikit/Button';
-import Input from 'uikit/Input';
-import { getBillingGroups, saveProject } from 'services/cavatica';
-
-import { Result, Button } from 'antd';
-import { getMsgFromErrorOrElse } from 'utils';
+import { Button, Result } from 'antd';
 
 import { styleComponent } from 'components/Utils';
+import { getBillingGroups, saveProject } from 'services/cavatica';
+import { TealActionButton, WhiteButton } from 'uikit/Button';
+import Column from 'uikit/Column';
+import Input from 'uikit/Input';
+import Row from 'uikit/Row';
+import { getMsgFromErrorOrElse } from 'utils';
 
-import { input, select } from '../../../theme/tempTheme.module.css';
 import './CavaticaProjects.css';
+import { input, select } from '../../../theme/tempTheme.module.css';
 
 const StyledLabel = styleComponent('label', 'CavaticaStyledLabel');
 
@@ -61,18 +57,18 @@ class Create extends React.Component {
     }
   };
 
-  onProjectNameChange = e => {
+  onProjectNameChange = (e) => {
     this.setState({ projectName: e.target.value });
   };
 
-  onBillingGroupSelect = e => {
+  onBillingGroupSelect = (e) => {
     this.setState({ selectedBillingGroup: e.target.value });
   };
 
   onClickTryAgain = () => {
     this.setState({ ...defaultState });
   };
-  onCancelClick = data => () => this.props.onProjectCreationCancelled(data);
+  onCancelClick = (data) => () => this.props.onProjectCreationCancelled(data);
 
   render() {
     const {
@@ -123,4 +119,4 @@ class Create extends React.Component {
   }
 }
 
-export default compose(injectState)(Create);
+export default Create;

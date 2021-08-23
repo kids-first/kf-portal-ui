@@ -20,7 +20,7 @@ import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/
 import { selectCurrentSelectionSqons } from 'store/selectors/currentStudy';
 import { selectSets } from 'store/selectors/saveSetsSelectors';
 import { Sqon, SqonFilters } from 'store/sqon';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 import SaveSetModal from './SaveSetModal';
@@ -28,7 +28,7 @@ import SaveSetModal from './SaveSetModal';
 import './ParticipantSetDropdown.scss';
 
 type ParticipantSetDropdownProps = {
-  user: LoggedInUser;
+  user: User;
   sqon: Sqon;
   participantCount: number;
 };

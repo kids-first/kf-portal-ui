@@ -15,7 +15,7 @@ import {
 } from 'store/saveSetTypes';
 import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
 import { Sqon } from 'store/sqon';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 
 import UserSetsFrom from './../UserSetsForm';
 
@@ -25,7 +25,7 @@ const FORM_NAME = 'add-remove-set';
 
 type OwnProps = {
   hideModalCb: Function;
-  user: LoggedInUser;
+  user: User;
   sqon: Sqon;
   subActionType: SetSubActionTypes;
 };

@@ -1,26 +1,26 @@
 import React from 'react';
-
+import { withRouter } from 'react-router-dom';
 import queryString from 'querystring';
-
 import { compose } from 'recompose';
-import { injectState } from 'freactal';
 import urlJoin from 'url-join';
 
 import Login from 'components/Login/Login';
 
-const enhance = compose(injectState);
+import useUser from '../hooks/useUser';
 
-const AuthRedirect = props => {
+const AuthRedirect = (props) => {
   const {
     location: { search },
   } = props;
-  const qs = queryString.parse(search.replace(/^\?/, ''));
-  if (props.state.loggedInUserToken) {
-    global.location = urlJoin(qs.redirect_uri, `?token=${props.state.loggedInUserToken}`);
+  const { userToken } = useUser();
+  if (userToken) {
+    const qs = queryString.parse(search.replace(/^\?/, ''));
+    // eslint-disable-next-line no-undef
+    global.location = urlJoin(qs.redirect_uri, `?token=${userToken}`);
     return null;
   } else {
-    return <Login {...props} shouldNotRedirect={true} />;
+    return <Login shouldNotRedirect={true} />;
   }
 };
 
-export default enhance(AuthRedirect);
+export default compose(withRouter)(AuthRedirect);

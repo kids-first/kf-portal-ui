@@ -1,17 +1,20 @@
+import chunk from 'lodash/chunk';
 import { ThunkAction } from 'redux-thunk';
 
 import { deleteSavedQuery, fetchAllSavedQueries } from 'services/riffQueries';
 import { getVirtualStudies } from 'services/virtualStudies';
 
+import { apiInitialized } from '../../services/api';
 import { Api } from '../apiTypes';
 import { RootState } from '../rootState';
 import {
   QueryType,
   SavedQueriesActions,
   SavedQueriesActionTypes,
+  SavedQueryWithFileContent,
   SplitSavedQueries,
 } from '../SavedQueriesTypes';
-import { LoggedInUser } from '../userTypes';
+import { User } from '../userTypes';
 
 import { deleteVirtualStudy } from './virtualStudies';
 
@@ -53,13 +56,13 @@ const requestFetchAllSavedQueries = (): SavedQueriesActionTypes => ({
 export const deleteParticularSavedQuery = (
   api: Api,
   queryId: string,
-  loggedInUser: LoggedInUser,
+  user: User,
   queryType: QueryType,
 ): ThunkAction<void, RootState, null, SavedQueriesActionTypes> => async (dispatch) => {
   dispatch(requestDeleteSavedQueryAction(queryId));
   try {
     if (queryType === QueryType.cohort) {
-      dispatch(deleteVirtualStudy({ virtualStudyId: queryId, loggedInUser }));
+      dispatch(deleteVirtualStudy({ virtualStudyId: queryId, user }));
     }
     await deleteSavedQuery(api, queryId);
     dispatch(successDeletingSavedQueryAction(queryId));
@@ -71,12 +74,12 @@ export const deleteParticularSavedQuery = (
 
 export const fetchSavedQueries = (
   api: Api,
-  loggedInUser: LoggedInUser,
+  user: User,
 ): ThunkAction<void, RootState, null, SavedQueriesActionTypes> => async (dispatch) => {
   dispatch(requestFetchAllSavedQueries());
   try {
-    const queriesFromRiff = await fetchAllSavedQueries(api, loggedInUser);
-    const queriesVirtualStudies = await getVirtualStudies(api, loggedInUser.egoId);
+    const queriesFromRiff = await fetchAllSavedQueries(api, user);
+    const queriesVirtualStudies = await getVirtualStudies(api, user.egoId);
     /*
      * Refactor of legacy code that had this message:
      * ###
@@ -96,5 +99,24 @@ export const fetchSavedQueries = (
     dispatch(failureFetchingAllSavedQueries(e));
   } finally {
     dispatch(toggleFetchAllQueriesLoading(false));
+  }
+};
+
+export const deleteAllSaveQueriesFromRiffForUser = (
+  api: Api,
+  user: User,
+): ThunkAction<void, RootState, null, SavedQueriesActionTypes> => async () => {
+  const BATCH_SIZE = 10;
+  try {
+    const queriesFromRiffToDelete = (await fetchAllSavedQueries(
+      api,
+      user,
+    )) as SavedQueryWithFileContent[];
+    const chunksOfQueriesToDelete = chunk(queriesFromRiffToDelete, BATCH_SIZE);
+    for (const chunkOfQueries of chunksOfQueriesToDelete) {
+      await Promise.all(chunkOfQueries.map((query) => deleteSavedQuery(apiInitialized, query.id)));
+    }
+  } catch (e) {
+    console.error(e);
   }
 };

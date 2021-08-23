@@ -15,7 +15,7 @@ import {
   SavedQueryWithFileContent,
   SplitSavedQueries,
 } from 'store/SavedQueriesTypes';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 import { Link } from 'uikit/Core';
 
 import SavedQueriesTab from './SavedQueriesTab';
@@ -23,14 +23,9 @@ import SavedQueriesTab from './SavedQueriesTab';
 import './SavedQueries.scss';
 
 type Props = {
-  loggedInUser: LoggedInUser;
+  user: User;
   api: Api;
-  deleteParticularSavedQuery: (
-    api: Api,
-    queryId: string,
-    loggedInUser: LoggedInUser,
-    queryType: QueryType,
-  ) => void;
+  deleteParticularSavedQuery: (api: Api, queryId: string, user: User, queryType: QueryType) => void;
   queries: SplitSavedQueries;
   queryIdToStatus: SavedQueriesIdToStatus;
 };
@@ -38,7 +33,7 @@ type Props = {
 const formatStat = (val: number | string) => (val || 0).toLocaleString();
 
 const FileTab = (props: Props) => {
-  const { queries, queryIdToStatus, loggedInUser, deleteParticularSavedQuery, api } = props;
+  const { queries, queryIdToStatus, user, deleteParticularSavedQuery, api } = props;
 
   return (
     <SavedQueriesTab
@@ -99,7 +94,7 @@ const FileTab = (props: Props) => {
           action: TRACKING_EVENTS.actions.query.delete,
           label: JSON.stringify(item),
         });
-        deleteParticularSavedQuery(api, item.id, loggedInUser, QueryType.file);
+        deleteParticularSavedQuery(api, item.id, user, QueryType.file);
       }}
     />
   );

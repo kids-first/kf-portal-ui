@@ -18,6 +18,6 @@ export const extractInfoFromRoles = (roles) => {
   };
 };
 
-export const isPartOfGroup = (group, egoGroups) => (egoGroups || []).includes(group);
+export const isPartOfGroup = (group, groups) => (groups || []).includes(group);
 
-export const isKfInvestigator = (egoGroups) => isPartOfGroup('kf-investigator', egoGroups);
+export const isKfInvestigator = (groups) => isPartOfGroup('kf-investigator', groups);

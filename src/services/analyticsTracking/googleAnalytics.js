@@ -1,8 +1,11 @@
 import ReactGA from 'react-ga';
-import { gaTrackingID, devDebug, debugGoogleAnalytics } from 'common/injectGlobals';
-import history from '../history';
-import merge from 'lodash/merge';
 import isObject from 'lodash/isObject';
+import merge from 'lodash/merge';
+
+import { debugGoogleAnalytics, devDebug, gaTrackingID } from 'common/injectGlobals';
+
+import history from '../history';
+
 import { TRACKING_EVENTS } from './trackingEventConstants';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
@@ -16,14 +19,14 @@ let GAState = {
   userId: null, //int
   userRoles: null, //string
   clientId: null, //string
-  egoGroups: null, // array?,
+  groups: null, // array?,
   cavaticaProjects: null,
 };
 let timingsStorage = window.localStorage;
 
 export const initGATracking = () => {
   ReactGA.initialize(GAState.trackingId, { debug: Boolean(devDebug && debugGoogleAnalytics) });
-  ReactGA.ga(function(tracker) {
+  ReactGA.ga(function (tracker) {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
 
@@ -51,8 +54,8 @@ const setUserDimensions = (userId, role, groups) => {
     ReactGA.set({ dimension2: role || GAState.userRoles[0] });
   }
 
-  if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
-    let _groups = JSON.stringify({ egoGroups: groups ? groups[0] : GAState.egoGroups[0] });
+  if ((groups && groups.length) || (GAState.groups && GAState.groups.length)) {
+    let _groups = JSON.stringify({ groups: groups ? groups[0] : GAState.groups[0] });
     // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
     // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
     ReactGA.set({ dimension4: _groups });
@@ -60,15 +63,15 @@ const setUserDimensions = (userId, role, groups) => {
   // dimension6 is userCavaticaProjects
 };
 
-export const addStateInfo = obj => merge(GAState, obj);
+export const addStateInfo = (obj) => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGroups }) => {
+export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, groups }) => {
   let userId = egoId;
   if (acceptedTerms && !GAState.userId) {
-    addStateInfo({ userId, personaId: _id, userRoles: roles, egoGroups });
-    setUserDimensions(userId, roles[0], egoGroups);
+    addStateInfo({ userId, personaId: _id, userRoles: roles, groups });
+    setUserDimensions(userId, roles[0], groups);
     return true;
   } else {
     return false;
@@ -79,7 +82,7 @@ export const trackUserInteraction = async ({ category, action, label, value }) =
   setUserDimensions(
     GAState.userId,
     GAState.userRoles ? GAState.userRoles[0] : null,
-    GAState.egoGroups,
+    GAState.groups,
   );
   ReactGA.event({ category, action, label, value });
   switch (category) {
@@ -105,13 +108,14 @@ export const trackUserInteraction = async ({ category, action, label, value }) =
       }
       break;
     case 'File Repo: Filters - Advanced':
-    case TRACKING_EVENTS.categories.fileRepo.filters:
-      let downloadEventStarted = timingsStorage.getItem(getTimingEventName('FILE_DOWNLOAD'));
+    case TRACKING_EVENTS.categories.fileRepo.filters: {
+      const downloadEventStarted = timingsStorage.getItem(getTimingEventName('FILE_DOWNLOAD'));
       if (action === 'Filter Selected' && !downloadEventStarted) {
         startAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
         startAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
       }
       break;
+    }
     case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
       if (
         action === TRACKING_EVENTS.actions.download.report ||
@@ -141,10 +145,10 @@ export const trackUserInteraction = async ({ category, action, label, value }) =
   }
 };
 
-const sanitizeName = name => name.toUpperCase().replace(/\s/g, '_');
-const getTimingEventName = name => `KF_GA_TIMING_INIT_${sanitizeName(name)}`;
+const sanitizeName = (name) => name.toUpperCase().replace(/\s/g, '_');
+const getTimingEventName = (name) => `KF_GA_TIMING_INIT_${sanitizeName(name)}`;
 
-export const startAnalyticsTiming = eventName => {
+export const startAnalyticsTiming = (eventName) => {
   timingsStorage.setItem(getTimingEventName(eventName), +new Date());
 };
 
@@ -166,12 +170,12 @@ export const stopAnalyticsTiming = (eventName, eventData) => {
   return duration;
 };
 
-export const clearAnalyticsTiming = timingEvent => {
+export const clearAnalyticsTiming = (timingEvent) => {
   timingsStorage.removeItem(getTimingEventName(timingEvent));
   timingsStorage.removeItem('KF_GA_TIMING_' + sanitizeName(timingEvent));
 };
 
-export const trackTiming = async eventData => {
+export const trackTiming = async (eventData) => {
   setUserDimensions();
   ReactGA.timing(
     merge(
@@ -190,7 +194,7 @@ export const trackPageView = (page, options = {}) => {
   setUserDimensions(
     GAState.userId,
     GAState.userRoles ? GAState.userRoles[0] : null,
-    GAState.egoGroups,
+    GAState.groups,
   );
   ReactGA.set({
     page,
@@ -222,7 +226,7 @@ export const trackPageView = (page, options = {}) => {
   }
 };
 
-export const trackExternalLink = url => {
+export const trackExternalLink = (url) => {
   if (url) ReactGA.outboundLink({ label: url }, () => {});
 };
 
@@ -234,4 +238,4 @@ export const trackProfileInteraction = ({ action, value, type }) =>
   });
 
 // track page views
-history.listen(({ pathname, search, hash }, action) => trackPageView(pathname + hash + search));
+history.listen(({ pathname, search, hash }) => trackPageView(pathname + hash + search));

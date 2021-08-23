@@ -1,9 +1,10 @@
+import { LogoutAction, UserActions } from 'store/userTypes';
 import {
   ClusterUnverifiedStatus,
   WorkBenchActions,
   WorkBenchActionTypes,
   WorkBenchState,
-} from '../WorkBenchTypes';
+} from 'store/WorkBenchTypes';
 
 const initialState: WorkBenchState = {
   isLoading: false,
@@ -12,7 +13,10 @@ const initialState: WorkBenchState = {
   url: null,
 };
 
-export default (state = initialState, action: WorkBenchActionTypes): WorkBenchState => {
+export default (
+  state = initialState,
+  action: WorkBenchActionTypes | LogoutAction,
+): WorkBenchState => {
   switch (action.type) {
     case WorkBenchActions.toggleLoading: {
       return { ...state, isLoading: action.isLoading };
@@ -31,6 +35,9 @@ export default (state = initialState, action: WorkBenchActionTypes): WorkBenchSt
     }
     case WorkBenchActions.clearClusterError: {
       return { ...state, error: null };
+    }
+    case UserActions.logout: {
+      return { ...initialState };
     }
     default:
       return state;

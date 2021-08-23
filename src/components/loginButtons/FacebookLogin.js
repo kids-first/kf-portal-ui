@@ -1,16 +1,21 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
+import { Spin } from 'antd';
 
-import DisabledFacebookLogin from './DisabledFacebookLogin';
 import { facebookStatus } from 'services/login';
 
-export default class extends Component {
+import DisabledFacebookLogin from './DisabledFacebookLogin';
+
+export default class FacebookLogin extends Component {
   state = {
     disabled: false,
+    isLoading: false,
   };
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     facebookStatus()
-      .then(response => {
+      .then((response) => {
         if (response.authResponse) {
           this.props.onLogin(response);
         } else {
@@ -18,11 +23,12 @@ export default class extends Component {
           global.FB.Event.subscribe('auth.login', this.props.onLogin);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn('unable to get fb login status: ', err);
         this.props.onError('facebookError');
         this.setState({ disabled: true });
-      });
+      })
+      .finally(() => this.setState({ isLoading: false }));
   }
 
   componentWillUnmount() {
@@ -34,21 +40,25 @@ export default class extends Component {
   }
 
   render() {
-    return this.state.disabled ? (
-      <DisabledFacebookLogin />
-    ) : (
-      <div
-        className="fb-login-button login-button"
-        style={{ height: '40px' }}
-        data-max-rows="1"
-        data-size="large"
-        data-width="240"
-        data-button-type="login_with"
-        data-show-faces="false"
-        data-auto-logout-link="false"
-        data-use-continue-as="false"
-        data-scope="public_profile,email"
-      />
+    return (
+      <Spin spinning={this.state.isLoading}>
+        {this.state.disabled ? (
+          <DisabledFacebookLogin />
+        ) : (
+          <div
+            className="fb-login-button login-button"
+            style={{ height: '40px' }}
+            data-max-rows="1"
+            data-size="large"
+            data-width="240"
+            data-button-type="login_with"
+            data-show-faces="false"
+            data-auto-logout-link="false"
+            data-use-continue-as="false"
+            data-scope="public_profile,email"
+          />
+        )}
+      </Spin>
     );
   }
 }

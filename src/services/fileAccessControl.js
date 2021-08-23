@@ -1,11 +1,12 @@
+import flatten from 'lodash/flatten';
+import get from 'lodash/get';
 import isObject from 'lodash/isObject';
 import keys from 'lodash/keys';
-import get from 'lodash/get';
-import flatten from 'lodash/flatten';
-import { getFenceUser } from 'services/fence';
-import { graphql } from 'services/arranger';
 
-const getStudyIdsFromSqon = api => ({ sqon }) =>
+import { graphql } from 'services/arranger';
+import { fetchFenceConnection } from 'services/fence';
+
+const getStudyIdsFromSqon = (api) => ({ sqon }) =>
   graphql(api)({
     query: `
       query StudyIds($sqon: JSON) {
@@ -35,16 +36,16 @@ const getStudyIdsFromSqon = api => ({ sqon }) =>
     }) => buckets.map(({ key }) => key),
   );
 
-const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
+const getStudiesAggregationsFromSqon = (api) => (studyIds) => (sqons) =>
   !studyIds.length
     ? []
     : graphql(api)({
         query: `
-          query AcceptedStudiesAggs(${studyIds.map(id => `$${id}_sqon: JSON`)}) {
+          query AcceptedStudiesAggs(${studyIds.map((id) => `$${id}_sqon: JSON`)}) {
             file {
               ${studyIds
                 .map(
-                  id => `
+                  (id) => `
                   ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
                     latest_did { buckets { key } }
                     participants__study__name { buckets { key } }
@@ -57,8 +58,8 @@ const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
           }
         `,
         variables: sqons,
-      }).then(({ data: { file: aggregations } }) => {
-        return studyIds.map(id => {
+      }).then(({ data: { file: aggregations } }) =>
+        studyIds.map((id) => {
           const aggregation = aggregations[id];
           const {
             latest_did: { buckets: fileIds },
@@ -73,10 +74,10 @@ const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
             studyName: studyNames.map(({ key }) => key)[0],
             studyShortName: studyShortNames.map(({ key }) => key)[0],
           };
-        });
-      });
+        }),
+      );
 
-export const createStudyIdSqon = studyId => ({
+export const createStudyIdSqon = (studyId) => ({
   op: 'and',
   content: [
     {
@@ -89,26 +90,23 @@ export const createStudyIdSqon = studyId => ({
   ],
 });
 
-export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
-  return {
-    op: 'and',
-    content: [
-      ...(sqon ? sqon.content : []),
-      { op: 'in', content: { field: 'acl', value: projects } },
-      { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
-    ],
-  };
-};
-const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => {
-  return {
-    op: 'and',
-    content: [
-      ...(sqon ? sqon.content : []),
-      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: projects } }] },
-      { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
-    ],
-  };
-};
+export const createAcceptedFilesByUserStudySqon = (projects) => ({ sqon, studyId }) => ({
+  op: 'and',
+  content: [
+    ...(sqon ? sqon.content : []),
+    { op: 'in', content: { field: 'acl', value: projects } },
+    { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
+  ],
+});
+
+const createUnacceptedFilesByUserStudySqon = (projects) => ({ studyId, sqon }) => ({
+  op: 'and',
+  content: [
+    ...(sqon ? sqon.content : []),
+    { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: projects } }] },
+    { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
+  ],
+});
 
 export const getUserStudyPermission = async (
   api,
@@ -120,7 +118,7 @@ export const getUserStudyPermission = async (
 ) => {
   const projects = flatten(
     Object.values(fenceConnections || {})
-      .filter(fenceUser => isObject(fenceUser.projects) && keys(fenceUser.projects).length > 0)
+      .filter((fenceUser) => isObject(fenceUser.projects) && keys(fenceUser.projects).length > 0)
       .map(({ projects }) => keys(projects))
       .concat('*'),
   );
@@ -186,10 +184,10 @@ export const getUserStudyPermission = async (
   return { acceptedStudiesAggs, unacceptedStudiesAggs };
 };
 
-export const checkUserFilePermission = api => async ({ fileId, fence }) => {
+export const checkUserFilePermission = (api) => async ({ fileId, fence }) => {
   let approvedAcls;
   try {
-    const userDetails = await getFenceUser(api, fence);
+    const userDetails = await fetchFenceConnection(api, fence);
     approvedAcls = Object.keys(userDetails.projects);
   } catch (err) {
     // Failed to get the fence information,
@@ -219,12 +217,12 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
       },
     },
   })
-    .then(data => {
+    .then((data) => {
       const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
-      return fileAcl.some(fileAcl => fileAcl === '*' || approvedAcls.includes(fileAcl));
+      return fileAcl.some((fileAcl) => fileAcl === '*' || approvedAcls.includes(fileAcl));
     })
-    .catch(err => {
-      console.log('err', err);
+    .catch((err) => {
+      console.error(err);
       return false;
     });
 };

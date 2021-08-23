@@ -5,7 +5,7 @@ import useQueryResolver from 'hooks/useQueryResolver';
 import { withApi } from 'services/api';
 import { setSelectionSqons } from 'store/actionCreators/virtualStudies';
 import { Sqon } from 'store/sqon';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 
 import ParticipantsTable from './ParticipantsTable';
 import { participantsQuery, SORTABLE_FIELDS_MAPPING } from './queries';
@@ -15,7 +15,7 @@ import './index.scss';
 
 type OwnProps = {
   sqon: Sqon;
-  loggedInUser?: LoggedInUser;
+  user: User;
   api: Function;
 };
 
@@ -130,7 +130,6 @@ const ParticipantsTableView = (props: OwnProps) => {
       }}
       selectedRows={selectedRows}
       allRowsSelected={allRowsSelected}
-      loggedInUser={props.loggedInUser}
     />
   );
 };

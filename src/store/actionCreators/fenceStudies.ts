@@ -5,12 +5,22 @@ import { ThunkAction } from 'redux-thunk';
 import { getAuthStudiesIdAndCount, getStudiesCountByNameAndAcl } from 'services/fenceStudies';
 
 import { Api } from '../apiTypes';
+import { ConnectionStatus } from '../connectionTypes';
 import { FenceStudies, FenceStudiesActions, FenceStudiesActionTypes } from '../fenceStudiesTypes';
 import { AclsByFence, FenceName, UserAcls } from '../fenceTypes';
 import { RootState } from '../rootState';
-import { selectFenceStudies } from '../selectors/fenceStudies';
+import { selectFenceStudies, selectFenceStudiesStatus } from '../selectors/fenceStudies';
 
 const addWildCardToAcls = (acls: UserAcls) => [...(acls || []), '*'];
+
+export const toggleIsFetchingOneFenceStudies = (
+  isLoading: boolean,
+  fenceName: FenceName,
+): FenceStudiesActionTypes => ({
+  type: FenceStudiesActions.toggleIsFetchingOneFenceStudies,
+  isLoading,
+  fenceName,
+});
 
 export const toggleIsFetchingAllFenceStudies = (isLoading: boolean): FenceStudiesActionTypes => ({
   type: FenceStudiesActions.toggleIsFetchingAllFenceStudies,
@@ -27,9 +37,27 @@ export const removeFenceStudies = (fenceName: FenceName): FenceStudiesActionType
   fenceName,
 });
 
+export const removeAllFencesStudies = (): FenceStudiesActionTypes => ({
+  type: FenceStudiesActions.removeAllFenceStudies,
+});
+
+export const addStudiesConnectionStatus = (
+  fenceName: FenceName,
+  newStatus: ConnectionStatus,
+): FenceStudiesActionTypes => ({
+  type: FenceStudiesActions.addStudiesConnectionStatus,
+  fenceName,
+  newStatus,
+});
+
 const shouldFetchFenceStudies = (fenceName: FenceName, state: RootState) => {
   const studiesForFence = selectFenceStudies(state)[fenceName];
-  return isEmpty(studiesForFence) || isEmpty(studiesForFence.authorizedStudies);
+  const hasNoAuthorizedStudiesForFence =
+    isEmpty(studiesForFence) || isEmpty(studiesForFence.authorizedStudies);
+  const hasNotBeenDisconnected = [ConnectionStatus.unknown, ConnectionStatus.connected].includes(
+    selectFenceStudiesStatus(fenceName, state),
+  );
+  return hasNotBeenDisconnected && hasNoAuthorizedStudiesForFence;
 };
 
 export const fetchFenceStudies = (
@@ -37,6 +65,7 @@ export const fetchFenceStudies = (
   fenceName: FenceName,
   userAcls: UserAcls,
 ): ThunkAction<void, RootState, null, FenceStudiesActionTypes> => async (dispatch) => {
+  dispatch(toggleIsFetchingOneFenceStudies(true, fenceName));
   try {
     const aclsWithWildCard = addWildCardToAcls(userAcls);
     const studies = await getAuthStudiesIdAndCount(api, fenceName, aclsWithWildCard);
@@ -51,8 +80,12 @@ export const fetchFenceStudies = (
         },
       }),
     );
+    dispatch(addStudiesConnectionStatus(fenceName, ConnectionStatus.connected));
   } catch (error) {
+    dispatch(addStudiesConnectionStatus(fenceName, ConnectionStatus.disconnected));
     console.error(`Error fetching fence studies for '${fenceName}': ${error}`);
+  } finally {
+    dispatch(toggleIsFetchingOneFenceStudies(false, fenceName));
   }
 };
 
