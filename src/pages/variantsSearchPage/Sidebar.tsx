@@ -38,31 +38,31 @@ const menuFilters = [
     key: '1',
     title: 'Variant',
     icon: <VariantIcon2 />,
-    filters: VariantFilters,
+    filters: <VariantFilters />,
   },
   {
     key: '2',
     title: 'Gene',
     icon: <GeneIcon />,
-    filters: GeneFilters,
+    filters: <GeneFilters />,
   },
   {
     key: '3',
     title: 'Pathogenicity',
     icon: <DiseaseIcon />,
-    filters: PathogenicityFilters,
+    filters: <PathogenicityFilters />,
   },
   {
     key: '4',
     title: 'Frequency',
     icon: <FrequencyIcon />,
-    filters: FrequencyFilters,
+    filters: <FrequencyFilters />,
   },
   {
     key: '5',
     title: 'Occurence',
     icon: <OccurenceIcon />,
-    filters: OccurenceFilters,
+    filters: <OccurenceFilters />,
   },
 ];
 
@@ -142,9 +142,7 @@ const VariantFiltersSider = (/*props: OwnProps*/) => {
           setSelectedKey('');
         }}
       >
-        {selectedFilterComponent && (
-          <selectedFilterComponent.filters></selectedFilterComponent.filters>
-        )}
+        {selectedFilterComponent && selectedFilterComponent.filters}
       </SidebarRightPanel>
     </div>
   );
