@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 
 import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
 
@@ -14,11 +14,12 @@ type OwnProps = {
   mappingResults: MappingResults;
 };
 
+//TODO missing genomic location and External Ref
 //order in list reflects order in UI
 const INPUT_FILTER_LIST = ['variant_class', 'consequences__consequences'];
 const INDEX = 'variants';
 
-const VariantFilters: FunctionComponent<OwnProps> = (props: OwnProps) => {
+const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   const { filters } = useFilters();
 
   const allSqons = getQueryBuilderCache('study-repo').state;
@@ -29,11 +30,15 @@ const VariantFilters: FunctionComponent<OwnProps> = (props: OwnProps) => {
       first: MAX_NUMBER_STUDIES, //TODO should be a pagination
       offset: 0,
     },
-    VARIANT_QUERY(INPUT_FILTER_LIST),
+    VARIANT_QUERY(INPUT_FILTER_LIST, mappingResults),
     INDEX,
   );
 
-  return <Layout>{generateFilters(results, props.mappingResults)}</Layout>; //TODO add spinner
+  return (
+    <Layout>
+      {results.loading ? <Spin size="large" /> : generateFilters(results, mappingResults)}
+    </Layout>
+  );
 };
 
 export default VariantFilters;

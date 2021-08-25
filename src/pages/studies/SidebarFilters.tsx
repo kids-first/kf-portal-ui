@@ -1,18 +1,11 @@
 import React from 'react';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
-import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
-import { IFilter } from '@ferlab/ui/core/components/filters/types';
-import {
-  getFilterType,
-  getSelectedFilters,
-  updateFilters,
-} from '@ferlab/ui/core/data/filters/utils';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Col, Row, Tooltip } from 'antd';
 
-import history from 'services/history';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
-import { keyEnhance, keyEnhanceBooleanOnly } from 'store/graphql/utils';
+
+import { generateFilters } from '../../components/Utils/utils';
 
 import SearchBar from './SearchBar';
 import { MAX_NUMBER_STUDIES } from './studies';
@@ -80,37 +73,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnP
         </Row>
         {options.length ? <SearchBar filters={filters} options={options} /> : <div />}
       </div>
-      {Object.keys(data.data?.aggregations || []).map((key) => {
-        const found = (studiesMappingResults?.extendedMapping || []).find(
-          (f: any) => f.field === key,
-        );
-        const filterGroup = {
-          field: found?.field || '',
-          title: found?.displayName || '',
-          type: getFilterType(found?.type || ''),
-        };
-        // @ts-ignore
-        const filters: IFilter[] = studiesResults.data.aggregations[key!].buckets.map((f: any) => ({
-          data: {
-            count: f.doc_count,
-            key: keyEnhanceBooleanOnly(f.key),
-          },
-          name: keyEnhance(f.key),
-          id: f.key,
-        }));
-        const selectedFilters = getSelectedFilters(filters, filterGroup);
-        return (
-          <FilterContainer
-            key={key}
-            filterGroup={filterGroup}
-            filters={filters}
-            onChange={(fg, f) => {
-              updateFilters(history, fg, f);
-            }}
-            selectedFilters={selectedFilters}
-          />
-        );
-      })}
+      {generateFilters(data, studiesMappingResults)}
     </>
   );
 };
