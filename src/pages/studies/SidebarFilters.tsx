@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
@@ -11,38 +10,14 @@ import {
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Col, Row, Tooltip } from 'antd';
 
-import { MISSING_DATA } from 'services/arranger';
 import history from 'services/history';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
+import { keyEnhance, keyEnhanceBooleanOnly } from 'store/graphql/utils';
 
 import SearchBar from './SearchBar';
 import { MAX_NUMBER_STUDIES } from './studies';
 
 import style from './SidebarFilter.module.scss';
-
-const keyEnhance = (key: string, s: string = ' No Data') => {
-  switch (key) {
-    case MISSING_DATA:
-      return s;
-    case '1':
-      return 'True';
-    case '0':
-      return 'False';
-    default:
-      return key;
-  }
-};
-
-const keyEnhanceBooleanOnly = (key: string) => {
-  switch (key) {
-    case '1':
-      return 'true';
-    case '0':
-      return 'false';
-    default:
-      return key;
-  }
-};
 
 type StudiesProps = {
   filters: ISqonGroupFilter;

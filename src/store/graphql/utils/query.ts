@@ -8,12 +8,6 @@ import {
   useQuery,
 } from '@apollo/client';
 
-export enum Hits {
-  COLLECTION = 'hits.edges',
-  SINGLE_ITEM = 'hits.edges[0].node',
-  ITEM = 'hits',
-}
-
 export interface IBaseQueryResults<TData> {
   error: ApolloError | undefined;
   result: TData | undefined;

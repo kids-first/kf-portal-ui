@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const VARIANT_QUERY = gql`
+export const VARIANT_QUERY = (aggList: string[]) => gql`
   query VariantInformation($sqon: JSON, $first: Int, $offset: Int) {
     variants {
       hits(filters: $sqon, first: $first, offset: $offset) {
@@ -20,19 +20,12 @@ export const VARIANT_QUERY = gql`
           }
         }
       }
-      aggregations {
-        variant_class {
-          buckets {
-            key
-            doc_count
-          }
-        }
-        consequences__consequences {
-          buckets {
-            key
-            doc_count
-          }
-        }
+       aggregations (filters: $sqon){
+        ${aggList.map(
+          (f) =>
+            f +
+            ' {\n          buckets {\n            key\n            doc_count\n          }\n        }',
+        )}
       }
     }
   }
