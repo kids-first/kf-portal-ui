@@ -1,6 +1,8 @@
-import { graphql } from '../../services/arranger';
-import OntologyTree, { lightTreeNodeConstructor, TreeNode } from './Model';
 import { Sqon } from 'store/sqon';
+
+import { graphql } from '../../services/arranger';
+
+import OntologyTree, { lightTreeNodeConstructor, TreeNode } from './Model';
 
 export type PhenotypeSource = {
   key: string;
@@ -14,7 +16,7 @@ export type PhenotypeSource = {
 const RegexHPOCode = /^.+(\(HP:\d+\)$)/;
 export const RegexExtractPhenotype = new RegExp(/([A-Z].+?\(HP:\d+\))/, 'g');
 
-const dotToUnderscore = (str: string) => str.replace('.', '__');
+export const dotToUnderscore = (str: string) => str.replace('.', '__');
 
 const termRegex = new RegExp('[^-]+$');
 

@@ -1,6 +1,7 @@
 import {
   ApolloError,
   DocumentNode,
+  gql,
   OperationVariables,
   QueryHookOptions,
   TypedDocumentNode,
@@ -46,3 +47,11 @@ export const buildVariantIdSqon = (id: string) => ({
     },
   ],
 });
+
+export const INDEX_EXTENDED_MAPPING = (index: string) => gql`
+  query ExtendedMapping {
+    ${index} {
+      extended
+    }
+  }
+`;
