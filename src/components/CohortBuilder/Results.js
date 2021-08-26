@@ -91,7 +91,7 @@ const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api }) =>
 
   return (
     <>
-      <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
+      <div className="cb-view-links">
         <Tabs
           tabBarExtraContent={toolbar}
           type="card"
