@@ -5,27 +5,28 @@ import {
   createHttpLink,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import { kfArrangerApiRoot, arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 import { IProvider } from 'store/providers';
 
-import { InMemoryCache } from '@apollo/client';
+import keycloak from '../../keycloak';
 
 const httpLink = createHttpLink({
   uri: `${kfArrangerApiRoot}${arrangerApiProjectId}/graphql`,
 });
 
-const getAuthLink = (userToken: string) =>
+const getAuthLink = () =>
   setContext((_, { headers }) => ({
     headers: {
       ...headers,
-      authorization: userToken ? `Bearer ${userToken}` : '',
+      authorization: keycloak?.token ? `Bearer ${keycloak?.token}` : '',
     },
   }));
 
-export default ({ children, userToken }: IProvider): ReactElement => {
-  const header = getAuthLink(userToken);
+export default ({ children }: IProvider): ReactElement => {
+  const header = getAuthLink();
 
   const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     cache: new InMemoryCache({ addTypename: false }),

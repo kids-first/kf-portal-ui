@@ -1,8 +1,11 @@
-import { GenomicActionTypes, GenomicSuggesterTypes } from '../genomicSuggesterTypes';
 import { ThunkAction } from 'redux-thunk';
-import { RootState } from '../rootState';
+
 import { getGenomicSuggestions } from 'services/genomicSuggestions';
+
+import { Api } from '../apiTypes';
+import { GenomicActionTypes, GenomicSuggesterTypes } from '../genomicSuggesterTypes';
 import { SearchText, SelectedSuggestion, Suggestion } from '../graphql/variants/models';
+import { RootState } from '../rootState';
 
 export const toggleLoading = (isLoading: boolean): GenomicSuggesterTypes => ({
   type: GenomicActionTypes.TOGGLE_LOADING,
@@ -47,12 +50,14 @@ export const reInitializeState = (): GenomicSuggesterTypes => ({
 });
 
 export const fetchSuggestions = (
+  api: Api,
   searchText: SearchText,
 ): ThunkAction<void, RootState, null, GenomicSuggesterTypes> => async (dispatch) => {
   dispatch(clearSuggestions());
   dispatch(toggleLoading(true));
   try {
     const response: { searchText: string; suggestions: Suggestion[] } = await getGenomicSuggestions(
+      api,
       searchText,
     );
     dispatch(addSuggestions(response.searchText, response.suggestions));

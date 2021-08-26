@@ -65,7 +65,6 @@ describe('Protected Route', () => {
     const store = mockStore({
       user: {
         ...initialState.user,
-        isAuthenticated: true,
         user: {
           ...MOCK_USER_1_NOT_ADMIN,
           isAdmin: false,
@@ -87,7 +86,6 @@ describe('Protected Route', () => {
       const store = mockStore({
         user: {
           ...initialState.user,
-          isAuthenticated: true,
           user: {
             ...MOCK_USER_1_NOT_ADMIN,
             acceptedTerms: false,
@@ -110,7 +108,6 @@ describe('Protected Route', () => {
       const store = mockStore({
         user: {
           ...initialState.user,
-          isAuthenticated: true,
           user: {
             ...MOCK_USER_1_NOT_ADMIN,
             acceptedTerms: true,
@@ -133,7 +130,6 @@ describe('Protected Route', () => {
       const store = mockStore({
         user: {
           ...initialState.user,
-          isAuthenticated: true,
           user: {
             ...MOCK_USER_1_NOT_ADMIN,
             acceptedTerms: true,

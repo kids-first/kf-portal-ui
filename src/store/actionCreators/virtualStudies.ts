@@ -1,4 +1,3 @@
-import { apiInitialized } from 'services/api';
 import {
   createNewVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
@@ -19,7 +18,7 @@ import {
   VirtualStudyRaw,
 } from 'store/virtualStudiesTypes';
 
-const api = apiInitialized;
+import { Api } from '../apiTypes';
 
 const assertStudyId = (id: unknown) => {
   if (typeof id !== 'string' || id.length === 0) {
@@ -152,7 +151,7 @@ export const addTermToActiveIndexAction = (payload: {
   payload,
 });
 
-export const fetchVirtualStudiesCollection = (uid: Uid): ThunkActionVirtualStudies => (
+export const fetchVirtualStudiesCollection = (api: Api, uid: Uid): ThunkActionVirtualStudies => (
   dispatch,
 ): Promise<void> => {
   dispatch(fetchVirtualStudiesRequested(uid));
@@ -168,6 +167,7 @@ export const fetchVirtualStudiesCollection = (uid: Uid): ThunkActionVirtualStudi
 };
 
 export const loadSavedVirtualStudy = (
+  api: Api,
   virtualStudyId: VirtualStudyId,
 ): ThunkActionVirtualStudies => (dispatch) => {
   dispatch(virtualStudyLoadRequested(virtualStudyId));
@@ -179,9 +179,11 @@ export const loadSavedVirtualStudy = (
     });
 };
 
-export const saveVirtualStudy = (user: User, study: VirtualStudy): ThunkActionVirtualStudies => (
-  dispatch,
-) => {
+export const saveVirtualStudy = (
+  api: Api,
+  user: User,
+  study: VirtualStudy,
+): ThunkActionVirtualStudies => (dispatch) => {
   try {
     assertStudyName(study.name);
     assertUser(user);
@@ -210,9 +212,11 @@ export const saveVirtualStudy = (user: User, study: VirtualStudy): ThunkActionVi
 };
 
 export const deleteVirtualStudy = ({
+  api,
   virtualStudyId,
   user,
 }: {
+  api: Api;
   virtualStudyId: VirtualStudyId;
   user: User;
 }): ThunkActionVirtualStudies => async (dispatch) => {
@@ -222,7 +226,7 @@ export const deleteVirtualStudy = ({
   dispatch(virtualStudyDeleteRequested(virtualStudyId));
 
   return deleteVirtualStudyApi({ virtualStudyId, api, user })
-    .then(() => dispatch(fetchVirtualStudiesCollection(user.egoId)))
+    .then(() => dispatch(fetchVirtualStudiesCollection(api, user.egoId)))
     .then(() => {
       dispatch(virtualStudyDeleteSuccess(virtualStudyId));
     })

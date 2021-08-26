@@ -62,18 +62,11 @@ export const withApi = (WrappedComponent) => (props) => (
   <ApiContext.Consumer>{(api) => <WrappedComponent {...{ api, ...props }} />}</ApiContext.Consumer>
 );
 
-export const onUnauthorizedWhenTokenInLs = async () => {
+export const onUnauthorizedUser = async () => {
   await store.dispatch(cleanlyLogout());
 };
 
 export const apiUser = initializeApi({
   onError: (err) => console.error(err),
-  onUnauthorized: onUnauthorizedWhenTokenInLs,
-});
-
-export const apiInitialized = initializeApi({
-  onError: (err) => console.error(err),
-  onUnauthorized: (response) => {
-    console.warn('Unauthorized', response);
-  },
+  onUnauthorized: onUnauthorizedUser,
 });

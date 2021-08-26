@@ -10,7 +10,6 @@ import { selectUser } from 'store/selectors/users';
 import { SHOW_DELETE_ACCOUNT } from '../../common/constants';
 
 import ApplicationIntegration from './ApplicationIntegration';
-import ConnectionProvider from './ConnectionProvider';
 import RepositoryIntegration from './RepositoryIntegration';
 
 const mapDispatch = (dispatch) => ({
@@ -26,7 +25,7 @@ const { Content } = Layout;
 const connector = connect(mapStateToProps, mapDispatch);
 
 const Settings = (props) => {
-  const { userEmail, onClearClusterError } = props;
+  const { onClearClusterError } = props;
 
   useEffect(() => {
     onClearClusterError();
@@ -35,9 +34,6 @@ const Settings = (props) => {
   return (
     <Layout className={'settings-layout'}>
       <Content>
-        <Row className={'settings-row-but-last'}>
-          <ConnectionProvider userEmail={userEmail} />
-        </Row>
         <Row className={'settings-row-but-last'}>
           <RepositoryIntegration />
         </Row>

@@ -26,6 +26,7 @@ import { selectUser } from 'store/selectors/users';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 import Row from 'uikit/Row';
 
+import { withApi } from '../../../services/api';
 import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
 
 import LoadQuery from './LoadQuery';
@@ -84,19 +85,20 @@ class VirtualStudiesMenu extends React.Component {
     isOwner: PropTypes.bool,
     virtualStudiesAreLoading: PropTypes.bool,
     areSqonsEmpty: PropTypes.bool,
+    api: PropTypes.func,
   };
 
   componentDidMount() {
-    const { uid, fetchVirtualStudiesCollection } = this.props;
+    const { uid, fetchVirtualStudiesCollection, api } = this.props;
     if (uid !== null) {
-      fetchVirtualStudiesCollection(uid);
+      fetchVirtualStudiesCollection(api, uid);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { uid, fetchVirtualStudiesCollection } = this.props;
+    const { uid, fetchVirtualStudiesCollection, api } = this.props;
     if (uid !== null && uid !== prevProps.uid) {
-      fetchVirtualStudiesCollection(uid);
+      fetchVirtualStudiesCollection(api, uid);
     }
   }
 
@@ -111,6 +113,7 @@ class VirtualStudiesMenu extends React.Component {
       virtualStudyName: name,
       description,
       saveVirtualStudy,
+      api,
     } = this.props;
 
     // if there is no virtual study loaded yet, save a new one instead
@@ -121,7 +124,7 @@ class VirtualStudiesMenu extends React.Component {
     const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
 
     try {
-      await saveVirtualStudy(user, study);
+      await saveVirtualStudy(api, user, study);
     } catch (err) {
       console.error('Error while saving the virtual study', err);
     }
@@ -151,7 +154,7 @@ class VirtualStudiesMenu extends React.Component {
     return virtualStudies.filter((study) => study.virtualStudyId === activeVirtualStudyId)[0];
   };
 
-  handleOpen = (virtualStudyId) => this.props.loadSavedVirtualStudy(virtualStudyId);
+  handleOpen = (virtualStudyId) => this.props.loadSavedVirtualStudy(this.props.api, virtualStudyId);
 
   render() {
     const {
@@ -170,6 +173,7 @@ class VirtualStudiesMenu extends React.Component {
       user,
       uid,
       loadSavedVirtualStudy,
+      api,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
 
@@ -247,6 +251,7 @@ class VirtualStudiesMenu extends React.Component {
               disabled={cantOpen}
               classNameBtn="button-group"
               loadSavedVirtualStudy={loadSavedVirtualStudy}
+              api={api}
             />
 
             <VirtualStudiesMenuButton
@@ -335,4 +340,5 @@ const mapDispatchToProps = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withRouter,
+  withApi,
 )(VirtualStudiesMenu);

@@ -1,3 +1,5 @@
+import { KeycloakTokenParsed } from 'keycloak-js';
+
 export type JwtToken = string;
 
 export type DecodedJwt = {
@@ -22,4 +24,8 @@ export type DecodedJwt = {
     };
   };
   [index: string]: any;
+};
+
+export type KcTokenParsedPlusClaims = KeycloakTokenParsed & {
+  groups: string[];
 };

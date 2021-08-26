@@ -1,18 +1,20 @@
-import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
+
 import { personaApiRoot, reactApiSearchMembersApi } from 'common/injectGlobals';
+import { initializeApi } from 'services/api';
+
 import downloader from '../../common/downloader';
+import keycloak from '../../keycloak';
 
 const api = initializeApi({
-  onError: console.err,
-  onUnauthorized: response => {
+  onError: console.error,
+  onUnauthorized: (response) => {
     console.warn('Unauthorized', response);
   },
 });
 
-const enhanceWithFilter = (filters, filterType) => {
-  return filters.map(filter => `&${filterType}=${filter}`).join('');
-};
+const enhanceWithFilter = (filters, filterType) =>
+  filters.map((filter) => `&${filterType}=${filter}`).join('');
 
 export const searchMembers = async (searchTerm, searchParams) => {
   const { start = 0, end = 50, roles = [], interests = [], adminMemberOptions = [] } = searchParams;
@@ -38,18 +40,17 @@ export const searchMembers = async (searchTerm, searchParams) => {
   return response;
 };
 
-export const getAllMembers = async token => {
-  return downloader({
+export const getAllMembers = async () =>
+  downloader({
     url: urljoin(personaApiRoot, 'userList'),
     method: 'GET',
     responseType: 'blob',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${keycloak.token}`,
     },
   });
-};
 
-export const searchInterests = async searchTerm => {
+export const searchInterests = async (searchTerm) => {
   try {
     return await api({
       method: 'GET',

@@ -28,6 +28,7 @@ import {
 import { selectIsUserAdmin, selectUser } from 'store/selectors/users';
 import { isSelfInUrlWhenLoggedIn } from 'utils';
 
+import { withApi } from '../../services/api';
 import Error from '../Error';
 
 import { KEY_ABOUT_ME } from './constants';
@@ -49,6 +50,7 @@ class UserProfilePageContainer extends React.Component {
     user: PropTypes.object.isRequired,
     onFetchProfile: PropTypes.func.isRequired,
     onUpdateProfile: PropTypes.func.isRequired,
+    api: PropTypes.func,
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
 
@@ -106,7 +108,7 @@ class UserProfilePageContainer extends React.Component {
   }
 
   submit = async (values) => {
-    const { profile, onUpdateProfile } = this.props;
+    const { profile, onUpdateProfile, api } = this.props;
 
     const mergedProfile = {
       ...profile,
@@ -130,7 +132,7 @@ class UserProfilePageContainer extends React.Component {
       type: TRACKING_EVENTS.actions.save,
     });
 
-    onUpdateProfile(mergedProfile);
+    onUpdateProfile(api, mergedProfile);
   };
 
   handleMenuClick = (e) => {
@@ -204,12 +206,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onFetchProfile: (userInfo) => dispatch(fetchProfileIfNeeded(userInfo)),
-  onUpdateProfile: (user) => dispatch(updateUserProfile(user)),
+  onUpdateProfile: (api, user) => dispatch(updateUserProfile(api, user)),
   onDeleteProfile: () => dispatch(deleteProfile()),
   onCleanErrors: () => dispatch(cleanProfileErrors()),
 });
 
 export default compose(
   withRouter,
+  withApi,
   connect(mapStateToProps, mapDispatchToProps),
 )(UserProfilePageContainer);

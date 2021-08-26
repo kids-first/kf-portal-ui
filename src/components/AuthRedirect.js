@@ -4,22 +4,22 @@ import queryString from 'querystring';
 import { compose } from 'recompose';
 import urlJoin from 'url-join';
 
-import Login from 'components/Login/Login';
+import keycloak from '../keycloak';
 
-import useUser from '../hooks/useUser';
+import Login from './Login/Login';
 
 const AuthRedirect = (props) => {
   const {
     location: { search },
   } = props;
-  const { userToken } = useUser();
-  if (userToken) {
+
+  if (keycloak?.token) {
     const qs = queryString.parse(search.replace(/^\?/, ''));
     // eslint-disable-next-line no-undef
-    global.location = urlJoin(qs.redirect_uri, `?token=${userToken}`);
+    global.location = urlJoin(qs.redirect_uri, `?token=${keycloak.token}`);
     return null;
   } else {
-    return <Login shouldNotRedirect={true} />;
+    return <Login />;
   }
 };
 

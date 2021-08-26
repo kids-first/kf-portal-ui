@@ -2,12 +2,10 @@ import { Action } from 'redux';
 
 import {
   logout,
-  receiveLoginProvider,
-  receiveUserToken,
   receiveUserWithComputedValues,
   toggleIsLoadingUser,
 } from 'store/actionCreators/user';
-import { Providers, userInitialState, UserState } from 'store/userTypes';
+import { userInitialState, UserState } from 'store/userTypes';
 
 import { MOCK_USER_1_NOT_ADMIN } from '../../actionCreators/Test/mockUserData';
 import reducer from '../user';
@@ -30,20 +28,6 @@ describe('User Reducer', () => {
     });
   });
 
-  it('should handle receiveUserToken', () => {
-    expect(reducer(initialState, receiveUserToken('abcdefg'))).toEqual({
-      ...initialState,
-      userToken: 'abcdefg',
-    });
-  });
-
-  it('should handle receiveLoginProvider', () => {
-    expect(reducer(initialState, receiveLoginProvider(Providers.orcid))).toEqual({
-      ...initialState,
-      loginProvider: Providers.orcid,
-    });
-  });
-
   it('should handle toggleIsLoadingUser', () => {
     expect(reducer(initialState, toggleIsLoadingUser(true))).toEqual({
       ...initialState,
@@ -60,13 +44,10 @@ describe('User Reducer', () => {
 
     const state: UserState = {
       ...initialState,
-      loginProvider: Providers.google,
-      userToken: 'eg84jlsjfldjfkl',
     };
 
     expect(reducer(state, receiveUserWithComputedValues(enhancedUser))).toEqual({
       ...state,
-      isAuthenticated: true,
       isLoadingUser: false,
       uid: enhancedUser.egoId,
       user: { ...enhancedUser },

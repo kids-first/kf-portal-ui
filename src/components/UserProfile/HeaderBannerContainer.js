@@ -12,6 +12,8 @@ import {
   selectProfile,
 } from 'store/selectors/profile';
 
+import { withApi } from '../../services/api';
+
 import { getMsgFromAccessError } from './utils';
 
 const HeaderBannerContainer = (props) => {
@@ -24,6 +26,7 @@ const HeaderBannerContainer = (props) => {
     onCleanErrors,
     onToggleIsPublic,
     onToggleIsActive,
+    api,
   } = props;
   useEffect(() => {
     if (error) {
@@ -39,13 +42,13 @@ const HeaderBannerContainer = (props) => {
   return (
     <HeaderBanner
       onChangePrivacyStatusCb={() =>
-        onToggleIsPublic({
+        onToggleIsPublic(api, {
           ...profile,
           ...{ isPublic: !profile.isPublic },
         })
       }
       onChangeActivityStatusCb={() =>
-        onToggleIsActive({
+        onToggleIsActive(api, {
           ...profile,
           ...{ isActive: !profile.isActive },
         })
@@ -69,6 +72,7 @@ HeaderBannerContainer.propTypes = {
   canEdit: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
   onCleanErrors: PropTypes.func.isRequired,
+  api: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
@@ -78,9 +82,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onToggleIsPublic: (profile) => dispatch(toggleIsPublic(profile)),
-  onToggleIsActive: (profile) => dispatch(toggleIsActive(profile)),
+  onToggleIsPublic: (api, profile) => dispatch(toggleIsPublic(profile)),
+  onToggleIsActive: (api, profile) => dispatch(toggleIsActive(profile)),
   onCleanErrors: () => dispatch(cleanProfileErrors()),
 });
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(HeaderBannerContainer);
+export default compose(
+  withApi,
+  connect(mapStateToProps, mapDispatchToProps),
+)(HeaderBannerContainer);

@@ -17,6 +17,8 @@ import {
   setSqons,
 } from 'store/actionCreators/virtualStudies';
 
+import { withApi } from '../../services/api';
+
 class SQONProvider extends React.Component {
   constructor(props) {
     super(props);
@@ -34,6 +36,7 @@ class SQONProvider extends React.Component {
     setActiveSqonIndex: PropTypes.func,
     setSqons: PropTypes.func,
     sqonDictionary: PropTypes.any,
+    api: PropTypes.func,
   };
 
   loadVirtualStudy(virtualStudyId) {
@@ -41,7 +44,7 @@ class SQONProvider extends React.Component {
       this.props.resetVirtualStudy();
       return;
     }
-    this.props.loadSavedVirtualStudy(virtualStudyId);
+    this.props.loadSavedVirtualStudy(this.props.api, this.props.virtualStudyId);
   }
 
   componentDidMount() {
@@ -153,4 +156,8 @@ const mapDispatchToProps = {
   resetVirtualStudy,
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(SQONProvider);
+export default compose(
+  withApi,
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(SQONProvider);

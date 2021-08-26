@@ -10,6 +10,7 @@ import {
   reInitializeState,
   selectChosenSuggestion,
 } from 'store/actionCreators/genomicSuggester';
+import { Api } from 'store/apiTypes';
 import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
 import { SearchText, SelectedSuggestion } from 'store/graphql/variants/models';
 import { RootState } from 'store/rootState';
@@ -20,6 +21,8 @@ import {
   selectSearchTextSuggestion,
   selectSuggestions,
 } from 'store/selectors/genomicSuggester';
+
+import { withApi } from '../../services/api';
 
 import generateSuggestionOptions from './SuggestionOptions';
 
@@ -40,7 +43,8 @@ const mapState = (state: RootState) => ({
 });
 
 const mapDispatch = (dispatch: DispatchGenomicSuggester) => ({
-  onFetchSuggestions: (searchText: SearchText) => dispatch(fetchSuggestions(searchText)),
+  onFetchSuggestions: (api: Api, searchText: SearchText) =>
+    dispatch(fetchSuggestions(api, searchText)),
   onSelectSuggestion: (params: SelectedSuggestion) => dispatch(selectChosenSuggestion(params)),
   reInitializeState: () => dispatch(reInitializeState()),
   onClearSuggestions: () => dispatch(clearSuggestions()),
@@ -50,7 +54,7 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux;
+type Props = PropsFromRedux & { api: Api };
 
 const Suggester = (props: Props) => {
   const {
@@ -63,12 +67,13 @@ const Suggester = (props: Props) => {
     onClearSuggestions,
     suggestionSearchText,
     selectedSuggestion,
+    api,
   } = props;
 
   const handleSearch = (userRawInput: string) => {
     onClearSuggestions();
     if (userRawInput && userRawInput.length >= MIN_N_OF_CHARS_BEFORE_SEARCH) {
-      return onFetchSuggestions(encodeURI(userRawInput));
+      return onFetchSuggestions(api, encodeURI(userRawInput));
     }
   };
 
@@ -136,4 +141,4 @@ const Suggester = (props: Props) => {
   );
 };
 
-export default connector(Suggester);
+export default withApi(connector(Suggester));

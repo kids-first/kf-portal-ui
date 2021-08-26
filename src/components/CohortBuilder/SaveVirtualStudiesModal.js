@@ -9,6 +9,8 @@ import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
 import { selectUser } from 'store/selectors/users';
 import PromptMessage from 'uikit/PromptMessage';
 
+import { withApi } from '../../services/api';
+
 const { TextArea } = Input;
 
 const DESCRIPTION_MAX_LENGTH = 300;
@@ -44,7 +46,15 @@ class SaveVirtualStudiesModal extends React.Component {
 
   saveStudy = () => {
     const { name, description } = this.state;
-    const { user, sqons, activeSqonIndex, virtualStudyId, saveVirtualStudy, saveAs } = this.props;
+    const {
+      user,
+      sqons,
+      activeSqonIndex,
+      virtualStudyId,
+      saveVirtualStudy,
+      saveAs,
+      api,
+    } = this.props;
 
     const study = createVirtualStudy(
       saveAs ? null : virtualStudyId,
@@ -54,7 +64,7 @@ class SaveVirtualStudiesModal extends React.Component {
       activeSqonIndex,
     );
 
-    return saveVirtualStudy(user, study);
+    return saveVirtualStudy(api, user, study);
   };
 
   submitHandler = async () => {
@@ -130,4 +140,7 @@ const mapDispatchToProps = {
   saveVirtualStudy,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(SaveVirtualStudiesModal);
+export default compose(
+  withApi,
+  connect(mapStateToProps, mapDispatchToProps),
+)(SaveVirtualStudiesModal);
