@@ -24,4 +24,5 @@ export const keyEnhanceBooleanOnly = (key: string) => {
   }
 };
 
-export const dotToUnderscore = (str: string) => str.replace('.', '__');
+export const dotToUnderscore = (str: string) => str.replaceAll('.', '__');
+export const underscoreToDot = (str: string) => str.replaceAll('__', '.');

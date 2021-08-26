@@ -6,7 +6,7 @@ import { QueryVariable } from '../studies/actions';
 
 import { INDEX_EXTENDED_MAPPING } from './query';
 
-type ExtendedMapping = {
+export type ExtendedMapping = {
   displayName: string;
   field: string;
   isArray: boolean;

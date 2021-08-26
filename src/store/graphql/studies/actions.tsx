@@ -1,5 +1,6 @@
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 
+import { Results } from 'components/Utils/utils';
 import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
 
@@ -63,7 +64,7 @@ export type StudiesMappingResults = {
 };
 
 export type SidebarData = {
-  studiesResults: StudiesResults;
+  studiesResults: Results;
   studiesMappingResults: StudiesMappingResults;
 };
 

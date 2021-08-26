@@ -20,10 +20,10 @@ const INPUT_FILTER_LIST = [
   'consequences__predictions__sift_pred',
   'consequences__predictions__polyphen2_hvar_pred',
   'consequences__predictions__fathmm_pred',
-  // 'consequences__predictions__cadd_rankscore',//TODO manage numeric
-  // 'consequences__predictions__dann_rankscore',//TODO manage numeric
+  'consequences__predictions__cadd_rankscore',
+  'consequences__predictions__dann_rankscore',
   'consequences__predictions__lrt_pred',
-  // 'consequences__predictions__revel_rankscore', //TODO manage numeric
+  'consequences__predictions__revel_rankscore',
 ];
 const INDEX = 'variants';
 

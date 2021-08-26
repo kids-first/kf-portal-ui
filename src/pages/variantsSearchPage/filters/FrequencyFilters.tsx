@@ -15,13 +15,13 @@ type OwnProps = {
 
 //order in list reflects order in UI
 const INPUT_FILTER_LIST: string[] = [
-  // 'frequencies__internal__upper_bound_kf__af',//TODO manage numeric
-  // 'frequencies__gnomad_exomes_2_1__af',//TODO manage numeric
-  // 'frequencies__gnomad_genomes_3_0__af',//TODO manage numeric
-  // 'frequencies__gnomad_genomes_3_1_1__af',//TODO manage numeric
-  // 'frequencies__gnomad_genomes_2_1__af',//TODO manage numeric
-  // 'frequencies__topmed__af',//TODO manage numeric
-  // 'frequencies__one_thousand_genomes__af',//TODO manage numeric
+  'frequencies__internal__upper_bound_kf__af',
+  'frequencies__gnomad_exomes_2_1__af',
+  'frequencies__gnomad_genomes_3_0__af',
+  'frequencies__gnomad_genomes_3_1_1__af',
+  'frequencies__gnomad_genomes_2_1__af',
+  'frequencies__topmed__af',
+  'frequencies__one_thousand_genomes__af',
 ];
 const INDEX = 'variants';
 
