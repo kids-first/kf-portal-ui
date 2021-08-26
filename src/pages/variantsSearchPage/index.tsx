@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
+import SidebarMenu, { ISidebarMenuItems } from '@ferlab/ui/core/components/sidebarMenu';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Tag, Typography } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
+import DiseaseIcon from 'icons/DiseaseIcon';
+import FrequencyIcon from 'icons/FrequencyIcon';
+import GeneIcon from 'icons/GeneIcon';
+import LineStyleIcon from 'icons/LineStyleIcon';
+import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
 
-import Sidebar from './Sidebar';
+import FrequencyFilters from './filters/FrequencyFilters';
+import GeneFilters from './filters/GeneFilters';
+import OccurenceFilters from './filters/OccurenceFilters';
+import PathogenicityFilters from './filters/PathogenicityFilters';
+import VariantFilters from './filters/VariantFilters';
 import VariantPageContainer from './VariantPageContainer';
 import VariantStats from './VariantStats';
 
@@ -15,12 +25,45 @@ import styles from './VariantsSearchPage.module.scss';
 
 const { Title } = Typography;
 
+const menuItems: ISidebarMenuItems[] = [
+  {
+    key: '1',
+    title: 'Variant',
+    icon: <LineStyleIcon />,
+    panelContent: <VariantFilters />,
+  },
+  {
+    key: '2',
+    title: 'Gene',
+    icon: <GeneIcon />,
+    panelContent: <GeneFilters />,
+  },
+  {
+    key: '3',
+    title: 'Pathogenicity',
+    icon: <DiseaseIcon />,
+    panelContent: <PathogenicityFilters />,
+  },
+  {
+    key: '4',
+    title: 'Frequency',
+    icon: <FrequencyIcon />,
+    panelContent: <FrequencyFilters />,
+  },
+  {
+    key: '5',
+    title: 'Occurence',
+    icon: <OccurenceIcon />,
+    panelContent: <OccurenceFilters />,
+  },
+];
+
 const VariantPage = () => {
   const [statsModalOpened, setStatsModalOpened] = useState(false);
 
   return (
     <Layout className={styles.layout}>
-      <Sidebar /*filters={{}}*/ />
+      <SidebarMenu menuItems={menuItems} />
       <ScrollView className={styles.scrollContent}>
         <PageContent
           title={
