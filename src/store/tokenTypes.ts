@@ -1,7 +1,5 @@
 import { KeycloakTokenParsed } from 'keycloak-js';
 
-export type JwtToken = string;
-
 export type DecodedJwt = {
   iat: number;
   exp: number;
