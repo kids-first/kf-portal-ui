@@ -30,7 +30,7 @@ const INDEX = 'variants';
 const PathogenicityFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   const { filters } = useFilters();
 
-  const allSqons = getQueryBuilderCache('study-repo').state;
+  const allSqons = getQueryBuilderCache('variant-repo').state;
 
   let results = useGetPageData(
     {

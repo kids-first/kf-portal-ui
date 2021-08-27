@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Tag, Typography } from 'antd';
@@ -11,7 +11,7 @@ import LineStyleIcon from 'icons/LineStyleIcon';
 import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
 
-import { MappingResults } from '../../store/graphql/utils/actions';
+import { MappingResults, useGetExtendedMappings } from '../../store/graphql/utils/actions';
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';
@@ -27,7 +27,7 @@ import styles from './VariantsSearchPage.module.scss';
 
 const { Title } = Typography;
 
-const filters = (mappingResults: MappingResults, type: string) => {
+const filters = (mappingResults: MappingResults, type: string): ReactNode => {
   switch (type) {
     case 'Variant':
       return <VariantFilters mappingResults={mappingResults} />;
@@ -44,41 +44,42 @@ const filters = (mappingResults: MappingResults, type: string) => {
   }
 };
 
-const menuItems: ISidebarMenuItem[] = [
-  {
-    key: '1',
-    title: 'Variant',
-    icon: <LineStyleIcon />,
-    panelContent: <div>ototo</div>,
-  },
-  {
-    key: '2',
-    title: 'Gene',
-    icon: <GeneIcon />,
-    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Gene'),
-  },
-  {
-    key: '3',
-    title: 'Pathogenicity',
-    icon: <DiseaseIcon />,
-    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Pathogenicity'),
-  },
-  {
-    key: '4',
-    title: 'Frequency',
-    icon: <FrequencyIcon />,
-    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Frequency'),
-  },
-  {
-    key: '5',
-    title: 'Occurence',
-    icon: <OccurenceIcon />,
-    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Occurence'),
-  },
-];
-
 const VariantPage = () => {
   const [statsModalOpened, setStatsModalOpened] = useState(false);
+  const variantMappingResults = useGetExtendedMappings('arranger_projets_2021_06_18_v1');
+
+  const menuItems: ISidebarMenuItem[] = [
+    {
+      key: '1',
+      title: 'Variant',
+      icon: <LineStyleIcon />,
+      panelContent: filters(variantMappingResults, 'Variant'),
+    },
+    {
+      key: '2',
+      title: 'Gene',
+      icon: <GeneIcon />,
+      panelContent: filters(variantMappingResults, 'Gene'),
+    },
+    {
+      key: '3',
+      title: 'Pathogenicity',
+      icon: <DiseaseIcon />,
+      panelContent: filters(variantMappingResults, 'Pathogenicity'),
+    },
+    {
+      key: '4',
+      title: 'Frequency',
+      icon: <FrequencyIcon />,
+      panelContent: filters(variantMappingResults, 'Frequency'),
+    },
+    {
+      key: '5',
+      title: 'Occurence',
+      icon: <OccurenceIcon />,
+      panelContent: filters(variantMappingResults, 'Occurence'),
+    },
+  ];
 
   return (
     <Layout className={styles.layout}>
