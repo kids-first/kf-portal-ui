@@ -46,7 +46,7 @@ const filters = (mappingResults: MappingResults, type: string): ReactNode => {
 
 const VariantPage = () => {
   const [statsModalOpened, setStatsModalOpened] = useState(false);
-  const variantMappingResults = useGetExtendedMappings('arranger_projets_2021_06_18_v1');
+  const variantMappingResults = useGetExtendedMappings('variants');
 
   const menuItems: ISidebarMenuItem[] = [
     {
