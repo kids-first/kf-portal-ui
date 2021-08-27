@@ -1,5 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
+import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
+import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Tag, Typography } from 'antd';
 
@@ -11,12 +13,17 @@ import LineStyleIcon from 'icons/LineStyleIcon';
 import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
 
-import { MappingResults, useGetExtendedMappings } from '../../store/graphql/utils/actions';
+import {
+  MappingResults,
+  useGetExtendedMappings,
+  useGetPageData,
+} from '../../store/graphql/utils/actions';
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';
 import OccurenceFilters from './filters/OccurenceFilters';
 import PathogenicityFilters from './filters/PathogenicityFilters';
+import { VARIANT_QUERY } from './filters/queries';
 import VariantFilters from './filters/VariantFilters';
 import VariantPageContainer from './VariantPageContainer';
 import VariantStats from './VariantStats';
@@ -27,7 +34,7 @@ import styles from './VariantsSearchPage.module.scss';
 
 const { Title } = Typography;
 
-const filters = (mappingResults: MappingResults, type: string): ReactNode => {
+const filtersContainer = (mappingResults: MappingResults, type: string): ReactNode => {
   switch (type) {
     case 'Variant':
       return <VariantFilters mappingResults={mappingResults} />;
@@ -44,40 +51,56 @@ const filters = (mappingResults: MappingResults, type: string): ReactNode => {
   }
 };
 
+const INDEX = 'variants';
+
 const VariantPage = () => {
   const [statsModalOpened, setStatsModalOpened] = useState(false);
   const variantMappingResults = useGetExtendedMappings('variants');
+
+  const { filters } = useFilters();
+
+  const allSqons = getQueryBuilderCache('variant-repo').state;
+
+  let results = useGetPageData(
+    {
+      sqon: resolveSyntheticSqon(allSqons, filters),
+      first: 15,
+      offset: 0,
+    },
+    VARIANT_QUERY,
+    INDEX,
+  );
 
   const menuItems: ISidebarMenuItem[] = [
     {
       key: '1',
       title: 'Variant',
       icon: <LineStyleIcon />,
-      panelContent: filters(variantMappingResults, 'Variant'),
+      panelContent: filtersContainer(variantMappingResults, 'Variant'),
     },
     {
       key: '2',
       title: 'Gene',
       icon: <GeneIcon />,
-      panelContent: filters(variantMappingResults, 'Gene'),
+      panelContent: filtersContainer(variantMappingResults, 'Gene'),
     },
     {
       key: '3',
       title: 'Pathogenicity',
       icon: <DiseaseIcon />,
-      panelContent: filters(variantMappingResults, 'Pathogenicity'),
+      panelContent: filtersContainer(variantMappingResults, 'Pathogenicity'),
     },
     {
       key: '4',
       title: 'Frequency',
       icon: <FrequencyIcon />,
-      panelContent: filters(variantMappingResults, 'Frequency'),
+      panelContent: filtersContainer(variantMappingResults, 'Frequency'),
     },
     {
       key: '5',
       title: 'Occurence',
       icon: <OccurenceIcon />,
-      panelContent: filters(variantMappingResults, 'Occurence'),
+      panelContent: filtersContainer(variantMappingResults, 'Occurence'),
     },
   ];
 
@@ -93,12 +116,16 @@ const VariantPage = () => {
               </Title>
               <Tag className={styles.dataReleaseTag} onClick={() => setStatsModalOpened(true)}>
                 <span>Data release 1.0</span>
-                <OpenInNewIcon fill="#00546E" width="12"></OpenInNewIcon>
+                <OpenInNewIcon fill="#00546E" width="12" />
               </Tag>
             </div>
           }
         >
-          <VariantPageContainer></VariantPageContainer>
+          <VariantPageContainer
+            results={results}
+            filters={filters}
+            mappingResults={variantMappingResults}
+          />
         </PageContent>
       </ScrollView>
       <Modal

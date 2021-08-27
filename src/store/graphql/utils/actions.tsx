@@ -2,8 +2,6 @@ import { DocumentNode, TypedDocumentNode } from '@apollo/client';
 
 import { useLazyResultQuery } from 'store/graphql/utils/query';
 
-import { QueryVariable } from '../studies/actions';
-
 import { INDEX_EXTENDED_MAPPING } from './query';
 
 export type ExtendedMapping = {
@@ -18,6 +16,12 @@ export type MappingResults = {
   extendedMapping: ExtendedMapping[];
 };
 
+export type QueryVariable = {
+  sqon: any;
+  first?: number; // number of element to fetch
+  offset?: number; // start from offset number of elements
+};
+
 export const useGetExtendedMappings = (index: string): MappingResults => {
   const { loading, result } = useLazyResultQuery<any>(INDEX_EXTENDED_MAPPING(index), {
     variables: [],
@@ -30,6 +34,21 @@ export const useGetExtendedMappings = (index: string): MappingResults => {
 };
 
 export const useGetPageData = (
+  variables: QueryVariable,
+  query: DocumentNode | TypedDocumentNode,
+  index: string,
+) => {
+  const { loading, result } = useLazyResultQuery<any>(query, {
+    variables: variables,
+  });
+
+  return {
+    loading,
+    data: (result && result[index]) || null,
+  };
+};
+
+export const useGetFilterBuckets = (
   variables: QueryVariable,
   query: DocumentNode | TypedDocumentNode,
   index: string,

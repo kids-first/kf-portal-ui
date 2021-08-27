@@ -3,11 +3,10 @@ import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/u
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Layout, Spin } from 'antd';
 
-import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
+import { generateFilters } from 'components/Utils/utils';
+import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
 
-import { generateFilters } from '../../../components/Utils/utils';
-
-import { VARIANT_QUERY } from './queries';
+import { VARIANT_AGGREGATION_QUERY } from './queries';
 
 type OwnProps = {
   mappingResults: MappingResults;
@@ -26,13 +25,11 @@ const OccurenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   const allSqons = getQueryBuilderCache('variant-repo').state;
 
-  let results = useGetPageData(
+  let results = useGetFilterBuckets(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
-      first: 15, //TODO should be a pagination
-      offset: 0,
     },
-    VARIANT_QUERY(INPUT_FILTER_LIST, mappingResults),
+    VARIANT_AGGREGATION_QUERY(INPUT_FILTER_LIST, mappingResults),
     INDEX,
   );
 

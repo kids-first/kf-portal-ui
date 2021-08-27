@@ -4,7 +4,32 @@ import { ExtendedMapping, MappingResults } from 'store/graphql/utils/actions';
 
 import { dotToUnderscore, underscoreToDot } from '../../../store/graphql/utils';
 
-export const VARIANT_QUERY = (aggList: string[], mappingResults: MappingResults) => {
+export const VARIANT_QUERY = gql`
+  query VariantInformation($sqon: JSON, $first: Int, $offset: Int) {
+    variants {
+      hits(filters: $sqon, first: $first, offset: $offset) {
+        total
+        edges {
+          node {
+            id
+            variant_class
+            consequences {
+              hits {
+                edges {
+                  node {
+                    consequences
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const VARIANT_AGGREGATION_QUERY = (aggList: string[], mappingResults: MappingResults) => {
   if (!mappingResults || mappingResults.loadingMapping) return gql``;
 
   const aggListDotNotation = aggList.map((i) => underscoreToDot(i));
@@ -14,25 +39,8 @@ export const VARIANT_QUERY = (aggList: string[], mappingResults: MappingResults)
   );
 
   return gql`
-      query VariantInformation($sqon: JSON, $first: Int, $offset: Int) {
+      query VariantInformation($sqon: JSON) {
         variants {
-          hits(filters: $sqon, first: $first, offset: $offset) {
-            edges {
-              node {
-                id
-                variant_class
-                consequences {
-                  hits {
-                    edges {
-                      node {
-                        consequences
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
            aggregations (filters: $sqon){
             ${generateAggregations(extendedMappingsFields)}
           }
