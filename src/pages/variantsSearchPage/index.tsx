@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SidebarMenu, { ISidebarMenuItems } from '@ferlab/ui/core/components/sidebarMenu';
+import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Tag, Typography } from 'antd';
 
@@ -10,6 +10,8 @@ import GeneIcon from 'icons/GeneIcon';
 import LineStyleIcon from 'icons/LineStyleIcon';
 import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
+
+import { MappingResults } from '../../store/graphql/utils/actions';
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';
@@ -25,36 +27,53 @@ import styles from './VariantsSearchPage.module.scss';
 
 const { Title } = Typography;
 
-const menuItems: ISidebarMenuItems[] = [
+const filters = (mappingResults: MappingResults, type: string) => {
+  switch (type) {
+    case 'Variant':
+      return <VariantFilters mappingResults={mappingResults} />;
+    case 'Gene':
+      return <GeneFilters mappingResults={mappingResults} />;
+    case 'Pathogenicity':
+      return <PathogenicityFilters mappingResults={mappingResults} />;
+    case 'Frequency':
+      return <FrequencyFilters mappingResults={mappingResults} />;
+    case 'Occurence':
+      return <OccurenceFilters mappingResults={mappingResults} />;
+    default:
+      return <div />;
+  }
+};
+
+const menuItems: ISidebarMenuItem[] = [
   {
     key: '1',
     title: 'Variant',
     icon: <LineStyleIcon />,
-    panelContent: <VariantFilters />,
+    panelContent: <div>ototo</div>,
   },
   {
     key: '2',
     title: 'Gene',
     icon: <GeneIcon />,
-    panelContent: <GeneFilters />,
+    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Gene'),
   },
   {
     key: '3',
     title: 'Pathogenicity',
     icon: <DiseaseIcon />,
-    panelContent: <PathogenicityFilters />,
+    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Pathogenicity'),
   },
   {
     key: '4',
     title: 'Frequency',
     icon: <FrequencyIcon />,
-    panelContent: <FrequencyFilters />,
+    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Frequency'),
   },
   {
     key: '5',
     title: 'Occurence',
     icon: <OccurenceIcon />,
-    panelContent: <OccurenceFilters />,
+    panelContent: (mappingResults: MappingResults) => filters(mappingResults, 'Occurence'),
   },
 ];
 
