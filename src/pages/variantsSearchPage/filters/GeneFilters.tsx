@@ -6,6 +6,9 @@ import { Layout, Spin } from 'antd';
 import { generateFilters } from 'components/Utils/utils';
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
 
+import Suggester from '../Suggester';
+import SuggesterWrapper from '../SuggesterWrapper';
+
 import { VARIANT_AGGREGATION_QUERY } from './queries';
 
 type OwnProps = {
@@ -22,6 +25,9 @@ const INPUT_FILTER_LIST = [
   'genes__cosmic__tumour_types_germline',
 ];
 const INDEX = 'variants';
+const SUGGESTION_TYPE = 'genes';
+const PLACE_HOLDER_TEXT = 'chr2:g.28025382G>T';
+const TITLE = 'Search by Gene';
 
 const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   const { filters } = useFilters();
@@ -38,6 +44,9 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   return (
     <Layout>
+      <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
+        <Suggester suggestionType={SUGGESTION_TYPE} placeholderText={PLACE_HOLDER_TEXT} />
+      </SuggesterWrapper>
       {results.loading ? <Spin size="large" /> : generateFilters(results, mappingResults)}
     </Layout>
   );

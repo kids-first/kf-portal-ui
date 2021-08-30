@@ -113,10 +113,15 @@ export type Suggestion = {
 };
 
 export type SelectedSuggestion = {
-  featureType: GenomicFeatureType;
+  type: string;
+  ensembl_gene_id?: string;
+  suggest: any;
   suggestionId: SuggestionId;
-  geneSymbol: string | undefined;
-  displayName: string;
+  symbol?: string;
+  rsnumber?: string;
+  locus?: string;
+  hgvsg?: string;
+  chromosome?: string;
 };
 
 export type VariantEntityResults = {

@@ -1,27 +1,14 @@
-import { GenomicActionTypes, GenomicSuggesterTypes } from '../genomicSuggesterTypes';
 import { ThunkAction } from 'redux-thunk';
-import { RootState } from '../rootState';
+
 import { getGenomicSuggestions } from 'services/genomicSuggestions';
-import { SearchText, SelectedSuggestion, Suggestion } from '../graphql/variants/models';
+
+import { GenomicActionTypes, GenomicSuggesterTypes } from '../genomicSuggesterTypes';
+import { SearchText, Suggestion } from '../graphql/variants/models';
+import { RootState } from '../rootState';
 
 export const toggleLoading = (isLoading: boolean): GenomicSuggesterTypes => ({
   type: GenomicActionTypes.TOGGLE_LOADING,
   isLoading,
-});
-
-export const selectChosenSuggestion = ({
-  suggestionId,
-  featureType,
-  geneSymbol,
-  displayName,
-}: SelectedSuggestion): GenomicSuggesterTypes => ({
-  type: GenomicActionTypes.SELECT_SUGGESTION,
-  selectedSuggestion: {
-    featureType,
-    suggestionId,
-    geneSymbol,
-    displayName,
-  },
 });
 
 export const failure = (error: Error): GenomicSuggesterTypes => ({
@@ -48,12 +35,14 @@ export const reInitializeState = (): GenomicSuggesterTypes => ({
 
 export const fetchSuggestions = (
   searchText: SearchText,
+  type: string,
 ): ThunkAction<void, RootState, null, GenomicSuggesterTypes> => async (dispatch) => {
   dispatch(clearSuggestions());
   dispatch(toggleLoading(true));
   try {
     const response: { searchText: string; suggestions: Suggestion[] } = await getGenomicSuggestions(
       searchText,
+      type,
     );
     dispatch(addSuggestions(response.searchText, response.suggestions));
   } catch (e) {
