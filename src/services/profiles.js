@@ -159,10 +159,10 @@ export const updateProfile = (api) => async ({ user }) => {
   } = await api({
     url,
     body: {
-      variables: { _id: user._id, record: omit(user, ['groups', 'isAdmin']) },
+      variables: { _id: user._id, record: omit(user, ['_id', 'groups', 'isAdmin']) },
       query: `
-        mutation($record: UpdateByIdUserModelInput!) {
-          userUpdate(record: $record) {
+        mutation($_id: MongoID!, $record: UpdateByIdUserModelInput!) {
+          userUpdate(_id: $_id, record: $record) {
             record {
               ${DEFAULT_FIELDS_SELF}
             }
