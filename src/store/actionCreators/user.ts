@@ -173,7 +173,7 @@ export const acceptTerms = (user: User, cb: () => Promise<void>): ThunkActionUse
   dispatch,
 ) => {
   try {
-    const updatedProfile = await deleteProfile(apiUser)({
+    const updatedProfile = await updateProfile(apiUser)({
       user: {
         ...user,
         acceptedTerms: true,
