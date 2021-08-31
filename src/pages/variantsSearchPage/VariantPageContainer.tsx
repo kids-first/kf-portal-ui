@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { useFilters } from '@ferlab/ui/core/data/filters/utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Typography } from 'antd';
 
-import { Results } from 'components/Utils/utils';
 import CaretDownIcon from 'icons/CaretDownIcon';
 import CaretRightIcon from 'icons/CaretRightIcon';
 import VariantIcon from 'icons/VariantIcon';
@@ -13,18 +12,20 @@ import history from 'services/history';
 
 import { MappingResults } from '../../store/graphql/utils/actions';
 
+import VariantTableContainer from './VariantTableContainer';
+
 import styles from './VariantPageContainer.module.scss';
 
 const { Title } = Typography;
 
 export type VariantPageContainerData = {
-  results: Results;
   mappingResults: MappingResults;
-  filters: ISyntheticSqon;
 };
 
-const VariantPageContainer = ({ results, mappingResults, filters }: VariantPageContainerData) => {
+const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [queryBuilderOpen, setQueryBuilderOpen] = useState(true);
+  const [total, setTotal] = useState(0);
+  const { filters } = useFilters();
 
   const dictionary: IDictionary = {
     query: {
@@ -33,8 +34,6 @@ const VariantPageContainer = ({ results, mappingResults, filters }: VariantPageC
           ?.displayName || key,
     },
   };
-
-  const total = results.data?.hits.total || 0;
 
   return (
     <StackLayout vertical>
@@ -63,7 +62,9 @@ const VariantPageContainer = ({ results, mappingResults, filters }: VariantPageC
           IconTotal={<VariantIcon fill="#383f72" />}
         />
       </div>
-      <StackLayout vertical className={styles.tableContainer} />
+      <StackLayout vertical className={styles.tableContainer}>
+        <VariantTableContainer setQbTotalCb={setTotal} />
+      </StackLayout>
     </StackLayout>
   );
 };

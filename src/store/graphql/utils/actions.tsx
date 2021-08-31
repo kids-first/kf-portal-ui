@@ -19,7 +19,8 @@ export type MappingResults = {
 
 export type QueryVariable = {
   sqon: any;
-  first?: number; // number of element to fetch
+  pageSize?: number; // number of element to fetch
+  first?: number;
   offset?: number; // start from offset number of elements
 };
 

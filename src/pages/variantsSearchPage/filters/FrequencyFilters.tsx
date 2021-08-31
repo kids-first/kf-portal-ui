@@ -6,7 +6,7 @@ import { Layout, Spin } from 'antd';
 import { generateFilters } from 'components/Utils/utils';
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
 
-import { VARIANT_AGGREGATION_QUERY } from './queries';
+import { VARIANT_AGGREGATION_QUERY } from '../../../store/graphql/variants/queries';
 
 type OwnProps = {
   mappingResults: MappingResults;

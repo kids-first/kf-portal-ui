@@ -1,7 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
-import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
-import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Tag, Typography } from 'antd';
 
@@ -13,17 +11,12 @@ import LineStyleIcon from 'icons/LineStyleIcon';
 import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
 
-import {
-  MappingResults,
-  useGetExtendedMappings,
-  useGetPageData,
-} from '../../store/graphql/utils/actions';
+import { MappingResults, useGetExtendedMappings } from '../../store/graphql/utils/actions';
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';
 import OccurenceFilters from './filters/OccurenceFilters';
 import PathogenicityFilters from './filters/PathogenicityFilters';
-import { VARIANT_QUERY } from './filters/queries';
 import VariantFilters from './filters/VariantFilters';
 import VariantPageContainer from './VariantPageContainer';
 import VariantStats from './VariantStats';
@@ -51,25 +44,9 @@ const filtersContainer = (mappingResults: MappingResults, type: string): ReactNo
   }
 };
 
-const INDEX = 'variants';
-
 const VariantPage = () => {
   const [statsModalOpened, setStatsModalOpened] = useState(false);
   const variantMappingResults = useGetExtendedMappings('variants');
-
-  const { filters } = useFilters();
-
-  const allSqons = getQueryBuilderCache('variant-repo').state;
-
-  let results = useGetPageData(
-    {
-      sqon: resolveSyntheticSqon(allSqons, filters),
-      first: 15,
-      offset: 0,
-    },
-    VARIANT_QUERY,
-    INDEX,
-  );
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -121,11 +98,7 @@ const VariantPage = () => {
             </div>
           }
         >
-          <VariantPageContainer
-            results={results}
-            filters={filters}
-            mappingResults={variantMappingResults}
-          />
+          <VariantPageContainer mappingResults={variantMappingResults} />
         </PageContent>
       </ScrollView>
       <Modal
