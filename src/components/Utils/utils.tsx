@@ -11,49 +11,44 @@ import history from 'services/history';
 import { keyEnhance, keyEnhanceBooleanOnly, underscoreToDot } from 'store/graphql/utils';
 import { ExtendedMapping, MappingResults } from 'store/graphql/utils/actions';
 
-type Bucket = {
-  key: string;
-  doc_count: number;
-};
-
-type Stats = {
-  key: string;
-  doc_count: number;
-};
-
-type BucketAggregations = {
-  field: string;
-  buckets: Bucket[];
-};
-
-type RangeAggregations = {
-  field: string;
-  stats: Stats;
-};
-
-export type AggregationResults = {
-  bucketAggs: BucketAggregations[];
-  rangeAggs: RangeAggregations[];
-  loading: boolean;
-};
-
 export type Results = {
   data: GQLData | null;
   loading: boolean;
 };
 
-export type GQLData = {
+export interface RangeAggs {
+  stats: {
+    max: number;
+    min: number;
+  };
+}
+export interface TermAggs {
+  buckets: TermAgg[];
+}
+
+export interface TermAgg {
+  doc_count: number;
+  key: string;
+}
+
+export type Aggs = TermAggs | RangeAggs;
+
+const isTermAgg = (obj: any): obj is TermAggs => obj.buckets !== undefined;
+const isRangeAgg = (obj: any): obj is RangeAggs => obj.stats !== undefined;
+
+export interface GQLData<T extends Aggs = any> {
   hits: any; //TODO refine type?
   aggregations: any; //TODO refine type?
-};
+}
 
+//TODO investigate: should only be called once per tab.
 export const generateFilters = (results: Results, mappingResults: MappingResults) =>
   Object.keys(results.data?.aggregations || []).map((key) => {
     const found = (mappingResults?.extendedMapping || []).find(
       (f: any) => f.field === underscoreToDot(key),
     );
 
-    const filterGroup = getFilterGroup(found, ['one', 'two']);
+    const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
     const filters = getFilters(results.data, key);
 
     const selectedFilters = getSelectedFilters(filters, filterGroup);
@@ -73,7 +68,7 @@ export const generateFilters = (results: Results, mappingResults: MappingResults
 const getFilters = (data: GQLData | null, key: string): IFilter[] => {
   if (!data || !key) return [];
 
-  if (data.aggregations[key]?.buckets) {
+  if (isTermAgg(data.aggregations[key])) {
     return data.aggregations[key!].buckets.map((f: any) => ({
       data: {
         count: f.doc_count,
@@ -85,7 +80,7 @@ const getFilters = (data: GQLData | null, key: string): IFilter[] => {
   } else if (data.aggregations[key]?.stats) {
     return [
       {
-        data: {},
+        data: { max: 1, min: 0 },
         name: keyEnhance(key),
         id: key,
       },
@@ -96,20 +91,29 @@ const getFilters = (data: GQLData | null, key: string): IFilter[] => {
 
 const getFilterGroup = (
   extendedMapping: ExtendedMapping | undefined,
+  aggregation: any,
   rangeTypes: string[],
-): IFilterGroup => ({
-  field: extendedMapping?.field || '',
-  title: extendedMapping?.displayName || '',
-  type: getFilterType(extendedMapping?.type || ''),
-  config:
-    rangeTypes.length > 0
-      ? {
-          min: 1,
-          max: 2,
-          rangeTypes: rangeTypes.map((r) => ({
-            name: r,
-            key: r,
-          })),
-        }
-      : undefined,
-});
+): IFilterGroup => {
+  if (isRangeAgg(aggregation)) {
+    return {
+      field: extendedMapping?.field || '',
+      title: extendedMapping?.displayName || '',
+      type: getFilterType(extendedMapping?.type || ''),
+      config: {
+        min: aggregation.stats.min,
+        max: aggregation.stats.max,
+        step: extendedMapping?.rangeStep || 1,
+        rangeTypes: rangeTypes.map((r) => ({
+          name: r,
+          key: r,
+        })),
+      },
+    };
+  }
+
+  return {
+    field: extendedMapping?.field || '',
+    title: extendedMapping?.displayName || '',
+    type: getFilterType(extendedMapping?.type || ''),
+  };
+};

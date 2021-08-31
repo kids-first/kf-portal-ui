@@ -109,7 +109,7 @@ export type Suggestion = {
   type: GenomicFeatureType;
   matchedText: string;
   suggestion_id: string;
-  geneSymbol: string | undefined;
+  symbol?: string;
 };
 
 export type SelectedSuggestion = {

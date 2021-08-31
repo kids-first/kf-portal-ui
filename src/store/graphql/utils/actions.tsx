@@ -9,6 +9,7 @@ export type ExtendedMapping = {
   field: string;
   isArray: boolean;
   type: string;
+  rangeStep?: number;
 };
 
 export type MappingResults = {

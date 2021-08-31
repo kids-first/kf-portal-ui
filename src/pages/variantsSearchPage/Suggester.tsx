@@ -89,7 +89,7 @@ const Suggester = (props: Props) => {
       };
     } else {
       fg = {
-        field: 'locus', //TODO pus right parameter
+        field: 'genes.symbol',
         title: '',
         type: VisualType.Checkbox,
       };

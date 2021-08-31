@@ -1,27 +1,20 @@
+import { useLazyResultQuery } from 'store/graphql/utils/query';
+
+import { SelectedSuggestion, StudyInfo, VariantEntityNode } from './models';
 import { SEARCH_VARIANT_TABLE_QUERY } from './queries';
-import { buildVariantIdSqon, useLazyResultQuery } from 'store/graphql/utils/query';
-import { GenomicFeatureType, SelectedSuggestion, StudyInfo, VariantEntityNode } from './models';
 
 const MAX_NUMBER_STUDIES = 2000;
 
-const buildSearchTableSqon = (selectedSuggestion: SelectedSuggestion) => {
-  const { suggestionId, featureType, geneSymbol } = selectedSuggestion;
-  const isGene = featureType === GenomicFeatureType.GENE;
-  return isGene
-    ? {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: 'genes.symbol',
-              value: [geneSymbol],
-            },
-          },
-        ],
-      }
-    : buildVariantIdSqon(suggestionId);
-};
+//TODO should be the filter sqon as input
+const buildSearchTableSqon = () => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {},
+    },
+  ],
+});
 
 const computeOffSet = (pageNum: number, pageSize: number) => pageSize * (pageNum - 1);
 
@@ -32,7 +25,7 @@ export const useVariantSearchTableData = (
 ) => {
   const { loading, result, error } = useLazyResultQuery<any>(SEARCH_VARIANT_TABLE_QUERY, {
     variables: {
-      sqon: buildSearchTableSqon(selectedSuggestion),
+      sqon: buildSearchTableSqon(), //todo filter sqon
       pageSize: pageSize,
       offset: computeOffSet(pageNum, pageSize),
       sort: [{ field: 'impact_score', order: 'desc' }],
