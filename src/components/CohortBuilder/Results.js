@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppstoreFilled, TableOutlined } from '@ant-design/icons';
 import { Empty, Tabs } from 'antd';
 import gql from 'graphql-tag';
@@ -8,13 +8,13 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
+import useQueryResolver from 'hooks/useQueryResolver';
 import useTab from 'hooks/useTab';
 import { withApi } from 'services/api';
 
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import Toolbar from './Results/Toolbar/Toolbar';
 import ParticipantsTableView from './ParticipantsTableView';
-import QueriesResolver from './QueriesResolver';
 import Summary from './Summary';
 
 import './Results.css';
@@ -60,84 +60,84 @@ const cohortResultsQuery = (sqon) => ({
 
 const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api }) => {
   const [tabKey, setTabKey] = useTab([SUMMARY, TABLE], SUMMARY);
-  return (
-    <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
-      {({ isLoading, data, error }) => {
-        if (error) {
-          return <TableErrorView error={error} />;
-        }
-        const resultsData = data[0];
-        const isFiltered = !isEmpty(sqon.content);
+  const { isLoading, data, error, updateQueries } = useQueryResolver(api, 'GQL_RESULT_QUERIES');
 
-        const participantCount = get(resultsData, 'participantCount', null);
-        const cohortIsEmpty = (!isLoading && !resultsData) || participantCount === 0;
+  useEffect(() => {
+    updateQueries([cohortResultsQuery(sqon)]);
+  }, [sqon]);
 
-        const toolbar = (
-          <Toolbar
-            {...{
-              api,
-              isLoading,
-              data: data[0],
-              participantCount,
-              isFiltered,
-              activeSqonIndex,
-              sqon,
-            }}
-          />
-        );
+  if (error) {
+    return <TableErrorView error={error} />;
+  }
 
-        return (
-          <>
-            <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
-              <Tabs
-                tabBarExtraContent={toolbar}
-                type="card"
-                style={{ marginBottom: '0px' }}
-                tabBarStyle={{ marginBottom: '0px' }}
-                activeKey={tabKey}
-                onChange={setTabKey}
-              >
-                <TabPane
-                  tab={
-                    <span>
-                      <AppstoreFilled />
-                      Summary View
-                    </span>
-                  }
-                  key={SUMMARY}
-                  className="cb-view-summary-view"
-                >
-                  <Summary sqon={sqon} />
-                </TabPane>
-                <TabPane
-                  tab={
-                    <span>
-                      <TableOutlined />
-                      Table View
-                    </span>
-                  }
-                  key={TABLE}
-                  className="cb-tab-content"
-                >
-                  {cohortIsEmpty ? (
-                    <Empty
-                      className={'empty-container'}
-                      description={
-                        <span className={'empty-description'}>
-                          {'There are no participants for this cohort.'}
-                        </span>
-                      }
-                    />
-                  ) : (
-                    <ParticipantsTableView sqon={sqon} />
-                  )}
-                </TabPane>
-              </Tabs>
-            </div>
-          </>
-        );
+  const resultsData = data[0];
+  const isFiltered = !isEmpty(sqon.content);
+  const participantCount = get(resultsData, 'participantCount', null);
+  const cohortIsEmpty = (!isLoading && !resultsData) || participantCount === 0;
+
+  const toolbar = (
+    <Toolbar
+      {...{
+        api,
+        isLoading,
+        data: data[0],
+        participantCount,
+        isFiltered,
+        activeSqonIndex,
+        sqon,
       }}
-    </QueriesResolver>
+    />
+  );
+
+  return (
+    <>
+      <div className="cb-view-links">
+        <Tabs
+          tabBarExtraContent={toolbar}
+          type="card"
+          style={{ marginBottom: '0px' }}
+          tabBarStyle={{ marginBottom: '0px' }}
+          activeKey={tabKey}
+          onChange={setTabKey}
+        >
+          <TabPane
+            tab={
+              <span>
+                <AppstoreFilled />
+                Summary View
+              </span>
+            }
+            key={SUMMARY}
+            className="cb-view-summary-view"
+          >
+            <Summary sqon={sqon} />
+          </TabPane>
+          <TabPane
+            tab={
+              <span>
+                <TableOutlined />
+                Table View
+              </span>
+            }
+            key={TABLE}
+            className="cb-tab-content"
+          >
+            {cohortIsEmpty ? (
+              <Empty
+                className={'empty-container'}
+                description={
+                  <span className={'empty-description'}>
+                    {'There are no participants for this cohort.'}
+                  </span>
+                }
+              />
+            ) : (
+              <ParticipantsTableView sqon={sqon} />
+            )}
+          </TabPane>
+        </Tabs>
+      </div>
+    </>
   );
 };
 

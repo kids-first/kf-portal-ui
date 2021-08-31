@@ -14,6 +14,7 @@ import { VirtualStudiesActions } from '../virtualStudiesTypes';
 
 export const initialState = {
   sqons: getDefaultSqon(),
+  selectionSqon: null,
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
@@ -96,6 +97,11 @@ export default (state = initialState, action) => {
       return setState({
         dirty: true,
         sqons: action.payload,
+      });
+
+    case VirtualStudiesActions.SET_SELECTION_SQONS:
+      return setState({
+        selectionSqon: action.payload,
       });
 
     case VirtualStudiesActions.SET_VIRTUAL_STUDY_ID:

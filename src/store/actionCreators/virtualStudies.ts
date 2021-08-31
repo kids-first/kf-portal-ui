@@ -135,6 +135,11 @@ export const setSqons = (sqons: Sqon | Sqon[]): VirtualStudiesActionTypes => ({
   payload: sqons,
 });
 
+export const setSelectionSqons = (sqons: Sqon | Sqon[] | null): VirtualStudiesActionTypes => ({
+  type: VirtualStudiesActions.SET_SELECTION_SQONS,
+  payload: sqons,
+});
+
 export const setVirtualStudyId = (virtualStudyId: VirtualStudyId): VirtualStudiesActionTypes => ({
   type: VirtualStudiesActions.SET_VIRTUAL_STUDY_ID,
   payload: virtualStudyId,

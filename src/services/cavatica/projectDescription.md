@@ -1,4 +1,4 @@
-### Welcome to your new Kids-First Cavatica project!
+### Welcome to your new Kids First Cavatica project!
 
 The Kids-First DRC has partnered with Cavatica to bring easy and collaborative cloud computing to the Kids-First datasets.
 
@@ -6,10 +6,10 @@ Projects are the core building blocks of the Cavatica Platform. Each project cor
 
 #### Within your project, you can:
 
-* Start [Analyzing your Kids-First Data](https://cavatica.sbgenomics.com/u/<username>/<project-name>/files/)
-* [Install your tools](http://docs.sevenbridges.com/docs/sdk-overview) and create workflows
-* Supplement analysis by [Uploading your own private data](http://docs.cavatica.org/docs/upload-your-data-to-cavatica)
-* [Collaborate securely](http://docs.cavatica.org/docs/collaboration) with other researchers
+- Start [Analyzing your Kids-First Data](https://cavatica.sbgenomics.com/u/<username>/<project-name>/files/)
+- [Install your tools](http://docs.sevenbridges.com/docs/sdk-overview) and create workflows
+- Supplement analysis by [Uploading your own private data](http://docs.cavatica.org/docs/upload-your-data-to-cavatica)
+- [Collaborate securely](http://docs.cavatica.org/docs/collaboration) with other researchers
 
 You can use this space to add notes about your project such as its aims, experimental context, and any other ideas that you’d like to share with your project members. as everyone will see the same content. (Bonus: This area is supported by [markdown](https://daringfireball.net/projects/markdown/basics) formatting!)
 
