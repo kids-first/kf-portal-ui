@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
@@ -253,10 +253,13 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
   const nodes = results.data?.hits?.edges || [];
   const variants = nodes as VariantEntityNode[];
   const total = results.data?.hits.total || 0;
-  setQbTotalCb(total);
 
   const nodesStudies = results?.data?.studies?.hits?.edges || [];
   const studies = nodesStudies.map((n: { node: string }) => n.node) as StudyInfo[];
+
+  useEffect(() => {
+    setQbTotalCb(total);
+  }, [total]);
 
   return (
     <Table
