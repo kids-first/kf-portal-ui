@@ -1,19 +1,22 @@
 import { format } from 'date-fns';
-import { EGO_JWT_KEY } from 'common/constants';
+import isEmpty from 'lodash/isEmpty';
+import uniq from 'lodash/uniq';
+
 import downloader from 'common/downloader';
 import { arrangerProjectId, reportsApiRoot } from 'common/injectGlobals';
 import { ReportConfig } from 'store/reportTypes';
-import isEmpty from 'lodash/isEmpty';
 import { Sqon, SqonFilters } from 'store/sqon';
-import { familyMemberAndParticipantIds } from './participants';
-import { TRACKING_EVENTS, trackUserInteraction } from './analyticsTracking';
-import uniq from 'lodash/uniq';
-import { fetchPtIdsFromSaveSets } from './sets';
 import {
   extractSaveSetIdsFromSqon,
   removeSaveSetFilters,
   shapeFileTypeSqonFiltersForParticipantType,
 } from 'store/sqonUtils';
+
+import keycloak from '../keycloak';
+
+import { TRACKING_EVENTS, trackUserInteraction } from './analyticsTracking';
+import { familyMemberAndParticipantIds } from './participants';
+import { fetchPtIdsFromSaveSets } from './sets';
 
 const trackDownload = async (label: string) => {
   await trackUserInteraction({
@@ -113,8 +116,6 @@ export default async (config: ReportConfig) => {
 
   await trackDownload(name);
 
-  const egoJwt = localStorage.getItem(EGO_JWT_KEY);
-
   let reportSqon;
 
   if (!config.sqon || isEmpty(config.sqon)) {
@@ -139,7 +140,7 @@ export default async (config: ReportConfig) => {
       filename: format(new Date(), `[${name}_]YYYYMMDD[.xlsx]`),
     },
     headers: {
-      Authorization: `Bearer ${egoJwt}`,
+      Authorization: `Bearer ${keycloak.token}`,
       Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'Content-Type': 'application/json',
     },
