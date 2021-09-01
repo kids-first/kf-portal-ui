@@ -10,6 +10,7 @@ import members from './members';
 import modal from './modal';
 import participantEntity from './participantEntity';
 import profile from './profile';
+import queryResolver from './queryResolver';
 import report from './report';
 import savedQueries from './SavedQueries';
 import saveSets from './saveSets';
@@ -30,6 +31,7 @@ export default combineReducers({
   savedQueries,
   fenceConnections,
   fenceStudies,
+  queryResolver,
   profile,
   cavatica,
   members,

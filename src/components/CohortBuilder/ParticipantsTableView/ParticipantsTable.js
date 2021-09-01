@@ -26,7 +26,7 @@ import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 
-import './ParticipantTableView.css';
+import './ParticipantsTable.css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input

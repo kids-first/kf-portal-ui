@@ -45,6 +45,7 @@ export enum VirtualStudiesActions {
   VIRTUAL_STUDY_RESET = 'VIRTUAL_STUDY_RESET',
 
   SET_ACTIVE_INDEX = 'SET_ACTIVE_INDEX',
+  SET_SELECTION_SQONS = 'SET_SELECTION_SQONS',
   SET_SQONS = 'SET_SQONS',
   SET_VIRTUAL_STUDY_ID = 'SET_VIRTUAL_STUDY_ID',
 }
@@ -129,6 +130,11 @@ export type SetSqonAction = {
   payload: Sqon | Sqon[];
 };
 
+export type SetSelectionSqonAction = {
+  type: VirtualStudiesActions.SET_SELECTION_SQONS;
+  payload: Sqon | Sqon[] | null;
+};
+
 export interface VirtualStudiesState {
   studies: VirtualStudy[];
   isLoading: boolean;
@@ -168,6 +174,7 @@ export type VirtualStudiesActionTypes =
   | ResetVirtualStudyAction
   | SetActiveIndexAction
   | SetSqonAction
+  | SetSelectionSqonAction
   | AddTermToActiveIndexAction
   | SetVirtualStudyId
   | CleanErrorAction;

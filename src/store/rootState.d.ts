@@ -8,6 +8,7 @@ import { GenomicSuggesterState } from './genomicSuggesterTypes';
 import { MembersState } from './membersTypes';
 import { ParticipantEntityState } from './participantEntityTypes';
 import { ProfileState } from './profileTypes';
+import { QueryResolverState } from './QueryResolverTypes';
 import { ReportState } from './reportTypes';
 import { SavedQueriesState } from './SavedQueriesTypes';
 import { SaveSetState } from './saveSetTypes';
@@ -29,6 +30,7 @@ export interface RootState {
   genomicSuggester: GenomicSuggesterState;
   workBench: WorkBenchState;
   savedQueries: SavedQueriesState;
+  queryResolver: QueryResolverState;
   fenceConnections: FenceConnectionsState;
   fenceStudies: FenceStudiesState;
   cavatica: CavaticaState;

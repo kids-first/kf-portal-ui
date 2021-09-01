@@ -191,7 +191,7 @@ const Toolbar = ({
           )}
         </div>
       )}
-      <ParticipantSetDropdown user={user} sqon={sqon} />
+      <ParticipantSetDropdown user={user} sqon={sqon} participantCount={participantCount} />
       <DownloadButton sqon={sqon} />
     </div>
   );
