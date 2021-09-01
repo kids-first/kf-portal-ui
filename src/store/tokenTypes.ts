@@ -24,6 +24,11 @@ export type DecodedJwt = {
   [index: string]: any;
 };
 
-export type KcTokenParsedPlusClaims = KeycloakTokenParsed & {
+export interface KidsFirstKeycloakTokenParsed extends KeycloakTokenParsed {
   groups: string[];
-};
+  name: string;
+  preferred_username: string;
+  given_name: string;
+  family_name: string;
+  email: string;
+}

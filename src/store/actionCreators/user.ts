@@ -16,7 +16,7 @@ import {
 import { Api } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import { selectUser } from 'store/selectors/users';
-import { KcTokenParsedPlusClaims } from 'store/tokenTypes';
+import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 
 import { removeForumBanner } from '../../ForumBanner';
 import { RawUser, ThunkActionUser, User, UserActions, UserActionTypes } from '../userTypes';
@@ -48,7 +48,7 @@ export const receiveUser = (user: RawUser): ThunkActionUser => async (dispatch) 
   const enhancedUser: User = {
     ...user,
     isAdmin: isAdminFromRoles(user.roles),
-    groups: (keycloak?.tokenParsed as KcTokenParsedPlusClaims)?.groups || [],
+    groups: (keycloak?.tokenParsed as KidsFirstKeycloakTokenParsed)?.groups || [],
   };
   await trackUserSession({ ...enhancedUser });
   dispatch(receiveUserWithComputedValues(enhancedUser));
@@ -119,18 +119,20 @@ export const revertAcceptedTermsThenLogoutCleanly = (): ThunkActionUser => async
   await dispatch(cleanlyLogout());
 };
 
-const bGUARD = false;
-
-export const fetchUser = (kcTokenParsed: KeycloakTokenParsed): ThunkActionUser => async (
+export const fetchUser = (kcTokenParsed: KidsFirstKeycloakTokenParsed): ThunkActionUser => async (
   dispatch,
 ) => {
   try {
-    const userPayload = kcTokenParsed.sub;
+    const userPayload = {
+      egoId: kcTokenParsed.sub,
+      lastName: kcTokenParsed.family_name,
+      firstName: kcTokenParsed.given_name,
+      email: kcTokenParsed.email,
+    };
     const sub = kcTokenParsed.sub;
     const existingProfile = await getProfile();
     let profile = existingProfile;
-    if (bGUARD && !existingProfile) {
-      //FIXME what to do when user is new?
+    if (!existingProfile) {
       profile = await initProfile(apiUser, userPayload, sub);
     }
     dispatch(receiveUser(profile));
@@ -146,7 +148,7 @@ export const fetchUserIfNeeded = (
   kcTokenParsed: KeycloakTokenParsed | undefined,
 ): ThunkActionUser => async (dispatch, getState) => {
   if (kcTokenParsed && shouldFetchUser(getState())) {
-    return dispatch(fetchUser(kcTokenParsed));
+    return dispatch(fetchUser(kcTokenParsed as KidsFirstKeycloakTokenParsed));
   }
 };
 

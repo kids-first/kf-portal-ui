@@ -138,7 +138,7 @@ export const createProfile = (api) => async ({ egoId, lastName, firstName, email
     body: {
       variables: { egoId, lastName, firstName, email },
       query: `
-        mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
+        mutation($egoId: String!, $firstName: String, $lastName: String, $email: String) {
           userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email}) {
             record {
               ${DEFAULT_FIELDS_SELF}
