@@ -1,9 +1,8 @@
 /* eslint-disable react/display-name */
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
-import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Table, Tooltip } from 'antd';
 
 import ROUTES from 'common/routes';
@@ -25,9 +24,6 @@ import { Sqon } from 'store/sqon';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
 import { AlignmentOptions } from 'ui/TableOptions';
 import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
-
-import { useGetPageData } from '../../store/graphql/utils/actions';
-import { VARIANT_QUERY } from '../../store/graphql/variants/queries';
 
 import ConsequencesCell from './ConsequencesCell';
 
@@ -55,7 +51,11 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & { setQbTotalCb: (total: number) => undefined };
+type Props = PropsFromRedux & {
+  results: any;
+  filters: ISyntheticSqon;
+  setCurrentPageCb: (currentPage: number) => undefined;
+};
 
 const generateColumns = (props: Props, studyList: StudyInfo[]) =>
   [
@@ -229,37 +229,18 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
   ].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
 
-const INDEX = 'variants';
-
 const makeRows = (rows: VariantEntityNode[]) =>
   rows.map((row: VariantEntityNode, index: number) => ({ ...row.node, key: `${index}` }));
 
 const VariantTableContainer: FunctionComponent<Props> = (props) => {
-  const { setQbTotalCb } = props;
-  const { filters } = useFilters();
+  const { results, setCurrentPageCb } = props;
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
-  const allSqons = getQueryBuilderCache('variant-repo').state;
-
-  let results = useGetPageData(
-    {
-      sqon: resolveSyntheticSqon(allSqons, filters),
-      first: DEFAULT_PAGE_SIZE,
-      offset: DEFAULT_PAGE_SIZE * (currentPageNum - 1),
-    },
-    VARIANT_QUERY,
-    INDEX,
-  );
 
   const nodes = results.data?.hits?.edges || [];
   const variants = nodes as VariantEntityNode[];
   const total = results.data?.hits.total || 0;
-
   const nodesStudies = results?.data?.studies?.hits?.edges || [];
   const studies = nodesStudies.map((n: { node: string }) => n.node) as StudyInfo[];
-
-  useEffect(() => {
-    setQbTotalCb(total);
-  }, [total]);
 
   return (
     <Table
@@ -282,6 +263,7 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
         onChange: (page) => {
           if (currentPageNum !== page) {
             setCurrentPageNum(page);
+            setCurrentPageCb(page);
           }
         },
         size: 'small',

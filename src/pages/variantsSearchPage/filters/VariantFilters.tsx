@@ -10,6 +10,8 @@ import { VARIANT_AGGREGATION_QUERY } from '../../../store/graphql/variants/queri
 import Suggester from '../Suggester';
 import SuggesterWrapper from '../SuggesterWrapper';
 
+import styles from './VariantFilters.module.scss';
+
 type OwnProps = {
   mappingResults: MappingResults;
 };
@@ -44,7 +46,11 @@ const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
           placeholderText={PLACE_HOLDER_TEXT}
         />
       </SuggesterWrapper>
-      {results.loading ? <Spin size="large" /> : generateFilters(results, mappingResults)}
+      {results.loading ? (
+        <Spin size="large" />
+      ) : (
+        generateFilters(results, mappingResults, styles.variantFilterContainer)
+      )}
     </Layout>
   );
 };

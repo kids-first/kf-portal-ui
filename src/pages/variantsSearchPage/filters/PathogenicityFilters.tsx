@@ -8,6 +8,8 @@ import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions
 
 import { VARIANT_AGGREGATION_QUERY } from '../../../store/graphql/variants/queries';
 
+import styles from './VariantFilters.module.scss';
+
 type OwnProps = {
   mappingResults: MappingResults;
 };
@@ -41,7 +43,11 @@ const PathogenicityFilters: FunctionComponent<OwnProps> = ({ mappingResults }) =
 
   return (
     <Layout>
-      {results.loading ? <Spin size="large" /> : generateFilters(results, mappingResults)}
+      {results.loading ? (
+        <Spin size="large" />
+      ) : (
+        generateFilters(results, mappingResults, styles.variantFilterContainer)
+      )}
     </Layout>
   );
 };

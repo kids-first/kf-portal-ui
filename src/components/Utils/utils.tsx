@@ -42,7 +42,11 @@ export interface GQLData<T extends Aggs = any> {
 }
 
 //TODO investigate: should only be called once per tab.
-export const generateFilters = (results: Results, mappingResults: MappingResults) =>
+export const generateFilters = (
+  results: Results,
+  mappingResults: MappingResults,
+  className: string = '',
+) =>
   Object.keys(results.data?.aggregations || []).map((key) => {
     const found = (mappingResults?.extendedMapping || []).find(
       (f: any) => f.field === underscoreToDot(key),
@@ -50,18 +54,19 @@ export const generateFilters = (results: Results, mappingResults: MappingResults
 
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
     const filters = getFilters(results.data, key);
-
     const selectedFilters = getSelectedFilters(filters, filterGroup);
+
     return (
-      <FilterContainer
-        key={key}
-        filterGroup={filterGroup}
-        filters={filters}
-        onChange={(fg, f) => {
-          updateFilters(history, fg, f);
-        }}
-        selectedFilters={selectedFilters}
-      />
+      <div className={className} key={key}>
+        <FilterContainer
+          filterGroup={filterGroup}
+          filters={filters}
+          onChange={(fg, f) => {
+            updateFilters(history, fg, f);
+          }}
+          selectedFilters={selectedFilters}
+        />
+      </div>
     );
   });
 

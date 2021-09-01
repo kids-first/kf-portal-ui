@@ -24991,6 +24991,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-btn-text:focus > span {
   text-decoration: none;
 }
+.ant-select-item-option-disabled.ant-select-item-option-selected {
+  background-color: #eaeaec;
+}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #eaeaec;
+}
 .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
   color: #8a8da8;
 }
