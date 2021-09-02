@@ -5,49 +5,7 @@ import { ExtendedMapping, MappingResults } from 'store/graphql/utils/actions';
 import { dotToUnderscore, underscoreToDot } from '../../../store/graphql/utils';
 
 export const VARIANT_QUERY = gql`
-  query VariantInformation($sqon: JSON, $first: Int, $offset: Int) {
-    variants {
-      hits(filters: $sqon, first: $first, offset: $offset) {
-        total
-        edges {
-          node {
-            id
-            hgvsg
-            hash
-            locus
-            variant_class
-            clinvar {
-              clinvar_id
-              clin_sig
-            }
-            rsnumber
-            participant_number
-            participant_frequency
-            participant_total_number
-            consequences {
-              hits {
-                edges {
-                  node {
-                    symbol
-                    canonical
-                    vep_impact
-                    symbol
-                    consequences
-                    aa_change
-                    impact_score
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const SEARCH_VARIANT_TABLE_QUERY = gql`
-  query GetSearchedVariant(
+  query VariantInformation(
     $sqon: JSON
     $pageSize: Int
     $offset: Int
@@ -59,6 +17,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
         total
         edges {
           node {
+            id
             hgvsg
             hash
             locus

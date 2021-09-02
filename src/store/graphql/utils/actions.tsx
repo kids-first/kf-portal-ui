@@ -21,6 +21,7 @@ export type QueryVariable = {
   sqon: any;
   pageSize?: number; // number of element to fetch
   first?: number;
+  studiesSize?: number;
   offset?: number; // start from offset number of elements
 };
 

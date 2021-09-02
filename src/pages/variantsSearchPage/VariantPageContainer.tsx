@@ -26,6 +26,7 @@ export type VariantPageContainerData = {
 
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_STUDIES_SIZE = 30000;
 
 const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [queryBuilderOpen, setQueryBuilderOpen] = useState(true);
@@ -36,8 +37,9 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   let results = useGetPageData(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
-      first: DEFAULT_PAGE_SIZE,
+      pageSize: DEFAULT_PAGE_SIZE,
       offset: DEFAULT_PAGE_SIZE * (currentPageNum - 1),
+      studiesSize: DEFAULT_STUDIES_SIZE,
     },
     VARIANT_QUERY,
     VARIANT_INDEX,
