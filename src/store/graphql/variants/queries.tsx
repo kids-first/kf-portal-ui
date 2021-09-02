@@ -454,7 +454,7 @@ export const VARIANT_AGGREGATION_QUERY = (aggList: string[], mappingResults: Map
   return gql`
       query VariantInformation($sqon: JSON) {
         variants {
-           aggregations (filters: $sqon){
+           aggregations (filters: $sqon, include_missing:false){
             ${generateAggregations(extendedMappingsFields)}
           }
         }

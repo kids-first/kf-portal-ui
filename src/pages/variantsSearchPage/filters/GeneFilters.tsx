@@ -16,9 +16,9 @@ type OwnProps = {
   mappingResults: MappingResults;
 };
 
-//TODO External Ref
 //order in list reflects order in UI
 const INPUT_FILTER_LIST = [
+  'external_reference',
   'genes__hpo__hpo_term_label',
   'genes__orphanet__panel',
   'genes__omim__name',
@@ -46,7 +46,11 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   return (
     <Layout>
       <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
-        <Suggester suggestionType={SUGGESTION_TYPE} placeholderText={PLACE_HOLDER_TEXT} />
+        <Suggester
+          title={TITLE}
+          suggestionType={SUGGESTION_TYPE}
+          placeholderText={PLACE_HOLDER_TEXT}
+        />
       </SuggesterWrapper>
       {results.loading ? (
         <Spin size="large" />

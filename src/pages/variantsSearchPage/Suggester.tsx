@@ -1,31 +1,15 @@
-import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { IFilter, VisualType } from '@ferlab/ui/core/components/filters/types';
 import { updateFilters } from '@ferlab/ui/core/data/filters/utils';
 import { AutoComplete, Input, notification, Spin } from 'antd';
-import debounce from 'lodash/debounce';
 
 import history from 'services/history';
-import {
-  clearSuggestions,
-  fetchSuggestions,
-  reInitializeState,
-} from 'store/actionCreators/genomicSuggester';
-import { DispatchGenomicSuggester } from 'store/genomicSuggesterTypes';
-import { SearchText } from 'store/graphql/variants/models';
-import { RootState } from 'store/rootState';
-import {
-  selectError,
-  selectIsLoading,
-  selectSearchTextSuggestion,
-  selectSuggestions,
-} from 'store/selectors/genomicSuggester';
+
+import { getGenomicSuggestions } from '../../services/genomicSuggestions';
 
 import generateSuggestionOptions from './SuggestionOptions';
 
 import style from './Suggester.module.scss';
-
-const WAIT_IN_MS = 100;
 
 const MIN_N_OF_CHARS_BEFORE_SEARCH = 2;
 
@@ -37,45 +21,24 @@ type SuggesterProps = {
   title: string;
 };
 
-const mapState = (state: RootState) => ({
-  isLoading: selectIsLoading(state),
-  suggestions: selectSuggestions(state),
-  error: selectError(state),
-  suggestionSearchText: selectSearchTextSuggestion(state),
-});
+const Suggester = (props: SuggesterProps) => {
+  const { suggestionType, placeholderText } = props;
 
-const mapDispatch = (dispatch: DispatchGenomicSuggester) => ({
-  onFetchSuggestions: (searchText: SearchText, type: string) =>
-    dispatch(fetchSuggestions(searchText, type)),
-  //TODO clean up redux stuff
-  // onSelectSuggestion: (params: SelectedSuggestion) => dispatch(selectChosenSuggestion(params)),
-  reInitializeState: () => dispatch(reInitializeState()),
-  onClearSuggestions: () => dispatch(clearSuggestions()),
-});
+  const [options, setOptions] = useState<{ value: string }[]>([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-const connector = connect(mapState, mapDispatch);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type Props = SuggesterProps & PropsFromRedux;
-
-const Suggester = (props: Props) => {
-  const {
-    isLoading,
-    error,
-    reInitializeState,
-    onFetchSuggestions,
-    suggestions,
-    onClearSuggestions,
-    suggestionSearchText,
-    suggestionType,
-    placeholderText,
-  } = props;
-
-  const handleSearch = (userRawInput: string) => {
-    onClearSuggestions();
+  const handleSearch = async (userRawInput: string, suggestionType: string) => {
     if (userRawInput && userRawInput.length >= MIN_N_OF_CHARS_BEFORE_SEARCH) {
-      return onFetchSuggestions(encodeURI(userRawInput), suggestionType);
+      setLoading(true);
+      try {
+        const response = await getGenomicSuggestions(userRawInput, suggestionType);
+        setOptions(generateSuggestionOptions(response.searchText, response.suggestions));
+      } catch (e) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -94,6 +57,7 @@ const Suggester = (props: Props) => {
         type: VisualType.Checkbox,
       };
     }
+
     const f: IFilter[] = [
       {
         data: {
@@ -113,27 +77,26 @@ const Suggester = (props: Props) => {
         message: 'Error',
         description: 'An error occurred while fetching suggestions',
         duration: null,
-        onClose: () => reInitializeState(),
+        onClose: () => setError(false),
       });
     }
-  }, [error, reInitializeState]);
+  }, [error]);
 
   return (
     <AutoComplete
       className={style.inputVariant}
       style={{ width: style.autoCompleteWidth }}
-      onSearch={debounce(handleSearch, WAIT_IN_MS)}
-      options={generateSuggestionOptions(suggestionSearchText, suggestions)}
-      notFoundContent={isLoading ? <Spin /> : 'No results found'}
+      onSearch={(searchText) => handleSearch(searchText, suggestionType)}
+      options={options}
+      notFoundContent={loading ? <Spin /> : 'No results found'}
       filterOption={(inputValue, option) =>
         //  make sure we show suggestions for corresponding search only.
         (inputValue || '').trim() === option?.meta?.searchText
       }
       onSelect={(value, option) => {
-        onClearSuggestions();
         onSelectSuggestion(option.meta.featureType, option.meta.displayName);
       }}
-      disabled={!!error}
+      disabled={error}
     >
       <Input
         maxLength={MAX_N_OF_CHARS}
@@ -144,7 +107,8 @@ const Suggester = (props: Props) => {
           e.preventDefault();
           const value = e.target.value;
           if (!value || !value.trim()) {
-            reInitializeState();
+            const opt: { value: string }[] = [];
+            setOptions(opt);
           }
         }}
       />
@@ -152,4 +116,4 @@ const Suggester = (props: Props) => {
   );
 };
 
-export default connector(Suggester);
+export default Suggester;

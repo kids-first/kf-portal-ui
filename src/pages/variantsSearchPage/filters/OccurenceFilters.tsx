@@ -15,11 +15,7 @@ type OwnProps = {
 };
 
 //order in list reflects order in UI
-const INPUT_FILTER_LIST: string[] = [
-  'studies__study_code',
-  // 'Zygozity', //TODO what is this???
-  // 'Inheritance', //TODO what is this???
-];
+const INPUT_FILTER_LIST: string[] = ['studies__study_code', 'zygosity', 'transmissions'];
 const INDEX = 'variants';
 
 const OccurenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
