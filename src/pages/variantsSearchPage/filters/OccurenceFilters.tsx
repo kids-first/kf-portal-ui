@@ -5,8 +5,9 @@ import { Layout, Spin } from 'antd';
 
 import { generateFilters } from 'components/Utils/utils';
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
+import { VARIANT_AGGREGATION_QUERY } from 'store/graphql/variants/queries';
 
-import { VARIANT_AGGREGATION_QUERY } from '../../../store/graphql/variants/queries';
+import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from '../constants';
 
 import styles from './VariantFilters.module.scss';
 
@@ -16,29 +17,24 @@ type OwnProps = {
 
 //order in list reflects order in UI
 const INPUT_FILTER_LIST: string[] = ['studies__study_code', 'zygosity', 'transmissions'];
-const INDEX = 'variants';
 
 const OccurenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   const { filters } = useFilters();
-
-  const allSqons = getQueryBuilderCache('variant-repo').state;
-
-  let results = useGetFilterBuckets(
+  const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
+  const results = useGetFilterBuckets(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
     },
     VARIANT_AGGREGATION_QUERY(INPUT_FILTER_LIST, mappingResults),
-    INDEX,
+    VARIANT_INDEX,
   );
 
   return (
-    <Layout>
-      {results.loading ? (
-        <Spin size="large" />
-      ) : (
-        generateFilters(results, mappingResults, styles.variantFilterContainer)
-      )}
-    </Layout>
+    <Spin size="large" spinning={results.loading}>
+      <Layout className={styles.variantFilterWrapper}>
+        {generateFilters(results, mappingResults, styles.variantFilterContainer)}
+      </Layout>
+    </Spin>
   );
 };
 

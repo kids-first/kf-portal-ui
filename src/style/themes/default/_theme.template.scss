@@ -44,10 +44,11 @@ $sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px $cyan-7, 0 0 0 3px $gray
 $sidebar-quick-filter-input-placeholder-color: $body-3;
 $sidebar-quick-filter-input-text-color: $body-1;
 
-$sidebar-right-panel-width: 320px;
-$sidebar-right-panel-close-icon-color: $cyan-7;
-$sidebar-right-panel-right-border: 1px solid $gray-5;
-$sidebar-right-panel-background-color: transparent;
+$sidebar-content-panel-padding: 16px;
+$sidebar-content-panel-width: 320px;
+$sidebar-content-panel-close-icon-color: $cyan-7;
+$sidebar-content-panel-right-border: 1px solid $gray-5;
+$sidebar-content-panel-background-color: transparent;
 
 // Filters
 $filter-input-label-color: $body-1;

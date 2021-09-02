@@ -271,7 +271,6 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
       loading={results.loading}
       dataSource={makeRows(variants)}
       columns={generateColumns(props, studies)}
-      className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}
     />
   );

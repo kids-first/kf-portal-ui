@@ -1,6 +1,24 @@
+@import 'style/themes/default/_colors';
+@import 'style/themes/default/_layout';
+
+.tableContainer {
+  background-color: $card-background;
+  margin-top: $default-padding;
+  border-radius: 2px;
+  border: 1px solid $gray-4;
+}
+
+.tableContainer > * {
+  margin: $default-padding;
+}
+
+.tableHeader {
+  margin-bottom: 16px;
+}
 
 .queryBuilderTogglerContainer {
   background-color: white;
+  border-radius: 2px;
 
   .queryBuilder {
     border-top-left-radius: 0;

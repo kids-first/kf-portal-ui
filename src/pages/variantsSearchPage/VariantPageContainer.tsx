@@ -10,10 +10,10 @@ import CaretDownIcon from 'icons/CaretDownIcon';
 import CaretRightIcon from 'icons/CaretRightIcon';
 import VariantIcon from 'icons/VariantIcon';
 import history from 'services/history';
+import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
+import { VARIANT_QUERY } from 'store/graphql/variants/queries';
 
-import { MappingResults, useGetPageData } from '../../store/graphql/utils/actions';
-import { VARIANT_QUERY } from '../../store/graphql/variants/queries';
-
+import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from './constants';
 import VariantTableContainer from './VariantTableContainer';
 
 import styles from './VariantPageContainer.module.scss';
@@ -24,7 +24,6 @@ export type VariantPageContainerData = {
   mappingResults: MappingResults;
 };
 
-const INDEX = 'variants';
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -32,7 +31,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [queryBuilderOpen, setQueryBuilderOpen] = useState(true);
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
   const { filters } = useFilters();
-  const allSqons = getQueryBuilderCache('variant-repo').state;
+  const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
 
   let results = useGetPageData(
     {
@@ -41,7 +40,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
       offset: DEFAULT_PAGE_SIZE * (currentPageNum - 1),
     },
     VARIANT_QUERY,
-    INDEX,
+    VARIANT_INDEX,
   );
 
   const total = results.data?.hits.total || 0;
@@ -71,7 +70,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
           className={`${styles.queryBuilder} ${
             !queryBuilderOpen && styles.hidden
           } variant-repo__query-builder`}
-          cacheKey="variant-repo"
+          cacheKey={VARIANT_REPO_CACHE_KEY}
           enableCombine={true}
           currentQuery={filters?.content?.length ? filters : {}}
           history={history}
