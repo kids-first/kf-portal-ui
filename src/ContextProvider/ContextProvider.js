@@ -7,8 +7,7 @@ import ScrollbarSizeProvider from 'ContextProvider/ScrollbarSizeProvider';
 import { ApiContext, initializeApi } from 'services/api';
 import { onUnauthorizedUser } from 'services/api';
 import history, { HistoryContext } from 'services/history';
-
-import { getPreloadedState, initStore } from '../store';
+import { getPreloadedState, initStore } from 'store';
 // eslint-disable-next-line react/display-name
 export default ({ children }) => {
   const preloadedState = getPreloadedState();
