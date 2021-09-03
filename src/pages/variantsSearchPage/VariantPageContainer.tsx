@@ -4,10 +4,7 @@ import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Typography } from 'antd';
 
-import CaretDownIcon from 'icons/CaretDownIcon';
-import CaretRightIcon from 'icons/CaretRightIcon';
 import VariantIcon from 'icons/VariantIcon';
 import history from 'services/history';
 import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
@@ -18,8 +15,6 @@ import VariantTableContainer from './VariantTableContainer';
 
 import styles from './VariantPageContainer.module.scss';
 
-const { Title } = Typography;
-
 export type VariantPageContainerData = {
   mappingResults: MappingResults;
 };
@@ -29,7 +24,6 @@ const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_STUDIES_SIZE = 30000;
 
 const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
-  const [queryBuilderOpen, setQueryBuilderOpen] = useState(true);
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
   const { filters } = useFilters();
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
@@ -57,31 +51,19 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
 
   return (
     <StackLayout vertical>
-      <div className={styles.queryBuilderTogglerContainer}>
-        <div
-          className={`${styles.queryBuilderToggler} ${!queryBuilderOpen && styles.togglerClosed}`}
-        >
-          <a className={styles.togglerIcon} onClick={() => setQueryBuilderOpen(!queryBuilderOpen)}>
-            {queryBuilderOpen ? <CaretDownIcon /> : <CaretRightIcon />}
-          </a>
-          <Title level={1} className={styles.togglerTitle}>
-            Variants Filter
-          </Title>
-        </div>
-        <QueryBuilder
-          className={`${styles.queryBuilder} ${
-            !queryBuilderOpen && styles.hidden
-          } variant-repo__query-builder`}
-          cacheKey={VARIANT_REPO_CACHE_KEY}
-          enableCombine={true}
-          currentQuery={filters?.content?.length ? filters : {}}
-          history={history}
-          loading={results.loading}
-          total={total}
-          dictionary={dictionary}
-          IconTotal={<VariantIcon fill="#383f72" />}
-        />
-      </div>
+      <QueryBuilder
+        className="variant-repo__query-builder"
+        showHeader={true}
+        showHeaderTools={true}
+        cacheKey={VARIANT_REPO_CACHE_KEY}
+        enableCombine={true}
+        currentQuery={filters?.content?.length ? filters : {}}
+        history={history}
+        loading={results.loading}
+        total={total}
+        dictionary={dictionary}
+        IconTotal={<VariantIcon fill="#383f72" />}
+      />
       <StackLayout vertical className={styles.tableContainer}>
         <VariantTableContainer
           results={results}
