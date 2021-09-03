@@ -25,6 +25,21 @@ const initialState = {
   },
 };
 
+let mockIsAuthenticated = false;
+
+jest.mock('@react-keycloak/web', () => {
+  const originalModule = jest.requireActual('@react-keycloak/web');
+  return {
+    ...originalModule,
+    useKeycloak: () => ({
+      initialized: true,
+      keycloak: {
+        authenticated: mockIsAuthenticated,
+      },
+    }),
+  };
+});
+
 describe('Protected Route', () => {
   let wrapper: ReactWrapper;
 
@@ -62,6 +77,7 @@ describe('Protected Route', () => {
   });
 
   it('should render the join route when user has not joined yet but is authenticated', () => {
+    mockIsAuthenticated = true;
     const store = mockStore({
       user: {
         ...initialState.user,
@@ -83,6 +99,7 @@ describe('Protected Route', () => {
     'should render terms and conditions route when' +
       ' user is authenticated, has joined but has not accepted terms yet',
     () => {
+      mockIsAuthenticated = true;
       const store = mockStore({
         user: {
           ...initialState.user,
@@ -105,6 +122,7 @@ describe('Protected Route', () => {
     'should render the dashboard route when' +
       ' user is authenticated, has joined has accepted terms but hits the login route',
     () => {
+      mockIsAuthenticated = true;
       const store = mockStore({
         user: {
           ...initialState.user,
@@ -127,6 +145,7 @@ describe('Protected Route', () => {
     'should render the desired route when' +
       ' user is authenticated, has joined and has accepted terms',
     () => {
+      mockIsAuthenticated = true;
       const store = mockStore({
         user: {
           ...initialState.user,
