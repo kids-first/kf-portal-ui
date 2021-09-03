@@ -18,7 +18,10 @@ const mockStore = createMockStore<StateSliceNeeded, DispatchUser>(middleware);
 
 jest.mock('services/fenceStudies');
 jest.mock('services/analyticsTracking');
-jest.mock('keycloak');
+jest.mock('keycloak', () => ({ tokenParsed: {} }));
+
+import keycloak from 'keycloak';
+import { KeycloakTokenParsed } from 'keycloak-js';
 
 const initialState = {
   user: {
@@ -45,11 +48,7 @@ describe('User actions', () => {
   });
 
   it('should receive a raw user and enhance it with computed values (not an admin)', async () => {
-    jest.mock('keycloak', () => ({
-      default: {
-        tokenParsed: { groups: [] },
-      },
-    }));
+    keycloak.tokenParsed = { groups: [] } as KeycloakTokenParsed;
 
     const storeNoAdminToken = mockStore({
       ...initialState,
@@ -76,11 +75,7 @@ describe('User actions', () => {
   });
 
   it('should receive a raw user and enhance it with computed values (an admin)', async () => {
-    jest.mock('keycloak', () => ({
-      default: {
-        tokenParsed: { groups: ['kf-investigator'] },
-      },
-    }));
+    keycloak.tokenParsed = { groups: ['kf-investigator'] } as KeycloakTokenParsed;
 
     const storeWithAdminToken = mockStore({
       ...initialState,
@@ -97,6 +92,7 @@ describe('User actions', () => {
       {
         payload: {
           ...MOCK_USER_2_ADMIN,
+          groups: ['kf-investigator'],
           isAdmin: true,
         },
         type: UserActions.receiveUserWithComputedValues,
