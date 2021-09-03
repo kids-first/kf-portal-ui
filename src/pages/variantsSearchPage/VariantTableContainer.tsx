@@ -254,8 +254,6 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
           <></>
         )
       }
-      scroll={{ x: 1500 }}
-      tableLayout="auto"
       pagination={{
         current: currentPageNum,
         total: total,
@@ -267,6 +265,7 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
         },
         size: 'small',
       }}
+      className={style.variantSearchTable}
       loading={results.loading}
       dataSource={makeRows(variants)}
       columns={generateColumns(props, studies)}

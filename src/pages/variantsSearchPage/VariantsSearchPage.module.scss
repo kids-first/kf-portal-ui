@@ -17,15 +17,17 @@
 
   .pageHeaderTitle {
     margin: 0;
-    margin-right: 1rem;
+    font-size: 20px;
+    line-height: 28px;
+    margin-right: 1.2rem;
   }
 
   .dataReleaseTag {
-    background-color: $cyan-2;
-    color: $cyan-8;
+    color: $cyan-7;
     display: flex;
     align-items: center;
-    height: 22px;
+    font-size: 12px;
+    height: 20px;
 
     &:hover {
       cursor: pointer;

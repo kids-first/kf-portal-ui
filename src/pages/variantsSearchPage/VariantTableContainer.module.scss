@@ -9,3 +9,12 @@
   min-width: 140px;
   width: 12%;
 }
+
+.variantSearchTable {
+  :global(.ant-table-content) {
+    overflow: scroll;
+    table {
+      min-width: 1500px;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
-import { Button, Layout, Modal, Tag, Typography } from 'antd';
+import { Button, Layout, Modal, Typography } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
 import DiseaseIcon from 'icons/DiseaseIcon';
@@ -89,12 +89,12 @@ const VariantPage = () => {
           title={
             <div className={styles.pageHeader}>
               <Title className={styles.pageHeaderTitle} level={1}>
-                Kids First Variants
+                Variants Exploration
               </Title>
-              <Tag className={styles.dataReleaseTag} onClick={() => setStatsModalOpened(true)}>
+              <a className={styles.dataReleaseTag} onClick={() => setStatsModalOpened(true)}>
                 <span>Data release 1.0</span>
-                <OpenInNewIcon fill="#00546E" width="12" />
-              </Tag>
+                <OpenInNewIcon fill="#007694" width="12" />
+              </a>
             </div>
           }
         >
