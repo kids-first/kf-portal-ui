@@ -1,10 +1,9 @@
+import keycloak from 'keycloak';
 import urljoin from 'url-join';
 
+import downloader from 'common/downloader';
 import { personaApiRoot, reactApiSearchMembersApi } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
-
-import downloader from '../../common/downloader';
-import keycloak from '../../keycloak';
 
 const api = initializeApi({
   onError: console.error,

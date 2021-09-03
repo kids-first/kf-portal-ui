@@ -10,14 +10,13 @@ import PropTypes from 'prop-types';
 import { parse as parseQueryString, stringify } from 'query-string';
 import { compose } from 'recompose';
 
+import { withApi } from 'services/api';
 import {
   loadSavedVirtualStudy,
   resetVirtualStudy,
   setActiveSqonIndex,
   setSqons,
 } from 'store/actionCreators/virtualStudies';
-
-import { withApi } from '../../services/api';
 
 class SQONProvider extends React.Component {
   constructor(props) {

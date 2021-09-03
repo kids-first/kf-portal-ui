@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-import keycloak from '../keycloak';
+import keycloak from 'keycloak';
 
 const ajax = axios.create();
 

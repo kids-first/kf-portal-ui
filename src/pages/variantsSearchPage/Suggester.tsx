@@ -4,6 +4,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import { AutoComplete, Badge, Form, Input, notification, Spin } from 'antd';
 import debounce from 'lodash/debounce';
 
+import generateSuggestionOptions from 'pages/variantsSearchPage/SuggestionOptions';
+import { withApi } from 'services/api';
 import {
   clearSuggestions,
   fetchSuggestions,
@@ -21,10 +23,6 @@ import {
   selectSearchTextSuggestion,
   selectSuggestions,
 } from 'store/selectors/genomicSuggester';
-
-import { withApi } from '../../services/api';
-
-import generateSuggestionOptions from './SuggestionOptions';
 
 import style from './Suggester.module.scss';
 

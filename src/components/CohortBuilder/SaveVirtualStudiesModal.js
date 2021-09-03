@@ -4,12 +4,11 @@ import { Button, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
+import { withApi } from 'services/api';
 import { createVirtualStudy } from 'services/virtualStudies';
 import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
 import { selectUser } from 'store/selectors/users';
 import PromptMessage from 'uikit/PromptMessage';
-
-import { withApi } from '../../services/api';
 
 const { TextArea } = Input;
 

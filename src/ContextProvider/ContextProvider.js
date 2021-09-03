@@ -1,15 +1,14 @@
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router';
+import KeycloakProvider from 'ContextProvider/Keycloak';
+import ScrollbarSizeProvider from 'ContextProvider/ScrollbarSizeProvider';
 
 import { ApiContext, initializeApi } from 'services/api';
 import { onUnauthorizedUser } from 'services/api';
 import history, { HistoryContext } from 'services/history';
 
 import { getPreloadedState, initStore } from '../store';
-
-import KeycloakProvider from './Keycloak';
-import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 // eslint-disable-next-line react/display-name
 export default ({ children }) => {
   const preloadedState = getPreloadedState();

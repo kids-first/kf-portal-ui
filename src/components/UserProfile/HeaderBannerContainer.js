@@ -5,16 +5,14 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
 import HeaderBanner from 'components/UserProfile/HeaderBanner';
+import { getMsgFromAccessError } from 'components/UserProfile/utils';
+import { withApi } from 'services/api';
 import { cleanProfileErrors, toggleIsActive, toggleIsPublic } from 'store/actionCreators/profile';
 import {
   selectErrorIsToggleProfileStatus,
   selectIsLoadingProfileStatus,
   selectProfile,
 } from 'store/selectors/profile';
-
-import { withApi } from '../../services/api';
-
-import { getMsgFromAccessError } from './utils';
 
 const HeaderBannerContainer = (props) => {
   const {

@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import { Layout, Row } from 'antd';
 import PropTypes from 'prop-types';
 
+import { SHOW_DELETE_ACCOUNT } from 'common/constants';
+import ApplicationIntegration from 'components/UserProfile//ApplicationIntegration';
 import DeleteAccount from 'components/UserProfile/DeleteAccount';
+import RepositoryIntegration from 'components/UserProfile/RepositoryIntegration';
 import { clearClusterError } from 'store/actionCreators/workBench';
 import { selectUser } from 'store/selectors/users';
-
-import { SHOW_DELETE_ACCOUNT } from '../../common/constants';
-
-import ApplicationIntegration from './ApplicationIntegration';
-import RepositoryIntegration from './RepositoryIntegration';
 
 const mapDispatch = (dispatch) => ({
   onClearClusterError: () => dispatch(clearClusterError()),

@@ -7,12 +7,16 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
+import Error from 'components/Error';
+import { KEY_ABOUT_ME } from 'components/UserProfile/constants';
+import UserProfilePage from 'components/UserProfile/UserProfilePage';
 import {
   addStateInfo as updateTrackingInfo,
   TRACKING_EVENTS,
   trackProfileInteraction,
   trackUserInteraction,
 } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import {
   cleanProfileErrors,
   deleteProfile,
@@ -27,12 +31,6 @@ import {
 } from 'store/selectors/profile';
 import { selectIsUserAdmin, selectUser } from 'store/selectors/users';
 import { isSelfInUrlWhenLoggedIn } from 'utils';
-
-import { withApi } from '../../services/api';
-import Error from '../Error';
-
-import { KEY_ABOUT_ME } from './constants';
-import UserProfilePage from './UserProfilePage';
 
 import './style.css';
 

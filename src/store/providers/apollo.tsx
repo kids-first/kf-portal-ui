@@ -7,11 +7,10 @@ import {
 } from '@apollo/client';
 import { InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import keycloak from 'keycloak';
 
 import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 import { IProvider } from 'store/providers';
-
-import keycloak from '../../keycloak';
 
 const httpLink = createHttpLink({
   uri: `${kfArrangerApiRoot}${arrangerApiProjectId}/graphql`,

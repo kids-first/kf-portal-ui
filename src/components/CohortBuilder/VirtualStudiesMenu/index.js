@@ -13,7 +13,12 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import urlJoin from 'url-join';
 
+import SaveVirtualStudiesModal from 'components/CohortBuilder/SaveVirtualStudiesModal';
+import LoadQuery from 'components/CohortBuilder/VirtualStudiesMenu/LoadQuery';
+// eslint-disable-next-line max-len
+import { VirtualStudiesMenuButton } from 'components/CohortBuilder/VirtualStudiesMenu/VirtualStudiesMenuButton';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
+import { withApi } from 'services/api';
 import { createVirtualStudy } from 'services/virtualStudies';
 import {
   fetchVirtualStudiesCollection,
@@ -25,12 +30,6 @@ import { closeModal, openModal } from 'store/actions/modal';
 import { selectUser } from 'store/selectors/users';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 import Row from 'uikit/Row';
-
-import { withApi } from '../../../services/api';
-import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
-
-import LoadQuery from './LoadQuery';
-import { VirtualStudiesMenuButton } from './VirtualStudiesMenuButton';
 
 import './index.scss';
 
