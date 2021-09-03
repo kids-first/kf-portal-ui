@@ -128,7 +128,6 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies?.hits.edges || [];
         const studyIds = nodes.map((r) => r.node.study_id);
-
         const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
 
         return studies?.hits?.total ? (

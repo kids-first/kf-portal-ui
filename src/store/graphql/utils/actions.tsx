@@ -47,7 +47,13 @@ export const useGetPageData = (
 
   return {
     loading,
-    data: (result && result[index]) || null,
+    data:
+      result && result[index]
+        ? {
+            ...result[index],
+            ...result,
+          }
+        : null,
   };
 };
 
