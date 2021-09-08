@@ -27,13 +27,9 @@ const DEFAULT_STUDIES_SIZE = 30000;
 
 const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
-  const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
-    undefined,
-  );
   const { filters } = useFilters();
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
-
-  let results = useGetPageData(
+  const results = useGetPageData(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
       pageSize: DEFAULT_PAGE_SIZE,
@@ -42,6 +38,9 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
     },
     VARIANT_QUERY,
     VARIANT_INDEX,
+  );
+  const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
+    undefined,
   );
 
   const total = results.data?.hits.total || 0;
