@@ -69,9 +69,21 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 const enhance = compose(connector, withApi);
 
+const translateSQON = ({ sets = [], defaultSetText = 'Uploaded List' }) => (value) => {
+  if (`${value}`.includes('set_id:')) {
+    const setId = value.replace('set_id:', '');
+    const set = sets.find((x) => x.setId === setId);
+    return (set || {}).name || defaultSetText;
+  }
+  return value;
+};
+
 const FileRepo = ({
   gen3User,
-  translateSQONValue = () => 'Uploaded List',
+  translateSQONValue = (userSets) =>
+    translateSQON({
+      sets: userSets,
+    }),
   userProjectIds = gen3User ? Object.keys(gen3User.projects) : [],
   openModalId,
   closeModal,
@@ -79,6 +91,7 @@ const FileRepo = ({
   ...props
 }) => {
   const { user } = useUser();
+  const userSets = (user && user.sets) || [];
   const { isConnected: isConnectedToCavatica } = useCavatica();
   const {
     //needed in order to avoid rendering the main component on mount before fetching fences.
@@ -153,7 +166,11 @@ const FileRepo = ({
                       )}
                       <Layout className="arranger-container">
                         <AggregationSidebar
-                          {...{ ...props, ...url, translateSQONValue }}
+                          {...{
+                            ...props,
+                            ...url,
+                            translateSQONValue: translateSQONValue(userSets),
+                          }}
                           trackFileRepoInteraction={trackFileRepoInteraction}
                         />
                         <Column className="arranger-table-container">
@@ -161,7 +178,7 @@ const FileRepo = ({
                             <CurrentSQON
                               {...props}
                               {...url}
-                              {...{ translateSQONValue }}
+                              {...{ translateSQONValue: translateSQONValue(userSets) }}
                               api={props.api}
                               onClear={() => {
                                 trackFileRepoInteraction({
