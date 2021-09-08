@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
@@ -7,9 +7,11 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 import VariantIcon from 'icons/VariantIcon';
 import history from 'services/history';
+import { dotToUnderscore } from 'store/graphql/utils';
 import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
 import { VARIANT_QUERY } from 'store/graphql/variants/queries';
 
+import GenericFilters from './filters/GenericFilters';
 import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from './constants';
 import VariantTableContainer from './VariantTableContainer';
 
@@ -25,6 +27,9 @@ const DEFAULT_STUDIES_SIZE = 30000;
 
 const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
+  const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
+    undefined,
+  );
   const { filters } = useFilters();
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
 
@@ -63,6 +68,13 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         loading={results.loading}
         total={total}
         dictionary={dictionary}
+        selectedFilterContent={selectedFilterContent}
+        enableFacetFilter={true}
+        onFacetClick={(field) => {
+          setSelectedFilterContent(
+            <GenericFilters field={dotToUnderscore(field)} mappingResults={mappingResults} />,
+          );
+        }}
         IconTotal={<VariantIcon fill="#383f72" />}
       />
       <StackLayout vertical className={styles.tableContainer}>

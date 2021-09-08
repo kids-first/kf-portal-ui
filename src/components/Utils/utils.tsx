@@ -1,5 +1,6 @@
 import React from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
+import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
 import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
 import {
   getFilterType,
@@ -46,6 +47,8 @@ export const generateFilters = (
   results: Results,
   mappingResults: MappingResults,
   className: string = '',
+  showSearchInput: boolean = false,
+  useFilterSelector: boolean = false,
 ) =>
   Object.keys(results.data?.aggregations || []).map((key) => {
     const found = (mappingResults?.extendedMapping || []).find(
@@ -55,15 +58,18 @@ export const generateFilters = (
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
     const filters = getFilters(results.data, key);
     const selectedFilters = getSelectedFilters(filters, filterGroup);
+    const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
 
     return (
       <div className={className} key={key}>
-        <FilterContainer
+        <FilterComponent
+          maxShowing={5}
           filterGroup={filterGroup}
           filters={filters}
           onChange={(fg, f) => {
             updateFilters(history, fg, f);
           }}
+          searchInputVisible={showSearchInput}
           selectedFilters={selectedFilters}
         />
       </div>
