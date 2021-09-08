@@ -172,12 +172,13 @@ const updateStudiesInPersona = async (api, user, newVirtualStudy) => {
       },
       query: print(gql`
         mutation(
-          $virtualStudies: [UserModelUserModelVirtualStudiesInput]
+          $virtualStudies: [UpdateByIdUserModelVirtualStudiesInput]
           $egoId: String
           $personaRecordId: MongoID!
         ) {
           userUpdate(
-            record: { egoId: $egoId, virtualStudies: $virtualStudies, _id: $personaRecordId }
+            _id: $personaRecordId
+            record: { egoId: $egoId, virtualStudies: $virtualStudies }
           ) {
             record {
               firstName
