@@ -1,6 +1,10 @@
 @import 'style/themes/default/_colors';
 @import 'style/themes/default/_layout';
 
+.variantPagecontainer {
+  position: relative;
+}
+
 .tableContainer {
   background-color: $card-background;
   margin-top: $default-padding;

@@ -55,7 +55,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   };
 
   return (
-    <StackLayout vertical>
+    <StackLayout vertical className={styles.variantPagecontainer}>
       <QueryBuilder
         className="variant-repo__query-builder"
         showHeader={true}
