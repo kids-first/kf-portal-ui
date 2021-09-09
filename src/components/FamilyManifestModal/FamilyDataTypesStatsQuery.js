@@ -1,7 +1,7 @@
 import React from 'react';
-import get from 'lodash/get';
-import difference from 'lodash/difference';
 import Query from '@kfarranger/components/dist/Query';
+import difference from 'lodash/difference';
+import get from 'lodash/get';
 import Proptypes from 'prop-types';
 
 const FamilyDataTypesStatsQuery = ({
