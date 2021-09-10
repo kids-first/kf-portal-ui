@@ -55,9 +55,8 @@ const setUserDimensions = (userId, role, groups) => {
   }
 
   if ((groups && groups.length) || (GAState.groups && GAState.groups.length)) {
-    let _groups = JSON.stringify({ groups: groups ? groups[0] : GAState.groups[0] });
-    // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
-    // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
+    let _groups = JSON.stringify({ groups: groups ? groups : GAState.groups });
+    // GA Custom Dimension:index 4: user groups (pulled from jwt)
     ReactGA.set({ dimension4: _groups });
   }
   // dimension6 is userCavaticaProjects
