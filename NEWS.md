@@ -8,6 +8,20 @@
 ### Technical / Other changes
 -->
 
+## 2021-09-10 kf-portal-ui 3.3.0
+
+### Features
+- [SKFP-100](https://d3b.atlassian.net/browse/SKFP-100) Feature (Studies, QueryBuilder) : Update QueryBuilder of the Studies page. Combine Queries now available
+### Technical / Other changes
+- [SKFP-8](https://d3b.atlassian.net/browse/SKFP-8) Refactor (Frontend, React): Removed freactal
+- [SKFP-19](https://d3b.atlassian.net/browse/SKFP-19) Refactor (Studies, Search bar): Adjustments regarding the background color of the selected study in the search bar
+- [SKFP-56](https://d3b.atlassian.net/browse/SKFP-56) Refactor (Maintenance) : Disabled redux-dev-tools from the production environment
+- [SKFP-72](https://d3b.atlassian.net/browse/SKFP-72) Fix (File repository, Cavatica) : Fixed two typos in the Cavatica description which is illustrated when creating a new cavatica project
+- [SKFP-75](https://d3b.atlassian.net/browse/SKFP-75) Refactor (Portal, Login): Adjustment regarding the disconnect message upon logging out of the portal
+- [SKFP-119](https://d3b.atlassian.net/browse/SKFP-120) Fix (File repository, Query bar): Fixed an issue where the query bar would display the wrong text after selecting for a filter
+- [SKFP-120](https://d3b.atlassian.net/browse/SKFP-119) Fix (File repository, Filter options): Fixed an issue where an error would appear when we clicked on File manifest for a specific filter from the Browse all option
+- [SKFP-122](https://d3b.atlassian.net/browse/SKFP-122) Fix (File repository, Columns): Fixed an issue where clicking on the dbGaP code would lead to an error on the dbGaP website
+
 ## 2021-07-29 kf-portal-ui 3.2.1
 
 ### Technical / Other changes
