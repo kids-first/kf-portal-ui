@@ -3,11 +3,8 @@ import Grid from '@ferlab/ui/core/layout/Grid';
 import Card from '@ferlab/ui/core/view/GridCard';
 import { compose } from 'recompose';
 
-import {
-  MemberResearchInterestsChart,
-  MostFrequentDiagnosesChart,
-  MostParticipantsStudiesChart,
-} from 'components/Charts';
+import { isKfInvestigator } from 'common/profile';
+import WorkBench from 'pages/variantsSearchPage/WorkBench';
 import { withApi } from 'services/api';
 import { Spinner } from 'uikit/Spinner';
 
@@ -27,7 +24,7 @@ import {
 } from './UserDashboard.module.css';
 
 export default compose(withApi)(({ api }) => {
-  const { user } = useUser();
+  const { user, groups } = useUser();
   return user ? (
     <div className={userDashboardContainer}>
       <div className={userDashboardContent}>
@@ -36,12 +33,11 @@ export default compose(withApi)(({ api }) => {
           <SavedQueries api={api} />
           <AuthorizedStudies api={api} />
           <CavaticaProjects />
-          <MostParticipantsStudiesChart />
-          <Card title={<span className={'title-dashboard-card'}>Member Research Interests</span>}>
-            <MemberResearchInterestsChart />
-          </Card>
-          <Card title={<span className={'title-dashboard-card'}>Most Frequent Diagnoses</span>}>
-            <MostFrequentDiagnosesChart />
+          <Card
+            classNameCardItem={'withScroll'}
+            title={<span className={'title-dashboard-card'}>Apache Zeppelin</span>}
+          >
+            <WorkBench isAllowed={isKfInvestigator(groups)} />
           </Card>
           <Card
             classNameCardItem={'withScroll'}
