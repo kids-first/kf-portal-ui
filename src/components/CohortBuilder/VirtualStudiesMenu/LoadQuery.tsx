@@ -6,8 +6,6 @@ import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { Api } from 'store/apiTypes';
 import { VirtualStudy } from 'store/virtualStudiesTypes';
 
-import '../../LoadShareSaveDeleteQuery/LoadShareSaveDeleteQuery.css';
-
 type OwnProps = {
   disabled: boolean;
   studies: Array<VirtualStudy>;
