@@ -17,9 +17,14 @@ type OwnProps = {
   mappingResults: MappingResults;
 };
 
-//TODO missing genomic location and External Ref
 //order in list reflects order in UI
-const INPUT_FILTER_LIST = ['variant_class', 'consequences__consequences'];
+const INPUT_FILTER_LIST = [
+  'variant_class',
+  'consequences__consequences',
+  'external_reference',
+  'chromosome',
+  'start',
+];
 const SUGGESTION_TYPE = 'variants';
 const PLACE_HOLDER_TEXT = 'chr2:g.28025382G>T';
 const TITLE = 'Search by Variant';
@@ -37,14 +42,14 @@ const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   return (
     <Layout>
+      <SuggesterWrapper tooltipMessage={'Search by Variant'} title={TITLE}>
+        <Suggester
+          suggestionType={SUGGESTION_TYPE}
+          title={TITLE}
+          placeholderText={PLACE_HOLDER_TEXT}
+        />
+      </SuggesterWrapper>
       <Spin size="large" spinning={results.loading}>
-        <SuggesterWrapper tooltipMessage={'Search by Variant'} title={TITLE}>
-          <Suggester
-            suggestionType={SUGGESTION_TYPE}
-            title={TITLE}
-            placeholderText={PLACE_HOLDER_TEXT}
-          />
-        </SuggesterWrapper>
         <Layout className={styles.variantFilterWrapper}>
           {generateFilters(results, mappingResults, styles.variantFilterContainer)}
         </Layout>

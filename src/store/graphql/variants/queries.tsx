@@ -252,13 +252,13 @@ export const TAB_SUMMARY_QUERY = gql`
                       fathmm_pred
                       fathmm_converted_rankscore
                       cadd_rankscore
-                      dann_score
+                      dann_rankscore
                       lrt_pred
                       lrt_converted_rankscore
                       revel_rankscore
                       sift_converted_rankscore
                       sift_pred
-                      polyphen2_hvar_score
+                      polyphen2_hvar_rankscore
                       polyphen2_hvar_pred
                     }
                     impact_score

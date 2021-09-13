@@ -19,6 +19,7 @@ type OwnProps = {
 
 //order in list reflects order in UI
 const INPUT_FILTER_LIST = [
+  'consequences.biotype',
   'external_reference',
   'genes__hpo__hpo_term_label',
   'genes__orphanet__panel',
@@ -42,20 +43,20 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   );
 
   return (
-    <Layout>
-      <Spin size="large" spinning={results.loading}>
-        <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
-          <Suggester
+    <>
+      <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
+        <Suggester
           title={TITLE}
           suggestionType={SUGGESTION_TYPE}
           placeholderText={PLACE_HOLDER_TEXT}
         />
-        </SuggesterWrapper>
+      </SuggesterWrapper>
+      <Spin size="large" spinning={results.loading}>
         <Layout className={styles.variantFilterWrapper}>
           {generateFilters(results, mappingResults, styles.variantFilterContainer)}
         </Layout>
       </Spin>
-    </Layout>
+    </>
   );
 };
 

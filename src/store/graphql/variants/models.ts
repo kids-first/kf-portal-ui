@@ -13,14 +13,12 @@ type Predictions = {
   fathmm_pred: any | null;
   fathmm_converted_rankscore: any | null;
   cadd_rankscore: any | null;
-  dann_score: any | null;
   dann_rankscore: any | null;
   lrt_pred: any | null;
   lrt_converted_rankscore: any | null;
   revel_rankscore: any | null;
   sift_converted_rankscore: any | null;
   sift_pred: any | null;
-  polyphen2_hvar_score: any | null;
   polyphen2_hvar_pred: any | null;
   polyphen2_hvar_rankscore: any | null;
 };
