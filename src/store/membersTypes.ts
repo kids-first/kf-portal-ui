@@ -1,0 +1,27 @@
+export enum MembersActions {
+  REQUEST_MATCHING_LIST_OF_MEMBERS = 'REQUEST_MATCHING_LIST_OF_MEMBERS',
+  RECEIVE_MATCHING_LIST_OF_MEMBERS = 'RECEIVE_MATCHING_LIST_OF_MEMBERS',
+  REQUEST_MATCHING_LIST_OF_MEMBERS_ERROR = 'REQUEST_MATCHING_LIST_OF_MEMBERS_ERROR',
+  REQUEST_ROLES_FILTER_UPDATE = 'REQUEST_ROLES_FILTER_UPDATE',
+  REQUEST_INTERESTS_FILTER_UPDATE = 'REQUEST_INTERESTS_FILTER_UPDATE',
+  REQUEST_QUERYSTRING_UPDATE = 'REQUEST_QUERYSTRING_UPDATE',
+  REQUEST_CURRENTPAGE_UPDATE = 'REQUEST_CURRENTPAGE_UPDATE',
+  REQUEST_MEMBER_PER_PAGE_UPDATE = 'REQUEST_MEMBER_PER_PAGE_UPDATE',
+  REQUEST_STORE_RESET = 'REQUEST_STORE_RESET',
+  REQUEST_ADMIN_FILTER_UPDATE = 'REQUEST_ADMIN_FILTER_UPDATE',
+}
+
+export type MembersState = {
+  members: string[];
+  count: { total: number; public: number; roles: number; interests: number };
+  pending: boolean;
+  errors: object;
+  rolesFilter: object;
+  interestsFilter: object;
+  queryString: string;
+  currentPage: number;
+  membersPerPage: number;
+  adminOptionsFilter: {
+    allMembers: boolean;
+  };
+};

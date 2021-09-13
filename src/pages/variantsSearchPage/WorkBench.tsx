@@ -1,38 +1,39 @@
 import React, { useEffect } from 'react';
-import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import azicon from 'assets/appache-zeppelin.png';
-import { Card, Typography, Switch, Alert, Button, Space } from 'antd';
-import { Link } from 'uikit/Core';
-import style from './WorkBench.module.scss';
-import { RootState } from 'store/rootState';
-
 import { connect, ConnectedProps } from 'react-redux';
-import {
-  ClusterStatus,
-  ClusterUnverifiedStatus,
-  DispatchWorkBench,
-  isClusterStatusIdling,
-  isClusterStatusInProgress,
-  isClusterRunning,
-  NO_OPEN_CONNECTION_DATA_INTEGRATION,
-  UnAuthorizedClusterError,
-} from 'store/WorkBenchTypes';
-import { selectLoggedInUser } from 'store/selectors/users';
-import {
-  selectIsLoading,
-  selectError,
-  selectStatus,
-  selectClusterUrl,
-} from 'store/selectors/workBench';
+import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { Alert, Button, Card, Space, Switch, Typography } from 'antd';
+
+import azicon from 'assets/appache-zeppelin.png';
+import IndeterminateProgress from 'components/UI/IndeterminateProgress';
+import useInterval from 'hooks/useInterval';
 import {
   getStatus,
   reInitializeState,
   startCluster,
   stopCluster,
 } from 'store/actionCreators/workBench';
-import useInterval from 'hooks/useInterval';
-import IndeterminateProgress from 'components/UI/IndeterminateProgress';
-import { LoggedInUser } from 'store/userTypes';
+import { RootState } from 'store/rootState';
+import { selectUser } from 'store/selectors/users';
+import {
+  selectClusterUrl,
+  selectError,
+  selectIsLoading,
+  selectStatus,
+} from 'store/selectors/workBench';
+import { User } from 'store/userTypes';
+import {
+  ClusterStatus,
+  ClusterUnverifiedStatus,
+  DispatchWorkBench,
+  isClusterRunning,
+  isClusterStatusIdling,
+  isClusterStatusInProgress,
+  NO_OPEN_CONNECTION_DATA_INTEGRATION,
+  UnAuthorizedClusterError,
+} from 'store/WorkBenchTypes';
+import { Link } from 'uikit/Core';
+
+import style from './WorkBench.module.scss';
 
 const POLLING_DELAY_IN_MS = 30000; //30[s]
 
@@ -45,7 +46,7 @@ const mapState = (state: RootState) => ({
   error: selectError(state),
   status: selectStatus(state),
   url: selectClusterUrl(state),
-  loggedInUser: selectLoggedInUser(state),
+  user: selectUser(state),
 });
 
 const mapDispatch = (dispatch: DispatchWorkBench) => ({
@@ -80,7 +81,7 @@ const WorkBench = (props: Props) => {
     onReInitializeState,
     isAllowed,
     url,
-    loggedInUser,
+    user,
   } = props;
 
   useInterval(
@@ -135,7 +136,7 @@ const WorkBench = (props: Props) => {
               </Space>
             )}
             {showProgress(status) && <IndeterminateProgress />}
-            {error && displayError(error, loggedInUser, onReInitializeState)}
+            {error && displayError(error, user!, onReInitializeState)}
           </div>
         </StackLayout>
       </StackLayout>
@@ -145,7 +146,7 @@ const WorkBench = (props: Props) => {
 
 const displayError = (
   error: UnAuthorizedClusterError | Error,
-  loggedInUser: LoggedInUser,
+  user: User,
   onReInitializeState: () => void,
 ) => {
   if (showNoConnectionError(error)) {
@@ -162,7 +163,7 @@ const displayError = (
             <Link
               className="color-primary"
               to={{
-                pathname: `/user/${loggedInUser._id}`,
+                pathname: `/user/${user?._id}`,
                 hash: '#settings',
               }}
             >

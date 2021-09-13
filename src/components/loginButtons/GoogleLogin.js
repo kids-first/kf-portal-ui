@@ -1,18 +1,21 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
+import { Spin } from 'antd';
 
 import googleSDK from 'services/googleSDK';
-
 import { Box } from 'uikit/Core';
-import DisabledGoogleLogin from './DisabledGoogleLogin';
 
+import DisabledGoogleLogin from './DisabledGoogleLogin';
 const COOKIES_NOT_ENABLED = 'Cookies are not enabled in current environment.';
 
 class GoogleButton extends Component {
   state = {
+    isLoading: false,
     disabled: false,
   };
 
   async componentDidMount() {
+    this.setState({ isLoading: true });
     const { onLogin, onError } = this.props;
     try {
       await googleSDK();
@@ -22,11 +25,11 @@ class GoogleButton extends Component {
         height: 40,
         longtitle: true,
         theme: 'light',
-        onsuccess: googleUser => {
+        onsuccess: (googleUser) => {
           const { id_token } = googleUser.getAuthResponse();
           onLogin(id_token);
         },
-        onfailure: error => {
+        onfailure: (error) => {
           global.log('login fail', error);
         },
       });
@@ -40,14 +43,20 @@ class GoogleButton extends Component {
         : onError('unknownError');
 
       global.log(e);
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
   render() {
-    return this.state.disabled ? (
-      <DisabledGoogleLogin />
-    ) : (
-      <Box key="google" id="googleSignin" className="login-button" />
+    return (
+      <Spin spinning={this.state.isLoading}>
+        {this.state.disabled ? (
+          <DisabledGoogleLogin />
+        ) : (
+          <Box key="google" id="googleSignin" className="login-button" />
+        )}
+      </Spin>
     );
   }
 }

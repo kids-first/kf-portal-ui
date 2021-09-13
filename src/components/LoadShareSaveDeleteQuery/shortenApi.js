@@ -1,25 +1,25 @@
 import urlJoin from 'url-join';
-import sqonToName from 'common/sqonToName';
-import { shortUrlApi } from 'common/injectGlobals';
 
-export const shortenApiDelete = ({ loggedInUser, api, id }) => {
-  return api({
+import { shortUrlApi } from 'common/injectGlobals';
+import sqonToName from 'common/sqonToName';
+
+export const shortenApiDelete = ({ user, api, id }) =>
+  api({
     url: urlJoin(shortUrlApi, id),
     method: 'DELETE',
     body: JSON.stringify({
-      userid: (loggedInUser || {}).egoId || 'anonymous',
+      userid: (user || {}).egoId || 'anonymous',
     }),
   });
-};
 
-export default ({ stats, queryName, sqon, loggedInUser, api, sharedPublicly = false }) => {
+export default ({ stats, queryName, sqon, user, api, sharedPublicly = false }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
 
   return api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
-      userid: (loggedInUser || {}).egoId || 'anonymous',
+      userid: (user || {}).egoId || 'anonymous',
       alias,
       sharedPublicly,
       content: {

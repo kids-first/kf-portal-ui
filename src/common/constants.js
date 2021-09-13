@@ -77,12 +77,7 @@ export const ROLES = [
   },
 ];
 
-export const DCF = 'dcf';
-export const GEN3 = 'gen3';
-export const FENCES = [GEN3, DCF];
-
 export const CAVATICA = 'cavatica';
-export const SERVICES = [...FENCES, CAVATICA];
 
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
@@ -197,4 +192,10 @@ export const STUDIES_WITH_PEDCBIO = ['SD_BHJXBDQK', 'SD_M3DBXD12'];
 export const DB_GA_P = 'dbGaP';
 
 export const generateUrlForDbGap = (dbGaPStudyId) =>
-  `https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${dbGaPStudyId}.v1.p1`;
+  `https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${dbGaPStudyId}`;
+
+export const INTEGRATION_PREFIX = 'integration_';
+
+export const LOGIN_PROVIDER = 'LOGIN_PROVIDER';
+
+export const SHOW_DELETE_ACCOUNT = 'SHOW_DELETE_ACCOUNT';

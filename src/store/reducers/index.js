@@ -1,14 +1,19 @@
 import { combineReducers } from 'redux';
 
+import cavatica from './cavatica';
 import currentVirtualStudy from './currentVirtualStudy';
-import enableFeatures from './enableFeatures';
+import fenceConnections from './fenceConnections';
+import fenceStudies from './fenceStudies';
 import fileSearchFilters from './fileSearchFilters';
 import genomicSuggester from './genomicSuggester';
+import members from './members';
 import modal from './modal';
+import participantEntity from './participantEntity';
+import profile from './profile';
+import queryResolver from './queryResolver';
 import report from './report';
 import savedQueries from './SavedQueries';
 import saveSets from './saveSets';
-import ui from './ui';
 import user from './user';
 import virtualStudies from './virtualStudies';
 import workBench from './workbench';
@@ -17,8 +22,6 @@ export default combineReducers({
   virtualStudies,
   currentVirtualStudy,
   user,
-  ui,
-  enableFeatures,
   report,
   fileSearchFilters,
   saveSets,
@@ -26,4 +29,11 @@ export default combineReducers({
   genomicSuggester,
   workBench,
   savedQueries,
+  fenceConnections,
+  fenceStudies,
+  queryResolver,
+  profile,
+  cavatica,
+  members,
+  participantEntity,
 });

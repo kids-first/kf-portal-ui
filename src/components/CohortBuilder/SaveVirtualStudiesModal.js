@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { Button, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import PromptMessage from 'uikit/PromptMessage';
-import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
+import { compose } from 'redux';
+
 import { createVirtualStudy } from 'services/virtualStudies';
-import { Modal, Button, Input } from 'antd';
+import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
+import { selectUser } from 'store/selectors/users';
+import PromptMessage from 'uikit/PromptMessage';
 
 const { TextArea } = Input;
 
@@ -24,7 +26,7 @@ class SaveVirtualStudiesModal extends React.Component {
     title: PropTypes.string.isRequired,
     defaultVsName: PropTypes.string,
     defaultVsDescription: PropTypes.string,
-    loggedInUser: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     saveVirtualStudy: PropTypes.func.isRequired,
     onCloseCB: PropTypes.func.isRequired,
     sqons: PropTypes.array,
@@ -42,14 +44,7 @@ class SaveVirtualStudiesModal extends React.Component {
 
   saveStudy = () => {
     const { name, description } = this.state;
-    const {
-      loggedInUser,
-      sqons,
-      activeSqonIndex,
-      virtualStudyId,
-      saveVirtualStudy,
-      saveAs,
-    } = this.props;
+    const { user, sqons, activeSqonIndex, virtualStudyId, saveVirtualStudy, saveAs } = this.props;
 
     const study = createVirtualStudy(
       saveAs ? null : virtualStudyId,
@@ -59,7 +54,7 @@ class SaveVirtualStudiesModal extends React.Component {
       activeSqonIndex,
     );
 
-    return saveVirtualStudy(loggedInUser, study);
+    return saveVirtualStudy(user, study);
   };
 
   submitHandler = async () => {
@@ -127,6 +122,7 @@ const mapStateToProps = (state) => {
     virtualStudyId: currentVirtualStudy.virtualStudyId,
     defaultVsName: currentVirtualStudy.name,
     defaultVsDescription: currentVirtualStudy.description,
+    user: selectUser(state),
   };
 };
 

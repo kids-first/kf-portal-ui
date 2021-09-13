@@ -1,66 +1,70 @@
-import React, { Fragment } from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-import isEmpty from 'lodash/isEmpty';
-import DownloadController from 'icons/DownloadController';
-import StudiesConnected from './StudiesConnected';
-import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
-import AccessGate from '../../AccessGate';
-import Info from '../Info';
-import { Badge, Button } from 'antd';
+import React from 'react';
 import Card from '@ferlab/ui/core/view/GridCard';
+import { Badge, Button } from 'antd';
+import isEmpty from 'lodash/isEmpty';
+
+import AccessGate from 'components/AccessGate';
+import useFenceConnections from 'hooks/useFenceConnections';
+import useFenceStudies from 'hooks/useFenceStudies';
+import useUser from 'hooks/useUser';
+import DownloadController from 'icons/DownloadController';
+import { AllFencesNames } from 'store/fenceTypes';
+
+import Info from '../Info';
+
+import StudiesConnected from './StudiesConnected';
+
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
-const AuthorizedStudies = compose(
-  injectState,
-  fenceConnectionInitializeHoc,
-)(
-  ({
-    state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
-  }) => {
-    const inactive = !fenceConnectionsInitialized;
-    return (
-      <Card
-        title={
-          <div className={antCardHeader}>
-            <span className={'title-dashboard-card'}>Authorized Studies&nbsp;</span>
+const AuthorizedStudies = ({ api }) => {
+  const { user } = useUser();
+  const { loadingFences, fenceConnections } = useFenceConnections(api, AllFencesNames);
+  const { loadingStudiesForFences, fenceAuthStudies } = useFenceStudies(api);
 
-            <Badge count={fenceAuthStudies.length || 0} showZero={!isEmpty(fenceConnections)} />
-          </div>
-        }
-        loading={inactive}
-      >
-        {isEmpty(fenceConnections) ? (
-          <Fragment>
-            <AccessGate
-              mt={'40px'}
-              Icon={DownloadController}
-              title="Access Controlled Data"
-              detail={
-                <span>
-                  To access controlled study files,{' '}
-                  <strong>connect to our data repository partners.</strong>
-                </span>
-              }
-            >
-              <Button type={'primary'} shape={'round'} href={`/user/${loggedInUser._id}#settings`}>
-                SETTINGS
-              </Button>
-            </AccessGate>
-            <Info
-              link={{
-                url:
-                  'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
-                text: 'applying for data access.',
-              }}
-            />
-          </Fragment>
-        ) : (
-          <StudiesConnected />
-        )}
-      </Card>
-    );
-  },
-);
+  const isLoadingDataFromFencesOrStudies =
+    loadingFences.length > 0 || loadingStudiesForFences.length > 0;
+  const hasNoFenceConnections = isEmpty(fenceConnections);
+
+  return (
+    <Card
+      title={
+        <div className={antCardHeader}>
+          <span className={'title-dashboard-card'}>Authorized Studies&nbsp;</span>
+
+          <Badge count={fenceAuthStudies.length || 0} showZero={!hasNoFenceConnections} />
+        </div>
+      }
+      loading={isLoadingDataFromFencesOrStudies}
+    >
+      {hasNoFenceConnections ? (
+        <>
+          <AccessGate
+            mt={'40px'}
+            Icon={DownloadController}
+            title="Access Controlled Data"
+            detail={
+              <span>
+                To access controlled study files,{' '}
+                <strong>connect to our data repository partners.</strong>
+              </span>
+            }
+          >
+            <Button type={'primary'} shape={'round'} href={`/user/${user._id}#settings`}>
+              SETTINGS
+            </Button>
+          </AccessGate>
+          <Info
+            link={{
+              url: 'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
+              text: 'applying for data access.',
+            }}
+          />
+        </>
+      ) : (
+        <StudiesConnected user={user} fenceAuthStudies={fenceAuthStudies} />
+      )}
+    </Card>
+  );
+};
 
 export default AuthorizedStudies;

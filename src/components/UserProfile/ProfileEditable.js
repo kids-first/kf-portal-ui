@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { Card, Col, Divider, Form, Input, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import { Card, Col, Divider, Row, Typography, Input, Form } from 'antd';
-import ResearchInterestsEditable from './ResearchInterestsEditable';
+
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
-import './style.css';
 import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
+
 import { ERROR_TOO_MANY_CHARACTERS } from './constants';
+import ResearchInterestsEditable from './ResearchInterestsEditable';
+
+import './style.css';
 
 const { Text } = Typography;
 
@@ -15,7 +18,7 @@ const { entries } = Object;
 
 const MAX_LENGTH_BIO_STORY = 2000;
 
-const retrieveInterestsFromForm = formFields =>
+const retrieveInterestsFromForm = (formFields) =>
   entries(formFields).reduce((acc, [key, value]) => {
     if (!key.startsWith('tag')) {
       return acc;
@@ -23,13 +26,13 @@ const retrieveInterestsFromForm = formFields =>
     return [value, ...acc];
   }, []);
 
-const ProfileForm = props => {
+const ProfileForm = (props) => {
   const [form] = Form.useForm();
   const { onClickSaveCb, updateProfileCb, data, onClickCancelCb, isProfileUpdating } = props;
 
   const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
 
-  const charactersLengthValidator = maxLength => (rule, value) => {
+  const charactersLengthValidator = (maxLength) => (rule, value) => {
     if (value && value.length > maxLength) {
       setIsSaveButtonDisabled(true);
       // eslint-disable-next-line no-undef
@@ -42,7 +45,7 @@ const ProfileForm = props => {
 
   const validateBioStory = charactersLengthValidator(MAX_LENGTH_BIO_STORY);
 
-  const handleSubmit = formFields => {
+  const handleSubmit = (formFields) => {
     const valuesToUpdate = {
       bio: formFields.bio,
       story: formFields.story,
@@ -132,7 +135,6 @@ ProfileForm.propTypes = {
   onClickSaveCb: PropTypes.func.isRequired,
   updateProfileCb: PropTypes.func.isRequired,
   isProfileUpdating: PropTypes.bool.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default ProfileForm;

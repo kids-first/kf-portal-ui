@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import { bindActionCreators } from 'redux';
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, Layout } from 'antd';
-import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
-import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
+import { bindActionCreators } from 'redux';
+
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
+import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
+import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import {
+  fetchListOfMembers,
   requestADMINOptionsUpdate,
   requestCurrentPageUpdate,
   requestInterestsFilterUpdate,
@@ -16,9 +17,23 @@ import {
   requestQueryStringUpdate,
   requestResetStore,
   requestRolesFilterUpdate,
-} from 'components/MemberSearchPage/actions';
+} from 'store/actionCreators/members';
+import {
+  selectAdminOptionsFilter,
+  selectCounts,
+  selectCurrentPage,
+  selectInterestsFilter,
+  selectIsPending,
+  selectMemberErrors,
+  selectMembers,
+  selectMembersPerPage,
+  selectQueryString,
+  selectRolesFilter,
+} from 'store/selectors/members';
+import { selectIsUserAdmin, selectUserToken } from 'store/selectors/users';
+
+import MemberTable from './MemberTable';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
-import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
 
 class MemberSearchContainer extends Component {
   static propTypes = {
@@ -39,12 +54,11 @@ class MemberSearchContainer extends Component {
     updateADMINOptionsFilter: PropTypes.func.isRequired,
     queryStringUpdate: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool,
-    loggedInUser: PropTypes.object,
-    loggedInUserToken: PropTypes.string.isRequired,
+    userToken: PropTypes.string.isRequired,
     members: PropTypes.array.isRequired,
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     const {
       membersPerPage,
       fetchListOfMembers,
@@ -88,7 +102,7 @@ class MemberSearchContainer extends Component {
     });
   }
 
-  handlePageChange = async page => {
+  handlePageChange = async (page) => {
     const {
       count,
       membersPerPage,
@@ -140,7 +154,7 @@ class MemberSearchContainer extends Component {
     });
   };
 
-  clearTag = (value, type) => e => {
+  clearTag = (value, type) => (e) => {
     e.preventDefault();
 
     const filter = { [value]: false };
@@ -189,7 +203,7 @@ class MemberSearchContainer extends Component {
       adminMemberOptions: [...getSelectedFilter(this.props.adminOptionsFilter)],
     };
 
-    const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
+    const { isAdmin, userToken } = this.props;
     const showAll =
       filters.adminMemberOptions && filters.adminMemberOptions.includes('allMembers') && isAdmin;
 
@@ -197,11 +211,7 @@ class MemberSearchContainer extends Component {
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer isAdmin={isAdmin} />
-          <MemberSearchBorder
-            loggedInUser={loggedInUser}
-            isAdmin={isAdmin}
-            loggedInUserToken={loggedInUserToken}
-          >
+          <MemberSearchBorder isAdmin={isAdmin} userToken={userToken}>
             <Input
               onChange={this.handleChange}
               placeholder="Member Name, Address, Institution/Organization,
@@ -234,31 +244,33 @@ class MemberSearchContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  error: state.ui.memberSearchPageReducer.errors,
-  members: state.ui.memberSearchPageReducer.members,
-  count: state.ui.memberSearchPageReducer.count,
-  pending: state.ui.memberSearchPageReducer.pending,
-  loggedInUser: state.user.loggedInUser,
-  queryString: state.ui.memberSearchPageReducer.queryString,
-  currentPage: state.ui.memberSearchPageReducer.currentPage,
-  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
-  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
-  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
-  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
+const mapStateToProps = (state) => ({
+  error: selectMemberErrors(state),
+  members: selectMembers(state),
+  count: selectCounts(state),
+  pending: selectIsPending(state),
+  queryString: selectQueryString(state),
+  currentPage: selectCurrentPage(state),
+  membersPerPage: selectMembersPerPage(state),
+  rolesFilter: selectRolesFilter(state),
+  interestsFilter: selectInterestsFilter(state),
+  adminOptionsFilter: selectAdminOptionsFilter(state),
+  userToken: selectUserToken(state),
+  isAdmin: selectIsUserAdmin(state),
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
-      fetchListOfMembers: fetchListOfMembersAction,
-      queryStringUpdate: queryString => dispatch(requestQueryStringUpdate(queryString)),
-      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
-      membersPerPageUpdate: membersPerPage => dispatch(requestMemberPerPageUpdate(membersPerPage)),
-      updateInterestsFilter: interestsFilter =>
+      fetchListOfMembers: fetchListOfMembers,
+      queryStringUpdate: (queryString) => dispatch(requestQueryStringUpdate(queryString)),
+      currentPageUpdate: (currentPage) => dispatch(requestCurrentPageUpdate(currentPage)),
+      membersPerPageUpdate: (membersPerPage) =>
+        dispatch(requestMemberPerPageUpdate(membersPerPage)),
+      updateInterestsFilter: (interestsFilter) =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
-      updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
-      updateADMINOptionsFilter: adminOptionsFilter =>
+      updateRolesFilter: (roleFilter) => dispatch(requestRolesFilterUpdate(roleFilter)),
+      updateADMINOptionsFilter: (adminOptionsFilter) =>
         dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
       resetStore: () => dispatch(requestResetStore()),
     },

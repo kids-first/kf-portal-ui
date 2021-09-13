@@ -25,7 +25,7 @@ export default class OrcidRedirect extends React.Component {
     location: PropTypes.shape({
       search: PropTypes.string,
     }),
-    loggedInUserToken: PropTypes.string,
+    userToken: PropTypes.string,
     loginProvider: PropTypes.string,
   };
 
@@ -113,8 +113,8 @@ export default class OrcidRedirect extends React.Component {
   }
 
   hasOrcidToken() {
-    const { loginProvider, loggedInUserToken } = this.props;
-    return loginProvider === ORCID && loggedInUserToken;
+    const { loginProvider, userToken } = this.props;
+    return loginProvider === ORCID && userToken;
   }
 
   get code() {
@@ -126,7 +126,7 @@ export default class OrcidRedirect extends React.Component {
   handleOrcidSuccess() {
     // already logged in with Orcid
     if (this.hasOrcidToken()) {
-      this.props.onLogin(this.props.loggedInUserToken);
+      this.props.onLogin(this.props.userToken);
       return;
     }
 

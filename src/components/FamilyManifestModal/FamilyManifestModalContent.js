@@ -101,6 +101,90 @@ export default compose(
             );
           }
 
+          const FileTypeStats = ({ loading: loadingFileTypeStats, fileTypeStats }) => {
+            if (loadingFileTypeStats) {
+              return spinner;
+            }
+
+            const uniqueParticipantsAndFamilyMemberIds = uniq([
+              ...participantIds,
+              ...(fileTypeStats
+                ? filterToCheckedTypes(fileTypeStats).reduce(
+                    (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                    [],
+                  )
+                : []),
+            ]);
+
+            return (
+              <>
+                <ParticipantsSection
+                  isFamilyMemberFilesAvailable={isFamilyMemberFilesAvailable}
+                  participantsMemberCount={participantsMemberCount}
+                  participantFilesCount={participantFilesCount}
+                  size={formatBytesToHumanReadable(participantFilesSize || 0)}
+                  checkIconClassName={`checkMark`}
+                />
+                <br />
+                <Paragraph>
+                  {
+                    // eslint-disable-next-line max-len
+                    ' - the participants in your query have related family member data. To include the family data in the manifest, select your desired data types below'
+                  }
+                </Paragraph>
+                <Table
+                  title={() => 'Family Summary'}
+                  footer={() => ''}
+                  scroll={{ y: 200 }}
+                  columns={familyMemberStatsHeader}
+                  rowSelection={{
+                    type: 'checkbox',
+                    onChange: (selectedRowKeys, selectedRows) => {
+                      setCheckedFileTypes(selectedRows.map((row) => row.datatypes));
+                    },
+                  }}
+                  dataSource={fileTypeStats.map(({ fileType, members, files, fileSize }) => ({
+                    key: toKebabCase(fileType),
+                    datatypes: fileType,
+                    familymembers: formatNumber(members),
+                    files: formatNumber(files),
+                    size: formatBytesToHumanReadable(fileSize || 0),
+                  }))}
+                  pagination={false}
+                />
+                <br />
+                <Table
+                  title={() => 'Total'}
+                  footer={() => ''}
+                  columns={participantStatsHeaderTotal}
+                  dataSource={[
+                    {
+                      key: '1',
+                      participants: uniqueParticipantsAndFamilyMemberIds.length,
+                      files:
+                        participantFilesCount + sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
+                      size: formatBytesToHumanReadable(
+                        participantFilesSize +
+                          sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
+                      ),
+                    },
+                  ]}
+                  pagination={false}
+                />
+                <br />
+                <Footer
+                  participantIds={uniqueParticipantsAndFamilyMemberIds}
+                  className={'wrapper-modal-footer'}
+                  onCloseCb={onCloseCb}
+                  columns={columns}
+                  sqon={sqon}
+                  checkedFileTypes={checkedFileTypes}
+                  loading={isSubmitting}
+                />
+              </>
+            );
+          };
+
           return (
             <FamilyDataTypesStatsQuery
               {...{
@@ -108,93 +192,9 @@ export default compose(
                 dataTypes,
                 participantIds,
                 projectId,
+                render: FileTypeStats,
               }}
-            >
-              {({ loading: loadingFileTypeStats, fileTypeStats }) => {
-                if (loadingFileTypeStats) {
-                  return spinner;
-                }
-
-                const uniqueParticipantsAndFamilyMemberIds = uniq([
-                  ...participantIds,
-                  ...(fileTypeStats
-                    ? filterToCheckedTypes(fileTypeStats).reduce(
-                        (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                        [],
-                      )
-                    : []),
-                ]);
-
-                return (
-                  <>
-                    <ParticipantsSection
-                      isFamilyMemberFilesAvailable={isFamilyMemberFilesAvailable}
-                      participantsMemberCount={participantsMemberCount}
-                      participantFilesCount={participantFilesCount}
-                      size={formatBytesToHumanReadable(participantFilesSize || 0)}
-                      checkIconClassName={`checkMark`}
-                    />
-                    <br />
-                    <Paragraph>
-                      {
-                        // eslint-disable-next-line max-len
-                        ' - the participants in your query have related family member data. To include the family data in the manifest, select your desired data types below'
-                      }
-                    </Paragraph>
-                    <Table
-                      title={() => 'Family Summary'}
-                      footer={() => ''}
-                      scroll={{ y: 200 }}
-                      columns={familyMemberStatsHeader}
-                      rowSelection={{
-                        type: 'checkbox',
-                        onChange: (selectedRowKeys, selectedRows) => {
-                          setCheckedFileTypes(selectedRows.map((row) => row.datatypes));
-                        },
-                      }}
-                      dataSource={fileTypeStats.map(({ fileType, members, files, fileSize }) => ({
-                        key: toKebabCase(fileType),
-                        datatypes: fileType,
-                        familymembers: formatNumber(members),
-                        files: formatNumber(files),
-                        size: formatBytesToHumanReadable(fileSize || 0),
-                      }))}
-                      pagination={false}
-                    />
-                    <br />
-                    <Table
-                      title={() => 'Total'}
-                      footer={() => ''}
-                      columns={participantStatsHeaderTotal}
-                      dataSource={[
-                        {
-                          key: '1',
-                          participants: uniqueParticipantsAndFamilyMemberIds.length,
-                          files:
-                            participantFilesCount +
-                            sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
-                          size: formatBytesToHumanReadable(
-                            participantFilesSize +
-                              sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
-                          ),
-                        },
-                      ]}
-                      pagination={false}
-                    />
-                    <br />
-                    <Footer
-                      participantIds={uniqueParticipantsAndFamilyMemberIds}
-                      className={'wrapper-modal-footer'}
-                      onCloseCb={onCloseCb}
-                      columns={columns}
-                      sqon={sqon}
-                      checkedFileTypes={checkedFileTypes}
-                      loading={isSubmitting}
-                    />
-                  </>
-                );
-              }}
-            </FamilyDataTypesStatsQuery>
+            />
           );
         }}
       />

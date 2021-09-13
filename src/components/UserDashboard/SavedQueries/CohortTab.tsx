@@ -3,21 +3,16 @@ import React from 'react';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { Api } from 'store/apiTypes';
 import { QueryType, SavedQueriesIdToStatus, SplitSavedQueries } from 'store/SavedQueriesTypes';
-import { LoggedInUser } from 'store/userTypes';
+import { User } from 'store/userTypes';
 import { VirtualStudyPlusId } from 'store/virtualStudiesTypes';
 import { Link } from 'uikit/Core';
 
 import SavedQueriesTab from './SavedQueriesTab';
 
 type Props = {
-  loggedInUser: LoggedInUser;
+  user: User;
   api: Api;
-  deleteParticularSavedQuery: (
-    api: Api,
-    queryId: string,
-    loggedInUser: LoggedInUser,
-    queryType: QueryType,
-  ) => void;
+  deleteParticularSavedQuery: (api: Api, queryId: string, user: User, queryType: QueryType) => void;
   queries: SplitSavedQueries;
   queryIdToStatus: SavedQueriesIdToStatus;
 };
@@ -28,7 +23,7 @@ const truncateWithEllipsis = (description: string) =>
   `${description.slice(0, MAX_N_OF_CHARS_FOR_VS_DESCRIPTION)}...`;
 
 const CohortTab = (props: Props) => {
-  const { queries, queryIdToStatus, loggedInUser, deleteParticularSavedQuery, api } = props;
+  const { queries, queryIdToStatus, user, deleteParticularSavedQuery, api } = props;
 
   return (
     <SavedQueriesTab
@@ -55,7 +50,7 @@ const CohortTab = (props: Props) => {
           action: TRACKING_EVENTS.actions.query.delete,
           label: JSON.stringify(item),
         });
-        deleteParticularSavedQuery(api, item.id, loggedInUser, QueryType.cohort);
+        deleteParticularSavedQuery(api, item.id, user, QueryType.cohort);
       }}
     />
   );

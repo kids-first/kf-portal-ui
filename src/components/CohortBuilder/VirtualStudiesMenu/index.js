@@ -1,32 +1,37 @@
 import React from 'react';
-import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import urlJoin from 'url-join';
-import Row from 'uikit/Row';
 import {
-  fetchVirtualStudiesCollection,
-  resetVirtualStudy,
-  loadSavedVirtualStudy,
-  saveVirtualStudy,
-} from 'store/actionCreators/virtualStudies';
-import { createVirtualStudy } from 'services/virtualStudies';
-import { Tooltip } from 'antd';
-import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
-import LoadQuery from './LoadQuery';
-import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
-import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
-import './index.scss';
-import { openModal, closeModal } from 'store/actions/modal';
-import PropTypes from 'prop-types';
-import { VirtualStudiesMenuButton } from './VirtualStudiesMenuButton';
-import {
-  FolderOpenFilled,
-  SaveOutlined,
-  FileOutlined,
   DeleteOutlined,
   EditTwoTone,
+  FileOutlined,
+  FolderOpenFilled,
+  SaveOutlined,
 } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import urlJoin from 'url-join';
+
+import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
+import { createVirtualStudy } from 'services/virtualStudies';
+import {
+  fetchVirtualStudiesCollection,
+  loadSavedVirtualStudy,
+  resetVirtualStudy,
+  saveVirtualStudy,
+} from 'store/actionCreators/virtualStudies';
+import { closeModal, openModal } from 'store/actions/modal';
+import { selectUser } from 'store/selectors/users';
+import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
+import Row from 'uikit/Row';
+
+import SaveVirtualStudiesModal from '../SaveVirtualStudiesModal';
+
+import LoadQuery from './LoadQuery';
+import { VirtualStudiesMenuButton } from './VirtualStudiesMenuButton';
+
+import './index.scss';
 
 const generateDescription = (content) => {
   const descriptionLines = content.trim().split(/\n/);
@@ -58,7 +63,7 @@ class VirtualStudiesMenu extends React.Component {
     uid: PropTypes.string,
     fetchVirtualStudiesCollection: PropTypes.func.isRequired,
     resetVirtualStudy: PropTypes.func.isRequired,
-    loggedInUser: PropTypes.object,
+    user: PropTypes.object,
     saveVirtualStudy: PropTypes.func.isRequired,
     sqons: PropTypes.array,
     activeIndex: PropTypes.number,
@@ -99,7 +104,7 @@ class VirtualStudiesMenu extends React.Component {
 
   onSaveClick = async () => {
     const {
-      loggedInUser,
+      user,
       sqons,
       activeIndex,
       activeVirtualStudyId: virtualStudyId,
@@ -116,7 +121,7 @@ class VirtualStudiesMenu extends React.Component {
     const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
 
     try {
-      await saveVirtualStudy(loggedInUser, study);
+      await saveVirtualStudy(user, study);
     } catch (err) {
       console.error('Error while saving the virtual study', err);
     }
@@ -162,7 +167,7 @@ class VirtualStudiesMenu extends React.Component {
       error,
       openModalId,
       closeModal,
-      loggedInUser,
+      user,
       uid,
       loadSavedVirtualStudy,
     } = this.props;
@@ -196,7 +201,6 @@ class VirtualStudiesMenu extends React.Component {
             title={MODAL_PARAMS[openModalId].title}
             onCloseCB={() => closeModal(openModalId)}
             uid={uid}
-            loggedInUser={loggedInUser}
           />
         )}
         <Row className="virtual-studies-menu container">
@@ -277,7 +281,7 @@ class VirtualStudiesMenu extends React.Component {
                 disabled
                 getSharableUrl={this.getSharableUrl}
                 handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
-                loggedInUser={loggedInUser}
+                user={user}
               />
             ) : (
               <Tooltip title={<div>Share this virtual study</div>} className="button-group">
@@ -286,7 +290,7 @@ class VirtualStudiesMenu extends React.Component {
                     disabled={false}
                     getSharableUrl={this.getSharableUrl}
                     handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
-                    loggedInUser={loggedInUser}
+                    user={user}
                   />
                 </div>
               </Tooltip>
@@ -302,7 +306,6 @@ const mapStateToProps = (state) => {
   const { user, currentVirtualStudy, virtualStudies, modal } = state;
   return {
     uid: user.uid,
-    loggedInUser: user.loggedInUser,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
     isOwner: currentVirtualStudy.uid === user.uid,
@@ -316,6 +319,7 @@ const mapStateToProps = (state) => {
     areSqonsEmpty: currentVirtualStudy.areSqonsEmpty,
     error: currentVirtualStudy.error,
     openModalId: modal.id,
+    user: selectUser(state),
   };
 };
 

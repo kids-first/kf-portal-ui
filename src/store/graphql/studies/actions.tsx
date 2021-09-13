@@ -1,4 +1,4 @@
-import { ISqonGroupFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 
 import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
@@ -70,7 +70,7 @@ export type SidebarData = {
 export type StudiesPageContainerData = {
   studiesResults: StudiesResults;
   studiesMappingResults: StudiesMappingResults;
-  filters: ISqonGroupFilter;
+  filters: ISyntheticSqon;
 };
 
 export type SideBarData = {

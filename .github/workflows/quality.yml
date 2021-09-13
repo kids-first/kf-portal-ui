@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Install Dependencies
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out source code
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         run: npm install
   linter:
     name: Run Linter
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: build
     steps:
       - name: Check out source code
@@ -41,7 +41,7 @@ jobs:
       - name: Run linter
         run: npm run eslint
   tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: build
     steps:
       - name: Check out source code

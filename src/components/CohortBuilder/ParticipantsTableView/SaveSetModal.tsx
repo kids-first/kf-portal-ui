@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Form, Input, Modal, notification, Spin } from 'antd';
-import { LoggedInUser } from 'store/userTypes';
-import { Sqon } from 'store/sqon';
-import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
+import { Button, Form, Input, Modal, notification, Spin } from 'antd';
+import { Store } from 'antd/lib/form/interface';
+
+import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
+import {
+  createSetIfUnique,
+  editSetTag,
+  reInitializeSetsState,
+} from 'store/actionCreators/saveSets';
+import { RootState } from 'store/rootState';
 import {
   DispatchSaveSets,
   EditSetTagParams,
@@ -16,14 +22,9 @@ import {
   SetInfo,
   UserSet,
 } from 'store/saveSetTypes';
-import {
-  createSetIfUnique,
-  editSetTag,
-  reInitializeSetsState,
-} from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
-import { RootState } from 'store/rootState';
-import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
+import { Sqon } from 'store/sqon';
+import { User } from 'store/userTypes';
 
 export const MAX_LENGTH_NAME = 50;
 const FORM_NAME = 'save-set';
@@ -33,7 +34,7 @@ type OwnProps = {
   saveSetActionType: SaveSetActionsTypes;
   hideModalCb: Function;
   sqon: Sqon;
-  user: LoggedInUser;
+  user: User;
   setToRename?: SetInfo;
 };
 

@@ -9,7 +9,6 @@ import { Card, Space, Spin, Table, Tooltip } from 'antd';
 import { addToSqons } from 'common/sqonUtils';
 import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
-import { createQueryInCohortBuilder, DispatchStoryPage } from 'store/actionCreators/studyPage';
 import {
   FreqCombined,
   FreqInternal,
@@ -25,6 +24,9 @@ import {
   formatQuotientToExponentialOrElse,
   toExponentialNotation,
 } from 'utils';
+
+import { createQueryInCohortBuilder } from '../../store/actionCreators/virtualStudies';
+import { DispatchVirtualStudies } from '../../store/virtualStudiesTypes';
 
 import TableSummaryKfStudies from './TableSummaryKfStudies';
 
@@ -277,7 +279,7 @@ const isExternalCohortsTableEmpty = (rows: Rows) =>
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   rows.every(({ cohort, key, ...visibleRow }: Row) => !hasAtLeastOneTruthyProperty(visibleRow));
 
-const mapDispatch = (dispatch: DispatchStoryPage) => ({
+const mapDispatch = (dispatch: DispatchVirtualStudies) => ({
   onClickStudyLink: (sqons: Sqon[]) => dispatch(createQueryInCohortBuilder(sqons)),
 });
 

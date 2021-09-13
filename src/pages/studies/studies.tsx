@@ -1,4 +1,6 @@
 import React from 'react';
+import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
+import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Layout } from 'antd';
 
@@ -7,17 +9,17 @@ import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/stu
 
 import Sidebar from './Sidebar';
 import StudyPageContainer from './StudyPageContainer';
-import { useFilters } from './utils';
 
 import styles from './studies.module.scss';
 
-const MAX_NUMBER_STUDIES = 1000;
+export const MAX_NUMBER_STUDIES = 1000;
 
 const Studies = () => {
   const { filters } = useFilters();
+  const allSqons = getQueryBuilderCache('study-repo').state;
 
   let studiesResults = useGetStudiesPageData({
-    sqon: filters,
+    sqon: resolveSyntheticSqon(allSqons, filters),
     first: MAX_NUMBER_STUDIES,
     offset: 0,
   });
