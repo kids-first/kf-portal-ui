@@ -1,12 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import keycloak from 'keycloak';
 import queryString from 'querystring';
 import { compose } from 'recompose';
 import urlJoin from 'url-join';
 
-import keycloak from '../keycloak';
-
-import Login from './Login/Login';
+import Login from 'components/Login/Login';
 
 const AuthRedirect = (props) => {
   const {

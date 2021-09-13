@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { SHOW_DELETE_ACCOUNT } from 'common/constants';
 import ApplicationIntegration from 'components/UserProfile//ApplicationIntegration';
+import ConnectionProvider from 'components/UserProfile/ConnectionProvider';
 import DeleteAccount from 'components/UserProfile/DeleteAccount';
 import RepositoryIntegration from 'components/UserProfile/RepositoryIntegration';
 import { clearClusterError } from 'store/actionCreators/workBench';
@@ -33,6 +34,9 @@ const Settings = (props) => {
     <Layout className={'settings-layout'}>
       <Content>
         <Row className={'settings-row-but-last'}>
+          <ConnectionProvider />
+        </Row>
+        <Row className={'settings-row-but-last'}>
           <RepositoryIntegration />
         </Row>
         <Row className={'settings-row-but-last'}>
@@ -49,7 +53,6 @@ const Settings = (props) => {
 };
 
 Settings.propTypes = {
-  userEmail: PropTypes.string.isRequired,
   onClearClusterError: PropTypes.func.isRequired,
 };
 
