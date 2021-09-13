@@ -8,7 +8,7 @@
 ### Technical / Other changes
 -->
 
-## 2021-09-10 kf-portal-ui 3.3.0
+## 2021-09-13 kf-portal-ui 3.3.0
 
 ### Features
 - [SKFP-100](https://d3b.atlassian.net/browse/SKFP-100) Feature (Studies, QueryBuilder) : Update QueryBuilder of the Studies page. Combine Queries now available
