@@ -41,11 +41,12 @@ class ParticipantEntity extends React.Component {
     participant: PropTypes.object,
     error: PropTypes.any,
     api: PropTypes.func,
+    fetchParticipant: PropTypes.func,
   };
 
   componentDidMount() {
-    const { participantId, fetchParticipant } = this.props;
-    fetchParticipant(participantId);
+    const { participantId, fetchParticipant, api } = this.props;
+    fetchParticipant(api, participantId);
   }
 
   render() {
