@@ -3,31 +3,26 @@ import Grid from '@ferlab/ui/core/layout/Grid';
 import Card from '@ferlab/ui/core/view/GridCard';
 import { compose } from 'recompose';
 
-import {
-  MemberResearchInterestsChart,
-  MostFrequentDiagnosesChart,
-  MostParticipantsStudiesChart,
-} from 'components/Charts';
-import { withApi } from 'services/api';
-import { Spinner } from 'uikit/Spinner';
-
-import useUser from '../../hooks/useUser';
-
-import AuthorizedStudies from './AuthorizedStudies';
-import CavaticaProjects from './CavaticaProjects';
-import ParticipantSets from './ParticipantSets';
-import SavedQueries from './SavedQueries';
-
-import './UserDashboard.module.css';
-import './UserDashboard.scss';
+import { isKfInvestigator } from 'common/profile';
+import AuthorizedStudies from 'components/UserDashboard/AuthorizedStudies';
+import CavaticaProjects from 'components/UserDashboard/CavaticaProjects';
+import ParticipantSets from 'components/UserDashboard/ParticipantSets';
+import SavedQueries from 'components/UserDashboard/SavedQueries';
 import {
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
-} from './UserDashboard.module.css';
+} from 'components/UserDashboard/UserDashboard.module.css';
+import WorkBench from 'components/UserDashboard/WorkBench';
+import useUser from 'hooks/useUser';
+import { withApi } from 'services/api';
+import { Spinner } from 'uikit/Spinner';
+
+import 'components/UserDashboard/UserDashboard.module.css';
+import 'components/UserDashboard/UserDashboard.scss';
 
 export default compose(withApi)(({ api }) => {
-  const { user } = useUser();
+  const { user, groups } = useUser();
   return user ? (
     <div className={userDashboardContainer}>
       <div className={userDashboardContent}>
@@ -36,12 +31,11 @@ export default compose(withApi)(({ api }) => {
           <SavedQueries api={api} />
           <AuthorizedStudies api={api} />
           <CavaticaProjects />
-          <MostParticipantsStudiesChart />
-          <Card title={<span className={'title-dashboard-card'}>Member Research Interests</span>}>
-            <MemberResearchInterestsChart />
-          </Card>
-          <Card title={<span className={'title-dashboard-card'}>Most Frequent Diagnoses</span>}>
-            <MostFrequentDiagnosesChart />
+          <Card
+            classNameCardItem={'withScroll'}
+            title={<span className={'title-dashboard-card'}>Apache Zeppelin</span>}
+          >
+            <WorkBench isAllowed={isKfInvestigator(groups)} />
           </Card>
           <Card
             classNameCardItem={'withScroll'}

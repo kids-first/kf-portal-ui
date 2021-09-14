@@ -3,11 +3,11 @@ import React from 'react';
 import { isKfInvestigator } from 'common/profile';
 import PageContent from 'components/Layout/PageContent';
 
+import WorkBench from '../../components/UserDashboard/WorkBench';
 import useUser from '../../hooks/useUser';
 
 import SearchView from './SearchView';
 import VariantStats from './VariantStats';
-import WorkBench from './WorkBench';
 
 import style from './VariantsSearchPage.module.scss';
 

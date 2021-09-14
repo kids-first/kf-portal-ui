@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Alert, Button, Card, Space, Switch, Typography } from 'antd';
+import { Alert, Button, Space, Switch, Typography } from 'antd';
 
 import azicon from 'assets/appache-zeppelin.png';
 import IndeterminateProgress from 'components/UI/IndeterminateProgress';
@@ -102,45 +102,43 @@ const WorkBench = (props: Props) => {
   }, [status, onGetStatus, error, isAllowed]);
 
   return (
-    <Card>
-      <StackLayout horizontal>
-        <div className={style.imgContainer}>
-          <img alt="Appache-Zeppelin-Logo" src={azicon} className={style.zeppelinImg} />
+    <StackLayout vertical>
+      <div className={style.imgContainer}>
+        <img alt="Appache-Zeppelin-Logo" src={azicon} className={style.zeppelinImg} />
+      </div>
+      <StackLayout vertical className={style.textAndBtnContainer}>
+        <Paragraph className={style.textParagraph}>
+          Launch your own <Text strong>high performance compute environment</Text> to access the
+          Kids First variant database using Apache Zeppelin notebooks.
+        </Paragraph>
+        <div className={style.switchContainer}>
+          {!error && showSwitch(status) && (
+            <Space size={'middle'}>
+              <Switch
+                disabled={!isAllowed}
+                checked={isClusterRunning(status)}
+                loading={isLoadingStatus}
+                onChange={(switchIsOn: boolean) =>
+                  switchIsOn ? onStartCluster() : onStopCluster()
+                }
+                checkedChildren={isLoadingStatus ? '' : 'On'}
+                unCheckedChildren={isLoadingStatus ? '' : 'Off'}
+              />
+              {!isAllowed && (
+                <Text disabled>Currently available for Kids First investigators only.</Text>
+              )}
+              {url && (
+                <Button href={url} target="_blank" rel="noopener noreferrer" type={'link'}>
+                  Access your SPARK cluster
+                </Button>
+              )}
+            </Space>
+          )}
+          {showProgress(status) && <IndeterminateProgress />}
+          {error && displayError(error, user!, onReInitializeState)}
         </div>
-        <StackLayout vertical className={style.textAndBtnContainer}>
-          <Paragraph>
-            Launch your own <Text strong>high performance compute environment</Text> to access the
-            Kids First variant database using Apache Zeppelin notebooks.
-          </Paragraph>
-          <div>
-            {!error && showSwitch(status) && (
-              <Space size={'middle'}>
-                <Switch
-                  disabled={!isAllowed}
-                  checked={isClusterRunning(status)}
-                  loading={isLoadingStatus}
-                  onChange={(switchIsOn: boolean) =>
-                    switchIsOn ? onStartCluster() : onStopCluster()
-                  }
-                  checkedChildren={isLoadingStatus ? '' : 'On'}
-                  unCheckedChildren={isLoadingStatus ? '' : 'Off'}
-                />
-                {!isAllowed && (
-                  <Text disabled>Currently available for Kids First investigators only.</Text>
-                )}
-                {url && (
-                  <Button href={url} target="_blank" rel="noopener noreferrer" type={'link'}>
-                    Access your SPARK cluster
-                  </Button>
-                )}
-              </Space>
-            )}
-            {showProgress(status) && <IndeterminateProgress />}
-            {error && displayError(error, user!, onReInitializeState)}
-          </div>
-        </StackLayout>
       </StackLayout>
-    </Card>
+    </StackLayout>
   );
 };
 
