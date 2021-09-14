@@ -4,7 +4,6 @@ import Card from '@ferlab/ui/core/view/GridCard';
 import { compose } from 'recompose';
 
 import { isKfInvestigator } from 'common/profile';
-import WorkBench from 'pages/variantsSearchPage/WorkBench';
 import { withApi } from 'services/api';
 import { Spinner } from 'uikit/Spinner';
 
@@ -14,6 +13,7 @@ import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 import ParticipantSets from './ParticipantSets';
 import SavedQueries from './SavedQueries';
+import WorkBench from './WorkBench';
 
 import './UserDashboard.module.css';
 import './UserDashboard.scss';
