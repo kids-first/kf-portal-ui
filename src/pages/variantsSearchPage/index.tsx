@@ -23,8 +23,6 @@ import VariantStats from './VariantStats';
 
 import styles from './VariantsSearchPage.module.scss';
 
-// <WorkBench isAllowed={isKfInvestigator(groups)} />
-
 const { Title } = Typography;
 
 const filtersContainer = (mappingResults: MappingResults, type: string): ReactNode => {
