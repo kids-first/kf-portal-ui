@@ -4,24 +4,22 @@ import Card from '@ferlab/ui/core/view/GridCard';
 import { compose } from 'recompose';
 
 import { isKfInvestigator } from 'common/profile';
-import { withApi } from 'services/api';
-import { Spinner } from 'uikit/Spinner';
-
-import useUser from '../../hooks/useUser';
-
-import AuthorizedStudies from './AuthorizedStudies';
-import CavaticaProjects from './CavaticaProjects';
-import ParticipantSets from './ParticipantSets';
-import SavedQueries from './SavedQueries';
-import WorkBench from './WorkBench';
-
-import './UserDashboard.module.css';
-import './UserDashboard.scss';
+import AuthorizedStudies from 'components/UserDashboard/AuthorizedStudies';
+import CavaticaProjects from 'components/UserDashboard/CavaticaProjects';
+import ParticipantSets from 'components/UserDashboard/ParticipantSets';
+import SavedQueries from 'components/UserDashboard/SavedQueries';
 import {
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
-} from './UserDashboard.module.css';
+} from 'components/UserDashboard/UserDashboard.module.css';
+import WorkBench from 'components/UserDashboard/WorkBench';
+import useUser from 'hooks/useUser';
+import { withApi } from 'services/api';
+import { Spinner } from 'uikit/Spinner';
+
+import 'components/UserDashboard/UserDashboard.module.css';
+import 'components/UserDashboard/UserDashboard.scss';
 
 export default compose(withApi)(({ api }) => {
   const { user, groups } = useUser();
