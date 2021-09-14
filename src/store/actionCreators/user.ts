@@ -5,6 +5,7 @@ import jwtDecode from 'jwt-decode';
 import { EGO_JWT_KEY, LOGIN_PROVIDER, SHOW_DELETE_ACCOUNT } from 'common/constants';
 import { trackUserSession } from 'services/analyticsTracking';
 import { apiUser } from 'services/api';
+import { removeCookie, setCookie } from 'services/cookie';
 import history from 'services/history';
 import {
   facebookLogout,
@@ -46,6 +47,15 @@ const deleteUserProfile = deleteProfile(apiUser);
 const isAdminFromRoles = (roles: string[] | null) => (roles || []).includes('ADMIN');
 
 const isStatusApproved = (status: string | null) => !!status && status.toLowerCase() === 'approved';
+
+const setEgoTokenCookie = (token: string): void => {
+  const decodedJwt: DecodedJwt = jwtDecode(token);
+  const exp: number = decodedJwt.exp;
+  const expires = new Date(exp * 1000);
+  setCookie(EGO_JWT_KEY, token, {
+    expires: expires,
+  });
+};
 
 export const logout = (): UserActionTypes => ({
   type: UserActions.logout,
@@ -104,6 +114,7 @@ export const subscribeUser = (): ThunkActionUser => async (dispatch, getState) =
 };
 
 const setTokenInStores = (token: JwtToken): ThunkActionUser => async (dispatch) => {
+  setEgoTokenCookie(token);
   localStorage.setItem(EGO_JWT_KEY, token);
   addArrangerHeaders({ authorization: `Bearer ${token}` });
   dispatch(receiveUserToken(token));
@@ -155,6 +166,7 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch, getState) =
   } catch (error) {
     console.error(error);
   } finally {
+    removeCookie(EGO_JWT_KEY);
     localStorage.removeItem(EGO_JWT_KEY);
     localStorage.removeItem(LOGIN_PROVIDER);
     localStorage.removeItem(SHOW_DELETE_ACCOUNT);

@@ -42,7 +42,7 @@ export const checkIfUserIsConnected = (): ThunkAction<
 };
 
 const shouldFetch = (state: RootState) =>
-  selectConnectionStatus(state) !== ConnectionStatus.disconnected;
+  selectConnectionStatus(state) !== ConnectionStatus.connected;
 
 export const checkIfUserIsConnectedIfNeeded = (): ThunkAction<
   void,
@@ -51,7 +51,7 @@ export const checkIfUserIsConnectedIfNeeded = (): ThunkAction<
   CavaticaActionTypes
 > => async (dispatch, getState) => {
   if (shouldFetch(getState())) {
-    dispatch(checkIfUserIsConnected);
+    dispatch(checkIfUserIsConnected());
   }
 };
 

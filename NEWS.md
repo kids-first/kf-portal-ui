@@ -8,11 +8,20 @@
 ### Technical / Other changes
 -->
 
-## 2021-09-10 kf-portal-ui 3.3.0
+## 2021-09-13 kf-portal-ui 3.3.1
+
+### Technical / Other changes
+
+- [SKFP-130](https://d3b.atlassian.net/browse/SKFP-130) Fix regression to access to Variant Workbench
+
+## 2021-09-13 kf-portal-ui 3.3.0
 
 ### Features
+
 - [SKFP-100](https://d3b.atlassian.net/browse/SKFP-100) Feature (Studies, QueryBuilder) : Update QueryBuilder of the Studies page. Combine Queries now available
+
 ### Technical / Other changes
+
 - [SKFP-8](https://d3b.atlassian.net/browse/SKFP-8) Refactor (Frontend, React): Removed freactal
 - [SKFP-19](https://d3b.atlassian.net/browse/SKFP-19) Refactor (Studies, Search bar): Adjustments regarding the background color of the selected study in the search bar
 - [SKFP-56](https://d3b.atlassian.net/browse/SKFP-56) Refactor (Maintenance) : Disabled redux-dev-tools from the production environment
