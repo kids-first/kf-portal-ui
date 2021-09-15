@@ -10,8 +10,7 @@ import GeneIcon from 'icons/GeneIcon';
 import LineStyleIcon from 'icons/LineStyleIcon';
 import OccurenceIcon from 'icons/OccurenceIcon';
 import OpenInNewIcon from 'icons/OpenInNewIcon';
-
-import { MappingResults, useGetExtendedMappings } from '../../store/graphql/utils/actions';
+import { MappingResults, useGetExtendedMappings } from 'store/graphql/utils/actions';
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';

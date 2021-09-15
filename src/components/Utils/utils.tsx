@@ -9,8 +9,10 @@ import {
 } from '@ferlab/ui/core/data/filters/utils';
 
 import history from 'services/history';
+import { StudiesResult } from 'store/graphql/studies/models';
 import { keyEnhance, keyEnhanceBooleanOnly, underscoreToDot } from 'store/graphql/utils';
-import { ExtendedMapping, MappingResults } from 'store/graphql/utils/actions';
+import { MappingResults } from 'store/graphql/utils/actions';
+import { VariantEntity } from 'store/graphql/variants/models';
 
 export type Results = {
   data: GQLData | null;
@@ -32,17 +34,33 @@ export interface TermAgg {
   key: string;
 }
 
+export interface ExtendedMapping {
+  active: boolean;
+  displayName: string;
+  isArray: boolean;
+  type: string;
+  field: string;
+  rangeStep?: number;
+}
+
 export type Aggs = TermAggs | RangeAggs;
+export type HitsEntity = VariantEntity | StudiesResult;
 
 const isTermAgg = (obj: any): obj is TermAggs => obj.buckets !== undefined;
 const isRangeAgg = (obj: any): obj is RangeAggs => obj.stats !== undefined;
 
 export interface GQLData<T extends Aggs = any> {
-  hits: any; //TODO refine type?
-  aggregations: any; //TODO refine type?
+  aggregations: any;
+  hits: {
+    edges: [
+      {
+        node: HitsEntity;
+      },
+    ];
+    total: number;
+  };
 }
 
-//TODO investigate: should only be called once per tab.
 export const generateFilters = (
   results: Results,
   mappingResults: MappingResults,
@@ -52,7 +70,7 @@ export const generateFilters = (
 ) =>
   Object.keys(results.data?.aggregations || []).map((key) => {
     const found = (mappingResults?.extendedMapping || []).find(
-      (f: any) => f.field === underscoreToDot(key),
+      (f: ExtendedMapping) => f.field === underscoreToDot(key),
     );
 
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
@@ -80,7 +98,7 @@ const getFilters = (data: GQLData | null, key: string): IFilter[] => {
   if (!data || !key) return [];
 
   if (isTermAgg(data.aggregations[key])) {
-    return data.aggregations[key!].buckets.map((f: any) => ({
+    return data.aggregations[key!].buckets.map((f: TermAgg) => ({
       data: {
         count: f.doc_count,
         key: keyEnhanceBooleanOnly(f.key),
@@ -88,21 +106,23 @@ const getFilters = (data: GQLData | null, key: string): IFilter[] => {
       name: keyEnhance(f.key),
       id: f.key,
     }));
-  } else if (data.aggregations[key]?.stats) {
-    return [
-      {
-        data: { max: 1, min: 0 },
-        name: keyEnhance(key),
-        id: key,
-      },
-    ];
+  } else {
+    if (data.aggregations[key]?.stats) {
+      return [
+        {
+          data: { max: 1, min: 0 },
+          name: keyEnhance(key),
+          id: key,
+        },
+      ];
+    }
   }
   return [];
 };
 
 const getFilterGroup = (
   extendedMapping: ExtendedMapping | undefined,
-  aggregation: any,
+  aggregation: Aggs,
   rangeTypes: string[],
 ): IFilterGroup => {
   if (isRangeAgg(aggregation)) {

@@ -3,9 +3,8 @@ import { InfoCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Col, Row, Tooltip } from 'antd';
 
+import { generateFilters } from 'components/Utils/utils';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
-
-import { generateFilters } from '../../components/Utils/utils';
 
 import SearchBar from './SearchBar';
 import { MAX_NUMBER_STUDIES } from './studies';

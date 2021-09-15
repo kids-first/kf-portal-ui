@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-import { ExtendedMapping, MappingResults } from 'store/graphql/utils/actions';
-
-import { dotToUnderscore, underscoreToDot } from '../../../store/graphql/utils';
+import { ExtendedMapping } from 'components/Utils/utils';
+import { dotToUnderscore, underscoreToDot } from 'store/graphql/utils';
+import { MappingResults } from 'store/graphql/utils/actions';
 
 export const VARIANT_QUERY = gql`
   query VariantInformation(

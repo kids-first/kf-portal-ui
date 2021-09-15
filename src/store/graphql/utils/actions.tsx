@@ -1,16 +1,8 @@
 import { DocumentNode, TypedDocumentNode } from '@apollo/client';
 
+import { ExtendedMapping } from 'components/Utils/utils';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
-
-import { INDEX_EXTENDED_MAPPING } from './query';
-
-export type ExtendedMapping = {
-  displayName: string;
-  field: string;
-  isArray: boolean;
-  type: string;
-  rangeStep?: number;
-};
+import { INDEX_EXTENDED_MAPPING } from 'store/graphql/utils/query';
 
 export type MappingResults = {
   loadingMapping: boolean;
@@ -50,7 +42,6 @@ export const useGetPageData = (
     data:
       result && result[index]
         ? {
-            ...result[index],
             ...result,
           }
         : null,

@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { computeStartStopPagination } from '../../utils';
+import { computeStartStopPagination } from 'utils';
+
+import styles from './TableTitle.module.scss';
 
 type OwnProps = {
   currentPage: number;
   pageSize: number;
   total: number;
 };
-
-import styles from './TableTitle.module.scss';
 
 const TableTitle = ({ currentPage, pageSize, total }: OwnProps) => {
   const [start, stop] = computeStartStopPagination(currentPage, pageSize, total);

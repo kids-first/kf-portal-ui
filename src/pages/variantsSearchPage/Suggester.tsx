@@ -3,9 +3,8 @@ import { IFilter, VisualType } from '@ferlab/ui/core/components/filters/types';
 import { updateFilters } from '@ferlab/ui/core/data/filters/utils';
 import { AutoComplete, Input, notification, Spin } from 'antd';
 
+import { getGenomicSuggestions } from 'services/genomicSuggestions';
 import history from 'services/history';
-
-import { getGenomicSuggestions } from '../../services/genomicSuggestions';
 
 import generateSuggestionOptions from './SuggestionOptions';
 

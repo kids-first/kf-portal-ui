@@ -10,11 +10,11 @@ import { addToSqons } from 'common/sqonUtils';
 import TableTitle from 'components/Table/TableTitle';
 import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import { createQueryInCohortBuilder } from 'store/actionCreators/virtualStudies';
+import { StudiesResult } from 'store/graphql/studies/models';
 import {
   ClinVar,
   Consequence,
   Frequencies,
-  StudyInfo,
   StudyNode,
   VariantEntity,
   VariantEntityNode,
@@ -26,6 +26,7 @@ import { AlignmentOptions } from 'ui/TableOptions';
 import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
 
 import ConsequencesCell from './ConsequencesCell';
+import { VariantPageResults } from './VariantPageContainer';
 
 import style from './VariantTableContainer.module.scss';
 
@@ -52,12 +53,12 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  results: any;
+  results: VariantPageResults;
   filters: ISyntheticSqon;
-  setCurrentPageCb: (currentPage: number) => undefined;
+  setCurrentPageCb: (currentPage: number) => void;
 };
 
-const generateColumns = (props: Props, studyList: StudyInfo[]) =>
+const generateColumns = (props: Props, studyList: StudiesResult[]) =>
   [
     {
       title: 'Variant',
@@ -128,7 +129,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies?.hits.edges || [];
         const studyIds = nodes.map((r) => r.node.study_id);
-        const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
+        const studyCodes = studyList.filter((s) => studyIds.includes(s.kf_id)).map((s) => s.code);
 
         return studies?.hits?.total ? (
           <Link
@@ -235,21 +236,17 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
   const { results, setCurrentPageCb } = props;
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
 
-  const nodes = results.data?.hits?.edges || [];
+  const nodes = results.data?.variants.hits?.edges || [];
   const variants = nodes as VariantEntityNode[];
-  const total = results.data?.hits.total || 0;
+  const total = results.data?.variants.hits.total || 0;
   const nodesStudies = results?.data?.studies?.hits?.edges || [];
-  const studies = nodesStudies.map((n: { node: string }) => n.node) as StudyInfo[];
+  const studies = nodesStudies.map((n: { node: StudiesResult }) => n.node);
 
   return (
     <Table
       title={() =>
         total > 0 ? (
-          <TableTitle
-            currentPage={currentPageNum}
-            pageSize={DEFAULT_PAGE_SIZE}
-            total={total}
-          ></TableTitle>
+          <TableTitle currentPage={currentPageNum} pageSize={DEFAULT_PAGE_SIZE} total={total} />
         ) : (
           <></>
         )

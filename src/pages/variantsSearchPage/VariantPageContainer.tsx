@@ -5,11 +5,15 @@ import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/u
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
+import { ExtendedMapping } from 'components/Utils/utils';
 import VariantIcon from 'icons/VariantIcon';
 import history from 'services/history';
+import { HitsStudiesResults } from 'store/graphql/studies/actions';
 import { dotToUnderscore } from 'store/graphql/utils';
 import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
+import { VariantEntity } from 'store/graphql/variants/models';
 import { VARIANT_QUERY } from 'store/graphql/variants/queries';
+import styleThemeColors from 'style/themes/default/colors.module.scss';
 
 import GenericFilters from './filters/GenericFilters';
 import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from './constants';
@@ -19,6 +23,30 @@ import styles from './VariantPageContainer.module.scss';
 
 export type VariantPageContainerData = {
   mappingResults: MappingResults;
+};
+
+export type VariantPageResults = {
+  data: {
+    studies: {
+      hits: HitsStudiesResults;
+    };
+    variants: {
+      hits: {
+        edges: [
+          {
+            node: VariantEntity;
+          },
+        ];
+        total?: number;
+      };
+    };
+  };
+  loading: boolean;
+};
+
+type Results = {
+  data: VariantPageResults | null;
+  loading: boolean;
 };
 
 const DEFAULT_PAGE_NUM = 1;
@@ -43,12 +71,12 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
     undefined,
   );
 
-  const total = results.data?.hits.total || 0;
+  const total = results.data?.variants.hits.total || 0;
 
   const dictionary: IDictionary = {
     query: {
       facet: (key) =>
-        mappingResults?.extendedMapping?.find((mapping: any) => key === mapping.field)
+        mappingResults?.extendedMapping?.find((mapping: ExtendedMapping) => key === mapping.field)
           ?.displayName || key,
     },
   };
@@ -74,7 +102,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
             <GenericFilters field={dotToUnderscore(field)} mappingResults={mappingResults} />,
           );
         }}
-        IconTotal={<VariantIcon fill="#383f72" />}
+        IconTotal={<VariantIcon fill={styleThemeColors.iconColor} />}
       />
       <StackLayout vertical className={styles.tableContainer}>
         <VariantTableContainer

@@ -4,12 +4,11 @@ import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Layout, Spin } from 'antd';
 
 import { generateFilters } from 'components/Utils/utils';
+import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from 'pages/variantsSearchPage/constants';
+import Suggester from 'pages/variantsSearchPage/Suggester';
+import SuggesterWrapper from 'pages/variantsSearchPage/SuggesterWrapper';
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
 import { VARIANT_AGGREGATION_QUERY } from 'store/graphql/variants/queries';
-
-import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from '../constants';
-import Suggester from '../Suggester';
-import SuggesterWrapper from '../SuggesterWrapper';
 
 import styles from './VariantFilters.module.scss';
 
