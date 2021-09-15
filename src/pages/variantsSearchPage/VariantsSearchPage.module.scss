@@ -1,5 +1,63 @@
 @import 'style/themes/default/_colors';
 
+.layout {
+  display: flex;
+  flex-direction: row;
+  overflow-y: hidden;
+}
+
+.scrollContent {
+  width: 100%;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .pageHeaderTitle {
+    margin: 0;
+    font-size: 20px;
+    line-height: 28px;
+    margin-right: 1.2rem;
+  }
+
+  .dataReleaseTag {
+    color: $cyan-7;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    height: 20px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    span {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.statsModalHeader {
+  display: flex;
+  align-items: center;
+
+  .statsTitle {
+    margin-right: 1rem;
+    font-size: 16px;
+  }
+
+  .releaseDate {
+    font-size: 14px;
+    font-weight: normal;
+  }
+}
+
+.variantfilterContainer {
+  margin-top: 16px;
+}
+
 .variantPageGrid {
   display: grid;
   grid-gap: 24px;

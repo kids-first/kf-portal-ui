@@ -1,0 +1,15 @@
+.@{select-prefix-cls} {
+  &-item {
+    &-option {
+      &-disabled {
+        &.@{select-prefix-cls}-item-option-selected {
+          background-color: @gray-4;
+        }
+      }
+
+      &-selected:not(&-disabled) {
+        background-color: @gray-4;
+      }
+    }
+  }
+}

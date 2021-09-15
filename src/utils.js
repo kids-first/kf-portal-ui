@@ -97,7 +97,7 @@ export const isNumber = (n) => n && !Number.isNaN(n);
 export const toExponentialNotation = (numberCandidate, fractionDigits = 2) =>
   isNumber(numberCandidate) ? numberCandidate.toExponential(fractionDigits) : numberCandidate;
 
-const computeStartStopPagination = (currentPage, pageSize, total) => {
+export const computeStartStopPagination = (currentPage, pageSize, total) => {
   const isLessOrEqualThanPageSize = total <= pageSize;
   if (isLessOrEqualThanPageSize) {
     return [1, total];

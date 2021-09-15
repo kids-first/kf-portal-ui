@@ -1,6 +1,8 @@
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 
+import { Results } from 'components/Utils/utils';
 import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
+import { MappingResults } from 'store/graphql/utils/actions';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
 
 import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY, STUDIES_SEARCH_QUERY } from './queries';
@@ -21,13 +23,13 @@ type AggregationResults = {
   program: AggregationBuckets;
 };
 
-type HitsResults = {
+export type HitsStudiesResults = {
   edges: [
     {
       node: StudiesResult;
     },
   ];
-  total: number;
+  total?: number;
 };
 
 export type HitsResultsDataCategory = {
@@ -42,7 +44,7 @@ export type HitsResultsDataCategory = {
 
 type StudiesPageData = {
   aggregations: AggregationResults;
-  hits: HitsResults;
+  hits: HitsStudiesResults;
 };
 
 type ExtendedMapping = {
@@ -63,12 +65,12 @@ export type StudiesMappingResults = {
 };
 
 export type SidebarData = {
-  studiesResults: StudiesResults;
-  studiesMappingResults: StudiesMappingResults;
+  studiesResults: Results;
+  studiesMappingResults: MappingResults;
 };
 
 export type StudiesPageContainerData = {
-  studiesResults: StudiesResults;
+  studiesResults: Results;
   studiesMappingResults: StudiesMappingResults;
   filters: ISyntheticSqon;
 };
@@ -83,7 +85,7 @@ export type QueryVariable = {
   offset: number; // start from offset number of elements
 };
 
-export const useGetStudiesPageData = (variables: QueryVariable): StudiesResults => {
+export const useGetStudiesPageData = (variables: QueryVariable): Results => {
   const { loading, result } = useLazyResultQuery<any>(STUDIES_QUERY, {
     variables: variables,
   });
@@ -105,7 +107,7 @@ export const useGetStudiesSearch = (variables: QueryVariable): StudiesResults =>
   };
 };
 
-export const useGetExtendedMappings = (index: string): StudiesMappingResults => {
+export const useGetExtendedMappings = (index: string): MappingResults => {
   const { loading, result } = useLazyResultQuery<any>(INDEX_EXTENDED_MAPPING(index), {
     variables: [],
   });

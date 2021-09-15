@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "private": true,
   "engines": {
     "node": ">=15.14.0",
@@ -10,8 +10,8 @@
     "@ant-design/icons": "^4.6.2",
     "@apollo/client": "^3.3.11",
     "@babel/runtime": "^7.12.1",
-    "@ferlab/style": "^1.7.1",
-    "@ferlab/ui": "^1.7.5",
+    "@ferlab/style": "^1.8.3",
+    "@ferlab/ui": "^1.9.1",
     "@kfarranger/components": "1.25.0",
     "@nivo/bar": "0.59.0",
     "@nivo/core": "0.59.0",
