@@ -8,6 +8,12 @@
 ### Technical / Other changes
 -->
 
+## 2021-09-15 kf-portal-ui 3.3.2
+
+### Technical / Other changes
+
+- [SKFP-135](https://d3b.atlassian.net/browse/SKFP-135) Fix (File repository, Filter options): Fix column selection error, pathology filter
+
 ## 2021-09-13 kf-portal-ui 3.3.1
 
 ### Technical / Other changes
