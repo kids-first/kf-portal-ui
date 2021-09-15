@@ -82,7 +82,6 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         className="variant-repo__query-builder"
         showHeader={true}
         headerTitle={'Variant Query'}
-        showHeaderTools={true}
         cacheKey={VARIANT_REPO_CACHE_KEY}
         enableCombine={true}
         currentQuery={filters?.content?.length ? filters : {}}
