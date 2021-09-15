@@ -24843,6 +24843,25 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table-thead > tr > th {
   border-bottom: 1px solid #eaeaec;
 }
+.ant-table-thead-cell {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2b388f;
+}
+.ant-table-cell {
+  font-weight: normal;
+  font-size: 14px;
+  color: #383f72;
+  align-items: top;
+}
+.ant-table-cell > a {
+  color: #383f72;
+}
+.ant-table-cell button.ant-btn-link {
+  height: auto;
+  line-height: 1;
+  padding: 0;
+}
 .ant-table-tbody > tr:nth-child(2n) {
   background-color: #f9f9fb;
 }
@@ -24857,24 +24876,8 @@ div.ant-typography-edit-content.ant-typography-rtl {
   vertical-align: top;
   border: none;
 }
-.ant-table-thead .ant-table-cell {
-  font-weight: 600;
-  font-size: 14px;
-  color: #2b388f;
-}
-.ant-table-cell {
-  font-weight: normal;
-  font-size: 14px;
-  color: #383f72;
-  align-items: top;
-}
-.ant-table-cell button.ant-btn-link {
-  height: auto;
-  line-height: 1;
-  padding: 0;
-}
-.ant-table-cell > a {
-  color: #383f72;
+.ant-table-title + .ant-table-container table > thead > tr:first-child th:first-child {
+  border-top-left-radius: 2px;
 }
 .ant-btn-default.ant-btn-dangerous {
   background-color: #ffffff;
@@ -24990,6 +24993,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-btn-link:focus > span,
 .ant-btn-text:focus > span {
   text-decoration: none;
+}
+.ant-select-item-option-disabled.ant-select-item-option-selected {
+  background-color: #eaeaec;
+}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #eaeaec;
 }
 .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
   color: #8a8da8;

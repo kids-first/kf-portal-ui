@@ -1,7 +1,11 @@
 import { gql } from '@apollo/client';
 
-export const SEARCH_VARIANT_TABLE_QUERY = gql`
-  query GetSearchedVariant(
+import { ExtendedMapping } from 'components/Utils/utils';
+import { dotToUnderscore, underscoreToDot } from 'store/graphql/utils';
+import { MappingResults } from 'store/graphql/utils/actions';
+
+export const VARIANT_QUERY = gql`
+  query VariantInformation(
     $sqon: JSON
     $pageSize: Int
     $offset: Int
@@ -13,6 +17,7 @@ export const SEARCH_VARIANT_TABLE_QUERY = gql`
         total
         edges {
           node {
+            id
             hgvsg
             hash
             locus
@@ -247,13 +252,13 @@ export const TAB_SUMMARY_QUERY = gql`
                       fathmm_pred
                       fathmm_converted_rankscore
                       cadd_rankscore
-                      dann_score
+                      dann_rankscore
                       lrt_pred
                       lrt_converted_rankscore
                       revel_rankscore
                       sift_converted_rankscore
                       sift_pred
-                      polyphen2_hvar_score
+                      polyphen2_hvar_rankscore
                       polyphen2_hvar_pred
                     }
                     impact_score
@@ -395,3 +400,43 @@ export const VARIANT_STATS_QUERY = gql`
     }
   }
 `;
+
+export const VARIANT_AGGREGATION_QUERY = (aggList: string[], mappingResults: MappingResults) => {
+  if (!mappingResults || mappingResults.loadingMapping) return gql``;
+
+  const aggListDotNotation = aggList.map((i) => underscoreToDot(i));
+
+  const extendedMappingsFields = aggListDotNotation.flatMap((i) =>
+    (mappingResults?.extendedMapping || []).filter((e) => e.field === i),
+  );
+
+  return gql`
+      query VariantInformation($sqon: JSON) {
+        variants {
+           aggregations (filters: $sqon, include_missing:false){
+            ${generateAggregations(extendedMappingsFields)}
+          }
+        }
+      }
+    `;
+};
+
+const generateAggregations = (extendedMappingFields: ExtendedMapping[]) => {
+  const aggs = extendedMappingFields.map((f) => {
+    if (['keyword', 'id'].includes(f.type)) {
+      return (
+        dotToUnderscore(f.field) + ' {\n     buckets {\n      key\n        doc_count\n    }\n  }'
+      );
+    } else if (['long', 'float', 'integer', 'date'].includes(f.type)) {
+      return dotToUnderscore(f.field) + '{\n    stats {\n  max\n   min\n    }\n    }';
+    } else if (['boolean'].includes(f.type)) {
+      return (
+        dotToUnderscore(f.field) +
+        ' {\n      buckets {\n       key\n       doc_count\n     }\n    }'
+      );
+    } else {
+      return '';
+    }
+  });
+  return aggs.join(' ');
+};

@@ -6,7 +6,7 @@ import SuggestionOption from './SuggestionOption';
 
 const generateDisplayName = (suggestion: Suggestion): string | undefined => {
   const type = suggestion.type;
-  return type === GenomicFeatureType.GENE ? suggestion.geneSymbol : suggestion.locus;
+  return type === GenomicFeatureType.GENE ? suggestion.symbol : suggestion.locus;
 };
 
 const removeSuggestionsDuplicates = (arr: Suggestion[]) =>
@@ -38,7 +38,7 @@ const generateSuggestionOptions = (searchText: string | undefined, suggestions: 
         searchText,
         suggestionId: suggestion.suggestion_id,
         featureType: suggestion.type,
-        geneSymbol: suggestion.geneSymbol,
+        geneSymbol: suggestion.symbol,
         displayName,
       },
     };

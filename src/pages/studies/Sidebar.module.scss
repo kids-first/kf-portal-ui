@@ -1,5 +1,9 @@
 @import 'style/themes/default/_colors';
 
+.siderWrapper {
+  overflow-y: auto;
+}
+
 .sider {
   border-right: thin solid $gray-4;
   min-width: 320px;
@@ -29,6 +33,8 @@
   & > .scrollView {
     margin-top: 28px;
     padding-bottom: 14px;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     // &:first-child > div {
     //   margin-top: 16px;

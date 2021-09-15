@@ -1,13 +1,7 @@
 @import 'src/style/themes/default/colors';
 
 .inputVariant {
-  padding: 8px;
   background: $layout-bg-base;
   border-radius: 2px;
-}
-
-$autocomplete-width: 750px;
-
-:export {
-  autoCompleteWidth: $autocomplete-width;
+  width: 100%;
 }

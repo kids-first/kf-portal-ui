@@ -24,3 +24,35 @@ $query-icon-operator-color-hover: #26436e;
 $query-icon-label-operator-color: #26436e;
 
 $query-total-color: $body-1;
+
+// SidebarMenu
+$sidebar-menu-width: 220px;
+$sidebar-menu-collapsed-width: 50px;
+$sidebar-menu-background-color: $cyan-7;
+$sidebar-menu-toggle-icon-size: 21px;
+
+$sidebar-menu-item-icon-size: 24px;
+$sidebar-menu-item-height: 50px;
+$sidebar-menu-item-text-color: $gray-1;
+$sidebar-menu-item-active-background-color: $cyan-8;
+$sidebar-menu-item-active-color: $gray-1;
+$sidebar-menu-item-hover-color: $gray-1;
+$sidebar-menu-item-hover-opacity: 0.8;
+
+$sidebar-quick-filter-input-box-shadow-hover: 0 0 0 2px $cyan-8;
+$sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px $cyan-7, 0 0 0 3px $gray-1;
+$sidebar-quick-filter-input-placeholder-color: $body-3;
+$sidebar-quick-filter-input-text-color: $body-1;
+
+$sidebar-content-panel-padding: 16px;
+$sidebar-content-panel-width: 320px;
+$sidebar-content-panel-close-icon-color: $cyan-7;
+$sidebar-content-panel-right-border: 1px solid $gray-5;
+$sidebar-content-panel-background-color: transparent;
+
+// Filters
+$filter-input-label-color: $body-1;
+$filter-actions-border-color: $gray-4;
+$filter-actions-disabled-border-color: $gray-5;
+$filter-actions-disabled-background-color: $gray-3;
+$filter-actions-disabled-color: $body-3;
