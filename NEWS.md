@@ -8,6 +8,12 @@
 ### Technical / Other changes
 -->
 
+## 2021-09-16 kf-portal-ui 3.3.3
+
+### Technical / Other changes
+
+- [SKFP-140](https://d3b.atlassian.net/browse/SKFP-140) Fix (Login): Fix ORCID login. Always redirects to Login page
+
 ## 2021-09-15 kf-portal-ui 3.3.2
 
 ### Technical / Other changes
