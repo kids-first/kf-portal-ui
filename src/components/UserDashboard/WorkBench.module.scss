@@ -11,6 +11,11 @@
 
   .switchContainer {
     padding: 0 5rem;
+    text-align: center;
+
+    > div {
+      text-align: left;
+    }
   }
 }
 

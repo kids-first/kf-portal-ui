@@ -44,11 +44,6 @@ export type VariantPageResults = {
   loading: boolean;
 };
 
-type Results = {
-  data: VariantPageResults | null;
-  loading: boolean;
-};
-
 const DEFAULT_PAGE_NUM = 1;
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_STUDIES_SIZE = 30000;
@@ -87,7 +82,6 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         className="variant-repo__query-builder"
         showHeader={true}
         headerTitle={'Variant Query'}
-        showHeaderTools={true}
         cacheKey={VARIANT_REPO_CACHE_KEY}
         enableCombine={true}
         currentQuery={filters?.content?.length ? filters : {}}

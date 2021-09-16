@@ -166,7 +166,7 @@ const App = () => {
                   )}
                 />
 
-                <ProtectedRoute
+                <Route
                   path={ROUTES.orcid}
                   exact
                   render={(props) => (
