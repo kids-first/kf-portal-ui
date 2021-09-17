@@ -80,8 +80,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onToggleIsPublic: (api, profile) => dispatch(toggleIsPublic(profile)),
-  onToggleIsActive: (api, profile) => dispatch(toggleIsActive(profile)),
+  onToggleIsPublic: (api, profile) => dispatch(toggleIsPublic(api, profile)),
+  onToggleIsActive: (api, profile) => dispatch(toggleIsActive(api, profile)),
   onCleanErrors: () => dispatch(cleanProfileErrors()),
 });
 
