@@ -49,22 +49,11 @@ export type HitsEntity = VariantEntity | StudiesResult;
 const isTermAgg = (obj: any): obj is TermAggs => obj.buckets !== undefined;
 const isRangeAgg = (obj: any): obj is RangeAggs => obj.stats !== undefined;
 
-export interface GQLData<T extends Aggs = any> {
-  aggregations: any;
-  hits: {
-    edges: [
-      {
-        node: HitsEntity;
-      },
-    ];
-    total: number;
-  };
-}
-
 export const generateFilters = (
   results: Results,
   mappingResults: MappingResults,
   className: string = '',
+  filtersOpen: boolean = true,
   showSearchInput: boolean = false,
   useFilterSelector: boolean = false,
 ) =>
@@ -79,9 +68,10 @@ export const generateFilters = (
     const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
 
     return (
-      <div className={className} key={key}>
+      <div className={className} key={`${key}_${filtersOpen}`}>
         <FilterComponent
           maxShowing={5}
+          isOpen={filtersOpen}
           filterGroup={filterGroup}
           filters={filters}
           onChange={(fg, f) => {
@@ -93,6 +83,18 @@ export const generateFilters = (
       </div>
     );
   });
+
+export interface GQLData<T extends Aggs = any> {
+  aggregations: any;
+  hits: {
+    edges: [
+      {
+        node: HitsEntity;
+      },
+    ];
+    total: number;
+  };
+}
 
 const getFilters = (data: GQLData | null, key: string): IFilter[] => {
   if (!data || !key) return [];

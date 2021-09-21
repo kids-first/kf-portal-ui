@@ -80,3 +80,13 @@
 .variantPageIconColor {
   fill: $geekblue-7;
 }
+
+.variantStatsLabel {
+  span:nth-last-of-type(2)  {
+    color: $geekblue-7;
+  }
+  span:nth-last-of-type(1)  {
+    color: $body-1;
+    font-size: 12px;
+  }
+}

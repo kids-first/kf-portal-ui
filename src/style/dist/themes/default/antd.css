@@ -24879,6 +24879,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table-title + .ant-table-container table > thead > tr:first-child th:first-child {
   border-top-left-radius: 2px;
 }
+.ant-btn:not(.ant-btn-link):not(.ant-btn-text):disabled,
+.ant-btn:not(.ant-btn-link):not(.ant-btn-text):disabled:hover {
+  background-color: #f3f4f6;
+  border-color: #d7d8db;
+  color: #8a8da8;
+}
 .ant-btn-default.ant-btn-dangerous {
   background-color: #ffffff;
   border-color: #dd1f2a;
@@ -24895,11 +24901,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-btn-default.ant-btn-dangerous:hover {
   background-color: #f9f9fb;
-}
-.ant-btn-default:disabled {
-  background-color: #f3f4f6;
-  border-color: #d7d8db;
-  color: #8a8da8;
 }
 .ant-btn-default:focus {
   background-color: white;
@@ -24942,11 +24943,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
   background-color: #cf1322;
   border-color: #cf1322;
 }
-.ant-btn-primary:disabled {
-  background-color: #f3f4f6;
-  border-color: #d7d8db;
-  color: #8a8da8;
-}
 .ant-btn-primary:focus {
   background-color: #00546e;
   border-color: #00546e;
@@ -24988,6 +24984,10 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-btn-link:disabled,
 .ant-btn-text:disabled {
+  color: #8a8da8;
+}
+.ant-btn-link:disabled > span,
+.ant-btn-text:disabled > span {
   color: #8a8da8;
 }
 .ant-btn-link:focus > span,
