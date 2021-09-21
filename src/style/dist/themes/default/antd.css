@@ -24994,6 +24994,21 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-btn-text:focus > span {
   text-decoration: none;
 }
+.ant-select {
+  color: #383f72;
+}
+.ant-select-selection-search .ant-input-affix-wrapper-focused {
+  box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+}
+.ant-select-selection-placeholder {
+  color: #8a8da8;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+}
+.ant-select-single.ant-select-open .ant-select-selection-item {
+  color: #8a8da8;
+}
 .ant-select-item-option-disabled.ant-select-item-option-selected {
   background-color: #eaeaec;
 }
@@ -25074,6 +25089,25 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-card-head {
   font-weight: 600;
+}
+.ant-input::placeholder {
+  color: #8a8da8 !important;
+}
+.ant-input-number,
+.ant-input {
+  color: #383f72;
+}
+.ant-input-number-focused,
+.ant-input-focused {
+  box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+}
+.ant-input-number-disabled,
+.ant-input-disabled {
+  color: #8a8da8;
+}
+.ant-input-number-input::placeholder,
+.ant-input-input::placeholder {
+  color: #8a8da8;
 }
 body {
   background-color: #f3f4f6;

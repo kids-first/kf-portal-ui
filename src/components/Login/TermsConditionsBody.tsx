@@ -1,11 +1,12 @@
-import { Typography } from 'antd';
 import React, { FunctionComponent } from 'react';
+import { Typography } from 'antd';
+
 import './termsConditions.css';
 
 const { Paragraph } = Typography;
 
 const TermsConditionsBody: FunctionComponent = () => (
-  <div className={'content-body-wrapper'}>
+  <div className={'content-body-wrapper terms-and-conditions'}>
     <Paragraph>
       As a user of the Services you agree that you are 13 years of age or older and furthermore
       agree to the Terms and Conditions of Services defined herein and where applicable the terms
