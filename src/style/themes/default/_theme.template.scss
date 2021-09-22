@@ -1,6 +1,10 @@
 @import '~@ferlab/style/themes/default/theme.template';
 @import 'colors';
 
+$query-default-action-default-color: $body-1;
+$query-default-action-hover-color: $body-1;
+$query-default-action-focus-color: $body-1;
+
 $query-builder-bg: $gray-1;
 $query-builder-border-color: $gray-4;
 $query-builder-padding: 2.4rem;
@@ -17,11 +21,25 @@ $query-bar-identifier-active: $cyan-6;
 $query-pill-bg: $gray-5;
 $query-pill-bg-active: rgba($cyan-5, 0.25);
 
+$query-pill-button-default-color: $query-default-action-default-color;
+$query-pill-button-hover-color: $query-default-action-hover-color;
+$query-pill-button-focus-color: $query-default-action-focus-color;
+
+$query-values-bg: $white;
+$query-values-button-default-color: $query-default-action-default-color;
+$query-values-button-hover-color: $query-default-action-hover-color;
+$query-values-button-focus-color: $query-default-action-focus-color;
+
+$query-combiner-button-default-color: $query-default-action-default-color;
+$query-combiner-button-hover-color: $query-default-action-hover-color;
+$query-combiner-button-focus-color: $query-default-action-focus-color;
+
 $query-values-bg: $white;
 
 $query-icon-operator-color: $body-1;
-$query-icon-operator-color-hover: #26436e;
-$query-icon-label-operator-color: #26436e;
+$query-icon-operator-color-hover: $body-1;
+$query-icon-label-operator-color: $body-1;
+$query-text-operator-color-hover: $body-1;
 
 $query-total-color: $body-1;
 
