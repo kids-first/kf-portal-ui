@@ -8,9 +8,15 @@ import {
   updateFilters,
 } from '@ferlab/ui/core/data/filters/utils';
 
+import { fieldMappings } from 'pages/variantsSearchPage/filters/fieldsMappings';
 import history from 'services/history';
 import { StudiesResult } from 'store/graphql/studies/models';
-import { keyEnhance, keyEnhanceBooleanOnly, underscoreToDot } from 'store/graphql/utils';
+import {
+  dotToUnderscore,
+  keyEnhance,
+  keyEnhanceBooleanOnly,
+  underscoreToDot,
+} from 'store/graphql/utils';
 import { MappingResults } from 'store/graphql/utils/actions';
 import { VariantEntity } from 'store/graphql/variants/models';
 
@@ -127,6 +133,8 @@ const getFilterGroup = (
   aggregation: Aggs,
   rangeTypes: string[],
 ): IFilterGroup => {
+  const nameMapping = fieldMappings[dotToUnderscore(extendedMapping?.field || '')];
+
   if (isRangeAgg(aggregation)) {
     return {
       field: extendedMapping?.field || '',
@@ -148,5 +156,8 @@ const getFilterGroup = (
     field: extendedMapping?.field || '',
     title: extendedMapping?.displayName || '',
     type: getFilterType(extendedMapping?.type || ''),
+    config: {
+      nameMapping: nameMapping || [],
+    },
   };
 };
