@@ -1,7 +1,7 @@
 import React from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
-import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
+import { IFilterGroup } from '@ferlab/ui/core/components/filters/types';
 import {
   getFilterType,
   getSelectedFilters,
@@ -63,7 +63,7 @@ export const generateFilters = (
     );
 
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
-    const filters = getFilters(results.data, key);
+    const filters = getFilters(results.data, key, found?.type || '');
     const selectedFilters = getSelectedFilters(filters, filterGroup);
     const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
 
@@ -96,16 +96,16 @@ export interface GQLData<T extends Aggs = any> {
   };
 }
 
-const getFilters = (data: GQLData | null, key: string): IFilter[] => {
+const getFilters = (data: GQLData | null, key: string, type: string) => {
   if (!data || !key) return [];
 
   if (isTermAgg(data.aggregations[key])) {
     return data.aggregations[key!].buckets.map((f: TermAgg) => ({
       data: {
         count: f.doc_count,
-        key: keyEnhanceBooleanOnly(f.key),
+        key: type === 'boolean' ? keyEnhanceBooleanOnly(f.key) : f.key,
       },
-      name: keyEnhance(f.key),
+      name: keyEnhance(f.key, type),
       id: f.key,
     }));
   } else {
@@ -113,7 +113,7 @@ const getFilters = (data: GQLData | null, key: string): IFilter[] => {
       return [
         {
           data: { max: 1, min: 0 },
-          name: keyEnhance(key),
+          name: keyEnhance(key, type),
           id: key,
         },
       ];
