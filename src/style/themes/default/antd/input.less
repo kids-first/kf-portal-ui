@@ -1,0 +1,24 @@
+.@{input-prefix-cls} {
+  &::placeholder {
+    color: @body-3 !important;
+  }
+
+  &-number,
+  & {
+    color: @body-1;
+
+    &-focused {
+      box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+    }
+
+    &-disabled {
+      color: @body-3;
+    }
+
+    &-input {
+      &::placeholder {
+        color: @body-3;
+      }
+    }
+  }
+}

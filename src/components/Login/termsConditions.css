@@ -11,6 +11,11 @@
   margin-left: 8px;
 }
 
+/* override */
+.terms-and-conditions .ant-typography {
+  color: #515885;
+}
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -24,8 +29,4 @@
 .content-body-wrapper {
   overflow-y: scroll;
   height: 450px;
-}
-
-.content-body-wrapper > .ant-typography {
-  color: #515885;
 }
