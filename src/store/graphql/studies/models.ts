@@ -1,7 +1,7 @@
 import { HitsResultsDataCategory, StudiesResults } from './actions';
 
 export type StudiesResult = {
-  kf_id: string;
+  id: string;
   name: string;
   domain: string[];
   score: string;
@@ -36,7 +36,7 @@ export const generateTableData = (studiesResults: StudiesResults) =>
       pat: data_category?.find((d) => d.data_category === 'Pathology')?.count || null,
       rad: data_category?.find((d) => d.data_category === 'Radiology')?.count || null,
       other: data_category?.find((d) => d.data_category === 'Other')?.count || null,
-      key: edge.node.kf_id,
+      key: edge.node.id,
     };
   });
 

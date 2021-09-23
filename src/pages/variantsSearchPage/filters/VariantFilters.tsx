@@ -56,7 +56,13 @@ const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
       </div>
       <Spin size="large" spinning={results.loading}>
         <Layout className={styles.variantFilterWrapper}>
-          {generateFilters(results, mappingResults, styles.variantFilterContainer, filtersOpen)}
+          {generateFilters(
+            results,
+            mappingResults,
+            styles.variantFilterContainer,
+            filtersOpen,
+            true,
+          )}
         </Layout>
       </Spin>
     </Layout>

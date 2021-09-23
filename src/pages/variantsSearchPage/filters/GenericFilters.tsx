@@ -29,7 +29,15 @@ const GenericFilters: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
   return (
     <Spin size="large" spinning={results.loading}>
       <Layout className={styles.variantFilterWrapper}>
-        {generateFilters(results, mappingResults, styles.variantFilterContainer, true, true, true)}
+        {generateFilters(
+          results,
+          mappingResults,
+          styles.variantFilterContainer,
+          true,
+          false,
+          true,
+          true,
+        )}
       </Layout>
     </Spin>
   );
