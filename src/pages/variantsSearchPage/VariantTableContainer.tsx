@@ -26,12 +26,11 @@ import { AlignmentOptions } from 'ui/TableOptions';
 import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
 
 import ConsequencesCell from './ConsequencesCell';
-import { VariantPageResults } from './VariantPageContainer';
+import { DEFAULT_PAGE_SIZE, VariantPageResults } from './VariantPageContainer';
 
 import style from './VariantTableContainer.module.scss';
 
 const DEFAULT_PAGE_NUM = 1;
-const DEFAULT_PAGE_SIZE = 10;
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type VariantTableState = {
@@ -56,6 +55,8 @@ type Props = PropsFromRedux & {
   results: VariantPageResults;
   filters: ISyntheticSqon;
   setCurrentPageCb: (currentPage: number) => void;
+  currentPageSize: number;
+  setcurrentPageSize: (currentPage: number) => void;
 };
 
 const generateColumns = (props: Props, studyList: StudiesResult[]) =>
@@ -129,7 +130,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies?.hits.edges || [];
         const studyIds = nodes.map((r) => r.node.study_id);
-        const studyCodes = studyList.filter((s) => studyIds.includes(s.kf_id)).map((s) => s.code);
+        const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
 
         return studies?.hits?.total ? (
           <Link
@@ -233,7 +234,7 @@ const makeRows = (rows: VariantEntityNode[]) =>
   rows.map((row: VariantEntityNode, index: number) => ({ ...row.node, key: `${index}` }));
 
 const VariantTableContainer: FunctionComponent<Props> = (props) => {
-  const { results, setCurrentPageCb } = props;
+  const { results, setCurrentPageCb, currentPageSize, setcurrentPageSize } = props;
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
 
   const nodes = results.data?.variants.hits?.edges || [];
@@ -246,7 +247,7 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
     <Table
       title={() =>
         total > 0 ? (
-          <TableTitle currentPage={currentPageNum} pageSize={DEFAULT_PAGE_SIZE} total={total} />
+          <TableTitle currentPage={currentPageNum} pageSize={currentPageSize} total={total} />
         ) : (
           <></>
         )
@@ -254,10 +255,12 @@ const VariantTableContainer: FunctionComponent<Props> = (props) => {
       pagination={{
         current: currentPageNum,
         total: total,
-        onChange: (page) => {
-          if (currentPageNum !== page) {
+        defaultPageSize: currentPageSize,
+        onChange: (page, pageSize) => {
+          if (currentPageNum !== page || currentPageSize !== pageSize) {
             setCurrentPageNum(page);
             setCurrentPageCb(page);
+            setcurrentPageSize(pageSize || DEFAULT_PAGE_SIZE);
           }
         },
         size: 'small',

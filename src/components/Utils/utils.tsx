@@ -11,12 +11,7 @@ import {
 import { fieldMappings } from 'pages/variantsSearchPage/filters/fieldsMappings';
 import history from 'services/history';
 import { StudiesResult } from 'store/graphql/studies/models';
-import {
-  dotToUnderscore,
-  keyEnhance,
-  keyEnhanceBooleanOnly,
-  underscoreToDot,
-} from 'store/graphql/utils';
+import { keyEnhance, keyEnhanceBooleanOnly, underscoreToDot } from 'store/graphql/utils';
 import { MappingResults } from 'store/graphql/utils/actions';
 import { VariantEntity } from 'store/graphql/variants/models';
 
@@ -60,6 +55,7 @@ export const generateFilters = (
   mappingResults: MappingResults,
   className: string = '',
   filtersOpen: boolean = true,
+  filterFooter: boolean = false,
   showSearchInput: boolean = false,
   useFilterSelector: boolean = false,
 ) =>
@@ -68,7 +64,7 @@ export const generateFilters = (
       (f: ExtendedMapping) => f.field === underscoreToDot(key),
     );
 
-    const filterGroup = getFilterGroup(found, results.data?.aggregations[key], []);
+    const filterGroup = getFilterGroup(found, results.data?.aggregations[key], [], filterFooter);
     const filters = getFilters(results.data, key, found?.type || '');
     const selectedFilters = getSelectedFilters(filters, filterGroup);
     const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
@@ -132,8 +128,9 @@ const getFilterGroup = (
   extendedMapping: ExtendedMapping | undefined,
   aggregation: Aggs,
   rangeTypes: string[],
+  filterFooter: boolean,
 ): IFilterGroup => {
-  const nameMapping = fieldMappings[dotToUnderscore(extendedMapping?.field || '')];
+  const nameMapping = fieldMappings[extendedMapping?.field || ''];
 
   if (isRangeAgg(aggregation)) {
     return {
@@ -158,6 +155,7 @@ const getFilterGroup = (
     type: getFilterType(extendedMapping?.type || ''),
     config: {
       nameMapping: nameMapping || [],
+      withFooter: filterFooter,
     },
   };
 };
