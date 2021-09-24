@@ -25008,6 +25008,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-select.ant-select:not(.ant-select-customize-input) .ant-select-selector {
   border: 1px solid #d7d8db;
 }
+.ant-select.ant-select:not(.ant-select-customize-input) .ant-select-selector:hover {
+  border: 1px solid #7b88c8;
+}
 .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
   border: 1px solid #7b88c8;
   box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
