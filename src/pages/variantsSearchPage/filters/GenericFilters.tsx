@@ -34,7 +34,7 @@ const GenericFilters: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
           mappingResults,
           styles.variantFilterContainer,
           true,
-          false,
+          true,
           true,
           true,
         )}
