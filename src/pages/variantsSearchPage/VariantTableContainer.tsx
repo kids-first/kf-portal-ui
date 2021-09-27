@@ -23,7 +23,7 @@ import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
 import { AlignmentOptions } from 'ui/TableOptions';
-import { formatQuotientOrElse, formatQuotientToExponentialOrElse } from 'utils';
+import { formatQuotientOrElse, toExponentialNotation } from 'utils';
 
 import ConsequencesCell from './ConsequencesCell';
 import { DEFAULT_PAGE_SIZE, VariantPageResults } from './VariantPageContainer';
@@ -209,13 +209,10 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       title: 'Frequency',
       dataIndex: '',
       render: (row: VariantEntity) => {
-        const participantNumber = row.participant_number;
-        const participantTotalNumber = row.participant_total_number;
-        return formatQuotientToExponentialOrElse(
-          participantNumber,
-          participantTotalNumber,
-          DISPLAY_WHEN_EMPTY_DATUM,
-        );
+        const participant_frequency = row.participant_frequency;
+        return participant_frequency
+          ? toExponentialNotation(participant_frequency)
+          : DISPLAY_WHEN_EMPTY_DATUM;
       },
     },
     {

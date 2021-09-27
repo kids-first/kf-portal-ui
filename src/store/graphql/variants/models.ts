@@ -37,7 +37,6 @@ export type Consequence = {
     ensembl_transcript_id: string;
     predictions: Predictions;
     coding_dna_change: string | null;
-    omim_gene_id: string | null;
     ensembl_gene_id: string | null;
     [key: string]: any;
   };
