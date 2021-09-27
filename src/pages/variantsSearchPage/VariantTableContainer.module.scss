@@ -12,7 +12,7 @@
 
 .variantSearchTable {
   :global(.ant-table-content) {
-    overflow: scroll;
+    overflow: auto;
     table {
       min-width: 1500px;
     }
