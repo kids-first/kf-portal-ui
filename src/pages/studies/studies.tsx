@@ -5,7 +5,8 @@ import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Layout } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
-import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useGetExtendedMappings } from 'store/graphql/utils/actions';
 
 import Sidebar from './Sidebar';
 import StudyPageContainer from './StudyPageContainer';

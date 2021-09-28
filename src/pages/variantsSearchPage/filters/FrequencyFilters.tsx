@@ -16,7 +16,7 @@ type OwnProps = {
 
 //order in list reflects order in UI
 const INPUT_FILTER_LIST: string[] = [
-  'frequencies__internal__upper_bound_kf__af',
+  'participant_frequency',
   'frequencies__gnomad_genomes_2_1__af',
   'frequencies__gnomad_genomes_3_0__af',
   'frequencies__gnomad_genomes_3_1_1__af',
