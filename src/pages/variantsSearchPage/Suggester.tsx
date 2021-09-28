@@ -100,7 +100,7 @@ const Suggester = (props: SuggesterProps) => {
       <Input
         maxLength={MAX_N_OF_CHARS}
         allowClear
-        size="large"
+        size="middle"
         placeholder={placeholderText}
         onPressEnter={(e: any) => {
           e.preventDefault();
