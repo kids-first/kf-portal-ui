@@ -1,4 +1,36 @@
 .@{select-prefix-cls} {
+  color: @body-1;
+
+  &-selection {
+    &-search {
+      .@{input-prefix-cls}-affix-wrapper-focused {
+        box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+      }
+    }
+
+    &-placeholder {
+      color: @body-3;
+    }
+  }
+
+  &-focused {
+    &:not(.@{select-prefix-cls}-disabled) {
+      &.@{select-prefix-cls}:not(.@{select-prefix-cls}-customize-input) {
+        .@{select-prefix-cls}-selector {
+          box-shadow: 0px 0px 4px rgba(100, 118, 189, 0.5);
+        }
+      }
+    }
+  }
+
+  &-single {
+    &.@{select-prefix-cls}-open {
+      .@{select-prefix-cls}-selection-item {
+        color: @body-3;
+      }
+    }
+  }
+
   &-item {
     &-option {
       &-disabled {

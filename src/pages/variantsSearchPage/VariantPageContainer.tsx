@@ -15,6 +15,7 @@ import { VariantEntity } from 'store/graphql/variants/models';
 import { VARIANT_QUERY } from 'store/graphql/variants/queries';
 import styleThemeColors from 'style/themes/default/colors.module.scss';
 
+import { fieldMappings } from './filters/fieldsMappings';
 import GenericFilters from './filters/GenericFilters';
 import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from './constants';
 import VariantTableContainer from './VariantTableContainer';
@@ -45,18 +46,20 @@ export type VariantPageResults = {
 };
 
 const DEFAULT_PAGE_NUM = 1;
-const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_STUDIES_SIZE = 30000;
 
 const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
+  const [currentPageSize, setcurrentPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { filters } = useFilters();
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
   const results = useGetPageData(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
-      pageSize: DEFAULT_PAGE_SIZE,
-      offset: DEFAULT_PAGE_SIZE * (currentPageNum - 1),
+      pageSize: currentPageSize,
+      offset: currentPageSize * (currentPageNum - 1),
+      sort: [{ field: 'impact_score', order: 'desc' }],
       studiesSize: DEFAULT_STUDIES_SIZE,
     },
     VARIANT_QUERY,
@@ -73,6 +76,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
       facet: (key) =>
         mappingResults?.extendedMapping?.find((mapping: ExtendedMapping) => key === mapping.field)
           ?.displayName || key,
+      facetValueMapping: fieldMappings,
     },
   };
 
@@ -103,6 +107,8 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
           results={results}
           filters={filters}
           setCurrentPageCb={setCurrentPageNum}
+          currentPageSize={currentPageSize}
+          setcurrentPageSize={setcurrentPageSize}
         />
       </StackLayout>
     </StackLayout>

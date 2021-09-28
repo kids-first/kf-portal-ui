@@ -112,7 +112,7 @@ const VariantPage = () => {
         visible={statsModalOpened}
         footer={[
           <Button type="primary" key="ok" onClick={() => setStatsModalOpened(false)}>
-            Ok
+            OK
           </Button>,
         ]}
       >
