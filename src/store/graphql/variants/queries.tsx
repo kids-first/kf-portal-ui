@@ -240,7 +240,6 @@ export const TAB_SUMMARY_QUERY = gql`
                     consequences
                     ensembl_gene_id
                     coding_dna_change
-                    omim_gene_id
                     aa_change
                     strand
                     canonical
@@ -293,6 +292,7 @@ export const TAB_SUMMARY_QUERY = gql`
               hits {
                 edges {
                   node {
+                    omim_gene_id
                     symbol
                   }
                 }

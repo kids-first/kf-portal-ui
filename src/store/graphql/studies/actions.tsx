@@ -5,7 +5,7 @@ import { DataCategory, StudiesResult } from 'store/graphql/studies/models';
 import { MappingResults } from 'store/graphql/utils/actions';
 import { useLazyResultQuery } from 'store/graphql/utils/query';
 
-import { INDEX_EXTENDED_MAPPING, STUDIES_QUERY, STUDIES_SEARCH_QUERY } from './queries';
+import { STUDIES_QUERY, STUDIES_SEARCH_QUERY } from './queries';
 
 type AggregationBuckets = {
   buckets: [
@@ -104,16 +104,5 @@ export const useGetStudiesSearch = (variables: QueryVariable): StudiesResults =>
   return {
     loading,
     data: result?.studies || null,
-  };
-};
-
-export const useGetExtendedMappings = (index: string): MappingResults => {
-  const { loading, result } = useLazyResultQuery<any>(INDEX_EXTENDED_MAPPING(index), {
-    variables: [],
-  });
-
-  return {
-    loadingMapping: loading,
-    extendedMapping: result?.studies.extended,
   };
 };
