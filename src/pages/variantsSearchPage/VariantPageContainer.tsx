@@ -59,7 +59,10 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
       sqon: resolveSyntheticSqon(allSqons, filters),
       pageSize: currentPageSize,
       offset: currentPageSize * (currentPageNum - 1),
-      sort: [{ field: 'impact_score', order: 'desc' }],
+      sort: [
+        { field: 'impact_score', order: 'desc' },
+        { field: 'hgvsg', order: 'asc' },
+      ],
       studiesSize: DEFAULT_STUDIES_SIZE,
     },
     VARIANT_QUERY,
