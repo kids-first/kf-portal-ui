@@ -107,6 +107,8 @@ export type Suggestion = {
   matchedText: string;
   suggestion_id: string;
   symbol?: string;
+  rsnumber?: string;
+  ensembl_gene_id?: string;
 };
 
 export type SelectedSuggestion = {
