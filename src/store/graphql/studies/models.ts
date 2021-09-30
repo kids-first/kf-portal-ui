@@ -36,7 +36,7 @@ export const generateTableData = (studiesResults: StudiesResults) =>
       pat: data_category?.find((d) => d.data_category === 'Pathology')?.count || null,
       rad: data_category?.find((d) => d.data_category === 'Radiology')?.count || null,
       other: data_category?.find((d) => d.data_category === 'Other')?.count || null,
-      key: edge.node.id,
+      key: edge.node.code,
     };
   });
 
