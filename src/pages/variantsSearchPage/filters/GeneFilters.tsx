@@ -27,7 +27,7 @@ const INPUT_FILTER_LIST = [
   'genes__cosmic__tumour_types_germline',
 ];
 const SUGGESTION_TYPE = 'genes';
-const PLACE_HOLDER_TEXT = 'chr2:g.28025382G>T';
+const PLACE_HOLDER_TEXT = 'BRAF';
 const TITLE = 'Search by Gene';
 
 const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
