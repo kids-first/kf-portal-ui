@@ -44,7 +44,10 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   return (
     <>
-      <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
+      <SuggesterWrapper
+        tooltipMessage={'Enter Gene Symbol, Gene Alias or Ensembl ID'}
+        title={TITLE}
+      >
         <Suggester
           title={TITLE}
           suggestionType={SUGGESTION_TYPE}
