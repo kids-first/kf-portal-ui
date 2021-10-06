@@ -42,7 +42,11 @@ const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   return (
     <Layout>
-      <SuggesterWrapper tooltipMessage={'Search by Variant'} title={TITLE}>
+      <SuggesterWrapper
+        tooltipMessage={`Enter Variant Locus, Gene Symbol, Gene Alias, 
+          Gene AA Change, dbSNP ID, Clinvar ID, Ensembl ID, refseq ID`}
+        title={TITLE}
+      >
         <Suggester
           suggestionType={SUGGESTION_TYPE}
           title={TITLE}

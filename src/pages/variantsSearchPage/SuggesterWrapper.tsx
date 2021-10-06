@@ -22,7 +22,13 @@ const SuggesterWrapper = (props: SuggesterWrapperProps) => {
             <div className={style.searchTitle}>{title}</div>
           </Col>
           <Col>
-            <Tooltip placement="topLeft" title={tooltipMessage}>
+            <Tooltip
+              align={{
+                offset: [-12],
+              }}
+              placement="topLeft"
+              title={tooltipMessage}
+            >
               <InfoCircleOutlined className={style.searchIconsDisabled} />
             </Tooltip>
           </Col>
