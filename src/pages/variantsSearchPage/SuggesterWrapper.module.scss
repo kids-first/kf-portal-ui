@@ -1,10 +1,14 @@
 @import 'style/themes/default/_colors';
 
-.searchTitle {
-  color: $body-1;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-.searchIconsDisabled {
-  color: $body-3;
+.suggesterTitleWrapper {
+  margin-bottom: 2px;
+  .searchTitle {
+    color: $body-1;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 22px;
+  }
+  .searchIconsDisabled {
+    color: $body-3;
+  }
 }
