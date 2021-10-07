@@ -17,7 +17,7 @@ type OwnProps = {
 //order in list reflects order in UI
 const INPUT_FILTER_LIST: string[] = ['studies__study_code', 'zygosity', 'transmissions'];
 
-const OccurenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
+const OccurrenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   const { filters } = useFilters();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
@@ -51,4 +51,4 @@ const OccurenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
   );
 };
 
-export default OccurenceFilters;
+export default OccurrenceFilters;
