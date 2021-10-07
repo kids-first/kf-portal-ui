@@ -10,7 +10,7 @@ import ExpandableTable from 'components/ExpandableTable';
 import { filterThanSortConsequencesByImpact } from 'components/Variants/consequences';
 import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
-import { Consequence, Impact, VariantEntity } from 'store/graphql/variants/models';
+import { Consequence, Gene, Impact, VariantEntity } from 'store/graphql/variants/models';
 import { useTabSummaryData } from 'store/graphql/variants/tabActions';
 
 import Summary from './Summary';
@@ -56,7 +56,7 @@ const getLongPredictionLabelIfKnown = (predictionField: string, predictionShortL
   return longPrediction || null;
 };
 
-const groupConsequencesBySymbol = (consequences: Consequence[]) => {
+const groupConsequencesBySymbol = (consequences: Consequence[], genes: Gene[]) => {
   if (consequences.length === 0) {
     return {};
   }
@@ -65,7 +65,8 @@ const groupConsequencesBySymbol = (consequences: Consequence[]) => {
     if (!symbol) {
       return acc;
     }
-    const omim = consequence.node.omim_gene_id || '';
+    const gene = genes.find((g) => g.node.symbol === symbol);
+    const omim = gene ? gene.node.omim_gene_id : '';
     const ensembleGeneId = consequence.node.ensembl_gene_id || '';
     const oldConsequences = acc[symbol]?.consequences || [];
 
@@ -102,11 +103,11 @@ const orderConsequencesForTable = (tableGroups: TableGroup[]) => {
   });
 };
 
-const makeTables = (rawConsequences: Consequence[]) => {
+const makeTables = (rawConsequences: Consequence[], rawGenes: Gene[]) => {
   if (!rawConsequences || rawConsequences.length === 0) {
     return [];
   }
-  const symbolToConsequences = groupConsequencesBySymbol(rawConsequences);
+  const symbolToConsequences = groupConsequencesBySymbol(rawConsequences, rawGenes);
   const orderedGenes = orderGenes(symbolToConsequences);
   return orderConsequencesForTable(orderedGenes);
 };
@@ -280,8 +281,9 @@ const TabSummary = ({ variantId }: OwnProps) => {
   const data = rawData as VariantEntity | undefined;
 
   const consequences = (data?.consequences?.hits?.edges || []) as Consequence[];
+  const genes = (data?.genes?.hits?.edges || []) as Gene[];
 
-  const tables = makeTables(consequences);
+  const tables = makeTables(consequences, genes);
   const hasTables = tables.length > 0;
 
   return (

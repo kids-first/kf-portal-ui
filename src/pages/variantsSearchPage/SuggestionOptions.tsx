@@ -29,7 +29,7 @@ const generateSuggestionOptions = (searchText: string | undefined, suggestions: 
         <SuggestionOption
           type={suggestion.type}
           key={suggestion.suggestion_id}
-          matchedText={suggestion.matchedText}
+          matchedText={suggestion.rsnumber || suggestion.ensembl_gene_id || ''}
           displayName={displayName || 'unknown'}
         />
       ),

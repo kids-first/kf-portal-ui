@@ -19,7 +19,7 @@ type OwnProps = {
 //order in list reflects order in UI
 const INPUT_FILTER_LIST = [
   'consequences.biotype',
-  'external_reference',
+  'gene_external_reference',
   'genes__hpo__hpo_term_label',
   'genes__orphanet__panel',
   'genes__omim__name',
@@ -27,7 +27,7 @@ const INPUT_FILTER_LIST = [
   'genes__cosmic__tumour_types_germline',
 ];
 const SUGGESTION_TYPE = 'genes';
-const PLACE_HOLDER_TEXT = 'chr2:g.28025382G>T';
+const PLACE_HOLDER_TEXT = 'BRAF';
 const TITLE = 'Search by Gene';
 
 const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
@@ -44,7 +44,10 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
 
   return (
     <>
-      <SuggesterWrapper tooltipMessage={'Search by Gene'} title={TITLE}>
+      <SuggesterWrapper
+        tooltipMessage={'Enter Gene Symbol, Gene Alias or Ensembl ID'}
+        title={TITLE}
+      >
         <Suggester
           title={TITLE}
           suggestionType={SUGGESTION_TYPE}

@@ -17,12 +17,18 @@ const SuggesterWrapper = (props: SuggesterWrapperProps) => {
   return (
     <StackLayout vertical className={style.autoCompleteContainer} fitContent>
       <div id={'anchor-search-bar'}>
-        <Row gutter={5}>
+        <Row gutter={5} className={style.suggesterTitleWrapper}>
           <Col>
             <div className={style.searchTitle}>{title}</div>
           </Col>
           <Col>
-            <Tooltip placement="topLeft" title={tooltipMessage}>
+            <Tooltip
+              align={{
+                offset: [-12],
+              }}
+              placement="topLeft"
+              title={tooltipMessage}
+            >
               <InfoCircleOutlined className={style.searchIconsDisabled} />
             </Tooltip>
           </Col>
