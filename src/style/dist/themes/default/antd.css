@@ -25141,6 +25141,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-radio-inner {
   border: 1px solid #d7d8db;
 }
+.ant-dropdown-menu-item-selected {
+  background-color: #eaeaec;
+}
 body {
   background-color: #f3f4f6;
 }
