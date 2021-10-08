@@ -44,7 +44,7 @@ const VariantStatsContainer = () => {
           label={formatCounts(result?.stats?.occurrencesCount)}
           Icon={<OccurencesIcon className={style.variantPageIconColor} {...iconSize} />}
           className={style.variantStatsLabel}
-          subLabel={'Occurences'}
+          subLabel={'Occurrences'}
         />
       </StackLayout>
     </Spin>
