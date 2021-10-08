@@ -60,7 +60,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
       pageSize: currentPageSize,
       offset: currentPageSize * (currentPageNum - 1),
       sort: [
-        { field: 'impact_score', order: 'desc' },
+        { field: 'max_impact_score', order: 'desc' },
         { field: 'hgvsg', order: 'asc' },
       ],
       studiesSize: DEFAULT_STUDIES_SIZE,
