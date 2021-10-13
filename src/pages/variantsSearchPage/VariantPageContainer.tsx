@@ -76,9 +76,14 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
 
   const dictionary: IDictionary = {
     query: {
-      facet: (key) =>
-        mappingResults?.extendedMapping?.find((mapping: ExtendedMapping) => key === mapping.field)
-          ?.displayName || key,
+      facet: (key) => {
+        if (key == 'locus') return 'Variant';
+
+        return (
+          mappingResults?.extendedMapping?.find((mapping: ExtendedMapping) => key === mapping.field)
+            ?.displayName || key
+        );
+      },
       facetValueMapping: fieldMappings,
     },
   };
@@ -98,12 +103,13 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         dictionary={dictionary}
         facetFilterConfig={{
           enable: true,
-          selectedFilterContent: selectedFilterContent,
           onFacetClick: (field) => {
             setSelectedFilterContent(
               <GenericFilters field={dotToUnderscore(field)} mappingResults={mappingResults} />,
             );
           },
+          selectedFilterContent: selectedFilterContent,
+          blacklistedFacets: ['genes.symbol', 'locus'],
         }}
         IconTotal={<VariantIcon fill={styleThemeColors.iconColor} />}
       />
