@@ -96,12 +96,14 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         loading={results.loading}
         total={total}
         dictionary={dictionary}
-        selectedFilterContent={selectedFilterContent}
-        enableFacetFilter={true}
-        onFacetClick={(field) => {
-          setSelectedFilterContent(
-            <GenericFilters field={dotToUnderscore(field)} mappingResults={mappingResults} />,
-          );
+        facetFilterConfig={{
+          enable: true,
+          selectedFilterContent: selectedFilterContent,
+          onFacetClick: (field) => {
+            setSelectedFilterContent(
+              <GenericFilters field={dotToUnderscore(field)} mappingResults={mappingResults} />,
+            );
+          },
         }}
         IconTotal={<VariantIcon fill={styleThemeColors.iconColor} />}
       />
