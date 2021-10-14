@@ -22,7 +22,6 @@ import {
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
-import { AlignmentOptions } from 'ui/TableOptions';
 import { formatQuotientOrElse, toExponentialNotation } from 'utils';
 
 import ConsequencesCell from './ConsequencesCell';
@@ -65,6 +64,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       title: 'Variant',
       dataIndex: 'hgvsg',
       ellipsis: true,
+      width: 200,
       className: style.variantTableCell,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
@@ -101,7 +101,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Consequences',
       dataIndex: 'consequences',
-      width: '20%',
+      width: 300,
       render: (consequences: { hits: { edges: Consequence[] } }) => (
         <ConsequencesCell consequences={consequences?.hits?.edges || []} />
       ),
@@ -125,7 +125,6 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     },
     {
       title: 'Studies',
-      align: AlignmentOptions.center,
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies?.hits.edges || [];
@@ -155,8 +154,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       },
     },
     {
-      title: 'Participants',
-      align: AlignmentOptions.left,
+      title: <Tooltip title="Participants">Part.</Tooltip>,
       dataIndex: '',
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
@@ -206,7 +204,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       },
     },
     {
-      title: 'Frequency',
+      title: <Tooltip title="Frequency">Freq.</Tooltip>,
       dataIndex: '',
       render: (row: VariantEntity) => {
         const participant_frequency = row.participant_frequency;
@@ -216,12 +214,12 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       },
     },
     {
-      title: 'ALT Alleles',
+      title: <Tooltip title="ALT Alleles">ALT</Tooltip>,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
-      title: 'Homozygotes',
+      title: <Tooltip title="Homozygotes">Homo</Tooltip>,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },

@@ -14,7 +14,7 @@ import { MappingResults, useGetExtendedMappings } from 'store/graphql/utils/acti
 
 import FrequencyFilters from './filters/FrequencyFilters';
 import GeneFilters from './filters/GeneFilters';
-import OccurenceFilters from './filters/OccurenceFilters';
+import OccurrenceFilters from './filters/OccurrenceFilters';
 import PathogenicityFilters from './filters/PathogenicityFilters';
 import VariantFilters from './filters/VariantFilters';
 import VariantPageContainer from './VariantPageContainer';
@@ -34,8 +34,8 @@ const filtersContainer = (mappingResults: MappingResults, type: string): ReactNo
       return <PathogenicityFilters mappingResults={mappingResults} />;
     case 'Frequency':
       return <FrequencyFilters mappingResults={mappingResults} />;
-    case 'Occurence':
-      return <OccurenceFilters mappingResults={mappingResults} />;
+    case 'Occurrence':
+      return <OccurrenceFilters mappingResults={mappingResults} />;
     default:
       return <div />;
   }
@@ -72,9 +72,9 @@ const VariantPage = () => {
     },
     {
       key: '5',
-      title: 'Occurence',
+      title: 'Occurrence',
       icon: <OccurenceIcon />,
-      panelContent: filtersContainer(variantMappingResults, 'Occurence'),
+      panelContent: filtersContainer(variantMappingResults, 'Occurrence'),
     },
   ];
 
