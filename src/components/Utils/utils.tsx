@@ -47,8 +47,8 @@ export interface ExtendedMapping {
 export type Aggs = TermAggs | RangeAggs;
 export type HitsEntity = VariantEntity | StudiesResult;
 
-const isTermAgg = (obj: any): obj is TermAggs => obj.buckets !== undefined;
-const isRangeAgg = (obj: any): obj is RangeAggs => obj.stats !== undefined;
+const isTermAgg = (obj: any): obj is TermAggs => obj!.buckets !== undefined;
+const isRangeAgg = (obj: any): obj is RangeAggs => obj!.stats !== undefined;
 
 export const generateFilters = (
   results: Results,
@@ -99,7 +99,7 @@ export interface GQLData<T extends Aggs = any> {
 }
 
 export const getFilters = (data: GQLData | null, key: string, type: string) => {
-  if (!data || !key) return [];
+  if (!data || !key || !data.aggregations[key]) return [];
 
   if (isTermAgg(data.aggregations[key])) {
     return data.aggregations[key!].buckets.map((f: TermAgg) => ({
@@ -132,7 +132,7 @@ export const getFilterGroup = (
 ): IFilterGroup => {
   const nameMapping = fieldMappings[extendedMapping?.field || ''];
 
-  if (isRangeAgg(aggregation)) {
+  if (aggregation && isRangeAgg(aggregation)) {
     return {
       field: extendedMapping?.field || '',
       title: extendedMapping?.displayName || '',

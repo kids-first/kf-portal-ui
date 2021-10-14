@@ -8,7 +8,7 @@ import { VARIANT_INDEX, VARIANT_REPO_CACHE_KEY } from 'pages/variantsSearchPage/
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
 import { VARIANT_AGGREGATION_QUERY } from 'store/graphql/variants/queries';
 
-import styles from './VariantFilters.module.scss';
+import styles from './Filters.module.scss';
 
 type OwnProps = {
   field: string;
