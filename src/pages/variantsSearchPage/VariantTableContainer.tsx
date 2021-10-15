@@ -63,9 +63,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Variant',
       dataIndex: 'hgvsg',
-      ellipsis: true,
-      width: 200,
-      className: style.variantTableCell,
+      className: `${style.variantTableCell} ${style.variantTableCellElipsis}`,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg}>

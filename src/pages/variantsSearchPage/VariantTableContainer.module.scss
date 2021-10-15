@@ -11,4 +11,10 @@
 }
 
 .variantSearchTable {
+  .variantTableCellElipsis {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: unset;
+  }
 }
