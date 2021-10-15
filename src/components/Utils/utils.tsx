@@ -99,7 +99,7 @@ export interface GQLData<T extends Aggs = any> {
 }
 
 export const getFilters = (data: GQLData | null, key: string, type: string) => {
-  if (!data || !key || !data.aggregations[key]) return [];
+  if (!data || !key) return [];
 
   if (isTermAgg(data.aggregations[key])) {
     return data.aggregations[key!].buckets.map((f: TermAgg) => ({
@@ -132,7 +132,7 @@ export const getFilterGroup = (
 ): IFilterGroup => {
   const nameMapping = fieldMappings[extendedMapping?.field || ''];
 
-  if (aggregation && isRangeAgg(aggregation)) {
+  if (isRangeAgg(aggregation)) {
     return {
       field: extendedMapping?.field || '',
       title: extendedMapping?.displayName || '',

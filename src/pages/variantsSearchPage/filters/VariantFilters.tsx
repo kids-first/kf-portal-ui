@@ -17,7 +17,7 @@ type OwnProps = {
 const INPUT_FILTER_LIST = [
   'variant_class',
   'consequences__consequences',
-  //'variant_external_reference',
+  'variant_external_reference',
   'chromosome',
   'start',
 ];

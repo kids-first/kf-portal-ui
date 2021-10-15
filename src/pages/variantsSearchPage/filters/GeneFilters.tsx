@@ -15,8 +15,8 @@ type OwnProps = {
 
 //order in list reflects order in UI
 const INPUT_FILTER_LIST = [
-  'consequences.biotype',
-  //'gene_external_reference',
+  'consequences__biotype',
+  'gene_external_reference',
   'genes__hpo__hpo_term_label',
   'genes__orphanet__panel',
   'genes__omim__name',
