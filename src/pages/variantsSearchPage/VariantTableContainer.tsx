@@ -156,6 +156,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: <Tooltip title="Participants">Part.</Tooltip>,
       dataIndex: '',
+      width: 90,
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
         const participantTotalNumber = row.participant_total_number;
@@ -206,6 +207,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: <Tooltip title="Frequency">Freq.</Tooltip>,
       dataIndex: '',
+      width: 90,
       render: (row: VariantEntity) => {
         const participant_frequency = row.participant_frequency;
         return participant_frequency

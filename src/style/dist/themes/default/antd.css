@@ -24840,6 +24840,11 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-table table {
   border-collapse: collapse;
   border-radius: 2px;
+  width: auto;
+  min-width: 100%;
+}
+.ant-table-content {
+  overflow: auto;
 }
 .ant-table-thead > tr > th {
   border-bottom: 1px solid #eaeaec;
@@ -25140,6 +25145,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .ant-radio-inner {
   border: 1px solid #d7d8db;
+}
+.ant-dropdown-menu-item-selected {
+  background-color: #eaeaec;
 }
 body {
   background-color: #f3f4f6;
