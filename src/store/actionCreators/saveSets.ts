@@ -1,14 +1,15 @@
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 
 import {
+  ArrangerUserSet,
   createSet as saveSet,
   deleteSets,
   getSetAndParticipantsCountByUser,
   setCountForTag,
   updateSet,
 } from 'services/sets';
-
-import { RootState } from '../rootState';
+import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
   DeleteSetParams,
@@ -22,8 +23,8 @@ import {
   SetSubActionTypes,
   SetUpdateInputData,
   UserSet,
-} from '../saveSetTypes';
-import { selectSets } from '../selectors/saveSetsSelectors';
+} from 'store/saveSetTypes';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
 
 export const createSet = (
   payload: SaveSetParams,
@@ -126,15 +127,15 @@ export const editSetTag = (
 };
 
 export const getUserSets = (
-  userId: string,
+  api: (config: AxiosRequestConfig) => Promise<any>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   dispatch(isLoadingSets(true));
   try {
-    const userSets = await getSetAndParticipantsCountByUser(userId);
-    const payload: UserSet[] = userSets.map((s: { node: UserSet }) => ({
-      setId: s.node.setId,
-      size: s.node.size,
-      tag: s.node.tag,
+    const userSets: ArrangerUserSet[] = await getSetAndParticipantsCountByUser(api);
+    const payload: UserSet[] = userSets.map((s) => ({
+      setId: s.id,
+      size: s.size,
+      tag: s.tag,
     }));
     dispatch(displayUserSets(payload));
   } catch (e) {
@@ -144,11 +145,11 @@ export const getUserSets = (
 };
 
 export const fetchSetsIfNeeded = (
-  userId: string,
+  api: (config: AxiosRequestConfig) => Promise<AxiosResponse>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch, getState) => {
   const setsInStore = selectSets(getState());
   if (setsInStore.length === 0) {
-    dispatch(getUserSets(userId));
+    dispatch(getUserSets(api));
   }
 };
 

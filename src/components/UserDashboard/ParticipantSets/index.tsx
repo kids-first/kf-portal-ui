@@ -4,14 +4,18 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AlignType } from 'rc-table/lib/interface';
 
 import participantMagenta from 'assets/icon-participants-magenta.svg';
+import SaveSetModal from 'components/CohortBuilder/ParticipantsTableView/SaveSetModal';
+import { withApi } from 'services/api';
 import {
   createSetQueryInCohortBuilder,
   deleteUserSets,
   fetchSetsIfNeeded,
 } from 'store/actionCreators/saveSets';
+import { Api } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DeleteSetParams,
@@ -22,8 +26,6 @@ import {
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
 import { User } from 'store/userTypes';
-
-import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
 
 import './ParticipantSets.scss';
 
@@ -42,14 +44,15 @@ const mapState = (state: RootState): SaveSetState => ({
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
-  fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
+  fetchUserSetsIfNeeded: (api: (config: AxiosRequestConfig) => Promise<AxiosResponse>) =>
+    dispatch(fetchSetsIfNeeded(api)),
 });
 
 const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & OwnProps;
+type Props = PropsFromRedux & OwnProps & Api;
 
 const align = 'right' as AlignType;
 
@@ -62,7 +65,14 @@ const onDeleteFail = () => {
 };
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
-  const { user, userSets, deleteSaveSet, onClickParticipantsLink, fetchUserSetsIfNeeded } = props;
+  const {
+    user,
+    userSets,
+    deleteSaveSet,
+    onClickParticipantsLink,
+    fetchUserSetsIfNeeded,
+    api,
+  } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
     key: '',
@@ -72,8 +82,8 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   } as SetInfo);
 
   useEffect(() => {
-    fetchUserSetsIfNeeded(user.egoId);
-  }, [user, fetchUserSetsIfNeeded]);
+    fetchUserSetsIfNeeded(api);
+  }, [fetchUserSetsIfNeeded, api]);
 
   const confirm = (setId: string) => {
     deleteSaveSet({ setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
@@ -185,4 +195,4 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
 
 const Connected = connector(ParticipantSets);
 
-export default Connected;
+export default withApi(Connected);

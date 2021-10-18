@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import {
   DownOutlined,
@@ -9,21 +9,22 @@ import {
   UsergroupDeleteOutlined,
 } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
+import SaveSetModal from 'components/CohortBuilder/ParticipantsTableView//SaveSetModal';
+import AddRemoveSaveSetModal from 'components/CohortBuilder/ParticipantsTableView/AddRemoveSaveSetModal';
 import useQueryResolverCache from 'hooks/useQueryResolverCache';
 import DemographicIcon from 'icons/DemographicIcon';
-import { ApiContext } from 'services/api';
+import { withApi } from 'services/api';
 import { fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
+import { Api } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
 import { selectCurrentSelectionSqons } from 'store/selectors/currentStudy';
 import { selectSets } from 'store/selectors/saveSetsSelectors';
 import { Sqon, SqonFilters } from 'store/sqon';
 import { User } from 'store/userTypes';
-
-import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
-import SaveSetModal from './SaveSetModal';
 
 import './ParticipantSetDropdown.scss';
 
@@ -41,14 +42,15 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  fetchUserSetsIfNeeded: (userId: string) => dispatch(fetchSetsIfNeeded(userId)),
+  fetchUserSetsIfNeeded: (api: (config: AxiosRequestConfig) => Promise<AxiosResponse>) =>
+    dispatch(fetchSetsIfNeeded(api)),
 });
 
 const connector = connect(mapStateToProps, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = ParticipantSetDropdownProps & PropsFromRedux;
+type Props = ParticipantSetDropdownProps & PropsFromRedux & Api;
 type ModalState = {
   showModalSave: boolean;
   actionType?: SetSubActionTypes;
@@ -89,17 +91,17 @@ const ParticipantSetDropdown = ({
   participantCount,
   selectionSqon,
   fetchUserSetsIfNeeded,
+  api,
 }: Props): JSX.Element => {
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [modal, setModal] = useState<ModalState>(modals.hideAll);
-  const api = useContext(ApiContext);
   const { clearQueryCache } = useQueryResolverCache();
 
   const onClick: MenuClickEventHandler = (e) => setModal(modals[e.key as ActionType]);
 
   useEffect(() => {
-    fetchUserSetsIfNeeded(user.egoId);
-  }, [user, fetchUserSetsIfNeeded]);
+    fetchUserSetsIfNeeded(api);
+  }, [fetchUserSetsIfNeeded, api]);
 
   useEffect(() => {
     if (userSets && (sqon || selectionSqon)) {
@@ -209,4 +211,4 @@ const ParticipantSetDropdown = ({
   );
 };
 
-export default connector(ParticipantSetDropdown);
+export default withApi(connector(ParticipantSetDropdown));

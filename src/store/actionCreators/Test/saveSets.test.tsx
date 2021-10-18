@@ -9,15 +9,6 @@ import {
   updateSet,
 } from 'services/sets';
 import {
-  DeleteSetParams,
-  EditSetTagParams,
-  SetNameConflictError,
-  SetsActions,
-  SetSubActionTypes,
-} from 'store/saveSetTypes';
-import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
-
-import {
   addRemoveSetIds,
   addSetToCurrentQuery,
   createSetIfUnique,
@@ -29,7 +20,16 @@ import {
   getUserSets,
   isLoadingCreateSet,
   reInitializeSetsState,
-} from '../saveSets';
+} from 'store/actionCreators/saveSets';
+import { Api } from 'store/apiTypes';
+import {
+  DeleteSetParams,
+  EditSetTagParams,
+  SetNameConflictError,
+  SetsActions,
+  SetSubActionTypes,
+} from 'store/saveSetTypes';
+import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
 
 console.error = jest.fn();
 
@@ -68,6 +68,11 @@ describe('Save Sets actions', () => {
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
+
+const mockApi: jest.Mocked<Api> = {
+  // @ts-ignore just a mock to call the api - no need add complex types.
+  api: () => {},
+};
 
 const payload = {
   onSuccess: () => {},
@@ -354,7 +359,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(fetchSetsIfNeeded('user1'));
+    await store.dispatch(fetchSetsIfNeeded(mockApi));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -385,7 +390,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(fetchSetsIfNeeded('user1'));
+    await store.dispatch(fetchSetsIfNeeded(mockApi));
     expect(store.getActions()).toEqual(expectedActions);
   });
 

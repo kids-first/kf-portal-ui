@@ -1,3 +1,6 @@
+import { AxiosRequestConfig } from 'axios';
+
+import { kfArrangerApiRoot } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
 import graphql from 'services/arranger';
 import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from 'store/saveSetTypes';
@@ -9,6 +12,12 @@ type CreateSetParams = {
   path: string;
   sort?: string[];
   tag?: string;
+};
+
+export type ArrangerUserSet = {
+  id: string;
+  size: number;
+  tag: string;
 };
 
 export const queryBodySets = (nodes: string) => `query($sqon: JSON) {
@@ -76,32 +85,13 @@ export const setCountForTag = async (tag: string, userId: string) => {
   return response.data.sets.aggregations.size.stats.count;
 };
 
-export const getSetAndParticipantsCountByUser = async (userId: string) => {
-  const response = await graphql(initializeApi())({
-    query: queryBodySets('tag setId size'),
-    variables: {
-      sqon: {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: { field: 'userId', value: [userId] },
-          },
-          {
-            op: 'not-in',
-            content: { field: 'tag.keyword', value: [''] },
-          },
-          {
-            op: 'in',
-            content: { field: 'tag.keyword', value: ['__missing_not_wrapped__'] },
-          },
-        ],
-      },
-    },
+export const getSetAndParticipantsCountByUser = async (
+  api: (config: AxiosRequestConfig) => Promise<ArrangerUserSet[]>,
+) =>
+  api({
+    url: `${kfArrangerApiRoot}sets`,
+    method: 'GET',
   });
-
-  return response.data.sets.hits.edges;
-};
 
 export const createSet = async (userId: string, params: CreateSetParams) => {
   const { type, sqon, path, sort, tag } = params;
