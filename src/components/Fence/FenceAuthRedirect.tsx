@@ -1,13 +1,14 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 import { fenceTokensUri } from 'common/injectGlobals';
 import { withApi } from 'services/api';
+import { ApiConfig } from 'store/apiTypes';
 import { FenceName } from 'store/fenceTypes';
 
 type OwnProps = {
-  api: (config: AxiosRequestConfig) => Promise<AxiosResponse>;
+  api: (config: ApiConfig) => Promise<AxiosResponse>;
   fence: FenceName;
 };
 /*

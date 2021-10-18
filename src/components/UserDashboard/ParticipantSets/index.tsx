@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { AlignType } from 'rc-table/lib/interface';
 
 import participantMagenta from 'assets/icon-participants-magenta.svg';
@@ -15,7 +15,7 @@ import {
   deleteUserSets,
   fetchSetsIfNeeded,
 } from 'store/actionCreators/saveSets';
-import { Api } from 'store/apiTypes';
+import { Api, ApiConfig } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DeleteSetParams,
@@ -44,7 +44,7 @@ const mapState = (state: RootState): SaveSetState => ({
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
   deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
-  fetchUserSetsIfNeeded: (api: (config: AxiosRequestConfig) => Promise<AxiosResponse>) =>
+  fetchUserSetsIfNeeded: (api: (config: ApiConfig) => Promise<AxiosResponse>) =>
     dispatch(fetchSetsIfNeeded(api)),
 });
 

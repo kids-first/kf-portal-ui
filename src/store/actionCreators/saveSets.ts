@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 
 import {
@@ -6,9 +6,9 @@ import {
   createSet as saveSet,
   deleteSets,
   getSetAndParticipantsCountByUser,
-  setCountForTag,
   updateSet,
 } from 'services/sets';
+import { ApiConfig } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
@@ -26,30 +26,34 @@ import {
 } from 'store/saveSetTypes';
 import { selectSets } from 'store/selectors/saveSetsSelectors';
 
-export const createSet = (
+const isTagUnique = (getState: () => RootState, tag: string): boolean =>
+  selectSets(getState()).filter((s) => s.tag === tag).length === 0;
+
+const createSet = (
+  api: (config: ApiConfig) => Promise<any>,
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { tag, userId, sqon, onSuccess } = payload;
+  const { tag, sqon, onSuccess } = payload;
 
   dispatch(isLoadingCreateSet(true));
   try {
-    const response = await saveSet(userId, {
+    const createdSet: ArrangerUserSet = await saveSet(api, {
       type: 'participant',
       path: 'kf_id',
       sqon,
       tag,
     });
 
-    if (response.errors && response.errors.length > 0) {
-      dispatch(failureCreate(new Error(response.errors[0].message)));
-      return;
-    }
+    const userSet: UserSet = {
+      setId: createdSet.id,
+      size: createdSet.size,
+      tag: createdSet.tag,
+    };
 
-    const createdSet: UserSet = response.data.saveSet;
-    dispatch(displayUserSets([...selectSets(getState()), createdSet]));
+    dispatch(displayUserSets([...selectSets(getState()), userSet]));
 
     if (onSuccess) {
       onSuccess();
@@ -62,17 +66,19 @@ export const createSet = (
 };
 
 export const createSetIfUnique = (
+  api: (config: ApiConfig) => Promise<AxiosResponse>,
   payload: SaveSetParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { tag, userId, onNameConflict } = payload;
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
+  const { tag, onNameConflict } = payload;
 
-  dispatch(isLoadingCreateSet(true));
   try {
-    const tagIsUnique = (await setCountForTag(tag, userId)) === 0;
+    const tagIsUnique = isTagUnique(getState, tag);
 
     if (tagIsUnique) {
-      dispatch(isLoadingCreateSet(false));
-      dispatch(createSet(payload));
+      dispatch(createSet(api, payload));
       return;
     }
 
@@ -81,20 +87,21 @@ export const createSetIfUnique = (
     }
 
     dispatch(failureCreate(new SetNameConflictError('A set with this name already exists')));
-    dispatch(isLoadingCreateSet(false));
   } catch (error) {
     dispatch(failureCreate(error));
-    dispatch(isLoadingCreateSet(false));
   }
 };
 
 export const editSetTag = (
   payload: EditSetTagParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
   const { setInfo, onNameConflict, onSuccess, onFail } = payload;
 
   try {
-    const tagIsUnique = (await setCountForTag(setInfo.name, setInfo.currentUser)) === 0;
+    const tagIsUnique = isTagUnique(getState, setInfo.name);
     if (tagIsUnique) {
       const data: SetUpdateInputData = {
         newTag: setInfo.name,
@@ -127,7 +134,7 @@ export const editSetTag = (
 };
 
 export const getUserSets = (
-  api: (config: AxiosRequestConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<any>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   dispatch(isLoadingSets(true));
   try {
@@ -145,7 +152,7 @@ export const getUserSets = (
 };
 
 export const fetchSetsIfNeeded = (
-  api: (config: AxiosRequestConfig) => Promise<AxiosResponse>,
+  api: (config: ApiConfig) => Promise<AxiosResponse>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch, getState) => {
   const setsInStore = selectSets(getState());
   if (setsInStore.length === 0) {

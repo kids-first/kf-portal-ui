@@ -9,7 +9,7 @@ import {
   UsergroupDeleteOutlined,
 } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 import SaveSetModal from 'components/CohortBuilder/ParticipantsTableView//SaveSetModal';
@@ -18,7 +18,7 @@ import useQueryResolverCache from 'hooks/useQueryResolverCache';
 import DemographicIcon from 'icons/DemographicIcon';
 import { withApi } from 'services/api';
 import { fetchSetsIfNeeded } from 'store/actionCreators/saveSets';
-import { Api } from 'store/apiTypes';
+import { Api, ApiConfig } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import { DispatchSaveSets, SaveSetActionsTypes, SetSubActionTypes } from 'store/saveSetTypes';
 import { selectCurrentSelectionSqons } from 'store/selectors/currentStudy';
@@ -42,7 +42,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  fetchUserSetsIfNeeded: (api: (config: AxiosRequestConfig) => Promise<AxiosResponse>) =>
+  fetchUserSetsIfNeeded: (api: (config: ApiConfig) => Promise<AxiosResponse>) =>
     dispatch(fetchSetsIfNeeded(api)),
 });
 

@@ -4,13 +4,16 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button, Form, Input, Modal, notification, Spin } from 'antd';
 import { Store } from 'antd/lib/form/interface';
+import { AxiosResponse } from 'axios';
 
 import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
+import { withApi } from 'services/api';
 import {
   createSetIfUnique,
   editSetTag,
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
+import { Api, ApiConfig } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DispatchSaveSets,
@@ -58,7 +61,8 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onCreateSet: (params: SaveSetParams) => dispatch(createSetIfUnique(params)),
+  onCreateSet: (api: (config: ApiConfig) => Promise<AxiosResponse>, params: SaveSetParams) =>
+    dispatch(createSetIfUnique(api, params)),
   onEditSet: (params: EditSetTagParams) => dispatch(editSetTag(params)),
   reInitializeState: () => dispatch(reInitializeSetsState()),
 });
@@ -67,7 +71,7 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & OwnProps;
+type Props = PropsFromRedux & OwnProps & Api;
 
 export const extractTagNumbers = (userSets: [{ node: UserSet }]) => {
   const regExp = /saved_set_([0-9]+)/i;
@@ -107,6 +111,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     title,
     saveSetActionType,
     setToRename,
+    api,
   } = props;
 
   const onSuccessCreateCb = () => {
@@ -155,9 +160,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         });
         break;
       case SaveSetActionsTypes.CREATE:
-        await onCreateSet({
+        await onCreateSet(api, {
           tag: nameSet,
-          userId: user.egoId,
           sqon: sqon,
           onSuccess: onSuccessCreateCb,
           onNameConflict: onNameConflictCb,
@@ -285,4 +289,4 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
 
 const Connected = connector(SaveSetModal);
 
-export default Connected;
+export default withApi(Connected);

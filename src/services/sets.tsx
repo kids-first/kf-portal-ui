@@ -1,8 +1,7 @@
-import { AxiosRequestConfig } from 'axios';
-
-import { kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
 import graphql from 'services/arranger';
+import { ApiConfig } from 'store/apiTypes';
 import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from 'store/saveSetTypes';
 import { Sqon } from 'store/sqon';
 
@@ -52,64 +51,28 @@ const getIdsFromSetId = async (rawId: string) => {
   return firstEdge?.node?.ids;
 };
 
-export const setCountForTag = async (tag: string, userId: string) => {
-  const response = await graphql(initializeApi())({
-    query: `query($sqon: JSON) {
-        sets {
-          aggregations(filters: $sqon, aggregations_filter_themselves: false) {
-            size {
-              stats {
-                count
-              }
-            }
-          }
-        }
-      }`,
-    variables: {
-      sqon: {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: { field: 'tag.keyword', value: [tag] },
-          },
-          {
-            op: 'in',
-            content: { field: 'userId', value: [userId] },
-          },
-        ],
-      },
-    },
-  });
-
-  return response.data.sets.aggregations.size.stats.count;
-};
-
 export const getSetAndParticipantsCountByUser = async (
-  api: (config: AxiosRequestConfig) => Promise<ArrangerUserSet[]>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ) =>
   api({
     url: `${kfArrangerApiRoot}sets`,
     method: 'GET',
   });
 
-export const createSet = async (userId: string, params: CreateSetParams) => {
+export const createSet = async (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
+  params: CreateSetParams,
+) => {
   const { type, sqon, path, sort, tag } = params;
-  return await graphql(initializeApi())({
-    query: `mutation saveSet($type: String! $userId: String $sqon: JSON! 
-            $path: String!, $sort: [Sort], $tag: String) {
-              saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path, sort: $sort, tag: $tag) {
-                setId
-                size
-               tag
-              }
-            }`,
-    variables: {
+  return api({
+    url: `${kfArrangerApiRoot}sets`,
+    method: 'POST',
+    body: {
+      projectId: arrangerApiProjectId,
       type,
-      userId,
       sqon,
-      path,
-      sort: sort || [],
+      idField: path,
+      sort,
       tag,
     },
   });
@@ -163,6 +126,3 @@ export const updateSet = async (
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
   (await Promise.all(setIds.map((id) => getIdsFromSetId(id)))).flat();
-
-export const saveNewSet = async (setName: string, userId: string) =>
-  setCountForTag(setName, userId);

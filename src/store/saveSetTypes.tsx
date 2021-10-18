@@ -136,9 +136,7 @@ export interface SaveSetState {
 
 export type SaveSetParams = {
   tag: string;
-  userId: string;
   sqon: Sqon;
-  // sets: UserSaveSets[];
   onSuccess: Function;
   onNameConflict: Function;
 };

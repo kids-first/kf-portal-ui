@@ -1,13 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import {
-  createSet,
-  deleteSets,
-  getSetAndParticipantsCountByUser,
-  setCountForTag,
-  updateSet,
-} from 'services/sets';
+import { createSet, deleteSets, getSetAndParticipantsCountByUser, updateSet } from 'services/sets';
 import {
   addRemoveSetIds,
   addSetToCurrentQuery,
@@ -25,11 +19,13 @@ import { Api } from 'store/apiTypes';
 import {
   DeleteSetParams,
   EditSetTagParams,
+  SaveSetParams,
   SetNameConflictError,
   SetsActions,
   SetSubActionTypes,
 } from 'store/saveSetTypes';
 import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
+import { Sqon } from 'store/sqon';
 
 console.error = jest.fn();
 
@@ -78,27 +74,21 @@ const payload = {
   onSuccess: () => {},
   onNameConflict: () => {},
   tag: 'tagName',
-  api: () => {},
-  userId: 'user1',
-  sqon: { op: 'and', content: { field: 'setId', value: '' } },
-};
+  sqon: { op: 'and', content: [{ op: 'in', content: { field: 'setId', value: '' } }] } as Sqon,
+} as SaveSetParams;
 
 describe('createSaveSet', () => {
   beforeEach(() => {
-    (setCountForTag as jest.Mock).mockReset();
     (deleteSets as jest.Mock).mockReset();
     (createSet as jest.Mock).mockReset();
   });
 
   it('should generate the correct flow when creating a saveSet', async () => {
-    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (createSet as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve({ data: { saveSet: { setId: 'set2', size: 1, tag: 'newSet' }, errors: [] } }),
+      Promise.resolve({ id: 'set2', size: 1, tag: 'newSet' }),
     );
 
     const expectedActions = [
-      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
-      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
       { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
       {
         type: SetsActions.USER_SAVE_SETS,
@@ -135,19 +125,16 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow when creating a saveSet and has a name conflict', async () => {
-    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
-      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: true },
       {
         type: SetsActions.FAILURE_CREATE,
         error: new SetNameConflictError('A set with this name already exists'),
       },
-      { type: SetsActions.TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
       saveSets: {
@@ -156,16 +143,23 @@ describe('createSaveSet', () => {
           error: null,
           tagNameConflict: false,
         },
+        userSets: {
+          sets: [{ setId: 'set1', size: 12, tag: 'tagName' }],
+          error: null,
+          isLoading: false,
+          isDeleting: false,
+          isEditing: false,
+        },
       },
     });
 
     // @ts-ignore
-    await store.dispatch(createSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate an error when creating a save set is unsuccessful', async () => {
-    (setCountForTag as jest.Mock).mockImplementation(() => {
+    (createSet as jest.Mock).mockImplementation(() => {
       throw new Error('error');
     });
     const expectedActions = [
@@ -180,11 +174,14 @@ describe('createSaveSet', () => {
           error: null,
           tagNameConflict: false,
         },
+        userSets: {
+          sets: [],
+        },
       },
     });
 
     // @ts-ignore
-    await store.dispatch(createSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -248,7 +245,6 @@ describe('createSaveSet', () => {
   });
 
   it('should generate the correct flow editing save sets tag ', async () => {
-    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (updateSet as jest.Mock).mockImplementationOnce(() =>
       Promise.resolve({ updatedResults: 1, setSize: 12 }),
     );
@@ -284,7 +280,6 @@ describe('createSaveSet', () => {
   });
 
   it('should generate the correct flow adding/deleting participant to tag ', async () => {
-    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (updateSet as jest.Mock).mockImplementationOnce(() =>
       Promise.resolve({ updatedResults: 1, setSize: 12 }),
     );
