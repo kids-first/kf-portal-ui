@@ -11,10 +11,10 @@
 }
 
 .variantSearchTable {
-  :global(.ant-table-content) {
-    overflow: auto;
-    table {
-      min-width: 1500px;
-    }
+  .variantTableCellElipsis {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: unset;
   }
 }

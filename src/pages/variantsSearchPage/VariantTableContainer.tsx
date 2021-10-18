@@ -63,8 +63,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Variant',
       dataIndex: 'hgvsg',
-      ellipsis: true,
-      className: style.variantTableCell,
+      className: `${style.variantTableCell} ${style.variantTableCellElipsis}`,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg}>
@@ -79,13 +78,11 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Type',
       dataIndex: 'variant_class',
-      width: 125,
     },
     {
       title: 'dbSnp',
       className: style.dbSnpTableCell,
       dataIndex: 'rsnumber',
-      width: 125,
       render: (rsNumber: string) =>
         rsNumber ? (
           <a
@@ -102,7 +99,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Consequences',
       dataIndex: 'consequences',
-      width: '20%',
+      width: 300,
       render: (consequences: { hits: { edges: Consequence[] } }) => (
         <ConsequencesCell consequences={consequences?.hits?.edges || []} />
       ),
@@ -111,7 +108,6 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'CLINVAR',
       dataIndex: 'clinvar',
-      width: 125,
       render: (clinVar: ClinVar) =>
         clinVar?.clin_sig && clinVar.clinvar_id ? (
           <a
@@ -128,7 +124,6 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: 'Studies',
       dataIndex: 'studies',
-      width: 100,
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
         const nodes: StudyNode[] = row?.studies?.hits.edges || [];
         const studyIds = nodes.map((r) => r.node.study_id);
@@ -157,9 +152,9 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       },
     },
     {
-      title: 'Participants',
+      title: <Tooltip title="Participants">Part.</Tooltip>,
       dataIndex: '',
-      width: 100,
+      width: 90,
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
         const participantTotalNumber = row.participant_total_number;
@@ -210,7 +205,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: <Tooltip title="Frequency">Freq.</Tooltip>,
       dataIndex: '',
-      width: 100,
+      width: 90,
       render: (row: VariantEntity) => {
         const participant_frequency = row.participant_frequency;
         return participant_frequency
@@ -221,13 +216,11 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
     {
       title: <Tooltip title="ALT Alleles">ALT</Tooltip>,
       dataIndex: 'frequencies',
-      width: 100,
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
       title: <Tooltip title="Homozygotes">Homo</Tooltip>,
       dataIndex: 'frequencies',
-      width: 100,
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
   ].map((el, index: number) => ({ ...el, key: `${el.dataIndex}-${index}` }));
