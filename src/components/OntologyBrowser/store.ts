@@ -1,3 +1,4 @@
+import { arrangerApiProjectId } from 'common/injectGlobals';
 import { graphql } from 'services/arranger';
 import { dotToUnderscore } from 'store/graphql/utils';
 import { Sqon } from 'store/sqon';
@@ -110,16 +111,14 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (field: string, sqon?: Sqon, filterThemselves?: boolean, noGlobalAggs?: boolean) => {
+  fetch = (field: string, sqon?: Sqon, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
-    return this.getPhenotypes(field, sqon, filterThemselves, noGlobalAggs).then(
-      (data: PhenotypeSource[]) => {
-        const ontologyTree = new OntologyTree(this.remoteSingleRootNode(data), field);
-        this.phenotypes = ontologyTree.phenotypes;
-        this.tree = ontologyTree.tree;
-      },
-    );
+    return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
+      const ontologyTree = new OntologyTree(this.remoteSingleRootNode(data), field);
+      this.phenotypes = ontologyTree.phenotypes;
+      this.tree = ontologyTree.tree;
+    });
   };
 
   getTree = () => {
@@ -130,13 +129,11 @@ export class PhenotypeStore {
   buildPhenotypeQuery = (
     field: string,
     filterThemselves: boolean,
-    noGlobalAggs?: boolean,
   ) => `query($sqon: JSON, $term_filters: JSON) {
     participant {
       aggregations(
       filters: $sqon, 
-      aggregations_filter_themselves: ${filterThemselves}
-      ${noGlobalAggs ? `no_global_aggregation: ${noGlobalAggs}` : ''}
+      aggregations_filter_themselves: ${!filterThemselves}
       ) {
         ${dotToUnderscore(field)}__name {
           buckets{
@@ -151,23 +148,17 @@ export class PhenotypeStore {
   }
   `;
 
-  getPhenotypes = async (
-    field: string,
-    sqon?: Sqon,
-    filterThemselves = false,
-    noGlobalAggs?: boolean,
-  ) => {
+  getPhenotypes = async (field: string, sqon?: Sqon, filterThemselves = false) => {
     const body = {
-      query: this.buildPhenotypeQuery(field, filterThemselves, noGlobalAggs),
+      query: this.buildPhenotypeQuery(field, filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
-        term_filters: [
-          {
-            field: `${field}.is_tagged`,
-            value: true,
-          },
-        ],
+        term_filters: {
+          op: 'and',
+          content: [{ op: 'in', content: { field: `${field}.is_tagged`, value: [true] } }],
+        },
       }),
+      projectId: arrangerApiProjectId,
     };
     try {
       const { data } = await graphql()(body);

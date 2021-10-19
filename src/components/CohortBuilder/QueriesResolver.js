@@ -1,9 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
-import urlJoin from 'url-join';
-import isEqual from 'lodash/isEqual';
 import { print } from 'graphql/language/printer';
+import isEqual from 'lodash/isEqual';
+import PropTypes from 'prop-types';
+import urlJoin from 'url-join';
+
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 
 /**
  * NOTE: this component pulls from a singleton queryCacheMap for its caching,
@@ -44,8 +45,9 @@ class QueriesResolver extends React.Component {
     const checkCount = ++this.updateCount;
     if (queries.length) {
       const body = JSON.stringify(
-        queries.map(q => ({
+        queries.map((q) => ({
           query: typeof q.query === 'string' ? q.query : print(q.query),
+          projectId: arrangerApiProjectId,
           variables: q.variables,
         })),
       );
@@ -67,13 +69,13 @@ class QueriesResolver extends React.Component {
     }
   };
 
-  fetchData = body => {
-    const { queries, api, name } = this.props;
+  fetchData = (body) => {
+    const { queries, api } = this.props;
     queryCacheMap[body] = api({
       method: 'POST',
-      url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql/${name}`),
+      url: urlJoin(kfArrangerApiRoot, `/search`),
       body,
-    }).then(data =>
+    }).then((data) =>
       data.map((d, i) => {
         const transform = queries[i].transform;
         return transform ? transform(d) : d;
@@ -82,7 +84,7 @@ class QueriesResolver extends React.Component {
     return queryCacheMap[body];
   };
 
-  cachedFetchData = body => queryCacheMap[body] || this.fetchData(body);
+  cachedFetchData = (body) => queryCacheMap[body] || this.fetchData(body);
 
   render() {
     return this.props.children({ ...this.state });
@@ -100,6 +102,7 @@ QueriesResolver.propTypes = {
     PropTypes.shape({
       query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
       variables: PropTypes.object,
+      projectId: PropTypes.string,
       transform: PropTypes.func,
     }),
   ).isRequired,

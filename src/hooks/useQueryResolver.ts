@@ -3,7 +3,7 @@ import { ASTNode } from 'graphql';
 import { print } from 'graphql/language/printer';
 import urlJoin from 'url-join';
 
-import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 
 import useQueryResolverCache from './useQueryResolverCache';
 
@@ -68,6 +68,7 @@ const useQueryResolver = (
         queryList.map((q: Query) => ({
           query: typeof q.query === 'string' ? q.query : print(q.query as ASTNode),
           variables: q.variables,
+          projectId: arrangerApiProjectId,
         })),
       );
 
@@ -83,10 +84,10 @@ const useQueryResolver = (
     }
   };
 
-  const fetchData = (body: string) => {
-    const result = api({
+  const fetchData = (body: string) =>
+    api({
       method: 'POST',
-      url: urlJoin(arrangerApiRoot!, `/${arrangerProjectId}/graphql/${name}`),
+      url: urlJoin(kfArrangerApiRoot!, `/search`),
       body,
     }).then((data: any) => {
       const result = data.map((d: any, i: any) => {
@@ -99,9 +100,6 @@ const useQueryResolver = (
       });
       return result;
     });
-
-    return result;
-  };
 
   const cachedFetchData = (body: string) => cache[body] || fetchData(body);
 
