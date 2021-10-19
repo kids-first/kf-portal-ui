@@ -1,5 +1,3 @@
-import { AxiosResponse } from 'axios';
-
 export type ApiConfig = {
   method: string;
   endpoint?: string;
@@ -9,6 +7,8 @@ export type ApiConfig = {
   arrangerRoot?: string;
 };
 
+export type ApiFunction = (config: ApiConfig) => Promise<any>; // any because it could be a lot of different type depending on which call is done.
+
 export type Api = {
-  api: (config: ApiConfig) => Promise<AxiosResponse>;
+  api: ApiFunction;
 };

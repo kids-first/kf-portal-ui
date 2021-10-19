@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 
 import {
@@ -29,7 +28,7 @@ const isTagUnique = (getState: () => RootState, tag: string): boolean =>
   selectSets(getState()).filter((s) => s.tag === tag).length === 0;
 
 const createSet = (
-  api: (config: ApiConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
@@ -65,7 +64,7 @@ const createSet = (
 };
 
 export const createSetIfUnique = (
-  api: (config: ApiConfig) => Promise<AxiosResponse>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
@@ -92,7 +91,7 @@ export const createSetIfUnique = (
 };
 
 export const editSetTag = (
-  api: (config: ApiConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: EditSetTagParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
@@ -131,7 +130,7 @@ export const editSetTag = (
 };
 
 export const getUserSets = (
-  api: (config: ApiConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   dispatch(isLoadingSets(true));
   try {
@@ -149,7 +148,7 @@ export const getUserSets = (
 };
 
 export const fetchSetsIfNeeded = (
-  api: (config: ApiConfig) => Promise<AxiosResponse>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch, getState) => {
   const setsInStore = selectSets(getState());
   if (setsInStore.length === 0) {
@@ -158,7 +157,7 @@ export const fetchSetsIfNeeded = (
 };
 
 export const addRemoveSetIds = (
-  api: (config: ApiConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: AddRemoveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
@@ -202,7 +201,7 @@ export const addRemoveSetIds = (
 };
 
 export const deleteUserSets = (
-  api: (config: ApiConfig) => Promise<any>,
+  api: (config: ApiConfig) => Promise<boolean>,
   payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   const { setId, onFail } = payload;

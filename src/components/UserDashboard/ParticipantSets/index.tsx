@@ -4,7 +4,6 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
-import { AxiosResponse } from 'axios';
 import { AlignType } from 'rc-table/lib/interface';
 
 import participantMagenta from 'assets/icon-participants-magenta.svg';
@@ -15,7 +14,7 @@ import {
   deleteUserSets,
   fetchSetsIfNeeded,
 } from 'store/actionCreators/saveSets';
-import { Api, ApiConfig } from 'store/apiTypes';
+import { Api, ApiFunction } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DeleteSetParams,
@@ -43,12 +42,9 @@ const mapState = (state: RootState): SaveSetState => ({
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
-  deleteSaveSet: (
-    api: (config: ApiConfig) => Promise<AxiosResponse>,
-    deleteSetParams: DeleteSetParams,
-  ) => dispatch(deleteUserSets(api, deleteSetParams)),
-  fetchUserSetsIfNeeded: (api: (config: ApiConfig) => Promise<AxiosResponse>) =>
-    dispatch(fetchSetsIfNeeded(api)),
+  deleteSaveSet: (api: ApiFunction, deleteSetParams: DeleteSetParams) =>
+    dispatch(deleteUserSets(api, deleteSetParams)),
+  fetchUserSetsIfNeeded: (api: ApiFunction) => dispatch(fetchSetsIfNeeded(api)),
 });
 
 const connector = connect(mapState, mapDispatch);

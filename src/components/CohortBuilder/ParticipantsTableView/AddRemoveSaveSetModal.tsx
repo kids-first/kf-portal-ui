@@ -4,12 +4,11 @@ import { FunctionComponent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button, Form, Modal, notification } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { AxiosResponse } from 'axios';
 
 import UserSetsFrom from 'components/CohortBuilder/UserSetsForm';
 import { withApi } from 'services/api';
 import { addRemoveSetIds } from 'store/actionCreators/saveSets';
-import { Api, ApiConfig } from 'store/apiTypes';
+import { Api, ApiFunction } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
@@ -47,10 +46,8 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onAddRemoveSetIds: (
-    api: (config: ApiConfig) => Promise<AxiosResponse>,
-    params: AddRemoveSetParams,
-  ) => dispatch(addRemoveSetIds(api, params)),
+  onAddRemoveSetIds: (api: ApiFunction, params: AddRemoveSetParams) =>
+    dispatch(addRemoveSetIds(api, params)),
 });
 
 const connector = connect(mapState, mapDispatch);

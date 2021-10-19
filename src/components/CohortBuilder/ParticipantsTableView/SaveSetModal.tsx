@@ -4,7 +4,6 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button, Form, Input, Modal, notification, Spin } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { AxiosResponse } from 'axios';
 
 import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
 import { withApi } from 'services/api';
@@ -13,7 +12,7 @@ import {
   editSetTag,
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
-import { Api, ApiConfig } from 'store/apiTypes';
+import { Api, ApiFunction } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DispatchSaveSets,
@@ -60,10 +59,9 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onCreateSet: (api: (config: ApiConfig) => Promise<AxiosResponse>, params: SaveSetParams) =>
+  onCreateSet: (api: ApiFunction, params: SaveSetParams) =>
     dispatch(createSetIfUnique(api, params)),
-  onEditSet: (api: (config: ApiConfig) => Promise<AxiosResponse>, params: EditSetTagParams) =>
-    dispatch(editSetTag(api, params)),
+  onEditSet: (api: ApiFunction, params: EditSetTagParams) => dispatch(editSetTag(api, params)),
   reInitializeState: () => dispatch(reInitializeSetsState()),
 });
 
