@@ -1,0 +1,29 @@
+@import '../../../style/themes/default/global';
+
+.caringForChildrenCard {
+  height: 100%;
+
+  .linkCards {
+    margin-top: 16px;
+    .linkCard {
+      background-color: $gray-3;
+      height: 100%;
+
+      div[class$='-body'] {
+        padding: 12px;
+      }
+
+      .linkCardTitle {
+        color: $purple-6;
+        text-decoration: underline;
+        font-size: 14px;
+      }
+
+      .linkCardDesc {
+        font-size: 12px;
+        line-height: 18px;
+        display: block;
+      }
+    }
+  }
+}
