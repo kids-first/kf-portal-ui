@@ -18,7 +18,6 @@
   .ant-card-body {
     padding: 24px 0;
   }
-
 }
 
 .core-layout-grid--content {
@@ -31,11 +30,8 @@
   overflow: auto;
 }
 
-.ant-card.core-grid-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 325px;
-  height: 400px;
+.ant-card {
+  height: 100%;
 }
 
 .core-grid-card .ant-card-head {
@@ -43,8 +39,8 @@
 }
 
 .title-dashboard-card {
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .dashboard-grid {

@@ -2,6 +2,9 @@
 @import '../../../style/themes/default/global';
 
 .user-sets-table {
+  max-height: 300px;
+  overflow: auto;
+
   .ant-btn-text {
     color: $greyScale11;
   }

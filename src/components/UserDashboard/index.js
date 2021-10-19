@@ -1,19 +1,15 @@
 import React from 'react';
-import Grid from '@ferlab/ui/core/layout/Grid';
-import Card from '@ferlab/ui/core/view/GridCard';
+import { Card } from 'antd';
+import { Col, Row } from 'antd';
 import { compose } from 'recompose';
 
-import {
-  MemberResearchInterestsChart,
-  MostFrequentDiagnosesChart,
-  MostParticipantsStudiesChart,
-} from 'components/Charts';
 import { withApi } from 'services/api';
 import { Spinner } from 'uikit/Spinner';
 
 import useUser from '../../hooks/useUser';
 
 import AuthorizedStudies from './AuthorizedStudies';
+import CaringForChildren from './CaringForChildren';
 import CavaticaProjects from './CavaticaProjects';
 import ParticipantSets from './ParticipantSets';
 import SavedQueries from './SavedQueries';
@@ -32,24 +28,25 @@ export default compose(withApi)(({ api }) => {
     <div className={userDashboardContainer}>
       <div className={userDashboardContent}>
         <h1 className={dashboardTitle}>My Dashboard</h1>
-        <Grid className={'dashboard-grid'}>
-          <SavedQueries api={api} />
-          <AuthorizedStudies api={api} />
-          <CavaticaProjects />
-          <MostParticipantsStudiesChart />
-          <Card title={<span className={'title-dashboard-card'}>Member Research Interests</span>}>
-            <MemberResearchInterestsChart />
-          </Card>
-          <Card title={<span className={'title-dashboard-card'}>Most Frequent Diagnoses</span>}>
-            <MostFrequentDiagnosesChart />
-          </Card>
-          <Card
-            classNameCardItem={'withScroll'}
-            title={<span className={'title-dashboard-card'}>My Participant Sets</span>}
-          >
-            <ParticipantSets user={user} />
-          </Card>
-        </Grid>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <SavedQueries api={api} />
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <AuthorizedStudies api={api} />
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <CavaticaProjects />
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <Card title={<span className={'title-dashboard-card'}>My Participant Sets</span>}>
+              <ParticipantSets user={user} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <CaringForChildren />
+          </Col>
+        </Row>
       </div>
     </div>
   ) : (
