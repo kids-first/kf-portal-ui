@@ -78,18 +78,11 @@ export const createSet = async (
   });
 };
 
-export const deleteSets = async (setIds: string[]) => {
-  const response = await graphql(initializeApi())({
-    query: `mutation ($setIds: [String!]) {
-              deleteSets(setIds: $setIds)
-            }`,
-    variables: {
-      setIds: setIds,
-    },
+export const deleteSets = async (api: (config: ApiConfig) => Promise<boolean>, setId: string) =>
+  api({
+    url: `${kfArrangerApiRoot}sets/${setId}`,
+    method: 'DELETE',
   });
-
-  return response.data.deleteSets;
-};
 
 export const updateSet = async (
   sourceType: SetSourceType,

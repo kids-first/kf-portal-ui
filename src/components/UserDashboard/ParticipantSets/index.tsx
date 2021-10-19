@@ -43,7 +43,10 @@ const mapState = (state: RootState): SaveSetState => ({
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onClickParticipantsLink: (setId: string) => dispatch(createSetQueryInCohortBuilder(setId)),
-  deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
+  deleteSaveSet: (
+    api: (config: ApiConfig) => Promise<AxiosResponse>,
+    deleteSetParams: DeleteSetParams,
+  ) => dispatch(deleteUserSets(api, deleteSetParams)),
   fetchUserSetsIfNeeded: (api: (config: ApiConfig) => Promise<AxiosResponse>) =>
     dispatch(fetchSetsIfNeeded(api)),
 });
@@ -86,7 +89,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   }, [fetchUserSetsIfNeeded, api]);
 
   const confirm = (setId: string) => {
-    deleteSaveSet({ setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
+    deleteSaveSet(api, { setId, onFail: onDeleteFail } as DeleteSetParams);
   };
 
   const onEditClick = (record: SetInfo) => {

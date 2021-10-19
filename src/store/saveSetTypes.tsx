@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import { RootState } from './rootState';
-import { Sqon } from './sqon';
+import { RootState } from 'store/rootState';
+import { Sqon } from 'store/sqon';
 
 export enum SetsActions {
   TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET',
@@ -12,7 +12,7 @@ export enum SetsActions {
   FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS',
   TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS',
   TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET',
-  REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS',
+  REMOVE_USER_SAVE_SET = 'REMOVE_USER_SAVE_SET',
   EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG',
   CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST',
   DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST',
@@ -76,9 +76,9 @@ interface isAddingOrRemovingToSet {
   isEditing: boolean;
 }
 
-interface RemoveUserSets {
-  type: SetsActions.REMOVE_USER_SAVE_SETS;
-  sets: string[];
+interface RemoveUserSet {
+  type: SetsActions.REMOVE_USER_SAVE_SET;
+  setId: string;
 }
 
 interface EditSetTag {
@@ -105,7 +105,7 @@ export type SetsActionTypes =
   | IsLoadingSaveSets
   | DisplayUserSaveSets
   | IsDeletingSaveSets
-  | RemoveUserSets
+  | RemoveUserSet
   | EditSetTag
   | isAddingOrRemovingToSet
   | FailureLoadSaveSets
@@ -149,7 +149,7 @@ export type EditSetTagParams = {
 };
 
 export type DeleteSetParams = {
-  setIds: string[];
+  setId: string;
   onFail: Function;
 };
 

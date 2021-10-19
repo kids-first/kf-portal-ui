@@ -218,7 +218,7 @@ describe('createSaveSet', () => {
     (deleteSets as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
       { type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
-      { type: SetsActions.REMOVE_USER_SAVE_SETS, sets: ['setId1'] },
+      { type: SetsActions.REMOVE_USER_SAVE_SET, setId: 'setId1' },
       { type: SetsActions.TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
     ];
     const store = mockStore({
@@ -237,10 +237,10 @@ describe('createSaveSet', () => {
       },
     });
 
-    const payload = { setIds: ['setId1'], onFail: () => {} } as DeleteSetParams;
+    const payload = { setId: 'setId1', onFail: () => {} } as DeleteSetParams;
 
     // @ts-ignore
-    await store.dispatch(deleteUserSets(payload));
+    await store.dispatch(deleteUserSets(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 

@@ -210,17 +210,18 @@ export const addRemoveSetIds = (
 };
 
 export const deleteUserSets = (
+  api: (config: ApiConfig) => Promise<any>,
   payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { setIds, onFail } = payload;
+  const { setId, onFail } = payload;
 
   dispatch(isDeletingSets(true));
 
   try {
-    const result = await deleteSets(setIds);
+    const result = await deleteSets(api, setId);
 
-    if (result && result > 0) {
-      dispatch(removeUserSets(setIds));
+    if (result) {
+      dispatch(removeUserSets(setId));
     } else {
       onFail();
     }
@@ -277,9 +278,9 @@ export const failureLoadSets = (error: Error): SetsActionTypes => ({
   error,
 });
 
-export const removeUserSets = (sets: string[]): SetsActionTypes => ({
-  type: SetsActions.REMOVE_USER_SAVE_SETS,
-  sets,
+export const removeUserSets = (setId: string): SetsActionTypes => ({
+  type: SetsActions.REMOVE_USER_SAVE_SET,
+  setId,
 });
 
 export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
