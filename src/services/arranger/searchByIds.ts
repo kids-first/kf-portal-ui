@@ -42,5 +42,7 @@ export const searchByIds = async (ids: string[]) => {
     method: 'POST',
     url,
     body,
+  }).catch(() => {
+    throw new Error(`Failed to search for ids "${ids.join(', ')}"`);
   });
 };

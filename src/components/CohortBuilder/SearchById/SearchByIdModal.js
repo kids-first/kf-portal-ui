@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal } from 'antd';
+import { Button, Modal, notification } from 'antd';
 import autobind from 'auto-bind-es5';
 import debounce from 'lodash/debounce';
 import flatMap from 'lodash/flatMap';
@@ -33,8 +33,13 @@ function handleViewResults() {
     .then((results) => {
       this.setState({ loading: false, results });
     })
-    .catch(() => {
+    .catch((error) => {
       this.setState({ loading: false });
+      notification.error({
+        message: 'Error',
+        description: error.message,
+        duration: 10,
+      });
     });
 }
 
