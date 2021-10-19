@@ -1,12 +1,11 @@
-import ajax from 'services/ajax';
-import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
-import flatten from 'lodash/flatten';
-import get from 'lodash/get';
+
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+import ajax from 'services/ajax';
 
 export const MISSING_DATA = '__missing__';
 
-export const graphql = (api, queryName = '') => body =>
+export const graphql = (api, queryName = '') => (body) =>
   api
     ? api({ endpoint: `/${arrangerProjectId}/graphql/${queryName}`, body })
     : ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
@@ -26,7 +25,7 @@ export const getErrorMessageFromResponse = (err, customMsg = '') => {
   if (err.response && err.response.data && Array.isArray(err.response.data.errors)) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    const errors = err.response.data.errors.map(error => error.message).join('\n');
+    const errors = err.response.data.errors.map((error) => error.message).join('\n');
     const { status, statusText } = err.response;
     return `${status} ${statusText}: ${customMsg}\n${errors}`;
   }
@@ -52,14 +51,7 @@ export const buildFileQuery = ({ fields, first = null }) => {
   )}}}}}}`;
 };
 
-export const buildParticipantQuery = ({ fields, first = null }) => {
-  const firstString = first === null ? '' : `, first:${first}`;
-  return `query ($sqon: JSON) {participant {hits(filters: $sqon${firstString}) {total, edges {node {${fields.reduce(
-    (a, b) => a + ' ' + b,
-  )}}}}}}`;
-};
-
-const extractHits = data => data.data.file.hits;
+const extractHits = (data) => data.data.file.hits;
 
 const getFileTotals = async ({ sqon, api }) => {
   const body = {
@@ -109,24 +101,7 @@ export const getFilesByQuery = async ({ sqon, fields, api }) => {
 };
 export default graphql;
 
-export const buildSqonForIds = ids => ({
+export const buildSqonForIds = (ids) => ({
   op: 'and',
   content: [{ op: 'in', content: { field: '_id', value: ids } }],
 });
-
-export const fetchSurvivalData = api => sqon => {
-  const body = { project: arrangerProjectId, sqon };
-  return api({ endpoint: `/survival`, body }).then(response => {
-    const donors = flatten(
-      response.data.map(group =>
-        group.donors.map(donor => ({
-          id: get(donor, 'meta.id', ''),
-          time: donor.time,
-          survivalEstimate: group.cumulativeSurvival,
-          censored: donor.censored,
-        })),
-      ),
-    );
-    return { donors };
-  });
-};

@@ -1,22 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
+import ResetIcon from 'react-icons/lib/md/replay';
+import Card from '@ferlab/ui/core/view/GridCard';
 import get from 'lodash/get';
 import has from 'lodash/has';
+import isEqual from 'lodash/isEqual';
 import md5 from 'md5';
+import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import ResetIcon from 'react-icons/lib/md/replay';
-import { fetchSurvivalData } from 'services/arranger';
+
+import SurvivalPlot from 'components/CohortBuilder/Summary/Cards/SurvivalPlot';
+import Empty, { SIZE } from 'components/UI/Empty';
+import { styleComponent } from 'components/Utils';
 import { withApi } from 'services/api';
+import { fetchSurvivalData } from 'services/arranger/survival';
+import theme from 'theme/defaultTheme';
 import CardContent from 'uikit/Card/CardContent';
 import Tooltip from 'uikit/Tooltip';
-import { styleComponent } from 'components/Utils';
-import theme from 'theme/defaultTheme';
-import SurvivalPlot from './SurvivalPlot';
-import Card from '@ferlab/ui/core/view/GridCard';
 
 import './SurvivalChart.css';
-import Empty, { SIZE } from 'components/UI/Empty';
 
 const formatDataset = (data) => [
   {
