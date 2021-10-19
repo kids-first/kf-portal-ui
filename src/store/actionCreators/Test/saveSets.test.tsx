@@ -24,7 +24,7 @@ import {
   SetsActions,
   SetSubActionTypes,
 } from 'store/saveSetTypes';
-import { AddRemoveSetParams, SetInfo } from 'store/saveSetTypes';
+import { AddRemoveSetParams } from 'store/saveSetTypes';
 import { Sqon } from 'store/sqon';
 
 console.error = jest.fn();
@@ -246,10 +246,11 @@ describe('createSaveSet', () => {
 
   it('should generate the correct flow editing save sets tag ', async () => {
     (updateSet as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve({ updatedResults: 1, setSize: 12 }),
+      Promise.resolve({ id: 'set1', tag: 'thisSet', size: 12 }),
     );
-    const set = { key: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SetInfo;
-    const expectedActions = [{ type: SetsActions.EDIT_SAVE_SET_TAG, set: set }];
+    const expectedActions = [
+      { type: SetsActions.EDIT_SAVE_SET_TAG, setId: 'set1', tag: 'thisSet' },
+    ];
 
     const store = mockStore({
       saveSets: {
@@ -268,20 +269,21 @@ describe('createSaveSet', () => {
     });
 
     const payload = {
-      setInfo: set,
+      setId: 'set1',
+      newTag: 'thisSet',
       onSuccess: () => {},
       onFail: () => {},
       onNameConflict: () => {},
     } as EditSetTagParams;
 
     // @ts-ignore
-    await store.dispatch(editSetTag(payload));
+    await store.dispatch(editSetTag(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow adding/deleting participant to tag ', async () => {
     (updateSet as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve({ updatedResults: 1, setSize: 12 }),
+      Promise.resolve({ id: 'set1', tag: 'thisSet', size: 12 }),
     );
     const expectedActions = [
       { type: SetsActions.TOGGLE_IS_ADD_DELETE_TO_SET, isEditing: true },
@@ -327,7 +329,7 @@ describe('createSaveSet', () => {
     };
 
     // @ts-ignore
-    await store.dispatch(addRemoveSetIds(payload));
+    await store.dispatch(addRemoveSetIds(mockApi, payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 

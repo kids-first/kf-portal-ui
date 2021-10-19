@@ -55,7 +55,7 @@ export default (state = initialState, action: SetsActionTypes | LogoutAction): S
         ...state,
         userSets: {
           ...state.userSets,
-          sets: editSaveSetTag(state.userSets.sets, action.set.key, action.set.name),
+          sets: editSaveSetTag(state.userSets.sets, action.setId, action.tag),
         },
       };
     }

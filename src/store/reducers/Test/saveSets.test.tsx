@@ -9,10 +9,8 @@ import {
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
 import { logout } from 'store/actionCreators/user';
-import { SetInfo } from 'store/saveSetTypes';
+import reducer from 'store/reducers/saveSets';
 import { LogoutAction } from 'store/userTypes';
-
-import reducer from '../saveSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -117,13 +115,10 @@ describe('Save Sets Reducer', () => {
   });
 
   it('should handle editing save sets tag', () => {
-    const set = {
-      key: '1234',
-      name: 'someSet',
-      currentUser: 'me',
-    } as SetInfo;
+    const setId = '1234';
+    const tag = 'someSet';
 
-    expect(reducer(initialState, isEditingTag(set))).toEqual({
+    expect(reducer(initialState, isEditingTag(setId, tag))).toEqual({
       create: {
         isLoading: false,
         error: null,

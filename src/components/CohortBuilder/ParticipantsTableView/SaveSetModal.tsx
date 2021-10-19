@@ -22,7 +22,6 @@ import {
   SaveSetActionsTypes,
   SaveSetParams,
   SaveSetState,
-  SetInfo,
   UserSet,
 } from 'store/saveSetTypes';
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
@@ -38,7 +37,7 @@ type OwnProps = {
   hideModalCb: Function;
   sqon: Sqon;
   user: User;
-  setToRename?: SetInfo;
+  setToRename?: UserSet;
 };
 
 type NameSetValidator = {
@@ -63,7 +62,8 @@ const mapState = (state: RootState): SaveSetState => ({
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onCreateSet: (api: (config: ApiConfig) => Promise<AxiosResponse>, params: SaveSetParams) =>
     dispatch(createSetIfUnique(api, params)),
-  onEditSet: (params: EditSetTagParams) => dispatch(editSetTag(params)),
+  onEditSet: (api: (config: ApiConfig) => Promise<AxiosResponse>, params: EditSetTagParams) =>
+    dispatch(editSetTag(api, params)),
   reInitializeState: () => dispatch(reInitializeSetsState()),
 });
 
@@ -101,7 +101,6 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
   const {
-    user,
     sqon,
     onCreateSet,
     onEditSet,
@@ -137,12 +136,9 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           break;
         }
 
-        await onEditSet({
-          setInfo: {
-            key: setToRename.key,
-            name: nameSet,
-            currentUser: user.egoId,
-          } as SetInfo,
+        await onEditSet(api, {
+          setId: setToRename.setId,
+          newTag: nameSet,
           onSuccess: () => {
             setIsVisible(false);
             hideModalCb();
@@ -203,7 +199,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     const formDefaultValue =
       saveSetActionType === SaveSetActionsTypes.CREATE
         ? { nameSet: defaultName !== SET_DEFAULT_NAME ? defaultName : '' }
-        : { nameSet: setToRename?.name ?? '' };
+        : { nameSet: setToRename?.tag ?? '' };
     form.setFieldsValue(formDefaultValue);
     setLoadingDefaultTagName(false);
   }, [form, saveSetActionType, setToRename, sqon]);

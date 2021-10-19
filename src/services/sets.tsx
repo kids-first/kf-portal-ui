@@ -2,22 +2,13 @@ import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
 import graphql from 'services/arranger';
 import { ApiConfig } from 'store/apiTypes';
-import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from 'store/saveSetTypes';
-import { Sqon } from 'store/sqon';
-
-type CreateSetParams = {
-  type: string;
-  sqon: Sqon;
-  path: string;
-  sort?: string[];
-  tag?: string;
-};
-
-export type ArrangerUserSet = {
-  id: string;
-  size: number;
-  tag: string;
-};
+import {
+  ArrangerUserSet,
+  CreateSetParams,
+  SetSourceType,
+  SetSubActionTypes,
+  SetUpdateInputData,
+} from 'store/saveSetTypes';
 
 export const queryBodySets = (nodes: string) => `query($sqon: JSON) {
               sets {
@@ -85,36 +76,25 @@ export const deleteSets = async (api: (config: ApiConfig) => Promise<boolean>, s
   });
 
 export const updateSet = async (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   sourceType: SetSourceType,
   data: SetUpdateInputData,
   subAction: SetSubActionTypes,
   setId: string,
 ) => {
-  const response = await graphql(initializeApi())({
-    query: `mutation(
-              $source: SetUpdateSource!,
-              $data: SetUpdateInputData!,
-              $subAction: SetSubActionTypes!,
-              $target: SetUpdateTarget!
-              ){
-              updateSet(source:$source, data: $data, subAction: $subAction, target: $target){
-                setSize
-                updatedResults
-              }
-            }`,
-    variables: {
-      source: {
-        sourceType: sourceType,
-      },
-      data: data,
-      subAction: subAction,
-      target: {
-        setId: setId,
-      },
+  const { sqon, newTag } = data;
+
+  return api({
+    url: `${kfArrangerApiRoot}sets/${setId}`,
+    method: 'PUT',
+    body: {
+      projectId: arrangerApiProjectId,
+      sourceType,
+      subAction,
+      sqon,
+      newTag,
     },
   });
-
-  return response.data.updateSet;
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>

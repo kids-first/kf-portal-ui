@@ -19,13 +19,6 @@ export enum SetsActions {
   ADD_SET_TO_CURRENT_QUERY = 'ADD_SET_TO_CURRENT_QUERY',
 }
 
-export type SetInfo = {
-  key: string;
-  name: string;
-  count?: number;
-  currentUser: string;
-};
-
 export type AddRemoveSetParams = {
   userId: string;
   setId: string;
@@ -83,7 +76,8 @@ interface RemoveUserSet {
 
 interface EditSetTag {
   type: SetsActions.EDIT_SAVE_SET_TAG;
-  set: SetInfo;
+  setId: string;
+  tag: string;
 }
 
 interface CreateQueryInCohortBuilder {
@@ -142,7 +136,8 @@ export type SaveSetParams = {
 };
 
 export type EditSetTagParams = {
-  setInfo: SetInfo;
+  setId: string;
+  newTag: string;
   onSuccess: Function;
   onFail: Function;
   onNameConflict: Function;
@@ -183,8 +178,20 @@ export type SetUpdateSource = {
 };
 
 export type SetUpdateInputData = {
-  type?: string;
   sqon?: Sqon;
-  path?: string;
   newTag?: string;
+};
+
+export type CreateSetParams = {
+  type: string;
+  sqon: Sqon;
+  path: string;
+  sort?: string[];
+  tag?: string;
+};
+
+export type ArrangerUserSet = {
+  id: string;
+  size: number;
+  tag: string;
 };

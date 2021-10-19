@@ -2,7 +2,6 @@ import { AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 
 import {
-  ArrangerUserSet,
   createSet as saveSet,
   deleteSets,
   getSetAndParticipantsCountByUser,
@@ -12,10 +11,10 @@ import { ApiConfig } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
+  ArrangerUserSet,
   DeleteSetParams,
   EditSetTagParams,
   SaveSetParams,
-  SetInfo,
   SetNameConflictError,
   SetsActions,
   SetsActionTypes,
@@ -93,34 +92,31 @@ export const createSetIfUnique = (
 };
 
 export const editSetTag = (
+  api: (config: ApiConfig) => Promise<any>,
   payload: EditSetTagParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { setInfo, onNameConflict, onSuccess, onFail } = payload;
+  const { setId, newTag, onNameConflict, onSuccess, onFail } = payload;
 
   try {
-    const tagIsUnique = isTagUnique(getState, setInfo.name);
+    const tagIsUnique = isTagUnique(getState, newTag);
     if (tagIsUnique) {
       const data: SetUpdateInputData = {
-        newTag: setInfo.name,
+        newTag,
       };
-      const { updatedResults } = await updateSet(
+      const result: ArrangerUserSet = await updateSet(
+        api,
         SetSourceType.SAVE_SET,
         data,
         SetSubActionTypes.RENAME_TAG,
-        setInfo.key,
+        setId,
       );
 
-      if (updatedResults && updatedResults > 0) {
-        dispatch(isEditingTag(setInfo));
-        onSuccess();
-        return;
-      } else {
-        onFail();
-        return;
-      }
+      dispatch(isEditingTag(result.id, result.tag));
+      onSuccess();
+      return;
     }
 
     if (onNameConflict) {
@@ -130,6 +126,7 @@ export const editSetTag = (
     dispatch(failureCreate(new SetNameConflictError('A set with this name already exists')));
   } catch (error) {
     console.error(error);
+    onFail();
   }
 };
 
@@ -161,46 +158,41 @@ export const fetchSetsIfNeeded = (
 };
 
 export const addRemoveSetIds = (
+  api: (config: ApiConfig) => Promise<any>,
   payload: AddRemoveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { onSuccess, onFail, sqon, path, type, subActionType, setId } = payload;
+  const { onSuccess, onFail, sqon, subActionType, setId } = payload;
 
   dispatch(isAddingOrRemovingToSet(true));
 
   const data: SetUpdateInputData = {
     sqon,
-    path,
-    type,
   };
 
   try {
-    const response = await updateSet(SetSourceType.QUERY, data, subActionType, setId);
+    const userSet: ArrangerUserSet = await updateSet(
+      api,
+      SetSourceType.QUERY,
+      data,
+      subActionType,
+      setId,
+    );
 
-    if (!response) {
-      return onFail();
-    }
+    const sets: UserSet[] = selectSets(getState());
+    const setsWithUpdatedCount = sets.map((s) => {
+      if (s.setId === setId) {
+        return { setId: s.setId, size: userSet.size, tag: s.tag };
+      } else {
+        return s;
+      }
+    });
 
-    const { setSize, updatedResults } = response;
+    dispatch(displayUserSets(setsWithUpdatedCount));
 
-    if (updatedResults && updatedResults > 0) {
-      const sets: UserSet[] = selectSets(getState());
-      const setsWithUpdatedCount = sets.map((s) => {
-        if (s.setId === setId) {
-          return { setId: s.setId, size: setSize, tag: s.tag };
-        } else {
-          return s;
-        }
-      });
-
-      dispatch(displayUserSets(setsWithUpdatedCount));
-
-      onSuccess();
-    } else {
-      onFail();
-    }
+    onSuccess();
   } catch (e) {
     console.error(e);
     onFail();
@@ -283,9 +275,10 @@ export const removeUserSets = (setId: string): SetsActionTypes => ({
   setId,
 });
 
-export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
+export const isEditingTag = (setId: string, tag: string): SetsActionTypes => ({
   type: SetsActions.EDIT_SAVE_SET_TAG,
-  set: set,
+  setId,
+  tag,
 });
 
 export const requestCreateQueryInCohort = (setId: string): SetsActionTypes => ({

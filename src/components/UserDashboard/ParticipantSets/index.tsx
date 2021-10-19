@@ -22,7 +22,7 @@ import {
   DispatchSaveSets,
   SaveSetActionsTypes,
   SaveSetState,
-  SetInfo,
+  UserSet,
 } from 'store/saveSetTypes';
 import { selectUserSets } from 'store/selectors/saveSetsSelectors';
 import { User } from 'store/userTypes';
@@ -78,11 +78,10 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
-    key: '',
-    name: '',
-    count: 0,
-    currentUser: '',
-  } as SetInfo);
+    setId: '',
+    tag: '',
+    size: 0,
+  } as UserSet);
 
   useEffect(() => {
     fetchUserSetsIfNeeded(api);
@@ -92,7 +91,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     deleteSaveSet(api, { setId, onFail: onDeleteFail } as DeleteSetParams);
   };
 
-  const onEditClick = (record: SetInfo) => {
+  const onEditClick = (record: UserSet) => {
     setEditSet(record);
     setShowModal(true);
   };
@@ -100,13 +99,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'tag',
+      key: 'tag',
       // eslint-disable-next-line react/display-name
-      render: (name: string, record: SetInfo) => (
+      render: (tag: string, record: UserSet) => (
         <div className={'save-set-column-name'}>
           <div className={'save-set-table-name'}>
-            {name}{' '}
+            {tag}{' '}
             <Button size={'small'} type={'text'} onClick={() => onEditClick(record)}>
               <EditFilled className={'edit-icon'} />
             </Button>
@@ -116,18 +115,18 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     },
     {
       title: 'Count',
-      dataIndex: 'count',
-      key: 'count',
+      dataIndex: 'size',
+      key: 'size',
       width: 80,
       align: align,
       // eslint-disable-next-line react/display-name
-      render: (count: number, record: SetInfo) => (
+      render: (size: number, record: UserSet) => (
         <Link
           className={'classNames'}
           to={'/explore'}
           href={'#top'}
           onClick={() => {
-            onClickParticipantsLink(record.key);
+            onClickParticipantsLink(record.setId);
             const toTop = document.getElementById('main-page-container');
             toTop?.scrollTo(0, 0);
           }}
@@ -135,7 +134,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           <Button className={'count-button'} type="text">
             {' '}
             <img src={participantMagenta} alt="Participants" />
-            <div className={'save-sets-participants-count'}>{count}</div>
+            <div className={'save-sets-participants-count'}>{size}</div>
           </Button>
         </Link>
       ),
@@ -143,7 +142,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     {
       title: '',
       key: 'delete',
-      dataIndex: 'key',
+      dataIndex: 'setId',
       width: 40,
       // eslint-disable-next-line react/display-name
       render: (setId: string) => (
@@ -161,12 +160,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     },
   ];
 
-  const data: SetInfo[] = userSets.sets.map((s) => ({
-    key: s.setId,
-    name: s.tag,
-    count: s.size,
-    currentUser: user.egoId,
-  }));
+  const data: UserSet[] = userSets.sets;
 
   return (
     <Fragment>
@@ -176,7 +170,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           user={user}
           hideModalCb={() => {
             setShowModal(false);
-            setEditSet({ key: '', name: '', count: 0, currentUser: '' });
+            setEditSet({ setId: '', tag: '', size: 0 });
           }}
           onFail={onDeleteFail}
           setToRename={editSet}
@@ -188,7 +182,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           <Spin size={'large'} />
         </div>
       ) : !userSets.error ? (
-        <Table className="user-sets-table" columns={columns} dataSource={data} pagination={false} />
+        <Table
+          className="user-sets-table"
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          rowKey="setId"
+        />
       ) : (
         <Result status="error" title="Failed to load user SaveSets" />
       )}

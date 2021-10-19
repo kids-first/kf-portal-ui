@@ -1,7 +1,6 @@
 import { Action } from 'redux';
 
 import { addSetToCurrentQuery, requestCreateQueryInCohort } from 'store/actionCreators/saveSets';
-import { SetInfo } from 'store/saveSetTypes';
 
 import reducer from '../currentVirtualStudy';
 
@@ -32,12 +31,8 @@ describe('Current Virtual Study Reducer', () => {
   });
 
   it('should handle create set query request', () => {
-    const setInfo: SetInfo = {
-      key: 'id12345',
-      name: 'thisSets',
-      currentUser: 'SomeUser',
-    };
-    expect(reducer(initialState, requestCreateQueryInCohort(setInfo.key))).toEqual({
+    const setId = 'id12345';
+    expect(reducer(initialState, requestCreateQueryInCohort(setId))).toEqual({
       sqons: [
         {
           op: 'and',
