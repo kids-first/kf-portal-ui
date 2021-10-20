@@ -6,10 +6,9 @@ import HighBadgeIcon from 'icons/variantBadgeIcons/HighBadgeIcon';
 import LowBadgeIcon from 'icons/variantBadgeIcons/LowBadgeIcon';
 import ModerateBadgeIcon from 'icons/variantBadgeIcons/ModerateBadgeIcon';
 import ModifierBadgeIcon from 'icons/variantBadgeIcons/ModifierBadgeIcon';
+import Symbol from 'pages/variantsSearchPage/Symbol';
 import { Consequence, Impact } from 'store/graphql/variants/models';
 import { toKebabCase } from 'utils';
-
-import Symbol from './Symbol';
 
 import style from './ConsequencesCell.module.scss';
 
