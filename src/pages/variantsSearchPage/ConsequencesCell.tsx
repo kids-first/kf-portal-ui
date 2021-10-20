@@ -2,9 +2,10 @@ import React from 'react';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 import { generateConsequencesDataLines } from 'components/Variants/consequences';
-import Symbol from 'pages/variantsSearchPage/Symbol';
 import { Consequence, Impact } from 'store/graphql/variants/models';
 import { toKebabCase } from 'utils';
+
+import Symbol from './Symbol';
 
 import style from './ConsequencesCell.module.scss';
 
