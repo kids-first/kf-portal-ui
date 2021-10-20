@@ -151,13 +151,13 @@ export class PhenotypeStore {
   getPhenotypes = async (field: string, sqon?: Sqon, filterThemselves = false) => {
     const body = {
       query: this.buildPhenotypeQuery(field, filterThemselves),
-      variables: JSON.stringify({
+      variables: {
         sqon: sqon,
         term_filters: {
           op: 'and',
           content: [{ op: 'in', content: { field: `${field}.is_tagged`, value: [true] } }],
         },
-      }),
+      },
       projectId: arrangerApiProjectId,
     };
     try {
