@@ -19,7 +19,12 @@ const CaringForChildren = () => (
     <div className={styles.linkCards}>
       <Row gutter={[8, 8]} align="stretch">
         <Col xs={12}>
-          <a target="_blank" rel="noopener noreferrer" href="">
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            // eslint-disable-next-line max-len
+            href="https://kf-api-fhir-service.kidsfirstdrc.org/Patient?_total=accurate&_has:ResearchSubject:individual:study=ResearchStudy/4873"
+          >
             <Card className={styles.linkCard}>
               <Title className={styles.linkCardTitle}>CARING Data FHIR API Endpoint</Title>
               <Text className={styles.linkCardDesc}>
