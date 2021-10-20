@@ -1,27 +1,29 @@
 import React from 'react';
-import style from './ConsequencesCell.module.scss';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import Symbol from './Symbol';
-import { toKebabCase } from 'utils';
-import { Consequence, Impact } from 'store/graphql/variants/models';
+
 import { generateConsequencesDataLines } from 'components/Variants/consequences';
+import HighBadgeIcon from 'icons/variantBadgeIcons/HighBadgeIcon';
+import LowBadgeIcon from 'icons/variantBadgeIcons/LowBadgeIcon';
+import ModerateBadgeIcon from 'icons/variantBadgeIcons/ModerateBadgeIcon';
+import ModifierBadgeIcon from 'icons/variantBadgeIcons/ModifierBadgeIcon';
+import Symbol from 'pages/variantsSearchPage/Symbol';
+import { Consequence, Impact } from 'store/graphql/variants/models';
+import { toKebabCase } from 'utils';
+
+import style from './ConsequencesCell.module.scss';
 
 type OwnProps = {
   consequences: Consequence[];
 };
 
 const impactToColorClassName = Object.freeze({
-  [Impact.High]: style.highImpact,
-  [Impact.Low]: style.lowImpact,
-  [Impact.Moderate]: style.moderateImpact,
-  [Impact.Modifier]: style.modifierImpact,
+  [Impact.High]: <HighBadgeIcon svgClass={`${style.bullet} ${style.highImpact}`} />,
+  [Impact.Low]: <LowBadgeIcon svgClass={`${style.bullet} ${style.lowImpact}`} />,
+  [Impact.Moderate]: <ModerateBadgeIcon svgClass={`${style.bullet} ${style.moderateImpact}`} />,
+  [Impact.Modifier]: <ModifierBadgeIcon svgClass={`${style.bullet} ${style.modifierImpact}`} />,
 });
 
-const pickImpactColorClassName = (impact: Impact) => impactToColorClassName[impact];
-
-const Bullet = ({ colorClassName = '' }) => (
-  <span className={`${style.bullet} ${colorClassName}`} />
-);
+const pickImpacBadge = (impact: Impact) => impactToColorClassName[impact];
 
 const ConsequencesCell = ({ consequences }: OwnProps) => {
   const lines = generateConsequencesDataLines(consequences);
@@ -32,7 +34,7 @@ const ConsequencesCell = ({ consequences }: OwnProps) => {
         const node = consequence.node;
         return (
           <StackLayout center key={index}>
-            <Bullet colorClassName={pickImpactColorClassName(node.vep_impact)} />
+            {pickImpacBadge(node.vep_impact)}
             <span key={index} className={style.detail}>
               {node.consequences[0]}
             </span>
