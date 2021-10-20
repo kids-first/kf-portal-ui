@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Dropdown } from 'antd';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import { Dropdown } from 'antd';
+import PropTypes from 'prop-types';
 
+import { arrangerApiProjectId } from 'common/injectGlobals';
+import CategoryMenu from 'components/CohortBuilder/Categories/CategoryMenu';
+import Filter from 'components/CohortBuilder/Categories/Filter';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
 import { sqonShape } from 'shapes';
-import Column from 'uikit/Column';
-import { arrangerProjectId } from 'common/injectGlobals';
-import Filter from './Filter';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import CategoryMenu from './CategoryMenu';
 import { openModal } from 'store/actions/modal';
+import Column from 'uikit/Column';
 
 import '../CohortBuilder.css';
-import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
 
 class Category extends React.Component {
   constructor(props) {
@@ -95,7 +95,7 @@ class Category extends React.Component {
           this.handleCloseFilter(false);
         }}
         field={field}
-        arrangerProjectId={arrangerProjectId}
+        arrangerProjectId={arrangerApiProjectId}
         arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       />
     );
@@ -109,7 +109,7 @@ class Category extends React.Component {
     return (
       <Fragment>
         <ExtendedMappingProvider
-          projectId={arrangerProjectId}
+          projectId={arrangerApiProjectId}
           graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         >
           {({ extendedMapping = [] }) => {

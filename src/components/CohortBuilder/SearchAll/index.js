@@ -12,19 +12,17 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerProjectId } from 'common/injectGlobals';
+import { arrangerApiProjectId } from 'common/injectGlobals';
+import Filter from 'components/CohortBuilder/Categories/Filter';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import QueriesResolver from 'components/CohortBuilder/QueriesResolver';
+import { searchAllQueries } from 'components/CohortBuilder/SearchAll/queries';
+import QueryResults from 'components/CohortBuilder/SearchAll/QueryResults';
+import { SQONdiff } from 'components/Utils';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { sqonShape } from 'shapes';
 import Column from 'uikit/Column';
-
-import { SQONdiff } from '../../Utils';
-import Filter from '../Categories/Filter';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import QueriesResolver from '../QueriesResolver';
-
-import { searchAllQueries } from './queries';
-import QueryResults from './QueryResults';
 
 import './SearchAll.css';
 
@@ -218,7 +216,7 @@ class SearchAll extends React.Component {
             this.close();
           }}
           field={fieldName}
-          arrangerProjectId={arrangerProjectId}
+          arrangerProjectId={arrangerApiProjectId}
           arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         />
       </div>
@@ -339,7 +337,7 @@ class SearchAll extends React.Component {
       // Extract the metadata & data fetching to a component
       <ExtendedMappingProvider
         api={api}
-        projectId={arrangerProjectId}
+        projectId={arrangerApiProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >

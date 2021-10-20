@@ -12,6 +12,17 @@ import {
   MERGE_VALUES_STRATEGIES,
   setSqonValueAtIndex,
 } from 'common/sqonUtils';
+import { EntityContentDivider, EntityContentSection } from 'components/EntityPage/';
+import FamilyTable from 'components/EntityPage/Participant/Utils/FamilyTable';
+import ParticipantDataTable from 'components/EntityPage/Participant/Utils/ParticipantDataTable';
+import prettifyAge from 'components/EntityPage/Participant/Utils/prettifyAge';
+import sanitize from 'components/EntityPage/Participant/Utils/sanitize';
+import {
+  HPOLink,
+  MONDOLink,
+  NCITLink,
+  SNOMEDLink,
+} from 'components/Utils/DiagnosisAndPhenotypeLinks';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
 import { initializeApi } from 'services/api';
@@ -22,14 +33,6 @@ import { resetVirtualStudy } from 'store/actionCreators/virtualStudies';
 import theme from 'theme/defaultTheme';
 import { Spinner } from 'uikit/Spinner';
 import Tooltip from 'uikit/Tooltip';
-
-import { HPOLink, MONDOLink, NCITLink, SNOMEDLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-import { EntityContentDivider, EntityContentSection } from '../';
-
-import FamilyTable from './Utils/FamilyTable';
-import ParticipantDataTable from './Utils/ParticipantDataTable';
-import prettifyAge from './Utils/prettifyAge';
-import sanitize from './Utils/sanitize';
 
 import './ParticipantClinical.css';
 
@@ -181,8 +184,8 @@ class ParticipantClinical extends React.Component {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
-        {"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
+        variables: JSON.parse(`{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`),
       });
     }
     let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(
@@ -226,16 +229,16 @@ class ParticipantClinical extends React.Component {
     function callObs(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
-        {"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
+        variables: JSON.parse(`{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`),
       });
     }
 
     function callNotObs(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
-        {"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`,
+        variables: JSON.parse(`{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`),
       });
     }
 

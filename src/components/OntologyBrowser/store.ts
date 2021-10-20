@@ -162,7 +162,7 @@ export class PhenotypeStore {
     };
     try {
       const { data } = await graphql()(body);
-      return data.data.participant.aggregations[dotToUnderscore(field) + '__name'].buckets;
+      return data.participant.aggregations[dotToUnderscore(field) + '__name'].buckets;
     } catch (error) {
       // console.warn(error);
       return [];

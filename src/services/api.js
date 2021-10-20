@@ -1,12 +1,10 @@
 import React from 'react';
 import urlJoin from 'url-join';
 
-import { arrangerApiRoot } from 'common/injectGlobals';
+import { kfArrangerApiRoot } from 'common/injectGlobals';
+import ajax from 'services/ajax';
 import { store } from 'store';
-
-import { cleanlyLogout } from '../store/actionCreators/user';
-
-import ajax from './ajax';
+import { cleanlyLogout } from 'store/actionCreators/user';
 
 const sendRequest = (defaultHeaders, method, body, headers, uri) => {
   const requestHeaders = {
@@ -40,7 +38,7 @@ export const initializeApi = ({
   body,
   headers = {},
   url,
-  arrangerRoot = arrangerApiRoot,
+  arrangerRoot = kfArrangerApiRoot,
 }) => {
   const uri = url || urlJoin(arrangerRoot, endpoint);
   const methodLowerCase = (method || '').toLowerCase();

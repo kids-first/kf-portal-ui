@@ -8,17 +8,16 @@ import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerProjectId } from 'common/injectGlobals';
+import { arrangerApiProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { FieldFilterContainer } from 'components/CohortBuilder/FieldFilterContainer';
+import { SQONdiff } from 'components/Utils';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { queryBodySets } from 'services/sets';
 import { closeModal, openModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
 import { selectUser } from 'store/selectors/users';
-
-import { SQONdiff } from '../../Utils';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import { FieldFilterContainer } from '../FieldFilterContainer';
 
 import './SqonBuilder.css';
 
@@ -153,7 +152,7 @@ const SqonBuilder = ({
       </Modal>
       <ExtendedMappingProvider
         api={api}
-        projectId={arrangerProjectId}
+        projectId={arrangerApiProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >
@@ -163,7 +162,7 @@ const SqonBuilder = ({
           ) : (
             <AdvancedSqonBuilder
               api={api}
-              arrangerProjectId={arrangerProjectId}
+              arrangerProjectId={arrangerApiProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
               FieldOpModifierContainer={(props) => (
                 <FieldFilterContainer className="" showHeader={false} {...props} />

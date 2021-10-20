@@ -1,14 +1,10 @@
-import urlJoin from 'url-join';
-
-import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
-import ajax from 'services/ajax';
+import { arrangerApiProjectId } from 'common/injectGlobals';
+import { initializeApi } from 'services/api';
 
 export const MISSING_DATA = '__missing__';
 
-export const graphql = (api, queryName = '') => (body) =>
-  api
-    ? api({ endpoint: `/${arrangerProjectId}/graphql/${queryName}`, body })
-    : ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
+export const graphql = (api = initializeApi()) => (body) =>
+  api({ endpoint: `/search`, body: { ...body, projectId: arrangerApiProjectId } });
 
 /**
  * Generates a human readable error message from a error thrown by the `graphql` function.
