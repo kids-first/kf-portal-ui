@@ -3,11 +3,29 @@
 .caringForChildrenCard {
   height: 100%;
 
+  .italic {
+    font-style: italic;
+  }
+
   .linkCards {
     margin-top: 16px;
+
+    a {
+      text-decoration: none;
+    }
+
     .linkCard {
       background-color: $gray-3;
       height: 100%;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $gray-2;
+
+        .linkCardTitle {
+          text-decoration: none;
+        }
+      }
 
       div[class$='-body'] {
         padding: 12px;
@@ -20,6 +38,7 @@
       }
 
       .linkCardDesc {
+        text-decoration: none;
         font-size: 12px;
         line-height: 18px;
         display: block;

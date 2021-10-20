@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
-import { Col, Row } from 'antd';
+import { Card, Col, Row } from 'antd';
 import { compose } from 'recompose';
 
 import { withApi } from 'services/api';
