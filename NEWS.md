@@ -8,7 +8,7 @@
 ### Technical / Other changes
 -->
 
-## 2021-10-19 kf-portal-ui 3.3.4
+## 2021-10-20 kf-portal-ui 3.3.4
 
 ### Features
 
