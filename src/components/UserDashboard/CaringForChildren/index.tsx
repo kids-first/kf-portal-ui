@@ -36,8 +36,8 @@ const CaringForChildren = () => (
                 <span className={styles.italic}>CARING</span> Data FHIR API Endpoint
               </Title>
               <Text className={styles.linkCardDesc}>
-                Query the entire <span className={styles.italic}>CARING</span> dataset via FHIR API
-                parameters
+                Use this to start querying the entire <span className={styles.italic}>CARING</span>{' '}
+                dataset via the FHIR API
               </Text>
             </Card>
           </a>
@@ -51,7 +51,8 @@ const CaringForChildren = () => (
             <Card className={styles.linkCard}>
               <Title className={styles.linkCardTitle}>Kids First FHIR API Endpoint</Title>
               <Text className={styles.linkCardDesc}>
-                Query all released Kids First datasets via FHIR API
+                Use this to start querying the entire <span className={styles.italic}>KF</span>{' '}
+                dataset via the FHIR AP
               </Text>
             </Card>
           </a>
@@ -65,25 +66,28 @@ const CaringForChildren = () => (
             <Card className={styles.linkCard}>
               <Title className={styles.linkCardTitle}>Kids First FHIR Data Dashboard</Title>
               <Text className={styles.linkCardDesc}>
-                Explore the <span className={styles.italic}>CARING</span> data via dashboard
-                interfaces
+                Use this to start exploring <span className={styles.italic}>KF & CARING</span> data
+                via a dashboard
               </Text>
             </Card>
           </a>
         </Col>
         <Col xs={12}>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://kf-api-fhir-service.kidsfirstdrc.org/swagger-ui"
-          >
-            <Card className={styles.linkCard}>
-              <Title className={styles.linkCardTitle}>Kids First FHIR Documentation</Title>
-              <Text className={styles.linkCardDesc}>
-                Swagger documentation to learn how to interact with the FHIR API
-              </Text>
-            </Card>
-          </a>
+          <Card className={styles.linkCard}></Card>
+          {false && (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://kf-api-fhir-service.kidsfirstdrc.org/swagger-ui"
+            >
+              <Card className={styles.linkCard}>
+                <Title className={styles.linkCardTitle}>Kids First FHIR Documentation</Title>
+                <Text className={styles.linkCardDesc}>
+                  Use this Swagger documentation to learn how to interact with the FHIR API
+                </Text>
+              </Card>
+            </a>
+          )}
         </Col>
       </Row>
     </div>
