@@ -51,7 +51,7 @@ const showErrorNotification = () =>
     description: 'Unable to create a link to access file repository',
   });
 
-type generateAllFilesLinkFn = (user: any, api: any, originalSqon: any) => Promise<string>;
+type generateAllFilesLinkFn = (api: any, originalSqon: any) => Promise<string>;
 
 const generateAllFilesLink: generateAllFilesLinkFn = async (
   api: ApiFunction,
@@ -178,7 +178,7 @@ const Toolbar = ({
               type="link"
               getLink={
                 isFiltered
-                  ? () => generateAllFilesLink(user, api, sqon)
+                  ? () => generateAllFilesLink(api, sqon)
                   : () => Promise.resolve('/search/file')
               }
             >
