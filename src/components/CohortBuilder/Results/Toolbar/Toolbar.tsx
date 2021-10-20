@@ -1,25 +1,23 @@
 import React from 'react';
 import { ArrowRightOutlined, FileFilled } from '@ant-design/icons';
-// @ts-ignore
-import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { notification, Spin } from 'antd';
 import capitalize from 'lodash/capitalize';
 import get from 'lodash/get';
 
 import { CARDINALITY_PRECISION_THRESHOLD } from 'common/constants';
+import DownloadButton from 'components/CohortBuilder/ParticipantsTableView/DownloadButton';
+import ParticipantSetDropdown from 'components/CohortBuilder/ParticipantsTableView/ParticipantSetDropdown';
+import { createFileRepoLink } from 'components/CohortBuilder/util';
+import useUser from 'hooks/useUser';
 import DemographicIcon from 'icons/DemographicIcon';
 import FamilyMembersIcon from 'icons/FamilyMembersIcon';
-import graphql from 'services/arranger';
+import { createSet } from 'services/sets';
+import { ApiFunction } from 'store/apiTypes';
+import { CreateSetParams } from 'store/saveSetTypes';
 import { Sqon } from 'store/sqon';
-import { User } from 'store/userTypes';
 import colors from 'style/themes/default/_colors.scss';
 import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 import { roundIntToChosenPowerOfTen } from 'utils';
-
-import useUser from '../../../../hooks/useUser';
-import DownloadButton from '../../ParticipantsTableView/DownloadButton';
-import ParticipantSetDropdown from '../../ParticipantsTableView/ParticipantSetDropdown';
-import { createFileRepoLink } from '../../util';
 
 import './Toolbar.scss';
 
@@ -56,23 +54,21 @@ const showErrorNotification = () =>
 type generateAllFilesLinkFn = (user: any, api: any, originalSqon: any) => Promise<string>;
 
 const generateAllFilesLink: generateAllFilesLinkFn = async (
-  user: User,
-  api: Function,
+  api: ApiFunction,
   originalSqon: Sqon,
 ) => {
+  const createSetParams: CreateSetParams = {
+    type: 'participant',
+    sqon: originalSqon || {},
+    path: 'kf_id',
+  };
   let fileSet = null;
   try {
-    fileSet = await saveSet({
-      type: 'participant',
-      sqon: originalSqon || {},
-      userId: user.egoId,
-      path: 'kf_id',
-      api: graphql(api),
-    });
+    fileSet = await createSet(api, createSetParams);
   } catch (e) {
     showErrorNotification();
   }
-  const setId = get(fileSet, 'data.saveSet.setId');
+  const setId = get(fileSet, 'id');
 
   return createFileRepoLink({
     op: 'and',
