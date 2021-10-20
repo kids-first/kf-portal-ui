@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconProps } from '../../icons';
+import { IconProps } from 'icons';
 
 const HighBadgeIcon = ({ svgClass = '', fill = '' }: IconProps) => (
   <svg
