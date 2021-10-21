@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Card from '@ferlab/ui/core/view/GridCard';
-import { Badge, Result } from 'antd';
+import { Badge, Card, Result } from 'antd';
 
 import {
   setUserDimension,
@@ -146,19 +145,17 @@ const CavaticaProjects = () => {
               onTabChange(key);
             }}
           >
-            {
-              generateTabsContent({
-                isConnected,
-                projectsError,
-                tabToCreate,
-                projects,
-                loading,
-                onProjectCreated,
-                onProjectCreationCanceled,
-                refresh,
-                activeTab,
-              }).component
-            }
+            {generateTabsContent({
+              isConnected,
+              projectsError,
+              tabToCreate,
+              projects,
+              loading,
+              onProjectCreated,
+              onProjectCreationCanceled,
+              refresh,
+              activeTab,
+            }).component()}
           </Card>
         );
       }}
