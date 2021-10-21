@@ -8,6 +8,12 @@
 ### Technical / Other changes
 -->
 
+## 2021-10-21 kf-portal-ui 3.3.6
+
+### Technical / Other changes
+
+- Fix typo in dashboard
+
 ## 2021-10-21 kf-portal-ui 3.3.5
 
 ### Technical / Other changes
