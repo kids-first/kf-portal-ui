@@ -52,7 +52,7 @@ const CaringForChildren = () => (
               <Title className={styles.linkCardTitle}>Kids First FHIR API Endpoint</Title>
               <Text className={styles.linkCardDesc}>
                 Use this to start querying the entire <span className={styles.italic}>KF</span>{' '}
-                dataset via the FHIR AP
+                dataset via the FHIR API
               </Text>
             </Card>
           </a>
