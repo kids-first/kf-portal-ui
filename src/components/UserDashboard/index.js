@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Col, Row } from 'antd';
 import { compose } from 'recompose';
 
+import { isKfInvestigator } from 'common/profile';
 import { withApi } from 'services/api';
 import { Spinner } from 'uikit/Spinner';
 
@@ -12,6 +13,7 @@ import CaringForChildren from './CaringForChildren';
 import CavaticaProjects from './CavaticaProjects';
 import ParticipantSets from './ParticipantSets';
 import SavedQueries from './SavedQueries';
+import WorkBench from './WorkBench';
 
 import './UserDashboard.module.css';
 import './UserDashboard.scss';
@@ -22,7 +24,7 @@ import {
 } from './UserDashboard.module.css';
 
 export default compose(withApi)(({ api }) => {
-  const { user } = useUser();
+  const { user, groups } = useUser();
   return user ? (
     <div className={userDashboardContainer}>
       <div className={userDashboardContent}>
@@ -40,6 +42,11 @@ export default compose(withApi)(({ api }) => {
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
             <Card title={<span className={'title-dashboard-card'}>My Participant Sets</span>}>
               <ParticipantSets user={user} />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+            <Card title={<span className={'title-dashboard-card'}>Apache Zeppelin</span>}>
+              <WorkBench isAllowed={isKfInvestigator(groups)} />
             </Card>
           </Col>
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
