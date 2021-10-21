@@ -8,7 +8,10 @@ import {
   updateFilters,
 } from '@ferlab/ui/core/data/filters/utils';
 
-import { fieldMappings } from 'pages/variantsSearchPage/filters/fieldsMappings';
+import {
+  defaultOperatorMapping,
+  fieldMappings,
+} from 'pages/variantsSearchPage/filters/fieldsMappings';
 import history from 'services/history';
 import { StudiesResult } from 'store/graphql/studies/models';
 import { keyEnhance, keyEnhanceBooleanOnly, underscoreToDot } from 'store/graphql/utils';
@@ -133,6 +136,8 @@ export const getFilterGroup = (
   const nameMapping = fieldMappings[extendedMapping?.field || ''];
 
   if (isRangeAgg(aggregation)) {
+    const defaultOperator = defaultOperatorMapping[extendedMapping?.field || ''];
+
     return {
       field: extendedMapping?.field || '',
       title: extendedMapping?.displayName || '',
@@ -145,6 +150,7 @@ export const getFilterGroup = (
           name: r,
           key: r,
         })),
+        defaultOperator: defaultOperator,
       },
     };
   }
