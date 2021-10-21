@@ -44,6 +44,7 @@ const SavedQueriesTab = (props: Props) => {
   return (
     <List
       size={'small'}
+      className="saved-queries-list"
       itemLayout="horizontal"
       dataSource={sortedQueries}
       renderItem={(item) => {
