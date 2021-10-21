@@ -45,6 +45,7 @@ const SavedQueriesTab = (props: Props) => {
     <List
       size={'small'}
       itemLayout="horizontal"
+      className="saved-queries-list"
       dataSource={sortedQueries}
       renderItem={(item) => {
         const currentItemIsDeleting = queryIdToStatus[item.id] === SavedQueriesStatuses.deleting;
