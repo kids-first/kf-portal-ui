@@ -8,6 +8,12 @@
 ### Technical / Other changes
 -->
 
+## 2021-10-20 kf-portal-ui 3.3.4
+
+### Features
+
+- [SKFP-252](https://d3b.atlassian.net/browse/SKFP-252) Feature (Dashboard) : New CARING for Children with COVID Resources widget
+
 ## 2021-09-16 kf-portal-ui 3.3.3
 
 ### Technical / Other changes

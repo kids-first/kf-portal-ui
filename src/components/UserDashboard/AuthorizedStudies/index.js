@@ -1,6 +1,5 @@
 import React from 'react';
-import Card from '@ferlab/ui/core/view/GridCard';
-import { Badge, Button } from 'antd';
+import { Badge, Button, Card } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
 import AccessGate from 'components/AccessGate';
