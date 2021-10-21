@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import Card from '@ferlab/ui/core/view/GridCard';
-import { Badge, Result } from 'antd';
+import { Badge, Card, Result } from 'antd';
 
 import { deleteParticularSavedQuery, fetchSavedQueries } from 'store/actionCreators/SavedQueries';
 import { Api } from 'store/apiTypes';
@@ -70,7 +69,7 @@ const SavedQueries = (props: Props) => {
 
   if (isLoadingAllQueries) {
     return (
-      <Card size="small" title={<span className={'title-dashboard-card'}>My Saved Queries</span>}>
+      <Card title={<span className={'title-dashboard-card'}>My Saved Queries</span>}>
         <Spinner />
       </Card>
     );
@@ -78,7 +77,7 @@ const SavedQueries = (props: Props) => {
 
   if (errorFetchAllQueries) {
     return (
-      <Card size="small" title={<span className={'title-dashboard-card'}>My Saved Queries</span>}>
+      <Card title={<span className={'title-dashboard-card'}>My Saved Queries</span>}>
         <Result
           status="error"
           title="Failed to Fetch Saved Queries"
@@ -112,7 +111,6 @@ const SavedQueries = (props: Props) => {
   return (
     <div className={'saved-queries-container'}>
       <Card
-        size="small"
         title={<span className={'title-dashboard-card'}>My Saved Queries</span>}
         tabList={tabList}
         tabProps={{ size: 'small' }}
