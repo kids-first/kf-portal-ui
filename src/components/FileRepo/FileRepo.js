@@ -9,10 +9,15 @@ import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerProjectId } from 'common/injectGlobals';
+import { arrangerApiProjectId } from 'common/injectGlobals';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import CavaticaCopyMultipleFilesModal from 'components/cavatica/CavaticaCopyMultipleFilesModal';
+import customTableColumns from 'components/FileRepo//customTableColumns';
+import DownloadButton from 'components/FileRepo//DownloadButton';
+import FileManifestButton from 'components/FileRepo//FileManifestButton';
+import StatsBar from 'components/FileRepo//StatsBar';
+import { ControlledIcon, OpenIcon, SaveShareButtonContainer } from 'components/FileRepo//ui';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
@@ -35,12 +40,6 @@ import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 import { Spinner } from 'uikit/Spinner';
 import Tooltip from 'uikit/Tooltip';
-
-import customTableColumns from './customTableColumns';
-import DownloadButton from './DownloadButton';
-import FileManifestButton from './FileManifestButton';
-import StatsBar from './StatsBar';
-import { ControlledIcon, OpenIcon, SaveShareButtonContainer } from './ui';
 
 import './FileRepo.scss';
 
@@ -122,7 +121,7 @@ const FileRepo = ({
               <Arranger
                 {...props}
                 api={props.api}
-                projectId={arrangerProjectId}
+                projectId={arrangerApiProjectId}
                 render={(props) => {
                   const selectionSQON = props.selectedTableRows.length
                     ? replaceSQON({
@@ -261,7 +260,7 @@ const FileRepo = ({
                                     <DownloadButton sqon={selectionSQON} />
                                     <FileManifestButton
                                       sqon={selectionSQON}
-                                      projectId={arrangerProjectId}
+                                      projectId={arrangerApiProjectId}
                                     />
                                   </>
                                 </Row>

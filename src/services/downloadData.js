@@ -1,10 +1,11 @@
-import startCase from 'lodash/startCase';
-import { format } from 'date-fns';
 import saveTSV from '@kfarranger/components/dist/DataTable/TableToolbar/saveTSV';
+import { format } from 'date-fns';
+import startCase from 'lodash/startCase';
 import urlJoin from 'url-join';
-import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
-const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+
+const downloadUrl = urlJoin(kfArrangerApiRoot, `${arrangerApiProjectId}/download`);
 
 function findColumnsByField(fields, columns) {
   const columnConfigs = fields.map((field) =>
