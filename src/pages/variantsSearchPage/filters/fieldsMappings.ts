@@ -14,6 +14,9 @@ export const fieldMappings: FieldMappings = {
 
 export const defaultOperatorMapping: IDefaultOpMappings = {
   start: RangeOperators.between,
+  'consequences.predictions.cadd_rankscore': RangeOperators['>'],
+  'consequences.predictions.dann_rankscore': RangeOperators['>'],
+  'consequences.predictions.revel_rankscore': RangeOperators['>'],
 };
 
 interface IDefaultOpMappings {

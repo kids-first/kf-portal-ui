@@ -10,6 +10,11 @@
   }
 }
 
+.saved-queries-list {
+  max-height: 315px;
+  overflow: auto;
+}
+
 .file-stats {
   margin-right: 8px;
 }

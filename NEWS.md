@@ -8,7 +8,13 @@
 ### Technical / Other changes
 -->
 
-## 2021-10-20 kf-portal-ui 3.3.4
+## 2021-10-21 kf-portal-ui 3.3.5
+
+### Technical / Other changes
+
+- [SKFP-258](https://d3b.atlassian.net/browse/SKFP-258) Fix (Dashboard) : Saved queries widget scrollbar
+
+## 2021-10-21 kf-portal-ui 3.3.4
 
 ### Features
 
