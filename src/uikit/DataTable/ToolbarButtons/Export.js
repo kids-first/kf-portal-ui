@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Button, notification } from 'antd';
+import { print } from 'graphql/language/printer';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+import urlJoin from 'url-join';
+
+import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
 import {
   participantQueryExport,
   participantsQuery,
 } from 'components/CohortBuilder/ParticipantsTableView/queries';
-import { Button, notification } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
 
-import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
-import urlJoin from 'url-join';
-import { print } from 'graphql/language/printer';
 import exportTSV from './exportTSV';
 
 const formatDataForExport = (result) => (result ? result.nodes.map((node) => ({ ...node })) : []);
@@ -47,14 +48,12 @@ export default class Export extends Component {
 
       const rawData = await api({
         method: 'POST',
-        url: urlJoin(
-          arrangerApiRoot,
-          `/${arrangerProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
-        ),
+        url: urlJoin(kfArrangerApiRoot, `/search`),
         body: JSON.stringify(
           queries.map((q) => ({
             query: typeof q.query === 'string' ? q.query : print(q.query),
             variables: q.variables,
+            projectId: arrangerApiProjectId,
           })),
         ),
       });
