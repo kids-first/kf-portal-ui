@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import cloneDeep from 'lodash/cloneDeep';
 import { cyan } from 'chalk';
+import cloneDeep from 'lodash/cloneDeep';
 
 import {
+  addFieldToActiveQuery,
+  addSetToActiveQuery,
+  createNewQueryFromSetId,
   getDefaultSqon,
   isDefaultSqon,
-  setSqonValueAtIndex,
-  createNewQueryFromSetId,
-  addSetToActiveQuery,
-  MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
-  addFieldToActiveQuery,
+  MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
 } from '../sqonUtils';
 
 const numberOfSqonsDidntChanged = (sourceSqons, sqonIndex, newSqons) => {

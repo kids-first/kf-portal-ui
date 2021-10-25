@@ -1,6 +1,4 @@
 import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
-import { initializeApi } from 'services/api';
-import graphql from 'services/arranger';
 import { ApiConfig } from 'store/apiTypes';
 import {
   ArrangerUserSet,
@@ -21,26 +19,6 @@ export const queryBodySets = (nodes: string) => `query($sqon: JSON) {
                 }
               }
             }`;
-
-const getIdsFromSetId = async (rawId: string) => {
-  const response = await graphql(initializeApi())({
-    query: queryBodySets('id ids tag setId path'),
-    variables: {
-      sqon: {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: { field: 'setId', value: [rawId] },
-          },
-        ],
-      },
-    },
-  });
-
-  const firstEdge = (response?.data?.sets?.hits?.edges || [])[0];
-  return firstEdge?.node?.ids;
-};
 
 export const getSetAndParticipantsCountByUser = async (
   api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
@@ -96,6 +74,3 @@ export const updateSet = async (
     },
   });
 };
-
-export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
-  (await Promise.all(setIds.map((id) => getIdsFromSetId(id)))).flat();
