@@ -1,12 +1,42 @@
+@import 'src/style/themes/default/colors';
+
 .variantFilterWrapper {
   min-height: 100px;
-  padding-bottom: 16px;
   .variantFilterContainer {
     margin-top: 8px;
+    &:last-child {
+      padding-bottom: 16px;
+    }
   }
+}
+
+.variantFilterWrapperGenes {
+  min-height: 100px;
+  .variantFilterContainer {
+    margin-top: 8px;
+    &:last-child {
+      padding-bottom: 8px;
+    }
+  }
+}
+
+.variantFilterFreeTextWrapper {
+  padding-bottom: 8px;
 }
 
 .expandButtonContainerVariant {
   display: grid;
   justify-content: end;
+}
+
+.freeTextFieldCount {
+  padding-top: 5px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+  color: $geekblue-7;
+}
+.freeTextFieldContainer {
+  display: inline-grid;
 }
