@@ -22,7 +22,7 @@ const INPUT_FILTER_LIST = [
   'start',
 ];
 const SUGGESTION_TYPE = 'variants';
-const PLACE_HOLDER_TEXT = 'chr2:g.28025382G>T';
+const PLACE_HOLDER_TEXT = 'e.g. 10-100063679-T-C, rs341';
 const TITLE = 'Search by Variant';
 
 const VariantFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
