@@ -8,8 +8,8 @@ const { Text, Title } = Typography;
 const CaringForChildren = () => (
   <Card
     title={
-      <span className={'title-dashboard-card'}>
-        <span className={styles.italic}>CARING</span> for Children with COVID Resources
+      <span className={`${'title-dashboard-card'} ${styles.italic}`}>
+        CARING for Children with COVID Resources
       </span>
     }
     className={styles.caringForChildrenCard}
