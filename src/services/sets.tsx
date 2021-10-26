@@ -8,18 +8,6 @@ import {
   SetUpdateInputData,
 } from 'store/saveSetTypes';
 
-export const queryBodySets = (nodes: string) => `query($sqon: JSON) {
-              sets {
-                hits(filters: $sqon, first: 100, sort: [{field: "tag.keyword", order: asc}]) {
-                  edges {
-                    node {
-                      ${nodes}
-                    }
-                  }
-                }
-              }
-            }`;
-
 export const getSetAndParticipantsCountByUser = async (
   api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ) =>

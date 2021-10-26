@@ -14,9 +14,9 @@ import { FieldFilterContainer } from 'components/CohortBuilder/FieldFilterContai
 import { SQONdiff } from 'components/Utils';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
-import { queryBodySets } from 'services/sets';
 import { closeModal, openModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
 import { selectUser } from 'store/selectors/users';
 
 import './SqonBuilder.css';
@@ -52,26 +52,9 @@ const ACTION_CLEAR_ALL = {
   ],
 };
 
-const setQueryVariables = (userId) => ({
-  op: 'and',
-  content: [
-    {
-      op: 'in',
-      content: { field: 'userId', value: [userId] },
-    },
-    {
-      op: 'not-in',
-      content: { field: 'tag.keyword', value: [''] },
-    },
-    {
-      op: 'in',
-      content: { field: 'tag.keyword', value: ['__missing_not_wrapped__'] },
-    },
-  ],
-});
-
 const mapStateToProps = (state) => ({
   user: selectUser(state),
+  sets: selectSets(state),
   openModalId: selectModalId(state),
 });
 
@@ -101,6 +84,7 @@ const SqonBuilder = ({
   ResultCountIcon,
   activeSqonIndex,
   user,
+  sets,
 }) => {
   if (isEmpty(user)) {
     return null;
@@ -177,15 +161,7 @@ const SqonBuilder = ({
               actionsProvider={actionsProvider}
               ResultCountIcon={ResultCountIcon}
               activeSqonIndex={activeSqonIndex}
-              customQuery={{
-                body: queryBodySets('tag setId size'),
-                variables: setQueryVariables(user.egoId),
-                mapResultData: (rawData) =>
-                  rawData.sets.hits.edges.map(({ node }) => ({
-                    key: `set_id:${node.setId}`,
-                    doc_count: node.size,
-                  })),
-              }}
+              userSets={sets}
               nestedArrayFields={['observed_phenotype.name']}
             />
           )
@@ -210,6 +186,7 @@ SqonBuilder.propTypes = {
   ResultCountIcon: PropTypes.any.isRequired,
   activeSqonIndex: PropTypes.number.isRequired,
   user: PropTypes.object,
+  sets: PropTypes.array.isRequired,
 };
 
 const enhanced = compose(withApi, connector);
