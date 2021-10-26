@@ -9,15 +9,13 @@ import PropTypes from 'prop-types';
 
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
+import SearchResults from 'components/CohortBuilder/SearchById/SearchResults';
+import LoadingOnClick from 'components/LoadingOnClick';
 import { searchByIds } from 'services/arranger/searchByIds';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { closeModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
 import Row from 'uikit/Column';
-
-import LoadingOnClick from '../../LoadingOnClick';
-
-import SearchResults from './SearchResults';
 
 import './styles.scss';
 

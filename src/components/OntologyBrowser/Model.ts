@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { hpoTreeTitleFormat } from '../UI/Charts/Sunburst/Sunburst';
-
-import { PhenotypeSource, splitHPOTerm } from './store';
+import { PhenotypeSource, splitHPOTerm } from 'components/OntologyBrowser/store';
+import { hpoTreeTitleFormat } from 'components/UI/Charts/Sunburst/Sunburst';
 
 export type TreeNode = {
   title: React.ReactElement | string;
