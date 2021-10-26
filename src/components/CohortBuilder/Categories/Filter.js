@@ -6,7 +6,7 @@ import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerApiProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
+import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
 import { FieldFilterContainer } from 'components/CohortBuilder/FieldFilterContainer';
 import { withApi } from 'services/api';

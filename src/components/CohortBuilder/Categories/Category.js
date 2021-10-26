@@ -4,7 +4,7 @@ import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedM
 import { Dropdown } from 'antd';
 import PropTypes from 'prop-types';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import CategoryMenu from 'components/CohortBuilder/Categories/CategoryMenu';
 import Filter from 'components/CohortBuilder/Categories/Filter';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
@@ -95,7 +95,7 @@ class Category extends React.Component {
           this.handleCloseFilter(false);
         }}
         field={field}
-        arrangerProjectId={arrangerApiProjectId}
+        arrangerProjectId={arrangerProjectId}
         arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       />
     );
@@ -109,7 +109,7 @@ class Category extends React.Component {
     return (
       <Fragment>
         <ExtendedMappingProvider
-          projectId={arrangerApiProjectId}
+          projectId={arrangerProjectId}
           graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         >
           {({ extendedMapping = [] }) => {

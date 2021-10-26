@@ -9,7 +9,7 @@ import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import { cloneDeep } from 'lodash';
 import findIndex from 'lodash/findIndex';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
 import { TreeNode } from 'components/OntologyBrowser/Model';
 import { SelectionTree } from 'components/OntologyBrowser/SelectionTree';
@@ -281,7 +281,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
     return (
       <ExtendedMappingProvider
-        projectId={arrangerApiProjectId}
+        projectId={arrangerProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       >
         {({ extendedMapping = [] }) => (

@@ -12,7 +12,7 @@ import memoizeOne from 'memoize-one';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import Filter from 'components/CohortBuilder/Categories/Filter';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
 import QueriesResolver from 'components/CohortBuilder/QueriesResolver';
@@ -216,7 +216,7 @@ class SearchAll extends React.Component {
             this.close();
           }}
           field={fieldName}
-          arrangerProjectId={arrangerApiProjectId}
+          arrangerProjectId={arrangerProjectId}
           arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         />
       </div>
@@ -337,7 +337,7 @@ class SearchAll extends React.Component {
       // Extract the metadata & data fetching to a component
       <ExtendedMappingProvider
         api={api}
-        projectId={arrangerApiProjectId}
+        projectId={arrangerProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >

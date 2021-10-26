@@ -1,4 +1,4 @@
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import { ApiConfig } from 'store/apiTypes';
 import {
   ArrangerUserSet,
@@ -12,7 +12,7 @@ export const getSetAndParticipantsCountByUser = async (
   api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ) =>
   api({
-    url: `${kfArrangerApiRoot}sets`,
+    url: `${arrangerApiRoot}sets`,
     method: 'GET',
   });
 
@@ -22,10 +22,10 @@ export const createSet = async (
 ) => {
   const { type, sqon, path, sort, tag } = params;
   return api({
-    url: `${kfArrangerApiRoot}sets`,
+    url: `${arrangerApiRoot}sets`,
     method: 'POST',
     body: {
-      projectId: arrangerApiProjectId,
+      projectId: arrangerProjectId,
       type,
       sqon,
       idField: path,
@@ -37,7 +37,7 @@ export const createSet = async (
 
 export const deleteSets = async (api: (config: ApiConfig) => Promise<boolean>, setId: string) =>
   api({
-    url: `${kfArrangerApiRoot}sets/${setId}`,
+    url: `${arrangerApiRoot}sets/${setId}`,
     method: 'DELETE',
   });
 
@@ -51,10 +51,10 @@ export const updateSet = async (
   const { sqon, newTag } = data;
 
   return api({
-    url: `${kfArrangerApiRoot}sets/${setId}`,
+    url: `${arrangerApiRoot}sets/${setId}`,
     method: 'PUT',
     body: {
-      projectId: arrangerApiProjectId,
+      projectId: arrangerProjectId,
       sourceType,
       subAction,
       sqon,

@@ -3,7 +3,7 @@ import { ASTNode } from 'graphql';
 import { print } from 'graphql/language/printer';
 import urlJoin from 'url-join';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import useQueryResolverCache from 'hooks/useQueryResolverCache';
 
 type Payload = {
@@ -85,7 +85,7 @@ const useQueryResolver = (
   const fetchData = (body: string) =>
     api({
       method: 'POST',
-      url: urlJoin(kfArrangerApiRoot!, `/${arrangerApiProjectId}/graphql/${name}`),
+      url: urlJoin(arrangerApiRoot!, `/${arrangerProjectId}/graphql/${name}`),
       body,
     }).then((data: any) => {
       const result = data.map((d: any, i: any) => {

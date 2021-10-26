@@ -1,7 +1,7 @@
 import flatten from 'lodash/flatten';
 import get from 'lodash/get';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import { ApiFunction } from 'store/apiTypes';
 import { Sqon } from 'store/sqon';
 
@@ -21,11 +21,11 @@ type Group = {
 };
 
 export const fetchSurvivalData = (api: ApiFunction) => async (sqon: Sqon) => {
-  const body = { project: arrangerApiProjectId, sqon };
+  const body = { project: arrangerProjectId, sqon };
 
   const result = await api({
     method: 'POST',
-    url: `${kfArrangerApiRoot}survival`,
+    url: `${arrangerApiRoot}survival`,
     body,
   });
 

@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import urlJoin from 'url-join';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import {
   participantQueryExport,
   participantsQuery,
@@ -48,8 +48,8 @@ export default class Export extends Component {
       const rawData = await api({
         method: 'POST',
         url: urlJoin(
-          kfArrangerApiRoot,
-          `/${arrangerApiProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
+          arrangerApiRoot,
+          `/${arrangerProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
         ),
         body: JSON.stringify(
           queries.map((q) => ({

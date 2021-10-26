@@ -1,17 +1,15 @@
 import { format } from 'date-fns';
+import keycloak from 'keycloak';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 
 import downloader from 'common/downloader';
-import { arrangerApiProjectId, reportsApiRoot } from 'common/injectGlobals';
+import { arrangerProjectId, reportsApiRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { familyMemberAndParticipantIds } from 'services/participants';
 import { ReportConfig } from 'store/reportTypes';
 import { Sqon } from 'store/sqon';
 import { shapeFileTypeSqonFiltersForParticipantType } from 'store/sqonUtils';
-
-import keycloak from '../keycloak';
-
-import { TRACKING_EVENTS, trackUserInteraction } from './analyticsTracking';
-import { familyMemberAndParticipantIds } from './participants';
 
 const trackDownload = async (label: string) => {
   await trackUserInteraction({
@@ -109,7 +107,7 @@ export default async (config: ReportConfig) => {
     responseType: 'blob',
     data: {
       sqon: reportSqon,
-      projectId: arrangerApiProjectId,
+      projectId: arrangerProjectId,
       filename: format(new Date(), `[${name}_]YYYYMMDD[.xlsx]`),
     },
     headers: {

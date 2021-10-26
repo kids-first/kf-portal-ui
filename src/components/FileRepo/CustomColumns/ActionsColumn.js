@@ -6,7 +6,7 @@ import intersection from 'lodash/intersection';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import { ControlledIcon } from 'components/FileRepo//ui';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import DownloadIcon from 'icons/DownloadIcon';
@@ -61,7 +61,7 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
   <Query
     renderError
     api={arrangerGqlRecompose(api, 'TableRowStudyId')}
-    projectId={arrangerApiProjectId}
+    projectId={arrangerProjectId}
     shouldFetch
     query={`query ($sqon: JSON) {
         file {

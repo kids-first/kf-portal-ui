@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import urlJoin from 'url-join';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
 /**
  * NOTE: this component pulls from a singleton queryCacheMap for its caching,
@@ -72,7 +72,7 @@ class QueriesResolver extends React.Component {
     const { queries, api, name } = this.props;
     queryCacheMap[body] = api({
       method: 'POST',
-      url: urlJoin(kfArrangerApiRoot, `/${arrangerApiProjectId}/graphql/${name}`),
+      url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql/${name}`),
       body,
     }).then((data) =>
       data.map((d, i) => {

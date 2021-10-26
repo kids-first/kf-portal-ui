@@ -3,9 +3,9 @@ import { format } from 'date-fns';
 import startCase from 'lodash/startCase';
 import urlJoin from 'url-join';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
-const downloadUrl = urlJoin(kfArrangerApiRoot, `${arrangerApiProjectId}/download`);
+const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
 
 function findColumnsByField(fields, columns) {
   const columnConfigs = fields.map((field) =>

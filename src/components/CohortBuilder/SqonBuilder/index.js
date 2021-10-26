@@ -8,7 +8,7 @@ import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
 import { FieldFilterContainer } from 'components/CohortBuilder/FieldFilterContainer';
 import { SQONdiff } from 'components/Utils';
@@ -136,7 +136,7 @@ const SqonBuilder = ({
       </Modal>
       <ExtendedMappingProvider
         api={api}
-        projectId={arrangerApiProjectId}
+        projectId={arrangerProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >
@@ -146,7 +146,7 @@ const SqonBuilder = ({
           ) : (
             <AdvancedSqonBuilder
               api={api}
-              arrangerProjectId={arrangerApiProjectId}
+              arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
               FieldOpModifierContainer={(props) => (
                 <FieldFilterContainer className="" showHeader={false} {...props} />

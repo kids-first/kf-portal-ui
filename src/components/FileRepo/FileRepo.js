@@ -9,7 +9,7 @@ import isObject from 'lodash/isObject';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
-import { arrangerApiProjectId } from 'common/injectGlobals';
+import { arrangerProjectId } from 'common/injectGlobals';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import CavaticaCopyMultipleFilesModal from 'components/cavatica/CavaticaCopyMultipleFilesModal';
@@ -121,7 +121,7 @@ const FileRepo = ({
               <Arranger
                 {...props}
                 api={props.api}
-                projectId={arrangerApiProjectId}
+                projectId={arrangerProjectId}
                 render={(props) => {
                   const selectionSQON = props.selectedTableRows.length
                     ? replaceSQON({
@@ -260,7 +260,7 @@ const FileRepo = ({
                                     <DownloadButton sqon={selectionSQON} />
                                     <FileManifestButton
                                       sqon={selectionSQON}
-                                      projectId={arrangerApiProjectId}
+                                      projectId={arrangerProjectId}
                                     />
                                   </>
                                 </Row>

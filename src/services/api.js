@@ -1,7 +1,7 @@
 import React from 'react';
 import urlJoin from 'url-join';
 
-import { kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot } from 'common/injectGlobals';
 import ajax from 'services/ajax';
 import { store } from 'store';
 import { cleanlyLogout } from 'store/actionCreators/user';
@@ -38,7 +38,7 @@ export const initializeApi = ({
   body,
   headers = {},
   url,
-  arrangerRoot = kfArrangerApiRoot,
+  arrangerRoot = arrangerApiRoot,
 }) => {
   const uri = url || urlJoin(arrangerRoot, endpoint);
   const methodLowerCase = (method || '').toLowerCase();

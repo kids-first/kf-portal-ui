@@ -9,11 +9,11 @@ import { InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import keycloak from 'keycloak';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import { IProvider } from 'store/providers';
 
 const httpLink = createHttpLink({
-  uri: `${kfArrangerApiRoot}${arrangerApiProjectId}/graphql`,
+  uri: `${arrangerApiRoot}${arrangerProjectId}/graphql`,
 });
 
 const getAuthLink = () =>

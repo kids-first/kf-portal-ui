@@ -1,6 +1,6 @@
 import urlJoin from 'url-join';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
 
 const api = initializeApi({
@@ -32,9 +32,9 @@ const api = initializeApi({
  *  }
  */
 export const searchByIds = async (ids: string[]) => {
-  const url = urlJoin(kfArrangerApiRoot, `/searchByIds`);
+  const url = urlJoin(arrangerApiRoot, `/searchByIds`);
   const body = {
-    project: arrangerApiProjectId,
+    project: arrangerProjectId,
     ids: ids,
   };
 
