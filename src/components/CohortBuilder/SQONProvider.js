@@ -43,7 +43,7 @@ class SQONProvider extends React.Component {
       this.props.resetVirtualStudy();
       return;
     }
-    this.props.loadSavedVirtualStudy(this.props.api, this.props.virtualStudyId);
+    this.props.loadSavedVirtualStudy(this.props.api, virtualStudyId);
   }
 
   componentDidMount() {
