@@ -3,8 +3,8 @@ import { initializeApi } from 'services/api';
 
 export const MISSING_DATA = '__missing__';
 
-export const graphql = (api = initializeApi()) => (body) =>
-  api({ endpoint: `/search`, body: { ...body, projectId: arrangerApiProjectId } });
+export const graphql = (api = initializeApi(), queryName = '') => (body) =>
+  api({ endpoint: `/${arrangerApiProjectId}/graphql/${queryName}`, body });
 
 /**
  * Generates a human readable error message from a error thrown by the `graphql` function.

@@ -47,7 +47,6 @@ class QueriesResolver extends React.Component {
       const body = JSON.stringify(
         queries.map((q) => ({
           query: typeof q.query === 'string' ? q.query : print(q.query),
-          projectId: arrangerApiProjectId,
           variables: q.variables,
         })),
       );
@@ -70,10 +69,10 @@ class QueriesResolver extends React.Component {
   };
 
   fetchData = (body) => {
-    const { queries, api } = this.props;
+    const { queries, api, name } = this.props;
     queryCacheMap[body] = api({
       method: 'POST',
-      url: urlJoin(kfArrangerApiRoot, `/search`),
+      url: urlJoin(kfArrangerApiRoot, `/${arrangerApiProjectId}/graphql/${name}`),
       body,
     }).then((data) =>
       data.map((d, i) => {
@@ -102,7 +101,6 @@ QueriesResolver.propTypes = {
     PropTypes.shape({
       query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
       variables: PropTypes.object,
-      projectId: PropTypes.string,
       transform: PropTypes.func,
     }),
   ).isRequired,

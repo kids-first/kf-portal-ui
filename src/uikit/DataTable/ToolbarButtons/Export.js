@@ -11,8 +11,7 @@ import {
   participantQueryExport,
   participantsQuery,
 } from 'components/CohortBuilder/ParticipantsTableView/queries';
-
-import exportTSV from './exportTSV';
+import exportTSV from 'uikit/DataTable/ToolbarButtons/exportTSV';
 
 const formatDataForExport = (result) => (result ? result.nodes.map((node) => ({ ...node })) : []);
 
@@ -48,12 +47,14 @@ export default class Export extends Component {
 
       const rawData = await api({
         method: 'POST',
-        url: urlJoin(kfArrangerApiRoot, `/search`),
+        url: urlJoin(
+          kfArrangerApiRoot,
+          `/${arrangerApiProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
+        ),
         body: JSON.stringify(
           queries.map((q) => ({
             query: typeof q.query === 'string' ? q.query : print(q.query),
             variables: q.variables,
-            projectId: arrangerApiProjectId,
           })),
         ),
       });

@@ -2,7 +2,7 @@ import React from 'react';
 import Component from 'react-component-component';
 import PropTypes from 'prop-types';
 
-import { arrangerApiProjectId, kfArrangerApiRoot } from 'common/injectGlobals';
+import graphql from 'services/arranger';
 
 /**
  * Expects an api object to make a request
@@ -12,15 +12,10 @@ const ArrangerDataProvider = ({ api, query = '', sqon = {}, transform = (x) => x
   <Component
     initialState={{ data: null, isLoading: true, error: null }}
     didMount={({ setState }) => {
-      api({
-        method: 'POST',
-        url: `${kfArrangerApiRoot}search`,
-        body: {
-          query,
-          variables: {
-            sqon,
-          },
-          projectId: arrangerApiProjectId,
+      graphql(api)({
+        query,
+        variables: {
+          sqon,
         },
       })
         .then((data) => transform(data))

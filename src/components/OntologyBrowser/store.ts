@@ -1,4 +1,3 @@
-import { arrangerApiProjectId } from 'common/injectGlobals';
 import { graphql } from 'services/arranger';
 import { dotToUnderscore } from 'store/graphql/utils';
 import { Sqon } from 'store/sqon';
@@ -158,7 +157,6 @@ export class PhenotypeStore {
           content: [{ op: 'in', content: { field: `${field}.is_tagged`, value: [true] } }],
         },
       },
-      projectId: arrangerApiProjectId,
     };
     try {
       const { data } = await graphql()(body);
