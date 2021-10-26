@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter, IFilterGroup, VisualType } from '@ferlab/ui/core/components/filters/types';
 import {
@@ -7,9 +7,10 @@ import {
   useFilters,
 } from '@ferlab/ui/core/data/filters/utils';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
 import { AutoComplete, Col, Input, Layout, Row, Spin, Tag } from 'antd';
 
-import { numberFormatCompact, TermAgg } from 'components/Utils/utils';
+import { TermAgg } from 'components/Utils/utils';
 import history from 'services/history';
 import { underscoreToDot } from 'store/graphql/utils';
 import { MappingResults, useGetFilterBuckets } from 'store/graphql/utils/actions';
@@ -34,13 +35,15 @@ const renderItem = (title: string, count: number) => ({
         {title}
       </Col>
       <Col span={6}>
-        <Tag>{numberFormatCompact(count)}</Tag>
+        <Tag>{numberFormat(count)}</Tag>
       </Col>
     </Row>
   ),
 });
 
 const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) => {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
   const { filters } = useFilters();
 
   const foundField = filters.content?.find(
@@ -87,6 +90,11 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
     updateFilters(history, fg, f);
   };
 
+  const handleSearch = (value: string) => {
+    setSearchOpen(value.length > 0);
+    setSelectedValue(value);
+  };
+
   return (
     <Layout className={styles.variantFilterFreeTextWrapper}>
       <FilterContainer
@@ -98,6 +106,8 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
           <div className={styles.freeTextFieldContainer}>
             <AutoComplete
               options={options}
+              open={searchOpen}
+              value={selectedValue}
               notFoundContent={'No results found'}
               filterOption={(inputValue, option) =>
                 option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -108,13 +118,19 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
                   title: displayName,
                   type: VisualType.Checkbox,
                 };
-                const filters = [...currentSelection, value].map((f) => ({
+                const setSelection = new Set([...currentSelection, value]);
+                const filters = Array.from(setSelection).map((f) => ({
                   data: { key: f },
                   name: f,
                   id: f,
                 }));
                 onChange(fg, filters);
+                setSelectedValue('');
+                setSearchOpen(false);
               }}
+              onSearch={(value) => handleSearch(value)}
+              disabled={results.loading}
+              getPopupContainer={(trigger) => trigger.parentElement!}
             >
               <Input
                 maxLength={10}
@@ -125,7 +141,7 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
             </AutoComplete>
             <Spin spinning={results.loading} size={'small'}>
               <div className={styles.freeTextFieldCount}>
-                {!results.loading ? `${termAggs.length || 0} Terms` : 'Loading Terms...'}
+                {!results.loading ? `${termAggs.length || 0} terms` : 'Loading terms...'}
               </div>
             </Spin>
           </div>
