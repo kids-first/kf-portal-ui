@@ -45,9 +45,8 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
   const [searchOpen, setSearchOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const { filters } = useFilters();
-
   const foundField = filters.content?.find(
-    (f: { content: { field: string } }) => f.content.field === underscoreToDot(field),
+    (f: { content: { field: string } }) => f.content?.field === underscoreToDot(field),
   );
 
   const currentSelection = foundField ? foundField.content.value : [];
