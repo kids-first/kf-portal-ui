@@ -18,3 +18,12 @@
   font-size: 1.2rem;
   color: $body-2;
 }
+
+.studyFiltersContainer {
+  margin-top: 28px;
+  padding-bottom: 14px;
+
+  & > :not(:first-child) > div {
+    margin-top: 16px;
+  }
+}
