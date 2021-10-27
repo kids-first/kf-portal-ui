@@ -25,6 +25,8 @@ type OwnProps = {
   mappingResults: MappingResults;
 };
 
+const MIM_DATA_DISPLAY = 100;
+
 const renderItem = (title: string, count: number) => ({
   key: title,
   value: title,
@@ -130,6 +132,8 @@ const FreeTextSearch: FunctionComponent<OwnProps> = ({ field, mappingResults }) 
               onSearch={(value) => handleSearch(value)}
               disabled={results.loading}
               getPopupContainer={(trigger) => trigger.parentElement!}
+              onFocus={() => setSearchOpen(options.length < MIM_DATA_DISPLAY)}
+              onBlur={() => setSearchOpen(false)}
             >
               <Input
                 maxLength={10}
