@@ -62,10 +62,16 @@
   .label {
     color: $body-2;
     font-size: 12px;
+    width: 25%;
   }
 
   .value {
     color: $body-1;
     font-weight: 500;
+    width: 75%;
+  }
+  .valueLong {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
