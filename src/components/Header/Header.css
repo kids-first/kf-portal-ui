@@ -81,6 +81,8 @@
 
 /* User Menu */
 .headerProfilePicture {
+  height: 24px;
+  width: 24px;
   border-radius: 50%;
   background-color: #ffffff;
   margin: 5px;
