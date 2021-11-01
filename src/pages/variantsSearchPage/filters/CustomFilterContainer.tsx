@@ -3,7 +3,13 @@ import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer'
 import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
 import { getSelectedFilters, updateFilters } from '@ferlab/ui/core/data/filters/utils';
 
-import { ExtendedMapping, getFilterGroup, getFilters, Results } from 'components/Utils/utils';
+import {
+  ExtendedMapping,
+  getFilterGroup,
+  getFilters,
+  MAX_BUCKETS_DISPLAY,
+  Results,
+} from 'components/Utils/utils';
 import history from 'services/history';
 import { underscoreToDot } from 'store/graphql/utils';
 import { MappingResults } from 'store/graphql/utils/actions';
@@ -48,7 +54,7 @@ const CustomFilterContainer = ({ classname, filterKey, filtersOpen, mappingResul
             dictionary={{}}
             filters={filters}
             filterGroup={filterGroup}
-            maxShowing={5}
+            maxShowing={aggregations?.buckets?.length > MAX_BUCKETS_DISPLAY ? 100 : 5}
             onChange={onChange}
             filterKey={filterKey}
             mappingResults={mappingResults}
