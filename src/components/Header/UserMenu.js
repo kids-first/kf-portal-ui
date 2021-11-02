@@ -47,7 +47,7 @@ const UserMenu = () => {
 
   return (
     <HeaderMenu onClick={handleMenuClick} menuItems={menuItems}>
-      <Gravatar className="headerProfilePicture" email={user.email || ''} size={39} />
+      <Gravatar className="headerProfilePicture" email={user.email || ''} size={100} />
       <span className="userName">{user.firstName}</span>
     </HeaderMenu>
   );
