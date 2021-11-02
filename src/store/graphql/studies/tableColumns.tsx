@@ -54,19 +54,19 @@ export const studiesColumns = (
       title: 'Name',
       name: 'name',
       summary: false,
-      width: 400,
+      width: 200,
     },
     {
       title: 'Program',
       name: 'program',
       summary: false,
-      width: 150,
+      width: 125,
     },
     {
       title: 'Domain',
       name: 'domain',
       summary: false,
-      width: 150,
+      width: 125,
       // eslint-disable-next-line react/display-name
       render: (domain: string[]) => domain.join(', '),
     },

@@ -1,16 +1,22 @@
-.zeppelinImg {
-  width: 144px;
-  height: 79px;
-}
-
 .imgContainer {
+  width: 100%;
   padding: 16px;
-  margin-right: 12px;
+  text-align: center;
 }
 
 .textAndBtnContainer {
-  margin-left: 12px;
-  width: 378px;
+  .textParagraph {
+    text-align: center;
+  }
+
+  .switchContainer {
+    padding: 0 5rem;
+    text-align: center;
+
+    > div {
+      text-align: left;
+    }
+  }
 }
 
 .alert {

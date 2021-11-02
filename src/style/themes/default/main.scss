@@ -39,3 +39,19 @@ h4 {
   padding: 0;
   font-weight: normal;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0.5;
+  border-radius: 30px;
+  border: 1px solid white;
+}

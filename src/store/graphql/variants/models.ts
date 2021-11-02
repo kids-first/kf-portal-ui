@@ -13,14 +13,12 @@ type Predictions = {
   fathmm_pred: any | null;
   fathmm_converted_rankscore: any | null;
   cadd_rankscore: any | null;
-  dann_score: any | null;
   dann_rankscore: any | null;
   lrt_pred: any | null;
   lrt_converted_rankscore: any | null;
   revel_rankscore: any | null;
   sift_converted_rankscore: any | null;
   sift_pred: any | null;
-  polyphen2_hvar_score: any | null;
   polyphen2_hvar_pred: any | null;
   polyphen2_hvar_rankscore: any | null;
 };
@@ -39,7 +37,6 @@ export type Consequence = {
     ensembl_transcript_id: string;
     predictions: Predictions;
     coding_dna_change: string | null;
-    omim_gene_id: string | null;
     ensembl_gene_id: string | null;
     [key: string]: any;
   };
@@ -109,14 +106,21 @@ export type Suggestion = {
   type: GenomicFeatureType;
   matchedText: string;
   suggestion_id: string;
-  geneSymbol: string | undefined;
+  symbol?: string;
+  rsnumber?: string;
+  ensembl_gene_id?: string;
 };
 
 export type SelectedSuggestion = {
-  featureType: GenomicFeatureType;
+  type: string;
+  ensembl_gene_id?: string;
+  suggest: any;
   suggestionId: SuggestionId;
-  geneSymbol: string | undefined;
-  displayName: string;
+  symbol?: string;
+  rsnumber?: string;
+  locus?: string;
+  hgvsg?: string;
+  chromosome?: string;
 };
 
 export type VariantEntityResults = {

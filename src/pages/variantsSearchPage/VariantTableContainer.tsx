@@ -1,41 +1,35 @@
 /* eslint-disable react/display-name */
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Table, Tooltip } from 'antd';
 
 import ROUTES from 'common/routes';
 import { addToSqons } from 'common/sqonUtils';
+import TableTitle from 'components/Table/TableTitle';
 import { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
-import ServerError from 'components/Variants/ServerError';
 import { createQueryInCohortBuilder } from 'store/actionCreators/virtualStudies';
+import { StudiesResult } from 'store/graphql/studies/models';
 import {
   ClinVar,
   Consequence,
   Frequencies,
-  SelectedSuggestion,
-  StudyInfo,
   StudyNode,
   VariantEntity,
   VariantEntityNode,
 } from 'store/graphql/variants/models';
-import { useVariantSearchTableData } from 'store/graphql/variants/searchActions';
 import { RootState } from 'store/rootState';
 import { Sqon } from 'store/sqon';
 import { DispatchVirtualStudies } from 'store/virtualStudiesTypes';
-import { AlignmentOptions } from 'ui/TableOptions';
-import {
-  formatQuotientOrElse,
-  formatQuotientToExponentialOrElse,
-  generatePaginationMessage,
-} from 'utils';
+import { formatQuotientOrElse, toExponentialNotation } from 'utils';
 
 import ConsequencesCell from './ConsequencesCell';
+import { DEFAULT_PAGE_SIZE, VariantPageResults } from './VariantPageContainer';
 
-import style from './VariantTable.module.scss';
+import style from './VariantTableContainer.module.scss';
 
 const DEFAULT_PAGE_NUM = 1;
-const DEFAULT_PAGE_SIZE = 10;
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type VariantTableState = {
@@ -56,17 +50,20 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = {
-  selectedSuggestion: SelectedSuggestion;
-} & PropsFromRedux;
+type Props = PropsFromRedux & {
+  results: VariantPageResults;
+  filters: ISyntheticSqon;
+  setCurrentPageCb: (currentPage: number) => void;
+  currentPageSize: number;
+  setcurrentPageSize: (currentPage: number) => void;
+};
 
-const generateColumns = (props: Props, studyList: StudyInfo[]) =>
+const generateColumns = (props: Props, studyList: StudiesResult[]) =>
   [
     {
       title: 'Variant',
       dataIndex: 'hgvsg',
-      ellipsis: true,
-      className: style.variantTableCell,
+      className: `${style.variantTableCell} ${style.variantTableCellElipsis}`,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg}>
@@ -102,7 +99,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     {
       title: 'Consequences',
       dataIndex: 'consequences',
-      width: '20%',
+      width: 300,
       render: (consequences: { hits: { edges: Consequence[] } }) => (
         <ConsequencesCell consequences={consequences?.hits?.edges || []} />
       ),
@@ -126,12 +123,10 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
     },
     {
       title: 'Studies',
-      align: AlignmentOptions.center,
       dataIndex: 'studies',
       render: (studies: { hits: { total: number } }, row: VariantEntity) => {
-        const nodes: StudyNode[] = row?.studies.hits.edges || [];
+        const nodes: StudyNode[] = row?.studies?.hits.edges || [];
         const studyIds = nodes.map((r) => r.node.study_id);
-
         const studyCodes = studyList.filter((s) => studyIds.includes(s.id)).map((s) => s.code);
 
         return studies?.hits?.total ? (
@@ -149,7 +144,7 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
               toTop?.scrollTo(0, 0);
             }}
           >
-            {studies.hits.total || 0}
+            {studies?.hits.total || 0}
           </Link>
         ) : (
           0
@@ -157,14 +152,14 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       },
     },
     {
-      title: 'Participants',
-      align: AlignmentOptions.left,
+      title: <Tooltip title="Participants">Part.</Tooltip>,
       dataIndex: '',
+      width: 90,
       render: (row: VariantEntity) => {
         const participantNumber = row.participant_number;
         const participantTotalNumber = row.participant_total_number;
 
-        const studyNodes: StudyNode[] = row?.studies.hits.edges || [];
+        const studyNodes: StudyNode[] = row?.studies?.hits.edges || [];
         const hasMinRequiredParticipants = studyNodes.some(
           (s: StudyNode) => s.node.participant_number >= MIN_N_OF_PARTICIPANTS_FOR_LINK,
         );
@@ -208,25 +203,23 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
       },
     },
     {
-      title: 'Frequency',
+      title: <Tooltip title="Frequency">Freq.</Tooltip>,
       dataIndex: '',
+      width: 90,
       render: (row: VariantEntity) => {
-        const participantNumber = row.participant_number;
-        const participantTotalNumber = row.participant_total_number;
-        return formatQuotientToExponentialOrElse(
-          participantNumber,
-          participantTotalNumber,
-          DISPLAY_WHEN_EMPTY_DATUM,
-        );
+        const participant_frequency = row.participant_frequency;
+        return participant_frequency
+          ? toExponentialNotation(participant_frequency)
+          : DISPLAY_WHEN_EMPTY_DATUM;
       },
     },
     {
-      title: 'ALT Alleles',
+      title: <Tooltip title="ALT Alleles">ALT</Tooltip>,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.ac,
     },
     {
-      title: 'Homozygotes',
+      title: <Tooltip title="Homozygotes">Homo</Tooltip>,
       dataIndex: 'frequencies',
       render: (frequencies: Frequencies) => frequencies?.internal?.upper_bound_kf?.homozygotes,
     },
@@ -235,52 +228,45 @@ const generateColumns = (props: Props, studyList: StudyInfo[]) =>
 const makeRows = (rows: VariantEntityNode[]) =>
   rows.map((row: VariantEntityNode, index: number) => ({ ...row.node, key: `${index}` }));
 
-const VariantTable: FunctionComponent<Props> = (props) => {
+const VariantTableContainer: FunctionComponent<Props> = (props) => {
+  const { results, setCurrentPageCb, currentPageSize, setcurrentPageSize } = props;
   const [currentPageNum, setCurrentPageNum] = useState(DEFAULT_PAGE_NUM);
-  const [currentPageSize, setCurrentPageSize] = useState(DEFAULT_PAGE_SIZE);
-  const { selectedSuggestion } = props;
-  const {
-    loading: loadingData,
-    results: { variants: data, total },
-    studies,
-    error,
-  } = useVariantSearchTableData(selectedSuggestion, currentPageNum, currentPageSize);
 
-  useEffect(() => {
-    //make sure page number is reset when another selection is selected
-    setCurrentPageNum(DEFAULT_PAGE_NUM);
-  }, [selectedSuggestion.suggestionId]);
-
-  if (error) {
-    return <ServerError />;
-  }
+  const nodes = results.data?.variants.hits?.edges || [];
+  const variants = nodes as VariantEntityNode[];
+  const total = results.data?.variants.hits.total || 0;
+  const nodesStudies = results?.data?.studies?.hits?.edges || [];
+  const studies = nodesStudies.map((n: { node: StudiesResult }) => n.node);
 
   return (
     <Table
       title={() =>
-        total > 0 ? generatePaginationMessage(currentPageNum, currentPageSize, total) : ''
+        total > 0 ? (
+          <TableTitle currentPage={currentPageNum} pageSize={currentPageSize} total={total} />
+        ) : (
+          <></>
+        )
       }
-      tableLayout="auto"
       pagination={{
         current: currentPageNum,
         total: total,
+        defaultPageSize: currentPageSize,
         onChange: (page, pageSize) => {
-          if (currentPageNum !== page) {
+          if (currentPageNum !== page || currentPageSize !== pageSize) {
             setCurrentPageNum(page);
-          }
-          if (currentPageSize !== pageSize) {
-            setCurrentPageSize(pageSize || DEFAULT_PAGE_SIZE);
+            setCurrentPageCb(page);
+            setcurrentPageSize(pageSize || DEFAULT_PAGE_SIZE);
           }
         },
         size: 'small',
       }}
-      loading={loadingData}
-      dataSource={makeRows(data)}
+      className={style.variantSearchTable}
+      loading={results.loading}
+      dataSource={makeRows(variants)}
       columns={generateColumns(props, studies)}
-      className={style.table}
       rowClassName={(_, index) => (isEven(index) ? '' : style.rowOdd)}
     />
   );
 };
 
-export default connector(VariantTable);
+export default connector(VariantTableContainer);

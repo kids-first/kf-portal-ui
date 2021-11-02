@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import Row from 'uikit/Row';
+import React, { useEffect, useState } from 'react';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import PropTypes from 'prop-types';
+
+import Row from 'uikit/Row';
 
 import { container, containerContent, footer, header } from './FieldFilterContainer.module.css';
 
@@ -31,6 +32,7 @@ const findAllCheckedBoxes = (el) => el?.querySelectorAll('input[type="checkbox"]
 const findAllActiveToggles = (el) => el?.querySelectorAll('div.toggle-button-option.active');
 const findAllRanges = (el) =>
   el?.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
+const getFilterWrapperId = (id) => (id ? `terms-wrapper-${id}` : 'terms-wrapper');
 
 export const FieldFilterContainer = ({
   children,
@@ -40,11 +42,12 @@ export const FieldFilterContainer = ({
   applyEnabled = true,
   showHeader = true,
   className = '',
+  id = '',
 }) => {
   const [isDisabled, setDisabled] = useState(true);
 
   const hasSelectedElements = () => {
-    const termsWrapperElement = document.getElementById('terms-wrapper');
+    const termsWrapperElement = document.getElementById(getFilterWrapperId(id));
 
     const checkboxes = findAllCheckedBoxes(termsWrapperElement) || [];
     const toggles = findAllActiveToggles(termsWrapperElement) || [];
@@ -65,6 +68,10 @@ export const FieldFilterContainer = ({
     return setDisabled(hasNoCheckedBox && hasNoActiveToggle && hasEmptyOrIncompleteRange);
   };
 
+  useEffect(() => {
+    hasSelectedElements();
+  }, []);
+
   const wrapperHandler = () => {
     setTimeout(() => {
       hasSelectedElements();
@@ -81,7 +88,7 @@ export const FieldFilterContainer = ({
         </Header>
       )}
       <div
-        id={'terms-wrapper'}
+        id={getFilterWrapperId(id)}
         className={`${containerContent} filterContainer`}
         onClick={wrapperHandler}
         onKeyUp={wrapperHandler}
@@ -101,6 +108,7 @@ export const FieldFilterContainer = ({
 FieldFilterContainer.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]).isRequired,
   onCancel: PropTypes.func.isRequired,
+  id: PropTypes.string,
   onBack: PropTypes.func,
   onSubmit: PropTypes.func,
   className: PropTypes.string,

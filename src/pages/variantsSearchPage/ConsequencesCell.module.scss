@@ -6,19 +6,19 @@
 }
 
 .highImpact {
-  background-color: $red-5;
+  fill: $red-5;
 }
 
 .lowImpact {
-  background-color: $green-6;
+  fill: $green-6;
 }
 
 .moderateImpact {
-  background-color: $orange-5;
+  fill: $orange-5;
 }
 
 .modifierImpact {
-  background-color: $body-3;
+  fill: $body-3;
 }
 
 .detail {
@@ -26,9 +26,6 @@
 }
 
 .bullet {
-  width: 8px;
-  border-radius: 50%;
-  height: 8px;
   margin-right: 8px;
 }
 

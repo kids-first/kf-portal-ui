@@ -1,16 +1,18 @@
 import React from 'react';
+import { MessageOutlined } from '@ant-design/icons';
 import { Badge, Menu } from 'antd';
 
+import { kfWebRoot, notionWebRoot } from 'common/injectGlobals';
 import AllAppsContactIcon from 'icons/AllAppsContactIcon';
-import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
-import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
-import { kfWebRoot, notionWebRoot } from 'common/injectGlobals';
-import { MessageOutlined } from '@ant-design/icons';
+import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
+import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import styleThemeColors from 'style/themes/default/colors.module.scss';
+
 import HeaderMenu from './HeaderMenu';
-import { messageFontSize, messageMarginRight, messageBadgeFontSize } from './AppsMenu.module.scss';
+
+import { messageBadgeFontSize, messageFontSize, messageMarginRight } from './AppsMenu.module.scss';
 
 const AppsMenu = () => {
   const menuItems = [
@@ -73,7 +75,7 @@ const AppsMenu = () => {
         count={'New'}
         className={'resourcesBadge'}
         style={{ backgroundColor: styleThemeColors.badgeNewColor }}
-        offset={[4, -15]}
+        offset={[4, -10]}
       >
         Resources
       </Badge>

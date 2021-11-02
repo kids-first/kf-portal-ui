@@ -1,5 +1,9 @@
 @import 'style/themes/default/_colors';
 
+.siderWrapper {
+  overflow-y: auto;
+}
+
 .sider {
   border-right: thin solid $gray-4;
   min-width: 320px;
@@ -16,6 +20,7 @@
 }
 
 .siderContainer {
+  width: 350px;
   margin: 12px 16px;
   overflow-y: hidden;
   max-height: 100%;
@@ -24,19 +29,6 @@
   &:first-child > span {
     display: flex;
     justify-content: flex-start;
-  }
-
-  & > .scrollView {
-    margin-top: 28px;
-    padding-bottom: 14px;
-
-    // &:first-child > div {
-    //   margin-top: 16px;
-    // }
-
-    & > :not(:first-child) > div {
-      margin-top: 16px;
-    }
   }
 
   & :global(.ant-card) {
