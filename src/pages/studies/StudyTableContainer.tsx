@@ -66,7 +66,6 @@ const StudyTable = (props: Props) => {
       </div>
       <Table
         columns={columns}
-        scroll={{ x: 1500 }}
         dataSource={tableData || []}
         pagination={false}
         summary={(data: readonly StudiesRes[]) => (

@@ -1,6 +1,7 @@
 import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
-import { TAB_CLINICAL_QUERY, TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY } from './queries';
+
 import { StudyNode } from './models';
+import { TAB_CLINICAL_QUERY, TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY } from './queries';
 
 const MAX_NUMBER_STUDIES = 2000;
 

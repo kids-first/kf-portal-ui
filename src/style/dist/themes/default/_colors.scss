@@ -5,12 +5,15 @@ $body-2: #6e7190;
 $body-3: #8a8da8;
 
 // CYAN
+$cyan-2: #c1e6ec;
 $cyan-5: #20b1c7;
 $cyan-6: #009bba;
 $cyan-7: #007694;
+$cyan-8: #00546e;
 
 // GEEKBLUE
 $geekblue-2: #c5cbe8;
+$geekblue-4: #7b88c8;
 $geekblue-7: #2b388f;
 
 // GRAY
@@ -95,6 +98,11 @@ $popover-color: $body-1;
 
 //Tooltip
 $tooltip-bg: $geekblue-7;
+
+//Input
+$input-border-color: $gray-5;
+$input-number-hover-border-color: $geekblue-4;
+$input-hover-border-color: $geekblue-4;
 
 $badge-color: $body-1;
 

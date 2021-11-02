@@ -5,6 +5,15 @@
 @btn-disabled-color: @body-3;
 
 .@{btn-prefix-cls} {
+  &:not(&-link):not(&-text) {
+    &:disabled,
+    &:disabled:hover {
+      background-color: @gray-3;
+      border-color: @gray-5;
+      color: @body-3;
+    }
+  }
+
   &-default {
     &.@{btn-prefix-cls} {
       &-dangerous {
@@ -27,12 +36,6 @@
           background-color: @gray-2;
         }
       }
-    }
-
-    &:disabled {
-      background-color: @gray-3;
-      border-color: @gray-5;
-      color: @body-3;
     }
 
     &:focus {
@@ -90,12 +93,6 @@
       }
     }
 
-    &:disabled {
-      background-color: @gray-3;
-      border-color: @gray-5;
-      color: @btn-disabled-color;
-    }
-
     &:focus {
       background-color: @gray-8;
       border-color: @gray-8;
@@ -141,6 +138,10 @@
 
     &:disabled {
       color: @btn-disabled-color;
+
+      > span {
+        color: @btn-disabled-color;
+      }
     }
 
     &:focus {

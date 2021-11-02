@@ -64,8 +64,8 @@ const NavigationToolBar = (props) => {
       )}
       <div className="gradientAccent" />
       <StackLayout className="headerContent">
-        <StackLayout>
-          <Link to={ROUTES.dashboard}>
+        <StackLayout className="leftContent">
+          <Link className="logoLink" to={ROUTES.dashboard}>
             <img src={logoPath} alt="Kids First Logo" className={'logo'} />
           </Link>
           {canSeeProtectedRoutes && (
@@ -105,6 +105,7 @@ const NavigationToolBar = (props) => {
           )}
         </StackLayout>
         <NavBarList style={{ justifyContent: 'flex-end' }}>
+          <AppsMenu />
           {!user && (
             <li>
               {path === '/' ? (
@@ -114,8 +115,6 @@ const NavigationToolBar = (props) => {
               )}
             </li>
           )}
-
-          <AppsMenu />
           {canSeeProtectedRoutes ? <UserMenu /> : null}
         </NavBarList>
       </StackLayout>

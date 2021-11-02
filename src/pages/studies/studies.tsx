@@ -1,11 +1,12 @@
 import React from 'react';
 import { getQueryBuilderCache, useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
-import ScrollView from '@ferlab/ui/core/layout/ScrollView';
+import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { Layout } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
-import { useGetExtendedMappings, useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useGetStudiesPageData } from 'store/graphql/studies/actions';
+import { useGetExtendedMappings } from 'store/graphql/utils/actions';
 
 import Sidebar from './Sidebar';
 import StudyPageContainer from './StudyPageContainer';
@@ -33,7 +34,7 @@ const Studies = () => {
         studiesResults={studiesResults}
         filters={filters}
       />
-      <ScrollView className={styles.scrollContent}>
+      <ScrollContent className={styles.scrollContent}>
         <PageContent title="Studies">
           <StudyPageContainer
             studiesResults={studiesResults}
@@ -41,7 +42,7 @@ const Studies = () => {
             filters={filters}
           />
         </PageContent>
-      </ScrollView>
+      </ScrollContent>
     </Layout>
   );
 };

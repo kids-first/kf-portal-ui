@@ -1,0 +1,26 @@
+.@{radio-prefix-cls} {
+  &:hover {
+    border-color: @cyan-7;
+    .@{radio-prefix-cls}-inner {
+      border-color: @cyan-7;
+    }
+  }
+
+  &-checked {
+    .@{radio-prefix-cls}-inner {
+      border-color: @cyan-7 !important;
+    }
+
+    &::after {
+      border: 1px solid @cyan-7;
+    }
+
+    ::after {
+      background-color: @cyan-7;
+    }
+  }
+
+  &-inner {
+    border: 1px solid @gray-5;
+  }
+}

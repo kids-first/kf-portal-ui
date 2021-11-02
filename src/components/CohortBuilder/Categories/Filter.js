@@ -94,6 +94,7 @@ const Filter = compose(withApi)(
           }),
           {},
         );
+
         return (
           <FieldFilter
             sqonPath={path}
@@ -105,7 +106,9 @@ const Filter = compose(withApi)(
             field={field}
             arrangerProjectId={arrangerProjectId}
             arrangerProjectIndex={arrangerProjectIndex}
-            ContainerComponent={(props) => <FieldFilterContainer {...props} onBack={onBack} />}
+            ContainerComponent={(props) => (
+              <FieldFilterContainer {...props} id={field} onBack={onBack} />
+            )}
           />
         );
       }}

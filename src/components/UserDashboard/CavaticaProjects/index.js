@@ -40,13 +40,13 @@ const generateTabsContent = ({
   activeTab,
 }) => {
   const NotConnectedComp = () => <NotConnected />;
-  const ConnectedComp = (cardProps) => (
-    <Connected tabToCreate={tabToCreate(cardProps)} projects={projects} loading={loading} />
+  const ConnectedComp = () => (
+    <Connected tabToCreate={tabToCreate()} projects={projects} loading={loading} />
   );
-  const CreateComp = (cardProps) => (
+  const CreateComp = () => (
     <Create
-      onProjectCreated={onProjectCreated({ cardProps, refresh })}
-      onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+      onProjectCreated={onProjectCreated({ refresh })}
+      onProjectCreationCancelled={onProjectCreationCanceled()}
     />
   );
 
@@ -83,8 +83,8 @@ const CavaticaProjects = () => {
 
   const [activeTab, setActiveTab] = useState('Projects');
 
-  const onProjectCreated = ({ cardProps, refresh }) => (data) => {
-    cardProps.setIndex(0);
+  const onProjectCreated = ({ refresh }) => (data) => {
+    setActiveTab('Projects');
     // added project data into the data param,
     // not sure of future plans for the data param
     trackUserInteraction({
@@ -101,8 +101,8 @@ const CavaticaProjects = () => {
     setActiveTab(key);
   };
 
-  const onProjectCreationCanceled = (cardProps) => (data) => {
-    cardProps.setIndex(0);
+  const onProjectCreationCanceled = () => (data) => {
+    setActiveTab('Projects');
     // added project data into the data param,
     // not sure of future plans for the data param
     trackUserInteraction({
@@ -112,8 +112,8 @@ const CavaticaProjects = () => {
     });
   };
 
-  const tabToCreate = (cardProps) => () => {
-    cardProps.setIndex(1);
+  const tabToCreate = () => () => {
+    setActiveTab('Create');
   };
 
   return isCheckingIfConnected ? (
@@ -144,6 +144,7 @@ const CavaticaProjects = () => {
             onTabChange={(key) => {
               onTabChange(key);
             }}
+            activeTabKey={activeTab}
           >
             {generateTabsContent({
               isConnected,

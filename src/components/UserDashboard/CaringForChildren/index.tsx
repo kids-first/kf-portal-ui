@@ -8,8 +8,8 @@ const { Text, Title } = Typography;
 const CaringForChildren = () => (
   <Card
     title={
-      <span className={'title-dashboard-card'}>
-        <span className={styles.italic}>CARING</span> for Children with COVID Resources
+      <span className={`${'title-dashboard-card'} ${styles.italic}`}>
+        CARING for Children with COVID Resources
       </span>
     }
     className={styles.caringForChildrenCard}
@@ -52,7 +52,7 @@ const CaringForChildren = () => (
               <Title className={styles.linkCardTitle}>Kids First FHIR API Endpoint</Title>
               <Text className={styles.linkCardDesc}>
                 Use this to start querying the entire <span className={styles.italic}>KF</span>{' '}
-                dataset via the FHIR API
+                dataset via the FHIR AP
               </Text>
             </Card>
           </a>
