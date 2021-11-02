@@ -81,12 +81,10 @@
 
 /* User Menu */
 .headerProfilePicture {
-  height: 45px;
-  width: 45px;
+  height: 24px;
+  width: 24px;
   border-radius: 50%;
-  padding: 2px;
   background-color: #ffffff;
-  border: 1px solid #cacbcf;
   margin: 5px;
 }
 
