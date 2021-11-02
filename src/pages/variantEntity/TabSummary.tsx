@@ -2,7 +2,7 @@
 import React from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Card, Space, Spin, Tag, Typography } from 'antd';
+import { Card, Space, Spin, Tag, Tooltip, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
 
 import ExpandableCell from 'components/ExpandableCell';
@@ -120,7 +120,12 @@ const columns = [
   {
     title: 'AA',
     dataIndex: 'aa',
-    render: (aa: string) => aa || DISPLAY_WHEN_EMPTY_DATUM,
+    render: (aa: string) => (
+      <Tooltip placement="topLeft" title={aa || DISPLAY_WHEN_EMPTY_DATUM}>
+        <div className={styles.longValue}>{aa || DISPLAY_WHEN_EMPTY_DATUM}</div>
+      </Tooltip>
+    ),
+    className: `${styles.longValue}`,
     width: '10%',
   },
   {
@@ -146,7 +151,11 @@ const columns = [
   {
     title: 'Coding Dna',
     dataIndex: 'codingDna',
-    render: (codingDna: string) => codingDna || DISPLAY_WHEN_EMPTY_DATUM,
+    render: (codingDna: string) => (
+      <Tooltip placement="topLeft" title={codingDna || DISPLAY_WHEN_EMPTY_DATUM}>
+        <div className={styles.longValue}>{codingDna || DISPLAY_WHEN_EMPTY_DATUM}</div>
+      </Tooltip>
+    ),
   },
   {
     title: 'Strand',

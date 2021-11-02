@@ -6,7 +6,6 @@ import SuggesterWrapper from 'pages/variantsSearchPage/SuggesterWrapper';
 import { MappingResults } from 'store/graphql/utils/actions';
 
 import CustomFilterContainer from './CustomFilterContainer';
-import FreeTextSearch from './FreeTextSearch';
 
 import styles from './Filters.module.scss';
 
@@ -19,14 +18,12 @@ const INPUT_FILTER_LIST = [
   'consequences__biotype',
   'gene_external_reference',
   'genes__cosmic__tumour_types_germline',
-];
-
-const INPUT_FILTER_LIST_FREE_TEXT = [
   'genes__hpo__hpo_term_label',
   'genes__orphanet__panel',
   'genes__omim__name',
   'genes__ddd__disease_name',
 ];
+
 const SUGGESTION_TYPE = 'genes';
 const PLACE_HOLDER_TEXT = 'e.g. BRAF, ENSG00000157764';
 const TITLE = 'Search by Gene';
@@ -61,11 +58,6 @@ const GeneFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
               mappingResults={mappingResults}
               filtersOpen={filtersOpen}
             />
-          ))}
-        </Layout>
-        <Layout className={styles.variantFilterFreeTextWrapper}>
-          {INPUT_FILTER_LIST_FREE_TEXT.map((field) => (
-            <FreeTextSearch key={field} field={field} mappingResults={mappingResults} />
           ))}
         </Layout>
       </div>

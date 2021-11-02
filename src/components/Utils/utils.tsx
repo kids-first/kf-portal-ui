@@ -49,6 +49,7 @@ export interface ExtendedMapping {
 
 export type Aggs = TermAggs | RangeAggs;
 export type HitsEntity = VariantEntity | StudiesResult;
+export const MAX_BUCKETS_DISPLAY = 1000;
 
 const isTermAgg = (obj: any): obj is TermAggs => obj!.buckets !== undefined;
 const isRangeAgg = (obj: any): obj is RangeAggs => obj!.stats !== undefined;
@@ -155,6 +156,8 @@ export const getFilterGroup = (
     };
   }
 
+  const isLargeFilter = aggregation?.buckets?.length > MAX_BUCKETS_DISPLAY || false;
+
   return {
     field: extendedMapping?.field || '',
     title: extendedMapping?.displayName || '',
@@ -162,6 +165,8 @@ export const getFilterGroup = (
     config: {
       nameMapping: nameMapping || [],
       withFooter: filterFooter,
+      showMoreReadOnly: isLargeFilter,
+      showSelectAll: !isLargeFilter,
     },
   };
 };
