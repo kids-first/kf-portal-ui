@@ -2,7 +2,7 @@ import React from 'react';
 import { RiseOutlined } from '@ant-design/icons';
 import MultiLabel from '@ferlab/ui/core/components/labels/MultiLabel';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { Card } from 'antd';
+import { Card, Tooltip } from 'antd';
 
 import ParticipantIcon from 'icons/ParticipantIcon';
 import StudyIcon from 'icons/StudyIconSvg';
@@ -16,12 +16,13 @@ import styles from './Summary.module.scss';
 type SummaryItemProps = {
   field: string;
   value: string;
+  isLongValue?: boolean;
 };
 
-const SummaryItem = ({ field, value }: SummaryItemProps) => (
+const SummaryItem = ({ field, value, isLongValue }: SummaryItemProps) => (
   <StackLayout className={styles.summaryItem}>
     <Label>{field}</Label>
-    <Value>{value}</Value>
+    <Value isLongValue={isLongValue}>{value}</Value>
   </StackLayout>
 );
 
@@ -29,9 +30,14 @@ const Label = ({ children }: { children: React.ReactNode }) => (
   <div className={styles.label}>{children}</div>
 );
 
-const Value = ({ children }: { children: React.ReactNode }) => (
-  <div className={styles.value}>{children}</div>
-);
+const Value = ({ children, isLongValue }: { children: React.ReactNode; isLongValue?: boolean }) =>
+  isLongValue ? (
+    <Tooltip placement="topLeft" title={children}>
+      <div className={`${styles.valueLong} ${styles.value}`}>{children}</div>
+    </Tooltip>
+  ) : (
+    <div className={styles.value}>{children}</div>
+  );
 
 type SummaryProps = {
   variant: VariantEntity | undefined;
@@ -48,7 +54,7 @@ const Summary = ({ variant }: SummaryProps) => {
         <div>
           <SummaryItem field="Chr" value={variant.chromosome} />
           <SummaryItem field="Start" value={variant.start} />
-          <SummaryItem field="Alt. Allele" value={`${variant.alternate}`} />
+          <SummaryItem field="Alt. Allele" value={`${variant.alternate}`} isLongValue={true} />
           <SummaryItem field="Ref. Allele" value={variant.reference} />
         </div>
         <div>
