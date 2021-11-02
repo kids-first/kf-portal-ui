@@ -11,7 +11,7 @@
     "@apollo/client": "^3.3.11",
     "@babel/runtime": "^7.12.1",
     "@ferlab/style": "^1.9.8",
-    "@ferlab/ui": "^2.2.1",
+    "@ferlab/ui": "^2.2.2",
     "@kfarranger/components": "1.25.0",
     "@nivo/bar": "0.59.0",
     "@nivo/core": "0.59.0",
