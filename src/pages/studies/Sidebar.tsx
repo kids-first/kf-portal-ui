@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 import { SidebarData } from 'store/graphql/studies/actions';
@@ -24,7 +25,7 @@ const StudiesFiltersSider = ({ studiesResults, studiesMappingResults, filters }:
         <MenuFoldOutlined onClick={() => setCollapsed(!collapsed)} />
       )}
 
-      <div className={styles.scrollView}>
+      <ScrollContent>
         {!collapsed && (
           <SidebarFilters
             studiesResults={studiesResults}
@@ -32,7 +33,7 @@ const StudiesFiltersSider = ({ studiesResults, studiesMappingResults, filters }:
             filters={filters}
           />
         )}
-      </div>
+      </ScrollContent>
     </StackLayout>
   );
 };

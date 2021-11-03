@@ -31,21 +31,6 @@
     justify-content: flex-start;
   }
 
-  & > .scrollView {
-    margin-top: 28px;
-    padding-bottom: 14px;
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    // &:first-child > div {
-    //   margin-top: 16px;
-    // }
-
-    & > :not(:first-child) > div {
-      margin-top: 16px;
-    }
-  }
-
   & :global(.ant-card) {
     background-color: transparent;
     border: none;

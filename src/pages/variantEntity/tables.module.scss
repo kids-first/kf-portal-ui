@@ -5,3 +5,10 @@
     padding-right: 20px;
   }
 }
+
+.longValue{
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: initial;
+}
