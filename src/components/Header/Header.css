@@ -112,29 +112,16 @@
   color: #a6278f;
   padding: 6px 10px;
   margin: 0 5px;
-  font-size: 16px;
-}
-.navLink:hover {
-  display: block;
-  color: #a6278f;
-  padding: 6px 10px;
-  margin: 0 4px;
-  font-size: 16px;
-  background: #f5e5f1;
-  border: 1px solid #f5e5f1;
-  box-sizing: border-box;
+  font-size: 14px;
   border-radius: 2px;
 }
+
+.navLink:hover,
 .navLink.active {
-  display: block;
-  color: #a6278f;
-  padding: 6px 10px;
   margin: 0 4px;
-  font-size: 16px;
+  color: #a6278f;
   background: #f5e5f1;
   border: 1px solid #f5e5f1;
-  box-sizing: border-box;
-  border-radius: 2px;
 }
 
 .linkAsButton {
@@ -172,6 +159,6 @@
 
 .resourcesBadge {
   color: #a6278f;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
 }
