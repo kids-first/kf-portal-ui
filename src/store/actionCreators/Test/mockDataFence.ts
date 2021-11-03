@@ -4,6 +4,7 @@ import { FenceStudies } from 'store/fenceStudiesTypes';
 import { FenceName } from '../../fenceTypes';
 
 export const mockApi: jest.Mocked<Api> = {
+  // @ts-ignore just a mock to call the api - no need add complex types.
   api: () => {},
 };
 

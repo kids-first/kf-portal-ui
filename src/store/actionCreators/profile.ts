@@ -1,4 +1,3 @@
-import { apiInitialized } from 'services/api';
 import {
   getOtherUserProfile,
   getProfile,
@@ -6,6 +5,7 @@ import {
   updateProfile,
 } from 'services/profiles';
 
+import { Api } from '../apiTypes';
 import {
   ProfileActions,
   ProfileActionTypes,
@@ -15,10 +15,6 @@ import {
 import { RootState } from '../rootState';
 import { selectProfile } from '../selectors/profile';
 import { UserInfo } from '../userTypes';
-
-const updateProfileFromUser = updateProfile(apiInitialized);
-
-const toggleActiveProfileFromUser = toggleActiveProfileAsAdmin(apiInitialized);
 
 export const requestProfile = (): ProfileActionTypes => ({
   type: ProfileActions.requestProfile,
@@ -106,10 +102,12 @@ export const fetchProfileIfNeeded = (userInfo: UserInfo): ThunkActionProfile => 
   }
 };
 
-export const updateUserProfile = (profile: ProfileTodo): ThunkActionProfile => async (dispatch) => {
+export const updateUserProfile = (api: Api, profile: ProfileTodo): ThunkActionProfile => async (
+  dispatch,
+) => {
   dispatch(requestUpdateProfile());
   try {
-    const updatedProfile = await updateProfileFromUser({
+    const updatedProfile = await updateProfile(api)({
       user: profile,
     });
     dispatch(updateProfileSuccess(updatedProfile));
@@ -118,10 +116,12 @@ export const updateUserProfile = (profile: ProfileTodo): ThunkActionProfile => a
   }
 };
 
-export const toggleIsPublic = (profile: ProfileTodo): ThunkActionProfile => async (dispatch) => {
+export const toggleIsPublic = (api: Api, profile: ProfileTodo): ThunkActionProfile => async (
+  dispatch,
+) => {
   dispatch(requestIsPublicToggle());
   try {
-    await updateProfileFromUser({
+    await updateProfile(api)({
       user: profile,
     });
     dispatch(receiveIsPublicToggle());
@@ -130,10 +130,12 @@ export const toggleIsPublic = (profile: ProfileTodo): ThunkActionProfile => asyn
   }
 };
 
-export const toggleIsActive = (profile: ProfileTodo): ThunkActionProfile => async (dispatch) => {
+export const toggleIsActive = (api: Api, profile: ProfileTodo): ThunkActionProfile => async (
+  dispatch,
+) => {
   dispatch(requestIsActiveToggle());
   try {
-    await toggleActiveProfileFromUser({
+    await toggleActiveProfileAsAdmin(api)({
       user: profile,
     });
     dispatch(receiveIsActiveToggle());

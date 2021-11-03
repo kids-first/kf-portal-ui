@@ -131,37 +131,6 @@ export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
 export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '') =>
   canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
 
-//ref: https://nofluffweb.com/mock-local-storage-in-jest-tests
-/*
-* setup example with jest:
-*   beforeAll(() => {
-    Object.defineProperty(window, 'localStorage', {
-      value: makeFakeLocalStorage(),
-    });
-  });
-
-  afterEach(() => {
-    window.localStorage.clear();
-  });
-* */
-export const makeFakeLocalStorage = () => {
-  let store = {};
-  return {
-    getItem: function (key) {
-      return store[key] || null;
-    },
-    setItem: function (key, value) {
-      store[key] = value.toString();
-    },
-    removeItem: function (key) {
-      delete store[key];
-    },
-    clear: function () {
-      store = {};
-    },
-  };
-};
-
 //https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript
 export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
   if (bytes === 0) {
@@ -178,3 +147,20 @@ export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
     parseFloat((bytes / Math.pow(scale, matchedIndex)).toFixed(dm)) + ' ' + sizes[matchedIndex]
   );
 };
+
+export const makeFakeKeycloak = (authClientOverride = {}) => ({
+  authenticated: 'false',
+  refreshToken: 'refreshToken',
+  token: 'random string',
+  ...authClientOverride,
+});
+
+export const useFakeKeycloak = (initialized = true, authClientOverride = {}) => ({
+  initialized,
+  keycloak: {
+    authenticated: 'false',
+    refreshToken: 'refreshToken',
+    token: 'random string',
+    ...authClientOverride,
+  },
+});

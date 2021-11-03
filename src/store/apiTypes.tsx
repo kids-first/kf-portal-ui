@@ -1,3 +1,5 @@
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 export type Api = {
-  api: Function;
+  api: (config: AxiosRequestConfig) => Promise<AxiosResponse>;
 };

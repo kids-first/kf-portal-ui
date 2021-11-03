@@ -4,7 +4,6 @@ import { ThunkAction } from 'redux-thunk';
 
 import { deleteFenceTokens, fenceConnect, fetchFenceConnection } from 'services/fence';
 
-import { apiInitialized } from '../../services/api';
 import { Api } from '../apiTypes';
 import { ConnectionStatus } from '../connectionTypes';
 import {
@@ -155,21 +154,6 @@ export const connectFence = (
     dispatch(addFenceStatus(fenceName, ConnectionStatus.disconnected));
   } finally {
     dispatch(toggleIsFetchingOneFenceConnection(false, fenceName));
-  }
-};
-
-export const deleteAllFencesTokens = (): ThunkAction<
-  void,
-  RootState,
-  null,
-  FenceConnectionsActionTypes
-> => async () => {
-  try {
-    for (const fenceName of AllFencesNames) {
-      await deleteFenceTokens(apiInitialized, fenceName);
-    }
-  } catch (error) {
-    console.error(error);
   }
 };
 

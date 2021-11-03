@@ -4,6 +4,7 @@ import get from 'lodash/get';
 import isNull from 'lodash/isNull';
 import PropTypes from 'prop-types';
 
+import { withApi } from 'services/api';
 import { fetchParticipant } from 'store/actionCreators/participantEntity';
 import { selectError, selectIsLoading, selectParticipant } from 'store/selectors/participantEntity';
 import Column from 'uikit/Column';
@@ -39,15 +40,17 @@ class ParticipantEntity extends React.Component {
     isLoading: PropTypes.bool.isRequired,
     participant: PropTypes.object,
     error: PropTypes.any,
+    api: PropTypes.func,
+    fetchParticipant: PropTypes.func,
   };
 
   componentDidMount() {
-    const { participantId, fetchParticipant } = this.props;
-    fetchParticipant(participantId);
+    const { participantId, fetchParticipant, api } = this.props;
+    fetchParticipant(api, participantId);
   }
 
   render() {
-    const { participantId, location, participant, isLoading, error } = this.props;
+    const { participantId, location, participant, isLoading, error, api } = this.props;
 
     //only way to update the page when we click a link to a participant in clinical...
     if (
@@ -55,7 +58,7 @@ class ParticipantEntity extends React.Component {
       this.props.participant !== null &&
       this.props.participant.kf_id !== this.props.participantId
     ) {
-      this.props.fetchParticipant(participantId);
+      this.props.fetchParticipant(api, participantId);
     }
 
     if (isLoading) {
@@ -116,4 +119,4 @@ const mapDispatchToProps = {
   fetchParticipant,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ParticipantEntity);
+export default withApi(connect(mapStateToProps, mapDispatchToProps)(ParticipantEntity));

@@ -3,15 +3,13 @@ import { connect } from 'react-redux';
 import { Layout, Row } from 'antd';
 import PropTypes from 'prop-types';
 
+import { SHOW_DELETE_ACCOUNT } from 'common/constants';
+import ApplicationIntegration from 'components/UserProfile//ApplicationIntegration';
+import ConnectionProvider from 'components/UserProfile/ConnectionProvider';
 import DeleteAccount from 'components/UserProfile/DeleteAccount';
+import RepositoryIntegration from 'components/UserProfile/RepositoryIntegration';
 import { clearClusterError } from 'store/actionCreators/workBench';
 import { selectUser } from 'store/selectors/users';
-
-import { SHOW_DELETE_ACCOUNT } from '../../common/constants';
-
-import ApplicationIntegration from './ApplicationIntegration';
-import ConnectionProvider from './ConnectionProvider';
-import RepositoryIntegration from './RepositoryIntegration';
 
 const mapDispatch = (dispatch) => ({
   onClearClusterError: () => dispatch(clearClusterError()),
@@ -26,7 +24,7 @@ const { Content } = Layout;
 const connector = connect(mapStateToProps, mapDispatch);
 
 const Settings = (props) => {
-  const { userEmail, onClearClusterError } = props;
+  const { onClearClusterError } = props;
 
   useEffect(() => {
     onClearClusterError();
@@ -36,7 +34,7 @@ const Settings = (props) => {
     <Layout className={'settings-layout'}>
       <Content>
         <Row className={'settings-row-but-last'}>
-          <ConnectionProvider userEmail={userEmail} />
+          <ConnectionProvider />
         </Row>
         <Row className={'settings-row-but-last'}>
           <RepositoryIntegration />
@@ -55,7 +53,6 @@ const Settings = (props) => {
 };
 
 Settings.propTypes = {
-  userEmail: PropTypes.string.isRequired,
   onClearClusterError: PropTypes.func.isRequired,
 };
 

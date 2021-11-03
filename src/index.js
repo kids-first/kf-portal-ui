@@ -10,44 +10,22 @@ import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 
 import { maintenanceMode } from 'common/injectGlobals';
 import { initAnalyticsTracking } from 'services/analyticsTracking';
-import facebookSDK from 'services/facebookSDK';
-import googleSDK from 'services/googleSDK';
 
 import { getAppElement } from './services/globalDomNodes.js';
-import { getPreloadedState, initStore } from './store/index';
 import App from './App';
 import MaintenancePage from './MaintenancePage';
 import * as serviceWorker from './serviceWorker';
 
 initAnalyticsTracking();
-googleSDK();
-facebookSDK();
 
 const render = (rootElement) => {
   ReactDOM.render(rootElement, getAppElement());
 };
 
-if (maintenanceMode) {
-  // TODO - TEMPORARY
-  const store = initStore();
-  render(
-    <Provider store={store}>
-      <MaintenancePage />
-    </Provider>,
-  );
-} else {
-  const preloadedState = getPreloadedState();
-  const store = initStore(preloadedState);
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-  );
-}
+render(maintenanceMode ? <MaintenancePage /> : <App />, getAppElement());
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
