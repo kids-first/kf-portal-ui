@@ -3,10 +3,11 @@ import { IFilter, VisualType } from '@ferlab/ui/core/components/filters/types';
 import { updateFilters } from '@ferlab/ui/core/data/filters/utils';
 import { AutoComplete, Input, notification, Spin } from 'antd';
 
+import generateSuggestionOptions from 'pages/variantsSearchPage/SuggestionOptions';
+import { withApi } from 'services/api';
 import { getGenomicSuggestions } from 'services/genomicSuggestions';
 import history from 'services/history';
-
-import generateSuggestionOptions from './SuggestionOptions';
+import { Api } from 'store/apiTypes';
 
 import style from './Suggester.module.scss';
 
@@ -18,10 +19,11 @@ type SuggesterProps = {
   suggestionType: string;
   placeholderText: string;
   title: string;
+  api: Api;
 };
 
 const Suggester = (props: SuggesterProps) => {
-  const { suggestionType, placeholderText } = props;
+  const { suggestionType, placeholderText, api } = props;
 
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const [error, setError] = useState(false);
@@ -31,7 +33,7 @@ const Suggester = (props: SuggesterProps) => {
     if (userRawInput && userRawInput.length >= MIN_N_OF_CHARS_BEFORE_SEARCH) {
       setLoading(true);
       try {
-        const response = await getGenomicSuggestions(userRawInput, suggestionType);
+        const response = await getGenomicSuggestions(api, userRawInput, suggestionType);
         setOptions(generateSuggestionOptions(response.searchText, response.suggestions));
       } catch (e) {
         setError(true);
@@ -115,4 +117,4 @@ const Suggester = (props: SuggesterProps) => {
   );
 };
 
-export default Suggester;
+export default withApi(Suggester);

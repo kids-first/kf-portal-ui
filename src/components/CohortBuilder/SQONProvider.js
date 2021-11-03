@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { parse as parseQueryString, stringify } from 'query-string';
 import { compose } from 'recompose';
 
+import { withApi } from 'services/api';
 import {
   loadSavedVirtualStudy,
   resetVirtualStudy,
@@ -34,6 +35,7 @@ class SQONProvider extends React.Component {
     setActiveSqonIndex: PropTypes.func,
     setSqons: PropTypes.func,
     sqonDictionary: PropTypes.any,
+    api: PropTypes.func,
   };
 
   loadVirtualStudy(virtualStudyId) {
@@ -41,7 +43,7 @@ class SQONProvider extends React.Component {
       this.props.resetVirtualStudy();
       return;
     }
-    this.props.loadSavedVirtualStudy(virtualStudyId);
+    this.props.loadSavedVirtualStudy(this.props.api, virtualStudyId);
   }
 
   componentDidMount() {
@@ -153,4 +155,8 @@ const mapDispatchToProps = {
   resetVirtualStudy,
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(SQONProvider);
+export default compose(
+  withApi,
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(SQONProvider);

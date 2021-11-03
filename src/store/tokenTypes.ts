@@ -1,4 +1,4 @@
-export type JwtToken = string;
+import { KeycloakTokenParsed } from 'keycloak-js';
 
 export type DecodedJwt = {
   iat: number;
@@ -23,3 +23,12 @@ export type DecodedJwt = {
   };
   [index: string]: any;
 };
+
+export interface KidsFirstKeycloakTokenParsed extends KeycloakTokenParsed {
+  groups: string[];
+  name: string;
+  preferred_username: string;
+  given_name: string;
+  family_name: string;
+  email: string;
+}

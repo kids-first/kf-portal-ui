@@ -16,20 +16,10 @@ export default (state = initialState, action: UserActionTypes): UserState => {
       };
     }
     case UserActions.receiveUserWithComputedValues: {
-      return { ...state, user: action.payload, isAuthenticated: true, uid: action.payload.egoId };
+      return { ...state, user: action.payload, uid: action.payload.egoId };
     }
     case UserActions.toggleIsLoadingUser: {
       return { ...state, isLoadingUser: action.isLoading };
-    }
-    case UserActions.receiveUserToken: {
-      const userToken = action.userToken;
-      return {
-        ...state,
-        userToken: userToken,
-      };
-    }
-    case UserActions.receiveLoginProvider: {
-      return { ...state, loginProvider: action.loginProvider };
     }
     default:
       return state;

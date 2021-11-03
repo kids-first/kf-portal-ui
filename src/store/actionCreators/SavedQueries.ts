@@ -4,7 +4,6 @@ import { ThunkAction } from 'redux-thunk';
 import { deleteSavedQuery, fetchAllSavedQueries } from 'services/riffQueries';
 import { getVirtualStudies } from 'services/virtualStudies';
 
-import { apiInitialized } from '../../services/api';
 import { Api } from '../apiTypes';
 import { RootState } from '../rootState';
 import {
@@ -62,7 +61,7 @@ export const deleteParticularSavedQuery = (
   dispatch(requestDeleteSavedQueryAction(queryId));
   try {
     if (queryType === QueryType.cohort) {
-      dispatch(deleteVirtualStudy({ virtualStudyId: queryId, user }));
+      dispatch(deleteVirtualStudy({ api, virtualStudyId: queryId, user }));
     }
     await deleteSavedQuery(api, queryId);
     dispatch(successDeletingSavedQueryAction(queryId));
@@ -114,7 +113,7 @@ export const deleteAllSaveQueriesFromRiffForUser = (
     )) as SavedQueryWithFileContent[];
     const chunksOfQueriesToDelete = chunk(queriesFromRiffToDelete, BATCH_SIZE);
     for (const chunkOfQueries of chunksOfQueriesToDelete) {
-      await Promise.all(chunkOfQueries.map((query) => deleteSavedQuery(apiInitialized, query.id)));
+      await Promise.all(chunkOfQueries.map((query) => deleteSavedQuery(api, query.id)));
     }
   } catch (e) {
     console.error(e);

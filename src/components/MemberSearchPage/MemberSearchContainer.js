@@ -30,7 +30,7 @@ import {
   selectQueryString,
   selectRolesFilter,
 } from 'store/selectors/members';
-import { selectIsUserAdmin, selectUserToken } from 'store/selectors/users';
+import { selectIsUserAdmin } from 'store/selectors/users';
 
 import MemberTable from './MemberTable';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
@@ -54,7 +54,6 @@ class MemberSearchContainer extends Component {
     updateADMINOptionsFilter: PropTypes.func.isRequired,
     queryStringUpdate: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool,
-    userToken: PropTypes.string.isRequired,
     members: PropTypes.array.isRequired,
   };
 
@@ -203,7 +202,7 @@ class MemberSearchContainer extends Component {
       adminMemberOptions: [...getSelectedFilter(this.props.adminOptionsFilter)],
     };
 
-    const { isAdmin, userToken } = this.props;
+    const { isAdmin } = this.props;
     const showAll =
       filters.adminMemberOptions && filters.adminMemberOptions.includes('allMembers') && isAdmin;
 
@@ -211,7 +210,7 @@ class MemberSearchContainer extends Component {
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer isAdmin={isAdmin} />
-          <MemberSearchBorder isAdmin={isAdmin} userToken={userToken}>
+          <MemberSearchBorder isAdmin={isAdmin}>
             <Input
               onChange={this.handleChange}
               placeholder="Member Name, Address, Institution/Organization,
@@ -255,7 +254,6 @@ const mapStateToProps = (state) => ({
   rolesFilter: selectRolesFilter(state),
   interestsFilter: selectInterestsFilter(state),
   adminOptionsFilter: selectAdminOptionsFilter(state),
-  userToken: selectUserToken(state),
   isAdmin: selectIsUserAdmin(state),
 });
 

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useKeycloak } from '@react-keycloak/web';
 
-import { EGO_JWT_KEY, LOGIN_PROVIDER } from './common/constants';
-import { manageUserTokenWithLoader, toggleIsLoadingUser } from './store/actionCreators/user';
+import { fetchUserIfNeededWithLoader, toggleIsLoadingUser } from './store/actionCreators/user';
 import { RootState } from './store/rootState';
 import { selectIsLoadingUser } from './store/selectors/users';
 import { Spinner } from './uikit/Spinner';
@@ -16,19 +16,23 @@ const Authenticator = (props: Props) => {
 
   const dispatch = useDispatch();
 
+  const { keycloak } = useKeycloak();
+
   useEffect(() => {
-    const jwtFromLocalStorage = localStorage.getItem(EGO_JWT_KEY);
-    const providerFromLocalStorage = localStorage.getItem(LOGIN_PROVIDER);
-    if (jwtFromLocalStorage && providerFromLocalStorage) {
-      dispatch(manageUserTokenWithLoader(jwtFromLocalStorage, providerFromLocalStorage));
+    if (keycloak.authenticated) {
+      dispatch(fetchUserIfNeededWithLoader());
     } else {
       dispatch(toggleIsLoadingUser(false));
     }
-  }, [dispatch]);
+  }, [dispatch, keycloak]);
 
   const isLoadingUser = useSelector((state: RootState) => selectIsLoadingUser(state));
 
-  return isLoadingUser ? <Spinner className={'spinner'} size={'large'} /> : children;
+  if (isLoadingUser) {
+    return <Spinner className={'spinner'} size={'large'} />;
+  }
+
+  return children;
 };
 
 export default Authenticator;

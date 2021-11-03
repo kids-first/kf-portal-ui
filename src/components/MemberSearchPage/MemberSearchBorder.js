@@ -23,7 +23,7 @@ const MemberSearchBorder = (props) => (
             type={'primary'}
             icon={<DownloadOutlined />}
             style={{ marginBottom: 14 }}
-            onClick={() => getAllMembers(props.userToken)}
+            onClick={() => getAllMembers()}
           >
             All Members
           </Button>
@@ -40,7 +40,6 @@ const MemberSearchBorder = (props) => (
 
 MemberSearchBorder.propTypes = {
   isAdmin: PropTypes.bool,
-  userToken: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
 

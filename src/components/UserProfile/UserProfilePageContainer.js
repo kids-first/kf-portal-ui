@@ -7,12 +7,16 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
+import Error from 'components/Error';
+import { KEY_ABOUT_ME } from 'components/UserProfile/constants';
+import UserProfilePage from 'components/UserProfile/UserProfilePage';
 import {
   addStateInfo as updateTrackingInfo,
   TRACKING_EVENTS,
   trackProfileInteraction,
   trackUserInteraction,
 } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import {
   cleanProfileErrors,
   deleteProfile,
@@ -27,11 +31,6 @@ import {
 } from 'store/selectors/profile';
 import { selectIsUserAdmin, selectUser } from 'store/selectors/users';
 import { isSelfInUrlWhenLoggedIn } from 'utils';
-
-import Error from '../Error';
-
-import { KEY_ABOUT_ME } from './constants';
-import UserProfilePage from './UserProfilePage';
 
 import './style.css';
 
@@ -49,6 +48,7 @@ class UserProfilePageContainer extends React.Component {
     user: PropTypes.object.isRequired,
     onFetchProfile: PropTypes.func.isRequired,
     onUpdateProfile: PropTypes.func.isRequired,
+    api: PropTypes.func,
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
 
@@ -106,7 +106,7 @@ class UserProfilePageContainer extends React.Component {
   }
 
   submit = async (values) => {
-    const { profile, onUpdateProfile } = this.props;
+    const { profile, onUpdateProfile, api } = this.props;
 
     const mergedProfile = {
       ...profile,
@@ -130,7 +130,7 @@ class UserProfilePageContainer extends React.Component {
       type: TRACKING_EVENTS.actions.save,
     });
 
-    onUpdateProfile(mergedProfile);
+    onUpdateProfile(api, mergedProfile);
   };
 
   handleMenuClick = (e) => {
@@ -204,12 +204,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onFetchProfile: (userInfo) => dispatch(fetchProfileIfNeeded(userInfo)),
-  onUpdateProfile: (user) => dispatch(updateUserProfile(user)),
+  onUpdateProfile: (api, user) => dispatch(updateUserProfile(api, user)),
   onDeleteProfile: () => dispatch(deleteProfile()),
   onCleanErrors: () => dispatch(cleanProfileErrors()),
 });
 
 export default compose(
   withRouter,
+  withApi,
   connect(mapStateToProps, mapDispatchToProps),
 )(UserProfilePageContainer);

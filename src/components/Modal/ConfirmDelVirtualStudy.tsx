@@ -1,9 +1,10 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Button, Modal } from 'antd';
 
+import { withApi } from 'services/api';
 import { cleanError, deleteVirtualStudy } from 'store/actionCreators/virtualStudies';
+import { Api } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import { selectCurrentVSError, selectICurrentVSLoading } from 'store/selectors/currentStudy';
 import { selectUser } from 'store/selectors/users';
@@ -26,6 +27,7 @@ const connector = connect(mapState, mapDispatch);
 type OwnProps = {
   virtualStudy: VirtualStudy;
   onCloseCb: Function;
+  api: Api;
 };
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -33,7 +35,16 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & OwnProps;
 
 const ConfirmDelVirtualStudy = (props: Props) => {
-  const { isLoading, error, cleanError, onCloseCb, deleteVirtualStudy, virtualStudy, user } = props;
+  const {
+    isLoading,
+    error,
+    cleanError,
+    onCloseCb,
+    deleteVirtualStudy,
+    virtualStudy,
+    user,
+    api,
+  } = props;
 
   useEffect(() => {
     if (error) {
@@ -73,7 +84,7 @@ const ConfirmDelVirtualStudy = (props: Props) => {
           loading={isLoading}
           onClick={async () => {
             const { virtualStudyId } = virtualStudy;
-            await deleteVirtualStudy({ virtualStudyId, user });
+            await deleteVirtualStudy({ api, virtualStudyId, user });
             onCloseCb();
           }}
         >
@@ -92,4 +103,4 @@ const ConfirmDelVirtualStudy = (props: Props) => {
 
 const Connected = connector(ConfirmDelVirtualStudy);
 
-export default Connected;
+export default withApi(Connected);

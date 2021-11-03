@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Button, Steps, Typography } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
@@ -22,6 +22,10 @@ const { Step } = Steps;
 
 const { Paragraph, Title } = Typography;
 
+interface ILocation {
+  from: string;
+}
+
 enum JoinSteps {
   LOGIN,
   SELECT_ROLE,
@@ -41,15 +45,20 @@ const computeInitialStep = (user: User | null) => {
 
 const Join = () => {
   const history = useHistory();
+  const location = useLocation();
+
   const { user, isLoadingUser } = useUser();
   const [current, setNextStep] = useState(computeInitialStep(user));
 
   useEffect(() => {
     const hasAlreadyJoinedButRoutedToThisPage = user && hasUserRole(user);
     if (hasAlreadyJoinedButRoutedToThisPage) {
-      history.push(user!.acceptedTerms ? ROUTES.dashboard : ROUTES.termsConditions);
+      const currentLocationState: ILocation = (location.state as ILocation) || {
+        from: ROUTES.dashboard,
+      };
+      history.push(user!.acceptedTerms ? currentLocationState.from : ROUTES.termsConditions);
     }
-  }, [history, user]);
+  }, [history, user, location]);
 
   const next = () => setNextStep(current + 1);
   const prev = () => setNextStep(current - 1);
@@ -64,7 +73,7 @@ const Join = () => {
             Your information will be kept confidential and secure and is not shared with any of
             these providers.
           </Paragraph>
-          <Login shouldNotRedirect={true} />
+          <Login />
         </>
       ),
     },

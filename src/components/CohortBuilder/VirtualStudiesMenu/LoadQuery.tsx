@@ -1,9 +1,9 @@
-/* eslint-disable react/prop-types */
-import React, { FunctionComponent } from 'react';
-import { Button, Menu, Dropdown, Tooltip } from 'antd';
-import '../../LoadShareSaveDeleteQuery/LoadShareSaveDeleteQuery.css';
+import React from 'react';
 import { FolderOpenOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
+
+import { Api } from 'store/apiTypes';
 import { VirtualStudy } from 'store/virtualStudiesTypes';
 
 type OwnProps = {
@@ -12,12 +12,13 @@ type OwnProps = {
   selection?: VirtualStudy;
   classNameBtn?: string;
   loadSavedVirtualStudy: Function;
+  api: Api;
 };
 
-const LoadQuery: FunctionComponent<OwnProps> = (props) => {
-  const { studies, selection, loadSavedVirtualStudy, disabled, classNameBtn = '' } = props;
+const LoadQuery = (props: OwnProps) => {
+  const { studies, selection, loadSavedVirtualStudy, disabled, classNameBtn = '', api } = props;
 
-  const onClickStudy: MenuClickEventHandler = (event) => loadSavedVirtualStudy(event.key);
+  const onClickStudy: MenuClickEventHandler = (event) => loadSavedVirtualStudy(api, event.key);
 
   const generateMenu = () => {
     const filteredStudies =
