@@ -8,10 +8,20 @@
 ### Technical / Other changes
 -->
 
+## 2021-11-04 kf-portal-ui 3.4.1
+
+### Technical / Other changes
+
+- Fix variant search page crashing when using some specific filters
+
 ## 2021-11-02 kf-portal-ui
+
 ### Features
+
 - [SKFP-58](https://d3b.atlassian.net/browse/SKFP-58) Feature : Redesigned and improved the Variant Search page by adding searchable categories, facets, and the query builder.
+
 ## Technical / Other changes
+
 - [SKFP-55](https://d3b.atlassian.net/browse/SKFP-55) Refactor(Backend, ETL): Updated ETL task service to point towards the new Elastic Search 7 database
 - [SKFP-103](https://d3b.atlassian.net/browse/SKFP-103) Refactor (Dashboard): Added Zeppelin Variant Workbench widget to the Dashboard and Removed Participant, Members, and Diagnosis chart widgets
 - [SKFP-127](https://d3b.atlassian.net/browse/SKFP-127) Fix (Dashboard Widget, Cavatica): Fixed an issue where the "Create a Cavatica Project" hyperlink would not work and an error would appear when creating a project
