@@ -16,14 +16,17 @@
 }
 
 .headerContainer .headerContent {
-  padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  padding: 12px 32px;
   justify-content: space-between;
 }
 
 .headerContainer .headerContent a {
   text-decoration: none;
+}
+
+.headerContainer .leftContent,
+.navBarList {
+  max-height: 40px;
 }
 
 /*******************************************************************/
@@ -78,12 +81,10 @@
 
 /* User Menu */
 .headerProfilePicture {
-  height: 45px;
-  width: 45px;
+  height: 24px;
+  width: 24px;
   border-radius: 50%;
-  padding: 2px;
   background-color: #ffffff;
-  border: 1px solid #cacbcf;
   margin: 5px;
 }
 
@@ -106,35 +107,21 @@
 }
 
 .navLink {
+  font-weight: 400;
   display: block;
   color: #a6278f;
   padding: 6px 10px;
   margin: 0 5px;
-  font-size: 16px;
-}
-.navLink:hover {
-  display: block;
-  color: #a6278f;
-  padding: 6px 10px;
-  margin: 0 4px;
-  font-size: 16px;
-  font-weight: 500;
-  background: #f5e5f1;
-  border: 1px solid #f5e5f1;
-  box-sizing: border-box;
+  font-size: 14px;
   border-radius: 2px;
 }
+
+.navLink:hover,
 .navLink.active {
-  display: block;
-  color: #a6278f;
-  padding: 6px 10px;
   margin: 0 4px;
-  font-size: 16px;
-  font-weight: 500;
+  color: #a6278f;
   background: #f5e5f1;
   border: 1px solid #f5e5f1;
-  box-sizing: border-box;
-  border-radius: 2px;
 }
 
 .linkAsButton {
@@ -143,29 +130,35 @@
   letter-spacing: 0.2px;
   text-align: left;
   display: block;
-  padding: 6px 16px;
+  padding: 2px 15px;
   margin: 0 4px;
   text-decoration: none;
   text-transform: uppercase;
   border: solid 2px transparent;
-  background-color: #90278e;
+  background-color: #a6278f;
   color: #fff;
-  border-radius: 19px;
+  border-radius: 2px;
 }
 .linkAsButton:hover {
-  border-radius: 19px;
-  background-color: #404c9a; /* ${colors.primaryHover}; */
-  border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
-  color: #ffffff;
+  color: #fff;
+  background-color: #801770;
+}
+.linkAsButton:active {
+  color: #fff;
+  background-color: #590c50;
 }
 
-.logo {
-  width: 211px;
-  height: 65px;
-  margin-right: 8px;
+.logoLink {
+  display: flex;
+}
+
+.logoLink .logo {
+  height: 35px;
+  margin-right: 24px;
 }
 
 .resourcesBadge {
   color: #a6278f;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 400;
 }

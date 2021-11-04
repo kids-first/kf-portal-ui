@@ -58,7 +58,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnP
   }
 
   return (
-    <>
+    <div className={style.studyFiltersContainer}>
       <div id={'anchor-search-bar'}>
         <Row gutter={5}>
           <Col>
@@ -73,7 +73,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnP
         {options.length ? <SearchBar filters={filters} options={options} /> : <div />}
       </div>
       {generateFilters(data, studiesMappingResults)}
-    </>
+    </div>
   );
 };
 

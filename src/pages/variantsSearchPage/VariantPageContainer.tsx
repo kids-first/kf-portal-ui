@@ -92,8 +92,6 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
     <StackLayout vertical className={styles.variantPagecontainer}>
       <QueryBuilder
         className="variant-repo__query-builder"
-        showHeader={true}
-        headerTitle={'Variant Query'}
         cacheKey={VARIANT_REPO_CACHE_KEY}
         enableCombine={true}
         currentQuery={filters?.content?.length ? filters : {}}
@@ -101,6 +99,11 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
         loading={results.loading}
         total={total}
         dictionary={dictionary}
+        headerConfig={{
+          showHeader: true,
+          showTools: false,
+          defaultTitle: 'Variant Queries',
+        }}
         facetFilterConfig={{
           enable: true,
           onFacetClick: (field) => {
