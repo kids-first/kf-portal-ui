@@ -17,12 +17,13 @@ const Login = (): React.ReactElement => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Button
         type={'primary'}
-        onClick={async () =>
-          await keycloak.login({
+        onClick={async () => {
+          const url = keycloak.createLoginUrl({
             // eslint-disable-next-line max-len
             redirectUri: `${window.location.origin}/${ROUTES.dashboard}`,
-          })
-        }
+          });
+          location.assign(url);
+        }}
       >
         {'Login'}
       </Button>
