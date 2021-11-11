@@ -25,7 +25,7 @@ const providerLabel = {
   [GOOGLE]: 'Google',
   [FACEBOOK]: 'Facebook',
   [ORCID]: 'Orcid',
-  [RAS]: 'your NIH Researcher Auth Service (RAS) account',
+  [RAS]: 'NIH Researcher Auth Service',
 };
 
 const isConnectedWithKnownProvider = (provider) => KNOWN_PROVIDERS.includes(provider);
@@ -42,7 +42,7 @@ const ConnectionProvider = () => {
         <CheckCircleTwoTone twoToneColor="#52c41a" />
         <Text> {`You are connected with ${providerLabel[provider]}`} </Text>
         {icons[provider]}
-        <Text> {` using this email address : ${providerIdentity}`} </Text>
+        <Text> {` using this account : ${providerIdentity}`} </Text>
       </>
     </Card>
   );
