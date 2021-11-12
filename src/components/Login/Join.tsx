@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, Steps, Typography } from 'antd';
+import { Alert, Button, Steps, Typography } from 'antd';
+import keycloak from 'keycloak';
 import isEmpty from 'lodash/isEmpty';
 
+import { ORCID } from 'common/constants';
+import { isFeatureEnabled } from 'common/featuresToggles';
+import ROUTES from 'common/routes';
+import Login from 'components/Login/Login';
+import RoleForm, { ROLE_FORM_NAME } from 'components/Login/RoleForm';
+import TermsConditionsAcceptButton from 'components/Login/TermsConditionsAcceptButton';
+import TermsConditionsBody from 'components/Login/TermsConditionsBody';
+import DeleteButton from 'components/loginButtons/DeleteButton';
+import SplashPage from 'components/SplashPage';
+import useUser from 'hooks/useUser';
+import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
-
-import ROUTES from '../../common/routes';
-import useUser from '../../hooks/useUser';
-import DeleteButton from '../loginButtons/DeleteButton';
-import SplashPage from '../SplashPage';
-
-import Login from './Login';
-import RoleForm, { ROLE_FORM_NAME } from './RoleForm';
-import TermsConditionsAcceptButton from './TermsConditionsAcceptButton';
-import TermsConditionsBody from './TermsConditionsBody';
 
 import './join.css';
 
@@ -62,6 +64,9 @@ const Join = () => {
 
   const next = () => setNextStep(current + 1);
   const prev = () => setNextStep(current - 1);
+  const provider = keycloak.tokenParsed
+    ? (keycloak.tokenParsed as KidsFirstKeycloakTokenParsed).identity_provider
+    : null;
 
   const steps = [
     {
@@ -81,6 +86,14 @@ const Join = () => {
       title: 'Basic Info',
       content: (
         <>
+          {isFeatureEnabled('showOrcidBanner') && provider === ORCID && (
+            <Alert
+              message={
+                'For ORCID user, if you want to recover your account, contact support with your ORCID ID'
+              }
+              type="warning"
+            />
+          )}
           <Paragraph className={'step-basic-info-paragraph'}>
             Please provide information about yourself to help us personalize your experience.
           </Paragraph>
