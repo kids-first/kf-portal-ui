@@ -4,10 +4,9 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Button } from 'antd';
 
 import ROUTES from 'common/routes';
+import LoginStats from 'components/Login/LoginStats';
 import KidsFirstIcon from 'icons/KidsFirstIcon';
 import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
-
-import LoginStats from './LoginStats';
 
 import styles from './Login.module.scss';
 

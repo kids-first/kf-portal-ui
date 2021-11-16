@@ -24,11 +24,6 @@ export const cavaticaWebRegistrationRoot: string = getApplicationEnvVar(
 
 export const googleMapsKey = getApplicationEnvVar('GOOGLE_MAPS_KEY');
 
-export const orcidAuthAppId = getApplicationEnvVar('ORCID_AUTH_APP_ID');
-export const orcidAuthApiBaseUri = getApplicationEnvVar('ORCID_AUTH_API_URI');
-export const orcidAuthScope = getApplicationEnvVar('ORCID_AUTH_API_SCOPE');
-export const orcidAuthRedirectUri = getApplicationEnvVar('ORCID_AUTH_REDIRECT_URI');
-
 export const gaTrackingID: string = getApplicationEnvVar('GA_TRACKING_ID');
 
 export const requireLogin = getApplicationEnvVar('REQUIRE_LOGIN') === 'true';
