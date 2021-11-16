@@ -12,7 +12,7 @@ import { RootState } from 'store/rootState';
 import { selectErrorSubscribeUser, selectIsLoadingUser, selectUser } from 'store/selectors/users';
 import { DispatchUser, User } from 'store/userTypes';
 
-import './termsConditions.css';
+import './index.css';
 
 const { Paragraph } = Typography;
 
