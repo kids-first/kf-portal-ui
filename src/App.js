@@ -1,8 +1,11 @@
 import React, { lazy, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import Authenticator from 'Authenticator';
 import ContextProvider from 'ContextProvider';
 import ErrorBoundary from 'ErrorBoundary';
+import ForumBanner, { showForumBanner } from 'ForumBanner';
+import ProtectedRoute from 'ProtectedRoute';
 
 import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
@@ -18,20 +21,16 @@ import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
+import LoginPage from 'components/Login/LoginPage';
 import TermsConditions from 'components/Login/TermsConditions';
 import MemberSearchPage from 'components/MemberSearchPage';
 import Page, { FixedFooterPage } from 'components/Page';
 import SideImagePage from 'components/SideImagePage';
 import UserDashboard from 'components/UserDashboard';
 import UserProfile from 'components/UserProfile';
+import { FenceName } from 'store/fenceTypes';
 import { default as ApolloProvider } from 'store/providers';
 import { Spinner } from 'uikit/Spinner';
-
-import LoginPage from './components/Login/LoginPage';
-import { FenceName } from './store/fenceTypes';
-import Authenticator from './Authenticator';
-import ForumBanner, { showForumBanner } from './ForumBanner';
-import ProtectedRoute from './ProtectedRoute';
 
 import 'index.css';
 
