@@ -4,11 +4,11 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Button } from 'antd';
 
 import ROUTES from 'common/routes';
-import LoginStats from 'components/Login/LoginStats';
+import LoginStats from 'components/LoginPage/Login/LoginStats';
 import KidsFirstIcon from 'icons/KidsFirstIcon';
 import ButtonWithRouter from 'ui/Buttons/ButtonWithRouter';
 
-import styles from './Login.module.scss';
+import styles from './index.module.scss';
 
 const Login = (): React.ReactElement => {
   const { keycloak } = useKeycloak();

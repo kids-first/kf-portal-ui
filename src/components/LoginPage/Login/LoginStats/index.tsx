@@ -14,7 +14,7 @@ import UserIcon from 'icons/UserIcon';
 import { fetchPublicStats } from 'services/publicStatistics';
 import { abbreviateNumber } from 'utils';
 
-import style from './Login.module.scss';
+import style from './index.module.scss';
 
 const formatCounts = (num: number) => abbreviateNumber(num);
 const formatStorage = (storage: string) => storage.replace(' ', '');

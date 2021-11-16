@@ -7,18 +7,18 @@ import isEmpty from 'lodash/isEmpty';
 import { ORCID } from 'common/constants';
 import { isFeatureEnabled } from 'common/featuresToggles';
 import ROUTES from 'common/routes';
-import RoleForm, { ROLE_FORM_NAME } from 'components/Login/RoleForm';
-import TermsConditionsAcceptButton from 'components/Login/TermsConditionsAcceptButton';
-import TermsConditionsBody from 'components/Login/TermsConditionsBody';
 import DeleteButton from 'components/loginButtons/DeleteButton';
+import RoleForm, { ROLE_FORM_NAME } from 'components/LoginPage/Join/RoleForm';
+import TermsConditionsAcceptButton from 'components/LoginPage/TermsConditions/TermsConditionsAcceptButton';
+import TermsConditionsBody from 'components/LoginPage/TermsConditions/TermsConditionsBody';
 import SplashPage from 'components/SplashPage';
 import useUser from 'hooks/useUser';
 import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
 
-import './join.css';
-import styles from './Login.module.scss';
+import './index.css';
+import styles from '../Login/index.module.scss';
 
 const { Step } = Steps;
 

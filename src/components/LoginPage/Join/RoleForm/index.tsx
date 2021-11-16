@@ -16,7 +16,7 @@ import { selectUser } from 'store/selectors/users';
 import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 import { DispatchUser, User } from 'store/userTypes';
 
-import './roleForm.css';
+import './index.css';
 
 const { Paragraph, Text } = Typography;
 

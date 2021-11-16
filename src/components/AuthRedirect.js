@@ -5,7 +5,7 @@ import queryString from 'querystring';
 import { compose } from 'recompose';
 import urlJoin from 'url-join';
 
-import Login from 'components/Login/Login';
+import Login from 'components/LoginPage/Login';
 
 const AuthRedirect = (props) => {
   const {

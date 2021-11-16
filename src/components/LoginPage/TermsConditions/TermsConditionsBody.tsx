@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Typography } from 'antd';
 
-import './termsConditions.css';
+import './index.css';
 
 const { Paragraph } = Typography;
 

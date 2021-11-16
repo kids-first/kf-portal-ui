@@ -1,0 +1,60 @@
+@import 'src/style/themes/default/colors';
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $cyan-7;
+  max-width: 833px;
+  margin: auto;
+
+  .loginHeader {
+    display: flex;
+    align-items: center;
+  }
+
+  .loginButtons {
+    display: flex;
+
+    .login {
+      background: $gray-1;
+      border-radius: 2px;
+      color: $cyan-7;
+    }
+
+    .signup button {
+      background: $cyan-7;
+      border: 1px solid $cyan-1;
+      box-sizing: border-box;
+      border-radius: 2px;
+      color: $cyan-1;
+      margin-left: 16px;
+    }
+  }
+
+  h1,
+  h2,
+  > span {
+    color: $gray-1;
+    margin: 24px 0px;
+  }
+
+  h2 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  > span {
+    margin-top: 0px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  h1 {
+    margin-left: 16px;
+  }
+}
