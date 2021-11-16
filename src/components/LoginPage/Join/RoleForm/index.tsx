@@ -69,6 +69,7 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
       acceptedTerms: false,
       firstName: values.firstName,
       lastName: values.lastName,
+      email: values.email,
       roles: [activeRole],
       acceptedKfOptIn: subscribing.some((s) => s === 'acceptedKfOptIn'),
       acceptedDatasetSubscriptionKfOptIn: subscribing.some(
