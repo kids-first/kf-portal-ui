@@ -77,9 +77,7 @@ const App = () => {
                 <Route
                   path={ROUTES.login}
                   exact
-                  render={() => (
-                    <SideImagePage logo={logo} sideImagePath={loginImage} Component={LoginPage} />
-                  )}
+                  render={() => <SideImagePage sideImagePath={loginImage} Component={LoginPage} />}
                 />
                 <Route
                   path={ROUTES.termsConditions}

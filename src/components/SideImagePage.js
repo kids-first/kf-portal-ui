@@ -16,9 +16,11 @@ import {
 const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props }) => (
   <Column className={sideImagePageContainer}>
     <div className={gradientBar} />
-    <a href={kfWebRoot}>
-      <img className={logoImage} src={logo} alt="Kids First Logo" />
-    </a>
+    {logo && (
+      <a href={kfWebRoot}>
+        <img className={logoImage} src={logo} alt="Kids First Logo" />
+      </a>
+    )}
     <Row className={backgroundGradient}>
       <div
         className={sideImageContainer}

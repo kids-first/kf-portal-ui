@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 import { ORCID } from 'common/constants';
 import { isFeatureEnabled } from 'common/featuresToggles';
 import ROUTES from 'common/routes';
-import Login from 'components/Login/Login';
 import RoleForm, { ROLE_FORM_NAME } from 'components/Login/RoleForm';
 import TermsConditionsAcceptButton from 'components/Login/TermsConditionsAcceptButton';
 import TermsConditionsBody from 'components/Login/TermsConditionsBody';
@@ -19,6 +18,7 @@ import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
 
 import './join.css';
+import styles from './Login.module.scss';
 
 const { Step } = Steps;
 
@@ -47,7 +47,7 @@ const computeInitialStep = (user: User | null) => {
 
 const Join = () => {
   const history = useHistory();
-  const location = useLocation();
+  const currentLocation = useLocation();
 
   const { user, isLoadingUser } = useUser();
   const [current, setNextStep] = useState(computeInitialStep(user));
@@ -55,12 +55,12 @@ const Join = () => {
   useEffect(() => {
     const hasAlreadyJoinedButRoutedToThisPage = user && hasUserRole(user);
     if (hasAlreadyJoinedButRoutedToThisPage) {
-      const currentLocationState: ILocation = (location.state as ILocation) || {
+      const currentLocationState: ILocation = (currentLocation.state as ILocation) || {
         from: ROUTES.dashboard,
       };
       history.push(user!.acceptedTerms ? currentLocationState.from : ROUTES.termsConditions);
     }
-  }, [history, user, location]);
+  }, [history, user, currentLocation]);
 
   const next = () => setNextStep(current + 1);
   const prev = () => setNextStep(current - 1);
@@ -78,7 +78,19 @@ const Join = () => {
             Your information will be kept confidential and secure and is not shared with any of
             these providers.
           </Paragraph>
-          <Login />
+          <Button
+            className={styles.login}
+            type={'primary'}
+            onClick={async () => {
+              const url = keycloak.createLoginUrl({
+                // eslint-disable-next-line max-len
+                redirectUri: `${window.location.origin}/${ROUTES.dashboard}`,
+              });
+              location.assign(url);
+            }}
+          >
+            {'Log in'}
+          </Button>
         </>
       ),
     },
