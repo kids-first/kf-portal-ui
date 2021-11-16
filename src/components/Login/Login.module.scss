@@ -4,8 +4,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
   justify-content: space-between;
-  width: 80%;
+  padding: 24px;
 }
 
 .loginContainer {
@@ -14,7 +15,7 @@
   justify-content: center;
   background-color: $cyan-7;
   max-width: 833px;
-  flex: 2;
+  margin: auto;
 }
 
 .loginStats {
@@ -115,7 +116,6 @@
   align-items: center;
   background-color: $gray-1;
   padding: 24px;
-  margin-bottom: 24px;
 }
 
 .loginFooter h3 {
