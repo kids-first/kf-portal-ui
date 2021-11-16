@@ -3,7 +3,7 @@
   height: 100vh;
   overflow-y: hidden;
   min-width: 1024;
-  background-image: url('../assets/background-science.jpg');
+  background-color: #007694;
 }
 
 .gradientBar {
@@ -16,7 +16,6 @@
   background-repeat: repeat;
   height: 100%;
   width: 100%;
-  background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
 }
 
 .sideImageContainer {

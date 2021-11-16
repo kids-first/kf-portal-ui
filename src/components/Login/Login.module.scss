@@ -1,0 +1,135 @@
+@import 'src/style/themes/default/colors';
+
+.loginPage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $cyan-7;
+  max-width: 833px;
+  flex: 2;
+}
+
+.loginStats {
+  background-color: $cyan-8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px;
+  margin: 48px 0px;
+}
+
+.loginStats hr {
+  border: none;
+  border-top: 1px solid $cyan-7;
+  width: 100%;
+}
+
+.loginStats h4 {
+  color: $cyan-4;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 8px 0px;
+}
+
+.loginStats > div {
+  width: 100%;
+}
+
+.loginStatsContainer {
+  justify-content: space-between;
+  display: flex;
+  margin-top: 24px;
+}
+
+.loginPageIconColor {
+  fill: $cyan-5;
+}
+
+.loginStatsLabel {
+  color: $gray-1;
+}
+
+.loginHeader {
+  display: flex;
+}
+
+.loginContainer h1,
+.loginContainer h2,
+.loginContainer > span {
+  color: $gray-1;
+  margin: 24px 0px;
+}
+
+.loginContainer h2 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.loginContainer > span {
+  margin-top: 0px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.loginContainer h1 {
+  margin-left: 16px;
+}
+
+.loginButtons {
+  display: flex;
+}
+
+.loginButtons .login {
+  background: $gray-1;
+  border-radius: 2px;
+  color: $cyan-7;
+}
+
+.loginButtons .signup button {
+  background: $cyan-7;
+  border: 1px solid $cyan-1;
+  box-sizing: border-box;
+  border-radius: 2px;
+  color: $cyan-1;
+  margin-left: 16px;
+}
+
+.loginFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $gray-1;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.loginFooter h3 {
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: $body-1;
+}
+
+.loginFooter span {
+  margin-bottom: 40px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: $body-1;
+}

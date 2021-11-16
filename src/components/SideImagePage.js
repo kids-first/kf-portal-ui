@@ -1,15 +1,16 @@
 import React from 'react';
+
 import { kfWebRoot } from 'common/injectGlobals';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 
 import {
-  sideImagePageContainer,
-  gradientBar,
   backgroundGradient,
-  sideImageContainer,
-  pageContent,
+  gradientBar,
   logoImage,
+  pageContent,
+  sideImageContainer,
+  sideImagePageContainer,
 } from './SideImagePage.module.css';
 
 const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props }) => (

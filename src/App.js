@@ -9,6 +9,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import joinImage from 'assets/smiling-boy.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import ROUTES from 'common/routes';
+import AppFooter from 'components/AppFooter';
 import AuthRedirect from 'components/AuthRedirect';
 import CohortBuilder from 'components/CohortBuilder';
 import FileEntity from 'components/EntityPage/File';
@@ -17,7 +18,6 @@ import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
-import LoginFooter from 'components/Login/LoginFooter';
 import TermsConditions from 'components/Login/TermsConditions';
 import MemberSearchPage from 'components/MemberSearchPage';
 import Page, { FixedFooterPage } from 'components/Page';
@@ -70,7 +70,7 @@ const App = () => {
                       logo={logo}
                       sideImagePath={loginImage}
                       Component={Error}
-                      Footer={LoginFooter}
+                      Footer={AppFooter}
                     />
                   )}
                 />
@@ -78,12 +78,7 @@ const App = () => {
                   path={ROUTES.login}
                   exact
                   render={() => (
-                    <SideImagePage
-                      logo={logo}
-                      sideImagePath={loginImage}
-                      Component={LoginPage}
-                      Footer={LoginFooter}
-                    />
+                    <SideImagePage logo={logo} sideImagePath={loginImage} Component={LoginPage} />
                   )}
                 />
                 <Route
@@ -94,7 +89,7 @@ const App = () => {
                       logo={logo}
                       sideImagePath={loginImage}
                       Component={TermsConditions}
-                      Footer={LoginFooter}
+                      Footer={AppFooter}
                     />
                   )}
                 />
@@ -166,21 +161,6 @@ const App = () => {
                   )}
                 />
 
-                <Route
-                  path={ROUTES.orcid}
-                  exact
-                  render={(props) => (
-                    <SideImagePage
-                      logo={logo}
-                      backgroundImage={scienceBgPath}
-                      Component={LoginPage}
-                      Footer={LoginFooter}
-                      sideImagePath={loginImage}
-                      stealth={true} // hide some of the visuals of the page during redirection
-                      {...props}
-                    />
-                  )}
-                />
                 <ProtectedRoute
                   path={ROUTES.profile}
                   exact
