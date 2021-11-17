@@ -149,7 +149,6 @@ const App = () => {
                   render={() => (
                     <SideImagePage
                       backgroundImage={scienceBgPath}
-                      logo={logo}
                       Component={Join}
                       sideImagePath={joinImage}
                     />
