@@ -18,7 +18,7 @@ import style from './index.module.scss';
 
 const formatCounts = (num: number) => abbreviateNumber(num);
 const formatStorage = (storage: string) => storage.replace(' ', '');
-const iconSize = { height: 21, width: 16.5 };
+const iconSize = { height: 24, width: 24 };
 
 const LoginStats = () => {
   const [stats, setStats] = useState({

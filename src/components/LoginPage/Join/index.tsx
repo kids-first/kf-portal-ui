@@ -18,7 +18,6 @@ import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
 
 import './index.css';
-import styles from '../Login/index.module.scss';
 
 const { Step } = Steps;
 
@@ -79,8 +78,8 @@ const Join = () => {
             these providers.
           </Paragraph>
           <Button
-            className={styles.login}
             type={'primary'}
+            size={'large'}
             onClick={async () => {
               const url = keycloak.createLoginUrl({
                 // eslint-disable-next-line max-len

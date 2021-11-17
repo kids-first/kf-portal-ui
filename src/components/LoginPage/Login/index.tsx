@@ -34,26 +34,22 @@ const Login = (): React.ReactElement => {
         research today.
       </span>
       <div className={styles.loginButtons}>
-        <div>
-          <Button
-            className={styles.login}
-            type={'primary'}
-            onClick={async () => {
-              const url = keycloak.createLoginUrl({
-                // eslint-disable-next-line max-len
-                redirectUri: `${window.location.origin}/${ROUTES.dashboard}`,
-              });
-              location.assign(url);
-            }}
-          >
-            {'Log in'}
-          </Button>
-        </div>
-        <div className={styles.signup}>
-          <ButtonWithRouter type={'default'} getLink={async () => ROUTES.join}>
-            {'Sign up'}
-          </ButtonWithRouter>
-        </div>
+        <Button
+          type={'primary'}
+          onClick={async () => {
+            const url = keycloak.createLoginUrl({
+              // eslint-disable-next-line max-len
+              redirectUri: `${window.location.origin}/${ROUTES.dashboard}`,
+            });
+            location.assign(url);
+          }}
+          size={'large'}
+        >
+          {'Log in'}
+        </Button>
+        <ButtonWithRouter type={'default'} size={'large'} getLink={async () => ROUTES.join}>
+          {'Sign up'}
+        </ButtonWithRouter>
       </div>
     </div>
   );

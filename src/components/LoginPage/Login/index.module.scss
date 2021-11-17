@@ -16,19 +16,40 @@
   .loginButtons {
     display: flex;
 
-    .login {
-      background: $gray-1;
+    :global(.ant-btn-primary) {
+      background-color: $gray-1;
+      border: 1px solid $gray-1;
       border-radius: 2px;
       color: $cyan-7;
+
+      &:hover {
+        background-color: $gray-2;
+      }
+
+      &:active {
+        background-color: $gray-3;
+        border: 1px solid $gray-3;
+      }
     }
 
-    .signup button {
-      background: $cyan-7;
+    :global(.ant-btn-default) {
+      background-color: $cyan-7;
       border: 1px solid $cyan-1;
       box-sizing: border-box;
       border-radius: 2px;
       color: $cyan-1;
       margin-left: 16px;
+
+      &:hover {
+        background-color: $cyan-6;
+      }
+    }
+
+    :global(.ant-btn-primary):focus,
+    :global(.ant-btn-default):focus {
+      background-color: $cyan-8;
+      border: 1px solid $cyan-1;
+      color: $gray-1;
     }
   }
 
