@@ -25198,3 +25198,9 @@ h3.ant-typography {
 .ant-list-item-meta-title > a {
   color: #a6278f;
 }
+.ant-alert-warning.ant-alert-banner {
+  background-color: #fff1b8;
+}
+.ant-alert-warning.ant-alert-banner span {
+  color: #ab5107;
+}

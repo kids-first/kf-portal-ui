@@ -17,6 +17,7 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
+import Banner, { showDynamicInfoBanner } from '../../DynamicBanner';
 import useUser from '../../hooks/useUser';
 
 import AppsMenu from './AppsMenu';
@@ -62,6 +63,7 @@ const NavigationToolBar = (props) => {
           onClose={onClosePublicProfileInviteAlert}
         />
       )}
+      {showDynamicInfoBanner() && <Banner />}
       <div className="gradientAccent" />
       <StackLayout className="headerContent">
         <StackLayout className="leftContent">
