@@ -8,44 +8,44 @@
 
 ## QA
 
-### Build image: 
+### Build image:
 
 ```
 docker build -f qa.Dockerfile -t kf-nginx-qa .
 ```
 
-### Run image: 
+### Run image:
 
-For Mac/Windows: 
-
-```
-docker run -p 3000:3000 -p 443:443 -p 80:80 -d kf-nginx-qa
-```
-
-For Linux (to be confirmed):
+For Mac/Windows:
 
 ```
-docker run -p 3000:3000 -p 443:443 -p 80:80 -d kf-nginx-qa --add-host=host.docker.internal:host-gateway
+docker run -p 443:443 -p 80:80 -d kf-nginx-qa
+```
+
+For Linux:
+
+```
+docker run -p 443:443 -p 80:80 --add-host=host.docker.internal:host-gateway -d kf-nginx-qa
 ```
 
 ## PRD
 
-### Build image: 
+### Build image:
 
 ```
 docker build -f prd.Dockerfile -t kf-nginx-prd .
 ```
 
-### Run image: 
+### Run image:
 
-For Mac/Windows: 
-
-```
-docker run -p 3000:3000 -p 443:443 -p 80:80 -d kf-nginx-prd
-```
-
-For Linux (to be confirmed):
+For Mac/Windows:
 
 ```
-docker run -p 3000:3000 -p 443:443 -p 80:80 -d kf-nginx-prd --add-host=host.docker.internal:host-gateway
+docker run -p 443:443 -p 80:80 -d kf-nginx-prd
+```
+
+For Linux:
+
+```
+docker run -p 443:443 -p 80:80 --add-host=host.docker.internal:host-gateway -d kf-nginx-prd
 ```
