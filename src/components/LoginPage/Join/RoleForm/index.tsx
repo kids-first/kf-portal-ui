@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Avatar, Card, Checkbox, Col, Form, Input, Row, Typography } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import keycloak from 'keycloak';
 
 import { ORCID, ROLES } from 'common/constants';
@@ -49,18 +48,8 @@ const getExistingRoleOrElse = (user: User) => (user?.roles || [])[0] || ROLES[0]
 const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
   const existingRoleOrElse = getExistingRoleOrElse(user);
   const [activeRole, setActiveRole] = useState(existingRoleOrElse);
-  const [kfOptIn, setKfOptIn] = useState(false);
-  const [datasetSubscriptionKfOptIn, setDatasetSubscriptionKfOptIn] = useState(false);
 
   const provider = (keycloak.tokenParsed as KidsFirstKeycloakTokenParsed)?.identity_provider;
-
-  const onChangeKfOptIn = (e: CheckboxChangeEvent) => {
-    setKfOptIn(e.target.checked);
-  };
-
-  const onChangeDatasetSubscriptionKfOptIn = (e: CheckboxChangeEvent) => {
-    setDatasetSubscriptionKfOptIn(e.target.checked);
-  };
 
   const onFinish = async (values: any) => {
     const subscribing: Array<string> = values.subscribing;
@@ -118,7 +107,7 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
         colon={false}
         label="My email address is"
         name="email"
-        rules={[{ required: kfOptIn || datasetSubscriptionKfOptIn, message: 'Email is required' }]}
+        rules={[{ required: true, message: 'Email is required' }]}
       >
         <Input
           size={'middle'}
@@ -178,7 +167,7 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
         <Checkbox.Group>
           <Row>
             <Col span={2}>
-              <Checkbox value="acceptedKfOptIn" onChange={onChangeKfOptIn} />
+              <Checkbox value="acceptedKfOptIn" />
             </Col>
             <Col span={22}>
               <Paragraph>
@@ -190,10 +179,7 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
           </Row>
           <Row>
             <Col span={2}>
-              <Checkbox
-                value="acceptedDatasetSubscriptionKfOptIn"
-                onChange={onChangeDatasetSubscriptionKfOptIn}
-              />
+              <Checkbox value="acceptedDatasetSubscriptionKfOptIn" />
             </Col>
             <Col span={22}>
               <Paragraph>

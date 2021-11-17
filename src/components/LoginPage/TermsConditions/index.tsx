@@ -15,7 +15,7 @@ const TermsConditions = () => {
   return (
     <SplashPage
       title={'Terms & Conditions'}
-      extra={'Last Update Date: 7/22/20'}
+      extra={'Last Update Date: 11/22/21'}
       mainTitle={'Terms & Conditions'}
       content={<TermsConditionsBody />}
       footerContent={

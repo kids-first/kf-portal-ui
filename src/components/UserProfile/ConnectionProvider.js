@@ -42,7 +42,7 @@ const ConnectionProvider = () => {
         <CheckCircleTwoTone twoToneColor="#52c41a" />
         <Text> {`You are connected with ${providerLabel[provider]}`} </Text>
         {icons[provider]}
-        <Text> {` using this account : ${providerIdentity}`} </Text>
+        <Text> {` using this account ID: ${providerIdentity}`} </Text>
       </>
     </Card>
   );
