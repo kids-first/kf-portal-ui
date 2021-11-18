@@ -33,3 +33,13 @@
 .stepsContent {
   margin-top: 48px;
 }
+
+@media (max-width: 1180px) {
+  :global(#join) {
+    background-image: linear-gradient(0deg, rgba(0, 118, 148, 0.9), rgba(0, 118, 148, 0.9)),
+      url(../../../assets/smiling-boy.jpg);
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: bottom;
+  }
+}
