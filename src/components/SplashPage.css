@@ -3,6 +3,10 @@
   margin: auto;
 }
 
+.splashPageContainer .ant-card {
+  margin: 24px 0;
+}
+
 .main-title {
   background-color: #ffffff;
   text-align: center;
