@@ -18,7 +18,6 @@ import { RootState } from 'store/rootState';
 import { selectUser } from 'store/selectors/users';
 import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 
-import { removeForumBanner } from '../../ForumBanner';
 import { RawUser, ThunkActionUser, User, UserActions, UserActionTypes } from '../userTypes';
 
 import { deleteAllSaveQueriesFromRiffForUser } from './SavedQueries';
@@ -107,7 +106,6 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch) => {
     console.error(error);
   } finally {
     cleanLegacyItems();
-    removeForumBanner();
     localStorage.removeItem(SHOW_DELETE_ACCOUNT);
     addArrangerHeaders({ authorization: `` });
     await dispatch(logout());
