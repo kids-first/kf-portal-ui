@@ -4,11 +4,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: $cyan-7;
-  max-width: 833px;
+  max-width: 800px;
   margin: auto;
 
   .loginStats {
+    order: 1;
     background-color: $cyan-8;
     display: flex;
     flex-direction: column;
@@ -37,9 +37,11 @@
     }
 
     .loginStatsContainer {
-      justify-content: space-between;
+      justify-content: space-evenly;
       display: flex;
       margin-top: 24px;
+      flex-wrap: wrap;
+      gap: 24px;
 
       .loginPageIconColor {
         fill: $cyan-5;
@@ -57,11 +59,17 @@
   }
 
   .loginHeader {
+    order: 2;
     display: flex;
     align-items: center;
   }
 
+  .loginText {
+    order: 3;
+  }
+
   .loginButtons {
+    order: 4;
     display: flex;
 
     :global(.ant-btn-primary) {
@@ -103,7 +111,7 @@
 
   h1,
   h2,
-  > span {
+  .loginText {
     color: $gray-1;
     margin: 24px 0px;
   }
@@ -115,7 +123,7 @@
     line-height: 32px;
   }
 
-  > span {
+  .loginText > span {
     margin-top: 0px;
     font-style: normal;
     font-weight: normal;
@@ -125,5 +133,35 @@
 
   h1 {
     margin-left: 16px;
+    line-height: 38px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .loginContainer {
+    align-items: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .loginContainer {
+    margin: 0;
+
+    .loginHeader {
+      order: 1;
+    }
+
+    .loginStats {
+      order: 2;
+      margin: 0;
+    }
+
+    .loginButtons {
+      width: 100%;
+
+      button {
+        flex: 1;
+      }
+    }
   }
 }

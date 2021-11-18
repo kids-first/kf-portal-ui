@@ -113,14 +113,16 @@ const Login = (): React.ReactElement => {
         <KidsFirstIcon />
         <h1>Kids First Data Resource Portal</h1>
       </div>
-      <h2>
-        Accelerating research and promoting new discoveries for children affected with cancer and
-        structural birth defects.
-      </h2>
-      <span>
-        Data from over {formatNumberToLocaleString(stats.samples)} samples, including whole genome
-        sequencing (WGS) and RNA-Sequencing, is available to empower your research today.
-      </span>
+      <div className={styles.loginText}>
+        <h2>
+          Accelerating research and promoting new discoveries for children affected with cancer and
+          structural birth defects.
+        </h2>
+        <span>
+          Data from over {formatNumberToLocaleString(stats.samples)} samples, including whole genome
+          sequencing (WGS) and RNA-Sequencing, is available to empower your research today.
+        </span>
+      </div>
       <div className={styles.loginButtons}>
         <Button
           type={'primary'}
