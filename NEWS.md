@@ -8,6 +8,10 @@
 ### Technical / Other changes
 -->
 
+## 2021-11-18 kf-portal-ui 3.5.0
+### Features
+- [SKFP-307](https://d3b.atlassian.net/browse/SKFP-307) Feature : New dynamic messaging banner. 
+
 ## 2021-11-02 kf-portal-ui
 ### Features
 - [SKFP-58](https://d3b.atlassian.net/browse/SKFP-58) Feature : Redesigned and improved the Variant Search page by adding searchable categories, facets, and the query builder.
