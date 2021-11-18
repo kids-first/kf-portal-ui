@@ -28,6 +28,10 @@ export const kfArrangerApiRoot = getApplicationEnvVar('KF_ARRANGER_API');
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 export const arrangerApiProjectId = getApplicationEnvVar('PROJECT_API_ID');
 
+export const bannerType = getApplicationEnvVar('BANNER_TYPE');
+export const bannerMessage = getApplicationEnvVar('BANNER_MESSAGE');
+export const bannerUrl = getApplicationEnvVar('BANNER_URL');
+
 export const personaApiRoot: string =
   personaApiOverride || getApplicationEnvVar('PERSONA_API') || '';
 export const secretStorageApiRoot: string = getApplicationEnvVar('SECRETS_API');

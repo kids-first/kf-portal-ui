@@ -29,7 +29,6 @@ import { Spinner } from 'uikit/Spinner';
 import LoginPage from './components/Login/LoginPage';
 import { FenceName } from './store/fenceTypes';
 import Authenticator from './Authenticator';
-import ForumBanner, { showForumBanner } from './ForumBanner';
 import ProtectedRoute from './ProtectedRoute';
 
 import 'index.css';
@@ -42,7 +41,6 @@ const App = () => (
   <div className="appContainer">
     <Authenticator>
       <ApolloProvider>
-        {showForumBanner() && <ForumBanner />}
         <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
           <Switch>
             <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />

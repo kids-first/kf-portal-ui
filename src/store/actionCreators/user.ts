@@ -27,7 +27,6 @@ import { DecodedJwt, JwtToken } from 'store/tokenTypes';
 import { extractGroupsFromToken, isDecodedJwtExpired } from 'store/tokenUtils';
 
 import ROUTES from '../../common/routes';
-import { removeForumBanner } from '../../ForumBanner';
 import {
   Provider,
   Providers,
@@ -172,7 +171,6 @@ export const cleanlyLogout = (): ThunkActionUser => async (dispatch, getState) =
     localStorage.removeItem(SHOW_DELETE_ACCOUNT);
     addArrangerHeaders({ authorization: `` });
     await dispatch(logout());
-    removeForumBanner();
     history.push(ROUTES.login);
   }
 };
