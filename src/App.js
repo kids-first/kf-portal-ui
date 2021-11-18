@@ -81,7 +81,6 @@ const App = () => {
                   exact
                   render={() => (
                     <SideImagePage
-                      logo={logo}
                       sideImagePath={loginImage}
                       Component={TermsConditions}
                       Footer={AppFooter}
@@ -151,6 +150,7 @@ const App = () => {
                       backgroundImage={scienceBgPath}
                       Component={Join}
                       sideImagePath={joinImage}
+                      id={'join'}
                     />
                   )}
                 />

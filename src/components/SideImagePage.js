@@ -13,7 +13,7 @@ import {
   sideImagePageContainer,
 } from './SideImagePage.module.css';
 
-const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props }) => (
+const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, id, ...props }) => (
   <Column className={sideImagePageContainer}>
     <div className={gradientBar} />
     {logo && (
@@ -28,7 +28,7 @@ const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props
           backgroundImage: `url(${sideImagePath})`,
         }}
       />
-      <Row className={pageContent}>
+      <Row className={pageContent} id={id}>
         <Component {...props} />
         {Footer ? <Footer {...props} /> : null}
       </Row>
