@@ -28,7 +28,7 @@ export const kfArrangerApiRoot = getApplicationEnvVar('KF_ARRANGER_API');
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 export const arrangerApiProjectId = getApplicationEnvVar('PROJECT_API_ID');
 
-export const bannerActivity: boolean = getApplicationEnvVar('BANNER_ACTIVITY') === 'true';
+export const bannerType = getApplicationEnvVar('BANNER_TYPE');
 export const bannerMessage = getApplicationEnvVar('BANNER_MESSAGE');
 export const bannerUrl = getApplicationEnvVar('BANNER_URL');
 

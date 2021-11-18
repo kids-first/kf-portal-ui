@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Alert, Layout } from 'antd';
+import Banner, { showDynamicInfoBanner } from 'DynamicBanner';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
@@ -17,7 +18,6 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
-import Banner, { showDynamicInfoBanner } from '../../DynamicBanner';
 import useUser from '../../hooks/useUser';
 
 import AppsMenu from './AppsMenu';
