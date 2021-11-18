@@ -25180,13 +25180,7 @@ h3.ant-typography {
 .ant-switch-checked {
   background-color: #009bba;
 }
-.ant-alert-message {
-  color: #910616;
-}
-.ant-alert-with-description .ant-alert-message {
-  color: #910616;
-}
-.ant-alert {
+.ant-alert-error .ant-alert-message {
   color: #910616;
 }
 .ant-list {
@@ -25198,9 +25192,23 @@ h3.ant-typography {
 .ant-list-item-meta-title > a {
   color: #a6278f;
 }
-.ant-alert-warning.ant-alert-banner {
+.ant-alert-warning {
   background-color: #fff1b8;
 }
-.ant-alert-warning.ant-alert-banner span {
+.ant-alert-warning.ant-alert-with-description .ant-alert-message {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.ant-alert-warning.ant-alert-with-description .ant-alert-description {
+  font-weight: 400;
+}
+.ant-alert-warning .ant-alert-message,
+.ant-alert-warning .ant-alert-message a,
+.ant-alert-warning .ant-alert-message a:hover,
+.ant-alert-warning .ant-alert-description,
+.ant-alert-warning .ant-alert-description a,
+.ant-alert-warning .ant-alert-description a:hover,
+.ant-alert-warning .ant-alert-icon {
   color: #ab5107;
 }
