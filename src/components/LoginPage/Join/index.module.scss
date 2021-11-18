@@ -1,0 +1,33 @@
+.stepConsentFooterWrapper,
+.stepBasicInfoFooterWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submitBtn {
+  margin-left: 8px;
+}
+
+.orchidBanner {
+  margin: 48px 0;
+}
+
+.joinHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    line-height: 24px;
+    font-weight: 600;
+    margin: 24px 0;
+  }
+}
+
+.steps {
+  margin: 24px 0;
+}
+
+.stepsContent {
+  margin-top: 48px;
+}
