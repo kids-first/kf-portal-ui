@@ -154,6 +154,19 @@
     .loginStats {
       order: 2;
       margin: 0;
+
+      .loginStatsContainer {
+        .loginStatsLabel {
+          :global(.wrapper__label) {
+            font-size: 1.6rem;
+          }
+
+          :global(.wrapper__icon) {
+            width: 16px;
+            margin-right: 0.5rem;
+          }
+        }
+      }
     }
 
     .loginButtons {
