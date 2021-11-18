@@ -27,12 +27,25 @@
   box-shadow: 0 0 6px 0.1px #bbbbbb;
 }
 
+@media (max-width: 1180px) {
+  .sideImageContainer {
+    flex: 0;
+  }
+
+  .pageContent {
+    display: flex;
+    background-position: bottom;
+    background: linear-gradient(0deg, rgba(0, 118, 148, 0.9), rgba(0, 118, 148, 0.9)),
+      url(../assets/smiling-girl.jpg) bottom;
+    background-size: cover;
+  }
+}
+
 .pageContent {
   justify-content: center;
   align-items: center;
   flex: 1;
   overflow: auto;
-  min-width: 830px;
 }
 
 .logoImage {
