@@ -65,16 +65,10 @@ h3.ant-typography {
   background-color: @cyan-6;
 }
 
-.ant-alert-message {
-  color: @red-8;
-}
-
-.ant-alert-with-description .ant-alert-message {
-  color: @red-8;
-}
-
-.ant-alert {
-  color: @red-8;
+.@{alert-prefix-cls}-error {
+  .@{alert-prefix-cls}-message {
+    color: @red-8;
+  }
 }
 
 .ant-list {
@@ -92,10 +86,27 @@ h3.ant-typography {
 }
 
 .@{alert-prefix-cls}-warning {
-  &.@{alert-prefix-cls}-banner {
-    background-color: @gold-2;
-    span {
-      color: @orange-8;
+  background-color: @gold-2;
+
+  &.@{alert-prefix-cls}-with-description {
+    .@{alert-prefix-cls}-message {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 600;
     }
+
+    .@{alert-prefix-cls}-description {
+      font-weight: 400;
+    }
+  }
+
+  .@{alert-prefix-cls}-message,
+  .@{alert-prefix-cls}-message a,
+  .@{alert-prefix-cls}-message a:hover,
+  .@{alert-prefix-cls}-description,
+  .@{alert-prefix-cls}-description a,
+  .@{alert-prefix-cls}-description a:hover,
+  .@{alert-prefix-cls}-icon {
+    color: @orange-8;
   }
 }

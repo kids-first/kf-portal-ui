@@ -5,8 +5,6 @@ import { bannerMessage, bannerType, bannerUrl } from 'common/injectGlobals';
 
 import { isFeatureEnabled } from './common/featuresToggles';
 
-import style from './DynamicBanner.module.scss';
-
 const SHOW_DYNAMIC_INFO_BANNER = 'SHOW_DYNAMIC_INFO_BANNER';
 
 export const hideDynamicInfoBannerForDisplay = () =>
@@ -31,9 +29,9 @@ const parseBannerType = (): 'success' | 'info' | 'warning' | 'error' | undefined
 const DynamicInfoBanner: FunctionComponent = () => (
   <Alert
     message={
-      <div className={style.messageContainer}>
+      <div>
         {bannerMessage + ' '}
-        <a className={style.forumLink} href={bannerUrl} target="_blank" rel="noopener noreferrer">
+        <a href={bannerUrl} target="_blank" rel="noopener noreferrer">
           Kids First forum.
         </a>
       </div>

@@ -48,7 +48,7 @@ const computeInitialStep = (user: User | null) => {
 const orcidBanner = () => (
   <Alert
     className={styles.orchidBanner}
-    message={'System Update notice for ORCID users'}
+    message={'System update notice for ORCID users'}
     description={
       <span>
         We are in the process of updating our login system. As a result, members who use the ORCID
