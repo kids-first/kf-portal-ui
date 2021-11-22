@@ -2,7 +2,6 @@ import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { trackUserSession } from 'services/analyticsTracking';
-import { extractGroupsFromToken } from 'store/tokenUtils';
 import { DispatchUser, UserActions, userInitialState, UserState } from 'store/userTypes';
 
 import { logout, receiveUser } from '../user';
@@ -18,8 +17,11 @@ type StateSliceNeeded = {
 const mockStore = createMockStore<StateSliceNeeded, DispatchUser>(middleware);
 
 jest.mock('services/fenceStudies');
-jest.mock('store/tokenUtils');
 jest.mock('services/analyticsTracking');
+jest.mock('keycloak', () => ({ tokenParsed: {} }));
+
+import keycloak from 'keycloak';
+import { KeycloakTokenParsed } from 'keycloak-js';
 
 const initialState = {
   user: {
@@ -29,8 +31,8 @@ const initialState = {
 
 describe('User actions', () => {
   beforeEach(() => {
+    jest.resetModules();
     console.error = jest.fn();
-    (extractGroupsFromToken as jest.Mock).mockReset();
     (trackUserSession as jest.Mock).mockImplementation(() => {});
   });
 
@@ -45,15 +47,13 @@ describe('User actions', () => {
     expect(logout()).toEqual(expectedAction);
   });
 
-  it('should receive a raw user and enhance it with computed values', async () => {
-    (extractGroupsFromToken as jest.Mock).mockImplementation((fakeToken: string) =>
-      fakeToken.includes('kf-investigator') ? ['kf-investigator'] : [],
-    );
+  it('should receive a raw user and enhance it with computed values (not an admin)', async () => {
+    keycloak.tokenParsed = { groups: [] } as KeycloakTokenParsed;
+
     const storeNoAdminToken = mockStore({
       ...initialState,
       user: {
         ...initialState.user,
-        userToken: 'abcdkf',
       },
     });
 
@@ -72,12 +72,15 @@ describe('User actions', () => {
       },
     ];
     expect(storeNoAdminToken.getActions()).toEqual(expectedActionsNotAdmin);
+  });
+
+  it('should receive a raw user and enhance it with computed values (an admin)', async () => {
+    keycloak.tokenParsed = { groups: ['kf-investigator'] } as KeycloakTokenParsed;
 
     const storeWithAdminToken = mockStore({
       ...initialState,
       user: {
         ...initialState.user,
-        userToken: 'abcdkfkf-investigator',
       },
     });
 

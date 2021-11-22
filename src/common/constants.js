@@ -82,6 +82,7 @@ export const CAVATICA = 'cavatica';
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
 export const ORCID = 'orcid';
+export const RAS = 'ras';
 
 export const UI_VERSION = packageJson.version;
 

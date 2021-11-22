@@ -1,13 +1,10 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { fenceTokensUri } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import { FenceName } from 'store/fenceTypes';
-import { RootState } from 'store/rootState';
-import { selectUserToken } from 'store/selectors/users';
 
 type OwnProps = {
   api: (config: AxiosRequestConfig) => Promise<AxiosResponse>;
@@ -19,17 +16,12 @@ type OwnProps = {
  * The code query param is sent to the Fence Token endpoint to request a token pair.
  */
 const FenceAuthRedirect = ({ api, fence }: OwnProps) => {
-  const userToken = useSelector((state: RootState) => selectUserToken(state));
-
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get('code');
-    if (code && userToken) {
+    if (code) {
       api({
         url: `${fenceTokensUri}?fence=${fence}&code=${code}`,
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
       })
         .then(() => {
           window.close();
@@ -40,15 +32,9 @@ const FenceAuthRedirect = ({ api, fence }: OwnProps) => {
           window.close();
         });
     } else {
-      if (!code) {
-        window.alert(
-          'Something went wrong (no code in the response), please refresh your window and try again.',
-        );
-      } else {
-        window.alert(
-          'Something went wrong (no ego token), please refresh your window and try again.',
-        );
-      }
+      window.alert(
+        'Something went wrong (no code in the response), please refresh your window and try again.',
+      );
       window.close();
     }
   });

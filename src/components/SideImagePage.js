@@ -1,23 +1,26 @@
 import React from 'react';
+
 import { kfWebRoot } from 'common/injectGlobals';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 
 import {
-  sideImagePageContainer,
-  gradientBar,
   backgroundGradient,
-  sideImageContainer,
-  pageContent,
+  gradientBar,
   logoImage,
+  pageContent,
+  sideImageContainer,
+  sideImagePageContainer,
 } from './SideImagePage.module.css';
 
-const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props }) => (
+const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, id, ...props }) => (
   <Column className={sideImagePageContainer}>
     <div className={gradientBar} />
-    <a href={kfWebRoot}>
-      <img className={logoImage} src={logo} alt="Kids First Logo" />
-    </a>
+    {logo && (
+      <a href={kfWebRoot}>
+        <img className={logoImage} src={logo} alt="Kids First Logo" />
+      </a>
+    )}
     <Row className={backgroundGradient}>
       <div
         className={sideImageContainer}
@@ -25,7 +28,7 @@ const SideImagePage = ({ logo, Component, sideImagePath, Footer = null, ...props
           backgroundImage: `url(${sideImagePath})`,
         }}
       />
-      <Row className={pageContent}>
+      <Row className={pageContent} id={id}>
         <Component {...props} />
         {Footer ? <Footer {...props} /> : null}
       </Row>

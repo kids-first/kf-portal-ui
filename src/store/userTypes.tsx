@@ -5,14 +5,6 @@ import { Nullable } from './utilityTypes';
 
 export type Groups = string[];
 
-export enum Providers {
-  google = 'google',
-  facebook = 'facebook',
-  orcid = 'orcid',
-}
-
-export type Provider = string;
-
 export type RawUser = {
   _id: string;
   roles: Array<string>;
@@ -84,8 +76,6 @@ export enum UserActions {
   failureSubscribeUser = 'failureSubscribeUser',
   toggleIsLoadingUser = 'toggleIsLoadingUser',
   receiveUser = 'receiveUser',
-  receiveLoginProvider = 'receiveLoginProvider',
-  receiveUserToken = 'receiveUserToken',
   updateUser = 'updateUser',
   receiveUserWithComputedValues = 'receiveUserWithComputedValues',
 }
@@ -123,24 +113,11 @@ export type ReceiveUserAction = {
   payload: User;
 };
 
-export type ReceiveLoginProvider = {
-  type: UserActions.receiveLoginProvider;
-  loginProvider: string;
-};
-
-export type ReceiveUserToken = {
-  type: UserActions.receiveUserToken;
-  userToken: string;
-};
-
 export type UserState = {
   isLoadingUser: boolean;
   uid: Nullable<string>;
   errorSubscribing: Nullable<Error>;
   user: User | null;
-  isAuthenticated: boolean;
-  loginProvider: Nullable<string>;
-  userToken: Nullable<string>;
 };
 
 export const userInitialState: UserState = {
@@ -148,9 +125,6 @@ export const userInitialState: UserState = {
   uid: null,
   errorSubscribing: null,
   user: null,
-  isAuthenticated: false,
-  loginProvider: null,
-  userToken: null,
 };
 
 export type UserActionTypes =
@@ -159,8 +133,6 @@ export type UserActionTypes =
   | FailureSubscribeUserAction
   | ToggleIsLoadingUserAction
   | ReceiveUserAction
-  | ReceiveLoginProvider
-  | ReceiveUserToken
   | UpdateUser
   | ReceiveUserWithComputedValuesAction;
 

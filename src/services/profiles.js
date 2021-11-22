@@ -138,7 +138,7 @@ export const createProfile = (api) => async ({ egoId, lastName, firstName, email
     body: {
       variables: { egoId, lastName, firstName, email },
       query: `
-        mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
+        mutation($egoId: String!, $firstName: String, $lastName: String, $email: String) {
           userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email}) {
             record {
               ${DEFAULT_FIELDS_SELF}
@@ -159,10 +159,10 @@ export const updateProfile = (api) => async ({ user }) => {
   } = await api({
     url,
     body: {
-      variables: { record: omit(user, ['groups', 'isAdmin']) },
+      variables: { _id: user._id, record: omit(user, ['_id', 'groups', 'isAdmin']) },
       query: `
-        mutation($record: UpdateByIdUserModelInput!) {
-          userUpdate(record: $record) {
+        mutation($_id: MongoID!, $record: UpdateByIdUserModelInput!) {
+          userUpdate(_id: $_id, record: $record) {
             record {
               ${DEFAULT_FIELDS_SELF}
             }

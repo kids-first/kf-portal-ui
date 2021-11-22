@@ -1,9 +1,7 @@
 import { kfArrangerApiRoot } from 'common/injectGlobals';
 
-import { apiInitialized } from './api';
-
-export const getGenomicSuggestions = async (searchText, type) =>
-  await apiInitialized({
+export const getGenomicSuggestions = async (api, searchText, type) =>
+  await api({
     url: `${kfArrangerApiRoot}${type}Feature/suggestions/${searchText}`,
     method: 'GET',
   });

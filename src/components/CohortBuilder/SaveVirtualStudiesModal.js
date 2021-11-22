@@ -4,6 +4,7 @@ import { Button, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 
+import { withApi } from 'services/api';
 import { createVirtualStudy } from 'services/virtualStudies';
 import { saveVirtualStudy } from 'store/actionCreators/virtualStudies';
 import { selectUser } from 'store/selectors/users';
@@ -44,7 +45,15 @@ class SaveVirtualStudiesModal extends React.Component {
 
   saveStudy = () => {
     const { name, description } = this.state;
-    const { user, sqons, activeSqonIndex, virtualStudyId, saveVirtualStudy, saveAs } = this.props;
+    const {
+      user,
+      sqons,
+      activeSqonIndex,
+      virtualStudyId,
+      saveVirtualStudy,
+      saveAs,
+      api,
+    } = this.props;
 
     const study = createVirtualStudy(
       saveAs ? null : virtualStudyId,
@@ -54,7 +63,7 @@ class SaveVirtualStudiesModal extends React.Component {
       activeSqonIndex,
     );
 
-    return saveVirtualStudy(user, study);
+    return saveVirtualStudy(api, user, study);
   };
 
   submitHandler = async () => {
@@ -130,4 +139,7 @@ const mapDispatchToProps = {
   saveVirtualStudy,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(SaveVirtualStudiesModal);
+export default compose(
+  withApi,
+  connect(mapStateToProps, mapDispatchToProps),
+)(SaveVirtualStudiesModal);

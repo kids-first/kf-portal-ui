@@ -1,11 +1,8 @@
-import { apiInitialized } from 'services/api';
 import { fetchParticipantWithId } from 'services/arranger/participants';
 
 import { ParticipantEntityActions } from '../participantEntityTypes';
 
-const api = apiInitialized;
-
-export const fetchParticipant = (participantId) => (dispatch) => {
+export const fetchParticipant = (api, participantId) => (dispatch) => {
   dispatch({
     type: ParticipantEntityActions.FETCH_PARTICIPANT_REQUESTED,
     payload: participantId,

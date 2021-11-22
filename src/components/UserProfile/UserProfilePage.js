@@ -107,7 +107,7 @@ function UserProfilePage(props) {
         </Sider>
         <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
           {isSettingsSelected ? (
-            <Settings userEmail={profile.email} />
+            <Settings />
           ) : (
             <AboutMe
               canEdit={canEdit}

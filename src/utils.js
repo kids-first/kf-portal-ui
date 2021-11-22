@@ -131,37 +131,6 @@ export const formatQuotientOrElse = (num, denum, defaultValue = '') =>
 export const formatQuotientToExponentialOrElse = (num, denum, defaultValue = '') =>
   canQuotientBeComputed(num, denum) ? `${toExponentialNotation(num / denum)}` : defaultValue;
 
-//ref: https://nofluffweb.com/mock-local-storage-in-jest-tests
-/*
-* setup example with jest:
-*   beforeAll(() => {
-    Object.defineProperty(window, 'localStorage', {
-      value: makeFakeLocalStorage(),
-    });
-  });
-
-  afterEach(() => {
-    window.localStorage.clear();
-  });
-* */
-export const makeFakeLocalStorage = () => {
-  let store = {};
-  return {
-    getItem: function (key) {
-      return store[key] || null;
-    },
-    setItem: function (key, value) {
-      store[key] = value.toString();
-    },
-    removeItem: function (key) {
-      delete store[key];
-    },
-    clear: function () {
-      store = {};
-    },
-  };
-};
-
 //https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript
 export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
   if (bytes === 0) {
@@ -178,3 +147,40 @@ export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
     parseFloat((bytes / Math.pow(scale, matchedIndex)).toFixed(dm)) + ' ' + sizes[matchedIndex]
   );
 };
+
+export const abbreviateNumber = (number) => {
+  const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+
+  // what tier? (determines SI symbol)
+  var tier = (Math.log10(Math.abs(number)) / 3) | 0;
+
+  // if zero, we don't need a suffix
+  if (tier == 0) return number;
+
+  // get suffix and determine scale
+  var suffix = SI_SYMBOL[tier];
+  var scale = Math.pow(10, tier * 3);
+
+  // scale the number
+  var scaled = number / scale;
+
+  // format number and add suffix
+  return scaled.toFixed(1) + suffix;
+};
+
+export const makeFakeKeycloak = (authClientOverride = {}) => ({
+  authenticated: 'false',
+  refreshToken: 'refreshToken',
+  token: 'random string',
+  ...authClientOverride,
+});
+
+export const useFakeKeycloak = (initialized = true, authClientOverride = {}) => ({
+  initialized,
+  keycloak: {
+    authenticated: 'false',
+    refreshToken: 'refreshToken',
+    token: 'random string',
+    ...authClientOverride,
+  },
+});
