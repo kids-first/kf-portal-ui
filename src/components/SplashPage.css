@@ -3,9 +3,12 @@
   margin: auto;
 }
 
+.splashPageContainer .ant-card {
+  margin: 24px 0;
+}
+
 .main-title {
-  background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),
-    linear-gradient(#2b388f, #2b388f);
+  background-color: #ffffff;
   text-align: center;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

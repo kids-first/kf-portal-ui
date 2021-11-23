@@ -22144,7 +22144,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 }
 .ant-tag-cyan {
   color: #007694;
-  background: #e1fafa;
+  background: #ddf4f8;
   border-color: #6cd9e0;
 }
 .ant-tag-cyan-inverse {
@@ -22173,9 +22173,9 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   border-color: #52c41a;
 }
 .ant-tag-blue {
-  color: #096dd9;
-  background: #e6f7ff;
-  border-color: #91d5ff;
+  color: #0089c4;
+  background: #e6fcff;
+  border-color: #7ae9ff;
 }
 .ant-tag-blue-inverse {
   color: #fff;
@@ -22209,8 +22209,8 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 }
 .ant-tag-processing {
   color: #1890ff;
-  background: #e6f7ff;
-  border-color: #91d5ff;
+  background: #e6fcff;
+  border-color: #7ae9ff;
 }
 .ant-tag-error {
   color: #f5222d;
@@ -25180,13 +25180,7 @@ h3.ant-typography {
 .ant-switch-checked {
   background-color: #009bba;
 }
-.ant-alert-message {
-  color: #910616;
-}
-.ant-alert-with-description .ant-alert-message {
-  color: #910616;
-}
-.ant-alert {
+.ant-alert-error .ant-alert-message {
   color: #910616;
 }
 .ant-list {
@@ -25197,4 +25191,48 @@ h3.ant-typography {
 }
 .ant-list-item-meta-title > a {
   color: #a6278f;
+}
+.ant-alert-warning {
+  background-color: #fff1b8;
+}
+.ant-alert-warning.ant-alert-with-description .ant-alert-message {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.ant-alert-warning.ant-alert-with-description .ant-alert-description {
+  font-weight: 400;
+}
+.ant-alert-warning .ant-alert-message,
+.ant-alert-warning .ant-alert-message a,
+.ant-alert-warning .ant-alert-message a:hover,
+.ant-alert-warning .ant-alert-description,
+.ant-alert-warning .ant-alert-description a,
+.ant-alert-warning .ant-alert-description a:hover,
+.ant-alert-warning .ant-alert-icon {
+  color: #ab5107;
+}
+.ant-alert-info {
+  background-color: #e6fcff;
+  border: 1px solid #7ae9ff;
+}
+.ant-alert-info.ant-alert-with-description .ant-alert-message {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.ant-alert-info.ant-alert-with-description .ant-alert-description {
+  font-weight: 400;
+}
+.ant-alert-info .ant-alert-message,
+.ant-alert-info .ant-alert-message a,
+.ant-alert-info .ant-alert-message a:hover,
+.ant-alert-info .ant-alert-description,
+.ant-alert-info .ant-alert-description a,
+.ant-alert-info .ant-alert-description a:hover,
+.ant-alert-info .ant-alert-close-icon > span {
+  color: #004c78;
+}
+.ant-alert-info .ant-alert-icon {
+  color: #0089c4;
 }

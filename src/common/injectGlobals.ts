@@ -11,6 +11,10 @@ export const arrangerApiRoot = getApplicationEnvVar('ARRANGER_API');
 
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 
+export const bannerType = getApplicationEnvVar('BANNER_TYPE');
+export const bannerMessage = getApplicationEnvVar('BANNER_MESSAGE');
+export const bannerUrl = getApplicationEnvVar('BANNER_URL');
+
 export const personaApiRoot: string = getApplicationEnvVar('PERSONA_API') || '';
 export const secretStorageApiRoot: string = getApplicationEnvVar('SECRETS_API');
 
@@ -21,11 +25,6 @@ export const cavaticaWebRegistrationRoot: string = getApplicationEnvVar(
 );
 
 export const googleMapsKey = getApplicationEnvVar('GOOGLE_MAPS_KEY');
-
-export const orcidAuthAppId = getApplicationEnvVar('ORCID_AUTH_APP_ID');
-export const orcidAuthApiBaseUri = getApplicationEnvVar('ORCID_AUTH_API_URI');
-export const orcidAuthScope = getApplicationEnvVar('ORCID_AUTH_API_SCOPE');
-export const orcidAuthRedirectUri = getApplicationEnvVar('ORCID_AUTH_REDIRECT_URI');
 
 export const gaTrackingID: string = getApplicationEnvVar('GA_TRACKING_ID');
 

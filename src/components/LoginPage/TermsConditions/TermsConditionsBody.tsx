@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Typography } from 'antd';
 
-import './termsConditions.css';
+import './index.css';
 
 const { Paragraph } = Typography;
 
@@ -56,11 +56,14 @@ const TermsConditionsBody: FunctionComponent = () => (
     </Paragraph>
     <Paragraph>
       DRC terms and conditions may be changed at any time via a public posting of revisions to the
-      Services. As a user, you agree to review the Terms & Conditions and Privacy Policies each time
-      you use the Services so that you are aware of any modifications made to these policies. By
-      accessing or using the Services, you agree with and to be bound by all of the terms and
-      conditions and policies as posted on the Services at the time of your access or use, including
-      the Privacy Policies then in effect.
+      Services. As a user, you agree to review the{' '}
+      <a href={'https://kidsfirstdrc.org/policies/'} target="_blank" rel="noreferrer">
+        Terms & Conditions and Privacy Policies
+      </a>{' '}
+      each time you use the Services so that you are aware of any modifications made to these
+      policies. By accessing or using the Services, you agree with and to be bound by all of the
+      terms and conditions and policies as posted on the Services at the time of your access or use,
+      including the Privacy Policies then in effect.
     </Paragraph>
     <Paragraph>
       For documents and/or data available from the Services, the DRC does not warrant or assume any

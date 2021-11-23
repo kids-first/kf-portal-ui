@@ -31,4 +31,6 @@ export interface KidsFirstKeycloakTokenParsed extends KeycloakTokenParsed {
   given_name: string;
   family_name: string;
   email: string;
+  identity_provider: string;
+  identity_provider_identity: string;
 }

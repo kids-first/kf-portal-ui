@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Avatar, Card, Checkbox, Col, Form, Input, Row, Typography } from 'antd';
+import keycloak from 'keycloak';
 
-import { ROLES } from 'common/constants';
+import { ORCID, ROLES } from 'common/constants';
 import {
   addStateInfo as updateTrackingDimension,
   TRACKING_EVENTS,
@@ -11,9 +12,10 @@ import {
 import { updateUser } from 'store/actionCreators/user';
 import { RootState } from 'store/rootState';
 import { selectUser } from 'store/selectors/users';
+import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 import { DispatchUser, User } from 'store/userTypes';
 
-import './roleForm.css';
+import './index.css';
 
 const { Paragraph, Text } = Typography;
 
@@ -47,14 +49,16 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
   const existingRoleOrElse = getExistingRoleOrElse(user);
   const [activeRole, setActiveRole] = useState(existingRoleOrElse);
 
+  const provider = (keycloak.tokenParsed as KidsFirstKeycloakTokenParsed)?.identity_provider;
+
   const onFinish = async (values: any) => {
     const subscribing: Array<string> = values.subscribing;
-
     await updateUser({
       ...user,
       acceptedTerms: false,
       firstName: values.firstName,
       lastName: values.lastName,
+      email: values.email,
       roles: [activeRole],
       acceptedKfOptIn: subscribing.some((s) => s === 'acceptedKfOptIn'),
       acceptedDatasetSubscriptionKfOptIn: subscribing.some(
@@ -103,9 +107,13 @@ const RoleForm = ({ submitExtraCB, user, updateUser }: Props) => {
         colon={false}
         label="My email address is"
         name="email"
-        rules={[{ required: false }]}
+        rules={[{ required: true, message: 'Email is required' }]}
       >
-        <Input size={'middle'} className={'input'} disabled />
+        <Input
+          size={'middle'}
+          className={'input'}
+          disabled={(user.email !== null && user.email !== '') || provider !== ORCID}
+        />
       </Form.Item>
       <>
         <div className={'section-header-spacing'}>I can best described as</div>

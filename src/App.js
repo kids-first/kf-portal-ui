@@ -1,14 +1,17 @@
 import React, { lazy, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import Authenticator from 'Authenticator';
 import ContextProvider from 'ContextProvider';
 import ErrorBoundary from 'ErrorBoundary';
+import ProtectedRoute from 'ProtectedRoute';
 
 import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import joinImage from 'assets/smiling-boy.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import ROUTES from 'common/routes';
+import AppFooter from 'components/AppFooter';
 import AuthRedirect from 'components/AuthRedirect';
 import CohortBuilder from 'components/CohortBuilder';
 import FileEntity from 'components/EntityPage/File';
@@ -16,22 +19,17 @@ import ParticipantEntity from 'components/EntityPage/Participant';
 import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 import FileRepo from 'components/FileRepo';
-import Join from 'components/Login/Join';
-import LoginFooter from 'components/Login/LoginFooter';
-import TermsConditions from 'components/Login/TermsConditions';
+import LoginPage from 'components/LoginPage';
+import Join from 'components/LoginPage/Join';
+import TermsConditions from 'components/LoginPage/TermsConditions';
 import MemberSearchPage from 'components/MemberSearchPage';
 import Page, { FixedFooterPage } from 'components/Page';
 import SideImagePage from 'components/SideImagePage';
 import UserDashboard from 'components/UserDashboard';
 import UserProfile from 'components/UserProfile';
+import { FenceName } from 'store/fenceTypes';
 import { default as ApolloProvider } from 'store/providers';
 import { Spinner } from 'uikit/Spinner';
-
-import LoginPage from './components/Login/LoginPage';
-import { FenceName } from './store/fenceTypes';
-import Authenticator from './Authenticator';
-import ForumBanner, { showForumBanner } from './ForumBanner';
-import ProtectedRoute from './ProtectedRoute';
 
 import 'index.css';
 
@@ -47,7 +45,6 @@ const App = () => {
       {keycloakIsReady ? (
         <Authenticator>
           <ApolloProvider>
-            {showForumBanner() && <ForumBanner />}
             <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
               <Switch>
                 <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />
@@ -70,31 +67,23 @@ const App = () => {
                       logo={logo}
                       sideImagePath={loginImage}
                       Component={Error}
-                      Footer={LoginFooter}
+                      Footer={AppFooter}
                     />
                   )}
                 />
                 <Route
                   path={ROUTES.login}
                   exact
-                  render={() => (
-                    <SideImagePage
-                      logo={logo}
-                      sideImagePath={loginImage}
-                      Component={LoginPage}
-                      Footer={LoginFooter}
-                    />
-                  )}
+                  render={() => <SideImagePage sideImagePath={loginImage} Component={LoginPage} />}
                 />
                 <Route
                   path={ROUTES.termsConditions}
                   exact
                   render={() => (
                     <SideImagePage
-                      logo={logo}
                       sideImagePath={loginImage}
                       Component={TermsConditions}
-                      Footer={LoginFooter}
+                      Footer={AppFooter}
                     />
                   )}
                 />
@@ -159,28 +148,13 @@ const App = () => {
                   render={() => (
                     <SideImagePage
                       backgroundImage={scienceBgPath}
-                      logo={logo}
                       Component={Join}
                       sideImagePath={joinImage}
+                      id={'join'}
                     />
                   )}
                 />
 
-                <Route
-                  path={ROUTES.orcid}
-                  exact
-                  render={(props) => (
-                    <SideImagePage
-                      logo={logo}
-                      backgroundImage={scienceBgPath}
-                      Component={LoginPage}
-                      Footer={LoginFooter}
-                      sideImagePath={loginImage}
-                      stealth={true} // hide some of the visuals of the page during redirection
-                      {...props}
-                    />
-                  )}
-                />
                 <ProtectedRoute
                   path={ROUTES.profile}
                   exact
