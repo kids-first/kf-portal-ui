@@ -1,16 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { ApiOutlined, RightOutlined } from '@ant-design/icons';
+import { RightOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
+import AccessGate from 'components/AccessGate';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
+import Info from 'components/UserDashboard/Info';
 import Cavatica from 'icons/Cavatica';
 import { closeModal, DispatchModal, openModal } from 'store/actions/modal';
 import { RootState } from 'store/rootState';
 import { selectModalId } from 'store/selectors/modal';
-
-import AccessGate from '../../AccessGate';
-import Info from '../Info';
 
 const mapStateToProps = (state: RootState) => ({
   openModalId: selectModalId(state),
@@ -53,7 +52,6 @@ const NotConnected: FunctionComponent<PropsFromRedux> = ({
       >
         <Button
           type={'primary'}
-          icon={<ApiOutlined />}
           onClick={() => {
             openModal(CAVATICA_CONNECT_MODAL_ID);
           }}

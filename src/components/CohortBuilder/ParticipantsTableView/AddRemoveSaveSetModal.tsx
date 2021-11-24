@@ -5,7 +5,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Button, Form, Modal, notification } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 
+import UserSetsFrom from 'components/CohortBuilder/UserSetsForm';
+import { withApi } from 'services/api';
 import { addRemoveSetIds } from 'store/actionCreators/saveSets';
+import { Api, ApiFunction } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
@@ -16,8 +19,6 @@ import {
 import { selectIsEditingSets, selectSets } from 'store/selectors/saveSetsSelectors';
 import { Sqon } from 'store/sqon';
 import { User } from 'store/userTypes';
-
-import UserSetsFrom from './../UserSetsForm';
 
 import './AddRemoveSaveSetModal.css';
 
@@ -45,14 +46,15 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onAddRemoveSetIds: (params: AddRemoveSetParams) => dispatch(addRemoveSetIds(params)),
+  onAddRemoveSetIds: (api: ApiFunction, params: AddRemoveSetParams) =>
+    dispatch(addRemoveSetIds(api, params)),
 });
 
 const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & OwnProps;
+type Props = PropsFromRedux & OwnProps & Api;
 
 const finishButtonText = (type: string) => {
   switch (type) {
@@ -77,14 +79,14 @@ const formTitle = (type: string) => {
 };
 
 const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
-  const { hideModalCb, subActionType, userSets, user, onAddRemoveSetIds, sqon } = props;
+  const { hideModalCb, subActionType, userSets, user, onAddRemoveSetIds, sqon, api } = props;
   const [isVisible, setIsVisible] = useState(true);
 
   const onFinish = async (values: Store) => {
     const { setId } = values;
     switch (subActionType) {
       case SetSubActionTypes.ADD_IDS:
-        onAddRemoveSetIds({
+        onAddRemoveSetIds(api, {
           setId: setId,
           userId: user.egoId,
           subActionType: SetSubActionTypes.ADD_IDS,
@@ -112,7 +114,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
         });
         break;
       case SetSubActionTypes.REMOVE_IDS:
-        onAddRemoveSetIds({
+        onAddRemoveSetIds(api, {
           setId: setId,
           userId: user.egoId,
           subActionType: SetSubActionTypes.REMOVE_IDS,
@@ -183,4 +185,4 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
 
 const Connected = connector(AddRemoveSaveSetModal);
 
-export default Connected;
+export default withApi(Connected);

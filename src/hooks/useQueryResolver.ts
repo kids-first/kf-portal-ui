@@ -4,8 +4,7 @@ import { print } from 'graphql/language/printer';
 import urlJoin from 'url-join';
 
 import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
-
-import useQueryResolverCache from './useQueryResolverCache';
+import useQueryResolverCache from 'hooks/useQueryResolverCache';
 
 type Payload = {
   data: Array<any>;
@@ -83,8 +82,8 @@ const useQueryResolver = (
     }
   };
 
-  const fetchData = (body: string) => {
-    const result = api({
+  const fetchData = (body: string) =>
+    api({
       method: 'POST',
       url: urlJoin(arrangerApiRoot!, `/${arrangerProjectId}/graphql/${name}`),
       body,
@@ -99,9 +98,6 @@ const useQueryResolver = (
       });
       return result;
     });
-
-    return result;
-  };
 
   const cachedFetchData = (body: string) => cache[body] || fetchData(body);
 

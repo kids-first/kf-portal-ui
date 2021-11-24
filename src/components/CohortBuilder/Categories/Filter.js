@@ -7,12 +7,11 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { FieldFilterContainer } from 'components/CohortBuilder/FieldFilterContainer';
 import { withApi } from 'services/api';
 import { sqonShape } from 'shapes';
 import { addFilterToSQON } from 'store/sqonUtils';
-
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import { FieldFilterContainer } from '../FieldFilterContainer';
 
 const fieldsWithCustomIsTaggedQuery = [
   'diagnoses.source_text_diagnosis',

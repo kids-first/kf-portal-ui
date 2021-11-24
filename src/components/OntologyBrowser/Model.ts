@@ -1,6 +1,7 @@
-import { PhenotypeSource, splitHPOTerm } from './store';
 import React from 'react';
-import { hpoTreeTitleFormat } from '../UI/Charts/Sunburst/Sunburst';
+
+import { PhenotypeSource, splitHPOTerm } from 'components/OntologyBrowser/store';
+import { hpoTreeTitleFormat } from 'components/UI/Charts/Sunburst/Sunburst';
 
 export type TreeNode = {
   title: React.ReactElement | string;
@@ -102,9 +103,7 @@ export default class OntologyTree {
       key: parentKey ? `${parentKey}-${source.key}` : source.key,
       children,
       results: source.doc_count,
-      exactTagCount: source.filter_by_term
-        ? source.filter_by_term[`${exactTagField}.is_tagged.term_filter`].doc_count
-        : 0,
+      exactTagCount: source.filter_by_term?.doc_count || 0,
       name: source.key,
       depth,
       disabled: false,

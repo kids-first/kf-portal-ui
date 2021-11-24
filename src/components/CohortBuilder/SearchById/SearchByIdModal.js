@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Button, Modal, notification } from 'antd';
 import autobind from 'auto-bind-es5';
-import uniq from 'lodash/uniq';
-import flatMap from 'lodash/flatMap';
 import debounce from 'lodash/debounce';
-import { searchByIds } from 'services/arranger/searchByIds';
-import Row from 'uikit/Column';
+import flatMap from 'lodash/flatMap';
+import uniq from 'lodash/uniq';
+import PropTypes from 'prop-types';
+
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
-import { closeModal } from 'store/actions/modal';
+import SearchResults from 'components/CohortBuilder/SearchById/SearchResults';
+import LoadingOnClick from 'components/LoadingOnClick';
+import { searchByIds } from 'services/arranger/searchByIds';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import SearchResults from './SearchResults';
-import { Button, Modal } from 'antd';
-import LoadingOnClick from '../../LoadingOnClick';
+import { closeModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
-import PropTypes from 'prop-types';
+import Row from 'uikit/Column';
+
 import './styles.scss';
 
 const SEARCH_MODAL_ID = 'SEARCH_MODAL_ID';
@@ -29,8 +31,13 @@ function handleViewResults() {
     .then((results) => {
       this.setState({ loading: false, results });
     })
-    .catch(() => {
+    .catch((error) => {
       this.setState({ loading: false });
+      notification.error({
+        message: 'Error',
+        description: error.message,
+        duration: 10,
+      });
     });
 }
 

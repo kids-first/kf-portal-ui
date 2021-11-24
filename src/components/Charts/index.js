@@ -2,10 +2,6 @@ import React from 'react';
 
 import 'ui/Tooltips/tooltips.scss';
 
-export { default as MostFrequentDiagnosesChart } from './MostFrequentDiagnosesChart';
-export { default as MemberResearchInterestsChart } from './MemberResearchInterestsChart';
-export { default as MostParticipantsStudiesChart } from './MostParticipantsStudiesChart';
-
 export const removeMondo = (value) => {
   const indexOfMondo = value.indexOf('(MONDO');
   return indexOfMondo > -1 ? value.substr(0, indexOfMondo) : value;

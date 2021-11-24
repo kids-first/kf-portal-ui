@@ -1,16 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
-import gql from 'graphql-tag';
-import theme from 'theme/defaultTheme';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import { setSqons } from 'store/actionCreators/virtualStudies';
-import {
-  setSqonValueAtIndex,
-  MERGE_VALUES_STRATEGIES,
-  MERGE_OPERATOR_STRATEGIES,
-} from 'common/sqonUtils';
+import gql from 'graphql-tag';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
+
+import {
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
+} from 'common/sqonUtils';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import theme from 'theme/defaultTheme';
 
 const dataTypeTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -114,8 +115,7 @@ const toChartData = ({ key, doc_count }) => {
 };
 
 export const dataTypesQuery = (sqon) => ({
-  query: gql`
-    query($sqon: JSON) {
+  query: `query($sqon: JSON) {
       participant {
         aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           files__data_type {
@@ -126,8 +126,7 @@ export const dataTypesQuery = (sqon) => ({
           }
         }
       }
-    }
-  `,
+    }`,
   variables: { sqon },
   transform: (data) =>
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData),

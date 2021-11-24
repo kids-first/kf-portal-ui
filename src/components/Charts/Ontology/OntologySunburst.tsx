@@ -47,10 +47,9 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     const sqon = this.props.sqon || null;
     this.setState({ loading: true });
     const filterThemselves = false;
-    const noGlobalAggs = true;
 
     this.ontologyStore
-      .fetch('observed_phenotype', sqon, filterThemselves, noGlobalAggs)
+      .fetch('observed_phenotype', sqon, filterThemselves)
       .then(() => {
         const data = this.ontologyStore.getTree();
         if (data.length > 0) {
