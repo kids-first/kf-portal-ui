@@ -28,6 +28,7 @@ const Filter = compose(withApi)(
       op: 'and',
       content: [],
     },
+    sets,
     onSubmit = () => {},
     onCancel = () => {},
     onBack = () => {},
@@ -105,6 +106,7 @@ const Filter = compose(withApi)(
             field={field}
             arrangerProjectId={arrangerProjectId}
             arrangerProjectIndex={arrangerProjectIndex}
+            userSets={sets}
             ContainerComponent={(props) => (
               <FieldFilterContainer {...props} id={field} onBack={onBack} />
             )}
@@ -117,6 +119,7 @@ const Filter = compose(withApi)(
 
 Filter.propTypes = {
   initialSqon: sqonShape,
+  sets: PropTypes.array.isRequired,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onBack: PropTypes.func,

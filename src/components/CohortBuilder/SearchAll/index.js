@@ -101,6 +101,7 @@ class SearchAll extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     sqon: sqonShape.isRequired,
+    sets: PropTypes.array.isRequired,
     onSqonUpdate: PropTypes.func.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     color: PropTypes.string,
@@ -198,13 +199,14 @@ class SearchAll extends React.Component {
   }
 
   renderFilter() {
-    const { sqon, onSqonUpdate } = this.props;
+    const { sqon, onSqonUpdate, sets } = this.props;
     const { fieldName } = this.state;
 
     return (
       <div className="results-container open">
         <Filter
           initialSqon={sqon}
+          sets={sets}
           onSubmit={(sqon) => {
             onSqonUpdate(fieldName, sqon);
             this.close();
