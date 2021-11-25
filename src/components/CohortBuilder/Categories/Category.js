@@ -28,6 +28,7 @@ class Category extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     sqon: sqonShape.isRequired,
+    sets: PropTypes.array.isRequired,
     color: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSqonUpdate: PropTypes.func.isRequired,
@@ -80,10 +81,11 @@ class Category extends React.Component {
       return null;
     }
 
-    const { sqon, onSqonUpdate } = this.props;
+    const { sqon, sets, onSqonUpdate } = this.props;
     return (
       <Filter
         initialSqon={sqon}
+        sets={sets}
         onSubmit={(sqon) => {
           onSqonUpdate(title, sqon);
           this.handleCloseFilter(false);

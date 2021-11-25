@@ -12,7 +12,7 @@
     "@babel/runtime": "^7.12.1",
     "@ferlab/style": "^1.9.8",
     "@ferlab/ui": "^2.2.2",
-    "@kfarranger/components": "1.28.0",
+    "@kfarranger/components": "1.28.1",
     "@nivo/bar": "0.59.0",
     "@nivo/core": "0.59.0",
     "@nivo/pie": "0.59.0",
