@@ -31,9 +31,11 @@ const DynamicInfoBanner: FunctionComponent = () => (
     message={
       <div>
         {bannerMessage + ' '}
-        <a href={bannerUrl} target="_blank" rel="noopener noreferrer">
-          Kids First forum.
-        </a>
+        {bannerUrl && (
+          <a href={bannerUrl} target="_blank" rel="noopener noreferrer">
+            Kids First forum.
+          </a>
+        )}
       </div>
     }
     type={parseBannerType()}
