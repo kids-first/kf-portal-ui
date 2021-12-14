@@ -8,6 +8,12 @@
 ### Technical / Other changes
 -->
 
+## 2021-11-22 kf-portal-ui 4.0.1
+
+### Technical/ Other changes:
+
+- Display KidsFirst Forum link in banner only if a link is provided
+
 ## 2021-11-22 kf-portal-ui 4.0.0
 
 ### Features
