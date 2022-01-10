@@ -8,6 +8,14 @@
 ### Technical / Other changes
 -->
 
+## 2022-01-10 kf-portal-ui 4.1.0
+
+### Technical/ Other changes:
+
+- [SKFP-26](https://d3b.atlassian.net/browse/SKFP-26) Technical: Update the portal to use the latest ElasticSearch 7 instead of ElasticSearch 6
+- [SKFP-320](https://d3b.atlassian.net/browse/SKFP-320) Fix (Profile/Members) Profile Status changes upon login
+- [SKFP-321](https://d3b.atlassian.net/browse/SKFP-321) Fix (Explore Data, Facets): Fixed an issue where values in the source_text_tumor location and source_text_anatomic_site facets were combined by a semicolon
+
 ## 2021-11-22 kf-portal-ui 4.0.1
 
 ### Technical/ Other changes:
