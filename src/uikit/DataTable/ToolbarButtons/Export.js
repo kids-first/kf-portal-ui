@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { DownloadOutlined } from '@ant-design/icons';
+import { Button, notification } from 'antd';
+import { print } from 'graphql/language/printer';
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
+import urlJoin from 'url-join';
+
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import {
   participantQueryExport,
   participantsQuery,
 } from 'components/CohortBuilder/ParticipantsTableView/queries';
-import { Button, notification } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
-
-import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
-import urlJoin from 'url-join';
-import { print } from 'graphql/language/printer';
-import exportTSV from './exportTSV';
+import exportTSV from 'uikit/DataTable/ToolbarButtons/exportTSV';
 
 const formatDataForExport = (result) => (result ? result.nodes.map((node) => ({ ...node })) : []);
 

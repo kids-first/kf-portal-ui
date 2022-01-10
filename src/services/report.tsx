@@ -1,22 +1,15 @@
 import { format } from 'date-fns';
+import keycloak from 'keycloak';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
 
 import downloader from 'common/downloader';
 import { arrangerProjectId, reportsApiRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { familyMemberAndParticipantIds } from 'services/participants';
 import { ReportConfig } from 'store/reportTypes';
-import { Sqon, SqonFilters } from 'store/sqon';
-import {
-  extractSaveSetIdsFromSqon,
-  removeSaveSetFilters,
-  shapeFileTypeSqonFiltersForParticipantType,
-} from 'store/sqonUtils';
-
-import keycloak from '../keycloak';
-
-import { TRACKING_EVENTS, trackUserInteraction } from './analyticsTracking';
-import { familyMemberAndParticipantIds } from './participants';
-import { fetchPtIdsFromSaveSets } from './sets';
+import { Sqon } from 'store/sqon';
+import { shapeFileTypeSqonFiltersForParticipantType } from 'store/sqonUtils';
 
 const trackDownload = async (label: string) => {
   await trackUserInteraction({
@@ -77,37 +70,15 @@ export const checkAvailability = async (reportName: string, sqon: Sqon): Promise
 };
 
 export const buildSqonFromFileRepoForReport = async (reportName: string, originalSqon: Sqon) => {
-  /*
-   * - Assumes that the sqon query in the file repository only has "AND" operators;
-   * - Save sets must be managed independently;
-   * */
-  const saveSetIds = extractSaveSetIdsFromSqon(originalSqon);
-  const saveSetsDetected = saveSetIds.length > 0;
-  const ptIds = saveSetsDetected ? await fetchPtIdsFromSaveSets(saveSetIds) : [];
-
   if (reportName === RP_FAM_CLINICAL_DATA_FILE_REPO_KEY) {
-    //searches in file index
-    const sqonFiltersForSaveSet = saveSetsDetected
-      ? [{ op: 'in', content: { field: 'participants.kf_id', value: [...ptIds] } }]
-      : [];
-    const reshapedSqonFiltersExceptSaveSet = removeSaveSetFilters(
-      originalSqon.content as SqonFilters[],
-    );
-    const sqonFileCentric = {
-      op: 'and',
-      content: [...reshapedSqonFiltersExceptSaveSet, ...sqonFiltersForSaveSet],
-    };
-    return shapeSqonForFamilyRp(sqonFileCentric);
+    return shapeSqonForFamilyRp(originalSqon);
   }
 
   //searches in participant index
-  const sqonFiltersForSaveSet = saveSetsDetected
-    ? [{ op: 'in', content: { field: 'kf_id', value: [...ptIds] } }]
-    : [];
-  const reshapedSqonFiltersExceptSaveSet = shapeFileTypeSqonFiltersForParticipantType(originalSqon);
+  const reshapedSqonFilters = shapeFileTypeSqonFiltersForParticipantType(originalSqon);
   return {
     op: 'and',
-    content: [...reshapedSqonFiltersExceptSaveSet, ...sqonFiltersForSaveSet],
+    content: [...reshapedSqonFilters],
   };
 };
 

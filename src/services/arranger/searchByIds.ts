@@ -1,14 +1,17 @@
 import urlJoin from 'url-join';
 
-import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 import { initializeApi } from 'services/api';
-import { getErrorMessageFromResponse } from 'services/arranger';
 
 const api = initializeApi({
-  onError: console.err,
-  onUnauthorized: response => {
-    console.warn('Unauthorized', response);
+  onError: (e) => {
+    console.error(e);
+    return Promise.reject(e);
   },
+  onUnauthorized: () => {
+    console.warn('Unauthorized');
+  },
+  defaultHeaders: {},
 });
 
 /**
@@ -28,7 +31,7 @@ const api = initializeApi({
  *    ]
  *  }
  */
-export const searchByIds = async ids => {
+export const searchByIds = async (ids: string[]) => {
   const url = urlJoin(arrangerApiRoot, `/searchByIds`);
   const body = {
     project: arrangerProjectId,
@@ -39,11 +42,7 @@ export const searchByIds = async ids => {
     method: 'POST',
     url,
     body,
-  }).catch(err => {
-    const message = getErrorMessageFromResponse(
-      err,
-      `Failed to search for ids "${ids.join(', ')}"`,
-    );
-    throw new Error(message);
+  }).catch(() => {
+    throw new Error(`Failed to search for ids "${ids.join(', ')}"`);
   });
 };

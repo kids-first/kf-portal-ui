@@ -2,11 +2,9 @@ import React from 'react';
 import urlJoin from 'url-join';
 
 import { arrangerApiRoot } from 'common/injectGlobals';
+import ajax from 'services/ajax';
 import { store } from 'store';
-
-import { cleanlyLogout } from '../store/actionCreators/user';
-
-import ajax from './ajax';
+import { cleanlyLogout } from 'store/actionCreators/user';
 
 const sendRequest = (defaultHeaders, method, body, headers, uri) => {
   const requestHeaders = {

@@ -1,26 +1,21 @@
+import uniq from 'lodash/uniq';
+
 import { familyMemberAndParticipantIds } from '../participants';
-import { fetchPtIdsFromSaveSets } from '../sets';
 import {
   buildSqonFromFileRepoForReport,
   RP_FAM_CLINICAL_DATA_FILE_REPO_KEY,
   RP_PARTICIPANT_FILE_REPO_KEY,
 } from '../report';
-import uniq from 'lodash/uniq';
 
 jest.mock('../participants');
-jest.mock('../sets');
 
 describe('Reshape sqon from file repo when asking for a report', () => {
   beforeEach(() => {
     (familyMemberAndParticipantIds as jest.Mock).mockReset();
-    (fetchPtIdsFromSaveSets as jest.Mock).mockReset();
   });
 
   describe('Participants-only and Biospecimen reports', () => {
     it('should return correct sqon shape when sqon is an uploaded list', async () => {
-      (fetchPtIdsFromSaveSets as jest.Mock).mockImplementation(() =>
-        Promise.resolve(['PT_1', 'PT_2']),
-      );
       const sqonFromFileRepoWithUploadedList = {
         op: 'and',
         content: [
@@ -46,7 +41,7 @@ describe('Reshape sqon from file repo when asking for a report', () => {
             op: 'in',
             content: {
               field: 'kf_id',
-              value: ['PT_1', 'PT_2'],
+              value: 'set_id:8df9c858-c1ca-45da-a3cf-2ac07b318911',
             },
           },
         ],
@@ -54,9 +49,6 @@ describe('Reshape sqon from file repo when asking for a report', () => {
     });
 
     it('should return correct sqon shape when sqon is mixed (save set and others)', async () => {
-      (fetchPtIdsFromSaveSets as jest.Mock).mockImplementation(() =>
-        Promise.resolve(['PT_1', 'PT_2']),
-      );
       const sqonFromFileRepoWithUploadedList = {
         op: 'and',
         content: [
@@ -89,7 +81,10 @@ describe('Reshape sqon from file repo when asking for a report', () => {
             op: 'in',
             content: { field: 'diagnoses.diagnosis_category', value: ['Structural Birth Defect'] },
           },
-          { op: 'in', content: { field: 'kf_id', value: ['PT_1', 'PT_2'] } },
+          {
+            op: 'in',
+            content: { field: 'kf_id', value: 'set_id:28b621a0-5081-488e-8069-386e813fb969' },
+          },
         ],
       });
     });
@@ -154,9 +149,6 @@ describe('Reshape sqon from file repo when asking for a report', () => {
         }),
       );
 
-      (fetchPtIdsFromSaveSets as jest.Mock).mockImplementation(() =>
-        Promise.resolve(['PT_1', 'PT_2']),
-      );
       const sqonFromFileRepo = {
         op: 'and',
         content: [

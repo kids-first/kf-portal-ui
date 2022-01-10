@@ -13,14 +13,12 @@ import {
   subscribeUser as subscribeUserService,
   updateProfile,
 } from 'services/profiles';
+import { deleteAllSaveQueriesFromRiffForUser } from 'store/actionCreators/SavedQueries';
 import { Api } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import { selectUser } from 'store/selectors/users';
 import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
-
-import { RawUser, ThunkActionUser, User, UserActions, UserActionTypes } from '../userTypes';
-
-import { deleteAllSaveQueriesFromRiffForUser } from './SavedQueries';
+import { RawUser, ThunkActionUser, User, UserActions, UserActionTypes } from 'store/userTypes';
 
 const isAdminFromRoles = (roles: string[] | null) => (roles || []).includes('ADMIN');
 
@@ -78,12 +76,13 @@ export const revertAcceptedTerms = (): ThunkActionUser => async (dispatch, getSt
     }
 
     if (user && user.acceptedTerms) {
-      await updateProfile(apiUser)({
+      const updatedProfile = await updateProfile(apiUser)({
         user: {
           ...user,
           acceptedTerms: false,
         },
       });
+      dispatch(receiveUser(updatedProfile));
     }
   } catch (error) {
     console.error(error);

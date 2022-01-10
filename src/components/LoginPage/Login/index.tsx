@@ -25,7 +25,8 @@ const formatNumberToLocaleString = (num: number) => (num || 0).toLocaleString('e
 const formatCounts = (num: number) => abbreviateNumber(num);
 const formatStorage = (storage: string) => {
   const parts = storage.split(/\.| /);
-  return `${parts[0]}${parts[2]}`;
+  const decimal = parts[1].length === 1 ? parts[1] : parts[1].substring(0, 1); // Keep only the first decimal digit.
+  return `${parts[0]}.${decimal}${parts[2]}`;
 };
 const iconSize = { height: 24, width: 24 };
 

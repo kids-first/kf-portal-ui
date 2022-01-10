@@ -1,17 +1,16 @@
 import React from 'react';
+import { RightOutlined } from '@ant-design/icons';
 import { Badge, Button, Card } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
 import AccessGate from 'components/AccessGate';
+import Info from 'components/UserDashboard//Info';
+import StudiesConnected from 'components/UserDashboard/AuthorizedStudies/StudiesConnected';
 import useFenceConnections from 'hooks/useFenceConnections';
 import useFenceStudies from 'hooks/useFenceStudies';
 import useUser from 'hooks/useUser';
 import DownloadController from 'icons/DownloadController';
 import { AllFencesNames } from 'store/fenceTypes';
-
-import Info from '../Info';
-
-import StudiesConnected from './StudiesConnected';
 
 import { antCardHeader } from '../../CohortBuilder/Summary/Cards/StudiesChart.module.css';
 
@@ -44,12 +43,13 @@ const AuthorizedStudies = ({ api }) => {
             detail={
               <span>
                 To access controlled study files,{' '}
-                <strong>connect to our data repository partners.</strong>
+                <strong>connect to our data repository partners in your settings page.</strong>
               </span>
             }
           >
-            <Button type={'primary'} shape={'round'} href={`/user/${user._id}#settings`}>
+            <Button type={'primary'} href={`/user/${user._id}#settings`}>
               SETTINGS
+              <RightOutlined />
             </Button>
           </AccessGate>
           <Info

@@ -8,10 +8,8 @@ export const shortUrlApi = getApplicationEnvVar('SHORTURL_API');
 export const shortUrlResolveRoot = getApplicationEnvVar('SHORTURL_RESOLVE_ROOT');
 
 export const arrangerApiRoot = getApplicationEnvVar('ARRANGER_API');
-export const kfArrangerApiRoot = getApplicationEnvVar('KF_ARRANGER_API');
 
 export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
-export const arrangerApiProjectId = getApplicationEnvVar('PROJECT_API_ID');
 
 export const bannerType = getApplicationEnvVar('BANNER_TYPE');
 export const bannerMessage = getApplicationEnvVar('BANNER_MESSAGE');
@@ -57,9 +55,6 @@ export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
 export const reactApiSearchMembersApi = getApplicationEnvVar('SEARCH_MEMBERS_API') || null;
 export const kfVariantClusterUrl = getApplicationEnvVar('VARIANT_CLUSTER_API') || null;
-
-// Public Stats
-export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
 
 export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;
 

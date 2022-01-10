@@ -4,6 +4,12 @@ import { FolderOpenFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 import { isFeatureEnabled } from 'common/featuresToggles';
+import ActionCategory from 'components/CohortBuilder/Categories//ActionCategory';
+import { CATEGORY_FIELDS } from 'components/CohortBuilder/Categories//categories';
+import Category from 'components/CohortBuilder/Categories//Category';
+import ModalSetsToQuery from 'components/CohortBuilder/Categories//ModalSetsToQuery';
+import SearchAll from 'components/CohortBuilder/SearchAll';
+import SearchByIdModal from 'components/CohortBuilder/SearchById/SearchByIdModal';
 import { SQONdiff } from 'components/Utils';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
@@ -14,16 +20,9 @@ import UploadIcon from 'icons/UploadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { openModal } from 'store/actions/modal';
 import { selectModalId } from 'store/selectors/modal';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
 import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
-
-import SearchAll from '../SearchAll';
-import SearchByIdModal from '../SearchById/SearchByIdModal';
-
-import ActionCategory from './ActionCategory';
-import { CATEGORY_FIELDS } from './categories';
-import Category from './Category';
-import ModalSetsToQuery from './ModalSetsToQuery';
 
 import '../CohortBuilder.css';
 
@@ -36,6 +35,7 @@ const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
 
 const mapStateToProps = (state) => ({
   openModalId: selectModalId(state),
+  sets: selectSets(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -73,7 +73,7 @@ class Categories extends React.Component {
   onOpenAddSetToQuery = () => this.props.openModal(ADD_SET_TO_QUERY_MODAL_ID);
 
   render() {
-    const { sqon } = this.props;
+    const { sqon, sets } = this.props;
 
     return (
       <Row className="cb-categories-content">
@@ -82,6 +82,7 @@ class Categories extends React.Component {
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.searchAll}
           color={theme.filterViolet}
@@ -92,6 +93,7 @@ class Categories extends React.Component {
         <Category
           title="Study"
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.study}
           color={theme.studyRed}
@@ -102,6 +104,7 @@ class Categories extends React.Component {
         <Category
           title="Demographic"
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.demographic}
           color={theme.demographicPurple}
@@ -112,6 +115,7 @@ class Categories extends React.Component {
         <Category
           title="Clinical"
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.clinical}
           color={theme.clinicalBlue}
@@ -123,6 +127,7 @@ class Categories extends React.Component {
         <Category
           title="Biospecimens"
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.biospecimen}
           color={theme.biospecimenOrange}
@@ -133,6 +138,7 @@ class Categories extends React.Component {
         <Category
           title="Available Data"
           sqon={sqon}
+          sets={sets}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.availableData}
           color={theme.dataBlue}
@@ -156,6 +162,7 @@ Categories.propTypes = {
   sqon: PropTypes.object,
   onSqonUpdate: PropTypes.func,
   openModal: PropTypes.func,
+  sets: PropTypes.array.isRequired,
 };
 
 export default connector(Categories);
