@@ -56,8 +56,6 @@ export const reactApiDataVersionFallback: string =
 export const reactApiSearchMembersApi = getApplicationEnvVar('SEARCH_MEMBERS_API') || null;
 export const kfVariantClusterUrl = getApplicationEnvVar('VARIANT_CLUSTER_API') || null;
 
-export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;
-
 // Reports API
 export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';
 
