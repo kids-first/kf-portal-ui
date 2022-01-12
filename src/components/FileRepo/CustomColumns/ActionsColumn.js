@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
 import { arrangerProjectId } from 'common/injectGlobals';
+import { ControlledIcon } from 'components/FileRepo//ui';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
@@ -16,8 +17,6 @@ import { FenceName } from 'store/fenceTypes';
 import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
-
-import { ControlledIcon } from '../ui';
 
 import './customColumns.css';
 

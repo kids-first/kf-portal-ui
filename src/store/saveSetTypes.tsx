@@ -1,7 +1,7 @@
 import { ThunkDispatch } from 'redux-thunk';
 
-import { RootState } from './rootState';
-import { Sqon } from './sqon';
+import { RootState } from 'store/rootState';
+import { Sqon } from 'store/sqon';
 
 export enum SetsActions {
   TOGGLE_PENDING_CREATE = 'TOGGLE_PENDING_CREATE_SAVE_SET',
@@ -12,19 +12,12 @@ export enum SetsActions {
   FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS',
   TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS',
   TOGGLE_IS_ADD_DELETE_TO_SET = 'TOGGLE_IS_ADD_DELETE_TO_SET',
-  REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS',
+  REMOVE_USER_SAVE_SET = 'REMOVE_USER_SAVE_SET',
   EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG',
   CREATE_SET_QUERY_REQUEST = 'CREATE_QUERY_REQUEST',
   DELETE_SET_QUERY_REQUEST = 'DELETE_SET_QUERY_REQUEST',
   ADD_SET_TO_CURRENT_QUERY = 'ADD_SET_TO_CURRENT_QUERY',
 }
-
-export type SetInfo = {
-  key: string;
-  name: string;
-  count?: number;
-  currentUser: string;
-};
 
 export type AddRemoveSetParams = {
   userId: string;
@@ -76,14 +69,15 @@ interface isAddingOrRemovingToSet {
   isEditing: boolean;
 }
 
-interface RemoveUserSets {
-  type: SetsActions.REMOVE_USER_SAVE_SETS;
-  sets: string[];
+interface RemoveUserSet {
+  type: SetsActions.REMOVE_USER_SAVE_SET;
+  setId: string;
 }
 
 interface EditSetTag {
   type: SetsActions.EDIT_SAVE_SET_TAG;
-  set: SetInfo;
+  setId: string;
+  tag: string;
 }
 
 interface CreateQueryInCohortBuilder {
@@ -105,7 +99,7 @@ export type SetsActionTypes =
   | IsLoadingSaveSets
   | DisplayUserSaveSets
   | IsDeletingSaveSets
-  | RemoveUserSets
+  | RemoveUserSet
   | EditSetTag
   | isAddingOrRemovingToSet
   | FailureLoadSaveSets
@@ -136,22 +130,21 @@ export interface SaveSetState {
 
 export type SaveSetParams = {
   tag: string;
-  userId: string;
   sqon: Sqon;
-  // sets: UserSaveSets[];
   onSuccess: Function;
   onNameConflict: Function;
 };
 
 export type EditSetTagParams = {
-  setInfo: SetInfo;
+  setId: string;
+  newTag: string;
   onSuccess: Function;
   onFail: Function;
   onNameConflict: Function;
 };
 
 export type DeleteSetParams = {
-  setIds: string[];
+  setId: string;
   onFail: Function;
 };
 
@@ -185,8 +178,20 @@ export type SetUpdateSource = {
 };
 
 export type SetUpdateInputData = {
-  type?: string;
   sqon?: Sqon;
-  path?: string;
   newTag?: string;
+};
+
+export type CreateSetParams = {
+  type: string;
+  sqon: Sqon;
+  path: string;
+  sort?: string[];
+  tag?: string;
+};
+
+export type ArrangerUserSet = {
+  id: string;
+  size: number;
+  tag: string;
 };

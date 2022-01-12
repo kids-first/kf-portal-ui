@@ -1,26 +1,27 @@
 import * as React from 'react';
-import { Button, Dropdown, Empty, Menu, Modal, Result, Transfer } from 'antd';
-import { RenderResult, TransferItem } from 'antd/lib/transfer';
-import findIndex from 'lodash/findIndex';
-import { SelectionTree } from './SelectionTree';
-import { PhenotypeStore, removeSameTerms, selectSameTerms } from './store';
-import { TreeNode } from './Model';
-import { Spinner } from 'uikit/Spinner';
-import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
-import { arrangerProjectId } from 'common/injectGlobals';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
-import { getFieldDisplayName } from '../../utils';
-
-// @ts-ignore
-import { IN_OP, SOME_NOT_IN_OP, ALL_OP } from '@kfarranger/middleware/dist/constants';
 //@ts-ignore
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-import './index.css';
+// @ts-ignore
+import { ALL_OP, IN_OP, SOME_NOT_IN_OP } from '@kfarranger/middleware/dist/constants';
+import { Button, Dropdown, Empty, Menu, Modal, Result, Transfer } from 'antd';
+import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import { cloneDeep } from 'lodash';
+import findIndex from 'lodash/findIndex';
+
+import { arrangerProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { TreeNode } from 'components/OntologyBrowser/Model';
+import { SelectionTree } from 'components/OntologyBrowser/SelectionTree';
+import { PhenotypeStore, removeSameTerms, selectSameTerms } from 'components/OntologyBrowser/store';
 import { IntersectionIcon } from 'icons/IntersectionIcon';
-import { UnionIcon } from 'icons/UnionIcon';
 import { NotEqualIcon } from 'icons/NotEqualIcon';
+import { UnionIcon } from 'icons/UnionIcon';
+import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
+import { Spinner } from 'uikit/Spinner';
+import { getFieldDisplayName } from 'utils';
+
+import './index.css';
 
 type ModalProps = {
   isVisible: boolean;

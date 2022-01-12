@@ -4,7 +4,6 @@ import { useKeycloak } from '@react-keycloak/web';
 import Authenticator from 'Authenticator';
 import ContextProvider from 'ContextProvider';
 import ErrorBoundary from 'ErrorBoundary';
-import ForumBanner, { showForumBanner } from 'ForumBanner';
 import ProtectedRoute from 'ProtectedRoute';
 
 import scienceBgPath from 'assets/background-science.jpg';
@@ -46,7 +45,6 @@ const App = () => {
       {keycloakIsReady ? (
         <Authenticator>
           <ApolloProvider>
-            {showForumBanner() && <ForumBanner />}
             <Suspense fallback={<Spinner className={'spinner'} size={'large'} />}>
               <Switch>
                 <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />
@@ -83,7 +81,6 @@ const App = () => {
                   exact
                   render={() => (
                     <SideImagePage
-                      logo={logo}
                       sideImagePath={loginImage}
                       Component={TermsConditions}
                       Footer={AppFooter}
@@ -151,9 +148,9 @@ const App = () => {
                   render={() => (
                     <SideImagePage
                       backgroundImage={scienceBgPath}
-                      logo={logo}
                       Component={Join}
                       sideImagePath={joinImage}
+                      id={'join'}
                     />
                   )}
                 />

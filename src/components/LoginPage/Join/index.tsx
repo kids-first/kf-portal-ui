@@ -13,16 +13,16 @@ import TermsConditionsAcceptButton from 'components/LoginPage/TermsConditions/Te
 import TermsConditionsBody from 'components/LoginPage/TermsConditions/TermsConditionsBody';
 import SplashPage from 'components/SplashPage';
 import useUser from 'hooks/useUser';
+import KidsFirstIcon from 'icons/KidsFirstIcon';
 import { KidsFirstKeycloakTokenParsed } from 'store/tokenTypes';
 import { User } from 'store/userTypes';
 import { hasUserRole } from 'utils';
 
-import './index.css';
-import styles from '../Login/index.module.scss';
+import styles from './index.module.scss';
 
 const { Step } = Steps;
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 
 interface ILocation {
   from: string;
@@ -44,6 +44,26 @@ const computeInitialStep = (user: User | null) => {
   }
   return JoinSteps.TERMS;
 };
+
+const orcidBanner = () => (
+  <Alert
+    className={styles.orchidBanner}
+    message={'System update notice for ORCID users'}
+    description={
+      <span>
+        We are in the process of updating our login system. As a result, members who use the ORCID
+        service are required to re-enter their credentials. This will only be asked of you one time.
+        Due to the update you will lose any previously saved queries and saved sets in the Explore
+        Data tool. If this affects you, please reach out to our support desk (
+        <a href={'mailto:support@kidsfirstdrc.org'} target="_blank" rel="noopener noreferrer">
+          support@kidsfirstdrc.org
+        </a>
+        ) and we will transfer these queries back to your account.
+      </span>
+    }
+    type="warning"
+  />
+);
 
 const Join = () => {
   const history = useHistory();
@@ -73,14 +93,12 @@ const Join = () => {
       title: 'Connect',
       content: (
         <>
-          <Title level={4}>Select a way to connect to the Kids First Data Resource Portal</Title>
           <Paragraph>
-            Your information will be kept confidential and secure and is not shared with any of
-            these providers.
+            As a first step you will be asked to choose from one of our connection services.
           </Paragraph>
           <Button
-            className={styles.login}
             type={'primary'}
+            size={'large'}
             onClick={async () => {
               const url = keycloak.createLoginUrl({
                 // eslint-disable-next-line max-len
@@ -89,7 +107,7 @@ const Join = () => {
               location.assign(url);
             }}
           >
-            {'Log in'}
+            {'Select a connection service'}
           </Button>
         </>
       ),
@@ -98,22 +116,12 @@ const Join = () => {
       title: 'Basic Info',
       content: (
         <>
-          {isFeatureEnabled('showOrcidBanner') && provider === ORCID && (
-            <Alert
-              message={
-                'For ORCID user, if you want to recover your account, contact support with your ORCID ID'
-              }
-              type="warning"
-            />
-          )}
-          <Paragraph className={'step-basic-info-paragraph'}>
-            Please provide information about yourself to help us personalize your experience.
-          </Paragraph>
+          {isFeatureEnabled('showOrcidBanner') && provider === ORCID && orcidBanner()}
           <RoleForm submitExtraCB={() => next()} />
         </>
       ),
       footer: (
-        <div className={'step-basic-info-footer-wrapper'}>
+        <div className={styles.stepBasicInfoFooterWrapper}>
           <div>
             <DeleteButton onClickCB={() => prev()} label={'Back'} />
           </div>
@@ -122,7 +130,7 @@ const Join = () => {
             <Button
               loading={isLoadingUser}
               disabled={isLoadingUser}
-              className={'submit-btn'}
+              className={styles.submitBtn}
               type={'primary'}
               form={ROLE_FORM_NAME}
               key="submit-select-role"
@@ -138,7 +146,7 @@ const Join = () => {
       title: 'Consent',
       content: <TermsConditionsBody />,
       footer: (
-        <div className={'step-consent-footer-wrapper'}>
+        <div className={styles.stepConsentFooterWrapper}>
           <div>
             <Button onClick={() => prev()}>Back</Button>
           </div>
@@ -153,15 +161,19 @@ const Join = () => {
 
   return (
     <SplashPage
-      mainTitle={'Join Kids First Data Resource Portal'}
+      mainTitle=""
       content={
         <>
-          <Steps current={current} size={'small'}>
+          <div className={styles.joinHeader}>
+            <KidsFirstIcon />
+            <h3>Join Kids First Data Resource Portal</h3>
+          </div>
+          <Steps current={current} size={'small'} className={styles.steps}>
             {steps.map((item) => (
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
-          <div className="steps-content">{steps[current].content}</div>
+          <div className={styles.stepsContent}>{steps[current].content}</div>
         </>
       }
       footerContent={steps[current].footer}

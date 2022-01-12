@@ -6,11 +6,13 @@ import { Button, Form, Input, Modal, notification, Spin } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 
 import filtersToName, { SET_DEFAULT_NAME } from 'common/sqonToName';
+import { withApi } from 'services/api';
 import {
   createSetIfUnique,
   editSetTag,
   reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
+import { Api, ApiFunction } from 'store/apiTypes';
 import { RootState } from 'store/rootState';
 import {
   DispatchSaveSets,
@@ -19,7 +21,6 @@ import {
   SaveSetActionsTypes,
   SaveSetParams,
   SaveSetState,
-  SetInfo,
   UserSet,
 } from 'store/saveSetTypes';
 import { selectError, selectIsLoading, selectSets } from 'store/selectors/saveSetsSelectors';
@@ -35,7 +36,7 @@ type OwnProps = {
   hideModalCb: Function;
   sqon: Sqon;
   user: User;
-  setToRename?: SetInfo;
+  setToRename?: UserSet;
 };
 
 type NameSetValidator = {
@@ -58,8 +59,9 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onCreateSet: (params: SaveSetParams) => dispatch(createSetIfUnique(params)),
-  onEditSet: (params: EditSetTagParams) => dispatch(editSetTag(params)),
+  onCreateSet: (api: ApiFunction, params: SaveSetParams) =>
+    dispatch(createSetIfUnique(api, params)),
+  onEditSet: (api: ApiFunction, params: EditSetTagParams) => dispatch(editSetTag(api, params)),
   reInitializeState: () => dispatch(reInitializeSetsState()),
 });
 
@@ -67,7 +69,7 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & OwnProps;
+type Props = PropsFromRedux & OwnProps & Api;
 
 export const extractTagNumbers = (userSets: [{ node: UserSet }]) => {
   const regExp = /saved_set_([0-9]+)/i;
@@ -97,7 +99,6 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
   const {
-    user,
     sqon,
     onCreateSet,
     onEditSet,
@@ -107,6 +108,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     title,
     saveSetActionType,
     setToRename,
+    api,
   } = props;
 
   const onSuccessCreateCb = () => {
@@ -132,12 +134,9 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           break;
         }
 
-        await onEditSet({
-          setInfo: {
-            key: setToRename.key,
-            name: nameSet,
-            currentUser: user.egoId,
-          } as SetInfo,
+        await onEditSet(api, {
+          setId: setToRename.setId,
+          newTag: nameSet,
           onSuccess: () => {
             setIsVisible(false);
             hideModalCb();
@@ -155,9 +154,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         });
         break;
       case SaveSetActionsTypes.CREATE:
-        await onCreateSet({
+        await onCreateSet(api, {
           tag: nameSet,
-          userId: user.egoId,
           sqon: sqon,
           onSuccess: onSuccessCreateCb,
           onNameConflict: onNameConflictCb,
@@ -199,7 +197,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     const formDefaultValue =
       saveSetActionType === SaveSetActionsTypes.CREATE
         ? { nameSet: defaultName !== SET_DEFAULT_NAME ? defaultName : '' }
-        : { nameSet: setToRename?.name ?? '' };
+        : { nameSet: setToRename?.tag ?? '' };
     form.setFieldsValue(formDefaultValue);
     setLoadingDefaultTagName(false);
   }, [form, saveSetActionType, setToRename, sqon]);
@@ -285,4 +283,4 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
 
 const Connected = connector(SaveSetModal);
 
-export default Connected;
+export default withApi(Connected);

@@ -4,17 +4,16 @@ import {
   createSet as saveSet,
   deleteSets,
   getSetAndParticipantsCountByUser,
-  setCountForTag,
   updateSet,
 } from 'services/sets';
-
-import { RootState } from '../rootState';
+import { ApiConfig } from 'store/apiTypes';
+import { RootState } from 'store/rootState';
 import {
   AddRemoveSetParams,
+  ArrangerUserSet,
   DeleteSetParams,
   EditSetTagParams,
   SaveSetParams,
-  SetInfo,
   SetNameConflictError,
   SetsActions,
   SetsActionTypes,
@@ -22,33 +21,37 @@ import {
   SetSubActionTypes,
   SetUpdateInputData,
   UserSet,
-} from '../saveSetTypes';
-import { selectSets } from '../selectors/saveSetsSelectors';
+} from 'store/saveSetTypes';
+import { selectSets } from 'store/selectors/saveSetsSelectors';
 
-export const createSet = (
+const isTagUnique = (getState: () => RootState, tag: string): boolean =>
+  selectSets(getState()).filter((s) => s.tag === tag).length === 0;
+
+const createSet = (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { tag, userId, sqon, onSuccess } = payload;
+  const { tag, sqon, onSuccess } = payload;
 
   dispatch(isLoadingCreateSet(true));
   try {
-    const response = await saveSet(userId, {
+    const createdSet: ArrangerUserSet = await saveSet(api, {
       type: 'participant',
       path: 'kf_id',
       sqon,
       tag,
     });
 
-    if (response.errors && response.errors.length > 0) {
-      dispatch(failureCreate(new Error(response.errors[0].message)));
-      return;
-    }
+    const userSet: UserSet = {
+      setId: createdSet.id,
+      size: createdSet.size,
+      tag: createdSet.tag,
+    };
 
-    const createdSet: UserSet = response.data.saveSet;
-    dispatch(displayUserSets([...selectSets(getState()), createdSet]));
+    dispatch(displayUserSets([...selectSets(getState()), userSet]));
 
     if (onSuccess) {
       onSuccess();
@@ -61,17 +64,19 @@ export const createSet = (
 };
 
 export const createSetIfUnique = (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: SaveSetParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { tag, userId, onNameConflict } = payload;
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
+  const { tag, onNameConflict } = payload;
 
-  dispatch(isLoadingCreateSet(true));
   try {
-    const tagIsUnique = (await setCountForTag(tag, userId)) === 0;
+    const tagIsUnique = isTagUnique(getState, tag);
 
     if (tagIsUnique) {
-      dispatch(isLoadingCreateSet(false));
-      dispatch(createSet(payload));
+      dispatch(createSet(api, payload));
       return;
     }
 
@@ -80,39 +85,37 @@ export const createSetIfUnique = (
     }
 
     dispatch(failureCreate(new SetNameConflictError('A set with this name already exists')));
-    dispatch(isLoadingCreateSet(false));
   } catch (error) {
     dispatch(failureCreate(error));
-    dispatch(isLoadingCreateSet(false));
   }
 };
 
 export const editSetTag = (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: EditSetTagParams,
-): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { setInfo, onNameConflict, onSuccess, onFail } = payload;
+): ThunkAction<void, RootState, null, SetsActionTypes> => async (
+  dispatch,
+  getState: () => RootState,
+) => {
+  const { setId, newTag, onNameConflict, onSuccess, onFail } = payload;
 
   try {
-    const tagIsUnique = (await setCountForTag(setInfo.name, setInfo.currentUser)) === 0;
+    const tagIsUnique = isTagUnique(getState, newTag);
     if (tagIsUnique) {
       const data: SetUpdateInputData = {
-        newTag: setInfo.name,
+        newTag,
       };
-      const { updatedResults } = await updateSet(
+      const result: ArrangerUserSet = await updateSet(
+        api,
         SetSourceType.SAVE_SET,
         data,
         SetSubActionTypes.RENAME_TAG,
-        setInfo.key,
+        setId,
       );
 
-      if (updatedResults && updatedResults > 0) {
-        dispatch(isEditingTag(setInfo));
-        onSuccess();
-        return;
-      } else {
-        onFail();
-        return;
-      }
+      dispatch(isEditingTag(result.id, result.tag));
+      onSuccess();
+      return;
     }
 
     if (onNameConflict) {
@@ -122,19 +125,20 @@ export const editSetTag = (
     dispatch(failureCreate(new SetNameConflictError('A set with this name already exists')));
   } catch (error) {
     console.error(error);
+    onFail();
   }
 };
 
 export const getUserSets = (
-  userId: string,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
   dispatch(isLoadingSets(true));
   try {
-    const userSets = await getSetAndParticipantsCountByUser(userId);
-    const payload: UserSet[] = userSets.map((s: { node: UserSet }) => ({
-      setId: s.node.setId,
-      size: s.node.size,
-      tag: s.node.tag,
+    const userSets: ArrangerUserSet[] = await getSetAndParticipantsCountByUser(api);
+    const payload: UserSet[] = userSets.map((s) => ({
+      setId: s.id,
+      size: s.size,
+      tag: s.tag,
     }));
     dispatch(displayUserSets(payload));
   } catch (e) {
@@ -144,55 +148,50 @@ export const getUserSets = (
 };
 
 export const fetchSetsIfNeeded = (
-  userId: string,
+  api: (config: ApiConfig) => Promise<ArrangerUserSet[]>,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch, getState) => {
   const setsInStore = selectSets(getState());
   if (setsInStore.length === 0) {
-    dispatch(getUserSets(userId));
+    dispatch(getUserSets(api));
   }
 };
 
 export const addRemoveSetIds = (
+  api: (config: ApiConfig) => Promise<ArrangerUserSet>,
   payload: AddRemoveSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (
   dispatch,
   getState: () => RootState,
 ) => {
-  const { onSuccess, onFail, sqon, path, type, subActionType, setId } = payload;
+  const { onSuccess, onFail, sqon, subActionType, setId } = payload;
 
   dispatch(isAddingOrRemovingToSet(true));
 
   const data: SetUpdateInputData = {
     sqon,
-    path,
-    type,
   };
 
   try {
-    const response = await updateSet(SetSourceType.QUERY, data, subActionType, setId);
+    const userSet: ArrangerUserSet = await updateSet(
+      api,
+      SetSourceType.QUERY,
+      data,
+      subActionType,
+      setId,
+    );
 
-    if (!response) {
-      return onFail();
-    }
+    const sets: UserSet[] = selectSets(getState());
+    const setsWithUpdatedCount = sets.map((s) => {
+      if (s.setId === setId) {
+        return { setId: s.setId, size: userSet.size, tag: s.tag };
+      } else {
+        return s;
+      }
+    });
 
-    const { setSize, updatedResults } = response;
+    dispatch(displayUserSets(setsWithUpdatedCount));
 
-    if (updatedResults && updatedResults > 0) {
-      const sets: UserSet[] = selectSets(getState());
-      const setsWithUpdatedCount = sets.map((s) => {
-        if (s.setId === setId) {
-          return { setId: s.setId, size: setSize, tag: s.tag };
-        } else {
-          return s;
-        }
-      });
-
-      dispatch(displayUserSets(setsWithUpdatedCount));
-
-      onSuccess();
-    } else {
-      onFail();
-    }
+    onSuccess();
   } catch (e) {
     console.error(e);
     onFail();
@@ -202,17 +201,18 @@ export const addRemoveSetIds = (
 };
 
 export const deleteUserSets = (
+  api: (config: ApiConfig) => Promise<boolean>,
   payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SetsActionTypes> => async (dispatch) => {
-  const { setIds, onFail } = payload;
+  const { setId, onFail } = payload;
 
   dispatch(isDeletingSets(true));
 
   try {
-    const result = await deleteSets(setIds);
+    const result = await deleteSets(api, setId);
 
-    if (result && result > 0) {
-      dispatch(removeUserSets(setIds));
+    if (result) {
+      dispatch(removeUserSets(setId));
     } else {
       onFail();
     }
@@ -269,14 +269,15 @@ export const failureLoadSets = (error: Error): SetsActionTypes => ({
   error,
 });
 
-export const removeUserSets = (sets: string[]): SetsActionTypes => ({
-  type: SetsActions.REMOVE_USER_SAVE_SETS,
-  sets,
+export const removeUserSets = (setId: string): SetsActionTypes => ({
+  type: SetsActions.REMOVE_USER_SAVE_SET,
+  setId,
 });
 
-export const isEditingTag = (set: SetInfo): SetsActionTypes => ({
+export const isEditingTag = (setId: string, tag: string): SetsActionTypes => ({
   type: SetsActions.EDIT_SAVE_SET_TAG,
-  set: set,
+  setId,
+  tag,
 });
 
 export const requestCreateQueryInCohort = (setId: string): SetsActionTypes => ({

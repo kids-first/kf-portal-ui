@@ -1,19 +1,19 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Dropdown } from 'antd';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import { Dropdown } from 'antd';
+import PropTypes from 'prop-types';
 
-import { sqonShape } from 'shapes';
-import Column from 'uikit/Column';
 import { arrangerProjectId } from 'common/injectGlobals';
-import Filter from './Filter';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import CategoryMenu from './CategoryMenu';
+import CategoryMenu from 'components/CohortBuilder/Categories/CategoryMenu';
+import Filter from 'components/CohortBuilder/Categories/Filter';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from 'components/CohortBuilder/common';
+import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
+import { sqonShape } from 'shapes';
 import { openModal } from 'store/actions/modal';
+import Column from 'uikit/Column';
 
 import '../CohortBuilder.css';
-import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
 
 class Category extends React.Component {
   constructor(props) {
@@ -28,6 +28,7 @@ class Category extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     sqon: sqonShape.isRequired,
+    sets: PropTypes.array.isRequired,
     color: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSqonUpdate: PropTypes.func.isRequired,
@@ -80,10 +81,11 @@ class Category extends React.Component {
       return null;
     }
 
-    const { sqon, onSqonUpdate } = this.props;
+    const { sqon, sets, onSqonUpdate } = this.props;
     return (
       <Filter
         initialSqon={sqon}
+        sets={sets}
         onSubmit={(sqon) => {
           onSqonUpdate(title, sqon);
           this.handleCloseFilter(false);

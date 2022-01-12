@@ -4,17 +4,17 @@ import {
   toggleActiveProfileAsAdmin,
   updateProfile,
 } from 'services/profiles';
-
-import { Api } from '../apiTypes';
+import { receiveUser } from 'store/actionCreators/user';
+import { Api } from 'store/apiTypes';
 import {
   ProfileActions,
   ProfileActionTypes,
   ProfileTodo,
   ThunkActionProfile,
-} from '../profileTypes';
-import { RootState } from '../rootState';
-import { selectProfile } from '../selectors/profile';
-import { UserInfo } from '../userTypes';
+} from 'store/profileTypes';
+import { RootState } from 'store/rootState';
+import { selectProfile } from 'store/selectors/profile';
+import { UserInfo } from 'store/userTypes';
 
 export const requestProfile = (): ProfileActionTypes => ({
   type: ProfileActions.requestProfile,
@@ -110,6 +110,7 @@ export const updateUserProfile = (api: Api, profile: ProfileTodo): ThunkActionPr
     const updatedProfile = await updateProfile(api)({
       user: profile,
     });
+    dispatch(receiveUser(updatedProfile));
     dispatch(updateProfileSuccess(updatedProfile));
   } catch (e) {
     dispatch(failureUpdateProfile(e));
@@ -121,9 +122,10 @@ export const toggleIsPublic = (api: Api, profile: ProfileTodo): ThunkActionProfi
 ) => {
   dispatch(requestIsPublicToggle());
   try {
-    await updateProfile(api)({
+    const updatedProfile = await updateProfile(api)({
       user: profile,
     });
+    dispatch(receiveUser(updatedProfile));
     dispatch(receiveIsPublicToggle());
   } catch (e) {
     dispatch(failureIsPublicToggle(e));

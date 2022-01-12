@@ -149,7 +149,7 @@ export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
 };
 
 export const abbreviateNumber = (number) => {
-  const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E'];
+  const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 
   // what tier? (determines SI symbol)
   var tier = (Math.log10(Math.abs(number)) / 3) | 0;

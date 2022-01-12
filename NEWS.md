@@ -8,10 +8,45 @@
 ### Technical / Other changes
 -->
 
-## 2021-11-02 kf-portal-ui
+## 2022-01-10 kf-portal-ui 4.1.0
+
+### Technical/ Other changes:
+
+- [SKFP-26](https://d3b.atlassian.net/browse/SKFP-26) Technical: Update the portal to use the latest ElasticSearch 7 instead of ElasticSearch 6
+- [SKFP-320](https://d3b.atlassian.net/browse/SKFP-320) Fix (Profile/Members) Profile Status changes upon login
+- [SKFP-321](https://d3b.atlassian.net/browse/SKFP-321) Fix (Explore Data, Facets): Fixed an issue where values in the source_text_tumor location and source_text_anatomic_site facets were combined by a semicolon
+
+## 2021-11-22 kf-portal-ui 4.0.1
+
+### Technical/ Other changes:
+
+- Display KidsFirst Forum link in banner only if a link is provided
+
+## 2021-11-22 kf-portal-ui 4.0.0
+
 ### Features
+
+- [SKFP-5](https://d3b.atlassian.net/browse/SKFP-5) Feature (Authentication): Added NIH's Researcher Auth Service (RAS) login using Keyloak for user authentication and removed the Facebook login service
+- [SKFP-306](https://d3b.atlassian.net/browse/SKFP-306) Feature ( Landing Page): Revamped the landing page to provide general information prior to logging in or registering
+
+### Technical/ Other changes:
+
+- [SKFP-9](https://d3b.atlassian.net/browse/SKFP-9) Feature (Authentication): Replaced Ego (OAuth) login and authentication application with the Keycloak authentication across the portal services
+
+## 2021-11-18 kf-portal-ui 3.5.0
+
+### Features
+
+- [SKFP-307](https://d3b.atlassian.net/browse/SKFP-307) Feature : New dynamic messaging banner.
+
+## 2021-11-02 kf-portal-ui
+
+### Features
+
 - [SKFP-58](https://d3b.atlassian.net/browse/SKFP-58) Feature : Redesigned and improved the Variant Search page by adding searchable categories, facets, and the query builder.
+
 ## Technical / Other changes
+
 - [SKFP-55](https://d3b.atlassian.net/browse/SKFP-55) Refactor(Backend, ETL): Updated ETL task service to point towards the new Elastic Search 7 database
 - [SKFP-103](https://d3b.atlassian.net/browse/SKFP-103) Refactor (Dashboard): Added Zeppelin Variant Workbench widget to the Dashboard and Removed Participant, Members, and Diagnosis chart widgets
 - [SKFP-127](https://d3b.atlassian.net/browse/SKFP-127) Fix (Dashboard Widget, Cavatica): Fixed an issue where the "Create a Cavatica Project" hyperlink would not work and an error would appear when creating a project

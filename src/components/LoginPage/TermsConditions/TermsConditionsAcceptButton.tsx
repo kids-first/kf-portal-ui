@@ -3,7 +3,6 @@ import { connect, ConnectedProps } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { CheckOutlined } from '@ant-design/icons';
 import { Button, notification, Typography } from 'antd';
-import { setForumBannerForDisplay } from 'ForumBanner';
 
 import ROUTES from 'common/routes';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
@@ -44,7 +43,6 @@ const TermsConditionsAcceptButton = ({ isNewUser, onSubscribeUser, user, acceptT
   const [updating, setUpdating] = useState(false);
 
   const onFinish = async () => {
-    setForumBannerForDisplay();
     if (!isNewUser) {
       setUpdating(false);
       history.push(ROUTES.dashboard);

@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Alert, Layout } from 'antd';
+import Banner, { showDynamicInfoBanner } from 'DynamicBanner';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 
@@ -62,6 +63,7 @@ const NavigationToolBar = (props) => {
           onClose={onClosePublicProfileInviteAlert}
         />
       )}
+      {showDynamicInfoBanner() && <Banner />}
       <div className="gradientAccent" />
       <StackLayout className="headerContent">
         <StackLayout className="leftContent">

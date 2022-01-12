@@ -30,3 +30,7 @@
   overflow-y: scroll;
   height: 450px;
 }
+
+.ant-card-extra {
+  color: #2b388f;
+}
