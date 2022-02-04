@@ -13,6 +13,7 @@ import DownloadIcon from 'icons/DownloadIcon';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { arrangerGqlRecompose } from 'services/arranger';
+import { OPEN_ACCESS } from 'store/actionCreators/fenceStudies';
 import { FenceName } from 'store/fenceTypes';
 import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
@@ -101,7 +102,7 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
       const file = get(data, 'file.hits.edges[0].node', {});
       const acl = file.acl || [];
       const repository = file.repository;
-      const hasAccess = acl.includes('*') || intersection(fenceAcls, acl).length > 0;
+      const hasAccess = acl.includes(OPEN_ACCESS) || intersection(fenceAcls, acl).length > 0;
       return (
         <Row center className={'action-column-row'}>
           {loadingQuery ? (

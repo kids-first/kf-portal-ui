@@ -11,7 +11,9 @@ import { AclsByFence, FenceName, UserAcls } from '../fenceTypes';
 import { RootState } from '../rootState';
 import { selectFenceStudies, selectFenceStudiesStatus } from '../selectors/fenceStudies';
 
-const addWildCardToAcls = (acls: UserAcls) => [...(acls || []), '*'];
+export const OPEN_ACCESS = 'open_access';
+
+const addOpenAccessToAcls = (acls: UserAcls) => [...(acls || []), OPEN_ACCESS];
 
 export const toggleIsFetchingOneFenceStudies = (
   isLoading: boolean,
@@ -67,7 +69,7 @@ export const fetchFenceStudies = (
 ): ThunkAction<void, RootState, null, FenceStudiesActionTypes> => async (dispatch) => {
   dispatch(toggleIsFetchingOneFenceStudies(true, fenceName));
   try {
-    const aclsWithWildCard = addWildCardToAcls(userAcls);
+    const aclsWithWildCard = addOpenAccessToAcls(userAcls);
     const studies = await getAuthStudiesIdAndCount(api, fenceName, aclsWithWildCard);
     const authorizedStudies = isEmpty(studies)
       ? []
