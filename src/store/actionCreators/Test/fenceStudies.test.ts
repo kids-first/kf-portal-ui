@@ -16,6 +16,7 @@ import {
   computeAllFencesAuthStudies,
   fetchFenceStudies,
   fetchFenceStudiesIfNeeded,
+  OPEN_ACCESS,
   removeFenceStudies,
   toggleIsFetchingAllFenceStudies,
 } from '../fenceStudies';
@@ -80,14 +81,14 @@ describe('Fence Studies actions', () => {
   it('should transform auth studies adequately', () => {
     expect(computeAllFencesAuthStudies(MOCK_AUTH_STUDIES_WITH_2_FENCES)).toEqual([
       {
-        acl: ['*'],
+        acl: [OPEN_ACCESS],
         authorizedFiles: 5239,
         id: `${FenceName.gen3}_1`,
         studyShortName: `studyShortName_${FenceName.gen3}_1`,
         totalFiles: 19791,
       },
       {
-        acl: ['*'],
+        acl: [OPEN_ACCESS],
         authorizedFiles: 5239,
         id: `${FenceName.dcf}_1`,
         studyShortName: `studyShortName_${FenceName.dcf}_1`,

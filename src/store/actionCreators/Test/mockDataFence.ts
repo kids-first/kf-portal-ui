@@ -2,6 +2,7 @@ import { Api } from 'store/apiTypes';
 import { FenceStudies } from 'store/fenceStudiesTypes';
 
 import { FenceName } from '../../fenceTypes';
+import { OPEN_ACCESS } from '../fenceStudies';
 
 export const mockApi: jest.Mocked<Api> = {
   // @ts-ignore just a mock to call the api - no need add complex types.
@@ -9,7 +10,7 @@ export const mockApi: jest.Mocked<Api> = {
 };
 
 export const MOCK_GEN3_STUDY_PHS_001436 = {
-  acl: ['*'],
+  acl: [OPEN_ACCESS],
   authorizedFiles: 5239,
   id: 'phs001436',
   studyShortName: 'Kids First: Neuroblastoma',
@@ -75,7 +76,7 @@ export const MOCK_STUDIES_IDS_AND_COUNTS = {
 
 export const MOCK_AUTH_STUDIES_GEN3 = [
   {
-    acl: ['*'],
+    acl: [OPEN_ACCESS],
     authorizedFiles: 5239,
     id: `${FenceName.gen3}_1`,
     studyShortName: `studyShortName_${FenceName.gen3}_1`,
@@ -85,7 +86,7 @@ export const MOCK_AUTH_STUDIES_GEN3 = [
 
 export const MOCK_AUTH_STUDIES_DCF = [
   {
-    acl: ['*'],
+    acl: [OPEN_ACCESS],
     authorizedFiles: 5239,
     id: `${FenceName.dcf}_1`,
     studyShortName: `studyShortName_${FenceName.dcf}_1`,
@@ -104,18 +105,24 @@ export const MOCK_AUTH_STUDIES_WITH_2_FENCES: FenceStudies = {
 
 export const MOCK_AUTH_STUDIES_FROM_GEN3 = [
   {
-    acl: ['*'],
+    acl: [OPEN_ACCESS],
     studyShortName: 'Kids First: Neuroblastoma',
     totalFiles: 19791,
     id: 'phs001436',
     authorizedFiles: 5239,
   },
   {
-    acl: ['*'],
+    acl: [OPEN_ACCESS],
     studyShortName: 'OpenDIPG: ICR London',
     totalFiles: 259,
     id: 'SD_1P41Z782',
     authorizedFiles: 259,
   },
-  { acl: ['*'], studyShortName: 'Cat Pics', totalFiles: 82, id: 'CHEEZBURGER', authorizedFiles: 1 },
+  {
+    acl: [OPEN_ACCESS],
+    studyShortName: 'Cat Pics',
+    totalFiles: 82,
+    id: 'CHEEZBURGER',
+    authorizedFiles: 1,
+  },
 ];
