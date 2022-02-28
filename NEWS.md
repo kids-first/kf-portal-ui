@@ -8,6 +8,13 @@
 ### Technical / Other changes
 -->
 
+## 2022-02-28 kf-portal-ui 4.1.1
+
+### Technical/ Other changes:
+
+- [SKFP-329](https://d3b.atlassian.net/browse/SKFP-329) Fix: Fixed the incorrect authorization status in the Authorized Studies widget after being connected to the Gen3 fence
+- [SKFP-330](https://d3b.atlassian.net/browse/SKFP-330) Fix: Fixed an error that appeared when a user would attempt to download a open access file
+
 ## 2022-01-10 kf-portal-ui 4.1.0
 
 ### Technical/ Other changes:
