@@ -1,18 +1,20 @@
 import React from 'react';
-
-import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-import ExternalLink from 'uikit/ExternalLink';
 import ProgressBar from 'chartkit/components/ProgressBar';
 
+import { OPEN_ACCESS } from 'store/actionCreators/fenceStudies';
+import Column from 'uikit/Column';
+import ExternalLink from 'uikit/ExternalLink';
+import Row from 'uikit/Row';
+
 import {
-  studyColumn,
-  studyName,
-  studyCount,
   studyCodes,
+  studyColumn,
+  studyCount,
+  studyName,
   studyNumberLink,
 } from './AuthorizedStudies.module.css';
 
+// eslint-disable-next-line react/display-name
 export default ({
   name,
   studyId,
@@ -44,7 +46,7 @@ export default ({
       </div>
     </Row>
     <div className={studyCodes}>
-      Data Use Groups: {consentCodes.join(', ').replace('*', 'Open Access')}
+      Data Use Groups: {consentCodes.join(', ').replace(OPEN_ACCESS, 'Open Access')}
     </div>
     <ProgressBar
       analyticsTracking={{ category: `Authorized Studies`, label: `studyId: ${studyId}` }}

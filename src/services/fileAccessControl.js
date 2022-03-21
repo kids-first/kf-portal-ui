@@ -5,6 +5,7 @@ import keys from 'lodash/keys';
 
 import { graphql } from 'services/arranger';
 import { fetchFenceConnection } from 'services/fence';
+import { OPEN_ACCESS } from 'store/actionCreators/fenceStudies';
 
 const getStudyIdsFromSqon = (api) => ({ sqon }) =>
   graphql(api)({
@@ -120,7 +121,7 @@ export const getUserStudyPermission = async (
     Object.values(fenceConnections || {})
       .filter((fenceUser) => isObject(fenceUser.projects) && keys(fenceUser.projects).length > 0)
       .map(({ projects }) => keys(projects))
-      .concat('*'),
+      .concat(OPEN_ACCESS),
   );
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
@@ -219,7 +220,7 @@ export const checkUserFilePermission = (api) => async ({ fileId, fence }) => {
   })
     .then((data) => {
       const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
-      return fileAcl.some((fileAcl) => fileAcl === '*' || approvedAcls.includes(fileAcl));
+      return fileAcl.some((fileAcl) => fileAcl === OPEN_ACCESS || approvedAcls.includes(fileAcl));
     })
     .catch((err) => {
       console.error(err);

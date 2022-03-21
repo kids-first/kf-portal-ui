@@ -47,7 +47,7 @@ export const buildFileQuery = ({ fields, first = null }) => {
   )}}}}}}`;
 };
 
-const extractHits = (data) => data.data.file.hits;
+const extractHits = (data) => data.file.hits;
 
 const getFileTotals = async ({ sqon, api }) => {
   const body = {
