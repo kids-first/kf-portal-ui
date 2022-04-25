@@ -1,4 +1,4 @@
-import { graphql } from 'services/arranger';
+import { fetchPhenotypes } from 'services/arranger';
 import { dotToUnderscore } from 'store/graphql/utils';
 import { Sqon } from 'store/sqon';
 
@@ -149,20 +149,20 @@ export class PhenotypeStore {
 
   getPhenotypes = async (field: string, sqon?: Sqon, filterThemselves = false) => {
     const body = {
-      query: this.buildPhenotypeQuery(field, filterThemselves),
-      variables: {
-        sqon: sqon,
-        term_filters: {
-          op: 'and',
-          content: [{ op: 'in', content: { field: `${field}.is_tagged`, value: [true] } }],
-        },
+      type: field,
+      sqon: {
+        ...sqon,
+        content: sqon?.content || [],
+        op: sqon?.op || 'and',
       },
+      aggregations_filter_themselves: filterThemselves,
     };
+
     try {
-      const { data } = await graphql()(body);
-      return data.participant.aggregations[dotToUnderscore(field) + '__name'].buckets;
-    } catch (error) {
-      // console.warn(error);
+      const { data } = await fetchPhenotypes(body);
+      return data;
+    } catch (e) {
+      console.error(e);
       return [];
     }
   };
