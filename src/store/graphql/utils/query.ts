@@ -29,14 +29,14 @@ export const useLazyResultQuery = <TData = any, TVariables = OperationVariables>
   return { error, loading, result };
 };
 
-export const buildVariantIdSqon = (id: string) => ({
+export const buildVariantSqon = (field: string, value: string) => ({
   op: 'and',
   content: [
     {
       op: 'in',
       content: {
-        field: 'hash',
-        value: id,
+        field,
+        value,
       },
     },
   ],
