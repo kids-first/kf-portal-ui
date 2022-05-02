@@ -11,11 +11,13 @@ import { makeClinVarRows, makeGenesOrderedRow } from './clinicalRowsGenerators';
 import ClinVarExternalLink from './ClinVarExternalLink';
 
 type OwnProps = {
-  variantId: string;
+  field: string;
+  value: string;
 };
 
-const TabClinical = ({ variantId }: OwnProps) => {
-  const { loading, data, error } = useTabClinicalData(variantId);
+const TabClinical = (props: OwnProps) => {
+  const { field, value } = props;
+  const { loading, data, error } = useTabClinicalData(field, value);
 
   if (error) {
     return <ServerError />;

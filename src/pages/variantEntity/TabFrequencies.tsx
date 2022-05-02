@@ -33,7 +33,8 @@ import TableSummaryKfStudies from './TableSummaryKfStudies';
 const MIN_N_OF_PARTICIPANTS_FOR_LINK = 10;
 
 type OwnProps = {
-  variantId: string;
+  field: string;
+  value: string;
 };
 
 type FrequencyTabTableContainerState = {
@@ -294,7 +295,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
 const TabFrequencies = (props: Props) => {
-  const { loading, data, error } = useTabFrequenciesData(props.variantId);
+  const { field, value } = props;
+  const { loading, data, error } = useTabFrequenciesData(field, value);
 
   if (error) {
     return <ServerError />;

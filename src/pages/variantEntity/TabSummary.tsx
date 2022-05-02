@@ -20,7 +20,8 @@ import styles from './tables.module.scss';
 const { Text } = Typography;
 
 type OwnProps = {
-  variantId: string;
+  field: string;
+  value: string;
 };
 
 type TableGroup = {
@@ -280,8 +281,8 @@ const makeRows = (consequences: Consequence[]) =>
     },
   }));
 
-const TabSummary = ({ variantId }: OwnProps) => {
-  const { loading, data: rawData, error } = useTabSummaryData(variantId);
+const TabSummary = ({ field, value }: OwnProps) => {
+  const { loading, data: rawData, error } = useTabSummaryData(field, value);
 
   if (error) {
     return <ServerError />;
