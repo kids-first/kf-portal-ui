@@ -103,7 +103,7 @@ const App = () => {
                   render={() => <FixedFooterPage Component={VariantSearchPage} />}
                 />
                 <ProtectedRoute
-                  path={`${ROUTES.variant}/:hash`}
+                  path={`${ROUTES.variant}/:identifier`}
                   exact
                   render={() => <Page Component={VariantEntityPage} />}
                 />

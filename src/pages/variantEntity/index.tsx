@@ -25,13 +25,13 @@ const mTabKeys = {
 
 const tabKeyValues = Object.keys(mTabKeys);
 
-const hgvsgRegex = /^(hgvsg|locus)=([A-Za-z0-9:.>-]+)#?.*$/;
+const regExp = /^(hgvsg|locus)=([A-Za-z0-9:.>-]+)#?.*$/;
 
-const extractHgvsg = (raw: string) => hgvsgRegex.exec(raw);
+const extractIdentifier = (raw: string) => regExp.exec(raw);
 
 const VariantEntity = () => {
-  const { hash } = useParams();
-  const match = extractHgvsg(hash);
+  const { identifier } = useParams();
+  const match = extractIdentifier(identifier);
   const field = match ? match[1] : '';
   const value = match ? match[2] : '';
 
