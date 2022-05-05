@@ -1,17 +1,19 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FileTextOutlined, MedicineBoxOutlined, RiseOutlined } from '@ant-design/icons';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Tabs, Tag, Typography } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
 import useTab from 'hooks/useTab';
+import { useTabSummaryClinicalData } from 'store/graphql/variants/tabActions';
 
 import TabClinical from './TabClinical';
 import TabFrequencies from './TabFrequencies';
 import TabSummary from './TabSummary';
 
 import styles from './VariantEntity.module.scss';
+
 const { TabPane } = Tabs;
 
 const { Title } = Typography;
@@ -24,19 +26,25 @@ const mTabKeys = {
 
 const tabKeyValues = Object.keys(mTabKeys);
 
+const regExp = /^(hgvsg|locus)=([A-Za-z0-9:.>-]+)#?.*$/;
+
+const extractIdentifier = (raw: string) => regExp.exec(raw);
+
 const VariantEntity = () => {
-  const { hash } = useParams();
-  const location = useLocation();
-  const hgvsg = new URLSearchParams(location.search).get('hgvsg');
+  const { identifier } = useParams();
+  const match = extractIdentifier(identifier);
+  const field = match ? match[1] : '';
+  const value = match ? match[2] : '';
 
   const [tabKey, setTabKey] = useTab(tabKeyValues, mTabKeys.summary);
+  const { loading, data, error } = useTabSummaryClinicalData(field, value);
 
   return (
     <PageContent
       className={styles.pageContent}
       title={
         <StackLayout horizontal>
-          <Title level={3}>{hgvsg}</Title>
+          <Title level={3}>{data?.hgvsg || ''}</Title>
           <Tag className={styles.variantTag}>Germline</Tag>
         </StackLayout>
       }
@@ -51,7 +59,7 @@ const VariantEntity = () => {
           }
           key={mTabKeys.summary}
         >
-          <TabSummary variantId={hash} />
+          <TabSummary rawData={data} error={error} loading={loading} />
         </TabPane>
         <TabPane
           tab={
@@ -62,7 +70,7 @@ const VariantEntity = () => {
           }
           key={mTabKeys.frequencies}
         >
-          <TabFrequencies variantId={hash} />
+          <TabFrequencies field={field} value={value} />
         </TabPane>
         <TabPane
           tab={
@@ -73,7 +81,7 @@ const VariantEntity = () => {
           }
           key={mTabKeys.clinical}
         >
-          <TabClinical variantId={hash} />
+          <TabClinical data={data} error={error} loading={loading} />
         </TabPane>
       </Tabs>
     </PageContent>

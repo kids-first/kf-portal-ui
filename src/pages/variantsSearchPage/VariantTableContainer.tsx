@@ -67,7 +67,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (
           <Tooltip placement="topLeft" title={hgvsg}>
-            <Link to={`/variant/${record.hash}?hgvsg=${hgvsg}`} href={'#top'}>
+            <Link to={`/variant/locus=${record.locus}`} href={'#top'}>
               {hgvsg}
             </Link>
           </Tooltip>

@@ -1,5 +1,8 @@
-import { arrangerProjectId } from 'common/injectGlobals';
+import urlJoin from 'url-join';
+
 import { initializeApi } from 'services/api';
+
+import { arrangerApiRoot, arrangerProjectId } from '../common/injectGlobals';
 
 export const MISSING_DATA = '__missing__';
 
@@ -95,6 +98,16 @@ export const getFilesByQuery = async ({ sqon, fields, api }) => {
   }
   return edges;
 };
+
+export const fetchPhenotypes = async (data) => {
+  const api = initializeApi();
+  return api({
+    url: urlJoin(arrangerApiRoot, '/phenotypes'),
+    body: { ...data, project: arrangerProjectId },
+    method: 'POST',
+  });
+};
+
 export default graphql;
 
 export const buildSqonForIds = (ids) => ({

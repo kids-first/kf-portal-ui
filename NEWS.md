@@ -8,6 +8,14 @@
 ### Technical / Other changes
 -->
 
+## 2022-05-05 kf-portal-ui 4.2.0
+
+### Technical/ Other changes:
+
+- [SKFP-338](https://d3b.atlassian.net/browse/SKFP-338) Fix: Variant Entity Page Routing by locus number.
+- [SKFP-334](https://d3b.atlassian.net/browse/SKFP-334) Fix: The "upload your list of IDs" for File ID in the File Repo returns an error, although the IDs given are acceptable.
+
+
 ## 2022-02-28 kf-portal-ui 4.1.1
 
 ### Technical/ Other changes:

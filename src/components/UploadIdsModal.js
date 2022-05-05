@@ -3,10 +3,7 @@ import { MatchBox } from '@kfarranger/components/dist/Arranger';
 import { Button, Modal, notification, Typography } from 'antd';
 import PropTypes from 'prop-types';
 
-import graphql from 'services/arranger';
 import { TableHeader } from 'uikit/Headings';
-
-import useUser from '../hooks/useUser';
 
 import LoadingOnClick from './LoadingOnClick';
 
@@ -28,7 +25,10 @@ const UploadIdsModal = (props) => {
     isVisible,
   } = props;
 
-  const { user } = useUser();
+  const createQuicksearchSqon = (ids) => ({
+    op: 'and',
+    content: uploadableFields.map((f) => ({ op: 'in', content: { field: f, value: ids || [] } })),
+  });
 
   return (
     <Modal
@@ -64,7 +64,7 @@ const UploadIdsModal = (props) => {
         }
         ButtonComponent={Button}
       >
-        {({ hasResults, saveSet }) => (
+        {({ hasResults, results }) => (
           <div className={'wrapper-modal-footer'}>
             <Button key="cancel" onClick={closeModal}>
               Cancel
@@ -72,11 +72,7 @@ const UploadIdsModal = (props) => {
             <LoadingOnClick
               onClick={async () => {
                 try {
-                  const { nextSQON } = await saveSet({
-                    userId: user.egoId,
-                    api: graphql(),
-                  });
-                  setSQON(nextSQON);
+                  setSQON(createQuicksearchSqon(results.map((r) => r.input)));
                 } catch (e) {
                   notification.error({
                     message: 'Unable to upload ids',

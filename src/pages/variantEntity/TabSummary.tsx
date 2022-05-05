@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { ApolloError } from '@apollo/client';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Card, Space, Spin, Tag, Tooltip, Typography } from 'antd';
 import capitalize from 'lodash/capitalize';
@@ -11,7 +12,6 @@ import { filterThanSortConsequencesByImpact } from 'components/Variants/conseque
 import EmptyMessage, { DISPLAY_WHEN_EMPTY_DATUM } from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
 import { Consequence, Gene, Impact, VariantEntity } from 'store/graphql/variants/models';
-import { useTabSummaryData } from 'store/graphql/variants/tabActions';
 
 import Summary from './Summary';
 
@@ -20,7 +20,9 @@ import styles from './tables.module.scss';
 const { Text } = Typography;
 
 type OwnProps = {
-  variantId: string;
+  loading: boolean;
+  rawData: any;
+  error: ApolloError | undefined;
 };
 
 type TableGroup = {
@@ -280,9 +282,7 @@ const makeRows = (consequences: Consequence[]) =>
     },
   }));
 
-const TabSummary = ({ variantId }: OwnProps) => {
-  const { loading, data: rawData, error } = useTabSummaryData(variantId);
-
+const TabSummary = ({ loading, rawData, error }: OwnProps) => {
   if (error) {
     return <ServerError />;
   }

@@ -1,14 +1,14 @@
-import { buildVariantIdSqon, useLazyResultQuery } from '../utils/query';
+import { buildVariantSqon, useLazyResultQuery } from '../utils/query';
 
 import { StudyNode } from './models';
-import { TAB_CLINICAL_QUERY, TAB_FREQUENCIES_QUERY, TAB_SUMMARY_QUERY } from './queries';
+import { TAB_FREQUENCIES_QUERY, TAB_SUMMARY_CLINICAL_QUERY } from './queries';
 
 const MAX_NUMBER_STUDIES = 2000;
 
-export const useTabFrequenciesData = (variantId: string) => {
+export const useTabFrequenciesData = (field: string, value: string) => {
   const { loading, result, error } = useLazyResultQuery<any>(TAB_FREQUENCIES_QUERY, {
     variables: {
-      sqon: buildVariantIdSqon(variantId),
+      sqon: buildVariantSqon(field, value),
       studiesSize: MAX_NUMBER_STUDIES,
     },
   });
@@ -35,20 +35,11 @@ export const useTabFrequenciesData = (variantId: string) => {
   };
 };
 
-export const useTabSummaryData = (variantId: string) => {
-  const { loading, result, error } = useLazyResultQuery<any>(TAB_SUMMARY_QUERY, {
+export const useTabSummaryClinicalData = (field: string, value: string) => {
+  const { loading, result, error } = useLazyResultQuery<any>(TAB_SUMMARY_CLINICAL_QUERY, {
     variables: {
-      sqon: buildVariantIdSqon(variantId),
+      sqon: buildVariantSqon(field, value),
     },
   });
   return { loading, data: result?.variants?.hits?.edges[0]?.node, error };
-};
-
-export const useTabClinicalData = (variantId: string) => {
-  const { loading, result, error } = useLazyResultQuery<any>(TAB_CLINICAL_QUERY, {
-    variables: {
-      sqon: buildVariantIdSqon(variantId),
-    },
-  });
-  return { loading, data: result?.variants?.hits?.edges[0]?.node || {}, error };
 };

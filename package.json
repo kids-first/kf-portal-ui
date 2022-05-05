@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "private": true,
   "engines": {
     "node": ">=15.14.0",
@@ -12,7 +12,7 @@
     "@babel/runtime": "^7.12.1",
     "@ferlab/style": "^1.9.8",
     "@ferlab/ui": "^2.2.2",
-    "@kfarranger/components": "1.28.1",
+    "@kfarranger/components": "1.29.0",
     "@nivo/bar": "0.59.0",
     "@nivo/core": "0.59.0",
     "@nivo/pie": "0.59.0",

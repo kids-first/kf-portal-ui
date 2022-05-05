@@ -1,21 +1,23 @@
 import React from 'react';
+import { ApolloError } from '@apollo/client';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Card, Space, Spin, Table } from 'antd';
 
 import EmptyMessage from 'components/Variants/Empty';
 import ServerError from 'components/Variants/ServerError';
-import { useTabClinicalData } from 'store/graphql/variants/tabActions';
 
 import { columnsClinVar, columnsPhenotypes } from './clinicalColumns';
 import { makeClinVarRows, makeGenesOrderedRow } from './clinicalRowsGenerators';
 import ClinVarExternalLink from './ClinVarExternalLink';
 
 type OwnProps = {
-  variantId: string;
+  loading: boolean;
+  data: any;
+  error: ApolloError | undefined;
 };
 
-const TabClinical = ({ variantId }: OwnProps) => {
-  const { loading, data, error } = useTabClinicalData(variantId);
+const TabClinical = (props: OwnProps) => {
+  const { loading, data, error } = props;
 
   if (error) {
     return <ServerError />;

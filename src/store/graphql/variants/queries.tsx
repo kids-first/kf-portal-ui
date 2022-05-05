@@ -207,7 +207,7 @@ export const TAB_FREQUENCIES_QUERY = gql`
   }
 `;
 
-export const TAB_SUMMARY_QUERY = gql`
+export const TAB_SUMMARY_CLINICAL_QUERY = gql`
   query GetSummaryTabVariant($sqon: JSON) {
     variants {
       hits(filters: $sqon) {
@@ -222,6 +222,8 @@ export const TAB_SUMMARY_QUERY = gql`
             clinvar {
               clinvar_id
               clin_sig
+              conditions
+              inheritance
             }
             rsnumber
             reference
@@ -287,35 +289,6 @@ export const TAB_SUMMARY_QUERY = gql`
               hits {
                 total
               }
-            }
-            genes {
-              hits {
-                edges {
-                  node {
-                    omim_gene_id
-                    symbol
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const TAB_CLINICAL_QUERY = gql`
-  query GetClinicalTabVariant($sqon: JSON) {
-    variants {
-      hits(filters: $sqon) {
-        edges {
-          node {
-            clinvar {
-              clin_sig
-              clinvar_id
-              conditions
-              inheritance
             }
             genes {
               hits {
