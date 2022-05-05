@@ -62,7 +62,7 @@ const generateColumns = (props: Props, studyList: StudiesResult[]) =>
   [
     {
       title: 'Variant',
-      dataIndex: 'locus',
+      dataIndex: 'hgvsg',
       className: `${style.variantTableCell} ${style.variantTableCellElipsis}`,
       render: (hgvsg: string, record: VariantEntity) =>
         hgvsg ? (

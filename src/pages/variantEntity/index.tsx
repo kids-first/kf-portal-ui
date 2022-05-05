@@ -6,6 +6,7 @@ import { Tabs, Tag, Typography } from 'antd';
 
 import PageContent from 'components/Layout/PageContent';
 import useTab from 'hooks/useTab';
+import { useTabSummaryClinicalData } from 'store/graphql/variants/tabActions';
 
 import TabClinical from './TabClinical';
 import TabFrequencies from './TabFrequencies';
@@ -36,13 +37,14 @@ const VariantEntity = () => {
   const value = match ? match[2] : '';
 
   const [tabKey, setTabKey] = useTab(tabKeyValues, mTabKeys.summary);
+  const { loading, data, error } = useTabSummaryClinicalData(field, value);
 
   return (
     <PageContent
       className={styles.pageContent}
       title={
         <StackLayout horizontal>
-          <Title level={3}>{value}</Title>
+          <Title level={3}>{data?.hgvsg || ''}</Title>
           <Tag className={styles.variantTag}>Germline</Tag>
         </StackLayout>
       }
@@ -57,7 +59,7 @@ const VariantEntity = () => {
           }
           key={mTabKeys.summary}
         >
-          <TabSummary field={field} value={value} />
+          <TabSummary rawData={data} error={error} loading={loading} />
         </TabPane>
         <TabPane
           tab={
@@ -79,7 +81,7 @@ const VariantEntity = () => {
           }
           key={mTabKeys.clinical}
         >
-          <TabClinical field={field} value={value} />
+          <TabClinical data={data} error={error} loading={loading} />
         </TabPane>
       </Tabs>
     </PageContent>
