@@ -138,7 +138,7 @@ describe('In SelectionTree', () => {
                   'Abnormality of the integument (HP:0001574)-' +
                   'Abnormality of skin adnexa morphology (HP:0011138)-' +
                   'Skin appendage neoplasm (HP:0012842)',
-                hidden: true,
+                hidden: false,
                 results: 2,
                 exactTagCount: 2,
                 valueText: 12,
@@ -152,7 +152,7 @@ describe('In SelectionTree', () => {
                   'Abnormality of the integument (HP:0001574)-' +
                   'Abnormality of skin adnexa morphology (HP:0011138)-' +
                   'Abnormal hair morphology (HP:0001595)',
-                hidden: true,
+                hidden: false,
                 results: 2,
                 exactTagCount: 2,
                 valueText: 24,
@@ -165,7 +165,7 @@ describe('In SelectionTree', () => {
                 key:
                   'Abnormality of the integument (HP:0001574)-' +
                   'Abnormality of skin adnexa morphology (HP:0011138)-Custom term xyz',
-                hidden: true,
+                hidden: false,
                 results: 1,
                 exactTagCount: 1,
                 valueText: 112,
@@ -179,7 +179,7 @@ describe('In SelectionTree', () => {
     ];
 
     const event = {
-      target: { value: 'adne' },
+      target: { value: 'adnexa' },
     } as React.ChangeEvent<HTMLInputElement>;
 
     wrapper.find('Input').simulate('change', event);
