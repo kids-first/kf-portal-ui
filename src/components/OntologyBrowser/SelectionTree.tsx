@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { Button, Col, Input, Row, Tree } from 'antd';
-import { TreeNode } from './Model';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Col, Input, Row, Tree } from 'antd';
+
+import { TreeNode } from './Model';
+import TermCounts from './TermCounts';
 
 import './SelectionTree.css';
-import TermCounts from './TermCounts';
 
 type SelectionTreeProps = {
   dataSource: TreeNode[];
@@ -102,8 +103,10 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     const cleanSearchText = searchText.replace(/[-/\\^$*+?.()|[\]{}]/g, '');
     const regex = new RegExp('\\b(\\w*' + cleanSearchText + '\\w*)\\b', 'gi');
     const text = treeNode.text;
+    const key = treeNode.key;
     const result = text.search(regex) >= 0;
-    let match = cleanSearchText === '' || result;
+    const resultKey = key.search(regex) >= 0;
+    let match = cleanSearchText === '' || result || resultKey;
 
     if (treeNode.children.length > 0) {
       let matchChild = cleanSearchText === '' || false;
@@ -118,7 +121,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
 
     if (!treeNode.hidden) {
       hitTreeNodes.push(treeNode.key);
-      if (result) {
+      if (result || resultKey) {
         const [before, hit, after] = treeNode.text.split(regex);
         treeNode.title = (
           <span>
