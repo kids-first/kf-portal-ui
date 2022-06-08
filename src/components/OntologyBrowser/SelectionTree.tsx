@@ -123,15 +123,17 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
       hitTreeNodes.push(treeNode.key);
       if (result || resultKey) {
         const [before, hit, after] = treeNode.text.split(regex);
-        treeNode.title = (
-          <span>
-            {before}
-            <div className={'highlight'} style={{ display: 'inherit' }}>
-              {hit}
-            </div>
-            {after}
-          </span>
-        );
+        if (hit) {
+          treeNode.title = (
+            <span>
+              {before}
+              <div className={'highlight'} style={{ display: 'inherit' }}>
+                {hit}
+              </div>
+              {after}
+            </span>
+          );
+        }
       }
     }
     return match;
