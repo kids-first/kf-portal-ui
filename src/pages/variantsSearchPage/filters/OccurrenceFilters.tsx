@@ -3,6 +3,8 @@ import { Button, Layout } from 'antd';
 
 import { MappingResults } from 'store/graphql/utils/actions';
 
+import { VARIANT_REPO_CACHE_KEY } from '../constants';
+
 import CustomFilterContainer from './CustomFilterContainer';
 
 import styles from './Filters.module.scss';
@@ -29,6 +31,7 @@ const OccurrenceFilters: FunctionComponent<OwnProps> = ({ mappingResults }) => {
           <CustomFilterContainer
             key={inputFilter}
             classname={styles.variantFilterContainer}
+            queryBuilderId={VARIANT_REPO_CACHE_KEY}
             filterKey={inputFilter}
             mappingResults={mappingResults}
             filtersOpen={filtersOpen}

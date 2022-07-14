@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
-import { getSelectedFilters, updateFilters } from '@ferlab/ui/core/data/filters/utils';
+import { updateFilters } from '@ferlab/ui/core/data/filters/utils';
+import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 
 import {
   ExtendedMapping,
@@ -18,12 +19,19 @@ import CustomFilterSelector from './CustomFilterSelector';
 
 type OwnProps = {
   classname: string;
+  queryBuilderId: string;
   filterKey: string;
   mappingResults: MappingResults;
   filtersOpen: boolean;
 };
 
-const CustomFilterContainer = ({ classname, filterKey, filtersOpen, mappingResults }: OwnProps) => {
+const CustomFilterContainer = ({
+  classname,
+  queryBuilderId,
+  filterKey,
+  filtersOpen,
+  mappingResults,
+}: OwnProps) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [results, setResults] = useState<Results>();
   const found = (mappingResults?.extendedMapping || []).find(
@@ -37,7 +45,9 @@ const CustomFilterContainer = ({ classname, filterKey, filtersOpen, mappingResul
   const aggregations = results?.data ? results?.data.aggregations[filterKey] : {};
   const filterGroup = getFilterGroup(found, aggregations, [], true);
   const filters = results?.data ? getFilters(results?.data, filterKey, found?.type || '') : [];
-  const selectedFilters = results?.data ? getSelectedFilters(filters, filterGroup) : [];
+  const selectedFilters = results?.data
+    ? getSelectedFilters({ queryBuilderId, filters, filterGroup })
+    : [];
 
   return (
     <div className={classname} key={`${filterKey}_${filtersOpen}`}>

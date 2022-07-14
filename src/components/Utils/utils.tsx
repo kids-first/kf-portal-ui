@@ -52,7 +52,7 @@ const isTermAgg = (obj: any): obj is TermAggs => obj!.buckets !== undefined;
 const isRangeAgg = (obj: any): obj is RangeAggs => obj!.stats !== undefined;
 
 export const generateFilters = (
-  queryBuilderId: String,
+  queryBuilderId: string,
   results: Results,
   mappingResults: MappingResults,
   className: string = '',
@@ -68,7 +68,7 @@ export const generateFilters = (
 
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], [], filterFooter);
     const filters = getFilters(results.data, key, found?.type || '');
-    const selectedFilters = getSelectedFilters({ filters, filterGroup });
+    const selectedFilters = getSelectedFilters({ queryBuilderId, filters, filterGroup });
     const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
 
     return (
