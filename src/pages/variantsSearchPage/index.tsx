@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/sidebarMenu';
+import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollView from '@ferlab/ui/core/layout/ScrollView';
 import { Button, Layout, Modal, Typography } from 'antd';
 

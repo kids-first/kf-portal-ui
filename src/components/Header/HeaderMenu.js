@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Menu, Dropdown } from 'antd';
-import autobind from 'auto-bind-es5';
+import { Dropdown, Menu } from 'antd';
 import noop from 'lodash/noop';
+import PropTypes from 'prop-types';
 
 import { DropdownArrowIcon } from 'uikit/Dropdown';
 
@@ -23,12 +22,11 @@ export default class HeaderMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isOpen: false };
-    autobind(this);
   }
 
-  setDropdownVisibility(isOpen) {
+  setDropdownVisibility = (isOpen) => {
     this.setState({ isOpen });
-  }
+  };
 
   render() {
     const { showArrow, onClick, className = '', menuItems, children = null } = this.props;
@@ -40,7 +38,7 @@ export default class HeaderMenu extends React.Component {
         defaultActiveFirst={true} // have the appearance of the first item as if it was hovered
         onClick={onClick}
       >
-        {menuItems.map(item =>
+        {menuItems.map((item) =>
           React.isValidElement(item) ? item : <Menu.Item key={item.key}>{item.label}</Menu.Item>,
         )}
       </Menu>

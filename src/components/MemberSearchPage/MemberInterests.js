@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import { CheckCircleFilled, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Col, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
-import autobind from 'auto-bind-es5';
+
+import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 
 const { Paragraph, Title } = Typography;
 
@@ -21,7 +21,6 @@ class MemberInterests extends Component {
     this.state = {
       filter: true,
     };
-    autobind(this);
   }
 
   static propTypes = {
@@ -30,18 +29,18 @@ class MemberInterests extends Component {
   };
 
   onClick() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       filter: !prevState.filter,
     }));
   }
 
-  testIfHighlighted(originalInterest) {
+  testIfHighlighted = (originalInterest) => {
     const { highlights } = this.props;
-    const matched = highlights.find(hl => hl.replace(regex, '') === originalInterest);
+    const matched = highlights.find((hl) => hl.replace(regex, '') === originalInterest);
     return matched || null;
-  }
+  };
 
-  getMergedInterests() {
+  getMergedInterests = () => {
     const { interests } = this.props;
     return interests
       .reduce((accumulator, currentInterest) => {
@@ -56,7 +55,7 @@ class MemberInterests extends Component {
       }, [])
       .sort(compare)
       .reverse();
-  }
+  };
 
   render() {
     const { filter } = this.state;

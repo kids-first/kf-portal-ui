@@ -1,3 +1,6 @@
+// @TODO: Update and sync getResolvedQueryForCount and fetchQueryCount to keep filter
+// While updating to ferlab ui 3.x, there was some breakings changes
+// @see https://d3b.atlassian.net/browse/SKFP-353
 import React, { ReactElement, useState } from 'react';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { IDictionary } from '@ferlab/ui/core/components/QueryBuilder/types';
@@ -7,7 +10,6 @@ import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 
 import { ExtendedMapping } from 'components/Utils/utils';
 import VariantIcon from 'icons/VariantIcon';
-import history from 'services/history';
 import { HitsStudiesResults } from 'store/graphql/studies/actions';
 import { dotToUnderscore } from 'store/graphql/utils';
 import { MappingResults, useGetPageData } from 'store/graphql/utils/actions';
@@ -54,6 +56,7 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   const [currentPageSize, setcurrentPageSize] = useState(DEFAULT_PAGE_SIZE);
   const { filters } = useFilters();
   const allSqons = getQueryBuilderCache(VARIANT_REPO_CACHE_KEY).state;
+
   const results = useGetPageData(
     {
       sqon: resolveSyntheticSqon(allSqons, filters),
@@ -91,14 +94,8 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
   return (
     <StackLayout vertical className={styles.variantPagecontainer}>
       <QueryBuilder
+        id={VARIANT_REPO_CACHE_KEY}
         className="variant-repo__query-builder"
-        cacheKey={VARIANT_REPO_CACHE_KEY}
-        enableCombine={true}
-        currentQuery={filters?.content?.length ? filters : {}}
-        history={history}
-        loading={results.loading}
-        total={total}
-        dictionary={dictionary}
         headerConfig={{
           showHeader: true,
           showTools: false,
@@ -114,7 +111,17 @@ const VariantPageContainer = ({ mappingResults }: VariantPageContainerData) => {
           selectedFilterContent: selectedFilterContent,
           blacklistedFacets: ['genes.symbol', 'locus'],
         }}
+        enableCombine
         IconTotal={<VariantIcon fill={styleThemeColors.iconColor} />}
+        currentQuery={filters?.content?.length ? filters : {}}
+        total={total}
+        dictionary={dictionary}
+        getResolvedQueryForCount={() => ({ op: 'and', content: [] })}
+        fetchQueryCount={async () =>
+          new Promise((resolve) => {
+            resolve(1);
+          })
+        }
       />
       <StackLayout vertical className={styles.tableContainer}>
         <VariantTableContainer

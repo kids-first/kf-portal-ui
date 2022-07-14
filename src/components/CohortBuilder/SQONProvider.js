@@ -5,7 +5,6 @@ import {
   isReference,
   resolveSyntheticSqon,
 } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
-import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
 import { parse as parseQueryString, stringify } from 'query-string';
 import { compose } from 'recompose';
@@ -19,11 +18,6 @@ import {
 } from 'store/actionCreators/virtualStudies';
 
 class SQONProvider extends React.Component {
-  constructor(props) {
-    super(props);
-    autobind(this);
-  }
-
   static propTypes = {
     history: PropTypes.object.isRequired,
     resetVirtualStudy: PropTypes.func,
@@ -37,14 +31,6 @@ class SQONProvider extends React.Component {
     sqonDictionary: PropTypes.any,
     api: PropTypes.func,
   };
-
-  loadVirtualStudy(virtualStudyId) {
-    if (virtualStudyId === null) {
-      this.props.resetVirtualStudy();
-      return;
-    }
-    this.props.loadSavedVirtualStudy(this.props.api, virtualStudyId);
-  }
 
   componentDidMount() {
     const { virtualStudyId, history } = this.props;
@@ -80,14 +66,22 @@ class SQONProvider extends React.Component {
     }
   }
 
-  getActiveExecutableSqon() {
+  loadVirtualStudy = (virtualStudyId) => {
+    if (virtualStudyId === null) {
+      this.props.resetVirtualStudy();
+      return;
+    }
+    this.props.loadSavedVirtualStudy(this.props.api, virtualStudyId);
+  };
+
+  getActiveExecutableSqon = () => {
     const { sqons, activeIndex } = this.props;
     return resolveSyntheticSqon(sqons)(sqons[activeIndex]);
-  }
+  };
 
   // takes care of putting a new sqon into place while preserving references
   // TODO - move to `common/sqonUtils`
-  mergeSqonToActiveIndex(newSqon) {
+  mergeSqonToActiveIndex = (newSqon) => {
     const { sqons, activeIndex } = this.props;
     const updatedSqons = sqons.map((currentSqon, i) =>
       i === activeIndex
@@ -100,15 +94,15 @@ class SQONProvider extends React.Component {
         : currentSqon,
     );
     this.props.setSqons(updatedSqons);
-  }
+  };
 
-  setStudyInUrl(virtualStudyId) {
+  setStudyInUrl = (virtualStudyId) => {
     const { history } = this.props;
     history.replace({
       ...history.location,
       search: virtualStudyId ? stringify({ id: virtualStudyId }) : '',
     });
-  }
+  };
 
   render() {
     const {

@@ -2,11 +2,8 @@ import React from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
 import { IFilterGroup } from '@ferlab/ui/core/components/filters/types';
-import {
-  getFilterType,
-  getSelectedFilters,
-  updateFilters,
-} from '@ferlab/ui/core/data/filters/utils';
+import { getFilterType, updateFilters } from '@ferlab/ui/core/data/filters/utils';
+import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 
 import {
   defaultOperatorMapping,
@@ -55,6 +52,7 @@ const isTermAgg = (obj: any): obj is TermAggs => obj!.buckets !== undefined;
 const isRangeAgg = (obj: any): obj is RangeAggs => obj!.stats !== undefined;
 
 export const generateFilters = (
+  queryBuilderId: String,
   results: Results,
   mappingResults: MappingResults,
   className: string = '',
@@ -70,7 +68,7 @@ export const generateFilters = (
 
     const filterGroup = getFilterGroup(found, results.data?.aggregations[key], [], filterFooter);
     const filters = getFilters(results.data, key, found?.type || '');
-    const selectedFilters = getSelectedFilters(filters, filterGroup);
+    const selectedFilters = getSelectedFilters({ filters, filterGroup });
     const FilterComponent = useFilterSelector ? FilterSelector : FilterContainer;
 
     return (

@@ -3,7 +3,6 @@ import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 import { Spin } from 'antd';
-import autobind from 'auto-bind-es5';
 import Downshift from 'downshift';
 import debounce from 'lodash/debounce';
 import isObject from 'lodash/isObject';
@@ -94,7 +93,6 @@ class SearchAll extends React.Component {
       selections: initializeSelection(props.fields, props.sqon),
       displayMode: DISPLAY_MODE.CLOSED,
     };
-    autobind(this);
     this.setQueryDebounced = debounce(this.setQueryDebounced, 200);
   }
 
@@ -113,7 +111,7 @@ class SearchAll extends React.Component {
     title: 'search',
   };
 
-  close() {
+  close = () => {
     this.setState({
       query: '',
       debouncedQuery: '',
@@ -122,9 +120,9 @@ class SearchAll extends React.Component {
       isFilterShown: false,
       selections: {},
     });
-  }
+  };
 
-  setQuery(query) {
+  setQuery = (query) => {
     const { displayMode } = this.state;
     const { fields, sqon } = this.props;
     const selections =
@@ -142,9 +140,9 @@ class SearchAll extends React.Component {
       debouncedQuery: query,
       displayMode: query === '' ? DISPLAY_MODE.CLOSED : DISPLAY_MODE.RESULTS,
     });
-  }
+  };
 
-  setQueryDebounced(state) {
+  setQueryDebounced = (state) => {
     this.setState(state);
 
     trackCohortBuilderAction({
@@ -155,13 +153,13 @@ class SearchAll extends React.Component {
           : TRACKING_EVENTS.actions.clear,
       label: state.debouncedQuery,
     });
-  }
+  };
 
-  handleQueryChange(evt) {
+  handleQueryChange = (evt) => {
     this.setQuery(evt.currentTarget.value);
-  }
+  };
 
-  handleClearQuery() {
+  handleClearQuery = () => {
     const { debouncedQuery } = this.state;
 
     this.close();
@@ -171,9 +169,9 @@ class SearchAll extends React.Component {
       action: TRACKING_EVENTS.actions.clear,
       label: debouncedQuery,
     });
-  }
+  };
 
-  renderSearchResults(isLoading, data, selections) {
+  renderSearchResults = (isLoading, data, selections) => {
     const { fields } = this.props;
     const { debouncedQuery } = this.state;
 
@@ -196,9 +194,9 @@ class SearchAll extends React.Component {
         onSearchField={this.handleSearchByField}
       />
     );
-  }
+  };
 
-  renderFilter() {
+  renderFilter = () => {
     const { sqon, onSqonUpdate, sets } = this.props;
     const { fieldName } = this.state;
 
@@ -223,9 +221,9 @@ class SearchAll extends React.Component {
         />
       </div>
     );
-  }
+  };
 
-  renderOverlay(isLoading, data) {
+  renderOverlay = (isLoading, data) => {
     const { selections, displayMode } = this.state;
 
     switch (displayMode) {
@@ -239,9 +237,9 @@ class SearchAll extends React.Component {
         console.warn(`[SearchAll] Unhandled display mode ${displayMode}`);
         return null;
     }
-  }
+  };
 
-  handleSelectionChange(evt, field, value) {
+  handleSelectionChange = (evt, field, value) => {
     const checked = evt.currentTarget.checked;
     const oldValues = this.state.selections[field.name];
     const index = oldValues.indexOf(value);
@@ -279,9 +277,9 @@ class SearchAll extends React.Component {
         value,
       },
     });
-  }
+  };
 
-  handleApplyFilter() {
+  handleApplyFilter = () => {
     const { sqon, fields, onSqonUpdate } = this.props;
     const { selections, fieldName } = this.state;
 
@@ -318,9 +316,9 @@ class SearchAll extends React.Component {
       action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
       label: { added_sqon: SQONdiff(newSqon, sqon), result_sqon: newSqon },
     });
-  }
+  };
 
-  handleSearchByField(fieldName) {
+  handleSearchByField = (fieldName) => {
     this.setState({
       query: '',
       debouncedQuery: '',
@@ -329,7 +327,7 @@ class SearchAll extends React.Component {
       isFilterShown: false,
       selections: {},
     });
-  }
+  };
 
   render() {
     const { api, sqon, color, title, fields } = this.props;

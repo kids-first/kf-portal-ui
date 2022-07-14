@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'antd';
-import autobind from 'auto-bind-es5';
 import compact from 'lodash/compact';
 import get from 'lodash/get';
 import union from 'lodash/union';
@@ -277,7 +276,6 @@ class ParticipantsTable extends Component {
           : { ...field, sortable: false },
       ),
     };
-    autobind(this);
   }
 
   render() {

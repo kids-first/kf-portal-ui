@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, notification } from 'antd';
-import autobind from 'auto-bind-es5';
 import debounce from 'lodash/debounce';
 import flatMap from 'lodash/flatMap';
 import uniq from 'lodash/uniq';
@@ -56,7 +55,6 @@ class SearchByIdModal extends React.Component {
     };
     this.fileInpuRef = React.createRef();
     this.handleViewResults = debounce(handleViewResults, 500);
-    autobind(this);
   }
 
   static propTypes = {
@@ -69,7 +67,7 @@ class SearchByIdModal extends React.Component {
 
   resetState = () => this.setState({ ...initialState });
 
-  handleFilesUpload(evt) {
+  handleFilesUpload = (evt) => {
     parseInputFiles(evt.currentTarget.files)
       .then((contents) => {
         const inputIds = contents
@@ -78,14 +76,14 @@ class SearchByIdModal extends React.Component {
         this.setInputIds(inputIds);
       })
       .catch(console.error);
-  }
+  };
 
-  handleInputIdsChange(evt) {
+  handleInputIdsChange = (evt) => {
     const inputIdsText = evt.currentTarget.value;
     this.setInputText(inputIdsText);
-  }
+  };
 
-  handleApplyFilterClick() {
+  handleApplyFilterClick = () => {
     if (!(this.state.results && this.state.results.participants)) {
       return;
     }
@@ -112,30 +110,30 @@ class SearchByIdModal extends React.Component {
     setSqons(modifiedSqons);
     closeModal(SEARCH_MODAL_ID);
     this.resetState();
-  }
+  };
 
-  setInputText(inputIdsText) {
+  setInputText = (inputIdsText) => {
     const inputIds = parseInput(inputIdsText);
     this.setState({ inputIdsText, inputIds });
     this.handleViewResults();
-  }
+  };
 
-  setInputIds(inputIds) {
+  setInputIds = (inputIds) => {
     const inputIdsText = inputIds.join(', ');
     this.setState({ inputIdsText, inputIds });
     this.handleViewResults();
-  }
+  };
 
-  handleClose() {
+  handleClose = () => {
     this.resetState();
     this.props.closeModal(SEARCH_MODAL_ID);
-  }
+  };
 
-  handleClear() {
+  handleClear = () => {
     this.setInputText('');
-  }
+  };
 
-  renderBody() {
+  renderBody = () => {
     const { inputIdsText, inputIds, results, loading } = this.state;
 
     return (
@@ -193,7 +191,7 @@ class SearchByIdModal extends React.Component {
         ) : null}
       </>
     );
-  }
+  };
 
   render() {
     const { openModalId, loading } = this.props;

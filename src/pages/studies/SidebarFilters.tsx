@@ -6,6 +6,7 @@ import { Col, Row, Tooltip } from 'antd';
 import { generateFilters } from 'components/Utils/utils';
 import { SidebarData, useGetStudiesSearch } from 'store/graphql/studies/actions';
 
+import { STUDIES_QUERY_BUILDER_ID } from './constants';
 import SearchBar from './SearchBar';
 import { MAX_NUMBER_STUDIES } from './studies';
 
@@ -72,7 +73,7 @@ const SidebarFilters = ({ studiesResults, studiesMappingResults, filters }: OwnP
         </Row>
         {options.length ? <SearchBar filters={filters} options={options} /> : <div />}
       </div>
-      {generateFilters(data, studiesMappingResults)}
+      {generateFilters(STUDIES_QUERY_BUILDER_ID, data, studiesMappingResults)}
     </div>
   );
 };

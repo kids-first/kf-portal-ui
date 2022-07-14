@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import { Tooltip } from 'antd';
-import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
 
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
@@ -26,11 +25,9 @@ class HorizontalBar extends Component {
     const { tickInterval } = props;
     this.maxValue = tickInterval ? this.maxValue : 'auto';
     this.tickValues = tickInterval;
-
-    autobind(this);
   }
 
-  onMouseEnter(data, e) {
+  onMouseEnter = (data, e) => {
     const { showCursor = true } = this.props;
     e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
@@ -45,22 +42,22 @@ class HorizontalBar extends Component {
         });
       }
     }
-  }
+  };
 
-  onMouseLeave(data, e) {
+  onMouseLeave = (data, e) => {
     const target = e ? e.target : false;
     if (target) {
       target.style.cursor = 'default';
     }
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
-  }
+  };
 
-  onClick(data) {
+  onClick = (data) => {
     const { onClick } = this.props;
     if (onClick) onClick(data);
-  }
+  };
 
-  renderAxisLeftTick(tick, xOffset) {
+  renderAxisLeftTick = (tick, xOffset) => {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, tickIndex } = tick;
@@ -104,20 +101,18 @@ class HorizontalBar extends Component {
         </g>
       </Tooltip>
     );
-  }
+  };
 
-  sumUpKeys(obj) {
-    return this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
-  }
+  sumUpKeys = (obj) => this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
 
-  defaultSort(datumA, datumB) {
+  defaultSort = (datumA, datumB) => {
     if (/desc(ending)?/i.test('' + this.props.sortOrder)) {
       return this.sumUpKeys(datumA) - this.sumUpKeys(datumB);
     }
     return this.sumUpKeys(datumB) - this.sumUpKeys(datumA);
-  }
+  };
 
-  sortData(data) {
+  sortData = (data) => {
     const { sortBy, sortByKeys = null } = this.props;
     const sortFn =
       typeof sortBy === 'function'
@@ -129,7 +124,7 @@ class HorizontalBar extends Component {
         : null;
     const filteredData = data.filter((x) => x);
     return sortFn ? filteredData.sort(sortFn) : filteredData;
-  }
+  };
 
   defaultAxisBottomFormat = (v) => (Number.isInteger(Number(v)) ? v.toLocaleString() : '');
 
