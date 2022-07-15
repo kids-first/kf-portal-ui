@@ -1,5 +1,5 @@
 import saveTSV from '@kfarranger/components/dist/DataTable/TableToolbar/saveTSV';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import startCase from 'lodash/startCase';
 import urlJoin from 'url-join';
 
@@ -27,13 +27,13 @@ function findColumnsByField(fields, columns) {
 }
 function getManifestDownload(type) {
   return ({ sqon, columns }) => () => {
-    const filename = `[kidsfirst-${type}-manifest_]YYYY-MM-DD`;
+    const filename = `kidsfirst-${type}-manifest_${dayjs().format('YYYY-MM-DD')}`;
     return saveTSV({
       url: downloadUrl,
-      fileName: format(new Date(), filename),
+      fileName: filename,
       files: [
         {
-          fileName: format(new Date(), `${filename}[.tsv]`),
+          fileName: `${filename}.tsv`,
           sqon,
           index: 'file',
           columns: findColumnsByField(

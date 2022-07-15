@@ -1,6 +1,7 @@
 import React from 'react';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { configure, mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+
 import LoadingOnClick from '../LoadingOnClick';
 
 configure({ adapter: new Adapter() });

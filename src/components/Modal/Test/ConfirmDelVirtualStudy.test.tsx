@@ -1,9 +1,10 @@
 import React from 'react';
-import { configure, mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import { Provider } from 'react-redux';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { configure, mount, ReactWrapper } from 'enzyme';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import ConfirmDelVirtualStudy from '../ConfirmDelVirtualStudy';
 
 configure({ adapter: new Adapter() });

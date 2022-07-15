@@ -1,7 +1,9 @@
 import React from 'react';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+
 import { jestPatchMatchMedia } from 'utils';
+
 import EntityContentSection from '../EntityContentSection';
 
 Enzyme.configure({ adapter: new Adapter() });

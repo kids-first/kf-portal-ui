@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent } from 'react';
-import { Button } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { Sqon } from 'store/sqon';
+import { Button } from 'antd';
+
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { fileManifestParticipantsAndFamily } from 'services/downloadData';
+import { Sqon } from 'store/sqon';
+
 import css from './FamilyManifestModal.module.css';
 
 type sqonForDownloadParams = {

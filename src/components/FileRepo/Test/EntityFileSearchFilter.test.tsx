@@ -1,6 +1,6 @@
 import React from 'react';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { configure, mount, ReactWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 
 import { EntityName } from 'store/fileSearchFiltersTypes';
 

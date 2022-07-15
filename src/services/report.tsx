@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import keycloak from 'keycloak';
 import isEmpty from 'lodash/isEmpty';
 import uniq from 'lodash/uniq';
@@ -108,7 +108,7 @@ export default async (config: ReportConfig) => {
     data: {
       sqon: reportSqon,
       projectId: arrangerProjectId,
-      filename: format(new Date(), `[${name}_]YYYYMMDD[.xlsx]`),
+      filename: `${name}_${dayjs().format('YYYYMMDD')}.xlsx`,
     },
     headers: {
       Authorization: `Bearer ${keycloak.token}`,

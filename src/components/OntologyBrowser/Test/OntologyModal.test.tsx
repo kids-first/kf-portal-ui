@@ -1,11 +1,14 @@
 import React from 'react';
-import OntologyModal, { updateSqons } from '../index';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { configure, mount, ReactWrapper, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import { Spinner } from 'uikit/Spinner';
-import { PhenotypeStore } from '../store';
-import { treeData } from './mockData';
+
 import { Sqon, SqonFilters } from 'store/sqon';
+import { Spinner } from 'uikit/Spinner';
+
+import OntologyModal, { updateSqons } from '../index';
+import { PhenotypeStore } from '../store';
+
+import { treeData } from './mockData';
 
 configure({ adapter: new Adapter() });
 

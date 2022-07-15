@@ -1,6 +1,6 @@
 import * as React from 'react';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme, { shallow, ShallowWrapper } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 
 import { jestPatchMatchMedia } from '../../../utils';
 import { TreeNode } from '../Model';

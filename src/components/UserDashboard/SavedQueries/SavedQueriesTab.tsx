@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 import { DeleteFilled, WarningFilled } from '@ant-design/icons';
 import { Alert, Button, List, Popconfirm, Space } from 'antd';
-import { distanceInWords } from 'date-fns';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { SavedQueriesStatuses, SavedQueryWithFileContent } from 'store/SavedQueriesTypes';
 import { VirtualStudyPlusId } from 'store/virtualStudiesTypes';
@@ -25,6 +26,9 @@ type Props = {
 
 const sortByEarliestToLatest = (items: Items) =>
   [...items].sort((a, b) => Number(new Date(b.creationDate)) - Number(new Date(a.creationDate)));
+
+// add fromNow support https://day.js.org/docs/en/plugin/relative-time
+dayjs.extend(relativeTime);
 
 const SavedQueriesTab = (props: Props) => {
   const {
@@ -82,9 +86,7 @@ const SavedQueriesTab = (props: Props) => {
               description={
                 <Space direction={'vertical'}>
                   {makeDescription(item)}
-                  <span className={'time-ago'}>
-                    Saved {distanceInWords(new Date(), new Date(item.creationDate))} ago
-                  </span>
+                  <span className={'time-ago'}>Saved {dayjs(item.creationDate).fromNow()} ago</span>
                   {currentItemIsInError && (
                     <Alert
                       type={'error'}
