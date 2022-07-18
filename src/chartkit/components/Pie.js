@@ -50,8 +50,11 @@ class Pie extends Component {
         {this.props.title ? <div className="pieTitle">{this.props.title}</div> : null}
         <ResponsivePie
           {...this.props}
+          enableArcLabels={false}
+          enableArcLinkLabels={false}
           data={colorData}
-          colors={(data) => data.color}
+          colors={gradient}
+          colorBy="index"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           fill={[{ match: (x) => x.data.index === this.state.highlightedIndex, id: 'lines' }]}
