@@ -8,7 +8,7 @@ export const removeMondo = (value) => {
 };
 
 export const mostFrequentDiagnosisTooltip = (data) => {
-  const { familyMembers, probands, label } = data;
+  const { familyMembers = 0, probands = 0, label } = data;
   const participants = familyMembers + probands;
   return (
     <div className={'tp-diagnosis-container'}>
@@ -19,7 +19,7 @@ export const mostFrequentDiagnosisTooltip = (data) => {
 };
 
 export const studiesToolTip = (data) => {
-  const { familyMembers, probands, label } = data;
+  const { familyMembers = 0, probands = 0, label } = data;
   const participants = familyMembers + probands;
   return (
     <div className={'tp-studies-container'}>
