@@ -10,6 +10,7 @@ import { defaultTheme } from '../themes';
 import { truncateText } from '../utils';
 
 import Legend from './Legend';
+import HorizontalBarTooltip from './Tooltip';
 
 import 'ui/Tooltips/tooltips.scss';
 
@@ -131,9 +132,9 @@ class HorizontalBar extends Component {
   defaultLeftFormat = (v) => v.toLocaleString();
 
   tooltip = ({ id, value, data, children }) => (
-    <Tooltip key={id} title={value} className={'tp-content'}>
+    <HorizontalBarTooltip key={id} title={value} className={'tp-content'}>
       {children ? children : this.props.tooltipFormatter(data)}
-    </Tooltip>
+    </HorizontalBarTooltip>
   );
   render() {
     const {

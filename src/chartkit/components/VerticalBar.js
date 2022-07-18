@@ -180,6 +180,7 @@ class VerticalBar extends Component {
         tickValues: tickInterval,
         format: axisBottomFormat,
         theme: defaultTheme,
+        renderTick: () => <></>,
       },
       axisLeft: {
         legend: axisLeftLegend,

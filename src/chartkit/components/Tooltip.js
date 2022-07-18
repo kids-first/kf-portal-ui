@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Tooltip = ({ className = '', index, data, children = null, formatter = v => v }) => (
+const Tooltip = ({ className = '', index, data, children = null, formatter = (v) => v }) => (
   <div
-    className={className}
+    className={`tooltip ${className}`}
     keys={index}
     style={{
       fill: '#404c9a',

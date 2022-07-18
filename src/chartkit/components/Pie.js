@@ -7,10 +7,10 @@ import Tooltip from './Tooltip';
 
 import './Pie.css';
 
-const PieTooltip = ({ id, value, label }) => (
+const PieTooltip = ({ datum: { id, label, value } }) => (
   <Tooltip className="pieTooltip" key={id}>
     <div>{label || id}</div>
-    <div>{`${value} Participants`}</div>
+    <div>{`${value ?? 0} Participants`}</div>
   </Tooltip>
 );
 
