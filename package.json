@@ -132,7 +132,7 @@
     "react-scripts": "^4.0.3",
     "redux-mock-store": "^1.5.4",
     "sass-loader": "^10.2.0",
-    "source-map-explorer": "^2.4.2",
+    "source-map-explorer": "^2.5.2",
     "typescript": "^3.9.3"
   },
   "lint-staged": {
