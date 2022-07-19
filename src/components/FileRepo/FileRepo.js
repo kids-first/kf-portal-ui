@@ -106,7 +106,6 @@ const FileRepo = ({
     <SQONURL
       render={(url) => (
         <ArrangerConnectionGuard
-          api={props.api}
           graphqlField={props.graphqlField}
           render={({ connecting, connectionError }) =>
             connecting || connectionError ? (

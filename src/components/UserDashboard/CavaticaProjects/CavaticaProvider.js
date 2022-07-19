@@ -1,12 +1,17 @@
-import React from 'react';
-import Component from 'react-component-component';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { getProjects as getCavaticaProjects, getMembers, getTasks } from 'services/cavatica';
+import { getMembers, getProjects as getCavaticaProjects, getTasks } from 'services/cavatica';
 
 const CavaticaProvider = ({ children, isConnected }) => {
-  const refresh = ({ setState }) => async () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [projects, setProjects] = useState(null);
+  const [projectsError, setProjectsError] = useState(null);
+
+  const refresh = async () => {
     if (!isConnected) return false;
-    setState({ loading: true });
+    setIsLoading(true);
+
     let projects = [];
     try {
       const response = await getCavaticaProjects();
@@ -14,11 +19,11 @@ const CavaticaProvider = ({ children, isConnected }) => {
         projects = response;
       }
     } catch (error) {
-      setState({ projectsError: error });
+      setProjectsError(error);
     }
 
     const projectList = await Promise.all(
-      (projects || []).map(async p => {
+      (projects || []).map(async (p) => {
         const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
           getMembers({ project: p.id }),
           getTasks({ project: p.id, type: 'COMPLETED' }),
@@ -35,21 +40,21 @@ const CavaticaProvider = ({ children, isConnected }) => {
         return { ...p, members: members.items.length, tasks };
       }),
     );
-    setState({ projects: projectList, loading: false });
+
+    setProjects(projectList);
+    setIsLoading(false);
   };
 
-  return (
-    <Component initialState={{ loading: true, projects: null }} didMount={s => refresh(s)()}>
-      {({ state, setState }) =>
-        children({
-          projects: state.projects,
-          loading: state.loading,
-          refresh: refresh({ setState }),
-          projectsError: state.projectsError,
-        })
-      }
-    </Component>
-  );
+  useEffect(() => {
+    refresh();
+  });
+
+  return <>{children({ projects, loading: isLoading, refresh, projectsError })}</>;
+};
+
+CavaticaProvider.propTypes = {
+  isConnected: PropTypes.bool,
+  children: PropTypes.func.isRequired,
 };
 
 export default CavaticaProvider;
