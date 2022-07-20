@@ -38,7 +38,7 @@
     "react-ga": "^2.7.0",
     "react-icons": "^2.2.7",
     "react-places-autocomplete": "^7.3.0",
-    "react-redux": "^7.2.0",
+    "react-redux": "^8.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scrollbar-size": "^5.0.0",
