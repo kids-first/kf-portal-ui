@@ -1,12 +1,15 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { Spinner } from 'uikit/Spinner';
-import { PhenotypeStore } from '../../OntologyBrowser/store';
-import { TreeNode } from '../../OntologyBrowser/Model';
+
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
-import { Sqon } from 'store/sqon';
-import './Ontology.css';
 import Empty, { Direction, SIZE } from 'components/UI/Empty';
+import { Sqon } from 'store/sqon';
+import { Spinner } from 'uikit/Spinner';
+
+import { TreeNode } from '../../OntologyBrowser/Model';
+import { PhenotypeStore } from '../../OntologyBrowser/store';
+
+import './Ontology.css';
 
 type OntologySunburstProps = {
   sqon: Sqon;
@@ -19,7 +22,7 @@ type OntologySunburstState = {
 };
 
 const tooltipFormatter = (data: TreeNode) => `${data.results}\n\n${data.title}`;
-const centerTextFormatter = (data: TreeNode) => `${data.results} ${data.title}`;
+const centerTextFormatter = (data: TreeNode) => `${data?.results} ${data?.title}`;
 
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
   state = {

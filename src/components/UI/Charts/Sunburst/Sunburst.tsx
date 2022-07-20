@@ -1,15 +1,18 @@
 import React from 'react';
 import { Component } from 'react';
-import sunburstD3 from './sunburst-d3';
-import InfoPanel from './InfoPanel';
-import { Phenotype } from 'store/sunburstTypes';
-import './sunburst.css';
+
+import { lightTreeNodeConstructor, TreeNode } from 'components/OntologyBrowser/Model';
 import {
   generateNavTreeFormKey,
   RegexExtractPhenotype,
   splitHPOTerm,
 } from 'components/OntologyBrowser/store';
-import { lightTreeNodeConstructor, TreeNode } from 'components/OntologyBrowser/Model';
+import { Phenotype } from 'store/sunburstTypes';
+
+import InfoPanel from './InfoPanel';
+import sunburstD3 from './sunburst-d3';
+
+import './sunburst.css';
 
 type PhenotypeSplit = {
   name: string;

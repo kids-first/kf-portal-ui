@@ -52,7 +52,7 @@ class VerticalBar extends Component {
   renderAxisLeftTick = (tick) => {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
-    const { format, key, x, y, tickIndex } = tick;
+    const { format, x, y, tickIndex } = tick;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
@@ -72,10 +72,9 @@ class VerticalBar extends Component {
 
     return (
       <g
-        key={key}
         transform={`translate(${x - xOffset},${y})`}
         style={{ cursor: highlighted ? 'pointer' : 'default' }}
-        onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+        onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex }, e)}
         onMouseLeave={this.onMouseLeave}
       >
         <text

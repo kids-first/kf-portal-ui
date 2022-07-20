@@ -61,7 +61,7 @@ class HorizontalBar extends Component {
   renderAxisLeftTick = (tick, xOffset) => {
     const { highlightedIndexValue } = this.state;
     const { onClick, xTickTextLength = 10 } = this.props;
-    const { format, key, x, y, tickIndex } = tick;
+    const { format, x, y, tickIndex } = tick;
     const { tooltipDictionary } = this.props;
 
     const value = typeof format === 'function' ? format(tick.value) : tick.value;
@@ -82,12 +82,11 @@ class HorizontalBar extends Component {
       : value;
 
     return (
-      <Tooltip key={key} title={tooltipValue}>
+      <Tooltip title={tooltipValue}>
         <g
-          key={key}
           transform={`translate(${x - xOffset},${y})`}
           style={{ cursor: highlighted ? 'pointer' : 'default' }}
-          onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+          onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex }, e)}
           onMouseLeave={this.onMouseLeave}
         >
           <text

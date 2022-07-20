@@ -78,7 +78,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
   path
     .filter((d) => d)
     .style('cursor', (d) => (arcVisible(d.current) ? 'pointer' : 'node'))
-    .on('mouseover', function (p) {
+    .on('mouseover', function (e, p) {
       const data = d3.select(this).datum().current;
       return arcVisible(data) ? onMouseover(p) : () => {};
     })
@@ -86,7 +86,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
       const data = d3.select(this).datum().current;
       return arcVisible(data) ? onMouseout() : () => {};
     })
-    .on('click', function (p) {
+    .on('click', function (e, p) {
       const data = d3.select(this).datum().current;
       return arcVisible(data) ? clicked(p) : () => {};
     })
@@ -101,7 +101,7 @@ const sunburstD3 = (ref, data, config, getSelectedPhenotype, formatters) => {
     .attr('pointer-events', 'all')
     .attr('text-anchor', 'middle')
     .style('cursor', 'pointer')
-    .on('click', clicked);
+    .on('click', (e, p) => clicked(p));
 
   // center text
   // Only create the node if we have something to display
