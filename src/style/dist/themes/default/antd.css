@@ -7638,6 +7638,9 @@ _:-ms-fullscreen .ant-picker-range-wrapper .ant-picker-year-panel .ant-picker-ce
 .ant-form-vertical .ant-form-item-label > label {
   height: auto;
 }
+.ant-form-vertical .ant-form-item .ant-form-item-control {
+  width: 100%;
+}
 .ant-form-vertical .ant-form-item-label,
 .ant-col-24.ant-form-item-label,
 .ant-col-xl-24.ant-form-item-label {
@@ -22173,7 +22176,7 @@ table tr th.ant-table-selection-column::after {
   padding: 0;
   color: inherit;
   line-height: 17px;
-  vertical-align: -3px;
+  vertical-align: -2.5px;
   background: #fff;
   border: 1px solid #d7d8db;
   border-radius: 2px;
@@ -22231,8 +22234,12 @@ table tr th.ant-table-selection-column::after {
   content: none;
 }
 .ant-table-row-indent + .ant-table-row-expand-icon {
-  margin-top: 2.5005px;
   margin-right: 8px;
+}
+.ant-table-row-expand-icon + .ant-table-cell-content {
+  display: inline-block !important;
+  width: calc(100% - (17px + 8px));
+  vertical-align: top;
 }
 tr.ant-table-expanded-row > td,
 tr.ant-table-expanded-row:hover > td {
@@ -24434,6 +24441,17 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   color: inherit;
   font-weight: 500;
 }
+.ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  visibility: visible;
+  opacity: 0.2;
+  transition: opacity 0.3s;
+}
+.ant-tree-treenode:hover .ant-tree .ant-tree-treenode-draggable .ant-tree-draggable-icon {
+  opacity: 0.45;
+}
 .ant-tree-indent {
   align-self: stretch;
   white-space: nowrap;
@@ -24444,14 +24462,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   width: 24px;
 }
 .ant-tree-draggable-icon {
-  width: 24px;
-  line-height: 24px;
-  text-align: center;
-  opacity: 0.2;
-  transition: opacity 0.3s;
-}
-.ant-tree-treenode:hover .ant-tree-draggable-icon {
-  opacity: 0.45;
+  visibility: hidden;
 }
 .ant-tree-switcher {
   position: relative;
@@ -24909,6 +24920,17 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   color: inherit;
   font-weight: 500;
 }
+.ant-select-tree .ant-select-tree-treenode-draggable .ant-select-tree-draggable-icon {
+  width: 24px;
+  line-height: 24px;
+  text-align: center;
+  visibility: visible;
+  opacity: 0.2;
+  transition: opacity 0.3s;
+}
+.ant-select-tree-treenode:hover .ant-select-tree .ant-select-tree-treenode-draggable .ant-select-tree-draggable-icon {
+  opacity: 0.45;
+}
 .ant-select-tree-indent {
   align-self: stretch;
   white-space: nowrap;
@@ -24919,14 +24941,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   width: 24px;
 }
 .ant-select-tree-draggable-icon {
-  width: 24px;
-  line-height: 24px;
-  text-align: center;
-  opacity: 0.2;
-  transition: opacity 0.3s;
-}
-.ant-select-tree-treenode:hover .ant-select-tree-draggable-icon {
-  opacity: 0.45;
+  visibility: hidden;
 }
 .ant-select-tree-switcher {
   position: relative;
@@ -25466,6 +25481,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
   display: inline-block;
 }
 .ant-upload.ant-upload-disabled {
+  color: rgba(0, 0, 0, 0.25);
   cursor: not-allowed;
 }
 .ant-upload.ant-upload-select-picture-card {

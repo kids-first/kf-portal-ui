@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { saveAs } from 'file-saver';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 
-const getDefaultContentType = responseType => {
+const getDefaultContentType = (responseType) => {
   const fallbackContentType = 'text/plain;charset=utf-8';
 
   switch (responseType) {
@@ -60,7 +60,7 @@ export default async (opts = {}) => {
     throw new Error(`Unsupported responseType "${opts.responseType}" provided.`);
   }
 
-  return axios(opts).then(response => {
+  return axios(opts).then((response) => {
     // Make a Blob from the response
     const blob = getBlobFromResponse(response, opts.responseType);
 
@@ -72,10 +72,10 @@ export default async (opts = {}) => {
       try {
         const filenameFromContentDisposition = disposition
           .split(';')
-          .map(part => part.trim())
+          .map((part) => part.trim())
           // Matching the modern format`filename="MyFile.txt"`,
           //  but not the derelict syntax `filename*=utf-8''MyFile.txt`
-          .find(part => /filename=".*"/i.test(part));
+          .find((part) => /filename=".*"/i.test(part));
         filename = /filename="(.*)"/i.exec(filenameFromContentDisposition)[1];
       } catch (err) {
         filename = uuid();
