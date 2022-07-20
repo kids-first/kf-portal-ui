@@ -1,5 +1,4 @@
 import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 
 import rootReducer from './reducers';
@@ -9,15 +8,10 @@ export { default as getPreloadedState } from './statePreloader';
 
 export let store = null;
 export const initStore = (preloadedState = {}) => {
-  const composeEnhancers = composeWithDevTools({
-    // Specify extension’s options like name,
-    //  actionsBlacklist, actionsCreators, serialize...
-  });
+  const composeEnhancers =
+    (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
-  const enhancer = composeEnhancers(
-    applyMiddleware(thunk),
-    // other store enhancers if any
-  );
+  const enhancer = composeEnhancers(applyMiddleware(thunk));
 
   store = createStore(rootReducer, preloadedState, enhancer);
 
