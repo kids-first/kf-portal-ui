@@ -1,3 +1,4 @@
+import React, { Fragment } from 'react';
 import {
   BankFilled,
   EnvironmentFilled,
@@ -6,15 +7,16 @@ import {
   WarningFilled,
 } from '@ant-design/icons';
 import { Avatar, Col, List, Row, Spin, Typography } from 'antd';
-import React, { Fragment } from 'react';
-import './MemberSearchPage.css';
+
+import ROUTES from 'common/routes';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberInterests';
-import { Link } from 'uikit/Core';
-import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
+import { Link } from 'uikit/Core';
 import ProfilePill from 'uikit/ProfilePill';
 import { computeGravatarSrcFromEmail } from 'utils';
+
+import './MemberSearchPage.css';
 
 const { Text, Title } = Typography;
 
@@ -99,6 +101,9 @@ const MemberTable = ({
 
   const memberShowThisPage = showAll ? count.total : count.public;
 
+  console.log('membersPerPage', membersPerPage); //TODO: to remove
+  console.log('memberList', memberList); //TODO: to remove
+
   return (
     <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
       <List
@@ -145,7 +150,7 @@ const MemberTable = ({
         className={'member-list'}
         dataSource={memberList}
         loading={pending}
-        renderItem={item => {
+        renderItem={(item) => {
           const hasAddress = item.city || item.state || item.country;
           return (
             <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
@@ -162,18 +167,16 @@ const MemberTable = ({
                     size={60}
                   />
                   <div style={{ paddingTop: 10 }}>
-                    {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
+                    {item.roles[0] && <ProfilePill roles={item.roles} />}
                   </div>
                 </Col>
                 <Col style={{ left: 0, right: 0, flex: 1 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
                     <div className={'flex member-info-title'}>
-                      {item.title ? (
+                      {item.title && (
                         <div key={0} style={{ paddingRight: 5 }}>
                           {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
                         </div>
-                      ) : (
-                        ''
                       )}
                       <FormatLabel
                         value={item.firstName}
@@ -187,25 +190,19 @@ const MemberTable = ({
                       />
                     </div>
                   </Link>
-                  {hasAddress || item.institution ? (
-                    <div style={{ paddingTop: 10 }}>
-                      {item.institution ? (
-                        <Row className={'flex'}>
-                          <BankFilled className={'icon-color'} style={{ paddingRight: 8 }} />
-                          <Text style={{ color: 'inherit' }}>{item.institution}</Text>
-                        </Row>
-                      ) : (
-                        ''
-                      )}
-
-                      <Address item={item} />
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                  {item.interests.length < 1 ? (
-                    ''
-                  ) : (
+                  {hasAddress ||
+                    (item.institution && (
+                      <div style={{ paddingTop: 10 }}>
+                        {item.institution && (
+                          <Row className={'flex'}>
+                            <BankFilled className={'icon-color'} style={{ paddingRight: 8 }} />
+                            <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                          </Row>
+                        )}
+                        <Address item={item} />
+                      </div>
+                    ))}
+                  {item?.interests?.length > 0 && (
                     <div style={{ color: 'inherit', paddingTop: 24 }}>
                       <MemberInterests
                         interests={item.interests}
@@ -219,7 +216,7 @@ const MemberTable = ({
                     story={(item.highlight || {}).story || []}
                   />
                 </Col>
-                {isAdmin ? (
+                {isAdmin && (
                   <Row
                     style={{
                       position: 'absolute',
@@ -231,8 +228,6 @@ const MemberTable = ({
                   >
                     {displayItemStatus(item)}
                   </Row>
-                ) : (
-                  ''
                 )}
               </Row>
             </List.Item>
@@ -241,6 +236,14 @@ const MemberTable = ({
       />
     </div>
   );
+};
+
+MemberTable.defaultProps = {
+  count: {
+    public: 0,
+    total: 0,
+  },
+  memberList: [],
 };
 
 export default MemberTable;

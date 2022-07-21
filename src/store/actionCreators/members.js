@@ -51,12 +51,14 @@ export const requestResetStore = () => ({
   payload: null,
 });
 
-export const fetchListOfMembers = (searchInput = '', searchParams) => async (dispatch) => {
-  dispatch(fetchMatchingListOfMembers());
-  try {
-    const response = await searchMembers(searchInput, searchParams);
-    dispatch(receiveMatchingListOfMembers(response));
-  } catch (err) {
-    dispatch(requestError(err));
-  }
-};
+export const fetchListOfMembers =
+  (searchInput = '', searchParams) =>
+  async (dispatch) => {
+    dispatch(fetchMatchingListOfMembers());
+    try {
+      const response = await searchMembers(searchInput, searchParams);
+      dispatch(receiveMatchingListOfMembers(response));
+    } catch (err) {
+      dispatch(requestError(err));
+    }
+  };

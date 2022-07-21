@@ -47,7 +47,6 @@
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "sass": "^1.42.1",
-    "scriptjs": "^2.5.9",
     "tinygradient": "^1.1.5",
     "uuid": "^8.3.2"
   },
@@ -135,6 +134,9 @@
     "sass-loader": "^10.2.0",
     "source-map-explorer": "^2.5.2",
     "typescript": "^3.9.3"
+  },
+  "overrides": {
+    "react-error-overlay": "6.0.9"
   },
   "lint-staged": {
     "*.(ts|tsx|js|jsx)": [
