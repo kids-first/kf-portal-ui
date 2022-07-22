@@ -101,9 +101,6 @@ const MemberTable = ({
 
   const memberShowThisPage = showAll ? count.total : count.public;
 
-  console.log('membersPerPage', membersPerPage); //TODO: to remove
-  console.log('memberList', memberList); //TODO: to remove
-
   return (
     <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
       <List
