@@ -1,3 +1,4 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
 import cavatica from './cavatica';
@@ -18,7 +19,7 @@ import user from './user';
 import virtualStudies from './virtualStudies';
 import workBench from './workbench';
 
-export default combineReducers({
+const rootReducer = combineReducers({
   virtualStudies,
   currentVirtualStudy,
   user,
@@ -37,3 +38,11 @@ export default combineReducers({
   members,
   participantEntity,
 });
+
+export const setupStore = (preloadedState) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+
+export default rootReducer;
