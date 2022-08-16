@@ -1,0 +1,18 @@
+@import 'src/style/themes/kids-first/colors';
+
+.headerLink {
+  .headerBtn {
+    border: none;
+    color: $purple-6;
+    padding: 4px 8px;
+    margin: 0 5px;
+
+    &:hover,
+    &:focus,
+    &.active {
+      background-color: $purple-1;
+      border: none;
+      color: $purple-6;
+    }
+  }
+}

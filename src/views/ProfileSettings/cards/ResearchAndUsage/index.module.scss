@@ -1,0 +1,14 @@
+.identificationCardContent {
+    width: 100%;
+}
+
+.gravatarCol {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+    
+    .userGravatar {
+        height: 120px;
+        width: 120px;
+    }
+}

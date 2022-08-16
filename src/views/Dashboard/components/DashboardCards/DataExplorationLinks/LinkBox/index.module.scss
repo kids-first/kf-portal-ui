@@ -1,0 +1,35 @@
+@import 'src/style/themes/kids-first/colors';
+
+.dataExploBox {
+  padding: 16px;
+  background-color: transparent;
+  width: 100%;
+  border-radius: 2px;
+  border: 1px solid $gray-7;
+
+  &:hover {
+    background-color: $gray-9;
+    border-color: $gray-9;
+
+    .linkArrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .linkArrow {
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    margin-left: -8px;
+    margin-top: 5px;
+    font-size: 20px;
+    color: $blue-7;
+  }
+
+  .linkTitle {
+    font-weight: 500;
+    color: $gray-8;
+    font-size: 16px;
+  }
+}

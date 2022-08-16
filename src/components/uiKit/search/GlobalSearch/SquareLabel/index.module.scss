@@ -1,0 +1,16 @@
+.squareLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  width: 42px;
+  height: 42px;
+  left: 0;
+  top: 0;
+  border-radius: 2px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+}

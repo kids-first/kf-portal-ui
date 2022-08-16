@@ -1,0 +1,31 @@
+.phenotypeSunburstTree {
+    width: 100%;
+  
+    *[class$="-typography"] {
+      margin: 0;
+    }
+  
+    .addTermBtn {
+      padding: 0;
+    }
+  
+    .treeWrapper {
+      margin-top: 8px;
+      width: 100%;
+  
+      .phenotypeTree {
+        background-color: transparent;
+  
+        :global(.ant-tree-switcher) {
+          width: 0;
+        }
+  
+        :global(.ant-tree-node-content-wrapper) {
+          &:global(:not(.ant-tree-node-selected)) {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+  

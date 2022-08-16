@@ -1,0 +1,64 @@
+@import 'src/style/themes/kids-first/layout';
+@import 'src/style/themes/kids-first/colors';
+
+.communityWrapper {
+  width: 100%;
+  padding: $default-page-content-padding;
+  margin: auto;
+  display: flex;
+
+  .tableWrapper {
+    width: 100%;
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  .usagesWrapper {
+    padding-left: 56px;
+  }
+
+  .usagesWrapper,
+  .commercialUseWrapper {
+    margin-top: 12px;
+
+    .usagesListTitle {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .usagesList {
+      padding-left: 14px;
+      font-size: 12px;
+    }
+
+    .commercialUseReason {
+      font-size: 12px;
+    }
+  }
+
+  .usersListWrapper {
+    width: 100%;
+
+    :global(.ant-list-pagination) {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .membersList {
+      background-color: unset;
+
+      :global(.ant-col) {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .memberListItem {
+        height: 100%;
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

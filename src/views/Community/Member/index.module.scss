@@ -1,0 +1,103 @@
+@import 'src/style/themes/kids-first/layout';
+@import 'src/style/themes/kids-first/colors';
+
+.communityMemberWrapper {
+  padding: 24px;
+}
+
+.communityMember {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+  border-radius: 4px;
+  background-color: white;
+
+  .contentWrapper {
+    width: 100%;
+    padding: 40px;
+    margin-top: -110px;
+    border: 1px solid $gray-4;
+    border-top: none;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  .banner {
+    height: 200px;
+    width: 100%;
+    background: url('../../../components/assets/memberHeader.png');
+    padding: 24px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 1px solid $gray-4;
+    border-bottom: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+
+  .bannerActions {
+    display: flex;
+    justify-content: space-between;
+
+    .communityBtn {
+      padding: 0;
+      color: $blue-5;
+    }
+
+    .editButton {
+      color: $blue-5;
+    }
+  }
+
+  .memberName {
+    margin-bottom: 0;
+  }
+
+  .avatarContainer {
+    width: 100%;
+  }
+
+  .gravatarWrapper,
+  .gravatar {
+    height: 140px;
+  }
+
+  .divider {
+    border-width: 1.5px;
+    margin: 35px 0;
+  }
+
+  .infoList {
+    background-color: transparent;
+    margin-left: 14px;
+
+    &.empty {
+      margin-left: 0;
+    }
+
+    :global(.ant-list-empty-text) {
+      padding: 0;
+    }
+
+    ul {
+      list-style: disc;
+    }
+  }
+
+  .memberNameSkeleton {
+    width: 200px;
+  }
+
+  .memberAssoSkeleton {
+    width: 100px;
+  }
+}
+
+.notFoundMember {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}

@@ -1,0 +1,51 @@
+@alert-info-bg-color: @blue-1;
+@alert-info-border-color: @blue-4;
+@alert-success-bg-color: @green-1;
+@alert-success-border-color: @green-4;
+@alert-warning-bg-color: @orange-1;
+@alert-warning-border-color: @orange-4;
+@alert-error-bg-color: @red-1;
+@alert-error-border-color: @red-4;
+@alert-close-color: inherit;
+@alert-close-hover-color: inherit;
+
+.@{alert-prefix-cls} {
+  &-success {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @green-9;
+    }
+  }
+
+  &-info {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @blue-9;
+    }
+  }
+
+  &-warning {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @orange-9;
+    }
+  }
+
+  &-error {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @red-8;
+    }
+  }
+
+  &-message {
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

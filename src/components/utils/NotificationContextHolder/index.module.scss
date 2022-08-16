@@ -1,0 +1,28 @@
+@import 'src/style/themes/kids-first/colors';
+
+.antMessage {
+  &.success {
+    div[class$='-notice-content'] {
+      background-color: $green-1;
+      color: $green-9;
+    }
+  }
+  &.info {
+    div[class$='-notice-content'] {
+      background-color: $blue-1;
+      color: $blue-9;
+    }
+  }
+  &.error {
+    div[class$='-notice-content'] {
+      background-color: $red-1;
+      color: $red-9;
+    }
+  }
+  &.warning {
+    div[class$='-notice-content'] {
+      background-color: $orange-1;
+      color: $orange-9;
+    }
+  }
+}

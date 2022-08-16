@@ -1,0 +1,32 @@
+@import 'src/style/themes/kids-first/layout';
+
+.dataExplorationLayout {
+  display: flex;
+  height: calc(100vh - #{$main-header-height});
+
+  .filterLoader {
+    padding: 24px;
+    width: 100%;
+  }
+
+  .sideMenu {
+    li[role='menuitem'] {
+      color: white;
+
+      span[class$='-title-content'] {
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+  span[role='img'].sideMenuIcon {
+    font-size: 20px !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .scrollContent {
+    width: 100%;
+    padding: $default-page-content-padding;
+  }
+}

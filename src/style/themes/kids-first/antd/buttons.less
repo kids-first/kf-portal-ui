@@ -1,0 +1,156 @@
+@btn-shadow: none;
+@btn-primary-shadow: none;
+@btn-text-shadow: none;
+
+@btn-default-color: @gray-8;
+@btn-default-bg: @gray-1;
+@btn-default-border: @gray-5;
+
+@btn-disable-border: @gray-5;
+
+@btn-default-ghost-color: @gray-6;
+@btn-default-ghost-border: @gray-6;
+
+@btn-text-hover-bg: @gray-2;
+
+.ant-btn-group .ant-btn-primary:last-child:not(:first-child)[disabled],
+.ant-btn-group .ant-btn-primary + .ant-btn-primacpry[disabled] {
+  border-left-color: @btn-disable-border;
+}
+
+.@{btn-prefix-cls} {
+  &.iconRight {
+    display: flex;
+    align-items: center;
+  }
+
+  &-lg {
+    &.iconRight .anticon {
+      height: 16px;
+    }
+  }
+
+  :not(&-lg) {
+    &.iconRight .anticon {
+      height: 14px;
+    }
+  }
+
+  &-default {
+    &:hover {
+      background-color: @cyan-7;
+      border-color: @cyan-7;
+      color: @gray-1;
+    }
+    &:focus {
+      background-color: @gray-1;
+      border-color: @gray-5;
+      color: @gray-8;
+    }
+    &:active {
+      background-color: @gray-3;
+    }
+    &:focus-visible {
+      border-color: @gray-8;
+      box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @gray-8;
+    }
+
+    &.@{btn-prefix-cls}-dangerous:not(:disabled) {
+      &:hover {
+        background-color: @gray-2;
+        color: @red-7;
+        border-color: @red-7;
+      }
+      &:focus {
+        color: @red-7;
+        border-color: @red-7;
+      }
+      &:active {
+        color: @red-8;
+        border-color: @red-8;
+      }
+      &:focus-visible {
+        border-color: @red-7;
+        box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @red-7;
+      }
+    }
+  }
+
+  &-primary {
+    &:hover {
+      background-color: @blue-9;
+      border-color: @blue-9;
+    }
+    &:focus {
+      background-color: @blue-8;
+      border-color: @blue-8;
+    }
+    &:active {
+      background-color: @blue-10;
+      border-color: @blue-10;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @blue-8;
+    }
+
+    &.@{btn-prefix-cls}-dangerous {
+      &:hover {
+        background-color: @red-6;
+        border-color: @red-6;
+      }
+      &:focus {
+        background-color: @red-6;
+        border-color: @red-6;
+      }
+      &:active {
+        background-color: @red-8;
+        border-color: @red-8;
+      }
+      &:focus-visible {
+        background-color: @red-7;
+        box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @red-7;
+      }
+    }
+
+    &.@{btn-prefix-cls}-background-ghost:not(:disabled) {
+      border-color: @blue-5;
+      color: @blue-5;
+
+      &:hover {
+        border-color: @blue-3;
+        color: @blue-3;
+      }
+      &:focus-visible {
+        border-color: @blue-3;
+        color: @blue-3;
+        border-width: 2px;
+      }
+    }
+  }
+
+  &-text {
+    &:hover {
+      background-color: @gray-2;
+    }
+    &:active {
+      background-color: @gray-3;
+    }
+    &:focus-visible {
+      box-shadow: 0 0 0 2px @gray-8;
+    }
+
+    &.@{btn-prefix-cls}-dangerous:not(:disabled) {
+      &:focus-visible {
+        box-shadow: 0 0 0 2px @red-7;
+      }
+    }
+  }
+
+  &-link {
+    &:not(:disabled) {
+      span:not(:hover) {
+        text-decoration: underline;
+      }
+    }
+  }
+}

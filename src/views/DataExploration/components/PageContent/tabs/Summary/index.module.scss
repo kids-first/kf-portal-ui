@@ -1,0 +1,15 @@
+.summaryGrapCard {
+  height: 100%;
+
+  div[class$='-body'] {
+    overflow: unset !important;
+  }
+}
+
+.summaryGraphCardCol {
+  width: 100%;
+}
+
+.sunburstGraphCard {
+  min-height: 450px;
+}

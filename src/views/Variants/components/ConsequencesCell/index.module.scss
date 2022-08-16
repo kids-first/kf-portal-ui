@@ -1,0 +1,34 @@
+@import 'src/style/themes/kids-first/colors';
+
+.consequenceUl {
+  list-style: none;
+  padding: 0;
+}
+
+.highImpact {
+  fill: $red-5;
+}
+
+.lowImpact {
+  fill: $green-6;
+}
+
+.moderateImpact {
+  fill: $orange-5;
+}
+
+.modifierImpact {
+  fill: $body-3;
+}
+
+.detail {
+  padding-right: 12px;
+}
+
+.bullet {
+  margin-right: 8px;
+}
+
+.symbol {
+  padding-right: 8px;
+}

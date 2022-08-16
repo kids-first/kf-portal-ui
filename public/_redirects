@@ -1,3 +1,2 @@
 # API requests for static hosts
-/api/*    https://arranger.kfdrc.org/:splat    200
 /*              /index.html          200

@@ -1,36 +1,49 @@
 import React from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import ConditionalWrapper from 'components/utils/ConditionalWrapper';
+import { STATIC_ROUTES } from 'utils/routes';
+import { useUser } from 'store/user';
+import { REDIRECT_URI_KEY } from 'common/constants';
 
-import ROUTES from 'common/routes';
+type OwnProps = Omit<RouteProps, 'component' | 'render' | 'children'> & {
+  layout?: (children: any) => React.ReactElement;
+  children: React.ReactNode;
+};
 
-import useUser from './hooks/useUser';
-import { hasUserRole } from './utils';
-
-// assumes that keycloak is always initialized when this component's called
-const ProtectedRoute = ({ ...routeProps }: RouteProps) => {
-  const { user } = useUser();
+const ProtectedRoute = ({ children, layout, ...routeProps }: OwnProps) => {
+  const { userInfo, error } = useUser();
   const { keycloak } = useKeycloak();
-  const userNeedsToLogin = !user || !keycloak.authenticated;
-  if (userNeedsToLogin) {
-    return <Redirect to={ROUTES.login} />;
-  }
-
-  if (!hasUserRole(user)) {
-    return <Redirect to={ROUTES.join} />;
-  }
-
-  if (!user!.acceptedTerms) {
-    return <Redirect to={ROUTES.termsConditions} />;
-  }
-
+  const RouteLayout = layout!;
+  const userNeedsToLogin = !userInfo || !keycloak.authenticated;
   const currentPath = routeProps.path;
-  if (currentPath === ROUTES.login) {
-    // is already authenticated but tries to reach the login page
-    return <Redirect to={ROUTES.dashboard} />;
+
+  if (error) {
+    return <Redirect to={STATIC_ROUTES.ERROR} />;
   }
 
-  return <Route {...routeProps} />;
+  if (userNeedsToLogin) {
+    return (
+      <Redirect
+        to={{
+          pathname: STATIC_ROUTES.LOGIN,
+          search: `${REDIRECT_URI_KEY}=${routeProps.location?.pathname}${routeProps.location?.search}`,
+        }}
+      />
+    );
+  }
+
+  if (currentPath === STATIC_ROUTES.LOGIN) {
+    return <Redirect to={STATIC_ROUTES.DASHBOARD} />;
+  }
+
+  return (
+    <ConditionalWrapper
+      condition={RouteLayout !== undefined}
+      children={<Route {...routeProps}>{children}</Route>}
+      wrapper={(children) => <RouteLayout>{children}</RouteLayout>}
+    />
+  );
 };
 
 export default ProtectedRoute;

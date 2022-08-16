@@ -1,0 +1,82 @@
+.@{notification-prefix-cls} {
+  &-notice {
+    &-message {
+      font-weight: bold;
+    }
+
+    &-success {
+      background-color: @green-1;
+      .@{notification-prefix-cls}-close-icon,
+      .@{notification-prefix-cls}-notice-message,
+      .@{notification-prefix-cls}-notice-description {
+        color: @green-9;
+      }
+    }
+
+    &-info {
+      background-color: @blue-1;
+      .@{notification-prefix-cls}-close-icon,
+      .@{notification-prefix-cls}-notice-message,
+      .@{notification-prefix-cls}-notice-description {
+        color: @blue-9;
+      }
+    }
+
+    &-warning {
+      background-color: @orange-1;
+      .@{notification-prefix-cls}-close-icon,
+      .@{notification-prefix-cls}-notice-message,
+      .@{notification-prefix-cls}-notice-description {
+        color: @orange-9;
+      }
+    }
+
+    &-error {
+      background-color: @red-1;
+      .@{notification-prefix-cls}-close-icon,
+      .@{notification-prefix-cls}-notice-message,
+      .@{notification-prefix-cls}-notice-description {
+        color: @red-9;
+      }
+    }
+  }
+
+  &-success {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @green-9;
+    }
+  }
+
+  &-info {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @blue-9;
+    }
+  }
+
+  &-warning {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @orange-9;
+    }
+  }
+
+  &-error {
+    .@{alert-prefix-cls}-message,
+    .@{alert-prefix-cls}-close-icon {
+      color: @red-8;
+    }
+  }
+
+  &-message {
+    a {
+      color: inherit;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

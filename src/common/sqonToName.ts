@@ -1,14 +1,9 @@
 // @ts-nocheck
+import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 
 type TGetValues = (filters: Object, sets: Object) => string;
 
-// type TFiltersToName = ({
-//   filters?: Object,
-//   max?: number,
-//   sets: Object,
-//   length?: number,
-// }) => string;
-export const SET_DEFAULT_NAME = 'input set';
+export const SET_DEFAULT_NAME = 'Untitled set';
 
 const getValues: TGetValues = (filters, sets) => {
   const content: Array<Object> | undefined = filters.content;
@@ -21,8 +16,8 @@ const getValues: TGetValues = (filters, sets) => {
       []
         .concat(content.value || [])
         .map((v) =>
-          typeof v === 'string' && v.includes('set_id:')
-            ? sets[v.replace('set_id:', '')] || SET_DEFAULT_NAME
+          typeof v === 'string' && v.includes(SET_ID_PREFIX)
+            ? sets[v.replace(SET_ID_PREFIX, '')] || SET_DEFAULT_NAME
             : v,
         ),
     ];
@@ -31,9 +26,9 @@ const getValues: TGetValues = (filters, sets) => {
 
 const MAX_VALUES = 6;
 
-// extend TFiltersToName
 const filtersToName = ({ filters, max = MAX_VALUES, sets = {}, length = Infinity }) => {
   if (!filters) return '';
+
   const values = getValues(
     filters,
     Object.values(sets).reduce((a, b) => ({ ...a, ...b }), {}),
@@ -50,6 +45,7 @@ const filtersToName = ({ filters, max = MAX_VALUES, sets = {}, length = Infinity
       );
     }, [])
     .join(', ');
+
   return name.length <= length ? name : name.slice(0, length - 3).replace(/[, ./]*$/, '...');
 };
 

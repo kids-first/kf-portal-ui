@@ -1,0 +1,11 @@
+All aliases in queries files
+
+`id` should be there in every `hits.edges` ?
+
+is_a_proband -> is_proband -> should be Boolean instead of String, or if keep String use Keyword instead of Text
+{"errors":[{"message":"Field \"is_a_proband\" of type \"Aggregations\" must have a selection of subfields. Did you mean \"is_a_proband { ... }\"?","locations":[{"line":4,"column":7}],"extensions":{"code":"GRAPHQL_VALIDATION_FAILED","exception":{"stacktrace":["GraphQLError: Field \"is_a_proband\" of type \"Aggregations\" must have a selection of subfields. Did you mean \"is_a_proband { ... }\"?",
+
+Variant:
+ - consequences in gql Variant is direct VariantConsequences object, not a array ArrangerResultsTree as Include
+
+variant_external_reference is string type but actually string[] on ELS

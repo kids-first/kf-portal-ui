@@ -1,0 +1,79 @@
+@import 'src/style/themes/kids-first/colors';
+
+.hpoTransfer {
+  div[class$='transfer-list'] {
+    flex: 1 1 50%;
+    width: auto;
+    height: auto;
+    min-height: 600px;
+
+    .highlight {
+      background-color: yellow;
+      display: inherit;
+    }
+
+    div[class$='-list-body-customize-wrapper'] {
+      height: 100%;
+
+      div[class^='ant-spin-'] {
+        height: 100%;
+      }
+    }
+
+    &:last-child {
+      div[class$='-list-body-search-wrapper'] {
+        display: none;
+      }
+    }
+  }
+
+  li[class$='-list-content-item'] {
+    span[class$='-list-content-item-text'] {
+      flex: unset;
+    }
+
+    div[class$='-list-content-item-remove'] {
+      color: $gray-8;
+    }
+  }
+
+  :global(.ant-tree-list-holder-inner) {
+    display: block !important;
+  }
+
+  :global(.ant-tree-treenode) {
+    width: 100%;
+  }
+
+  :global(.ant-tree-node-content-wrapper) {
+    width: 100%;
+    display: block;
+  }
+
+  :global(.ant-tree-title) {
+    display: block;
+    width: 100%;
+  }
+
+  .phenotypeTreeCountTag {
+    display: flex;
+    justify-content: center;
+  }
+
+  .phenotypeTreeHeader {
+    padding-right: 4px;
+    margin-bottom: 12px;
+  }
+}
+
+.hpoTreeModalWrapper {
+  .hpoTreeModal {
+    width: 90% !important;
+  }
+}
+
+.treeNodeTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}

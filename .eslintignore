@@ -1,11 +1,2 @@
-package.json
-package-lock.json
-.eslintrc*
-tsconfig.json
-NEWS.md
-commitlint.config.js
-
 *.scss
 *.css
-*.less
-*.md

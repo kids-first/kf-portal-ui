@@ -1,0 +1,10 @@
+@import 'src/style/themes/kids-first/colors';
+
+.savedSetListItem {
+  .countDisplay {
+    padding-right: 5px;
+    .count {
+      font-weight: 500;
+    }
+  }
+}

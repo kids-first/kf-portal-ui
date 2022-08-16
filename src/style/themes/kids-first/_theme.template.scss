@@ -1,0 +1,96 @@
+@import '~@ferlab/style/themes/default/theme.template';
+@import 'src/style/themes/kids-first/colors';
+
+$font-weight-semibold: 500;
+$font-weight-bold: 500;
+
+// Query Builder
+$query-default-action-default-color: $gray-8;
+$query-default-action-hover-color: $gray-8;
+$query-default-action-focus-color: $gray-8;
+
+$query-builder-header-tools-icon-color: $gray-8;
+$query-builder-header-tools-icon-hover: $gray-8;
+$query-builder-header-tools-icon-focus: $gray-8;
+$query-builder-header-tools-icon-color-dirty: $orange-7;
+
+$query-builder-bg: $white;
+$query-builder-border-color: $gray-4;
+$query-builder-header-border-divider-color: $gray-4;
+
+$query-bar-bg: $gray-2;
+$query-bar-bg-active: $blue-2;
+$query-bar-border-color: $gray-4;
+$query-bar-border-color-active: $blue-4;
+
+$query-bar-identifier: $gray-6;
+$query-bar-identifier-active: $blue-6;
+
+$query-pill-bg: $gray-4;
+$query-pill-bg-active: $blue-3;
+$query-pill-button-default-color: $gray-8;
+$query-pill-button-hover-color: $gray-8;
+$query-pill-button-focus-color: $gray-8;
+
+$query-icon-operator-color: $gray-8;
+$query-text-operator-color-hover: $gray-8;
+$query-icon-operator-color-hover: $gray-8;
+$query-icon-label-operator-color: $gray-8;
+
+$query-combiner-button-default-color: $gray-8;
+$query-combiner-button-hover-color: $gray-8;
+$query-combiner-button-focus-color: $gray-8;
+
+// Filters
+$checkbox-filter-actions-separator-links: $blue-8;
+$filter-actions-border-color: $gray-4;
+
+// SidebarMenu
+$sidebar-login-width: 573px;
+
+$sidebar-menu-width: 180px;
+$sidebar-menu-collapsed-width: 50px;
+$sidebar-menu-background-color: $cyan-7;
+$sidebar-menu-toggle-icon-size: 21px;
+
+$sidebar-menu-item-icon-size: 24px;
+$sidebar-menu-item-height: 50px;
+$sidebar-menu-item-text-color: $gray-1;
+$sidebar-menu-item-active-background-color: $cyan-8;
+$sidebar-menu-item-active-color: $gray-1;
+$sidebar-menu-item-hover-color: $gray-1;
+$sidebar-menu-item-hover-opacity: 0.8;
+$sidebar-menu-item-border-focus: none;
+$sidebar-menu-item-border-focus-color: $gray-1;
+
+$sidebar-quick-filter-input-box-shadow-hover: 0 0 0 2px $blue-8;
+$sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px $gray-8, 0 0 0 3px $gray-1;
+$sidebar-quick-filter-input-placeholder-color: $gray-6;
+$sidebar-quick-filter-input-text-color: $gray-8;
+
+$sidebar-content-panel-padding: 16px;
+$sidebar-content-panel-width: 320px;
+$sidebar-content-panel-close-icon-color: $gray-8;
+$sidebar-content-panel-right-border: 1px solid $gray-5;
+$sidebar-content-panel-background-color: transparent;
+$sidebar-content-panel-close-icon-width: 16px;
+
+// TODO Set variables see: https://github.com/Ferlab-Ste-Justine/ferlab-ui/blob/master/packages/style/themes/default/_theme.template.scss
+
+$grid-card-light-background-color: white;
+$grid-card-shade-background-color: $gray-2;
+
+// EMPTY
+$empty-image-color: $gray-5;
+$empty-content-color: $gray-7;
+
+// Collapse
+$collapse-light-background-color: white;
+$collapse-shade-background-color: $gray-3;
+$collapse-header-border-color: $gray-4;
+
+// ProLabel
+$prolabel-required-mark-color: $red-8;
+
+// UploadIds
+$file-upload-item-color: $blue-8;

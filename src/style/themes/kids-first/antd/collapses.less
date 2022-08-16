@@ -1,0 +1,34 @@
+@collapse-header-bg: @gray-1;
+@collapse-content-padding: 16px;
+
+.@{collapse-prefix-cls} {
+  &, &-content {
+    border-color: @gray-4;
+  }
+
+  &-content-box {
+    padding: @collapse-content-padding !important;
+  }
+
+  &-borderless {
+    >.@{collapse-prefix-cls}-item { 
+      &:last-child {
+        border-radius: 2px; 
+  
+        >.@{collapse-prefix-cls}-header {
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+
+  & > &-item {
+    border-color: @gray-4;
+
+    > .@{collapse-prefix-cls}-header {
+      .@{collapse-prefix-cls}-arrow {
+        color: @gray-7;
+      }
+    }
+  }
+}

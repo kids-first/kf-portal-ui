@@ -1,0 +1,18 @@
+export const getCommonColors = (): string[] => [
+  "#008fc7",
+  "#b9bd31",
+  "#d06d5e",
+  "#ffb600",
+  "#36cfc9",
+  "#b37feb",
+  "#f759ab",
+  "#d06d5e",
+  "#31bdf2",
+  "#ff7a45",
+  "#d3adf7",
+  "#ffb600",
+  "#fb9a99",
+  "#6a3d9a",
+  "#ff7f00",
+  "#1f78b4",
+];

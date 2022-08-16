@@ -1,0 +1,13 @@
+.savedFiltersList {
+    height: 100%;
+    overflow: auto;
+    min-height: 200px;
+
+    div[class$="-item-meta"] {
+        margin-bottom: 0;
+    }
+
+    *[class$="-item-meta-description"] {
+        font-size: 12px;
+    }
+}

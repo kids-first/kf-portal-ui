@@ -1,0 +1,19 @@
+@import 'src/style/themes/kids-first/colors';
+
+.searchLabel {
+  &.titleWrapper {
+    color: $gray-9;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .title {
+      font-size: 12px;
+    }
+
+    .tooltipIcon {
+      margin-left: 0.5rem;
+      color: $gray-6;
+    }
+  }
+}

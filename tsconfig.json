@@ -6,27 +6,27 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "assumeChangesOnlyAffectDirectDependencies": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "downlevelIteration": true,
     "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./src",
-    "noFallthroughCasesInSwitch": true
+    "jsx": "react-jsx"
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
   "include": [
     "src"
+  ],
+  "exclude": [
+    ".eslintrc.json",
+    "./public/**/*"
   ]
 }

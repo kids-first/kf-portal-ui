@@ -1,0 +1,41 @@
+@import 'src/style/themes/kids-first/colors';
+
+.listItemWithActions {
+  align-items: baseline;
+
+  .filterLink {
+    padding: 0;
+    height: unset;
+    color: $gray-8;
+  }
+
+  &:hover {
+    .setLink {
+      * {
+        text-decoration: underline;
+      }
+
+      &:hover {
+        color: $gray-8;
+        * {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .extra {
+      display: none;
+    }
+  }
+
+  .itemMeta {
+    margin-bottom: 0px;
+  }
+
+  .actionBtn {
+    &:hover,
+    &:focus {
+      background-color: transparent;
+    }
+  }
+}

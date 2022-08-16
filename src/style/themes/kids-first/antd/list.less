@@ -1,0 +1,66 @@
+.@{list-prefix-cls} {
+  background-color: @gray-1;
+
+  &-bordered {
+    .@{list-prefix-cls}-item,
+    .@{list-prefix-cls}-footer,
+    .@{list-prefix-cls}-header {
+      padding: 8px 12px;
+    }
+
+    border-color: @gray-4;
+  }
+
+  .@{list-prefix-cls}-item {
+    &:hover {
+      background-color: @gray-3;
+    }
+
+    &-action {
+      margin-left: 20px;
+
+      &-split {
+        display: none;
+      }
+
+      > li {
+        padding: 0 4px;
+
+        &:last-child {
+          padding-right: 0;
+        }
+        color: @text-color;
+      }
+    }
+
+    &-meta {
+      &-description {
+        color: @text-color;
+      }
+
+      &-title {
+        margin-bottom: 2px;
+      }
+    }
+  }
+
+  .@{list-prefix-cls}-item {
+    // custom class action on hover
+    &.with-action-on-hover {
+      &:not(:hover) {
+        .@{list-prefix-cls}-item-action {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // Empty
+  div[class$="-nested-loading"] {
+    &,
+    .ant-spin-container,
+    .ant-list-empty-text {
+      height: 100%;
+    }
+  }
+}

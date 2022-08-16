@@ -1,0 +1,7 @@
+.variantTabWrapper {
+    display: flex;
+
+    :global(.ant-pagination) {
+        margin-bottom: 0;
+    }
+}

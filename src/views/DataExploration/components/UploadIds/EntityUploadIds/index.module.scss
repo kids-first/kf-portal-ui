@@ -1,0 +1,11 @@
+.entityUploadIdsPopover {
+    max-width: 400px;
+
+    :global(.ant-descriptions-item) {
+        padding-bottom: 0;
+    }
+
+    :global(.ant-descriptions-item-label) {
+        font-weight: 500;
+    }
+}

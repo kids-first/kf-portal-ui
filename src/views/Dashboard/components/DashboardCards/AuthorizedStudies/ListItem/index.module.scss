@@ -1,0 +1,31 @@
+@import 'src/style/themes/kids-first/colors';
+
+.AuthorizedStudiesListItem {
+  .filesCount {
+    font-size: 12px;
+
+    .fileLink {
+      padding: 0;
+      height: unset;
+      font-size: 12px;
+      color: $gray-8;
+    }
+  }
+
+  .dataUseGroups {
+    font-size: 12px;
+    display: block;
+  }
+
+  .itemMeta {
+    margin-bottom: 2px;
+
+    *[class$='-meta-title'] {
+      font-size: 14px;
+    }
+  }
+
+  .progress {
+    width: 50%;
+  }
+}

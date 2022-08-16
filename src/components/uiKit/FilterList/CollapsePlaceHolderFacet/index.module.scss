@@ -1,0 +1,21 @@
+.collapseLikeFacet {
+  .collapse {
+    &,
+    :global(.ant-collapse-item) {
+      border: none;
+    }
+
+    div[class$='-header'] {
+      color: unset !important;
+      padding-top: 5.5px;
+      padding-bottom: 5.5px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

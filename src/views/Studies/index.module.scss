@@ -1,0 +1,14 @@
+@import 'src/style/themes/kids-first/layout';
+
+.studiesWrapper {
+  width: 100%;
+  padding: $default-page-content-padding;
+
+  .tableWrapper {
+    width: 100%;
+  }
+
+  .title {
+    margin: 0;
+  }
+}

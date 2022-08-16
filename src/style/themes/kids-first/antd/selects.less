@@ -1,0 +1,23 @@
+@select-item-selected-bg: @blue-1;
+@select-item-selected-font-weight: 400;
+
+.@{select-prefix-cls} {
+  &-selection-overflow-item {
+    &.@{select-prefix-cls}-selection-overflow-item-rest {
+      .@{select-prefix-cls}-selection-item {
+        background: @blue-8;
+        color: white;
+        border: none;
+        height: 20px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  &-item-option-state {
+    * {
+      color: @blue-6;
+    }
+  }
+}
