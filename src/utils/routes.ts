@@ -18,6 +18,7 @@ export enum STATIC_ROUTES {
   VARIANT_SUMMARY = '/variant-exploration/summary',
   VARIANT_VARIANTS = '/variant-exploration/variants',
 
+  DCF_FENCE_REDIRECT = '/dcf_redirect',
   GEN3_FENCE_REDIRECT = '/gen3_redirect',
   CAVATICA_FENCE_REDIRECT = '/cavatica_redirect',
 }

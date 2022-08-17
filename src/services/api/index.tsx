@@ -3,7 +3,7 @@ import keycloak from 'auth/keycloak-api/keycloak';
 
 const apiInstance = axios.create();
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   data: T | undefined;
   response: AxiosResponse;
   error: AxiosError | undefined;
@@ -39,25 +39,6 @@ export const sendRequest = async <T,>(config: AxiosRequestConfig) => {
         response: err.response,
         data: undefined,
         error: err,
-      }),
-    );
-};
-
-export const sendRequestMock = async <T,>(config: AxiosRequestConfig, mockResponsed: any) => {
-  return apiInstance
-    .request<T>(config)
-    .then(
-      (response): ApiResponse<T> => ({
-        response: response,
-        data: mockResponsed,
-        error: undefined,
-      }),
-    )
-    .catch(
-      (err): ApiResponse<T> => ({
-        response: err.response,
-        data: mockResponsed,
-        error: undefined,
       }),
     );
 };

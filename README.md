@@ -33,6 +33,47 @@
 - Follow the steps here: https://github.com/include-dcc/include-users-api/blob/main/README.md
 - Make sure to add the include keycloak config for the users-api in your `.env`
 
+### Mock front-end data
+
+#### Import mock object
+
+- Import the mock object you needs
+- Use the correction function e.g. `Mock_UserService.fetch'
+
+e.g.
+
+```Typescript
+const fetch = () => Mock_UserService.fetch(headers);
+// const fetch = () =>
+//   sendRequest<TUser>({
+//     method: 'GET',
+//     url: USER_API_URL,
+//     headers: headers(),
+//   });
+
+```
+
+#### Create a new mock service/function
+
+- All service must have the `Mock_` prefixe (to be easier to check on a PR review)
+- All mocked function must have the same name as the original one
+
+e.g.
+
+```Typescript
+export const Mock_SavedSet = {
+  fetchAll: (headers: Function, tag?: string) =>
+    sendRequestMock<IUserSetOutput[]>(
+      {
+        method: 'GET',
+        url: SETS_API_URL,
+        headers: headers(),
+      },
+      [],
+    ),
+};
+```
+
 ### Branch
 
 Namee structure is `type/SKFP-[github ticker number]/description`
