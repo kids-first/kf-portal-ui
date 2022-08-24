@@ -28,12 +28,7 @@ const AuthorizedStudiesConnectionModal = () => {
 
   const onClose = () => dispatch(fenceConnectionActions.toggleConnectionModal(false));
   const onSwitchClick = (fenceNames: FENCE_NAMES, isConnected: boolean) => () => {
-    if (isConnected) {
-      dispatch(disconnectFromFence(fenceNames));
-      return;
-    }
-
-    dispatch(connectToFence(fenceNames));
+    dispatch(isConnected ? disconnectFromFence(fenceNames) : connectToFence(fenceNames));
   };
 
   useEffect(() => {

@@ -9,12 +9,18 @@
 ## Setup
 
 - Open a terminal and exec `sudo vim /etc/hosts` or `sudo nano etc/hosts`
-- Add both/one of the following line
+- Add both/one of the following line(s)
 
 ```
 127.0.0.1 portal-qa.kidsfirstdrc.org
 127.0.0.1 portal.kidsfirstdrc.org
 ```
+
+> Notice
+> 
+> if you want to regain access to the non-local portal, those lines must be removed from your hosts file
+
+
 
 - Build and run your docker image, check [QA](#QA) or [PRD](#PRD)
 - Start your front-end env by running `npm run start` at the root folder

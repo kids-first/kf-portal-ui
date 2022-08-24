@@ -1,7 +1,6 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { TUserSavedSetInsert, TUserSavedSetUpdate, TUserSavedSet, IUserSetOutput } from './models';
 import { sendRequest } from 'services/api';
-import { Mock_SavedSet } from '../mock';
 
 export const SETS_API_URL = `${EnvironmentVariables.configFor('ARRANGER_API')}/sets`;
 
@@ -9,13 +8,12 @@ const headers = () => ({
   'Content-Type': 'application/json',
 });
 
-const fetchAll = (tag?: string) => Mock_SavedSet.fetchAll(headers, tag);
-// const fetchAll = (tag?: string) =>
-//   sendRequest<IUserSetOutput[]>({
-//     method: 'GET',
-//     url: SETS_API_URL,
-//     headers: headers(),
-//   });
+const fetchAll = (tag?: string) =>
+  sendRequest<IUserSetOutput[]>({
+    method: 'GET',
+    url: SETS_API_URL,
+    headers: headers(),
+  });
 
 const fetchById = (id: string) =>
   sendRequest<IUserSetOutput>({
