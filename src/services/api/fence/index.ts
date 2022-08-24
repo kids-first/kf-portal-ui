@@ -3,7 +3,7 @@ import EnvironmentVariables from 'helpers/EnvVariables';
 import { sendRequest } from '..';
 import { IFenceAclsPayload, IFenceAuthPayload, IFenceInfo } from './models';
 
-const FENCE_API_URL = EnvironmentVariables.configFor('FENCE_API_URL');
+export const FENCE_API_URL = EnvironmentVariables.configFor('FENCE_API_URL');
 
 const isAuthenticated = (fence: FENCE_NAMES) =>
   sendRequest<IFenceAuthPayload>({

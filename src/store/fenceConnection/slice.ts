@@ -1,24 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from 'store/fenceConnection/types';
 import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { checkFenceAuthStatus, connectToFence, disconnectFromFence } from './thunks';
 
 export const FenceConnectionState: initialState = {
   connectionStatus: {
+    [FENCE_NAMES.dcf]: FENCE_CONNECTION_STATUSES.unknown,
     [FENCE_NAMES.gen3]: FENCE_CONNECTION_STATUSES.unknown,
     [FENCE_NAMES.cavatica]: FENCE_CONNECTION_STATUSES.unknown,
   },
   fencesInfo: {
+    [FENCE_NAMES.dcf]: undefined,
     [FENCE_NAMES.gen3]: undefined,
     [FENCE_NAMES.cavatica]: undefined,
   },
   fencesAcls: {
+    [FENCE_NAMES.dcf]: [],
     [FENCE_NAMES.gen3]: [],
     [FENCE_NAMES.cavatica]: [],
   },
   loadingFences: [],
   fencesConnectError: [],
   fencesDisconnectError: [],
+  isFenceConnectionModalOpen: false,
 };
 
 const removeFenceFromList = (state: FENCE_NAMES[], fenceName: FENCE_NAMES) =>
@@ -35,7 +39,16 @@ const addLoadingFences = (state: initialState, fenceName: FENCE_NAMES) =>
 const fenceConnectionSlice = createSlice({
   name: 'fence',
   initialState: FenceConnectionState,
-  reducers: {},
+  reducers: {
+    toggleConnectionModal: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      isFenceConnectionModalOpen: action.payload,
+    }),
+    resetFenceConnectErrors: (state) => ({
+      ...state,
+      fencesConnectError: [],
+    }),
+  },
   extraReducers: (builder) => {
     /** NEW */
     // CONNECT FENCE
@@ -97,4 +110,5 @@ const fenceConnectionSlice = createSlice({
   },
 });
 
+export const fenceConnectionActions = fenceConnectionSlice.actions;
 export default fenceConnectionSlice.reducer;

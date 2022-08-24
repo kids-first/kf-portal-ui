@@ -1,22 +1,19 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { TUserSavedFilter, TUserSavedFilterInsert, TUserSavedFilterUpdate } from './models';
-import { sendRequest, sendRequestMock } from 'services/api';
+import { sendRequest } from 'services/api';
 
-const SAVED_FILTER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/saved-filters`;
+export const SAVED_FILTER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/saved-filters`;
 
 const headers = () => ({
   'Content-Type': 'application/json',
 });
 
 const fetchAll = (tag?: string) =>
-  sendRequestMock<TUserSavedFilter[]>(
-    {
-      method: 'GET',
-      url: `${SAVED_FILTER_API_URL}${tag ? '/tag/' + tag : ''}`,
-      headers: headers(),
-    },
-    [],
-  );
+  sendRequest<TUserSavedFilter[]>({
+    method: 'GET',
+    url: `${SAVED_FILTER_API_URL}${tag ? '/tag/' + tag : ''}`,
+    headers: headers(),
+  });
 
 const fetchById = (id: string) =>
   sendRequest<TUserSavedFilter>({

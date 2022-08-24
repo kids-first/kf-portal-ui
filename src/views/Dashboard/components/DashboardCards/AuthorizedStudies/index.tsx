@@ -8,21 +8,22 @@ import Text from 'antd/lib/typography/Text';
 import AuthorizedStudiesListItem from './ListItem';
 import Empty from '@ferlab/ui/core/components/Empty';
 import CardConnectPlaceholder from 'views/Dashboard/components/CardConnectPlaceholder';
-import { connectToFence, disconnectFromFence } from 'store/fenceConnection/thunks';
+import { disconnectFromFence } from 'store/fenceConnection/thunks';
 import { FENCE_NAMES } from 'common/fenceTypes';
 import { useDispatch } from 'react-redux';
 import { TFenceStudy } from 'store/fenceStudies/types';
-import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
+import { fenceConnectionActions } from 'store/fenceConnection/slice';
 import { useFenceStudies } from 'store/fenceStudies';
 import { useEffect } from 'react';
 import { fetchAllFenceStudies } from 'store/fenceStudies/thunks';
 import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 
 import styles from './index.module.scss';
+import AuthorizedStudiesConnectionModal from './Modal';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const { loadingStudiesForFences, fenceStudiesAcls, isConnected, hasErrors, connectionLoading } =
+  const { loadingStudiesForFences, fenceStudiesAcls, isConnected, connectionLoading } =
     useFenceStudies();
   const fenceStudiesLoading = loadingStudiesForFences.length > 0;
 
@@ -65,7 +66,8 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       }
       content={
         <div className={styles.authorizedWrapper}>
-          {isConnected && !hasErrors && !fenceStudiesLoading && (
+          <AuthorizedStudiesConnectionModal />
+          {isConnected && !fenceStudiesLoading && (
             <Space className={styles.authenticatedHeader} direction="horizontal">
               <Space align="start">
                 <SafetyOutlined className={styles.safetyIcon} />
@@ -92,9 +94,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
             itemLayout="vertical"
             loading={fenceStudiesLoading || connectionLoading}
             locale={{
-              emptyText: hasErrors ? (
-                <CardErrorPlaceholder />
-              ) : isConnected ? (
+              emptyText: isConnected ? (
                 <Empty
                   imageType="grid"
                   description={intl.get(
@@ -108,12 +108,12 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     'screen.dashboard.cards.authorizedStudies.disconnectedNotice',
                   )}
                   btnProps={{
-                    onClick: () => dispatch(connectToFence(FENCE_NAMES.gen3)),
+                    onClick: () => dispatch(fenceConnectionActions.toggleConnectionModal(true)),
                   }}
                 />
               ),
             }}
-            dataSource={isConnected && !hasErrors ? fenceStudiesAcls : []}
+            dataSource={isConnected ? fenceStudiesAcls : []}
             renderItem={(item) => <AuthorizedStudiesListItem id={item.id} data={item} />}
           ></List>
         </div>

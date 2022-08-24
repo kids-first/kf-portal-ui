@@ -38,7 +38,14 @@ const checkFenceAuthStatus = createAsyncThunk<
       error,
       data: {
         auth: data!,
-        acls: fenceAcls,
+        acls: [
+          'phs001138.c1',
+          'phs001138.c2',
+          'phs001138.c999',
+          'phs002330.c1',
+          'phs002330.c2',
+          'phs002330.c999',
+        ],
       },
       reject: thunkAPI.rejectWithValue,
     });

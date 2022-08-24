@@ -18,6 +18,7 @@ const en = {
   global: {
     yes: 'Yes',
     no: 'No',
+    close: 'Close',
     search: {
       genes: {
         emptyText: 'No gene found',
@@ -368,6 +369,16 @@ const en = {
           of: 'of',
           files: 'Files',
           dataGroups: 'Data use groups: {groups}',
+          modal: {
+            title: 'Manage Connections',
+            description:
+              'Access select NCI and Kids First controlled access data by connecting your account using your NIH login credentials. Please remember that it is your responsibility to follow any data use limitations with controlled access data.',
+          },
+          notification: {
+            message: 'Error Connecting',
+            description:
+              'An error occurred while connecting to the data repository. Please, try again or contact our support.',
+          },
           infoPopover: {
             title: 'Accessing Data',
             content:
