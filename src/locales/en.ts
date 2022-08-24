@@ -360,9 +360,9 @@ const en = {
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
           connectedNotice:
-            'You have access to the following INCLUDE controlled data through your NIH credentials.',
+            'You have access to the following KIDS FIRST controlled data through your NIH credentials.',
           disconnectedNotice:
-            'Access INCLUDE controlled-access data by connecting your account using your NIH Credentials',
+            'Access controlled-access data by connecting your account using your NIH Credentials',
           disconnect: 'Disconnect',
           noAvailableStudies: 'No available studies',
           authorization: 'Authorization',
@@ -389,7 +389,7 @@ const en = {
         cavatica: {
           title: 'Cavatica Projects',
           connectedNotice: 'You are connected to the Cavatica cloud environment.',
-          disconnectedNotice: 'To analyze INCLUDE data on the cloud, connect to Cavatica.',
+          disconnectedNotice: 'To analyze KIDS FIRST data on the cloud, connect to Cavatica.',
           disconnect: 'Disconnect',
           noProjects: 'You do not have any Cavatica projects.',
           createNewProject: 'Create your first project',
@@ -547,36 +547,36 @@ const en = {
       back: 'Back',
       submit: 'Submit',
       disclaimers: {
-        title: 'INCLUDE Portal Registration Process',
+        title: 'KIDS FIRST Portal Registration Process',
         description:
-          'The INCLUDE Portal is the primary entry point to the INCLUDE Data Hub. The INCLUDE Portal enables searching, visualizing, and accessing INCLUDE-relevant data. Some datasets may require additional approvals (e.g., dbGaP) and terms and conditions of access and use.',
+          'The KIDS FIRST Portal is the primary entry point to the KIDS FIRST Data Hub. The KIDS FIRST Portal enables searching, visualizing, and accessing KIDS FIRST-relevant data. Some datasets may require additional approvals (e.g., dbGaP) and terms and conditions of access and use.',
         terms: {
-          title: 'INCLUDE Portal Terms & Conditions',
+          title: 'KIDS FIRST Portal Terms & Conditions',
           lastUpdate: 'Last Update: {date}',
           bullets: {
-            1: 'My purpose for the use of INCLUDE Portal data is free from discrimination on the grounds of race, ethnicity, nationality, gender, age, physical and/or mental ability, sexual orientation, gender identity or expression, religion, or any other grounds that would impinge on an individual’s rights.',
-            2: 'I will acknowledge specific dataset(s) and/or applicable accession number(s) as well as the INCLUDE Data Hub in my dissemination of research findings, as applicable to the medium or type of dissemination.',
-            3: 'I will only share or distribute INCLUDE Portal data under terms consistent with this agreement, and the data or derivatives of the data may not be sold, in whole or in part, to any individual at any point in time for any purpose.',
+            1: 'My purpose for the use of KIDS FIRST Portal data is free from discrimination on the grounds of race, ethnicity, nationality, gender, age, physical and/or mental ability, sexual orientation, gender identity or expression, religion, or any other grounds that would impinge on an individual’s rights.',
+            2: 'I will acknowledge specific dataset(s) and/or applicable accession number(s) as well as the KIDS FIRST Data Hub in my dissemination of research findings, as applicable to the medium or type of dissemination.',
+            3: 'I will only share or distribute KIDS FIRST Portal data under terms consistent with this agreement, and the data or derivatives of the data may not be sold, in whole or in part, to any individual at any point in time for any purpose.',
             4: 'I will respect the privacy of research participants, and I will make no attempt to identify or contact individual participants or groups from whom data were collected or to generate information that could allow participants’ identities to be readily ascertained.',
-            5: 'I agree to provide a brief statement regarding my intended use of the data on the INCLUDE Portal with my name and affiliation which will be publicly displayed for the purpose of transparency and collaboration.',
-            6: 'I understand that participation in the INCLUDE community is voluntary and may be terminated by the INCLUDE Portal Administrator. I will report any actual or suspected violation of this agreement, even if unintentional, to the INCLUDE Portal Administrator. I understand that the INCLUDE Portal Administrator may take action to remedy any actual or suspected violation and/or report such behavior to the appropriate authorities.  I also understand that the INCLUDE Portal Administrator may immediately suspend or terminate my access to the INCLUDE Portal if there is an actual or suspected violation of this agreement.',
+            5: 'I agree to provide a brief statement regarding my intended use of the data on the KIDS FIRST Portal with my name and affiliation which will be publicly displayed for the purpose of transparency and collaboration.',
+            6: 'I understand that participation in the KIDS FIRST community is voluntary and may be terminated by the KIDS FIRST Portal Administrator. I will report any actual or suspected violation of this agreement, even if unintentional, to the KIDS FIRST Portal Administrator. I understand that the KIDS FIRST Portal Administrator may take action to remedy any actual or suspected violation and/or report such behavior to the appropriate authorities.  I also understand that the KIDS FIRST Portal Administrator may immediately suspend or terminate my access to the KIDS FIRST Portal if there is an actual or suspected violation of this agreement.',
           },
-          checkbox: 'I have read and agree to the INCLUDE Portal Terms and Conditions',
+          checkbox: 'I have read and agree to the KIDS FIRST Portal Terms and Conditions',
         },
         disclaimer: {
-          title: 'INCLUDE Portal Disclaimers',
+          title: 'KIDS FIRST Portal Disclaimers',
           bullets: {
-            1: 'Data available in the INCLUDE Portal is provided on an AS-IS basis and may change over time.',
-            2: 'The INCLUDE DCC does not warrant or assume any legal liability or responsibility for information, apparatus, product, or process contained in the INCLUDE Portal.',
-            3: 'Content provided on the INCLUDE Portal is for informational purposes only and is not intended to be a substitute for independent professional medical judgment, advice, diagnosis, or treatment.',
+            1: 'Data available in the KIDS FIRST Portal is provided on an AS-IS basis and may change over time.',
+            2: 'The KIDS FIRST DCC does not warrant or assume any legal liability or responsibility for information, apparatus, product, or process contained in the KIDS FIRST Portal.',
+            3: 'Content provided on the KIDS FIRST Portal is for informational purposes only and is not intended to be a substitute for independent professional medical judgment, advice, diagnosis, or treatment.',
           },
-          checkbox: 'I have read and understand the INCLUDE Portal Disclaimers',
+          checkbox: 'I have read and understand the KIDS FIRST Portal Disclaimers',
         },
         errors: 'Please accept the terms & conditions and portal disclaimers.',
       },
       registration: {
         notice:
-          'Information provided here will be shared with the INCLUDE community on the INCLUDE Portal. All fields are required unless specified as optional.',
+          'Information provided here will be shared with the KIDS FIRST community on the KIDS FIRST Portal. All fields are required unless specified as optional.',
         sections: {
           identification: 'Identification',
           roleAndAffiliation: 'Role & Affiliation',
@@ -594,7 +594,7 @@ const en = {
           iAmA: 'I am a:',
           pleaseDescribe: 'Please describe',
           iAmAffiliatedWith: 'I am affiliated with:',
-          intendToUser: 'I intend to use the INCLUDE Portal data for:',
+          intendToUser: 'I intend to use the KIDS FIRST Portal data for:',
           dataUseStatement: 'Data use statement',
           researchAreaDescribe: 'My research area or area of interest may best be described as:',
         },

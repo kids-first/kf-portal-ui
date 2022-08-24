@@ -5,11 +5,11 @@
   background-color: transparent;
   width: 100%;
   border-radius: 2px;
-  border: 1px solid $gray-7;
+  border: 1px solid $cyan-7;
 
   &:hover {
-    background-color: $gray-9;
-    border-color: $gray-9;
+    background-color: $cyan-9;
+    border-color: $cyan-9;
 
     .linkArrow {
       opacity: 1;
@@ -24,12 +24,12 @@
     margin-left: -8px;
     margin-top: 5px;
     font-size: 20px;
-    color: $blue-7;
+    color: $cyan-5;
   }
 
   .linkTitle {
     font-weight: 500;
-    color: $gray-8;
+    color: $gray-1;
     font-size: 16px;
   }
 }
