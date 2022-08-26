@@ -5,16 +5,23 @@ import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { useStudies } from 'graphql/studies/actions';
 import { getProTableDictionary } from 'utils/translation';
 import { Link } from 'react-router-dom';
+import intl from 'react-intl-universal';
 import { STATIC_ROUTES } from 'utils/routes';
 import { IStudyEntity } from 'graphql/studies/models';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, UserOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import styles from './index.module.scss';
+import SideBarFacet from './SideBarFacet';
+import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
+import { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
+import FilterList from 'components/uiKit/FilterList';
+import { STUDIES_QB_ID } from './utils/constant';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
 
 const { Title } = Typography;
 
@@ -29,6 +36,22 @@ const enum DataCategory {
 
 const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
+
+const filterInfo: FilterInfo = {
+  groups: [
+    {
+      facets: [
+        'external_id',
+        'domain',
+        'program',
+        'attribution',
+        'data_category',
+        'experimental_strategy',
+        'family_data',
+      ],
+    },
+  ],
+};
 
 const columns: ProColumnType<any>[] = [
   {
@@ -174,35 +197,43 @@ const Studies = () => {
       },
     ],
   });
+  const studiesMappingResults = useGetExtendedMappings(INDEXES.STUDY);
+
+  console.log('data', data); //TODO: to remove
+  console.log('total', total); //TODO: to remove
+  console.log('studiesMappingResults', studiesMappingResults); //TODO: to remove
 
   return (
-    <Space direction="vertical" size={16} className={styles.studiesWrapper}>
-      <Title className={styles.title} level={4}>
-        Studies
-      </Title>
-      <GridCard
-        content={
-          <ProTable
-            tableId="studies"
-            wrapperClassName={styles.tableWrapper}
-            size="small"
-            bordered
-            columns={columns}
-            dataSource={data}
-            loading={loading}
-            pagination={false}
-            headerConfig={{
-              itemCount: {
-                pageIndex: 1,
-                pageSize: 20,
-                total,
-              },
-            }}
-            dictionary={getProTableDictionary()}
-          />
-        }
-      />
-    </Space>
+    <div className={styles.studiesPage}>
+      <SideBarFacet extendedMappingResults={studiesMappingResults} filterInfo={filterInfo} />
+      <Space direction="vertical" size={16} className={styles.studiesWrapper}>
+        <Title className={styles.title} level={4}>
+          {intl.get('screen.studies.title')}
+        </Title>
+        <GridCard
+          content={
+            <ProTable
+              tableId="studies"
+              wrapperClassName={styles.tableWrapper}
+              size="small"
+              bordered
+              columns={columns}
+              dataSource={data}
+              loading={loading}
+              pagination={false}
+              headerConfig={{
+                itemCount: {
+                  pageIndex: 1,
+                  pageSize: 20,
+                  total,
+                },
+              }}
+              dictionary={getProTableDictionary()}
+            />
+          }
+        />
+      </Space>
+    </div>
   );
 };
 

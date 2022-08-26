@@ -1,5 +1,5 @@
 export enum INDEXES {
-  STUDY = 'study',
+  STUDY = 'Study',
   PARTICIPANT = 'participant',
   FILE = 'file',
   BIOSPECIMEN = 'biospecimen',

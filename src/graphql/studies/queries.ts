@@ -1,8 +1,8 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const FETCH_STUDIES_QUERY = gql`
   query getStudy {
-    study {
+    study: Study {
       hits {
         total
         edges {

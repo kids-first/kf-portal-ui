@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Layout, Space, Typography } from 'antd';
+import { Button, Layout, Space, Spin, Typography } from 'antd';
 import CustomFilterContainer from './CustomFilterContainer';
 import intl from 'react-intl-universal';
 import { FilterGroup, FilterInfo } from './types';
@@ -13,6 +13,7 @@ import { isEmpty } from 'lodash';
 export type TCustomFilterMapper = (filters: ISqonGroupFilter) => ISyntheticSqon;
 
 type OwnProps = {
+  loading?: boolean;
   index: string;
   queryBuilderId: string;
   extendedMappingResults: ExtendedMappingResults;
@@ -25,9 +26,9 @@ const { Text } = Typography;
 const isAllFacetOpen = (filterInfo: FilterInfo) => {
   const allOpen = concatAllFacets(filterInfo).every((facet) =>
     typeof facet === 'string' ? filterInfo.defaultOpenFacets?.includes(facet) : true,
-  )
-  return allOpen ? true : undefined
-}
+  );
+  return allOpen ? true : undefined;
+};
 
 const concatAllFacets = (filterInfo: FilterInfo) => {
   let allFacets: any[] = [];
@@ -36,6 +37,7 @@ const concatAllFacets = (filterInfo: FilterInfo) => {
 };
 
 const FilterList = ({
+  loading = true,
   index,
   queryBuilderId,
   extendedMappingResults,
@@ -43,6 +45,10 @@ const FilterList = ({
   filterMapper,
 }: OwnProps) => {
   const [filtersOpen, setFiltersOpen] = useState<boolean | undefined>(isAllFacetOpen(filterInfo));
+
+  if (loading) {
+    return <Spin className={styles.filterLoader} spinning />;
+  }
 
   return (
     <>

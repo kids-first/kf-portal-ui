@@ -440,12 +440,9 @@ const en = {
         variant: 'Variant',
       },
     },
-    studyExploration: {
-      tabs: {
-        studies: {
-          title: 'Studies',
-        },
-      },
+    studies: {
+      title: 'Studies',
+      search: 'Search Studies',
     },
     dataExploration: {
       sidemenu: {
