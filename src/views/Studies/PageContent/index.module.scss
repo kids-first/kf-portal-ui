@@ -1,10 +1,14 @@
 @import 'src/style/themes/kids-first/layout';
 
-.studiesPage {
-  display: flex;
-}
-
-.scrollContent {
+.pageContent {
   width: 100%;
   padding: $default-page-content-padding;
+
+  .tableWrapper {
+    width: 100%;
+  }
+
+  .title {
+    margin: 0;
+  }
 }

@@ -8,13 +8,12 @@ import { useState } from 'react';
 import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-import SidebarFacetItemsList from './SidebarFacetItemsList';
-import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
-import { FilterInfo } from 'components/uiKit/FilterList/types';
-import { STUDIES_QB_ID } from '../utils/constant';
+import { ExtendedMappingResults } from 'graphql/models';
+import { STUDIES_QB_ID } from '../../utils/constant';
 import { mapFilterForVariant } from 'utils/fieldMapper';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
 const { Title } = Typography;
 
 type OwnProps = {
@@ -25,7 +24,7 @@ type OwnProps = {
 
 const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const { loading, data } = extendedMappingResults;
+  const { loading } = extendedMappingResults;
   return (
     <StackLayout
       className={cx(className, styles.sideBarFacet, { [styles.collapsed]: collapsed })}

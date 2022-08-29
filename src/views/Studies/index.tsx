@@ -1,11 +1,6 @@
-import ProTable from '@ferlab/ui/core/components/ProTable';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Space, Typography } from 'antd';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { useStudies } from 'graphql/studies/actions';
-import { getProTableDictionary } from 'utils/translation';
 import { Link } from 'react-router-dom';
-import intl from 'react-intl-universal';
 import { STATIC_ROUTES } from 'utils/routes';
 import { IStudyEntity } from 'graphql/studies/models';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -16,14 +11,12 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import styles from './index.module.scss';
-import SideBarFacet from './SideBarFacet';
+import SideBarFacet from './components/SideBarFacet';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
-import { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
-import FilterList from 'components/uiKit/FilterList';
-import { STUDIES_QB_ID } from './utils/constant';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
-
-const { Title } = Typography;
+import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
+import { SCROLL_WRAPPER_ID } from './utils/constant';
+import PageContent from './PageContent';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -44,7 +37,6 @@ const filterInfo: FilterInfo = {
         'external_id',
         'domain',
         'program',
-        'attribution',
         'data_category',
         'experimental_strategy',
         'family_data',
@@ -189,50 +181,14 @@ const columns: ProColumnType<any>[] = [
 ];
 
 const Studies = () => {
-  const { loading, data, total } = useStudies({
-    sort: [
-      {
-        field: 'study_id',
-        order: 'desc',
-      },
-    ],
-  });
   const studiesMappingResults = useGetExtendedMappings(INDEXES.STUDY);
-
-  console.log('data', data); //TODO: to remove
-  console.log('total', total); //TODO: to remove
-  console.log('studiesMappingResults', studiesMappingResults); //TODO: to remove
 
   return (
     <div className={styles.studiesPage}>
       <SideBarFacet extendedMappingResults={studiesMappingResults} filterInfo={filterInfo} />
-      <Space direction="vertical" size={16} className={styles.studiesWrapper}>
-        <Title className={styles.title} level={4}>
-          {intl.get('screen.studies.title')}
-        </Title>
-        <GridCard
-          content={
-            <ProTable
-              tableId="studies"
-              wrapperClassName={styles.tableWrapper}
-              size="small"
-              bordered
-              columns={columns}
-              dataSource={data}
-              loading={loading}
-              pagination={false}
-              headerConfig={{
-                itemCount: {
-                  pageIndex: 1,
-                  pageSize: 20,
-                  total,
-                },
-              }}
-              dictionary={getProTableDictionary()}
-            />
-          }
-        />
-      </Space>
+      <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
+        <PageContent defaultColumns={columns} />
+      </ScrollContent>
     </div>
   );
 };

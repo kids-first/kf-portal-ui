@@ -9,8 +9,6 @@ export const useStudies = (variables?: QueryVariable) => {
     variables,
   });
 
-  console.log('result', result); //TODO: to remove
-
   return {
     loading,
     data: hydrateResults(result?.study?.hits?.edges || []),
