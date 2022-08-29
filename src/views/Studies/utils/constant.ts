@@ -1,6 +1,6 @@
 import { IQueryConfig } from 'common/searchPageTypes';
 
-export const STUDIES_QB_ID = 'studies-repo-key';
+export const STUDIES_REPO_QB_ID = 'studies-repo-key';
 
 export const DEFAULT_PAGE_INDEX = 1;
 export const DEFAULT_PAGE_SIZE = 20;

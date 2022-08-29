@@ -9,7 +9,7 @@ import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
 import { ExtendedMappingResults } from 'graphql/models';
-import { STUDIES_QB_ID } from '../../utils/constant';
+import { STUDIES_REPO_QB_ID } from '../../utils/constant';
 import { mapFilterForVariant } from 'utils/fieldMapper';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
@@ -54,7 +54,7 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
               loading={loading}
               key={INDEXES.STUDY}
               index={INDEXES.STUDY}
-              queryBuilderId={STUDIES_QB_ID}
+              queryBuilderId={STUDIES_REPO_QB_ID}
               extendedMappingResults={extendedMappingResults}
               filterInfo={filterInfo}
               filterMapper={mapFilterForVariant}

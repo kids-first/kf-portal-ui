@@ -31,6 +31,14 @@ const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
 
 const filterInfo: FilterInfo = {
+  defaultOpenFacets: [
+    'external_id',
+    'domain',
+    'program',
+    'data_category',
+    'experimental_strategy',
+    'family_data',
+  ],
   groups: [
     {
       facets: [
