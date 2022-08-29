@@ -23,6 +23,9 @@ import { useEffect, useState } from 'react';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { useStudies } from 'graphql/studies/actions';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
+import { useDispatch } from 'react-redux';
+import { fetchTsvReport } from 'store/report/thunks';
+import { INDEXES } from 'graphql/constants';
 
 const { Title } = Typography;
 
@@ -35,6 +38,7 @@ const PageContent = ({
   defaultColumns = [],
   extendedMappingResults = { data: [], loading: false },
 }: OwnProps) => {
+  const dispatch = useDispatch();
   const { queryList, activeQuery } = useQueryBuilderState(STUDIES_REPO_QB_ID);
   const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const resolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
@@ -118,8 +122,13 @@ const PageContent = ({
               },
               enableTableExport: true,
               onTableExportClick: () => {
-                console.log('onTableExportClick'); //TODO: to remove
-                console.log('see thunks of include'); //TODO: to remove
+                dispatch(
+                  fetchTsvReport({
+                    columns: defaultColumns,
+                    index: INDEXES.STUDY,
+                    sqon: resolvedSqon,
+                  }),
+                );
               },
             }}
             size="small"

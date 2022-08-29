@@ -19,7 +19,7 @@ export type initialState = {
 
 export type TFetchTSVArgs = {
   index: string;
-  columnStates: TColumnStates | undefined;
+  columnStates?: TColumnStates;
   columns: ProColumnType[];
   sqon: any;
 };
