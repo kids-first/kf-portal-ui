@@ -26,6 +26,7 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { useDispatch } from 'react-redux';
 import { fetchTsvReport } from 'store/report/thunks';
 import { INDEXES } from 'graphql/constants';
+import { useUser } from 'store/user';
 
 const { Title } = Typography;
 
@@ -39,6 +40,7 @@ const PageContent = ({
   extendedMappingResults = { data: [], loading: false },
 }: OwnProps) => {
   const dispatch = useDispatch();
+  const { userInfo } = useUser();
   const { queryList, activeQuery } = useQueryBuilderState(STUDIES_REPO_QB_ID);
   const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const resolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
@@ -102,12 +104,11 @@ const PageContent = ({
           <ProTable
             tableId={STUDIES_REPO_QB_ID}
             columns={defaultColumns}
+            initialColumnState={userInfo?.config.study?.tables?.study?.columns}
             wrapperClassName={styles.tableWrapper}
             loading={loading}
             bordered
             onChange={({ current, pageSize }, _, sorter) => {
-              console.log('current', current); //TODO: to remove
-
               setQueryConfig({
                 pageIndex: current!,
                 size: pageSize!,
@@ -120,10 +121,12 @@ const PageContent = ({
                 pageSize: queryConfig.size,
                 total,
               },
+              enableColumnSort: true,
               enableTableExport: true,
               onTableExportClick: () => {
                 dispatch(
                   fetchTsvReport({
+                    columnStates: userInfo?.config.study?.tables?.study?.columns,
                     columns: defaultColumns,
                     index: INDEXES.STUDY,
                     sqon: resolvedSqon,

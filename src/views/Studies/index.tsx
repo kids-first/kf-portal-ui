@@ -1,5 +1,5 @@
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { useStudies } from 'graphql/studies/actions';
+import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
 import { IStudyEntity } from 'graphql/studies/models';
@@ -155,36 +155,28 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'genomic',
-    title: DataCategory.GENOMIC,
+    title: 'Genomics',
     align: 'center',
     render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.GENOMIC),
   },
   {
     key: 'transcriptomic',
-    title: DataCategory.TRANSCRIPTOMIC,
+    title: 'Transcriptomics',
     align: 'center',
     render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC),
   },
   {
     key: 'proteomic',
-    title: 'Proteomic',
+    title: 'Proteomics',
     align: 'center',
     render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
   {
-    key: 'immune_map',
-    title: 'Immune Map',
+    key: 'clinical',
+    title: 'Clinicals',
     align: 'center',
-    render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.IMMUNE_MAP),
-  },
-  {
-    key: 'metabolic',
-    title: 'Metabolomic',
-    align: 'center',
-    render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.METABOLOMIC),
+    render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
 ];
 

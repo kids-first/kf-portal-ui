@@ -2,7 +2,7 @@
 import cx from 'classnames';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Spin, Typography } from 'antd';
+import { Typography } from 'antd';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { useState } from 'react';
 import intl from 'react-intl-universal';
