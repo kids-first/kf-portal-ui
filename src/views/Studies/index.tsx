@@ -15,8 +15,10 @@ import SideBarFacet from './components/SideBarFacet';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-import { SCROLL_WRAPPER_ID } from './utils/constant';
-import PageContent from './PageContent';
+import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
+import PageContent from './components/PageContent';
+import StudySearch from './components/StudySearch';
+import { SuggestionType } from 'services/api/arranger/models';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -31,6 +33,7 @@ const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
 
 const filterInfo: FilterInfo = {
+  customSearches: [<StudySearch queryBuilderId={STUDIES_REPO_QB_ID} />],
   defaultOpenFacets: [
     'external_id',
     'domain',

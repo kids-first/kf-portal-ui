@@ -33,6 +33,11 @@ const en = {
         tooltip:
           'Enter Variant Locus, Gene Symbol, Gene Alias, Gene AA Change, dbSNP ID, Clinvar ID, Ensembl ID, refseq ID',
       },
+      study: {
+        emptyText: 'No study found',
+        placeholder: 'e.g. KF-DSD, Neuroblastoma…',
+        title: "Search studies"
+      }
     },
     filters: {
       actions: {

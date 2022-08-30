@@ -46,10 +46,6 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
       <ScrollContent>
         {!collapsed && (
           <div className={styles.content}>
-            <Title className={styles.title} level={5}>
-              {intl.get('screen.studies.search')}
-            </Title>
-
             <FilterList
               loading={loading}
               key={INDEXES.STUDY}

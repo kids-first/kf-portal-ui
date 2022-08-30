@@ -17,7 +17,7 @@ import {
   DEFAULT_QUERY_CONFIG,
   SCROLL_WRAPPER_ID,
   STUDIES_REPO_QB_ID,
-} from '../utils/constant';
+} from '../../utils/constant';
 import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useEffect, useState } from 'react';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
