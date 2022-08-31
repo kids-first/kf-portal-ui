@@ -50,7 +50,6 @@ const GlobalSearch = <T,>({
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
       })
     }
-    searchValueTransformer={(value) => value.toUpperCase()}
     index={index}
     tooltipText={tooltipText}
     emptyDescription={emptyDescription}
