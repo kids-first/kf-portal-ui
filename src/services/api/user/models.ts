@@ -43,6 +43,11 @@ export type TUserConfig = {
       };
     };
   };
+  study?: {
+    tables?: {
+      study?: TUserTableConfig;
+    };
+  };
   dashboard?: {
     cards?: {
       order?: string[];

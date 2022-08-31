@@ -1,9 +1,9 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
-export const FETCH_STUDIES_QUERY = gql`
-  query getStudy {
-    study {
-      hits {
+export const SEARCH_STUDIES_QUERY = gql`
+  query searchStudy($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
+    study: Study {
+      hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
         total
         edges {
           node {
@@ -19,6 +19,21 @@ export const FETCH_STUDIES_QUERY = gql`
             attribution
             data_category
             website
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
+  query searchStudyById($sqon: JSON) {
+    Study {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            study_id
+            study_name
           }
         }
       }

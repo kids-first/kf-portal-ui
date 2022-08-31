@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { DocumentNode } from 'graphql';
-import { INDEXES } from 'graphql/constants';
-import get from 'lodash/get';
-
 import SearchAutocomplete, {
   ISearchAutocomplete,
   OptionsType,
 } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { INDEXES } from 'graphql/constants';
+import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ArrangerApi } from 'services/api/arranger';
+import { DocumentNode } from 'graphql';
 import { ISuggestionPayload } from 'services/api/arranger/models';
+import { toPascalCase } from 'utils/helper';
 
 interface IGlobalSearch<T> {
   query: DocumentNode;
@@ -23,7 +22,6 @@ interface IGlobalSearch<T> {
 }
 
 export type TCustomHandleSearch<T> = (searchText: string) => Promise<ISuggestionPayload<T>>;
-
 type TGlobalSearch<T> = IGlobalSearch<T> &
   Omit<ISearchAutocomplete, 'onClose' | 'onSearch' | 'onSelect' | 'options'>;
 
@@ -50,7 +48,12 @@ const Search = <T,>({
         newFilters: searchKey.map((key) =>
           generateValueFilter({
             field: key,
-            value: [`${search}*`],
+            value: [
+              `${search}*`,
+              `${search.toUpperCase()}*`,
+              `${search.toLowerCase()}*`,
+              `${toPascalCase(search)}*`,
+            ],
             index,
           }),
         ),
@@ -66,14 +69,7 @@ const Search = <T,>({
         },
       });
 
-      setOptions(
-        setCurrentOptions(
-          get(data.data, `${index}.hits.edges`, []).map(({ node }: any) => ({
-            ...node,
-          })),
-          search,
-        ),
-      );
+      setOptions(setCurrentOptions(data.data, search));
     }
   };
 

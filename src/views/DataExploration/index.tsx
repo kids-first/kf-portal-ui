@@ -87,28 +87,6 @@ const filterGroups: {
   },
 };
 
-const filtersContainer = (
-  mappingResults: ExtendedMappingResults,
-  type: FilterTypes,
-  index: string,
-  filterMapper: TCustomFilterMapper,
-): React.ReactNode => {
-  if (mappingResults.loading) {
-    return <Spin className={styles.filterLoader} spinning />;
-  }
-
-  return (
-    <FilterList
-      key={index}
-      index={index}
-      queryBuilderId={DATA_EXPLORATION_QB_ID}
-      extendedMappingResults={mappingResults}
-      filterInfo={filterGroups[type]}
-      filterMapper={filterMapper}
-    />
-  );
-};
-
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
@@ -119,22 +97,30 @@ const DataExploration = () => {
       key: TAB_IDS.PARTICIPANTS,
       title: intl.get('screen.dataExploration.sidemenu.participant'),
       icon: <UserOutlined className={styles.sideMenuIcon} />,
-      panelContent: filtersContainer(
-        participantMappingResults,
-        FilterTypes.Participant,
-        INDEXES.PARTICIPANT,
-        mapFilterForParticipant,
+      panelContent: (
+        <FilterList
+          key={INDEXES.PARTICIPANT}
+          index={INDEXES.PARTICIPANT}
+          queryBuilderId={DATA_EXPLORATION_QB_ID}
+          extendedMappingResults={participantMappingResults}
+          filterInfo={filterGroups[FilterTypes.Participant]}
+          filterMapper={mapFilterForParticipant}
+        />
       ),
     },
     {
       key: TAB_IDS.DATA_FILES,
       title: intl.get('screen.dataExploration.sidemenu.datafiles'),
       icon: <FileSearchOutlined className={styles.sideMenuIcon} />,
-      panelContent: filtersContainer(
-        fileMappingResults,
-        FilterTypes.Datafiles,
-        INDEXES.FILE,
-        mapFilterForFiles,
+      panelContent: (
+        <FilterList
+          key={INDEXES.FILE}
+          index={INDEXES.FILE}
+          queryBuilderId={DATA_EXPLORATION_QB_ID}
+          extendedMappingResults={fileMappingResults}
+          filterInfo={filterGroups[FilterTypes.Datafiles]}
+          filterMapper={mapFilterForFiles}
+        />
       ),
     },
   ];

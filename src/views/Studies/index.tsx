@@ -1,22 +1,24 @@
-import ProTable from '@ferlab/ui/core/components/ProTable';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Space, Typography } from 'antd';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { useStudies } from 'graphql/studies/actions';
-import { getProTableDictionary } from 'utils/translation';
+import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
 import { IStudyEntity } from 'graphql/studies/models';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, UserOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import styles from './index.module.scss';
-
-const { Title } = Typography;
+import SideBarFacet from './components/SideBarFacet';
+import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
+import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
+import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
+import PageContent from './components/PageContent';
+import StudySearch from './components/StudySearch';
+import { SuggestionType } from 'services/api/arranger/models';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -29,6 +31,30 @@ const enum DataCategory {
 
 const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
+
+const filterInfo: FilterInfo = {
+  customSearches: [<StudySearch queryBuilderId={STUDIES_REPO_QB_ID} />],
+  defaultOpenFacets: [
+    'external_id',
+    'domain',
+    'program',
+    'data_category',
+    'experimental_strategy',
+    'family_data',
+  ],
+  groups: [
+    {
+      facets: [
+        'external_id',
+        'domain',
+        'program',
+        'data_category',
+        'experimental_strategy',
+        'family_data',
+      ],
+    },
+  ],
+};
 
 const columns: ProColumnType<any>[] = [
   {
@@ -132,77 +158,41 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'genomic',
-    title: DataCategory.GENOMIC,
+    title: 'Genomics',
     align: 'center',
     render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.GENOMIC),
   },
   {
     key: 'transcriptomic',
-    title: DataCategory.TRANSCRIPTOMIC,
+    title: 'Transcriptomics',
     align: 'center',
     render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC),
   },
   {
     key: 'proteomic',
-    title: 'Proteomic',
+    title: 'Proteomics',
     align: 'center',
     render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
   {
-    key: 'immune_map',
-    title: 'Immune Map',
+    key: 'clinical',
+    title: 'Clinicals',
     align: 'center',
-    render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.IMMUNE_MAP),
-  },
-  {
-    key: 'metabolic',
-    title: 'Metabolomic',
-    align: 'center',
-    render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.METABOLOMIC),
+    render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
 ];
 
 const Studies = () => {
-  const { loading, data, total } = useStudies({
-    sort: [
-      {
-        field: 'study_id',
-        order: 'desc',
-      },
-    ],
-  });
+  const studiesMappingResults = useGetExtendedMappings(INDEXES.STUDY);
 
   return (
-    <Space direction="vertical" size={16} className={styles.studiesWrapper}>
-      <Title className={styles.title} level={4}>
-        Studies
-      </Title>
-      <GridCard
-        content={
-          <ProTable
-            tableId="studies"
-            wrapperClassName={styles.tableWrapper}
-            size="small"
-            bordered
-            columns={columns}
-            dataSource={data}
-            loading={loading}
-            pagination={false}
-            headerConfig={{
-              itemCount: {
-                pageIndex: 1,
-                pageSize: 20,
-                total,
-              },
-            }}
-            dictionary={getProTableDictionary()}
-          />
-        }
-      />
-    </Space>
+    <div className={styles.studiesPage}>
+      <SideBarFacet extendedMappingResults={studiesMappingResults} filterInfo={filterInfo} />
+      <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
+        <PageContent defaultColumns={columns} />
+      </ScrollContent>
+    </div>
   );
 };
 
