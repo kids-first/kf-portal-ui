@@ -4,6 +4,7 @@ export default class EnvironmentVariables {
     ENV: process.env.NODE_ENV,
     WEB_ROOT: process.env.REACT_APP_WEB_ROOT,
     // APIS
+    PERSONA_API: process.env.REACT_APP_PERSONA_API,
     ARRANGER_API: process.env.REACT_APP_ARRANGER_API_URL,
     ARRANGER_PROJECT_ID: process.env.REACT_APP_ARRANGER_PROJECT_ID,
     USERS_API: process.env.REACT_APP_USERS_API_URL,

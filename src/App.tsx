@@ -13,6 +13,7 @@ import SideImageLayout from 'components/Layout/SideImage';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
 import Spinner from 'components/uiKit/Spinner';
 import MainSideImage from 'components/assets/mainSideImage.jpg';
+import MainSideImageAlt from 'components/assets/mainSideImage-alt.jpg';
 import ProtectedRoute from 'ProtectedRoute';
 import PageLayout from 'components/Layout';
 import AuthMiddleware from 'middleware/AuthMiddleware';
@@ -30,6 +31,7 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import ApolloProvider from 'provider/ApolloProvider';
 import GradientAccent from 'components/uiKit/GradientAccent';
+import PersonaRegistration from 'views/Login/PersonaRegistration';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -75,6 +77,12 @@ const App = () => {
                     <GradientAccent isFixed />
                     <SideImageLayout sideImgSrc={MainSideImage}>
                       <Login />
+                    </SideImageLayout>
+                  </Route>
+                  <Route exact path={STATIC_ROUTES.REGISTRATION}>
+                    <GradientAccent isFixed />
+                    <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
+                      <PersonaRegistration />
                     </SideImageLayout>
                   </Route>
                   <Route

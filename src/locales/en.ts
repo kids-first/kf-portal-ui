@@ -36,8 +36,8 @@ const en = {
       study: {
         emptyText: 'No study found',
         placeholder: 'e.g. KF-DSD, Neuroblastoma…',
-        title: "Search studies"
-      }
+        title: 'Search studies',
+      },
     },
     filters: {
       actions: {

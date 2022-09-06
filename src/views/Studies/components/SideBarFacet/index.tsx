@@ -1,4 +1,4 @@
-// @TODO: Could be exported to ferlab-ui
+// @TODO: FERLAB-UI Could be exported to ferlab-ui
 import cx from 'classnames';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';

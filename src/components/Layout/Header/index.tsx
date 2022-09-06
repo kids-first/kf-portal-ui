@@ -17,13 +17,13 @@ import { DownOutlined } from '@ant-design/icons';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import { STATIC_ROUTES } from 'utils/routes';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import { useUser } from 'store/user';
+// import { useUser } from 'store/user';
 import intl from 'react-intl-universal';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import NotificationBanner from 'components/featureToggle/NotificationBanner';
 import { AlterTypes } from 'common/types';
 import { useKeycloak } from '@react-keycloak/web';
-import { IncludeKeycloakTokenParsed } from 'common/tokenTypes';
+import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -34,19 +34,29 @@ import GradientAccent from 'components/uiKit/GradientAccent';
 
 import style from 'components/Layout/Header/index.module.scss';
 import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/featureToggle';
+import { usePersona } from 'store/persona';
+import { personaActions } from 'store/persona/slice';
 
 const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
 
+// @TODO: KEYCLOACK remove persona and use userInfo when keycloack is done
 const Header = () => {
-  const { userInfo } = useUser();
+  // const { userInfo } = useUser();
+  const { personaUserInfo } = usePersona();
+  let userInfo = {
+    first_name: personaUserInfo?.firstName,
+    last_name: personaUserInfo?.lastName,
+    email: personaUserInfo?.email,
+    keycloak_id: personaUserInfo?.egoId,
+  };
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const history = useHistory();
   const currentPathName = history.location.pathname;
-  const tokenParsed = keycloak.tokenParsed as IncludeKeycloakTokenParsed;
+  const tokenParsed = keycloak.tokenParsed as KidsFirstKeycloakTokenParsed;
 
   return (
     <>
@@ -218,7 +228,10 @@ const Header = () => {
                         {intl.get('layout.user.menu.logout')}
                       </Space>
                     ),
-                    onClick: () => dispatch(userActions.cleanLogout()),
+                    onClick: () => {
+                      dispatch(personaActions.cleanLogout());
+                      dispatch(userActions.cleanLogout());
+                    },
                   },
                 ]}
               />

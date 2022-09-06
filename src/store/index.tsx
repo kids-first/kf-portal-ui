@@ -9,6 +9,7 @@ import createFilter from 'redux-persist-transform-filter';
 // Reducers
 import GlobalReducer from 'store/global';
 import UserReducer from 'store/user';
+import PersonaReducer from 'store/persona';
 import FenceConnectionReducer from 'store/fenceConnection';
 import ReportReducer from 'store/report';
 import SavedFilterReducer from 'store/savedFilter';
@@ -27,6 +28,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers<RootState>({
   global: GlobalReducer,
+  persona: PersonaReducer,
   user: UserReducer,
   report: ReportReducer,
   fenceConnection: FenceConnectionReducer,
