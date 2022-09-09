@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { PageHeader, Dropdown, Button, Menu, Space, Typography } from 'antd';
+import { PageHeader, Dropdown, Menu, Space, Typography } from 'antd';
 import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
 import {
   ReadOutlined,

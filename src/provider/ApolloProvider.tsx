@@ -11,7 +11,7 @@ import { GraphqlBackend, GraphqlProvider } from 'provider/types';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import keycloak from 'auth/keycloak-api/keycloak';
 
-const ARRANGER_API = EnvironmentVariables.configFor('ARRANGER_API');
+export const ARRANGER_API = EnvironmentVariables.configFor('ARRANGER_API');
 const PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
 const FHIR_API = EnvironmentVariables.configFor('FHIR_API');
 

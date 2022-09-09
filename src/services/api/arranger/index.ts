@@ -3,6 +3,7 @@ import { IParticipantResultTree } from 'graphql/participants/models';
 import { MATCH_PARTICIPANT_QUERY } from 'graphql/participants/queries';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import {
+  ARRANGER_API,
   ARRANGER_API_COLUMN_STATE_URL,
   ARRANGER_API_DOWNLOAD_URL,
   ARRANGER_API_PROJECT_URL,
@@ -83,7 +84,7 @@ const fetchMatchParticipant = (ids: string[]) =>
 const searchSuggestions = (type: SuggestionType, value: string) =>
   sendRequest<ISuggestionPayload<Suggestion>>({
     method: 'GET',
-    url: `${ARRANGER_API_PROJECT_URL}/${type}Feature/suggestions/${value}`,
+    url: `${ARRANGER_API}/${type}Feature/suggestions/${value}`,
   });
 
 export const ArrangerApi = {

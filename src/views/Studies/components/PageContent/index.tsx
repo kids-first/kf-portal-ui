@@ -128,7 +128,7 @@ const PageContent = ({
                   fetchTsvReport({
                     columnStates: userInfo?.config.study?.tables?.study?.columns,
                     columns: defaultColumns,
-                    index: INDEXES.STUDY,
+                    index: INDEXES.STUDIES,
                     sqon: resolvedSqon,
                   }),
                 );

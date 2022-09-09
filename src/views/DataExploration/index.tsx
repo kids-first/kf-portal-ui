@@ -3,9 +3,7 @@ import { useParams } from 'react-router-dom';
 import { FileSearchOutlined, UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-import { Spin } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { ExtendedMappingResults } from 'graphql/models';
 import PageContent from 'views/DataExploration/components/PageContent';
 import {
   DATA_EXPLORATION_QB_ID,
@@ -13,7 +11,7 @@ import {
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 
-import FilterList, { TCustomFilterMapper } from 'components/uiKit/FilterList';
+import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { mapFilterForFiles, mapFilterForParticipant } from 'utils/fieldMapper';

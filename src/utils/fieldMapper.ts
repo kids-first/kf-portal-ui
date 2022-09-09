@@ -51,7 +51,7 @@ const recursiveMap = (
 export const mapFilterForVariant = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.STUDY,
+      index: INDEXES.STUDIES,
       prefix: 'study.',
     },
   ]);

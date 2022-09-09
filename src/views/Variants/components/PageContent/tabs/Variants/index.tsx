@@ -8,10 +8,9 @@ import { useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
-import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
+import { IQueryResults } from 'graphql/models';
 import {
   IClinVar,
-  IConsequenceEntity,
   IConsequenceNode,
   IExternalFrequenciesEntity,
   ITableVariantEntity,

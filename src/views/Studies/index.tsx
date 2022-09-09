@@ -1,11 +1,10 @@
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
-import { IStudyEntity } from 'graphql/studies/models';
+import { IStudiesEntity } from 'graphql/studies/models';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { CheckOutlined, UserOutlined } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -18,7 +17,6 @@ import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
 import PageContent from './components/PageContent';
 import StudySearch from './components/StudySearch';
-import { SuggestionType } from 'services/api/arranger/models';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -36,7 +34,6 @@ const filterInfo: FilterInfo = {
   customSearches: [<StudySearch queryBuilderId={STUDIES_REPO_QB_ID} />],
   defaultOpenFacets: [
     'external_id',
-    'domain',
     'program',
     'data_category',
     'experimental_strategy',
@@ -46,7 +43,6 @@ const filterInfo: FilterInfo = {
     {
       facets: [
         'external_id',
-        'domain',
         'program',
         'data_category',
         'experimental_strategy',
@@ -60,7 +56,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'study_id',
     title: 'Study Code',
-    render: (record: IStudyEntity) => (
+    render: (record: IStudiesEntity) => (
       <ExternalLink href={record.website}>{record.study_id}</ExternalLink>
     ),
   },
@@ -90,7 +86,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'participant_count',
     title: 'Participants',
-    render: (record: IStudyEntity) => {
+    render: (record: IStudiesEntity) => {
       const participantCount = record.participant_count;
 
       return participantCount ? (
@@ -127,7 +123,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'biospecimen_count',
     title: 'Biospecimens',
-    render: (record: IStudyEntity) => {
+    render: (record: IStudiesEntity) => {
       const biospecimenCount = record.biospecimen_count;
 
       return biospecimenCount ? (
@@ -160,31 +156,31 @@ const columns: ProColumnType<any>[] = [
     key: 'genomic',
     title: 'Genomics',
     align: 'center',
-    render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.GENOMIC),
+    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.GENOMIC),
   },
   {
     key: 'transcriptomic',
     title: 'Transcriptomics',
     align: 'center',
-    render: (record: IStudyEntity) =>
+    render: (record: IStudiesEntity) =>
       hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC),
   },
   {
     key: 'proteomic',
     title: 'Proteomics',
     align: 'center',
-    render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
   {
     key: 'clinical',
     title: 'Clinicals',
     align: 'center',
-    render: (record: IStudyEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
 ];
 
 const Studies = () => {
-  const studiesMappingResults = useGetExtendedMappings(INDEXES.STUDY);
+  const studiesMappingResults = useGetExtendedMappings(INDEXES.STUDIES);
 
   return (
     <div className={styles.studiesPage}>

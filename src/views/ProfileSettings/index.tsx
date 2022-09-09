@@ -1,5 +1,4 @@
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Alert, Button, Space, Typography } from 'antd';
+import { Button, Space, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useUser } from 'store/user';
 import intl from 'react-intl-universal';

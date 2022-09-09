@@ -2,11 +2,8 @@
 import cx from 'classnames';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Typography } from 'antd';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { useState } from 'react';
-import intl from 'react-intl-universal';
-
 import styles from './index.module.scss';
 import { ExtendedMappingResults } from 'graphql/models';
 import { STUDIES_REPO_QB_ID } from '../../utils/constant';
@@ -14,7 +11,6 @@ import { mapFilterForVariant } from 'utils/fieldMapper';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
-const { Title } = Typography;
 
 type OwnProps = {
   className?: string;
@@ -48,8 +44,8 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
           <div className={styles.content}>
             <FilterList
               loading={loading}
-              key={INDEXES.STUDY}
-              index={INDEXES.STUDY}
+              key={INDEXES.STUDIES}
+              index={INDEXES.STUDIES}
               queryBuilderId={STUDIES_REPO_QB_ID}
               extendedMappingResults={extendedMappingResults}
               filterInfo={filterInfo}

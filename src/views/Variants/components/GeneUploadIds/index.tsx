@@ -61,7 +61,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
               generateValueFilter({
                 field,
                 value: ids,
-                index: INDEXES.GENE,
+                index: INDEXES.GENES,
               }),
             ),
           }),
@@ -89,7 +89,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
         queryBuilderId,
         field: 'consequences.symbol_id_1',
         value: match.map((value) => value.mappedTo),
-        index: INDEXES.VARIANT,
+        index: INDEXES.VARIANTS,
         overrideValuesName: intl.get('upload.gene.ids.modal.pill.title'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
       })

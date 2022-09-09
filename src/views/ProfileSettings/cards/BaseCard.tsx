@@ -1,7 +1,6 @@
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, FormInstance, Space, Typography } from 'antd';
 import React, { PropsWithChildren } from 'react';
-import intl from 'react-intl-universal';
 
 interface OwnProps {
   title: string;

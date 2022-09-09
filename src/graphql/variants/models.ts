@@ -1,5 +1,5 @@
 import { ArrangerResultsTree } from 'graphql/models';
-import { IStudyEntity } from 'graphql/studies/models';
+import { IStudiesEntity } from 'graphql/studies/models';
 
 export interface IVariantResultTree {
   variants: ArrangerResultsTree<IVariantEntity>;
@@ -168,7 +168,7 @@ export interface IVariantEntity {
   variant_external_reference: string;
   vep_impacts: string;
   zygosity: string;
-  studies: ArrangerResultsTree<IStudyEntity>;
+  studies: ArrangerResultsTree<IStudiesEntity>;
   consequences: ArrangerResultsTree<IConsequenceEntity>;
   clinvar: IClinVar;
   frequencies: IExternalFrequenciesEntity;
