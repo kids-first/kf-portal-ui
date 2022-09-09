@@ -1,10 +1,10 @@
 import { ArrangerResultsTree } from "graphql/models";
 
-export interface IStudyResultTree {
-  study: ArrangerResultsTree<IStudyEntity>;
+export interface IStudiesResultTree {
+  studies: ArrangerResultsTree<IStudiesEntity>;
 }
 
-export interface IStudyEntity {
+export interface IStudiesEntity {
   id: string;
   study_id: string;
   study_code: string;

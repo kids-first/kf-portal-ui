@@ -3,23 +3,20 @@ import { useParams } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-import { Spin } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { ExtendedMappingResults } from 'graphql/models';
 import ParticipantSearch from 'views/DataExploration/components/ParticipantSearch';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from 'views/DataExploration/utils/helper';
 import GenesUploadIds from 'views/Variants/components/GeneUploadIds';
 import VariantGeneSearch from 'views/Variants/components/VariantGeneSearch';
-import VariantSearch from 'views/Variants/components/VariantSearch';
 import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import DiseaseIcon from 'components/Icons/DiseaseIcon';
 import FrequencyIcon from 'components/Icons/FrequencyIcon';
 import GeneIcon from 'components/Icons/GeneIcon';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import FilterList, { TCustomFilterMapper } from 'components/uiKit/FilterList';
+import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { SuggestionType } from 'services/api/arranger/models';
@@ -37,9 +34,6 @@ import PageContent from './components/PageContent';
 import { SCROLL_WRAPPER_ID } from './utils/constants';
 
 import styles from 'views/Variants/index.module.scss';
-interface OwnProps {
-  tab?: string;
-}
 
 enum FilterTypes {
   Participant,
@@ -47,6 +41,14 @@ enum FilterTypes {
   Gene,
   Frequency,
   Pathogenicity,
+}
+
+enum FilterKeys {
+  PARTICIPANT = 'participant',
+  VARIANTS = 'variants',
+  GENES = 'genes',
+  PATHOGENICITY = 'pathogenicity',
+  FREQUENCY = 'frequency',
 }
 
 const filterGroups: {
@@ -69,7 +71,6 @@ const filterGroups: {
             titleFormatter={formatHpoTitleAndCode}
             key={'observed_phenotype'}
           />,
-          'study',
         ],
       },
     ],
@@ -127,7 +128,7 @@ const filterGroups: {
         facets: ['clinvar__clin_sig', 'consequences__vep_impact'],
       },
       {
-        title: 'Prédictions',
+        title: 'Predictions',
         facets: [
           'consequences__predictions__sift_pred',
           'consequences__predictions__polyphen2_hvar_pred',
@@ -160,7 +161,7 @@ const filterGroups: {
 const Variants = () => {
   const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
-  const variantMappingResults = useGetExtendedMappings(INDEXES.VARIANT);
+  const variantMappingResults = useGetExtendedMappings(INDEXES.VARIANTS);
   const menuItems: ISidebarMenuItem[] = [];
 
   if (getFTEnvVarByKey(FT_VARIANT_FACET_PARTICIPANT) !== 'false') {
@@ -171,7 +172,7 @@ const Variants = () => {
       panelContent: (
         <FilterList
           loading={participantMappingResults.loading}
-          key={INDEXES.PARTICIPANT}
+          key={FilterKeys.PARTICIPANT}
           index={INDEXES.PARTICIPANT}
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={participantMappingResults}
@@ -190,8 +191,8 @@ const Variants = () => {
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
-          key={INDEXES.VARIANT}
-          index={INDEXES.VARIANT}
+          key={FilterKeys.VARIANTS}
+          index={INDEXES.VARIANTS}
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Variant]}
@@ -208,8 +209,8 @@ const Variants = () => {
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
-          key={INDEXES.GENE}
-          index={INDEXES.GENE}
+          key={FilterKeys.GENES}
+          index={INDEXES.VARIANTS}
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Gene]}
@@ -226,8 +227,8 @@ const Variants = () => {
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
-          key={INDEXES.PATHOGENICITY}
-          index={INDEXES.PATHOGENICITY}
+          key={FilterKeys.PATHOGENICITY}
+          index={INDEXES.VARIANTS}
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Pathogenicity]}
@@ -244,8 +245,8 @@ const Variants = () => {
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
-          key={INDEXES.FREQUENCY}
-          index={INDEXES.FREQUENCY}
+          key={FilterKeys.FREQUENCY}
+          index={INDEXES.VARIANTS}
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Frequency]}

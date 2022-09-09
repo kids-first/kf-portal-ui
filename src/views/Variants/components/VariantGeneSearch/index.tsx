@@ -1,50 +1,57 @@
 import intl from 'react-intl-universal';
-import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { INDEXES } from 'graphql/constants';
-import { SEARCH_VARIANT_BY_ID_QUERY } from 'graphql/variants/queries';
 
-import GlobalSearch, { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
+import { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
 import { ArrangerApi } from 'services/api/arranger';
 import { Suggestion, SuggestionType } from 'services/api/arranger/models';
 
 import OptionItem from './OptionItem';
+import SearchAutocomplete, {
+  OptionsType,
+} from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
+import { useState } from 'react';
 
 type OwnProps = ICustomSearchProps & {
   type: SuggestionType;
 };
 
-export const getValue = (type: SuggestionType, option: Suggestion) =>
-  type === SuggestionType.GENES ? option.symbol! : option.locus!;
+const getValue = (type: SuggestionType, option: Suggestion) =>
+  (type === SuggestionType.GENES ? option.symbol : option.locus) ?? '';
 
 const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
-  const { activeQuery } = useQueryBuilderState(queryBuilderId);
+  const [options, setOptions] = useState<OptionsType[]>([]);
 
   const handleSearch = async (searchText: string) => {
     const { data } = await ArrangerApi.searchSuggestions(type, searchText);
-    return data!;
+    setOptions(
+      data?.suggestions?.map((s) => ({
+        label: <OptionItem type={type} suggestion={s} value={getValue(type, s)} />,
+        value: getValue(type, s),
+      })) ?? [],
+    );
+    return;
   };
 
   return (
-    <GlobalSearch<Suggestion>
-      queryBuilderId={queryBuilderId}
-      field={type === SuggestionType.VARIANTS ? 'locus' : 'consequences.symbol'}
-      index={INDEXES.VARIANT}
-      placeholder={intl.get(`global.search.${type}.placeholder`)}
-      emptyDescription={intl.get(`global.search.${type}.emptyText`)}
-      searchFields={[]}
-      tooltipText={intl.get(`global.search.${type}.tooltip`)}
-      query={SEARCH_VARIANT_BY_ID_QUERY}
-      sqon={activeQuery as ISqonGroupFilter}
-      handleSearch={handleSearch}
-      optionsFormatter={(options) =>
-        options.map((option) => ({
-          label: <OptionItem type={type} suggestion={option} value={getValue(type, option)} />,
-          value: getValue(type, option),
-        }))
+    <SearchAutocomplete
+      onSearch={(value) => handleSearch(value)}
+      onSelect={(values) =>
+        updateActiveQueryField({
+          queryBuilderId,
+          field: type === SuggestionType.VARIANTS ? 'locus' : 'consequences.symbol',
+          value: values,
+          index: INDEXES.VARIANTS,
+          merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+        })
       }
-      title={intl.get(`global.search.${type}.title`)}
-      limit={4}
+      placeHolder={intl.get(`global.search.${type}.placeholder`)}
+      options={options}
+      selectedItems={[]}
+      title={'Search by Variant ID'}
+      emptyDescription={intl.get(`global.search.${type}.emptyText`)}
+      tooltipText={intl.get(`global.search.${type}.tooltip`)}
     />
   );
 };

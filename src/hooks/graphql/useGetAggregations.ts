@@ -9,6 +9,7 @@ const useGetAggregations = (
 ): GqlResults<any> => {
   const { loading, result } = useLazyResultQuery<any>(query, {
     variables,
+    fetchPolicy: 'no-cache',
   });
 
   return {

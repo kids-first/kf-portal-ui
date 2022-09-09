@@ -67,17 +67,3 @@ export const SEARCH_VARIANT_QUERY = gql`
   ${studiesVariantFragment}
   ${clinvarFragment}
 `;
-
-export const SEARCH_VARIANT_BY_ID_QUERY = gql`
-  query searchVariantById($sqon: JSON) {
-    variants {
-      hits(filters: $sqon) {
-        edges {
-          node {
-            id
-          }
-        }
-      }
-    }
-  }
-`;
