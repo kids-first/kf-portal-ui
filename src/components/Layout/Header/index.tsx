@@ -17,7 +17,6 @@ import { DownOutlined } from '@ant-design/icons';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import { STATIC_ROUTES } from 'utils/routes';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
-// import { useUser } from 'store/user';
 import intl from 'react-intl-universal';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import NotificationBanner from 'components/featureToggle/NotificationBanner';
@@ -42,11 +41,9 @@ const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
 
-// @TODO: KEYCLOACK remove persona and use userInfo when keycloack is done
 const Header = () => {
-  // const { userInfo } = useUser();
   const { personaUserInfo } = usePersona();
-  let userInfo = {
+  const userInfo = {
     first_name: personaUserInfo?.firstName,
     last_name: personaUserInfo?.lastName,
     email: personaUserInfo?.email,

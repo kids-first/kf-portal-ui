@@ -31,7 +31,8 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import ApolloProvider from 'provider/ApolloProvider';
 import GradientAccent from 'components/uiKit/GradientAccent';
-import PersonaRegistration from 'views/Login/PersonaRegistration';
+import PersonaRegistration from 'views/Persona';
+import PersonaUpdateTermsAndConditions from 'views/Persona/updateTermsAndConditions';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -83,6 +84,12 @@ const App = () => {
                     <GradientAccent isFixed />
                     <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
                       <PersonaRegistration />
+                    </SideImageLayout>
+                  </Route>
+                  <Route exact path={STATIC_ROUTES.TERMSCONDITONS}>
+                    <GradientAccent isFixed />
+                    <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
+                      <PersonaUpdateTermsAndConditions />
                     </SideImageLayout>
                   </Route>
                   <Route

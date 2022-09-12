@@ -10,7 +10,8 @@ import { STATIC_ROUTES } from 'utils/routes';
 const { Title } = Typography;
 
 interface OwnProps {
-  hidden: boolean;
+  isMultiStep?: boolean;
+  hidden?: boolean;
   onFinish: (values: any) => void;
 }
 
@@ -107,7 +108,7 @@ export const TermsConditionsContent = () => (
   </Space>
 );
 
-const TermsConditions = ({ hidden, onFinish }: OwnProps) => {
+const TermsConditions = ({ isMultiStep = false, hidden = false, onFinish }: OwnProps) => {
   const history = useHistory();
   const [form] = Form.useForm();
 
@@ -158,7 +159,7 @@ const TermsConditions = ({ hidden, onFinish }: OwnProps) => {
               Cancel
             </Button>
             <Button type={'primary'} size={'large'} onClick={handleSubmit}>
-              Next
+              {isMultiStep ? 'Next' : 'Accept'}
             </Button>
           </Space>
         </Row>

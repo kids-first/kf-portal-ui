@@ -19,7 +19,6 @@ type Props = {
   children: React.ReactElement;
 };
 
-// @TODO: KEYCLOACK remove persona and use userInfo when keycloack is done
 const AuthMiddleware = ({ children }: Props) => {
   const { isLoading } = useUser();
   const { isLoading: personaIsLoading } = usePersona();
@@ -39,7 +38,6 @@ const AuthMiddleware = ({ children }: Props) => {
 
   useEffect(() => {
     if (keycloak.authenticated) {
-      console.log('AUTH_MIDDLEWARE: keycloack is authenticated'); //TODO: to remove
       dispatch(
         fetchPersonaUser({
           egoId: tokenParsed.sub,

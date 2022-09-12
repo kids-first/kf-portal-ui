@@ -7,12 +7,12 @@ import { REDIRECT_URI_KEY } from 'common/constants';
 import useQueryParams from 'hooks/useQueryParams';
 import { STATIC_ROUTES } from 'utils/routes';
 
-import Registration from './RegistrationForm';
-import TermsConditions from './TermsConditions';
+import Registration from './components/RegistrationForm';
+import TermsConditions from './components/TermsConditions';
 import { usePersona } from 'store/persona';
 import Spinner from 'components/uiKit/Spinner';
 
-enum Step {
+enum Steps {
   LOADING,
   TERMSANDCONDITIONS,
   REGISTRATION,
@@ -22,17 +22,11 @@ const PersonaRegistration = () => {
   const { personaUserInfo } = usePersona();
   const query = useQueryParams();
   const dispatch = useDispatch();
-  const [step, setStep] = useState(Step.TERMSANDCONDITIONS);
+  const [step, setStep] = useState(Steps.TERMSANDCONDITIONS);
   const { keycloak } = useKeycloak();
   const tokenParsed = keycloak?.tokenParsed as KidsFirstKeycloakTokenParsed;
 
   useEffect(() => {
-    // if the use tried to acces the registration page wihout using keycloack login
-    if (!tokenParsed?.sub!) {
-      window.location.assign(`${window.location.origin}/${STATIC_ROUTES.LOGIN}`);
-      return;
-    }
-
     if (personaUserInfo === undefined) {
       dispatch(
         fetchPersonaUser({
@@ -65,24 +59,25 @@ const PersonaRegistration = () => {
     }
   });
 
-  if (step === Step.LOADING || personaUserInfo?.acceptedTerms || !tokenParsed?.sub) {
+  if (step === Steps.LOADING || personaUserInfo?.acceptedTerms || !tokenParsed?.sub) {
     return <Spinner size={'large'} />;
   }
 
   return (
     <>
       <TermsConditions
-        hidden={!(step === Step.TERMSANDCONDITIONS)}
+        isMultiStep
+        hidden={step !== Steps.TERMSANDCONDITIONS}
         onFinish={() => {
-          setStep(Step.REGISTRATION);
+          setStep(Steps.REGISTRATION);
         }}
       />
 
       <Registration
-        hidden={!(step === Step.REGISTRATION)}
-        handleBack={() => setStep(Step.TERMSANDCONDITIONS)}
+        hidden={step !== Steps.REGISTRATION}
+        handleBack={() => setStep(Steps.TERMSANDCONDITIONS)}
         kcToken={tokenParsed}
-        onFinishCallback={() => setStep(Step.LOADING)}
+        onFinishCallback={() => setStep(Steps.LOADING)}
       />
     </>
   );

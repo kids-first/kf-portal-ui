@@ -14,9 +14,7 @@ const personaSlice = createSlice({
   name: 'persona',
   initialState: PersonaState,
   reducers: {
-    cleanLogout: (state) => {
-      return PersonaState;
-    },
+    cleanLogout: (_) => PersonaState,
     setIsPersonaLoading: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoading: action.payload,

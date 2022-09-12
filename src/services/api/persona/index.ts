@@ -44,15 +44,15 @@ const DEFAULT_FIELDS_SELF = `
   hashedEmail
 `;
 
-export const headers = () => ({
+export const headers = {
   'Content-Type': 'application/json',
-});
+};
 
 const fetch = () =>
   sendRequest<TPersonaUserFetch>({
     method: 'POST',
     url: `${PERSONA_API_URL}graphql`,
-    headers: headers(),
+    headers,
     data: {
       query: `
         query {
@@ -75,7 +75,7 @@ const create = (user: TPersonaUser) => {
   return sendRequest<TPersonaUserCreate>({
     method: 'POST',
     url: `${PERSONA_API_URL}graphql`,
-    headers: headers(),
+    headers,
     data: {
       variables: user,
       query: `
@@ -93,9 +93,9 @@ const create = (user: TPersonaUser) => {
 
 const update = (user: TPersonaUserUpdate) => {
   return sendRequest<TPersonaUser>({
-    method: 'PUT',
+    method: 'POST',
     url: `${PERSONA_API_URL}graphql`,
-    headers: headers(),
+    headers,
     data: {
       variables: { _id: user._id, record: omit(user, ['_id', 'groups', 'isAdmin']) },
       query: `
