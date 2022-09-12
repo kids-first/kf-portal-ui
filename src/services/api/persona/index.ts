@@ -51,7 +51,7 @@ export const headers = {
 const fetch = () =>
   sendRequest<TPersonaUserFetch>({
     method: 'POST',
-    url: `${PERSONA_API_URL}graphql`,
+    url: `${PERSONA_API_URL}/graphql`,
     headers,
     data: {
       query: `
@@ -74,7 +74,7 @@ export type TPersonaUserRequestPayload = {
 const create = (user: TPersonaUser) => {
   return sendRequest<TPersonaUserCreate>({
     method: 'POST',
-    url: `${PERSONA_API_URL}graphql`,
+    url: `${PERSONA_API_URL}/graphql`,
     headers,
     data: {
       variables: user,
@@ -94,7 +94,7 @@ const create = (user: TPersonaUser) => {
 const update = (user: TPersonaUserUpdate) => {
   return sendRequest<TPersonaUser>({
     method: 'POST',
-    url: `${PERSONA_API_URL}graphql`,
+    url: `${PERSONA_API_URL}/graphql`,
     headers,
     data: {
       variables: { _id: user._id, record: omit(user, ['_id', 'groups', 'isAdmin']) },

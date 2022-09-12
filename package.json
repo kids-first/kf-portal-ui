@@ -1,5 +1,5 @@
 {
-  "name": "include-portal-ui",
+  "name": "kids-first-portal-ui",
   "version": "1.4.0",
   "private": true,
   "lint-staged": {
@@ -47,7 +47,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/include-dcc/include-portal-ui.git"
+    "url": "git+https://github.com/kids-first/kf-portal-ui.git"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
