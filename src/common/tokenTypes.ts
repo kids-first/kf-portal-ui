@@ -1,4 +1,4 @@
-import { KeycloakTokenParsed } from "keycloak-js";
+import { KeycloakTokenParsed } from 'keycloak-js';
 
 export type DecodedJwt = {
   iat: number;
@@ -24,7 +24,7 @@ export type DecodedJwt = {
   [index: string]: any;
 };
 
-export interface IncludeKeycloakTokenParsed extends KeycloakTokenParsed {
+export interface KidsFirstKeycloakTokenParsed extends KeycloakTokenParsed {
   groups: string[];
   name: string;
   preferred_username: string;

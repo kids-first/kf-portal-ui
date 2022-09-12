@@ -1,9 +1,9 @@
-// @TODO: Could be exported to ferlab-ui
 import cx from 'classnames';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { useState } from 'react';
+
 import styles from './index.module.scss';
 import { ExtendedMappingResults } from 'graphql/models';
 import { STUDIES_REPO_QB_ID } from '../../utils/constant';

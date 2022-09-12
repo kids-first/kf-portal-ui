@@ -4,7 +4,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { Alert, Col, Form, Input, Row, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
-import { IncludeKeycloakTokenParsed } from 'common/tokenTypes';
+import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -37,7 +37,7 @@ const IdentificationCard = () => {
   const { keycloak } = useKeycloak();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
-  const tokenParsed = keycloak.tokenParsed as IncludeKeycloakTokenParsed;
+  const tokenParsed = keycloak.tokenParsed as KidsFirstKeycloakTokenParsed;
 
   const isValueChanged = () => Object.values(hasChanged).some((val) => val);
 
@@ -108,7 +108,6 @@ const IdentificationCard = () => {
                 name={FORM_FIELDS.PUBLIC_EMAIL}
                 requiredMark="optional"
                 label={
-                  
                   <ProLabel
                     title="Public Email"
                     popoverProps={{

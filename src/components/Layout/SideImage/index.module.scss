@@ -6,6 +6,10 @@
   height: 100vh;
   background-color: $cyan-7;
 
+  &.sideImagePageContainerAlt {
+    background-color: $gray-2;
+  }
+
   .contentWrapper {
     height: 100%;
     width: 100%;
@@ -58,6 +62,23 @@
 
   .pageContent {
     display: flex;
+
+    &.sideImagePageContainerAlt {
+      background-color: $gray-2;
+
+      &.dark {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background: linear-gradient(
+            0deg,
+            transparentize($gray-2, 0.1),
+            transparentize($gray-2, 0.1)
+          ),
+          url(../../assets/mainSideImage-alt.jpg) bottom;
+        background-size: cover;
+      }
+    }
 
     &.dark {
       background-size: cover;

@@ -7,6 +7,7 @@ import style from 'components/Layout/SideImage/index.module.scss';
 import { Theme } from 'common/theme';
 
 interface OwnProps {
+  alt?: boolean;
   logoSrc?: string;
   sideImgSrc?: string;
   alignCenter?: boolean;
@@ -15,13 +16,14 @@ interface OwnProps {
 }
 
 const SideImageLayout = ({
+  alt = false,
   logoSrc,
   sideImgSrc,
   alignCenter = true,
   theme = Theme.DARK,
   children,
 }: OwnProps) => (
-  <div className={style.sideImagePageContainer}>
+  <div className={cx(style.sideImagePageContainer, { [style.sideImagePageContainerAlt]: alt })}>
     {logoSrc && (
       <a href={EnvVariables.configFor('WEB_ROOT')}>
         <img className={style.logoImage} src={logoSrc} alt="Include Logo Logo" />
@@ -41,6 +43,7 @@ const SideImageLayout = ({
           style.pageContent,
           alignCenter && style.alignCenter,
           theme === Theme.LIGHT ? style.light : style.dark,
+          { [style.sideImagePageContainerAlt]: alt },
         )}
       >
         {children}

@@ -1,6 +1,6 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
 import keycloak from 'auth/keycloak-api/keycloak';
-import { IncludeKeycloakTokenParsed } from 'common/tokenTypes';
+import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { TUser, TUserInsert, TUserUpdate } from './models';
 import { sendRequest } from 'services/api';
 
@@ -18,7 +18,7 @@ const fetch = () =>
   });
 
 const create = (body?: Omit<TUserInsert, 'keycloak_id'>) => {
-  const tokenParsed = keycloak.tokenParsed as IncludeKeycloakTokenParsed;
+  const tokenParsed = keycloak.tokenParsed as KidsFirstKeycloakTokenParsed;
   return sendRequest<TUser>({
     method: 'POST',
     url: USER_API_URL,
