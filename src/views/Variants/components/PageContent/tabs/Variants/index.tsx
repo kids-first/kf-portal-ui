@@ -85,7 +85,6 @@ const defaultColumns: ProColumnType<any>[] = [
         {intl.get('screen.variants.table.gnomAd')}
       </Tooltip>
     ),
-    displayTitle: intl.get('screen.variants.table.gnomAd'),
     dataIndex: 'frequencies',
     render: (frequencies: IExternalFrequenciesEntity) =>
       frequencies?.gnomad_exomes_2_1

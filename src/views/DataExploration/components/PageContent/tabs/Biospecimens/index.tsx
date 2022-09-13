@@ -124,7 +124,6 @@ const getDefaultColumns = (history: any): ProColumnType<any>[] => [
         Age (days)
       </Tooltip>
     ),
-    displayTitle: 'Age (days)',
     dataIndex: 'age_at_biospecimen_collection',
     render: (age_at_biospecimen_collection) =>
       age_at_biospecimen_collection || TABLE_EMPTY_PLACE_HOLDER,

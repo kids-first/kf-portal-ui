@@ -433,6 +433,31 @@ const en = {
           open: 'Open notebooks',
           launch: 'Launch environment',
         },
+        fhirDataResource: {
+          title: 'Kids First FHIR API',
+          infoPopover: {
+            content:
+              'FHIR & Data Resources for NIH’s Collaboration to Assess Risk and Identify LoNG-term outcomes for Children with COVID. Expanded clinical, treatment, and lab result data for these patients are available via the Kids First FHIR API.',
+          },
+          caringApi: {
+            title: '<i>CARING</i> Data FHIR API Endpoint',
+            description: 'Query the entire CARING dataset via FHIR API parameters',
+            popoverText:
+              "FHIR & Data Resources for NIH's Collaboration to Assess Risk and Identify LoNG-term outcomes for Children with COVID",
+          },
+          kfApi: {
+            title: 'Kids First FHIR API Endpoint',
+            description: 'Query all released Kids First datasets via FHIR API',
+          },
+          dashboardApi: {
+            title: 'Kids First FHIR Data Dashboard',
+            description: 'Explore the CARING data via dashboard interfaces',
+          },
+          documentation: {
+            title: 'Kids First FHIR Documentation',
+            description: 'Swagger documentation to learn how to interact with the FHIR API',
+          },
+        },
       },
     },
     variants: {

@@ -64,7 +64,6 @@ const getDefaultColumns = (
         <LockOutlined />
       </Tooltip>
     ),
-    displayTitle: 'File Authorization',
     align: 'center',
     render: (record: IFileEntity) => {
       const hasAccess = userHasAccessToFile(
@@ -93,7 +92,6 @@ const getDefaultColumns = (
       </Tooltip>
     ),
     dataIndex: 'controlled_access',
-    displayTitle: 'Data access',
     align: 'center',
     width: 75,
     render: (controlled_access: string) =>

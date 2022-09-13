@@ -26,6 +26,10 @@ export type initialState = {
     [FENCE_NAMES.gen3]: string[];
     [FENCE_NAMES.cavatica]: string[];
   };
-  connectionStatus: TFencesConnectionStatus;
+  connectionStatus: {
+    [FENCE_NAMES.dcf]: FENCE_CONNECTION_STATUSES;
+    [FENCE_NAMES.gen3]: FENCE_CONNECTION_STATUSES;
+    [FENCE_NAMES.cavatica]: FENCE_CONNECTION_STATUSES;
+  };
   modalConnectionParams: TModalConnectionParams;
 };
