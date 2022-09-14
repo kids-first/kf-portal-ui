@@ -7,6 +7,11 @@ export type TUserSavedFilter = ISavedFilter & {
   updated_date: string;
 };
 
+export enum SavedFilterTag {
+  PARTICIPANT = 'participant',
+  VARIANT = 'variants-exploration',
+}
+
 export type TUserSavedFilterInsert = Omit<
   TUserSavedFilter,
   'keycloak_id' | 'updated_date' | 'creation_date'

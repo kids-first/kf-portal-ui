@@ -1,13 +1,33 @@
 .savedFiltersList {
+  height: 100%;
+  overflow: auto;
+  min-height: 200px;
+
+  div[class$='-item-meta'] {
+    margin-bottom: 0;
+  }
+
+  *[class$='-item-meta-description'] {
+    font-size: 12px;
+  }
+}
+
+.setTabs {
+  height: 100%;
+
+  :global(.ant-tabs-content) {
     height: 100%;
-    overflow: auto;
-    min-height: 200px;
+  }
 
-    div[class$="-item-meta"] {
-        margin-bottom: 0;
-    }
+  :global(.ant-tabs-tab) {
+    padding-top: 0 !important;
+  }
 
-    *[class$="-item-meta-description"] {
-        font-size: 12px;
+  &:global(.ant-tabs-top) {
+    :global(.ant-tabs-nav) {
+      &::before {
+        border: none;
+      }
     }
+  }
 }
