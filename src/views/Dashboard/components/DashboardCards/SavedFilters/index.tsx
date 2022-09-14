@@ -21,15 +21,22 @@ import { SUPPORT_EMAIL } from 'store/report/thunks';
 const { Text } = Typography;
 const { TabPane } = Tabs;
 
-const getItemList = (
-  tag: SavedFilterTag,
-  savedFilters: TUserSavedFilter[],
-  fetchingError: boolean,
-  isLoading: boolean,
-) => (
+type SavedFilterListWrapperOwnprops = {
+  tag: SavedFilterTag;
+  savedFilters: TUserSavedFilter[];
+  fetchingError: boolean;
+  isLoading: boolean;
+};
+
+const SavedFilterListWrapper = ({
+  tag,
+  savedFilters,
+  fetchingError,
+  isLoading,
+}: SavedFilterListWrapperOwnprops) => (
   <List<TUserSavedFilter>
     className={styles.savedFiltersList}
-    key="2"
+    key={tag}
     bordered
     locale={{
       emptyText: fetchingError ? (
@@ -37,7 +44,7 @@ const getItemList = (
           title="Failed to Fetch Saved Filters"
           subTitle={
             <Text>
-              Please refresh and try again or{' '}
+              Please refresh and try again or
               <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
                 <Text>contact our support</Text>
               </ExternalLink>
@@ -103,7 +110,12 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               </div>
             }
           >
-            {getItemList(SavedFilterTag.PARTICIPANT, savedFilters, fetchingError, isLoading)}
+            <SavedFilterListWrapper
+              tag={SavedFilterTag.PARTICIPANT}
+              savedFilters={savedFilters}
+              fetchingError={fetchingError}
+              isLoading={isLoading}
+            />
           </TabPane>
 
           <TabPane
@@ -115,7 +127,12 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               </div>
             }
           >
-            {getItemList(SavedFilterTag.VARIANT, savedFilters, fetchingError, isLoading)}
+            <SavedFilterListWrapper
+              tag={SavedFilterTag.VARIANT}
+              savedFilters={savedFilters}
+              fetchingError={fetchingError}
+              isLoading={isLoading}
+            />
           </TabPane>
         </Tabs>
       }
