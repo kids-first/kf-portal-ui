@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
-import { FileTextOutlined, ReadOutlined, UserOutlined } from '@ant-design/icons';
+import { DatabaseOutlined, FileTextOutlined, ReadOutlined, UserOutlined } from '@ant-design/icons';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import LinkBox from './LinkBox';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -14,6 +14,8 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 
 import styles from './index.module.scss';
+import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
+import TeamIcon from 'components/Icons/TeamIcon';
 
 const formatStorage = (storage: string) => {
   if (!storage) return;
@@ -70,10 +72,29 @@ const DataExplorationLinks = () => {
           </Col>
           <Col flex="auto" className={styles.customCol}>
             <LinkBox
+              href=""
+              multiLabelClassName={styles.dataReleaseStatsLabel}
+              label={numberFormat(stats?.families!)}
+              subLabel={intl.get('components.dataRelease.families')}
+              icon={<TeamIcon className={styles.dataReleaseIcon} />}
+            />
+          </Col>
+          <Col flex="auto" className={styles.customCol}>
+            <LinkBox
               href={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
               multiLabelClassName={styles.dataReleaseStatsLabel}
               label={numberFormat(stats?.samples!)}
               subLabel={intl.get('components.dataRelease.biospecimens')}
+              icon={<BiospecimenIcon className={styles.dataReleaseIcon} />}
+            />
+          </Col>
+
+          <Col flex="auto" className={styles.customCol}>
+            <LinkBox
+              href={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
+              multiLabelClassName={styles.dataReleaseStatsLabel}
+              label={numberFormat(stats?.files!)}
+              subLabel={intl.get('components.dataRelease.files')}
               icon={<FileTextOutlined className={styles.dataReleaseIcon} />}
             />
           </Col>
@@ -82,8 +103,8 @@ const DataExplorationLinks = () => {
               href={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
               multiLabelClassName={styles.dataReleaseStatsLabel}
               label={formatStorage(stats?.fileSize!) || '0TB'}
-              subLabel={intl.get('components.dataRelease.datafiles')}
-              icon={<FileTextOutlined className={styles.dataReleaseIcon} />}
+              subLabel={intl.get('components.dataRelease.storage')}
+              icon={<DatabaseOutlined className={styles.dataReleaseIcon} />}
             />
           </Col>
         </Row>
