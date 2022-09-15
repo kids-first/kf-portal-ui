@@ -17,16 +17,21 @@ const iconSize = {
   height: 45,
 };
 
-const AuthorizedStudiesConnectionModal = () => {
+const FencesConnectionModal = () => {
   const dispatch = useDispatch();
-  const { isFenceConnectionModalOpen, connectionStatus, fencesConnectError, loadingFences } =
+  const { modalConnectionParams, connectionStatus, fencesConnectError, loadingFences } =
     useFenceConnection();
 
   const isDcfConnected = connectionStatus[FENCE_NAMES.dcf] === FENCE_CONNECTION_STATUSES.connected;
   const isGen3Connected =
     connectionStatus[FENCE_NAMES.gen3] === FENCE_CONNECTION_STATUSES.connected;
 
-  const onClose = () => dispatch(fenceConnectionActions.toggleConnectionModal(false));
+  const onClose = () => {
+    if (modalConnectionParams.onClose) {
+      modalConnectionParams.onClose();
+    }
+    dispatch(fenceConnectionActions.setConnectionModalParams({ open: false, onClose: undefined }));
+  };
   const onSwitchClick = (fenceNames: FENCE_NAMES, isConnected: boolean) => () => {
     dispatch(isConnected ? disconnectFromFence(fenceNames) : connectToFence(fenceNames));
   };
@@ -49,7 +54,7 @@ const AuthorizedStudiesConnectionModal = () => {
   return (
     <Modal
       title={intl.get('screen.dashboard.cards.authorizedStudies.modal.title')}
-      visible={isFenceConnectionModalOpen}
+      visible={modalConnectionParams.open}
       onCancel={onClose}
       footer={[
         <Button key="close" type="primary" onClick={onClose}>
@@ -82,4 +87,4 @@ const AuthorizedStudiesConnectionModal = () => {
   );
 };
 
-export default AuthorizedStudiesConnectionModal;
+export default FencesConnectionModal;

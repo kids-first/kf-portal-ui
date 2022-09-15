@@ -17,6 +17,7 @@ import {
 } from 'common/featureToggle';
 
 import styles from './index.module.scss';
+import FencesConnectionModal from 'components/uiKit/Fences/Modal';
 
 const { Title } = Typography;
 
@@ -54,6 +55,8 @@ const Dashboard = () => {
         items={orderCardIfNeeded(dashboardCards, userInfo?.config.dashboard?.cards?.order)}
         gutter={[24, 24]}
       />
+
+      <FencesConnectionModal />
     </Space>
   );
 };

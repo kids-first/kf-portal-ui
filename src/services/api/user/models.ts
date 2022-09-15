@@ -55,5 +55,9 @@ export type TUserConfig = {
   };
 };
 
+export enum TUserGroups {
+  INVESTIGATOR = 'kf-investigator',
+}
+
 export type TUserInsert = Omit<TUser, 'id' | 'keycloak_id' | 'creation_date' | 'update_date'>;
 export type TUserUpdate = Partial<TUserInsert>;

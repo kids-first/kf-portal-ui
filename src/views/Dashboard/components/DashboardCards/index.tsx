@@ -3,6 +3,7 @@ import AuthorizedStudies from './AuthorizedStudies';
 import cx from 'classnames';
 import SavedFilters from './SavedFilters';
 import Cavatica from './Cavatica';
+import Notebook from './Notebook';
 
 import styles from './index.module.scss';
 import SavedSets from './SavedSets';
@@ -47,5 +48,14 @@ export const dashboardCards: TSortableItems[] = [
     xxl: 8,
     className: cx(styles.cardColxxl6, styles.cardColxxl5),
     component: <SavedSets id="4" className={styles.dashboardCard} />,
+  },
+
+  {
+    id: '5',
+    xs: 24,
+    md: 12,
+    xxl: 8,
+    className: cx(styles.cardColxxl6, styles.cardColxxl5),
+    component: <Notebook id="5" className={styles.dashboardCard} />,
   },
 ];

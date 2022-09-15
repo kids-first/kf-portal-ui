@@ -7,11 +7,13 @@ import { SavedSetInitialState } from './savedSet';
 import { ReportInitialState } from './report';
 import { FenceCavaticaInitialState } from './fenceCavatica';
 import { fenceStudiesInitialState } from './fenceStudies';
+import { NotebookInitialState } from './notebook';
 
 export type RootState = {
   global: GlobalInitialState;
   user: UserInitialState;
   persona: PersonaInitialState;
+  notebook: NotebookInitialState;
   report: ReportInitialState;
   fenceConnection: FenceConnectionInitialState;
   fenceStudies: fenceStudiesInitialState;

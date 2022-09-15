@@ -1,6 +1,11 @@
 import { FENCE_CONNECTION_STATUSES, FENCE_NAMES, TFenceConnections } from 'common/fenceTypes';
 import { IFenceInfo } from 'services/api/fence/models';
 
+export type TModalConnectionParams = {
+  open: boolean;
+  onClose?: () => void;
+};
+
 export type initialState = {
   loadingFences: FENCE_NAMES[];
   fencesConnectError: FENCE_NAMES[];
@@ -20,5 +25,5 @@ export type initialState = {
     [FENCE_NAMES.gen3]: FENCE_CONNECTION_STATUSES;
     [FENCE_NAMES.cavatica]: FENCE_CONNECTION_STATUSES;
   };
-  isFenceConnectionModalOpen: boolean;
+  modalConnectionParams: TModalConnectionParams;
 };

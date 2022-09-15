@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from 'store/fenceConnection/types';
+import { initialState, TModalConnectionParams } from 'store/fenceConnection/types';
 import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { checkFenceAuthStatus, connectToFence, disconnectFromFence } from './thunks';
 
@@ -22,7 +22,10 @@ export const FenceConnectionState: initialState = {
   loadingFences: [],
   fencesConnectError: [],
   fencesDisconnectError: [],
-  isFenceConnectionModalOpen: false,
+  modalConnectionParams: {
+    open: false,
+    onClose: undefined,
+  },
 };
 
 const removeFenceFromList = (state: FENCE_NAMES[], fenceName: FENCE_NAMES) =>
@@ -40,9 +43,9 @@ const fenceConnectionSlice = createSlice({
   name: 'fence',
   initialState: FenceConnectionState,
   reducers: {
-    toggleConnectionModal: (state, action: PayloadAction<boolean>) => ({
+    setConnectionModalParams: (state, action: PayloadAction<TModalConnectionParams>) => ({
       ...state,
-      isFenceConnectionModalOpen: action.payload,
+      modalConnectionParams: action.payload,
     }),
     resetFenceConnectErrors: (state) => ({
       ...state,
