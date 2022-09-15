@@ -48,19 +48,19 @@ const DataRelease = ({ className = '' }: OwnProps) => {
         <Col xs={12} md={4}>
           <MultiLabel
             iconPosition={MultiLabelIconPositionEnum.Top}
-            label={numberFormat(stats?.families!)}
-            Icon={<TeamIcon className={styles.dataReleaseIcon} />}
+            label={numberFormat(stats?.participants!)}
+            Icon={<UserOutlined className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
-            subLabel={intl.get('components.dataRelease.families')}
+            subLabel={intl.get('components.dataRelease.participants')}
           />
         </Col>
         <Col xs={12} md={4}>
           <MultiLabel
             iconPosition={MultiLabelIconPositionEnum.Top}
-            label={numberFormat(stats?.participants!)}
-            Icon={<UserOutlined className={styles.dataReleaseIcon} />}
+            label={numberFormat(stats?.families!)}
+            Icon={<TeamIcon className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
-            subLabel={intl.get('components.dataRelease.participants')}
+            subLabel={intl.get('components.dataRelease.families')}
           />
         </Col>
         <Col xs={12} md={4}>
@@ -87,7 +87,7 @@ const DataRelease = ({ className = '' }: OwnProps) => {
             label={formatStorage(stats?.fileSize!) || '0TB'}
             Icon={<DatabaseOutlined className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
-            subLabel={intl.get('components.dataRelease.datafiles')}
+            subLabel={intl.get('components.dataRelease.storage')}
           />
         </Col>
       </Row>

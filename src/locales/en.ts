@@ -300,8 +300,8 @@ const en = {
       participants: 'Participants',
       biospecimens: 'Biospecimens',
       families: 'Families',
-      datafiles: 'Data Files',
-      files: 'Files',
+      storage: 'Storage',
+      files: 'Data Files',
     },
   },
   layout: {
