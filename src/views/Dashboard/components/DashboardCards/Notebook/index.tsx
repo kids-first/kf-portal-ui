@@ -21,13 +21,15 @@ import { ApiOutlined, RocketOutlined } from '@ant-design/icons';
 import OpenInNewIcon from 'components/Icons/OpenInIcon';
 const { Text } = Typography;
 
+const REFRESH_INTERVAL = 30000;
+
 const Notebook = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
   const { url, isLoading, error, status } = useNotebook();
   const { groups } = useUser();
   const { connectionStatus } = useFenceConnection();
 
-  const isConnectedToFences = hasOneFenceConnected(connectionStatus) || true;
+  const isConnectedToFences = hasOneFenceConnected(connectionStatus);
 
   const isAllowed = groups.includes(TUserGroups.INVESTIGATOR);
   const isProcessing = (isLoading || isNotebookStatusInProgress(status)) && !error;
@@ -44,7 +46,7 @@ const Notebook = ({ id, className = '' }: DashboardCardProps) => {
       dispatch(getNotebookClusterStatus());
     },
     // Delay in milliseconds or null to stop it
-    isProcessing ? 2000 : null,
+    isProcessing ? REFRESH_INTERVAL : null,
   );
 
   useEffect(() => {

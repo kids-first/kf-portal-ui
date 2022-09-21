@@ -1,4 +1,4 @@
-import { FENCE_CONNECTION_STATUSES, FENCE_NAMES, TFenceConnections } from 'common/fenceTypes';
+import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { IFenceInfo } from 'services/api/fence/models';
 
 export type TModalConnectionParams = {

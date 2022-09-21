@@ -1,7 +1,7 @@
 import { NotebookApiStatus } from 'services/api/notebook/model';
 
 export type initialState = {
-  url?: string | null;
+  url: string;
   status: NotebookApiStatus;
   error?: any;
   isLoading: boolean;

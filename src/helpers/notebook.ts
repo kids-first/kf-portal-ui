@@ -8,7 +8,7 @@ export const isNotebookStatusLaunched = (status: NotebookApiStatus) =>
   ].includes(status);
 
 export const isNotebookStatusInProgress = (status: NotebookApiStatus) =>
-  status === NotebookApiStatus.deleteInProgress || status === NotebookApiStatus.createInProgress;
+  [NotebookApiStatus.deleteInProgress, NotebookApiStatus.createInProgress].includes(status);
 
 export const isNotebookRunning = (status: NotebookApiStatus) =>
   status === NotebookApiStatus.createComplete;

@@ -12,7 +12,7 @@ const start = () => {
 };
 
 const get = () => {
-  return sendRequest<any>({
+  return sendRequest<TNotebookApiResponse>({
     method: 'GET',
     url: NOTEBOOK_API_URL,
   });

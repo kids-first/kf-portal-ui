@@ -5,7 +5,7 @@ import { NotebookApiStatus } from 'services/api/notebook/model';
 
 export const notebookState: initialState = {
   isLoading: false,
-  url: null,
+  url: '',
   status: NotebookApiStatus.unverified,
 };
 
@@ -31,7 +31,7 @@ const notebookSlice = createSlice({
       ...state,
       isLoading: true,
       status: NotebookApiStatus.createInProgress,
-      error: undefined,
+      error: null,
     }));
     builder.addCase(startNotebookCluster.fulfilled, (state) => ({
       ...state,
@@ -47,7 +47,7 @@ const notebookSlice = createSlice({
     builder.addCase(getNotebookClusterStatus.pending, (state) => ({
       ...state,
       isLoading: true,
-      error: undefined,
+      error: null,
     }));
     builder.addCase(getNotebookClusterStatus.fulfilled, (state, action) => ({
       ...state,
@@ -66,14 +66,14 @@ const notebookSlice = createSlice({
       ...state,
       isLoading: true,
       status: NotebookApiStatus.deleteInProgress,
-      url: null,
-      error: undefined,
+      url: '',
+      error: null,
     }));
     builder.addCase(stopNotebookCluster.fulfilled, (state) => ({
       ...state,
       isLoading: true,
       status: NotebookApiStatus.deleteInProgress,
-      url: null,
+      url: '',
     }));
     builder.addCase(stopNotebookCluster.rejected, (state, action) => ({
       ...state,
