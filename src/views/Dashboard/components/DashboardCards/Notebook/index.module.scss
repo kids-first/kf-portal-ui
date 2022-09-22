@@ -1,0 +1,28 @@
+@import 'src/style/themes/kids-first/colors';
+@import 'src/style/themes/kids-first/layout';
+
+.wrapper {
+  padding: $default-padding;
+  background-color: $gray-1;
+  border: 1px solid $gray-5;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+}
+
+.progressBar {
+  margin: $default-padding auto;
+  width: 80%;
+}
+
+.textCentered {
+  text-align: center;
+}
+
+.message {
+  margin-top: 8px;
+}

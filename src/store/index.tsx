@@ -16,6 +16,7 @@ import SavedFilterReducer from 'store/savedFilter';
 import SavedSetReducer from 'store/savedSet';
 import FenceCavaticaReducer from 'store/fenceCavatica';
 import FenceStudiesReducer from 'store/fenceStudies';
+import NotebookReducer from 'store/notebook';
 
 const devMode = EnvVariables.configFor('ENV') === 'development';
 
@@ -29,6 +30,7 @@ const persistConfig = {
 const rootReducer = combineReducers<RootState>({
   global: GlobalReducer,
   persona: PersonaReducer,
+  notebook: NotebookReducer,
   user: UserReducer,
   report: ReportReducer,
   fenceConnection: FenceConnectionReducer,

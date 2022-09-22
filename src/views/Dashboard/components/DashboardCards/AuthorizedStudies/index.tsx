@@ -19,7 +19,6 @@ import { fetchAllFenceStudies } from 'store/fenceStudies/thunks';
 import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 
 import styles from './index.module.scss';
-import AuthorizedStudiesConnectionModal from './Modal';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
@@ -66,7 +65,6 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       }
       content={
         <div className={styles.authorizedWrapper}>
-          <AuthorizedStudiesConnectionModal />
           {isConnected && !fenceStudiesLoading && (
             <Space className={styles.authenticatedHeader} direction="horizontal">
               <Space align="start">
@@ -108,7 +106,8 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     'screen.dashboard.cards.authorizedStudies.disconnectedNotice',
                   )}
                   btnProps={{
-                    onClick: () => dispatch(fenceConnectionActions.toggleConnectionModal(true)),
+                    onClick: () =>
+                      dispatch(fenceConnectionActions.setConnectionModalParams({ open: true })),
                   }}
                 />
               ),

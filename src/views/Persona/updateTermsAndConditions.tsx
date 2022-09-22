@@ -16,7 +16,6 @@ const PersonaUpdateTermsAndConditions = () => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const tokenParsed = keycloak?.tokenParsed as KidsFirstKeycloakTokenParsed;
-  console.log('personaUserInfo', personaUserInfo); //TODO: to remove
 
   useEffect(() => {
     if (!tokenParsed?.sub! || !personaUserInfo) {

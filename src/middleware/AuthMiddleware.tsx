@@ -46,6 +46,7 @@ const AuthMiddleware = ({ children }: Props) => {
           email: tokenParsed.email,
         }),
       );
+      dispatch(userActions.setUserGroups(tokenParsed?.groups));
       dispatch(fetchUser());
       dispatch(fetchSavedFilters());
       dispatch(fetchSavedSet());

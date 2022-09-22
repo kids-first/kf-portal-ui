@@ -6,6 +6,7 @@ export default class EnvironmentVariables {
     // APIS
     PERSONA_API: process.env.REACT_APP_PERSONA_API,
     ARRANGER_API: process.env.REACT_APP_ARRANGER_API_URL,
+    VARIANT_CLUSTER_API: process.env.REACT_APP_VARIANT_CLUSTER_API,
     ARRANGER_PROJECT_ID: process.env.REACT_APP_ARRANGER_PROJECT_ID,
     USERS_API: process.env.REACT_APP_USERS_API_URL,
     // CAVATICA

@@ -6,6 +6,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 export const UserState: initialState = {
   userInfo: null,
+  groups: [],
   isLoading: true,
   isUpdating: false,
   isDeleting: false,
@@ -25,6 +26,10 @@ const userSlice = createSlice({
     setIsUserLoading: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoading: action.payload,
+    }),
+    setUserGroups: (state, action: PayloadAction<string[]>) => ({
+      ...state,
+      groups: action.payload,
     }),
   },
   extraReducers: (builder) => {

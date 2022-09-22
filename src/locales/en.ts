@@ -18,6 +18,7 @@ const en = {
   global: {
     yes: 'Yes',
     no: 'No',
+    connect: 'Connect',
     close: 'Close',
     search: {
       genes: {
@@ -416,6 +417,21 @@ const en = {
           title: 'Saved Sets',
           noSavedFilters: 'You have no saved sets',
           lastSaved: 'Last saved: {date} ago',
+        },
+        notebook: {
+          title: 'Variant Workbench',
+          account: 'Account Settings',
+          firstConnectError:
+            'In order to lauch your notebook, you must first connect to your data repositories in your',
+          description:
+            'Connect to our data respository partners in order to access the Kids First variant database in your own <b>high performance compute environment</b>.',
+          contactSupport:
+            'We were unable to complete this operation. <a href="mailto:support@kidsfirstdrc.org">Contact support</a> if the issue persists',
+          tryAgain: 'Try Again',
+          notAllowed: 'Currently available for Kids First investigators only.',
+          wait: 'This process may take up to 10 minutes. You can safely navigate away from this page.',
+          open: 'Open notebooks',
+          launch: 'Launch environment',
         },
       },
     },
