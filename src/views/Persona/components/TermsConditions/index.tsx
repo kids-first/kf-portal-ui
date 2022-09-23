@@ -125,13 +125,13 @@ const TermsConditions = ({ isMultiStep = false, hidden = false, onFinish }: OwnP
       style={inlineStyle}
     >
       <Space direction="vertical" size={24} className={styles.termsAndConditionsWrapper}>
-        <Title level={3}>KIDS FIRST Portal Registration Process</Title>
+        <Title level={3}>Kids First Portal Registration Process</Title>
         <GridCard
           wrapperClassName={styles.cardWrapper}
           className={styles.card}
           title={
             <div className={styles.termsCardHeader}>
-              <Title level={5}>KIDS FIRST Portal Terms & Conditions</Title>
+              <Title level={5}>Kids First Portal Terms & Conditions</Title>
               <span className={styles.lastUpdateDate}>Last Update: 11/22/2021</span>
             </div>
           }
@@ -148,17 +148,15 @@ const TermsConditions = ({ isMultiStep = false, hidden = false, onFinish }: OwnP
         >
           <Checkbox.Group>
             <Checkbox value="acceptedTerms">
-              I have read and agree to the KF Portal Terms and Conditions
+              I have read and agree to the Kids First Portal Terms and Conditions
             </Checkbox>
           </Checkbox.Group>
         </Form.Item>
 
         <Row justify="end">
           <Space size={16}>
-            <Button onClick={handleCancel} size={'large'}>
-              Cancel
-            </Button>
-            <Button type={'primary'} size={'large'} onClick={handleSubmit}>
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type={'primary'} onClick={handleSubmit}>
               {isMultiStep ? 'Next' : 'Accept'}
             </Button>
           </Space>

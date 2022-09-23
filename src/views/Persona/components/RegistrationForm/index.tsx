@@ -69,7 +69,11 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
           <Title level={3} className={styles.title}>
             Role & Affiliation
           </Title>
-          <Form.Item name="roles" label="I am a:">
+          <Form.Item
+            name="roles"
+            label="I am a:"
+            rules={[{ required: true, message: 'This field is required' }]}
+          >
             <Checkbox.Group>
               <Space direction="vertical" size={8}>
                 <div>Check all that apply</div>
@@ -100,16 +104,14 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
           </Form.Item>
 
           <Row justify="space-between">
-            <Button onClick={handleBack} size={'large'}>
+            <Button onClick={handleBack}>
               <ArrowLeftOutlined />
               Back
             </Button>
             <Space size={16}>
-              <Button onClick={handleCancel} size={'large'}>
-                Cancel
-              </Button>
-              <Button type={'primary'} onClick={handleSubmit} size={'large'}>
-                Accept
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button type={'primary'} onClick={handleSubmit}>
+                Submit
               </Button>
             </Space>
           </Row>
