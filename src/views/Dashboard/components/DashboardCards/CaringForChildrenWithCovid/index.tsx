@@ -36,53 +36,51 @@ const FHIR: TFHIR[] = [
   },
 ];
 
-const CaringForChildrenWithCovid = ({ id, key, className = '' }: DashboardCardProps) => {
-  return (
-    <GridCard
-      theme="shade"
-      wrapperClassName={className}
-      title={
-        <CardHeader
-          id={id}
-          key={key}
-          title={intl.get('screen.dashboard.cards.fhirDataResource.title')}
-          infoPopover={{
-            title: intl.get('screen.dashboard.cards.fhirDataResource.title'),
-            content: (
-              <Space direction="vertical" className={styles.content} size={0}>
-                <Text>
-                  {intl.getHTML('screen.dashboard.cards.fhirDataResource.infoPopover.content')}{' '}
-                </Text>
-              </Space>
-            ),
-          }}
-          withHandle
-        />
-      }
-      content={
-        <div className={styles.wrapper}>
-          <img className={styles.icon} src={FHIR_ICON} alt="fhir icon" width={105} height={64} />
-          <Space direction="vertical" align="center">
-            {FHIR.map(({ url, title, text, popoverText }) => (
-              <div className={styles.listItem}>
-                <ExternalLink href={url} hasIcon>
-                  {title}
-                </ExternalLink>
-                <p className={styles.text}>
-                  {text}
-                  {popoverText && (
-                    <Tooltip title={popoverText}>
-                      <InfoCircleOutlined className={styles.tooltipsText} />
-                    </Tooltip>
-                  )}
-                </p>
-              </div>
-            ))}
-          </Space>
-        </div>
-      }
-    />
-  );
-};
+const CaringForChildrenWithCovid = ({ id, key, className = '' }: DashboardCardProps) => (
+  <GridCard
+    theme="shade"
+    wrapperClassName={className}
+    title={
+      <CardHeader
+        id={id}
+        key={key}
+        title={intl.get('screen.dashboard.cards.fhirDataResource.title')}
+        infoPopover={{
+          title: intl.get('screen.dashboard.cards.fhirDataResource.title'),
+          content: (
+            <Space direction="vertical" className={styles.content} size={0}>
+              <Text>
+                {intl.getHTML('screen.dashboard.cards.fhirDataResource.infoPopover.content')}{' '}
+              </Text>
+            </Space>
+          ),
+        }}
+        withHandle
+      />
+    }
+    content={
+      <div className={styles.wrapper}>
+        <img className={styles.icon} src={FHIR_ICON} alt="fhir icon" width={105} height={64} />
+        <Space direction="vertical" align="center">
+          {FHIR.map(({ id, url, title, text, popoverText }) => (
+            <div key={id} className={styles.listItem}>
+              <ExternalLink href={url} hasIcon={true}>
+                {title}
+              </ExternalLink>
+              <p className={styles.text}>
+                {text}
+                {popoverText && (
+                  <Tooltip title={popoverText}>
+                    <InfoCircleOutlined className={styles.tooltipsText} />
+                  </Tooltip>
+                )}
+              </p>
+            </div>
+          ))}
+        </Space>
+      </div>
+    }
+  />
+);
 
 export default CaringForChildrenWithCovid;
