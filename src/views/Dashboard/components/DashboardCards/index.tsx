@@ -7,6 +7,7 @@ import Notebook from './Notebook';
 
 import styles from './index.module.scss';
 import SavedSets from './SavedSets';
+import CaringForChildrenWithCovid from './CaringForChildrenWithCovid';
 
 export interface DashboardCardProps {
   id: string;
@@ -57,5 +58,14 @@ export const dashboardCards: TSortableItems[] = [
     xxl: 8,
     className: cx(styles.cardColxxl6, styles.cardColxxl5),
     component: <Notebook id="5" className={styles.dashboardCard} />,
+  },
+
+  {
+    id: '6',
+    xs: 24,
+    md: 12,
+    xxl: 8,
+    className: cx(styles.cardColxxl6, styles.cardColxxl5),
+    component: <CaringForChildrenWithCovid id="5" className={styles.dashboardCard} />,
   },
 ];
