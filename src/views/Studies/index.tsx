@@ -32,22 +32,10 @@ const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
 
 const filterInfo: FilterInfo = {
   customSearches: [<StudySearch queryBuilderId={STUDIES_REPO_QB_ID} />],
-  defaultOpenFacets: [
-    'external_id',
-    'program',
-    'data_category',
-    'experimental_strategy',
-    'family_data',
-  ],
+  defaultOpenFacets: ['program', 'data_category', 'experimental_strategy', 'family_data'],
   groups: [
     {
-      facets: [
-        'external_id',
-        'program',
-        'data_category',
-        'experimental_strategy',
-        'family_data',
-      ],
+      facets: ['program', 'data_category', 'experimental_strategy', 'family_data'],
     },
   ],
 };
@@ -70,18 +58,6 @@ const columns: ProColumnType<any>[] = [
     key: 'program',
     title: 'Program',
     dataIndex: 'program',
-  },
-  {
-    key: 'external_id',
-    title: 'dbGaP',
-    dataIndex: 'external_id',
-    render: (external_id: string) => (
-      <ExternalLink
-        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${external_id}`}
-      >
-        {external_id}
-      </ExternalLink>
-    ),
   },
   {
     key: 'participant_count',
@@ -169,13 +145,15 @@ const columns: ProColumnType<any>[] = [
     key: 'proteomic',
     title: 'Proteomics',
     align: 'center',
-    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+    render: (record: IStudiesEntity) =>
+      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
   {
     key: 'clinical',
     title: 'Clinicals',
     align: 'center',
-    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+    render: (record: IStudiesEntity) =>
+      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
   },
 ];
 
