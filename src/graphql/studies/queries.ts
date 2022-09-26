@@ -34,6 +34,7 @@ export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
           node {
             study_id
             study_name
+            external_id
           }
         }
       }
