@@ -5,13 +5,12 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-import Sorter from '../Sorter';
-import { roleOptions, usageOptions } from 'views/Community/contants';
+import { roleOptions, interestsOptions } from 'views/Community/contants';
 
 interface OwnProps {
   onMatchFilterChange: (value: string) => void;
   onRoleFilterChange: (value: string) => void;
-  onUsageFilterChange: (value: string) => void;
+  onInterestFilterChange: (value: string) => void;
   onSortChange: (value: string) => void;
   hasFilters: boolean;
 }
@@ -19,17 +18,17 @@ interface OwnProps {
 const FiltersBox = ({
   onMatchFilterChange,
   onRoleFilterChange,
-  onUsageFilterChange,
+  onInterestFilterChange,
   onSortChange,
   hasFilters = false,
 }: OwnProps) => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
-  const [usageFilter, setUsageFilter] = useState<string[]>([]);
+  const [interestFilter, setInterestFilter] = useState<string[]>([]);
 
   useEffect(() => onRoleFilterChange(roleFilter.join(',')), [roleFilter]);
 
-  useEffect(() => onUsageFilterChange(usageFilter.join(',')), [usageFilter]);
+  useEffect(() => onInterestFilterChange(interestFilter.join(',')), [interestFilter]);
 
   return (
     <Space direction="vertical" size={16} className={styles.filtersContainer}>
@@ -38,13 +37,12 @@ const FiltersBox = ({
         <div className={styles.filterContentWrapper}>
           <Input
             onChange={(e) => onMatchFilterChange(e.currentTarget.value)}
-            placeholder="Ex: Watson, Linda Crnic Institute"
+            placeholder="e.g. Watson, Children's Hospital of Philadelphia"
           />
           <Button onClick={() => setFiltersVisible(!filtersVisible)}>
             {intl.get('screen.community.search.filters')}{' '}
             {filtersVisible ? <CaretUpFilled /> : <CaretDownFilled />}
           </Button>
-          <Sorter onSortChange={onSortChange} />
         </div>
       </Space>
       {filtersVisible && (
@@ -79,19 +77,19 @@ const FiltersBox = ({
             />
           </Space>
           <Space direction="vertical">
-            <ProLabel title={intl.get('screen.community.search.dataUse')} />
+            <ProLabel title={intl.get('screen.community.search.interest')} />
             <Select
               className={styles.filterMultiSelect}
               mode="multiple"
               allowClear
               placeholder={intl.get('screen.community.search.selectPlaceholder')}
               maxTagCount={1}
-              value={usageFilter}
-              onSelect={(value: string) => setUsageFilter([...usageFilter, value])}
+              value={interestFilter}
+              onSelect={(value: string) => setInterestFilter([...interestFilter, value])}
               onDeselect={(value: string) =>
-                setUsageFilter(usageFilter.filter((val) => val !== value))
+                setInterestFilter(interestFilter.filter((val) => val !== value))
               }
-              options={usageOptions.map((option) => ({
+              options={interestsOptions.map((option) => ({
                 label: option.value,
                 value: option.value,
               }))}
@@ -111,7 +109,7 @@ const FiltersBox = ({
             disabled={!hasFilters}
             onClick={() => {
               setRoleFilter([]);
-              setUsageFilter([]);
+              setInterestFilter([]);
             }}
           >
             {intl.get('screen.community.search.clearFilters')}

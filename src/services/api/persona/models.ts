@@ -4,7 +4,7 @@ export type TPersonaUser = {
   firstName: string;
   lastName: string;
   egoId?: string;
-  roles: string;
+  roles?: string[];
   acceptedTerms: boolean;
   email: string;
   institutionalEmail?: string;
@@ -28,7 +28,7 @@ export type TPersonaUser = {
   github?: string;
   linkedin?: string;
   orchid?: string;
-  interests?: string;
+  interests?: string[];
   acceptedKfOptIn?: boolean;
   acceptedNihOptIn?: boolean;
   acceptedDatasetSubscriptionKfOptIn?: boolean;
@@ -45,12 +45,17 @@ export type TPersonaUserCreate = {
   };
 };
 
-export type TPersonaUserFetch = {
+export type TPersonaSelfFetch = {
   data: {
     self: TPersonaUser;
   };
 };
 
+export type TPersonaProfileFetch = {
+  data: {
+    user: TPersonaUser;
+  };
+};
 export type TUserPersonaInsert = Omit<
   TPersonaUser,
   'id' | 'keycloak_id' | 'creation_date' | 'update_date'

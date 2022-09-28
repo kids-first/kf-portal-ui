@@ -5,6 +5,7 @@ export default class EnvironmentVariables {
     WEB_ROOT: process.env.REACT_APP_WEB_ROOT,
     // APIS
     PERSONA_API: process.env.REACT_APP_PERSONA_API,
+    LEGACY_MEMBERS_API: process.env.REACT_APP_LEGACY_MEMBERS_API,
     ARRANGER_API: process.env.REACT_APP_ARRANGER_API_URL,
     VARIANT_CLUSTER_API: process.env.REACT_APP_VARIANT_CLUSTER_API,
     ARRANGER_PROJECT_ID: process.env.REACT_APP_ARRANGER_PROJECT_ID,
