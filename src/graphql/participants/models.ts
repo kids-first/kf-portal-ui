@@ -3,7 +3,7 @@ import { IFileEntity } from 'graphql/files/models';
 import { ArrangerResultsTree } from 'graphql/models';
 
 export interface IParticipantResultTree {
-  participants: ArrangerResultsTree<IParticipantEntity>;
+  participant: ArrangerResultsTree<IParticipantEntity>;
 }
 
 export interface IParticipantDiagnosis {
@@ -41,7 +41,7 @@ export interface IParticipantEntity {
   family_type: string;
   is_proband: boolean;
   down_syndrome_status: string;
-  participant_id: string;
+  kf_id: string;
   external_id: string;
   race: string;
   sex: string;
@@ -55,6 +55,7 @@ export interface IParticipantEntity {
   files: ArrangerResultsTree<IFileEntity>;
   biospecimen: ArrangerResultsTree<IBiospecimenEntity>;
   phenotype: ArrangerResultsTree<IParticipantPhenotype>;
+  participant_id: string;
 }
 
 export type ITableParticipantEntity = IParticipantEntity & {

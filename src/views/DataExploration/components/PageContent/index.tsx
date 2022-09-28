@@ -223,7 +223,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
             },
           });
 
-          return data?.data?.participants.hits.total ?? 0;
+          return data?.data?.participant.hits.total ?? 0;
         }}
       />
       <Tabs

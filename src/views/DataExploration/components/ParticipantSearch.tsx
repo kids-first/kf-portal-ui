@@ -25,10 +25,10 @@ const ParticipantSearch = ({ queryBuilderId }: ICustomSearchProps) => {
           label: (
             <SelectItem
               icon={<UserOutlined />}
-              title={highlightSearchMatch(option.participant_id, matchRegex, search)}
+              title={highlightSearchMatch(option.kf_id, matchRegex, search)}
             />
           ),
-          value: option.participant_id,
+          value: option.kf_id,
         }));
       }}
       title={'Search by Participant ID'}

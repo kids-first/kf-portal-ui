@@ -2,13 +2,12 @@ import { gql } from '@apollo/client';
 
 export const SEARCH_PARTICIPANT_QUERY = gql`
   query searchParticipant($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
-    participants: Donor {
+    participant {
       hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
         total
         edges {
           node {
-            participant_id: internal_donor_id
-            submitter_participant_id: submitter_donor_id
+            kf_id
             score
             age_at_recruitment
             age_of_death
@@ -41,7 +40,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                 total
                 edges {
                   node {
-                    study_id
+                    kf_id
                     name
                   }
                 }
@@ -107,7 +106,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
 
 export const MATCH_PARTICIPANT_QUERY = gql`
   query fetchMatchParticipant($sqon: JSON) {
-    participants: Donor {
+    participant {
       hits(filters: $sqon) {
         edges {
           node {
@@ -117,7 +116,7 @@ export const MATCH_PARTICIPANT_QUERY = gql`
                 total
                 edges {
                   node {
-                    id
+                    kf_id
                   }
                 }
               }
@@ -132,7 +131,7 @@ export const MATCH_PARTICIPANT_QUERY = gql`
 
 export const GET_PARTICIPANT_COUNT = gql`
   query getParticipantCount($sqon: JSON) {
-    participants: Donor {
+    participant {
       hits(filters: $sqon) {
         total
       }
@@ -157,11 +156,11 @@ export const CHECK_PARTICIPANT_MATCH = gql`
 `;
 export const PARTICIPANT_SEARCH_BY_ID_QUERY = gql`
   query searchParticipantById($sqon: JSON) {
-    participants: Donor {
+    participant {
       hits(filters: $sqon) {
         edges {
           node {
-            id
+            kf_id
           }
         }
       }

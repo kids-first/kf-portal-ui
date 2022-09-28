@@ -29,7 +29,7 @@ const en = {
       },
       variants: {
         emptyText: 'No variant found',
-        placeholder: 'e.g. 10-100063679-T-C, rs341',
+        placeholder: 'e.g. 10-100063679-C-T, rs341',
         title: 'Search by variant',
         tooltip:
           'Enter Variant Locus, Gene Symbol, Gene Alias, Gene AA Change, dbSNP ID, Clinvar ID, Ensembl ID, refseq ID',
@@ -741,15 +741,72 @@ const en = {
     collection_sample_type: 'Collection Sample Type',
 
     //Variants
-    variant_class: 'Variant class',
+    variant_class: 'Variant Type',
     type: 'Type',
-    consequences: 'Consequences',
     variant_external_reference: 'External reference',
     chromosome: 'Chromosome',
     position: 'Position',
     zygosity: 'Zygosity',
     transmissions: 'Transmissions',
     genePanels: 'Gene panels',
+    gene_external_reference: 'External Reference',
+    consequences: {
+      consequences: 'Consequence',
+      biotype: 'Gene Type',
+      vep_impact: 'VEP',
+      predictions: {
+        sift_pred: 'SIFT',
+        polyphen2_hvar_pred: 'Polyphen2 HVAR',
+        fathmm_pred: 'FATHMM',
+        cadd_rankscore: 'CADD',
+        lrt_pred: 'LRT',
+        revel_rankscore: 'REVEL',
+        dann_rankscore: 'DANM',
+      },
+    },
+    genes: {
+      hpo: {
+        hpo_term_label: 'HPO',
+      },
+      orphanet: {
+        panel: 'ORPHANET',
+      },
+      omim: {
+        name: 'OMIM',
+      },
+      ddd: {
+        disease_name: 'DDD',
+      },
+      cosmic: {
+        tumour_types_germline: 'COSMIC',
+      },
+    },
+    clinvar: {
+      clin_sig: 'Clinvar',
+    },
+    frequencies: {
+      internal: {
+        upper_bound_kf: { af: 'KF Allele Frequency' },
+      },
+      gnomad_genomes_2_1: {
+        af: 'gnomAD Genome 2.1',
+      },
+      gnomad_genomes_3_0: {
+        af: 'gnomAD Genome 3.0',
+      },
+      gnomad_genomes_3_1_1: {
+        af: 'gnomAD Genome 3.1',
+      },
+      gnomad_exomes_2_1: {
+        af: 'gnomAD Exome 2.1',
+      },
+      topmed: {
+        af: 'TopMed',
+      },
+      one_thousand_genomes: {
+        af: '1000 Genomes',
+      },
+    },
 
     // Studies
     domain: 'Study Domain',

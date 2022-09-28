@@ -8,7 +8,7 @@ import { useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
-import { IQueryResults } from 'graphql/models';
+import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
 import {
   IClinVar,
   IConsequenceNode,
@@ -25,6 +25,7 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { IStudiesEntity } from 'graphql/studies/models';
 
 interface OwnProps {
   results: IQueryResults<IVariantEntity[]>;
@@ -33,7 +34,10 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-const defaultColumns: ProColumnType<any>[] = [
+const isNumber = (n: number) => n && !Number.isNaN(n);
+const toExponentialNotation = (n: number, fractionDigits = 2) => n.toExponential(fractionDigits);
+
+const defaultColumns: ProColumnType[] = [
   {
     title: intl.get('screen.variants.table.variant'),
     key: 'hgvsg',
@@ -74,24 +78,6 @@ const defaultColumns: ProColumnType<any>[] = [
       ),
   },
   {
-    key: 'genome_build',
-    title: intl.get('screen.variants.table.genome_build'),
-    dataIndex: 'genome_build',
-  },
-  {
-    key: 'external_frequencies',
-    title: (
-      <Tooltip title={`${intl.get('screen.variants.table.gnomAd')} exomes`}>
-        {intl.get('screen.variants.table.gnomAd')}
-      </Tooltip>
-    ),
-    dataIndex: 'frequencies',
-    render: (frequencies: IExternalFrequenciesEntity) =>
-      frequencies?.gnomad_exomes_2_1
-        ? frequencies.gnomad_exomes_2_1.af?.toExponential(3)
-        : TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'consequences',
     title: intl.get('screen.variants.table.consequences'),
     dataIndex: 'consequences',
@@ -113,6 +99,39 @@ const defaultColumns: ProColumnType<any>[] = [
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
+  },
+  {
+    title: 'Studies',
+    dataIndex: 'studies',
+    key: 'studies',
+    render: (studies: ArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
+  },
+  {
+    title: 'Participants',
+    dataIndex: 'participant_number',
+    key: 'part',
+  },
+  {
+    title: 'Freq.',
+    dataIndex: 'participant_frequency',
+    key: 'participant_frequency',
+    render: (participantFrequency: number) =>
+      isNumber(participantFrequency)
+        ? toExponentialNotation(participantFrequency)
+        : TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    title: 'ALT',
+    dataIndex: 'frequencies',
+    key: 'alternate',
+    render: (frequencies: IExternalFrequenciesEntity) => frequencies?.internal?.upper_bound_kf?.ac,
+  },
+  {
+    title: 'Homo.',
+    dataIndex: 'frequencies',
+    key: 'homozygotes',
+    render: (frequencies: IExternalFrequenciesEntity) =>
+      frequencies?.internal?.upper_bound_kf?.homozygotes,
   },
 ];
 

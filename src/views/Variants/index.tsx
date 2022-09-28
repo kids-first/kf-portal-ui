@@ -60,16 +60,16 @@ const filterGroups: {
       {
         facets: [
           <TreeFacet
-            type={'mondoTree'}
-            field={'mondo'}
-            titleFormatter={formatMondoTitleAndCode}
-            key={'mondo'}
-          />,
-          <TreeFacet
             type={'hpoTree'}
             field={'observed_phenotype'}
             titleFormatter={formatHpoTitleAndCode}
             key={'observed_phenotype'}
+          />,
+          <TreeFacet
+            type={'mondoTree'}
+            field={'mondo'}
+            titleFormatter={formatMondoTitleAndCode}
+            key={'mondo'}
           />,
         ],
       },
@@ -112,21 +112,19 @@ const filterGroups: {
       {
         title: intl.get('facets.genePanels'),
         facets: [
-          'genes__name',
           'genes__hpo__hpo_term_label',
           'genes__orphanet__panel',
           'genes__omim__name',
           'genes__ddd__disease_name',
           'genes__cosmic__tumour_types_germline',
+          'clinvar__clin_sig',
+          'consequences__vep_impact',
         ],
       },
     ],
   },
   [FilterTypes.Pathogenicity]: {
     groups: [
-      {
-        facets: ['clinvar__clin_sig', 'consequences__vep_impact'],
-      },
       {
         title: 'Predictions',
         facets: [
@@ -146,6 +144,7 @@ const filterGroups: {
       {
         title: intl.get('screen.patientsnv.filter.grouptitle.publiccohorts'),
         facets: [
+          'frequencies__internal__upper_bound_kf__af',
           'frequencies__gnomad_genomes_2_1__af',
           'frequencies__gnomad_genomes_3_0__af',
           'frequencies__gnomad_genomes_3_1_1__af',
