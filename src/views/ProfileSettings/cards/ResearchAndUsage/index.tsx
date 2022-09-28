@@ -2,7 +2,7 @@ import { Checkbox, Form, Input, Space } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
 import { useUser } from 'store/user';
-import { usageOptions } from 'views/Community/contants';
+import { interestsOptions } from 'views/Community/contants';
 import cx from 'classnames';
 import { useDispatch } from 'react-redux';
 import { updateUser } from 'store/user/thunks';
@@ -24,7 +24,9 @@ const initialChangedValues = {
 };
 
 const hasOtherUsage = (userUsages: string[]) =>
-  userUsages.find((usage) => !usageOptions.find((defaultUsage) => defaultUsage.value === usage));
+  userUsages.find(
+    (usage) => !interestsOptions.find((defaultUsage) => defaultUsage.value === usage),
+  );
 
 const ResearchAndUsagesCard = () => {
   const [form] = useForm();
@@ -88,7 +90,7 @@ const ResearchAndUsagesCard = () => {
           <Checkbox.Group className={formStyles.checkBoxGroup}>
             <span className={formStyles.help}>Check all that apply</span>
             <Space direction="vertical">
-              {usageOptions.map((option) => (
+              {interestsOptions.map((option) => (
                 <Checkbox key={option.key} value={option.value}>
                   {option.value}
                 </Checkbox>
@@ -101,7 +103,7 @@ const ResearchAndUsagesCard = () => {
               >
                 {({ getFieldValue }) =>
                   getFieldValue(FORM_FIELDS.DATA_USAGE)?.includes(
-                    usageOptions.find((option) => option.key === 'commercial')?.value,
+                    interestsOptions.find((option) => option.key === 'commercial')?.value,
                   ) ? (
                     <Form.Item
                       className={cx(formStyles.dynamicField, formStyles.inner)}

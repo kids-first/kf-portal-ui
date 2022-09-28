@@ -26,7 +26,7 @@ const createPersonaUser = createAsyncThunk<
   {
     condition: (_, { getState }) => {
       const { persona } = getState();
-      if (persona.personaUserInfo) {
+      if (persona.profile) {
         return false;
       }
     },
@@ -58,6 +58,24 @@ const fetchPersonaUser = createAsyncThunk<
   },
 );
 
+const fetchPersonaUserProfile = createAsyncThunk<
+  TPersonaUser,
+  {
+    id: string;
+  },
+  { rejectValue: string; state: RootState }
+>('persona/fetch/profile', async (args, thunkAPI) => {
+  console.log('args', args); //TODO: to remove
+  const { data, error } = await PersonaApi.fetchProfile(args.id);
+  console.log('data', data); //TODO: to remove
+
+  if (!error) {
+    return data?.data?.user!;
+  }
+
+  return thunkAPI.rejectWithValue(error?.message);
+});
+
 const updatePersonaUser = createAsyncThunk<
   TPersonaUser,
   {
@@ -86,4 +104,4 @@ const updatePersonaUser = createAsyncThunk<
   },
 );
 
-export { createPersonaUser, fetchPersonaUser, updatePersonaUser };
+export { createPersonaUser, fetchPersonaUser, fetchPersonaUserProfile, updatePersonaUser };

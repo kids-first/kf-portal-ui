@@ -43,4 +43,23 @@ export const sendRequest = async <T,>(config: AxiosRequestConfig) => {
     );
 };
 
+export const sendRequestMock = async <T,>(config: AxiosRequestConfig, mockResponsed: any) => {
+  return apiInstance
+    .request<T>(config)
+    .then(
+      (response): ApiResponse<T> => ({
+        response: response,
+        data: mockResponsed,
+        error: undefined,
+      }),
+    )
+    .catch((err): ApiResponse<T> => {
+      return {
+        response: err.response,
+        data: mockResponsed,
+        error: undefined,
+      };
+    });
+};
+
 export default apiInstance;

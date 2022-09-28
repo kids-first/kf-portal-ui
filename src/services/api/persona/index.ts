@@ -1,9 +1,16 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import { TPersonaUser, TPersonaUserCreate, TPersonaUserFetch, TPersonaUserUpdate } from './models';
+import {
+  TPersonaUser,
+  TPersonaUserCreate,
+  TPersonaSelfFetch,
+  TPersonaUserUpdate,
+  TPersonaProfileFetch,
+} from './models';
 import { sendRequest } from 'services/api';
 import { omit } from 'lodash';
 
 export const PERSONA_API_URL = `${EnvironmentVariables.configFor('PERSONA_API')}`;
+export const MEMBER_API_URL = `${EnvironmentVariables.configFor('LEGACY_MEMBERS_API')}`;
 
 const DEFAULT_FIELDS_SELF = `
   _id
@@ -44,12 +51,61 @@ const DEFAULT_FIELDS_SELF = `
   hashedEmail
 `;
 
+const DEFAULT_FIELDS_OTHER_USER = `
+  _id
+  title
+  firstName
+  lastName
+  roles
+  acceptedTerms
+  eraCommonsID
+  department
+  story
+  bio
+  jobTitle
+  institution
+  addressLine1
+  addressLine2
+  city
+  state
+  country
+  zip
+  phone
+  website
+  googleScholarId
+  twitter
+  facebook
+  github
+  linkedin
+  orchid
+  interests
+  acceptedKfOptIn
+  acceptedNihOptIn
+  acceptedDatasetSubscriptionKfOptIn
+  isPublic
+  isActive
+  sets {
+    name
+    size
+    type
+    setId
+  }
+  hashedEmail
+`;
+
+export type TPersonaUserRequestPayload = {
+  egoId?: string;
+  lastName: string;
+  firstName: string;
+  email: string;
+};
+
 export const headers = {
   'Content-Type': 'application/json',
 };
 
 const fetch = () =>
-  sendRequest<TPersonaUserFetch>({
+  sendRequest<TPersonaSelfFetch>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -64,15 +120,8 @@ const fetch = () =>
     },
   });
 
-export type TPersonaUserRequestPayload = {
-  egoId?: string;
-  lastName: string;
-  firstName: string;
-  email: string;
-};
-
-const create = (user: TPersonaUser) => {
-  return sendRequest<TPersonaUserCreate>({
+const create = (user: TPersonaUser) =>
+  sendRequest<TPersonaUserCreate>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -89,10 +138,9 @@ const create = (user: TPersonaUser) => {
       `,
     },
   });
-};
 
-const update = (user: TPersonaUserUpdate) => {
-  return sendRequest<TPersonaUser>({
+const update = (user: TPersonaUserUpdate) =>
+  sendRequest<TPersonaUser>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -109,10 +157,60 @@ const update = (user: TPersonaUserUpdate) => {
       `,
     },
   });
-};
+
+const fetchProfile = (id: string) =>
+  sendRequest<TPersonaProfileFetch>({
+    method: 'POST',
+    url: `${PERSONA_API_URL}/graphql`,
+    headers,
+    data: {
+      variables: { _id: id },
+      query: `
+      query($_id: MongoID!){
+        user(_id:$_id){
+            ${DEFAULT_FIELDS_OTHER_USER}
+        }
+      }
+      `,
+    },
+  });
+
+const search = ({
+  pageIndex = 0,
+  pageSize = 15,
+  match,
+  roles,
+  interests,
+}: {
+  pageIndex?: number;
+  pageSize?: number;
+  match?: string;
+  sort?: string;
+  roles?: string;
+  interests?: string;
+}) =>
+  sendRequest<{
+    publicMembers: TPersonaUser[];
+    count: {
+      public: number;
+    };
+  }>({
+    method: 'GET',
+    url: `${MEMBER_API_URL}/searchmembers`,
+    headers,
+    params: {
+      queryString: match,
+      start: pageIndex * pageSize,
+      end: pageIndex * pageSize + pageSize,
+      roles,
+      interests,
+    },
+  });
 
 export const PersonaApi = {
   fetch,
+  fetchProfile,
   create,
   update,
+  search,
 };

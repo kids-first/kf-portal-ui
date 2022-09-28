@@ -7,22 +7,25 @@ export const roleOptions = [
   'Federal Employee',
 ];
 
-export const usageOptions = [
+export const interestsOptions = [
   {
-    key: 'learn',
-    value:
-      'Learning more about Down syndrome and its health outcomes, management, and/or treatment',
+    key: 'childhood-cancer',
+    value: 'Childhood cancer',
   },
   {
-    key: 'help',
-    value: 'Helping me design a new research study',
+    key: 'pediatric-brain-tumors',
+    value: 'Pediatric brain tumors',
   },
   {
-    key: 'analyse',
-    value: 'Identifying datasets that I want to analyze',
+    key: 'pediatric-brain-tumors-cbttc',
+    value: 'Pediatric brain tumors: cbttc',
   },
   {
-    key: 'commercial',
-    value: 'Commercial purposes',
+    key: 'cancer',
+    value: 'Cancer',
+  },
+  {
+    key: 'bioinformatics',
+    value: 'Bioinformatics',
   },
 ];

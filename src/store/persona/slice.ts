@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from 'store/persona/types';
-import { createPersonaUser, fetchPersonaUser } from 'store/persona/thunks';
+import { createPersonaUser, fetchPersonaUser, fetchPersonaUserProfile } from 'store/persona/thunks';
 
 // Since api can return null for personaUserInfo, undefined must be set by default
 export const PersonaState: initialState = {
   personaUserInfo: undefined,
+  profile: undefined,
   isLoading: true,
   isUpdating: false,
   isDeleting: false,
@@ -19,6 +20,9 @@ const personaSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
+    clearProfile: (state) => {
+      state.profile = undefined;
+    },
   },
   extraReducers: (builder) => {
     // Create Persona User
@@ -50,6 +54,23 @@ const personaSlice = createSlice({
     builder.addCase(fetchPersonaUser.rejected, (state, action) => ({
       ...state,
       error: action.payload,
+      isLoading: false,
+    }));
+    // Fetch Profile
+    builder.addCase(fetchPersonaUserProfile.pending, (state) => {
+      state.isLoading = true;
+      state.profile = undefined;
+      state.error = undefined;
+    });
+    builder.addCase(fetchPersonaUserProfile.fulfilled, (state, action) => ({
+      ...state,
+      isLoading: false,
+      profile: action.payload,
+    }));
+    builder.addCase(fetchPersonaUserProfile.rejected, (state, action) => ({
+      ...state,
+      error: action.payload,
+      profile: undefined,
       isLoading: false,
     }));
   },

@@ -1,4 +1,4 @@
-import { TUser } from 'services/api/user/models';
+import { TPersonaUser } from 'services/api/persona/models';
 
-export const formatName = (user: TUser) =>
-  user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email;
+export const formatName = (user: TPersonaUser) =>
+  user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email;

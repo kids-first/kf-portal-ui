@@ -461,6 +461,24 @@ const en = {
         },
       },
     },
+    community: {
+      title: 'Kids First Community',
+      resultsMember: 'Members',
+      noResults: 'No members',
+      search: {
+        filters: 'Filters',
+        selectPlaceholder: 'Select',
+        role: 'Member Categories',
+        interest: 'Research Interests',
+        clearFilters: 'Clear filters',
+        barPlaceholder: 'Search by member name or affiliation',
+        sorter: {
+          newest: 'Newest first',
+          oldest: 'Oldest first',
+          lastnameAlpha: 'Alphabetical (last name)',
+        },
+      },
+    },
     variants: {
       sidemenu: {
         participant: 'Participant',
