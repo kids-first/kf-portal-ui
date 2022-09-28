@@ -65,9 +65,7 @@ const fetchPersonaUserProfile = createAsyncThunk<
   },
   { rejectValue: string; state: RootState }
 >('persona/fetch/profile', async (args, thunkAPI) => {
-  console.log('args', args); //TODO: to remove
   const { data, error } = await PersonaApi.fetchProfile(args.id);
-  console.log('data', data); //TODO: to remove
 
   if (!error) {
     return data?.data?.user!;

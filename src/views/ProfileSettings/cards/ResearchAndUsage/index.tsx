@@ -24,7 +24,7 @@ const initialChangedValues = {
 };
 
 const hasOtherUsage = (userUsages: string[]) =>
-  userUsages.find(
+  userUsages.some(
     (usage) => !interestsOptions.find((defaultUsage) => defaultUsage.value === usage),
   );
 

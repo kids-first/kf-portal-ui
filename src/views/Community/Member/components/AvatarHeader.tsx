@@ -2,7 +2,7 @@ import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { Skeleton, Space, Typography } from 'antd';
 import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { TPersonaUser } from 'services/api/persona/models';
-import { formatName } from '../../utils';
+import { formatName } from 'views/Community/utils';
 
 import styles from '../index.module.scss';
 
@@ -36,9 +36,6 @@ const AvatarHeader = ({ user, isLoading = false }: OwnProps) => (
           <Typography.Title level={3} className={styles.memberName}>
             {formatName(user!)}
           </Typography.Title>
-          {/* {user?.affiliation && (
-            <Typography.Text type="secondary">{user?.affiliation}</Typography.Text>
-          )} */}
         </>
       )}
     </Space>

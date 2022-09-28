@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-import Sorter from '../Sorter';
 import { roleOptions, interestsOptions } from 'views/Community/contants';
 
 interface OwnProps {
@@ -44,7 +43,6 @@ const FiltersBox = ({
             {intl.get('screen.community.search.filters')}{' '}
             {filtersVisible ? <CaretUpFilled /> : <CaretDownFilled />}
           </Button>
-          {/* <Sorter onSortChange={onSortChange} /> */}
         </div>
       </Space>
       {filtersVisible && (

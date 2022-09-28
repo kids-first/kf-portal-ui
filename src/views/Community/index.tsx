@@ -36,7 +36,6 @@ const CommunityPage = () => {
       roles: roleFilter,
       interests: interestFilter,
     }).then(({ data }) => {
-      console.log('data', data); //TODO: to remove
       setUsers(data?.publicMembers || []);
       setCount(data?.count?.public || 0);
       setIsLoading(false);

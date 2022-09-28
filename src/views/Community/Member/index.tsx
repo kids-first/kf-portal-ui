@@ -83,25 +83,6 @@ const CommunityMember = () => {
                     <Typography.Title level={5}>
                       {intl.get('screen.memberProfile.usageTitle')}
                     </Typography.Title>
-                    {/* <List
-                      className={cx(
-                        styles.infoList,
-                        !result?.portal_usages?.length && styles.empty,
-                      )}
-                      itemLayout="horizontal"
-                      dataSource={result?.portal_usages ?? []}
-                      renderItem={(usage, index) => <li key={index}>{usage}</li>}
-                      locale={{
-                        emptyText: (
-                          <Empty
-                            showImage={false}
-                            description={intl.get('screen.memberProfile.noUsage')}
-                            align="left"
-                            noPadding
-                          />
-                        ),
-                      }}
-                    /> */}
                   </Col>
                 </Row>
               </Col>
