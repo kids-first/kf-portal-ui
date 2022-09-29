@@ -700,6 +700,7 @@ const en = {
     file_id: 'File ID',
     // Participant
     participant_id: 'Participant ID',
+    study: { study_code: 'Study Code' },
     study_id: 'Study Code',
     down_syndrome_status: 'Down Syndrome Status',
     down_syndrome_diagnosis: 'Down Syndrome Diagnosis',

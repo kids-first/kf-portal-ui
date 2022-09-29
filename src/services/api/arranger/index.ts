@@ -72,7 +72,7 @@ const fetchMatchParticipant = (ids: string[]) =>
         sqon: generateQuery({
           newFilters: [
             generateValueFilter({
-              field: 'kf_id',
+              field: 'participant_id',
               value: ids,
             }),
           ],

@@ -7,7 +7,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
         total
         edges {
           node {
-            kf_id
+            participant_id
             score
             age_at_recruitment
             age_of_death
@@ -40,7 +40,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                 total
                 edges {
                   node {
-                    kf_id
+                    study_id
                     name
                   }
                 }
@@ -116,7 +116,7 @@ export const MATCH_PARTICIPANT_QUERY = gql`
                 total
                 edges {
                   node {
-                    kf_id
+                    study_id
                   }
                 }
               }
@@ -160,7 +160,7 @@ export const PARTICIPANT_SEARCH_BY_ID_QUERY = gql`
       hits(filters: $sqon) {
         edges {
           node {
-            kf_id
+            participant_id
           }
         }
       }

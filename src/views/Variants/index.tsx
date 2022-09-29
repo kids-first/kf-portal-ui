@@ -59,6 +59,7 @@ const filterGroups: {
     groups: [
       {
         facets: [
+          'study__study_code',
           <TreeFacet
             type={'hpoTree'}
             field={'observed_phenotype'}
