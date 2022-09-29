@@ -31,31 +31,46 @@ export interface IParticipantObservedPhenotype {
   is_tagged: boolean;
 }
 
-export interface IParticipantEntity {
-  id: string;
-  score: number;
+export interface IParticipantStudy {
   fhir_id: string;
-  age_at_data_collection: number;
-  down_syndrome_diagnosis: string;
-  ethnicity: string;
+  study_name: string;
+  status: string;
+  investigator_id: string;
+  study_code: string;
+  participant_count: number;
+  file_count: number;
+  biospecimen_count: number;
+  family_count: number;
+  family_data: boolean;
+  study_id: string;
+}
+
+export interface IParticipantEntity {
+  id: string; //weird constraint imposed.
+  fhir_id: string;
+  sex: string;
+  external_id: string;
+  participant_id: string;
+  study: IParticipantStudy;
+  down_syndrome_status: string;
   family_type: string;
   is_proband: boolean;
-  down_syndrome_status: string;
-  kf_id: string;
-  external_id: string;
-  race: string;
-  sex: string;
-  study_external_id: string;
-  study_id: string;
+  age_at_data_collection: number;
   nb_files: number;
+  files: ArrangerResultsTree<IFileEntity>;
   nb_biospecimens: number;
+  study_id: string;
+  release_id: string;
+  score: number;
+  down_syndrome_diagnosis: string;
+  ethnicity: string;
+  study_external_id: string;
   mondo: ArrangerResultsTree<IParticipantMondo>;
   observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>;
   diagnosis: ArrangerResultsTree<IParticipantDiagnosis>;
-  files: ArrangerResultsTree<IFileEntity>;
   biospecimen: ArrangerResultsTree<IBiospecimenEntity>;
   phenotype: ArrangerResultsTree<IParticipantPhenotype>;
-  participant_id: string;
+  race: string;
 }
 
 export type ITableParticipantEntity = IParticipantEntity & {
