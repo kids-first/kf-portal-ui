@@ -209,7 +209,7 @@ const Header = () => {
                   {
                     key: 'profile_settings',
                     label: (
-                      <Link to={`/member/${userInfo?.keycloak_id}`}>
+                      <Link to={`/profile/settings`}>
                         <Space>
                           <UserOutlined />
                           {intl.get('layout.user.menu.settings')}
@@ -237,7 +237,6 @@ const Header = () => {
             <a className={style.userMenuTrigger} onClick={(e) => e.preventDefault()} href="">
               <Gravatar
                 circle
-                placeholder={DEFAULT_GRAVATAR_PLACEHOLDER}
                 className={style.userGravatar}
                 email={tokenParsed.email || tokenParsed.identity_provider_identity}
               />

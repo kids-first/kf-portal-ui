@@ -5,30 +5,43 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-import { roleOptions, interestsOptions } from 'views/Community/contants';
+import {
+  memberRolesOptions,
+  diseasesInterestOptions,
+  studiesInterestOptions,
+} from 'views/Community/contants';
 
 interface OwnProps {
   onMatchFilterChange: (value: string) => void;
   onRoleFilterChange: (value: string) => void;
-  onInterestFilterChange: (value: string) => void;
-  onSortChange: (value: string) => void;
+  onDiseasesInterestFilterChange: (value: string) => void;
+  onStudiesInterestFilterChange: (value: string) => void;
   hasFilters: boolean;
 }
 
 const FiltersBox = ({
   onMatchFilterChange,
   onRoleFilterChange,
-  onInterestFilterChange,
-  onSortChange,
+  onDiseasesInterestFilterChange,
+  onStudiesInterestFilterChange,
   hasFilters = false,
 }: OwnProps) => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
-  const [interestFilter, setInterestFilter] = useState<string[]>([]);
+  const [diseasesInterestFilter, setDiseasesInterestFilter] = useState<string[]>([]);
+  const [studiesInterestFilter, setStudiesInterestFilter] = useState<string[]>([]);
 
-  useEffect(() => onRoleFilterChange(roleFilter.join(',')), [roleFilter]);
+  useEffect(() => onRoleFilterChange(roleFilter.join(',')), [roleFilter, onRoleFilterChange]);
 
-  useEffect(() => onInterestFilterChange(interestFilter.join(',')), [interestFilter]);
+  useEffect(
+    () => onDiseasesInterestFilterChange(diseasesInterestFilter.join(',')),
+    [diseasesInterestFilter, onDiseasesInterestFilterChange],
+  );
+
+  useEffect(
+    () => onStudiesInterestFilterChange(studiesInterestFilter.join(',')),
+    [studiesInterestFilter, onStudiesInterestFilterChange],
+  );
 
   return (
     <Space direction="vertical" size={16} className={styles.filtersContainer}>
@@ -60,7 +73,7 @@ const FiltersBox = ({
               onDeselect={(value: string) =>
                 setRoleFilter(roleFilter.filter((val) => val !== value))
               }
-              options={roleOptions.map((option) => ({
+              options={memberRolesOptions.map((option) => ({
                 label: option,
                 value: option,
               }))}
@@ -77,19 +90,53 @@ const FiltersBox = ({
             />
           </Space>
           <Space direction="vertical">
-            <ProLabel title={intl.get('screen.community.search.interest')} />
+            <ProLabel title={intl.get('screen.community.search.diseasesInterest')} />
             <Select
               className={styles.filterMultiSelect}
               mode="multiple"
               allowClear
               placeholder={intl.get('screen.community.search.selectPlaceholder')}
               maxTagCount={1}
-              value={interestFilter}
-              onSelect={(value: string) => setInterestFilter([...interestFilter, value])}
-              onDeselect={(value: string) =>
-                setInterestFilter(interestFilter.filter((val) => val !== value))
+              value={diseasesInterestFilter}
+              onSelect={(value: string) =>
+                setDiseasesInterestFilter([...diseasesInterestFilter, value])
               }
-              options={interestsOptions.map((option) => ({
+              onDeselect={(value: string) =>
+                setDiseasesInterestFilter(diseasesInterestFilter.filter((val) => val !== value))
+              }
+              options={diseasesInterestOptions.map((option) => ({
+                label: option.value,
+                value: option.value,
+              }))}
+              tagRender={({ onClose, value }) => (
+                <Tag
+                  className={styles.filterTag}
+                  closable
+                  onClose={onClose}
+                  style={{ marginRight: 3 }}
+                >
+                  <Typography.Text className={styles.filterTagText}>{value}</Typography.Text>
+                </Tag>
+              )}
+            />
+          </Space>
+
+          <Space direction="vertical">
+            <ProLabel title={intl.get('screen.community.search.studiesInterest')} />
+            <Select
+              className={styles.filterMultiSelect}
+              mode="multiple"
+              allowClear
+              placeholder={intl.get('screen.community.search.selectPlaceholder')}
+              maxTagCount={1}
+              value={studiesInterestFilter}
+              onSelect={(value: string) =>
+                setStudiesInterestFilter([...diseasesInterestFilter, value])
+              }
+              onDeselect={(value: string) =>
+                setStudiesInterestFilter(diseasesInterestFilter.filter((val) => val !== value))
+              }
+              options={studiesInterestOptions.map((option) => ({
                 label: option.value,
                 value: option.value,
               }))}
@@ -109,7 +156,8 @@ const FiltersBox = ({
             disabled={!hasFilters}
             onClick={() => {
               setRoleFilter([]);
-              setInterestFilter([]);
+              setDiseasesInterestFilter([]);
+              setStudiesInterestFilter([]);
             }}
           >
             {intl.get('screen.community.search.clearFilters')}

@@ -6,8 +6,8 @@ import IdentificationCard from './cards/Identification';
 
 import styles from './index.module.scss';
 import RoleAndAffiliationCard from './cards/RoleAndAffiliation';
-import ResearchAndUsagesCard from './cards/ResearchAndUsage';
-import DeleteCard from './cards/DeleteCard';
+import ResearchInterestsCard from './cards/ResearchInterests';
+import LocationCard from './cards/Location';
 
 const { Title } = Typography;
 
@@ -26,8 +26,8 @@ const ProfileSettings = () => {
         <Space size={24} direction="vertical" className={styles.cardsWrapper}>
           <IdentificationCard />
           <RoleAndAffiliationCard />
-          <ResearchAndUsagesCard />
-          <DeleteCard />
+          <LocationCard />
+          <ResearchInterestsCard />
         </Space>
       </Space>
     </div>

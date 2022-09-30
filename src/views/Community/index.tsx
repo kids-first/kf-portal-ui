@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import useDebounce from '@ferlab/ui/core/hooks/useDebounce';
 import { scrollToTop } from 'utils/helper';
 import FiltersBox from './components/Filters/Box';
-import { SortItems } from './components/Filters/Sorter';
 
 import styles from './index.module.scss';
 import MemberCard from './components/MemberCard';
@@ -23,8 +22,8 @@ const CommunityPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [match, setMatch] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
-  const [interestFilter, setInterestFilter] = useState('');
-  const [sort, setSort] = useState(SortItems[0].sort);
+  const [diseasesInterestFilter, setDiseasesInterestFilter] = useState('');
+  const [studiesInterestFilter, setStudiesInterestFilter] = useState('');
   const debouncedMatchValue = useDebounce(match, 300);
 
   useEffect(() => {
@@ -34,13 +33,20 @@ const CommunityPage = () => {
       pageSize: DEFAULT_PAGE_SIZE,
       match,
       roles: roleFilter,
-      interests: interestFilter,
+      interests: studiesInterestFilter.concat(diseasesInterestFilter),
     }).then(({ data }) => {
       setUsers(data?.publicMembers || []);
       setCount(data?.count?.public || 0);
       setIsLoading(false);
     });
-  }, [currentPage, sort, debouncedMatchValue, roleFilter, interestFilter]);
+  }, [
+    currentPage,
+    match,
+    debouncedMatchValue,
+    roleFilter,
+    diseasesInterestFilter,
+    studiesInterestFilter,
+  ]);
 
   return (
     <Space direction="vertical" size={24} className={styles.communityWrapper}>
@@ -50,9 +56,9 @@ const CommunityPage = () => {
       <FiltersBox
         onMatchFilterChange={setMatch}
         onRoleFilterChange={setRoleFilter}
-        onInterestFilterChange={setInterestFilter}
-        onSortChange={setSort}
-        hasFilters={!!(roleFilter || interestFilter)}
+        onDiseasesInterestFilterChange={setDiseasesInterestFilter}
+        onStudiesInterestFilterChange={setStudiesInterestFilter}
+        hasFilters={!!(roleFilter || diseasesInterestFilter)}
       />
       <Space className={styles.usersListWrapper} size={24} direction="vertical">
         <TableHeader
