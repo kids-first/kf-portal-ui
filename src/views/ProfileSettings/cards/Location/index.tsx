@@ -78,7 +78,7 @@ const LocationCard = () => {
           rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
           required={false}
         >
-          <Input></Input>
+          <Input />
         </Form.Item>
 
         <Form.Item
@@ -87,7 +87,7 @@ const LocationCard = () => {
           rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
           required={false}
         >
-          <Input></Input>
+          <Input />
         </Form.Item>
       </BaseForm>
     </BaseCard>

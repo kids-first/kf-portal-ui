@@ -86,7 +86,7 @@ const RoleAndAffiliationCard = () => {
           rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
           required={false}
         >
-          <Input></Input>
+          <Input />
         </Form.Item>
         <Form.Item
           className={formStyles.withCustomHelp}
@@ -117,7 +117,7 @@ const RoleAndAffiliationCard = () => {
           label={intl.get('screen.profileSettings.cards.roleAffiliation.institutionalEmail')}
           requiredMark="optional"
         >
-          <Input placeholder="email@domain.com"></Input>
+          <Input placeholder="email@domain.com" />
         </Form.Item>
       </BaseForm>
     </BaseCard>

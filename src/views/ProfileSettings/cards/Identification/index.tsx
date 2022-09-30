@@ -120,7 +120,7 @@ const IdentificationCard = () => {
                   placeholder={intl.get(
                     'screen.profileSettings.cards.identification.yourFirstName',
                   )}
-                ></Input>
+                />
               </Form.Item>
               <Form.Item
                 name={FORM_FIELDS.LAST_NAME}
@@ -134,7 +134,7 @@ const IdentificationCard = () => {
               >
                 <Input
                   placeholder={intl.get('screen.profileSettings.cards.identification.yourLastName')}
-                ></Input>
+                />
               </Form.Item>
               <Form.Item
                 name={FORM_FIELDS.LINKEDIN}
@@ -142,7 +142,7 @@ const IdentificationCard = () => {
                 rules={[{ type: 'url', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
-                <Input placeholder="https://www.linkedin.com/in/username/"></Input>
+                <Input placeholder="https://www.linkedin.com/in/username/" />
               </Form.Item>
               <Form.Item
                 className="noMargin"
@@ -155,7 +155,7 @@ const IdentificationCard = () => {
                 rules={[{ type: 'url', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
-                <Input placeholder="https://domain.com/username"></Input>
+                <Input placeholder="https://domain.com/username" />
               </Form.Item>
             </BaseForm>
           </Col>
