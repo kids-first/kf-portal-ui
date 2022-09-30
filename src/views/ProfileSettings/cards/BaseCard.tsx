@@ -1,9 +1,10 @@
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, FormInstance, Space, Typography } from 'antd';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactElement } from 'react';
 
 interface OwnProps {
-  title: string;
+  title?: string;
+  customHeader?: ReactElement;
   form: FormInstance;
   isValueChanged: boolean;
   onDiscardChanges: () => void;
@@ -13,6 +14,7 @@ const { Title } = Typography;
 
 const BaseCard = ({
   title,
+  customHeader,
   isValueChanged,
   form,
   onDiscardChanges,
@@ -20,7 +22,7 @@ const BaseCard = ({
 }: PropsWithChildren<OwnProps>) => {
   return (
     <GridCard
-      title={<Title level={4}>{title}</Title>}
+      title={<>{customHeader ? customHeader : <Title level={4}>{title}</Title>}</>}
       footer={
         <Space>
           <Button type="primary" disabled={!isValueChanged} onClick={form.submit}>

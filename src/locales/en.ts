@@ -468,8 +468,9 @@ const en = {
       search: {
         filters: 'Filters',
         selectPlaceholder: 'Select',
-        role: 'Member Categories',
-        interest: 'Research Interests',
+        role: 'Member Role',
+        diseasesInterest: 'Diseases Interests',
+        studiesInterest: 'Studies Interests',
         clearFilters: 'Clear filters',
         barPlaceholder: 'Search by member name or affiliation',
         sorter: {
@@ -477,6 +478,69 @@ const en = {
           oldest: 'Oldest first',
           lastnameAlpha: 'Alphabetical (last name)',
         },
+      },
+    },
+    profileSettings: {
+      title: 'Profile settings',
+      viewProfile: 'View profile',
+      toggleProfileVisibility: {
+        title: 'Public Profile',
+        tooltip:
+          'When your profile is public, other members can see information about you that includes your name, role, affiliation, and research interest.',
+      },
+      cards: {
+        deleteAccount: {
+          title: 'Delete Account',
+          button: 'Delete my account',
+          notice:
+            'You will no longer be able to sign into the Kids First data portal. All of your saved sets and queries will be lost. You can create a new account at any time.',
+          confirm: {
+            content: 'Are you sure you want to permanently delete this account?',
+          },
+        },
+        identification: {
+          title: 'Identification',
+          alert:
+            'You are authenticated with <strong>{provider}</strong> using <strong>{email}</strong>. This email is never shown to the public and cannot be changed.',
+          firstName: 'First Name',
+          yourFirstName: 'Your First Name',
+          lastName: 'Last Name',
+          yourLastName: 'Your Last Name',
+          website: 'Website',
+          editPhotoModalTitle: 'Edit photo',
+          uploadImageError: 'Unable to upload your image at the moment',
+          removePhotoModalTitle: 'Remove profile photo?',
+          removePhotoModalButton: 'Yes remove photo',
+          removePhotoModalMessage:
+            'Are you sure you want to remove your photo? We will replace it with a default avatar.',
+          uploadPhotoButton: 'Upload photo',
+          removePhotoButton: 'Remove photo',
+        },
+        roleAffiliation: {
+          title: 'Role & Affiliation',
+          iama: 'I am a:',
+          checkAllThatApply: 'Check all that apply',
+          institution: 'Institution or organization',
+          institutionalEmail: 'Institutional email address',
+          institutionalEmailTooltip:
+            'This email will be displayed on your profile page and accessible to all logged-in users of the portal.',
+        },
+        location: {
+          title: 'Location',
+          adressLine1: 'Adress Line 1',
+          adressLine2: 'Adress Line 2',
+          city: 'City',
+          state: 'State',
+          country: 'Country',
+          zip: 'Zip',
+        },
+        researchInterests: {
+          title: 'Research Interests',
+          diseases: 'Kids First disease areas',
+          studies: 'Studies',
+        },
+        saveChanges: 'Save changes',
+        discardChanges: 'Discard changes',
       },
     },
     variants: {

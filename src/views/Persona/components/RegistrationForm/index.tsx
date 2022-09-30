@@ -7,6 +7,7 @@ import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.scss';
+import { memberRolesOptions } from 'views/Community/contants';
 
 const { Title, Text } = Typography;
 
@@ -77,10 +78,9 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
             <Checkbox.Group>
               <Space direction="vertical" size={8}>
                 <div>Check all that apply</div>
-                <Checkbox value="research">Researcher</Checkbox>
-                <Checkbox value="healthcare">Healthcare professional</Checkbox>
-                <Checkbox value="patient">Patient/Family member</Checkbox>
-                <Checkbox value="community">Community member</Checkbox>
+                {memberRolesOptions.map(({ key, value }) => (
+                  <Checkbox value={key}>{value}</Checkbox>
+                ))}
               </Space>
             </Checkbox.Group>
           </Form.Item>

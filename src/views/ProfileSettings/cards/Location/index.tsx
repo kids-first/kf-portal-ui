@@ -12,18 +12,16 @@ import ProLabel from '@ferlab/ui/core/components/ProLabel';
 import { updatePersonaUser } from 'store/persona/thunks';
 
 enum FORM_FIELDS {
-  ROLES = 'roles',
-  INSTITUTION = 'organization',
-  INSTITUTIONAL_EMAIL = 'institutionalEmail',
+  STATE = 'state',
+  COUNTRY = 'country',
 }
 
 const initialChangedValues = {
-  [FORM_FIELDS.ROLES]: false,
-  [FORM_FIELDS.INSTITUTION]: false,
-  [FORM_FIELDS.INSTITUTIONAL_EMAIL]: false,
+  [FORM_FIELDS.STATE]: false,
+  [FORM_FIELDS.COUNTRY]: false,
 };
 
-const RoleAndAffiliationCard = () => {
+const LocationCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
   const { personaUserInfo } = usePersona();
@@ -39,9 +37,8 @@ const RoleAndAffiliationCard = () => {
 
   useEffect(() => {
     initialValues.current = {
-      [FORM_FIELDS.ROLES]: personaUserInfo?.roles,
-      [FORM_FIELDS.INSTITUTION]: personaUserInfo?.institution || '',
-      [FORM_FIELDS.INSTITUTIONAL_EMAIL]: personaUserInfo?.institutionalEmail || '',
+      [FORM_FIELDS.STATE]: personaUserInfo?.state || '',
+      [FORM_FIELDS.COUNTRY]: personaUserInfo?.country || '',
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
@@ -50,7 +47,7 @@ const RoleAndAffiliationCard = () => {
   return (
     <BaseCard
       form={form}
-      title={intl.get('screen.profileSettings.cards.roleAffiliation.title')}
+      title={intl.get('screen.profileSettings.cards.location.title')}
       isValueChanged={isValueChanged()}
       onDiscardChanges={onDiscardChanges}
     >
@@ -64,9 +61,8 @@ const RoleAndAffiliationCard = () => {
             updatePersonaUser({
               data: {
                 ...personaUserInfo,
-                roles: values[FORM_FIELDS.ROLES],
-                institution: values[FORM_FIELDS.INSTITUTION],
-                institutionalEmail: values[FORM_FIELDS.INSTITUTIONAL_EMAIL],
+                state: values[FORM_FIELDS.STATE],
+                country: values[FORM_FIELDS.COUNTRY],
               },
               callback: () => {
                 initialValues.current = values;
@@ -77,51 +73,25 @@ const RoleAndAffiliationCard = () => {
         }
       >
         <Form.Item
-          name={FORM_FIELDS.INSTITUTION}
-          label={
-            <ProLabel
-              title={intl.get('screen.profileSettings.cards.roleAffiliation.institution')}
-            />
-          }
+          name={FORM_FIELDS.STATE}
+          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.state')} />}
           rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
           required={false}
         >
           <Input />
         </Form.Item>
+
         <Form.Item
-          className={formStyles.withCustomHelp}
-          name={FORM_FIELDS.ROLES}
-          label={intl.get('screen.profileSettings.cards.roleAffiliation.iama')}
+          name={FORM_FIELDS.COUNTRY}
+          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.country')} />}
+          rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
           required={false}
-          rules={[{ required: true }]}
         >
-          <Checkbox.Group className={formStyles.checkBoxGroup}>
-            <span className={formStyles.help}>
-              {intl.get('screen.profileSettings.cards.roleAffiliation.checkAllThatApply')}
-            </span>
-            <Space direction="vertical">
-              {memberRolesOptions.map(({ key, value }) => (
-                <Checkbox key={key} value={key}>
-                  {value}
-                </Checkbox>
-              ))}
-            </Space>
-          </Checkbox.Group>
-        </Form.Item>
-        <Form.Item
-          className={formStyles.noMargin}
-          name={FORM_FIELDS.INSTITUTIONAL_EMAIL}
-          tooltip={intl.get(
-            'screen.profileSettings.cards.roleAffiliation.institutionalEmailTooltip',
-          )}
-          label={intl.get('screen.profileSettings.cards.roleAffiliation.institutionalEmail')}
-          requiredMark="optional"
-        >
-          <Input placeholder="email@domain.com" />
+          <Input />
         </Form.Item>
       </BaseForm>
     </BaseCard>
   );
 };
 
-export default RoleAndAffiliationCard;
+export default LocationCard;

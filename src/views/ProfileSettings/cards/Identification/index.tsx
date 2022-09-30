@@ -1,39 +1,40 @@
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
 import { useKeycloak } from '@react-keycloak/web';
-import { Alert, Col, Form, Input, Row, Space } from 'antd';
+import { Alert, Col, Form, Input, Row, Space, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateUser } from 'store/user/thunks';
 import intl from 'react-intl-universal';
-import { useUser } from 'store/user';
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
 
 import styles from './index.module.scss';
+import { usePersona } from 'store/persona';
+import { updatePersonaUser } from 'store/persona/thunks';
+import ToggleProfileVisibility from './ToggleProfileVisibility';
 
 enum FORM_FIELDS {
-  FIRST_NAME = 'first_name',
-  LAST_NAME = 'last_name',
-  PUBLIC_EMAIL = 'public_email',
+  FIRST_NAME = 'firstName',
+  LAST_NAME = 'lastName',
   LINKEDIN = 'linkedin',
+  WEBSITE = 'website',
 }
 
 const initialChangedValues = {
   [FORM_FIELDS.FIRST_NAME]: false,
   [FORM_FIELDS.LAST_NAME]: false,
-  [FORM_FIELDS.PUBLIC_EMAIL]: false,
   [FORM_FIELDS.LINKEDIN]: false,
+  [FORM_FIELDS.WEBSITE]: false,
 };
 
 const IdentificationCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const { userInfo } = useUser();
+  const { personaUserInfo } = usePersona();
   const { keycloak } = useKeycloak();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
@@ -48,19 +49,26 @@ const IdentificationCard = () => {
 
   useEffect(() => {
     initialValues.current = {
-      [FORM_FIELDS.FIRST_NAME]: userInfo?.first_name,
-      [FORM_FIELDS.LAST_NAME]: userInfo?.last_name,
-      [FORM_FIELDS.PUBLIC_EMAIL]: userInfo?.public_email,
-      [FORM_FIELDS.LINKEDIN]: userInfo?.linkedin,
+      [FORM_FIELDS.FIRST_NAME]: personaUserInfo?.firstName,
+      [FORM_FIELDS.LAST_NAME]: personaUserInfo?.lastName,
+      [FORM_FIELDS.LINKEDIN]: personaUserInfo?.linkedin,
+      [FORM_FIELDS.WEBSITE]: personaUserInfo?.website,
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-  }, [userInfo]);
+  }, [personaUserInfo]);
 
   return (
     <BaseCard
       form={form}
-      title={intl.get('screen.profileSettings.cards.identification.title')}
+      customHeader={
+        <div className={styles.customHeader}>
+          <Typography.Title level={4}>
+            {intl.get('screen.profileSettings.cards.identification.title')}
+          </Typography.Title>
+          <ToggleProfileVisibility />
+        </div>
+      }
       isValueChanged={isValueChanged()}
       onDiscardChanges={onDiscardChanges}
     >
@@ -70,7 +78,7 @@ const IdentificationCard = () => {
           type="info"
           message={intl.getHTML('screen.profileSettings.cards.identification.alert', {
             provider: capitalize(tokenParsed.identity_provider),
-            email: userInfo?.email,
+            email: personaUserInfo?.email,
           })}
         />
         <Row gutter={24}>
@@ -82,69 +90,81 @@ const IdentificationCard = () => {
               onHasChanged={setHasChanged}
               onFinish={(values: any) =>
                 dispatch(
-                  updateUser({
-                    data: values,
+                  updatePersonaUser({
+                    data: {
+                      ...personaUserInfo,
+                      firstName: values[FORM_FIELDS.FIRST_NAME],
+                      lastName: values[FORM_FIELDS.LAST_NAME],
+                      linkedin: values[FORM_FIELDS.LINKEDIN],
+                      website: values[FORM_FIELDS.WEBSITE],
+                    },
+                    callback: () => {
+                      initialValues.current = values;
+                      setHasChanged(initialChangedValues);
+                    },
                   }),
                 )
               }
             >
               <Form.Item
                 name={FORM_FIELDS.FIRST_NAME}
-                label={<ProLabel title="First Name" />}
+                label={
+                  <ProLabel
+                    title={intl.get('screen.profileSettings.cards.identification.firstName')}
+                  />
+                }
                 rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
-                <Input placeholder="Your First Name"></Input>
+                <Input
+                  placeholder={intl.get(
+                    'screen.profileSettings.cards.identification.yourFirstName',
+                  )}
+                />
               </Form.Item>
               <Form.Item
                 name={FORM_FIELDS.LAST_NAME}
-                label={<ProLabel title="Last Name" />}
+                label={
+                  <ProLabel
+                    title={intl.get('screen.profileSettings.cards.identification.lastName')}
+                  />
+                }
                 rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
-                <Input placeholder="Your Last Name"></Input>
+                <Input
+                  placeholder={intl.get('screen.profileSettings.cards.identification.yourLastName')}
+                />
               </Form.Item>
               <Form.Item
-                name={FORM_FIELDS.PUBLIC_EMAIL}
-                requiredMark="optional"
-                label={
-                  <ProLabel
-                    title="Public Email"
-                    popoverProps={{
-                      placement: 'top',
-                      overlayStyle: {
-                        maxWidth: 250,
-                      },
-                      content:
-                        'This email will be displayed on your profile page and accessible to all logged-in users of the portal.',
-                    }}
-                  />
-                }
-                rules={[{ type: 'email', validateTrigger: 'onSubmit' }]}
-                required={false}
-              >
-                <Input placeholder="email@domain.com"></Input>
-              </Form.Item>
-              <Form.Item
-                className="noMargin"
                 name={FORM_FIELDS.LINKEDIN}
                 label={<ProLabel title="Linkedin" />}
                 rules={[{ type: 'url', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
-                <Input placeholder="https://www.linkedin.com/in/username/"></Input>
+                <Input placeholder="https://www.linkedin.com/in/username/" />
+              </Form.Item>
+              <Form.Item
+                className="noMargin"
+                name={FORM_FIELDS.WEBSITE}
+                label={
+                  <ProLabel
+                    title={intl.get('screen.profileSettings.cards.identification.website')}
+                  />
+                }
+                rules={[{ type: 'url', validateTrigger: 'onSubmit' }]}
+                required={false}
+              >
+                <Input placeholder="https://domain.com/username" />
               </Form.Item>
             </BaseForm>
           </Col>
           <Col span={8} className={styles.gravatarCol}>
-            <div>
-              <Gravatar
-                circle
-                placeholder={DEFAULT_GRAVATAR_PLACEHOLDER}
-                className={styles.userGravatar}
-                email={tokenParsed.email || tokenParsed.identity_provider_identity}
-              />
-            </div>
+            <Gravatar
+              circle
+              className={styles.userGravatar}
+              email={tokenParsed.email || tokenParsed.identity_provider_identity}
+            />
           </Col>
         </Row>
       </Space>
