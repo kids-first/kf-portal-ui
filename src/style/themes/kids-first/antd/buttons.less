@@ -30,12 +30,7 @@
   }
 
   &-default {
-    padding: 5px 15px;
     color: @cyan-7;
-
-    &.@{btn-prefix-cls}-icon-only {
-      padding: inherit;
-    }
 
     &:hover {
       background-color: @gray-5;
@@ -87,10 +82,6 @@
   }
 
   &-primary {
-    &.@{btn-prefix-cls}-icon-only {
-      padding: inherit;
-    }
-
     &.@{btn-prefix-cls}-loading {
       color: @gray-1;
       background-color: @cyan-7;
@@ -177,24 +168,6 @@
       span:not(:hover) {
         text-decoration: underline;
       }
-    }
-  }
-
-  &-lg {
-    padding: 8px 16px;
-
-    &.iconRight .anticon {
-      height: 16px;
-    }
-  }
-
-  &-sm {
-    padding: 1px 8px;
-  }
-
-  :not(&-lg) {
-    &.iconRight .anticon {
-      height: 14px;
     }
   }
 }
