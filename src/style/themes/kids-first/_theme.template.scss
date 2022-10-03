@@ -2,44 +2,47 @@
 @import 'src/style/themes/kids-first/colors';
 
 $font-weight-semibold: 500;
-$font-weight-bold: 500;
+$font-weight-bold: 600;
 
 // Query Builder
-$query-default-action-default-color: $gray-8;
-$query-default-action-hover-color: $gray-8;
-$query-default-action-focus-color: $gray-8;
+$query-default-action-default-color: $body-1;
+$query-default-action-hover-color: $body-1;
+$query-default-action-focus-color: $body-1;
 
 $query-builder-header-tools-icon-color: $gray-8;
 $query-builder-header-tools-icon-hover: $gray-8;
 $query-builder-header-tools-icon-focus: $gray-8;
 $query-builder-header-tools-icon-color-dirty: $orange-7;
 
-$query-builder-bg: $white;
+$query-builder-bg: $gray-1;
 $query-builder-border-color: $gray-4;
 $query-builder-header-border-divider-color: $gray-4;
 
-$query-bar-bg: $gray-2;
-$query-bar-bg-active: $blue-2;
+$query-bar-identifier-active: $cyan-6;
+
+$query-bar-bg: $gray-3;
+$query-bar-bg-active: $cyan-1;
 $query-bar-border-color: $gray-4;
-$query-bar-border-color-active: $blue-4;
+$query-bar-border-color-active: $cyan-3;
 
-$query-bar-identifier: $gray-6;
-$query-bar-identifier-active: $blue-6;
+$query-bar-identifier: $gray-7;
+$query-bar-identifier-active: $cyan-6;
 
-$query-pill-bg: $gray-4;
-$query-pill-bg-active: $blue-3;
-$query-pill-button-default-color: $gray-8;
-$query-pill-button-hover-color: $gray-8;
-$query-pill-button-focus-color: $gray-8;
+$query-pill-bg: $gray-5;
+$query-pill-bg-active: $cyan-2;
 
-$query-icon-operator-color: $gray-8;
-$query-text-operator-color-hover: $gray-8;
-$query-icon-operator-color-hover: $gray-8;
-$query-icon-label-operator-color: $gray-8;
+$query-pill-button-default-color: $query-default-action-default-color;
+$query-pill-button-hover-color: $query-default-action-hover-color;
+$query-pill-button-focus-color: $query-default-action-hover-color;
 
-$query-combiner-button-default-color: $gray-8;
-$query-combiner-button-hover-color: $gray-8;
-$query-combiner-button-focus-color: $gray-8;
+$query-icon-operator-color: $body-1;
+$query-text-operator-color-hover: $body-1;
+$query-icon-operator-color-hover: $body-1;
+$query-icon-label-operator-color: $body-1;
+
+$query-combiner-button-default-color: $query-default-action-default-color;
+$query-combiner-button-hover-color: $query-default-action-hover-color;
+$query-combiner-button-focus-color: $query-default-action-hover-color;
 
 // Filters
 $checkbox-filter-actions-separator-links: $blue-8;
@@ -81,8 +84,8 @@ $grid-card-light-background-color: white;
 $grid-card-shade-background-color: $gray-2;
 
 // EMPTY
-$empty-image-color: $gray-5;
-$empty-content-color: $gray-7;
+$empty-image-color: $geekblue-2;
+$empty-content-color: $body-2;
 
 // Collapse
 $collapse-light-background-color: white;
