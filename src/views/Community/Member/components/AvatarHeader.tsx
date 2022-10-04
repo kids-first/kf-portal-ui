@@ -1,10 +1,11 @@
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { Skeleton, Space, Typography } from 'antd';
-import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { TPersonaUser } from 'services/api/persona/models';
-import { formatName } from 'views/Community/utils';
+import { formatCountryAndState, formatName } from 'views/Community/utils';
 
 import styles from '../index.module.scss';
+
+const { Title, Text } = Typography;
 
 interface OwnProps {
   user?: TPersonaUser;
@@ -17,12 +18,7 @@ const AvatarHeader = ({ user, isLoading = false }: OwnProps) => (
       <Skeleton.Avatar active size={140} />
     ) : (
       <div className={styles.gravatarWrapper}>
-        <Gravatar
-          circle
-          className={styles.gravatar}
-          placeholder={DEFAULT_GRAVATAR_PLACEHOLDER}
-          email={user?.email! || ''}
-        />
+        <Gravatar circle className={styles.gravatar} email={user?.email! || ''} />
       </div>
     )}
     <Space direction="vertical" size={8} align="center">
@@ -33,9 +29,14 @@ const AvatarHeader = ({ user, isLoading = false }: OwnProps) => (
         </>
       ) : (
         <>
-          <Typography.Title level={3} className={styles.memberName}>
+          <Title level={3} className={styles.memberName}>
             {formatName(user!)}
-          </Typography.Title>
+          </Title>
+          <Text type="secondary">{user?.institution}</Text>
+
+          {(user?.state || user?.country) && (
+            <Text type="secondary">{formatCountryAndState(user)}</Text>
+          )}
         </>
       )}
     </Space>

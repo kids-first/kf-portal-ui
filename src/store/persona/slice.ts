@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from 'store/persona/types';
-import { createPersonaUser, fetchPersonaUser, fetchPersonaUserProfile } from 'store/persona/thunks';
+import {
+  createPersonaUser,
+  fetchPersonaUser,
+  fetchPersonaUserProfile,
+  updatePersonaUser,
+} from 'store/persona/thunks';
+import { TPersonaUser } from 'services/api/persona/models';
 
 // Since api can return null for personaUserInfo, undefined must be set by default
 export const PersonaState: initialState = {
@@ -15,10 +21,21 @@ const personaSlice = createSlice({
   name: 'persona',
   initialState: PersonaState,
   reducers: {
-    cleanLogout: (_) => PersonaState,
+    cleanLogout: (state) => {
+      state.profile = undefined;
+      state.personaUserInfo = PersonaState.personaUserInfo;
+      state.isLoading = PersonaState.isLoading;
+      state.isUpdating = PersonaState.isUpdating;
+      state.isDeleting = PersonaState.isDeleting;
+    },
     setIsPersonaLoading: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoading: action.payload,
+    }),
+    setUserAsMember: (state, action: PayloadAction<TPersonaUser>) => ({
+      ...state,
+      isLoading: false,
+      profile: action.payload,
     }),
     clearProfile: (state) => {
       state.profile = undefined;
@@ -55,6 +72,12 @@ const personaSlice = createSlice({
       ...state,
       error: action.payload,
       isLoading: false,
+    }));
+    // Update Persona User
+    builder.addCase(updatePersonaUser.fulfilled, (state, action) => ({
+      ...state,
+      isLoading: false,
+      personaUserInfo: { ...state.personaUserInfo, ...action.payload },
     }));
     // Fetch Profile
     builder.addCase(fetchPersonaUserProfile.pending, (state) => {

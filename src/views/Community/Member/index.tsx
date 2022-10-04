@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { LinkedinFilled, MailFilled } from '@ant-design/icons';
+import { GlobalOutlined, LinkedinFilled } from '@ant-design/icons';
 import cx from 'classnames';
 import Empty from '@ferlab/ui/core/components/Empty';
-import { Col, Divider, List, Result, Row, Skeleton, Space, Typography } from 'antd';
-import { useParams } from 'react-router-dom';
+import { Alert, Col, Divider, List, Result, Row, Skeleton, Space, Typography } from 'antd';
+import { Link, useParams } from 'react-router-dom';
 import Banner from './components/Banner';
 import intl from 'react-intl-universal';
 import AvatarHeader from './components/AvatarHeader';
@@ -14,21 +14,41 @@ import { usePersona } from 'store/persona';
 import { fetchPersonaUserProfile } from 'store/persona/thunks';
 import { useDispatch } from 'react-redux';
 import { personaActions } from 'store/persona/slice';
+import { diseasesInterestOptions, studiesInterestOptions } from '../contants';
 
 const CommunityMember = () => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
   const { personaUserInfo, isLoading, profile } = usePersona();
+  const isOwner = personaUserInfo?._id === id;
+
+  const diseasesInterest = personaUserInfo?.interests?.filter((interest) =>
+    diseasesInterestOptions.some(
+      (diseasesInterest) => diseasesInterest.value.toLocaleLowerCase() === interest,
+    ),
+  );
+
+  const studiesInterest = personaUserInfo?.interests?.filter((interest) =>
+    studiesInterestOptions.some(
+      (studiesInterest) => studiesInterest.value.toLocaleLowerCase() === interest,
+    ),
+  );
 
   useEffect(() => {
-    if (profile === undefined) {
+    if (profile !== undefined) {
+      return;
+    }
+
+    if (isOwner) {
+      dispatch(personaActions.setUserAsMember(personaUserInfo));
+    } else {
       dispatch(fetchPersonaUserProfile({ id }));
     }
 
     return () => {
       dispatch(personaActions.clearProfile());
     };
-  }, [id, profile, dispatch]);
+  }, []);
 
   if (!isLoading && !profile) {
     return (
@@ -43,8 +63,29 @@ const CommunityMember = () => {
 
   return (
     <div className={styles.communityMemberWrapper}>
+      {isOwner &&
+        !personaUserInfo.isPublic &&
+        !window.sessionStorage.getItem('profileSettings.privateAlertHasBeenClosed') && (
+          <Alert
+            className={styles.privateAlert}
+            type="warning"
+            message={
+              <>
+                {intl.get('screen.memberProfile.privateAlert')}
+                <Link to={`/profile/settings`}>
+                  {intl.get('screen.memberProfile.settingsPage')}
+                </Link>
+                .
+              </>
+            }
+            closable
+            onClose={() => {
+              window.sessionStorage.setItem('profileSettings.privateAlertHasBeenClosed', 'true');
+            }}
+          />
+        )}
       <div className={styles.communityMember}>
-        <Banner isOwnUser={personaUserInfo?._id === profile?._id} />
+        <Banner isOwnUser={isOwner} />
         <div className={styles.contentWrapper}>
           <AvatarHeader user={profile} isLoading={isLoading} />
           <Divider className={styles.divider} />
@@ -59,7 +100,7 @@ const CommunityMember = () => {
               <Col md={16}>
                 <Row gutter={[28, 28]}>
                   <Col span={24}>
-                    <Typography.Title level={5}>
+                    <Typography.Title level={4}>
                       {intl.get('screen.memberProfile.rolesTitle')}
                     </Typography.Title>
                     <List
@@ -79,28 +120,71 @@ const CommunityMember = () => {
                       }}
                     />
                   </Col>
-                  <Col span={24}>
-                    <Typography.Title level={5}>
-                      {intl.get('screen.memberProfile.usageTitle')}
-                    </Typography.Title>
-                  </Col>
+                  {(!!diseasesInterest?.length || !!studiesInterest?.length) && (
+                    <>
+                      <Col span={24}>
+                        <Typography.Title level={4}>
+                          {intl.get('screen.memberProfile.researchInterest')}
+                        </Typography.Title>
+
+                        {!!diseasesInterest?.length && (
+                          <>
+                            <Typography.Title level={5}>
+                              {intl.get('screen.memberProfile.diseasesInterest')}
+                            </Typography.Title>
+                            {diseasesInterest?.join(', ')}
+                          </>
+                        )}
+                      </Col>
+
+                      {!!studiesInterest?.length && (
+                        <Col span={24}>
+                          <Typography.Title level={5}>
+                            {intl.get('screen.memberProfile.studiesInterest')}
+                          </Typography.Title>
+                          <List
+                            className={cx(
+                              styles.infoList,
+                              !studiesInterest?.length && styles.empty,
+                            )}
+                            itemLayout="horizontal"
+                            dataSource={studiesInterest}
+                            renderItem={(interest, index) => <li key={index}>{interest}</li>}
+                            locale={{
+                              emptyText: (
+                                <Empty
+                                  showImage={false}
+                                  description={intl.get('screen.memberProfile.noStudiesInterest')}
+                                  align="left"
+                                  noPadding
+                                />
+                              ),
+                            }}
+                          />
+                        </Col>
+                      )}
+                    </>
+                  )}
                 </Row>
               </Col>
               <Col md={8}>
                 <Space direction="vertical">
                   {profile?.linkedin && (
-                    <ExternalLink style={{ color: 'unset' }} href={profile.linkedin}>
+                    <ExternalLink href={profile.linkedin}>
                       <Space align="center">
                         <LinkedinFilled />
-                        <Typography.Text>Linkedin</Typography.Text>
+                        Linkedin
                       </Space>
                     </ExternalLink>
                   )}
-                  {profile?.email && (
-                    <Space align="center">
-                      <MailFilled />
-                      <Typography.Text>{profile?.email}</Typography.Text>
-                    </Space>
+
+                  {profile?.website && (
+                    <ExternalLink href={profile.website}>
+                      <Space align="center">
+                        <GlobalOutlined />
+                        Website
+                      </Space>
+                    </ExternalLink>
                   )}
                 </Space>
               </Col>

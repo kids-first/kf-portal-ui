@@ -24,6 +24,9 @@ const BaseForm = <T,>({
     form={form}
     initialValues={initialValues}
     onFieldsChange={(changedFields) => {
+      if (!changedFields.length) {
+        return;
+      }
       const field = changedFields[0];
       onHasChanged({
         ...hasChangedInitialValue,

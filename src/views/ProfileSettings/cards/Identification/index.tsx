@@ -3,7 +3,6 @@ import ProLabel from '@ferlab/ui/core/components/ProLabel';
 import { useKeycloak } from '@react-keycloak/web';
 import { Alert, Col, Form, Input, Row, Space, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { capitalize } from 'lodash';
 import { useEffect, useRef, useState } from 'react';

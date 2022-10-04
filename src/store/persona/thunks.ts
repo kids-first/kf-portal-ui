@@ -85,10 +85,9 @@ const updatePersonaUser = createAsyncThunk<
   'persona/update',
   async (args, thunkAPI) => {
     const { data, error } = await PersonaApi.update(args.data);
-
     return handleThunkApiReponse({
       error,
-      data: data!,
+      data: data?.data?.userUpdate?.record!,
       reject: thunkAPI.rejectWithValue,
       onSuccess: args.callback,
     });

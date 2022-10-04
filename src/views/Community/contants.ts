@@ -19,6 +19,10 @@ export const memberRolesOptions = [
 
 export const diseasesInterestOptions = [
   {
+    key: 'patients-with-both-childhood-cancer-and-birth-defects',
+    value: ' Patients With Both Childhood Cancer and Birth Defects',
+  },
+  {
     key: 'childhood-cancer',
     value: 'Childhood cancer',
   },
@@ -43,7 +47,7 @@ export const diseasesInterestOptions = [
     value: 'Craniofacial Microsomia',
   },
   {
-    key: 'disorders-of-sex-development',
+    key: 'disorders-of-sex-development2',
     value: 'Disorders of Sex Development',
   },
   {
@@ -117,7 +121,6 @@ export const studiesInterestOptions = [
     key: 'adolescent-idiopathic-scoliosis',
     value: 'Adolescent Idiopathic Scoliosis',
   },
-
   {
     key: 'congenital-heart-defects',
     value: 'Congenital Heart Defects',
@@ -126,7 +129,6 @@ export const studiesInterestOptions = [
     key: 'pediatric-brain-tumors-cbttc',
     value: 'Pediatric Brain Tumors: CBTTC',
   },
-
   {
     key: 'ewing-sarcoma-genetic-risk',
     value: 'Ewing Sarcoma: Genetic Risk',

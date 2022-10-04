@@ -228,6 +228,7 @@ const Header = () => {
                     onClick: () => {
                       dispatch(personaActions.cleanLogout());
                       dispatch(userActions.cleanLogout());
+                      window.sessionStorage.clear();
                     },
                   },
                 ]}

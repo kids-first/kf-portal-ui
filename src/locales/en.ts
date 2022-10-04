@@ -333,6 +333,20 @@ const en = {
     },
   },
   screen: {
+    memberProfile: {
+      notFound: 'User not found',
+      rolesTitle: 'I am',
+      noRoles: 'No roles',
+      researchInterest: 'Research Interest',
+      diseasesInterest: 'Disease areas of interest',
+      studiesInterest: 'Studies of interest',
+      noUsage: 'No intended usages',
+      editProfileBtn: 'Edit Profile',
+      communityBtn: 'Community',
+      privateAlert:
+        'Your profile is currently hidden from community members. You can make it public in the ',
+      settingsPage: 'settings page',
+    },
     loginPage: {
       title: 'Kids First Data Resource Portal',
       datarelease: {
@@ -536,8 +550,8 @@ const en = {
         },
         researchInterests: {
           title: 'Research Interests',
-          diseases: 'Kids First disease areas',
-          studies: 'Studies',
+          diseases: 'Disease areas of interest',
+          studies: 'Studies of interest',
         },
         saveChanges: 'Save changes',
         discardChanges: 'Discard changes',

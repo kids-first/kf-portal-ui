@@ -14,13 +14,11 @@ import { updatePersonaUser } from 'store/persona/thunks';
 enum FORM_FIELDS {
   ROLES = 'roles',
   INSTITUTION = 'organization',
-  INSTITUTIONAL_EMAIL = 'institutionalEmail',
 }
 
 const initialChangedValues = {
   [FORM_FIELDS.ROLES]: false,
   [FORM_FIELDS.INSTITUTION]: false,
-  [FORM_FIELDS.INSTITUTIONAL_EMAIL]: false,
 };
 
 const RoleAndAffiliationCard = () => {
@@ -41,7 +39,6 @@ const RoleAndAffiliationCard = () => {
     initialValues.current = {
       [FORM_FIELDS.ROLES]: personaUserInfo?.roles,
       [FORM_FIELDS.INSTITUTION]: personaUserInfo?.institution || '',
-      [FORM_FIELDS.INSTITUTIONAL_EMAIL]: personaUserInfo?.institutionalEmail || '',
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
@@ -66,7 +63,6 @@ const RoleAndAffiliationCard = () => {
                 ...personaUserInfo,
                 roles: values[FORM_FIELDS.ROLES],
                 institution: values[FORM_FIELDS.INSTITUTION],
-                institutionalEmail: values[FORM_FIELDS.INSTITUTIONAL_EMAIL],
               },
               callback: () => {
                 initialValues.current = values;
@@ -107,17 +103,6 @@ const RoleAndAffiliationCard = () => {
               ))}
             </Space>
           </Checkbox.Group>
-        </Form.Item>
-        <Form.Item
-          className={formStyles.noMargin}
-          name={FORM_FIELDS.INSTITUTIONAL_EMAIL}
-          tooltip={intl.get(
-            'screen.profileSettings.cards.roleAffiliation.institutionalEmailTooltip',
-          )}
-          label={intl.get('screen.profileSettings.cards.roleAffiliation.institutionalEmail')}
-          requiredMark="optional"
-        >
-          <Input placeholder="email@domain.com" />
         </Form.Item>
       </BaseForm>
     </BaseCard>

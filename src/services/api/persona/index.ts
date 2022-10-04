@@ -1,11 +1,5 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import {
-  TPersonaUser,
-  TPersonaUserCreate,
-  TPersonaSelfFetch,
-  TPersonaUserUpdate,
-  TPersonaProfileFetch,
-} from './models';
+import { TPersonaUser, TPersonaUserUpdate } from './models';
 import { sendRequest } from 'services/api';
 import { omit } from 'lodash';
 
@@ -105,7 +99,11 @@ export const headers = {
 };
 
 const fetch = () =>
-  sendRequest<TPersonaSelfFetch>({
+  sendRequest<{
+    data: {
+      self: TPersonaUser;
+    };
+  }>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -121,7 +119,13 @@ const fetch = () =>
   });
 
 const create = (user: TPersonaUser) =>
-  sendRequest<TPersonaUserCreate>({
+  sendRequest<{
+    data: {
+      userCreate: {
+        record: TPersonaUser;
+      };
+    };
+  }>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -140,7 +144,13 @@ const create = (user: TPersonaUser) =>
   });
 
 const update = (user: TPersonaUserUpdate) =>
-  sendRequest<TPersonaUser>({
+  sendRequest<{
+    data: {
+      userUpdate: {
+        record: TPersonaUser;
+      };
+    };
+  }>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
@@ -159,7 +169,11 @@ const update = (user: TPersonaUserUpdate) =>
   });
 
 const fetchProfile = (id: string) =>
-  sendRequest<TPersonaProfileFetch>({
+  sendRequest<{
+    data: {
+      user: TPersonaUser;
+    };
+  }>({
     method: 'POST',
     url: `${PERSONA_API_URL}/graphql`,
     headers,
