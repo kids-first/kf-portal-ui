@@ -49,7 +49,7 @@ const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
       placeHolder={intl.get(`global.search.${type}.placeholder`)}
       options={options}
       selectedItems={[]}
-      title={'Search by Variant ID'}
+      title={intl.get(`global.search.${type}.title`)}
       emptyDescription={intl.get(`global.search.${type}.emptyText`)}
       tooltipText={intl.get(`global.search.${type}.tooltip`)}
     />

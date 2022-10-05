@@ -144,6 +144,7 @@ export interface IGeneEntity {
 
 export interface IVariantEntity {
   id: string;
+  study_id: string;
   score: number;
   acls: string;
   alternate: string;

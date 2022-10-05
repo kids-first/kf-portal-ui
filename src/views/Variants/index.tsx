@@ -55,7 +55,6 @@ const filterGroups: {
   [type: string]: FilterInfo;
 } = {
   [FilterTypes.Participant]: {
-    customSearches: [<ParticipantSearch key={0} queryBuilderId={DATA_EXPLORATION_QB_ID} />],
     groups: [
       {
         facets: [
@@ -159,7 +158,6 @@ const filterGroups: {
 };
 
 const Variants = () => {
-  const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const variantMappingResults = useGetExtendedMappings(INDEXES.VARIANTS);
   const menuItems: ISidebarMenuItem[] = [];
@@ -265,7 +263,6 @@ const Variants = () => {
             data: [],
             loading: false,
           }}
-          tabId={tab}
         />
       </ScrollContent>
     </div>

@@ -15,7 +15,3 @@ export const DEFAULT_QUERY_CONFIG: IQueryConfig = {
   size: DEFAULT_PAGE_SIZE,
   sort: [],
 };
-
-export enum TAB_IDS {
-  VARIANTS = 'variants',
-}

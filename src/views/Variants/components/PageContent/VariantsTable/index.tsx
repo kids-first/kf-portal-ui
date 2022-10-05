@@ -5,7 +5,7 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { useFilters } from '@ferlab/ui/core/data/filters/utils';
-import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
 import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
@@ -26,12 +26,16 @@ import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
 import { IStudiesEntity } from 'graphql/studies/models';
+import { STATIC_ROUTES } from 'utils/routes';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { INDEXES } from 'graphql/constants';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 interface OwnProps {
   results: IQueryResults<IVariantEntity[]>;
   setQueryConfig: TQueryConfigCb;
   queryConfig: IQueryConfig;
-  sqon?: ISqonGroupFilter;
 }
 
 const isNumber = (n: number) => n && !Number.isNaN(n);
@@ -107,12 +111,47 @@ const defaultColumns: ProColumnType[] = [
     render: (studies: ArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
   },
   {
-    title: 'Participants',
-    dataIndex: 'participant_number',
+    title: (
+      <Tooltip className="tooltip" title={intl.get('screen.variants.table.participant.tooltip')}>
+        {intl.get('screen.variants.table.participant.title')}
+      </Tooltip>
+    ),
     key: 'part',
+    render: (record: IVariantEntity) => {
+      const participantNumber = record.participant_number || 0;
+      if (participantNumber <= 10) {
+        return participantNumber;
+      }
+      return (
+        <Link
+          to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+          onClick={() => {
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'study_id',
+                    value: [record.study_id],
+                    index: INDEXES.PARTICIPANT,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            });
+          }}
+        >
+          {participantNumber}
+        </Link>
+      );
+    },
   },
   {
-    title: 'Freq.',
+    title: (
+      <Tooltip className="tooltip" title={intl.get('screen.variants.table.frequence.tooltip')}>
+        {intl.get('screen.variants.table.frequence.title')}
+      </Tooltip>
+    ),
     dataIndex: 'participant_frequency',
     key: 'participant_frequency',
     render: (participantFrequency: number) =>
@@ -121,13 +160,21 @@ const defaultColumns: ProColumnType[] = [
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    title: 'ALT',
+    title: (
+      <Tooltip className="tooltip" title={intl.get('screen.variants.table.alt.tooltip')}>
+        {intl.get('screen.variants.table.alt.title')}
+      </Tooltip>
+    ),
     dataIndex: 'frequencies',
     key: 'alternate',
     render: (frequencies: IExternalFrequenciesEntity) => frequencies?.internal?.upper_bound_kf?.ac,
   },
   {
-    title: 'Homo.',
+    title: (
+      <Tooltip className="tooltip" title={intl.get('screen.variants.table.homozygotes.tooltip')}>
+        {intl.get('screen.variants.table.homozygotes.title')}
+      </Tooltip>
+    ),
     dataIndex: 'frequencies',
     key: 'homozygotes',
     render: (frequencies: IExternalFrequenciesEntity) =>
@@ -135,7 +182,7 @@ const defaultColumns: ProColumnType[] = [
   },
 ];
 
-const VariantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) => {
+const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
@@ -152,7 +199,6 @@ const VariantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) =
       columns={defaultColumns}
       wrapperClassName={styles.variantTabWrapper}
       loading={results.loading}
-      enableRowSelection={true}
       initialSelectedKey={selectedKeys}
       showSorterTooltip={false}
       onChange={({ current, pageSize }, _, sorter) =>
@@ -184,4 +230,4 @@ const VariantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) =
   );
 };
 
-export default VariantsTab;
+export default VariantsTable;
