@@ -120,14 +120,14 @@ const CommunityMember = () => {
                       }}
                     />
                   </Col>
-                  {(!!diseasesInterest?.length || !!studiesInterest?.length) && (
+                  {(diseasesInterest?.length! > 0 || studiesInterest?.length! > 0) && (
                     <>
                       <Col span={24}>
                         <Typography.Title level={4}>
                           {intl.get('screen.memberProfile.researchInterest')}
                         </Typography.Title>
 
-                        {!!diseasesInterest?.length && (
+                        {diseasesInterest?.length! > 0 && (
                           <>
                             <Typography.Title level={5}>
                               {intl.get('screen.memberProfile.diseasesInterest')}
@@ -137,7 +137,7 @@ const CommunityMember = () => {
                         )}
                       </Col>
 
-                      {!!studiesInterest?.length && (
+                      {studiesInterest?.length! > 0 && (
                         <Col span={24}>
                           <Typography.Title level={5}>
                             {intl.get('screen.memberProfile.studiesInterest')}
