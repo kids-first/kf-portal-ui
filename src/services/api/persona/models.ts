@@ -37,25 +37,6 @@ export type TPersonaUser = {
   hashedEmail?: boolean;
 };
 
-export type TPersonaUserCreate = {
-  data: {
-    userCreate: {
-      record: TPersonaUser;
-    };
-  };
-};
-
-export type TPersonaSelfFetch = {
-  data: {
-    self: TPersonaUser;
-  };
-};
-
-export type TPersonaProfileFetch = {
-  data: {
-    user: TPersonaUser;
-  };
-};
 export type TUserPersonaInsert = Omit<
   TPersonaUser,
   'id' | 'keycloak_id' | 'creation_date' | 'update_date'

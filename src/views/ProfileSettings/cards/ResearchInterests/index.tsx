@@ -11,7 +11,7 @@ import intl from 'react-intl-universal';
 import { updatePersonaUser } from 'store/persona/thunks';
 
 enum FORM_FIELDS {
-  DISEASES = 'interests',
+  DISEASES = 'diseases',
   STUDIES = 'studies',
 }
 
@@ -32,10 +32,10 @@ const ResearchInterestsCard = () => {
   const isValueChanged = () => Object.values(hasChanged).some((val) => val);
 
   const onDiscardChanges = () => {
-    setDiseasesInterestFilter([]);
-    setStudiesInterestFilter([]);
     setHasChanged(initialChangedValues);
     form.setFieldsValue(initialValues.current);
+    setDiseasesInterestFilter([]);
+    setStudiesInterestFilter([]);
   };
 
   useEffect(() => {
@@ -49,9 +49,11 @@ const ResearchInterestsCard = () => {
       [FORM_FIELDS.DISEASES]: diseasesInterests || [],
       [FORM_FIELDS.STUDIES]: studiesInterests || [],
     };
+    setDiseasesInterestFilter(diseasesInterests || []);
+    setStudiesInterestFilter(studiesInterests || []);
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-  }, [personaUserInfo, form]);
+  }, [personaUserInfo]);
 
   return (
     <BaseCard
@@ -92,7 +94,6 @@ const ResearchInterestsCard = () => {
             allowClear
             placeholder={intl.get('screen.community.search.selectPlaceholder')}
             maxTagCount={4}
-            value={[]}
             onSelect={(value: string) =>
               setDiseasesInterestFilter([...diseasesInterestFilter, value])
             }
@@ -122,7 +123,6 @@ const ResearchInterestsCard = () => {
             allowClear
             placeholder={intl.get('screen.community.search.selectPlaceholder')}
             maxTagCount={4}
-            value={[]}
             onSelect={(value: string) =>
               setStudiesInterestFilter([...studiesInterestFilter, value])
             }
