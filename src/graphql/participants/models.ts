@@ -8,15 +8,18 @@ export interface IParticipantResultTree {
 
 export interface IParticipantDiagnosis {
   id: string;
-  score: number;
   mondo_id_diagnosis: string;
   source_text: string;
+  ncit_id_diagnosis: string;
+  affected_status: boolean;
 }
 
 export interface IParticipantPhenotype {
   id: string;
-  score: number;
-  hpo_id_phenotype: string;
+  age_at_event_days: number;
+  fhir_id: string;
+  hpo_phenotype_observed: string;
+  is_observed: boolean;
 }
 
 export interface IParticipantMondo {
@@ -29,6 +32,9 @@ export interface IParticipantObservedPhenotype {
   id: any;
   name: string;
   is_tagged: boolean;
+  is_leaf: boolean;
+  parents: string[];
+  age_at_event_days: string[];
 }
 
 export interface IParticipantStudy {
@@ -43,6 +49,20 @@ export interface IParticipantStudy {
   family_count: number;
   family_data: boolean;
   study_id: string;
+}
+
+export interface IParticipantOutcomes {
+  id: string;
+  fhir_id: string;
+  release_id: string;
+  study_id: string;
+  participant_fhir_id: string;
+  vital_status: string;
+  observation_id: string;
+  age_at_event_days: {
+    value: string;
+    units: string;
+  };
 }
 
 export interface IParticipantEntity {
@@ -71,6 +91,7 @@ export interface IParticipantEntity {
   biospecimen: ArrangerResultsTree<IBiospecimenEntity>;
   phenotype: ArrangerResultsTree<IParticipantPhenotype>;
   race: string;
+  outcomes: ArrangerResultsTree<IParticipantOutcomes>;
 }
 
 export type ITableParticipantEntity = IParticipantEntity & {

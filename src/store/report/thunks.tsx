@@ -136,7 +136,7 @@ const idField = (index: string) => {
   switch (index) {
     case INDEXES.PARTICIPANT:
       return 'participant_id';
-    case INDEXES.FILE:
+    case INDEXES.FILES:
       return 'file_id';
     case INDEXES.BIOSPECIMEN:
       return 'sample_id';

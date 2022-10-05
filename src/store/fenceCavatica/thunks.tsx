@@ -114,11 +114,7 @@ const beginAnalyse = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.message);
   }
 
-  const {
-    data: { file },
-  } = data!;
-
-  const files = hydrateResults(file?.hits?.edges || []);
+  const files = hydrateResults(data?.data?.files?.hits?.edges || []);
 
   const authorizedFiles = getAuthorizedFiles(
     allFencesAcls,

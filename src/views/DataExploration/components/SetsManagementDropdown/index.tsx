@@ -78,7 +78,7 @@ const itemIcon = (type: string) => {
   switch (type) {
     case INDEXES.BIOSPECIMEN:
       return <ExperimentOutlined width="14px" height="14px" />;
-    case INDEXES.FILE:
+    case INDEXES.FILES:
       return <FileTextOutlined width="14px" height="14px" />;
     default:
       return <UserOutlined width="14px" height="14px" />;

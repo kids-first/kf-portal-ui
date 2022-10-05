@@ -102,7 +102,7 @@ const getStudiesCountByNameAndAcl = async (
     query StudyCountByNamesAndAcl(${studyIds.map(
       (studyId) => `$${replaceDashByUnderscore(studyId)}_sqon: JSON`,
     )}) {          
-      file {
+      files {
         ${studyIds
           .map(
             (studyId) => `
@@ -167,7 +167,7 @@ const getAuthStudyIdsAndCounts = async (
   const { data, error } = await ArrangerApi.graphqlRequest<any>({
     query: `
     query AuthorizedStudyIdsAndCount($sqon: JSON) {
-      file {
+      files {
         aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false){
           participants__study__study_id {
             buckets
@@ -214,7 +214,7 @@ const getAuthStudyIdsAndCounts = async (
 
   const {
     data: {
-      file: {
+      files: {
         aggregations: {
           participants__study__study_id: { buckets },
         },

@@ -1,10 +1,25 @@
 import { ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
-import { IStudiesEntity } from 'graphql/studies/models';
 import { IBiospecimenEntity } from '../biospecimens/models';
 
 export interface IFileResultTree {
-  file: ArrangerResultsTree<IFileEntity>;
+  files: ArrangerResultsTree<IFileEntity>;
+}
+
+export interface IFileStudyEntity {
+  id: string;
+  study_id: string;
+  fhir_id: string;
+  study_code: string;
+  study_name: string;
+  investigator_id: string;
+  experimental_strategy: string[];
+  family_count: number;
+  participant_count: number;
+  biospecimen_count: number;
+  data_category: string[];
+  family_data: boolean;
+  controlled_access: string[];
 }
 
 export interface IFileEntity {
@@ -22,7 +37,7 @@ export interface IFileEntity {
   size: number;
   file_name: string;
   repository: string;
-  study: IStudiesEntity;
+  study: IFileStudyEntity;
   nb_participants: number;
   nb_biospecimens: number;
   fhir_document_reference: string;
@@ -35,6 +50,7 @@ export interface IFileEntity {
   };
   participant: ArrangerResultsTree<IParticipantEntity>;
   biospecimens: ArrangerResultsTree<IBiospecimenEntity>;
+  external_id: string;
 }
 
 export enum FileAccessType {

@@ -1,7 +1,10 @@
 import {
+  IParticipantOutcomes,
   IParticipantDiagnosis,
   IParticipantEntity,
   IParticipantObservedPhenotype,
+  IParticipantPhenotype,
+  IParticipantStudy,
   ITableParticipantEntity,
 } from 'graphql/participants/models';
 import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
@@ -21,13 +24,13 @@ import {
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { getProTableDictionary } from 'utils/translation';
-import { Button, Dropdown, Menu, Tag, Tooltip } from 'antd';
+import { Button, Dropdown, Menu, Tag } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateUserConfig } from 'store/user/thunks';
 import { useUser } from 'store/user';
 import { ReportType } from 'services/api/reports/models';
 import { DownloadOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -36,7 +39,6 @@ import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
-import intl from 'react-intl-universal';
 import { capitalize } from 'lodash';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import useQueryBuilderState, {
@@ -54,7 +56,7 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-const defaultColumns: ProColumnType<any>[] = [
+const defaultColumns: ProColumnType[] = [
   {
     key: 'participant_id',
     title: 'Participant ID',
@@ -64,47 +66,24 @@ const defaultColumns: ProColumnType<any>[] = [
     },
   },
   {
-    key: 'study_id',
-    title: 'Study Code',
-    dataIndex: 'study_id',
+    key: 'study',
+    title: 'Study',
+    dataIndex: 'study',
     sorter: {
       multiple: 1,
     },
     className: styles.studyIdCell,
+    render: (study: IParticipantStudy) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'study_external_id',
-    title: 'dbGaP',
-    dataIndex: 'study_external_id',
-    render: (study_external_id: string) =>
-      study_external_id ? (
-        <ExternalLink
-          href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${study_external_id}`}
-        >
-          {study_external_id}
-        </ExternalLink>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
-  },
-  {
-    key: 'down_syndrome_status',
-    title: (
-      <Tooltip className="tooltip" title={'Down Syndrome Status'}>
-        DS Status
-      </Tooltip>
-    ),
+    key: 'proband',
+    title: 'Proband',
+    dataIndex: 'is_proband',
     sorter: {
       multiple: 1,
     },
-    dataIndex: 'down_syndrome_status',
-    render: (down_syndrome_status: 'D21' | 'T21') => {
-      return (
-        <Tooltip title={intl.get(`facets.options.${down_syndrome_status}`)}>
-          {down_syndrome_status}
-        </Tooltip>
-      );
-    },
+    className: styles.studyIdCell,
+    render: (isProband: boolean) => (isProband ? `true` : `false`), //|| TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'sex',
@@ -128,55 +107,13 @@ const defaultColumns: ProColumnType<any>[] = [
     ),
   },
   {
-    key: 'race',
-    title: 'Race',
-    dataIndex: 'race',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (race) => race || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'ethnicity',
-    title: 'Ethnicity',
-    dataIndex: 'ethnicity',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (ethnicity) => ethnicity || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'family_type',
-    title: 'Family Unit',
-    dataIndex: 'family_type',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (family_type) => family_type || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'diagnosis.source_text',
-    title: 'Diagnosis (Source Text)',
+    key: 'diagnosis_category',
+    title: 'Diagnosis Category',
     dataIndex: 'diagnosis',
-    defaultHidden: true,
-    render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
-      const sourceTexts = mondo?.hits?.edges.map((m) => m.node.source_text);
-
-      if (!sourceTexts || sourceTexts.length === 0) {
-        return TABLE_EMPTY_PLACE_HOLDER;
-      }
-
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={sourceTexts}
-          renderItem={(sourceText, index): React.ReactNode => <div key={index}>{sourceText}</div>}
-        />
-      );
+    sorter: {
+      multiple: 1,
     },
+    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'diagnosis.mondo_id_diagnosis',
@@ -185,18 +122,15 @@ const defaultColumns: ProColumnType<any>[] = [
     className: styles.diagnosisCell,
     render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
       const mondoNames = mondo?.hits?.edges.map((m) => m.node.mondo_id_diagnosis);
-
       if (!mondoNames || mondoNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
-
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
           dataSource={mondoNames}
           renderItem={(mondo_id, index): React.ReactNode => {
             const mondoInfo = extractMondoTitleAndCode(mondo_id);
-
             return mondoInfo ? (
               <div key={index}>
                 {capitalize(mondoInfo.title)} (MONDO:{' '}
@@ -217,18 +151,14 @@ const defaultColumns: ProColumnType<any>[] = [
   },
   {
     key: 'phenotype.hpo_phenotype_observed',
-    title: 'Phenotype (HPO)',
-    dataIndex: 'observed_phenotype',
+    title: 'Observed Phenotype (HPO)',
+    dataIndex: 'phenotype',
     className: styles.phenotypeCell,
-    render: (observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>) => {
-      const phenotypeNames = observed_phenotype?.hits?.edges
-        .filter((p) => p.node.is_tagged)
-        .map((p) => p.node.name);
-
+    render: (phenotype: ArrangerResultsTree<IParticipantPhenotype>) => {
+      const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
       if (!phenotypeNames || phenotypeNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
-
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
@@ -251,6 +181,33 @@ const defaultColumns: ProColumnType<any>[] = [
         />
       );
     },
+  },
+  {
+    key: 'families_id',
+    title: 'Family ID',
+    dataIndex: 'families_id',
+    sorter: {
+      multiple: 1,
+    },
+    render: (families_id: string) => families_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'family_composition',
+    title: 'Family Composition',
+    dataIndex: 'family_composition',
+    sorter: {
+      multiple: 1,
+    },
+    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'pedcbioportal',
+    title: 'PedcBioPortal',
+    dataIndex: 'pedcbioportal',
+    sorter: {
+      multiple: 1,
+    },
+    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'nb_biospecimens',
@@ -319,6 +276,148 @@ const defaultColumns: ProColumnType<any>[] = [
         record.nb_files || 0
       );
     },
+  },
+  {
+    key: 'race',
+    title: 'Race',
+    dataIndex: 'race',
+    sorter: {
+      multiple: 1,
+    },
+    render: (race: string) => race || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'ethnicity',
+    title: 'Ethnicity',
+    dataIndex: 'ethnicity',
+    sorter: {
+      multiple: 1,
+    },
+    render: (ethnicity: string) => ethnicity || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'external_id',
+    title: 'Participant External ID',
+    dataIndex: 'external_id',
+    sorter: {
+      multiple: 1,
+    },
+    render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'diagnosis_ncit',
+    title: 'Diagnosis (NCIT)',
+    dataIndex: 'diagnosis',
+    sorter: {
+      multiple: 1,
+    },
+    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+      diagnosis?.hits?.edges?.map((o) => o.node.ncit_id_diagnosis)?.join(', ') ||
+      TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'diagnosis_source_text',
+    title: 'Diagnosis (Source Text)',
+    dataIndex: 'diagnosis',
+    render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
+      const sourceTexts = mondo?.hits?.edges.map((m) => m.node.source_text);
+
+      if (!sourceTexts || sourceTexts.length === 0) {
+        return TABLE_EMPTY_PLACE_HOLDER;
+      }
+
+      return (
+        <ExpandableCell
+          nOfElementsWhenCollapsed={1}
+          dataSource={sourceTexts}
+          renderItem={(sourceText, index): React.ReactNode => <div key={index}>{sourceText}</div>}
+        />
+      );
+    },
+  },
+  {
+    key: 'clinical_status',
+    title: 'Clinical Status',
+    dataIndex: 'diagnosis',
+    sorter: {
+      multiple: 1,
+    },
+    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+      diagnosis?.hits?.edges?.map((dn) => dn.node.affected_status) || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'disease_related',
+    title: 'Disease Related',
+    dataIndex: 'outcomes',
+    sorter: {
+      multiple: 1,
+    },
+    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'vital_status',
+    title: 'Vital Status',
+    dataIndex: 'outcomes',
+    sorter: {
+      multiple: 1,
+    },
+    render: (outcomes: ArrangerResultsTree<IParticipantOutcomes>) =>
+      outcomes?.hits?.edges?.map((o) => o.node.vital_status) || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'phenotypes_hpo_not_observed',
+    title: 'Not Observed Phenotype (HPO)',
+    dataIndex: 'phenotype',
+    sorter: {
+      multiple: 1,
+    },
+    render: (_: ArrangerResultsTree<IParticipantPhenotype>) => TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'source_text_phenotype',
+    title: 'Observed Phenotype (Source Text)',
+    dataIndex: 'phenotype',
+    sorter: {
+      multiple: 1,
+    },
+    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'observed_phenotype_age_at_event_days',
+    title: 'Age at Diagnosis',
+    dataIndex: 'observed_phenotype',
+    sorter: {
+      multiple: 1,
+    },
+    render: (observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>) =>
+      observed_phenotype?.hits?.edges
+        ?.filter((e) => e.node.age_at_event_days)
+        ?.map((e) => e.node.age_at_event_days)
+        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'outcomes_age_at_event_days',
+    title: 'Age at Outcome',
+    dataIndex: 'outcomes',
+    sorter: {
+      multiple: 1,
+    },
+    render: (outcomes: ArrangerResultsTree<IParticipantOutcomes>) =>
+      outcomes?.hits?.edges
+        ?.filter((e) => e.node.age_at_event_days?.value)
+        ?.map((e) => e.node.age_at_event_days.value)
+        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'outcomes_age_at_event_days',
+    title: 'Age at Observed Phenotype',
+    dataIndex: 'phenotype',
+    sorter: {
+      multiple: 1,
+    },
+    render: (phenotype: ArrangerResultsTree<IParticipantPhenotype>) =>
+      phenotype.hits?.edges?.map((e) => e.node.age_at_event_days)?.join(', ') ||
+      TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 

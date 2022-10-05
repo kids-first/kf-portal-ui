@@ -51,15 +51,15 @@ const recursiveMap = (
 export const mapFilterForVariant = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.STUDIES,
-      prefix: 'study.',
+      index: INDEXES.VARIANTS,
+      prefix: 'variants.',
     },
   ]);
 
 export const mapFilterForParticipant = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.FILE,
+      index: INDEXES.FILES,
       prefix: 'files.',
     },
     {
@@ -71,19 +71,15 @@ export const mapFilterForParticipant = (sqonFilters: ISqonGroupFilter) =>
 export const mapFilterForFiles = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.PARTICIPANT,
-      prefix: 'participants.',
+      index: INDEXES.FILES,
+      prefix: 'files.',
     },
-    // {
-    //   index: INDEXES.BIOSPECIMEN,
-    //   prefix: 'participants.biospecimens.',
-    // },
   ]);
 
 export const mapFilterForBiospecimen = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.FILE,
+      index: INDEXES.FILES,
       prefix: 'files.',
     },
     {
