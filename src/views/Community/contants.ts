@@ -5,15 +5,15 @@ export const memberRolesOptions = [
   },
   {
     key: 'health',
-    value: 'Healthcare professional',
+    value: 'Healthcare Professional',
   },
   {
     key: 'patient',
-    value: 'Patient/Family member',
+    value: 'Patient/Family Member',
   },
   {
     key: 'community',
-    value: 'Community member',
+    value: 'Community Member',
   },
 ];
 
@@ -24,7 +24,7 @@ export const diseasesInterestOptions = [
   },
   {
     key: 'childhood-cancer',
-    value: 'Childhood cancer',
+    value: 'Childhood Cancer',
   },
   {
     key: 'cancer',

@@ -1,0 +1,17 @@
+@import 'src/style/themes/kids-first/colors';
+
+.container {
+  display: flex;
+  align-items: center;
+
+  .title {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .icon {
+    margin: 0 12px 0 4px;
+    color: $gray-7;
+    font-size: 12px;
+  }
+}

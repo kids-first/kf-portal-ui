@@ -73,19 +73,15 @@ const LocationCard = () => {
         }
       >
         <Form.Item
-          name={FORM_FIELDS.STATE}
-          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.state')} />}
-          rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
-          required={false}
+          name={FORM_FIELDS.COUNTRY}
+          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.country')} />}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          name={FORM_FIELDS.COUNTRY}
-          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.country')} />}
-          rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
-          required={false}
+          name={FORM_FIELDS.STATE}
+          label={<ProLabel title={intl.get('screen.profileSettings.cards.location.state')} />}
         >
           <Input />
         </Form.Item>

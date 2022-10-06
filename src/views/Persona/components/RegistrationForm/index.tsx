@@ -6,6 +6,8 @@ import { createPersonaUser } from 'store/persona/thunks';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { STATIC_ROUTES } from 'utils/routes';
 
+import intl from 'react-intl-universal';
+
 import styles from './index.module.scss';
 import { memberRolesOptions } from 'views/Community/contants';
 
@@ -53,14 +55,14 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
           <Title level={3}>Identification</Title>
           <Text>All fields are required unless specified as optional.</Text>
           <Form.Item
-            label="First name:"
+            label={intl.get('screen.profileSettings.cards.identification.firstName')}
             name="firstName"
             rules={[{ required: true, message: 'First name is required' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Last name:"
+            label={intl.get('screen.profileSettings.cards.identification.lastName')}
             name="lastName"
             rules={[{ required: true, message: 'Last name is required' }]}
           >
@@ -72,7 +74,7 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
           </Title>
           <Form.Item
             name="roles"
-            label="I am a:"
+            label={intl.get('screen.profileSettings.cards.roleAffiliation.iama')}
             rules={[{ required: true, message: 'This field is required' }]}
           >
             <Checkbox.Group>

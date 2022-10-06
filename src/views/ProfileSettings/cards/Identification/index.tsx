@@ -62,7 +62,7 @@ const IdentificationCard = () => {
       form={form}
       customHeader={
         <div className={styles.customHeader}>
-          <Typography.Title level={4}>
+          <Typography.Title className={styles.title} level={4}>
             {intl.get('screen.profileSettings.cards.identification.title')}
           </Typography.Title>
           <ToggleProfileVisibility />
@@ -137,7 +137,7 @@ const IdentificationCard = () => {
               </Form.Item>
               <Form.Item
                 name={FORM_FIELDS.LINKEDIN}
-                label={<ProLabel title="Linkedin" />}
+                label={<ProLabel title="LinkedIn" />}
                 rules={[{ type: 'url', validateTrigger: 'onSubmit' }]}
                 required={false}
               >
