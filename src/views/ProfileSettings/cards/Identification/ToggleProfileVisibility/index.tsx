@@ -6,18 +6,20 @@ import { useDispatch } from 'react-redux';
 import { usePersona } from 'store/persona';
 import { updatePersonaUser } from 'store/persona/thunks';
 
+import styles from './index.module.scss';
+
 const ToggleProfileVisibility = () => {
   const dispatch = useDispatch();
   const { personaUserInfo } = usePersona();
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <Space align="baseline">
-      <Typography.Title level={5}>
+    <div className={styles.container}>
+      <Typography.Text className={styles.title} strong>
         {intl.get('screen.profileSettings.toggleProfileVisibility.title')}
-      </Typography.Title>
+      </Typography.Text>
       <Tooltip title={intl.get('screen.profileSettings.toggleProfileVisibility.tooltip')}>
-        <InfoCircleOutlined />
+        <InfoCircleOutlined className={styles.icon} />
       </Tooltip>
       <Switch
         loading={isLoading}
@@ -37,7 +39,7 @@ const ToggleProfileVisibility = () => {
           );
         }}
       />
-    </Space>
+    </div>
   );
 };
 

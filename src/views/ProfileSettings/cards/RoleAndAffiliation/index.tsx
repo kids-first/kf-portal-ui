@@ -79,8 +79,6 @@ const RoleAndAffiliationCard = () => {
               title={intl.get('screen.profileSettings.cards.roleAffiliation.institution')}
             />
           }
-          rules={[{ required: true, type: 'string', validateTrigger: 'onSubmit' }]}
-          required={false}
         >
           <Input />
         </Form.Item>
@@ -88,7 +86,6 @@ const RoleAndAffiliationCard = () => {
           className={formStyles.withCustomHelp}
           name={FORM_FIELDS.ROLES}
           label={intl.get('screen.profileSettings.cards.roleAffiliation.iama')}
-          required={false}
           rules={[{ required: true }]}
         >
           <Checkbox.Group className={formStyles.checkBoxGroup}>

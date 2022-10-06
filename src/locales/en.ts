@@ -519,9 +519,9 @@ const en = {
           title: 'Identification',
           alert:
             'You are authenticated with <strong>{provider}</strong> using <strong>{email}</strong>. This email is never shown to the public and cannot be changed.',
-          firstName: 'First Name',
+          firstName: 'First name',
           yourFirstName: 'Your First Name',
-          lastName: 'Last Name',
+          lastName: 'Last name',
           yourLastName: 'Your Last Name',
           website: 'Website',
           editPhotoModalTitle: 'Edit photo',
@@ -535,7 +535,7 @@ const en = {
         },
         roleAffiliation: {
           title: 'Role & Affiliation',
-          iama: 'I am a:',
+          iama: 'I am a',
           checkAllThatApply: 'Check all that apply',
           institution: 'Institution or organization',
           institutionalEmail: 'Institutional email address',
@@ -552,7 +552,7 @@ const en = {
           zip: 'Zip',
         },
         researchInterests: {
-          title: 'Research Interests',
+          title: 'Research Interest',
           diseases: 'Disease areas of interest',
           studies: 'Studies of interest',
         },
@@ -818,7 +818,7 @@ const en = {
     phenotype: {
       hpo_phenotype_observed: 'Observed Phenotype (HPO)',
       hpo_phenotype_not_observed: 'Not Observed Phenotype (HPO)',
-      age_at_event_days: 'Age at Observed Phenotype'
+      age_at_event_days: 'Age at Observed Phenotype',
     },
     age_at_data_collection: 'Age at data collection',
     family_type: 'Family Unit',
