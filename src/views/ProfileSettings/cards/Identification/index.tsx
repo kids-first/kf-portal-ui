@@ -55,6 +55,7 @@ const IdentificationCard = () => {
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personaUserInfo]);
 
   return (

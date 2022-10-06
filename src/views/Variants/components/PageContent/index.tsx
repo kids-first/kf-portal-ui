@@ -95,7 +95,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         <Typography.Title className={styles.pageHeaderTitle} level={1}>
           {intl.get('screen.variants.title')}
         </Typography.Title>
-        <a className={styles.dataReleaseTag}>
+        <a href="#data-release" className={styles.dataReleaseTag}>
           <span>Data release 1.0</span>
           <OpenInNewIcon width={12} />
         </a>
@@ -131,7 +131,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
           const { data } = await ArrangerApi.graphqlRequest<{ data: IVariantResultTree }>({
             query: GET_VARIANT_COUNT.loc?.source.body,
             variables: {
-              sqon: resolveSqonForVariants(queryList, sqon),
+              sqon,
             },
           });
 

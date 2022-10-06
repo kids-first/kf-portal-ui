@@ -1,10 +1,8 @@
-import { Checkbox, Form, Input, Space } from 'antd';
+import { Form, Input } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { memberRolesOptions } from 'views/Community/contants';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import formStyles from '../form.module.scss';
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
 import { usePersona } from 'store/persona';
@@ -42,6 +40,7 @@ const LocationCard = () => {
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [personaUserInfo]);
 
   return (

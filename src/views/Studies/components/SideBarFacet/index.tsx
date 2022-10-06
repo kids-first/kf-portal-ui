@@ -7,10 +7,10 @@ import { useState } from 'react';
 import styles from './index.module.scss';
 import { ExtendedMappingResults } from 'graphql/models';
 import { STUDIES_REPO_QB_ID } from '../../utils/constant';
-import { mapFilterForVariant } from 'utils/fieldMapper';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
+import { Button } from 'antd';
 
 type OwnProps = {
   className?: string;
@@ -21,23 +21,20 @@ type OwnProps = {
 const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { loading } = extendedMappingResults;
+
   return (
     <StackLayout
       className={cx(className, styles.sideBarFacet, { [styles.collapsed]: collapsed })}
       vertical
       flexContent
     >
-      {collapsed ? (
-        <MenuUnfoldOutlined
-          className={styles.collapseIcon}
-          onClick={() => setCollapsed(!collapsed)}
-        />
-      ) : (
-        <MenuFoldOutlined
-          className={styles.collapseIcon}
-          onClick={() => setCollapsed(!collapsed)}
-        />
-      )}
+      <Button className={styles.button} type="text" onClick={() => setCollapsed(!collapsed)}>
+        {collapsed ? (
+          <MenuUnfoldOutlined className={styles.collapseIcon} />
+        ) : (
+          <MenuFoldOutlined className={styles.collapseIcon} />
+        )}
+      </Button>
 
       <ScrollContent>
         {!collapsed && (
@@ -49,7 +46,6 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
               queryBuilderId={STUDIES_REPO_QB_ID}
               extendedMappingResults={extendedMappingResults}
               filterInfo={filterInfo}
-              filterMapper={mapFilterForVariant}
             />
           </div>
         )}

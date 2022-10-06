@@ -43,7 +43,7 @@ const filterInfo: FilterInfo = {
 const columns: ProColumnType<any>[] = [
   {
     key: 'study_id',
-    title: 'Study Code',
+    title: 'Code',
     render: (record: IStudiesEntity) => (
       <ExternalLink href={record.website}>{record.study_id}</ExternalLink>
     ),
@@ -58,6 +58,23 @@ const columns: ProColumnType<any>[] = [
     key: 'program',
     title: 'Program',
     dataIndex: 'program',
+  },
+  {
+    key: 'domain',
+    title: 'Domain',
+    dataIndex: 'domain',
+  },
+  {
+    key: 'external_id',
+    title: 'dbGaP',
+    dataIndex: 'external_id',
+    render: (externalId: string) => (
+      <ExternalLink
+        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${externalId}`}
+      >
+        {externalId}
+      </ExternalLink>
+    ),
   },
   {
     key: 'participant_count',
@@ -92,11 +109,6 @@ const columns: ProColumnType<any>[] = [
     },
   },
   {
-    key: 'family_count',
-    title: 'Families',
-    dataIndex: 'family_count',
-  },
-  {
     key: 'biospecimen_count',
     title: 'Biospecimens',
     render: (record: IStudiesEntity) => {
@@ -129,6 +141,18 @@ const columns: ProColumnType<any>[] = [
     },
   },
   {
+    key: 'family_count',
+    title: 'Families',
+    dataIndex: 'family_count',
+  },
+  {
+    key: 'clinical',
+    title: 'Clinical',
+    align: 'center',
+    render: (record: IStudiesEntity) =>
+      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+  },
+  {
     key: 'genomic',
     title: 'Genomics',
     align: 'center',
@@ -144,13 +168,6 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'proteomic',
     title: 'Proteomics',
-    align: 'center',
-    render: (record: IStudiesEntity) =>
-      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
-  },
-  {
-    key: 'clinical',
-    title: 'Clinicals',
     align: 'center',
     render: (record: IStudiesEntity) =>
       hasDataCategory(record.data_category, DataCategory.PROTEOMIC),

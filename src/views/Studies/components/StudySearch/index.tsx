@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { FileTextOutlined } from '@ant-design/icons';
+import { ReadOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { INDEXES } from 'graphql/constants';
@@ -28,7 +28,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
         options.map((option) => ({
           label: (
             <SelectItem
-              icon={<FileTextOutlined />}
+              icon={<ReadOutlined />}
               title={highlightSearchMatch(option.study_id, matchRegex, search)}
               caption={highlightSearchMatch(option.study_name, matchRegex, search)}
             />

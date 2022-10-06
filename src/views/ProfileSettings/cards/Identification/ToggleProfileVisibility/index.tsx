@@ -1,5 +1,5 @@
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Space, Switch, Tooltip, Typography } from 'antd';
+import { Switch, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
