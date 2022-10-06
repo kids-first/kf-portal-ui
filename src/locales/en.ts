@@ -41,7 +41,7 @@ const en = {
         emptyText: 'No study found',
         placeholder: 'e.g. KF DSD, Neuroblastoma',
         title: 'Search studies',
-        tooltip: 'Search by Study Code, Study name, dbGaP Accession number',
+        tooltip: 'Search by <b>Study Code</b>, <b>Study name</b>, <b>dbGaP Accession number</b>',
       },
     },
     filters: {

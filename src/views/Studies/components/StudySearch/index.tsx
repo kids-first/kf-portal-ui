@@ -18,7 +18,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
       queryBuilderId={queryBuilderId}
       field="study_id"
       searchFields={['study_id', 'study_name', 'external_id']}
-      tooltipText={intl.get('global.search.study.tooltip')}
+      tooltipText={intl.getHTML('global.search.study.tooltip')}
       index={INDEXES.STUDIES}
       placeholder={intl.get(`global.search.study.placeholder`)}
       emptyDescription={intl.get(`global.search.study.emptyText`)}
