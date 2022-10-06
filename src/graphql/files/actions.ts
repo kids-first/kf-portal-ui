@@ -11,7 +11,7 @@ export const useDataFiles = (variables?: QueryVariable) => {
 
   return {
     loading,
-    data: hydrateResults(result?.file?.hits?.edges || []),
-    total: result?.file?.hits?.total || 0,
+    data: hydrateResults(result?.files?.hits?.edges || []),
+    total: result?.files?.hits?.total || 0,
   };
 };

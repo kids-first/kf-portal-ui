@@ -37,7 +37,6 @@ const concatAllFacets = (filterInfo: FilterInfo) => {
 };
 
 const FilterList = ({
-  loading = true,
   index,
   queryBuilderId,
   extendedMappingResults,
@@ -46,7 +45,7 @@ const FilterList = ({
 }: OwnProps) => {
   const [filtersOpen, setFiltersOpen] = useState<boolean | undefined>(isAllFacetOpen(filterInfo));
 
-  if (loading) {
+  if (extendedMappingResults.loading) {
     return <Spin className={styles.filterLoader} spinning />;
   }
 

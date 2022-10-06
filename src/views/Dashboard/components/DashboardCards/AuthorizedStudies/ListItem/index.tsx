@@ -46,7 +46,7 @@ const AuthorizedStudiesListItem = ({ id, data }: OwnProps) => {
                       generateValueFilter({
                         field: 'acl',
                         value: data.acl,
-                        index: INDEXES.FILE,
+                        index: INDEXES.FILES,
                       }),
                     ],
                   }),

@@ -10,7 +10,7 @@ const FileSetSearch = ({ queryBuilderId }: ICustomSearchProps) => {
 
   return (
     <SetSearch
-      index={INDEXES.FILE}
+      index={INDEXES.FILES}
       title="Saved File Sets"
       queryBuilderId={DATA_EXPLORATION_QB_ID}
       type={SetType.FILE}

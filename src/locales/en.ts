@@ -8,9 +8,12 @@ const filesFacets = {
   file_format: 'File Format',
   size: 'Size',
   access: 'Access',
+  controlled_access: 'Access',
   sequencing_experiment: {
     experiment_strategy: 'Experimental Strategy',
   },
+  is_harmonized: 'Harmonized Data',
+  acl: 'ACL',
 };
 
 const en = {
@@ -778,7 +781,12 @@ const en = {
     file_id: 'File ID',
     // Participant
     participant_id: 'Participant ID',
-    study: { study_code: 'Study Code' },
+    study: {
+      study_code: 'Study Code',
+      study_name: 'Study Name',
+      external_id: 'dbGaP Accession Number',
+    },
+    is_proband: 'Proband',
     study_id: 'Study Code',
     down_syndrome_status: 'Down Syndrome Status',
     down_syndrome_diagnosis: 'Down Syndrome Diagnosis',
@@ -786,10 +794,20 @@ const en = {
       name: 'Diagnosis (MONDO)',
     },
     diagnosis: {
+      affected_status: 'Clinical Status',
       mondo_id_diagnosis: 'Diagnosis (MONDO)',
+      age_at_event_days: 'Age at Diagnosis',
+      source_text: 'Diagnosis (Source Text)',
+      source_text_tumor_location: 'Tumor Location (Source Text)',
+    },
+    outcomes: {
+      age_at_event_days: 'Age at Outcome',
+      vital_status: 'Vital Status',
     },
     phenotype: {
-      hpo_phenotype_observed: 'Phenotype (HPO)',
+      hpo_phenotype_observed: 'Observed Phenotype (HPO)',
+      hpo_phenotype_not_observed: 'Not Observed Phenotype (HPO)',
+      age_at_event_days: 'Age at Observed Phenotype'
     },
     age_at_data_collection: 'Age at data collection',
     family_type: 'Family Unit',
