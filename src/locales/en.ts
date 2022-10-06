@@ -812,7 +812,9 @@ const en = {
       source_text_tumor_location: 'Tumor Location (Source Text)',
     },
     outcomes: {
-      age_at_event_days: 'Age at Outcome',
+      age_at_event_days: {
+        value: 'Age at Outcome',
+      },
       vital_status: 'Vital Status',
     },
     phenotype: {

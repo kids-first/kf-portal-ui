@@ -37,25 +37,25 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                 }
               }
             }
-#            outcomes {
-#              hits {
-#                total
-#                edges {
-#                  node {
-#                    fhir_id
-#                    release_id
-#                    study_id
-#                    participant_fhir_id
-#                    vital_status
-#                    observation_id
-#                    age_at_event_days {
-#                      value
-#                      units
-#                    }
-#                  }
-#                }
-#              }
-#            }
+            outcomes {
+              hits {
+                total
+                edges {
+                  node {
+                    fhir_id
+                    release_id
+                    study_id
+                    participant_fhir_id
+                    vital_status
+                    observation_id
+                    age_at_event_days {
+                      value
+                      units
+                    }
+                  }
+                }
+              }
+            }
             phenotype {
               hits {
                 total
@@ -63,7 +63,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                   node {
                     fhir_id
                     hpo_phenotype_observed
-#                    is_observed
+                    #                    is_observed
                     age_at_event_days
                   }
                 }
@@ -78,7 +78,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                     is_tagged
                     name
                     parents
-#                    age_at_event_days
+                    #                    age_at_event_days
                   }
                 }
               }
