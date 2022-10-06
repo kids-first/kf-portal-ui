@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { UserOutlined } from '@ant-design/icons';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
-import { Space, Tabs, Typography } from 'antd';
+import { Space, Typography } from 'antd';
 import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useVariant } from 'graphql/variants/actions';
 import { isEmpty } from 'lodash';
@@ -15,7 +13,6 @@ import OpenInNewIcon from 'components/Icons/OpenInIcon';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
-  TAB_IDS,
   VARIANT_FILTER_TAG,
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
@@ -27,17 +24,20 @@ import {
   setSavedFilterAsDefault,
   updateSavedFilter,
 } from 'store/savedFilter/thunks';
-import { combineExtendedMappings } from 'utils/fieldMapper';
-import { STATIC_ROUTES } from 'utils/routes';
+import { combineExtendedMappings, mapFilterForVariant } from 'utils/fieldMapper';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
-import VariantsTab from './tabs/Variants';
+import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
+import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import { ArrangerApi } from 'services/api/arranger';
+import { IVariantResultTree } from 'graphql/variants/models';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
 
 type OwnProps = {
   variantMapping: ExtendedMappingResults;
-  tabId?: string;
 };
 
 const addTagToFilter = (filter: ISavedFilter) => ({
@@ -45,9 +45,11 @@ const addTagToFilter = (filter: ISavedFilter) => ({
   tag: VARIANT_FILTER_TAG,
 });
 
-const PageContent = ({ variantMapping, tabId = TAB_IDS.VARIANTS }: OwnProps) => {
+const resolveSqonForVariants = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
+  mapFilterForVariant(resolveSyntheticSqon(queryList, activeQuery));
+
+const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
   const { savedFilters, defaultFilter } = useSavedFilter(VARIANT_FILTER_TAG);
 
@@ -120,46 +122,27 @@ const PageContent = ({ variantMapping, tabId = TAB_IDS.VARIANTS }: OwnProps) => 
         }}
         enableCombine
         enableShowHideLabels
-        IconTotal={<UserOutlined size={18} />}
+        IconTotal={<LineStyleIcon width={18} height={18} />}
         currentQuery={isEmptySqon(activeQuery) ? {} : activeQuery}
         total={variantResults.total}
         dictionary={getQueryBuilderDictionary(facetTransResolver)}
         getResolvedQueryForCount={() => ({ op: 'and', content: [] })}
-        fetchQueryCount={() =>
-          new Promise((resolve, reject) => {
-            resolve(1);
-          })
-        }
-      />
-      <Tabs
-        type="card"
-        className="navNoMarginBtm"
-        activeKey={tabId || TAB_IDS.VARIANTS}
-        onChange={(key) => {
-          if (!history.location.pathname.includes(key)) {
-            history.push(`${STATIC_ROUTES.VARIANT}/${key}${window.location.search}`);
-          }
+        fetchQueryCount={async (sqon) => {
+          const { data } = await ArrangerApi.graphqlRequest<{ data: IVariantResultTree }>({
+            query: GET_VARIANT_COUNT.loc?.source.body,
+            variables: {
+              sqon: resolveSqonForVariants(queryList, sqon),
+            },
+          });
+
+          return data?.data?.variants.hits.total ?? 0;
         }}
-      >
-        <Tabs.TabPane
-          tab={
-            <span>
-              <UserOutlined />
-              {intl.get('screen.variants.tabs.variants.title', {
-                count: variantResults.total,
-              })}
-            </span>
-          }
-          key={TAB_IDS.VARIANTS}
-        >
-          <VariantsTab
-            results={variantResults}
-            setQueryConfig={setVariantQueryConfig}
-            queryConfig={variantQueryConfig}
-            sqon={variantResolvedSqon}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      />
+      <VariantsTable
+        results={variantResults}
+        setQueryConfig={setVariantQueryConfig}
+        queryConfig={variantQueryConfig}
+      />
     </Space>
   );
 };

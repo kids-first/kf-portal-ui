@@ -568,15 +568,10 @@ const en = {
         frequency: 'Frequency',
         pathogenicity: 'Pathogenicity',
       },
-      tabs: {
-        variants: {
-          title: 'Variants',
-        },
-      },
       title: 'Variants Exploration',
       table: {
         consequences: 'Consequences',
-        clinvar: 'Clinvar',
+        clinvar: 'ClinVar',
         type: 'Type',
         variant_class: 'Variant class',
         variant_id: 'Variant ID',
@@ -584,6 +579,22 @@ const en = {
         genome_build: 'Genome build',
         dbsnp: 'dbSNP',
         variant: 'Variant',
+        homozygotes: {
+          title: 'Homo.',
+          tooltip: '# of Homozygotes',
+        },
+        alt: {
+          title: 'ALT',
+          tooltip: '# of Alternative alleles',
+        },
+        frequence: {
+          title: 'Freq.',
+          tooltip: 'Frequency of the variant across Kids First cohorts',
+        },
+        participant: {
+          title: 'Part.',
+          tooltip: '# of affected participants across Kids First cohorts',
+        },
       },
     },
     studies: {
@@ -840,25 +851,25 @@ const en = {
     //Variants
     variant_class: 'Variant Type',
     type: 'Type',
-    variant_external_reference: 'External reference',
+    variant_external_reference: 'Variant External reference',
     chromosome: 'Chromosome',
     position: 'Position',
     zygosity: 'Zygosity',
     transmissions: 'Transmissions',
     genePanels: 'Gene panels',
-    gene_external_reference: 'External Reference',
+    gene_external_reference: 'Gene External Reference',
     consequences: {
       consequences: 'Consequence',
       biotype: 'Gene Type',
       vep_impact: 'VEP',
       predictions: {
         sift_pred: 'SIFT',
-        polyphen2_hvar_pred: 'Polyphen2 HVAR',
+        polyphen2_hvar_pred: 'PolyPhen-2 HVAR',
         fathmm_pred: 'FATHMM',
         cadd_rankscore: 'CADD',
         lrt_pred: 'LRT',
         revel_rankscore: 'REVEL',
-        dann_rankscore: 'DANM',
+        dann_rankscore: 'DANN',
       },
     },
     genes: {
@@ -879,7 +890,7 @@ const en = {
       },
     },
     clinvar: {
-      clin_sig: 'Clinvar',
+      clin_sig: 'ClinVar',
     },
     frequencies: {
       internal: {

@@ -1,4 +1,4 @@
-import { ArrangerResultsTree } from "graphql/models";
+import { ArrangerResultsTree } from 'graphql/models';
 
 export interface IStudiesResultTree {
   studies: ArrangerResultsTree<IStudiesEntity>;
@@ -14,6 +14,6 @@ export interface IStudiesEntity {
   family_count: number;
   participant_count: number;
   biospecimen_count: number;
-  data_category: string[]
+  data_category: string[];
   website: string;
 }

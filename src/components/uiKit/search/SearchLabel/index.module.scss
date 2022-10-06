@@ -2,12 +2,13 @@
 
 .searchLabel {
   &.titleWrapper {
-    color: $gray-9;
+    color: $body-1;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 
     .title {
+      color: $body-1;
       font-size: 12px;
     }
 

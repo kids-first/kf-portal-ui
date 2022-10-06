@@ -242,3 +242,13 @@ export const SEARCH_VARIANT_QUERY = gql`
     }
   }
 `;
+
+export const GET_VARIANT_COUNT = gql`
+  query getVariantsCount($sqon: JSON) {
+    variants {
+      hits(filters: $sqon) {
+        total
+      }
+    }
+  }
+`;
