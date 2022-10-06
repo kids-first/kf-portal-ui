@@ -55,7 +55,7 @@ const filterGroups: {
         facets: [
           'diagnosis__affected_status',
           'diagnosis__age_at_event_days',
-          //FIXME 'outcomes__age_at_event_days',
+          'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
           'diagnosis__mondo_id_diagnosis',
           'diagnosis__source_text',
