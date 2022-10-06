@@ -41,3 +41,13 @@ export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
     }
   }
 `;
+
+export const GET_STUDY_COUNT = gql`
+  query getStudiesCount($sqon: JSON) {
+    studies {
+      hits(filters: $sqon) {
+        total
+      }
+    }
+  }
+`;

@@ -1,6 +1,6 @@
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { UserOutlined } from '@ant-design/icons';
+import { ReadOutlined } from '@ant-design/icons';
 import { Space, Typography } from 'antd';
 import { getProTableDictionary } from 'utils/translation';
 import intl from 'react-intl-universal';
@@ -27,6 +27,9 @@ import { useDispatch } from 'react-redux';
 import { fetchTsvReport } from 'store/report/thunks';
 import { INDEXES } from 'graphql/constants';
 import { useUser } from 'store/user';
+import { ArrangerApi } from 'services/api/arranger';
+import { IStudiesResultTree } from 'graphql/studies/models';
+import { GET_STUDY_COUNT } from 'graphql/studies/queries';
 
 const { Title } = Typography;
 
@@ -87,17 +90,21 @@ const PageContent = ({
           },
         }}
         enableCombine
-        enableShowHideLabels
-        IconTotal={<UserOutlined size={18} />}
+        IconTotal={<ReadOutlined size={18} />}
         currentQuery={isEmptySqon(activeQuery) ? {} : activeQuery}
         total={total}
         dictionary={getQueryBuilderDictionary(facetTransResolver)}
         getResolvedQueryForCount={() => ({ op: 'and', content: [] })}
-        fetchQueryCount={() =>
-          new Promise((resolve, reject) => {
-            resolve(1);
-          })
-        }
+        fetchQueryCount={async (sqon) => {
+          const { data } = await ArrangerApi.graphqlRequest<{ data: IStudiesResultTree }>({
+            query: GET_STUDY_COUNT.loc?.source.body,
+            variables: {
+              sqon,
+            },
+          });
+
+          return data?.data?.studies.hits.total ?? 0;
+        }}
       />
       <GridCard
         content={
