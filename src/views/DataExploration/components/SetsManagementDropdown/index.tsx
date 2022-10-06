@@ -76,7 +76,7 @@ const exceedLimit = (participantCount: number) => participantCount > ROW_SELECTI
 
 const itemIcon = (type: string) => {
   switch (type) {
-    case INDEXES.BIOSPECIMEN:
+    case INDEXES.BIOSPECIMENS:
       return <ExperimentOutlined width="14px" height="14px" />;
     case INDEXES.FILES:
       return <FileTextOutlined width="14px" height="14px" />;

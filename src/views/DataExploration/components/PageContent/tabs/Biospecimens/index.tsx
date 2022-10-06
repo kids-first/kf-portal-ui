@@ -101,7 +101,7 @@ const getDefaultColumns = (history: any): ProColumnType<any>[] => [
               queryBuilderId: DATA_EXPLORATION_QB_ID,
               field: 'collection_sample_id',
               value: [collection_sample_id],
-              index: INDEXES.BIOSPECIMEN,
+              index: INDEXES.BIOSPECIMENS,
             })
           }
         >
@@ -185,7 +185,7 @@ const getDefaultColumns = (history: any): ProColumnType<any>[] => [
                   generateValueFilter({
                     field: 'sample_id',
                     value: [record.sample_id],
-                    index: INDEXES.BIOSPECIMEN,
+                    index: INDEXES.BIOSPECIMENS,
                   }),
                 ],
               }),
@@ -266,7 +266,7 @@ const BioSpecimenTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps
             fetchTsvReport({
               columnStates: userInfo?.config.data_exploration?.tables?.biospecimens?.columns,
               columns: getDefaultColumns(history),
-              index: INDEXES.BIOSPECIMEN,
+              index: INDEXES.BIOSPECIMENS,
               sqon: getCurrentSqon(),
             }),
           ),

@@ -33,7 +33,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
               generateValueFilter({
                 field,
                 value: ids,
-                index: INDEXES.BIOSPECIMEN,
+                index: INDEXES.BIOSPECIMENS,
               }),
             ),
           }),
@@ -56,7 +56,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
         queryBuilderId,
         field: 'biospecimen_facet_ids.biospecimen_fhir_id_2',
         value: match.map((value) => value.key),
-        index: INDEXES.BIOSPECIMEN,
+        index: INDEXES.BIOSPECIMENS,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
       })
