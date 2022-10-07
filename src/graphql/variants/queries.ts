@@ -232,6 +232,8 @@ export const SEARCH_VARIANT_QUERY = gql`
                     hgvsc
                     consequences
                     vep_impact
+                    symbol
+                    aa_change
                   }
                 }
               }

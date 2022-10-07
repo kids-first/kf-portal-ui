@@ -61,7 +61,10 @@ const PageContent = ({ variantMapping }: OwnProps) => {
     offset: variantQueryConfig.size * (variantQueryConfig.pageIndex - 1),
     sqon: variantResolvedSqon,
     sort: isEmpty(variantQueryConfig.sort)
-      ? [{ field: 'variant_class', order: 'asc' }]
+      ? [
+          { field: 'max_impact_score', order: 'desc' },
+          { field: 'hgvsg', order: 'asc' },
+        ]
       : variantQueryConfig.sort,
   });
 
