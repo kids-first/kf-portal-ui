@@ -8,7 +8,7 @@ import {
   DATA_EPLORATION_FILTER_TAG,
   DATA_EXPLORATION_QB_ID,
 } from 'views/DataExploration/utils/constant';
-import { distanceInWords } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import CreateEditModal from '../CreateEditModal';
 import { deleteSavedSet } from 'store/savedSet/thunks';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -101,7 +101,7 @@ const ListItem = ({ data, icon }: OwnProps) => {
           },
         }}
         description={intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
-          date: distanceInWords(new Date(), new Date(data.updated_date)),
+          date: formatDistance(new Date(), new Date(data.updated_date)),
         })}
       />
       <CreateEditModal
