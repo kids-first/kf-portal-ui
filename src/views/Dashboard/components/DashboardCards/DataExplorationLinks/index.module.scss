@@ -17,6 +17,7 @@
 
     .customCol {
       display: flex;
+      min-width: 150px;
 
       @media screen and (max-width: 1150px) {
         flex: unset !important;
@@ -47,7 +48,7 @@
 
     .dataReleaseIcon {
       margin-top: -1px;
-      color: $cyan-5;
+      color: $cyan-4;
       font-size: 20px;
     }
 

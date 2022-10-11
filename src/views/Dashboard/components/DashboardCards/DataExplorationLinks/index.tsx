@@ -17,12 +17,6 @@ import styles from './index.module.scss';
 import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 import TeamIcon from 'components/Icons/TeamIcon';
 
-const formatStorage = (storage: string) => {
-  if (!storage) return;
-  const parts = storage.split(/\.| /);
-  return `${parts[0]}${parts[2]}`;
-};
-
 const DataExplorationLinks = () => {
   const dispatch = useDispatch();
   const { stats } = useGlobals();
@@ -91,20 +85,11 @@ const DataExplorationLinks = () => {
 
           <Col flex="auto" className={styles.customCol}>
             <LinkBox
-              href={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
+              href={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
               multiLabelClassName={styles.dataReleaseStatsLabel}
               label={numberFormat(stats?.files!)}
               subLabel={intl.get('components.dataRelease.files')}
               icon={<FileTextOutlined className={styles.dataReleaseIcon} />}
-            />
-          </Col>
-          <Col flex="auto" className={styles.customCol}>
-            <LinkBox
-              href={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
-              multiLabelClassName={styles.dataReleaseStatsLabel}
-              label={formatStorage(stats?.fileSize!) || '0TB'}
-              subLabel={intl.get('components.dataRelease.storage')}
-              icon={<DatabaseOutlined className={styles.dataReleaseIcon} />}
             />
           </Col>
         </Row>

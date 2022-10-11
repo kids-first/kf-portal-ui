@@ -13,16 +13,11 @@ import { useDispatch } from 'react-redux';
 import { fetchStats } from 'store/global/thunks';
 
 import styles from 'components/uiKit/DataRelease/index.module.scss';
+import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 
 interface OwnProps {
   className?: string;
 }
-
-const formatStorage = (storage: string) => {
-  if (!storage) return;
-  const parts = storage.split(/\.| /);
-  return `${parts[0]}${parts[2]}`;
-};
 
 const DataRelease = ({ className = '' }: OwnProps) => {
   const dispatch = useDispatch();
@@ -67,7 +62,7 @@ const DataRelease = ({ className = '' }: OwnProps) => {
           <MultiLabel
             iconPosition={MultiLabelIconPositionEnum.Top}
             label={numberFormat(stats?.samples!)}
-            Icon={<FileTextOutlined className={styles.dataReleaseIcon} />}
+            Icon={<BiospecimenIcon className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
             subLabel={intl.get('components.dataRelease.biospecimens')}
           />
@@ -79,15 +74,6 @@ const DataRelease = ({ className = '' }: OwnProps) => {
             Icon={<FileTextOutlined className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
             subLabel={intl.get('components.dataRelease.files')}
-          />
-        </Col>
-        <Col xs={12} md={4}>
-          <MultiLabel
-            iconPosition={MultiLabelIconPositionEnum.Top}
-            label={formatStorage(stats?.fileSize!) || '0TB'}
-            Icon={<DatabaseOutlined className={styles.dataReleaseIcon} />}
-            className={styles.dataReleaseStatsLabel}
-            subLabel={intl.get('components.dataRelease.storage')}
           />
         </Col>
       </Row>
