@@ -22,8 +22,6 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { loading } = extendedMappingResults;
 
-  console.log('extendedMappingResults', extendedMappingResults); //TODO: to remove
-
   return (
     <StackLayout
       className={cx(className, styles.sideBarFacet, { [styles.collapsed]: collapsed })}

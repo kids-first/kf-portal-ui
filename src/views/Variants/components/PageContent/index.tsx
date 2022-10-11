@@ -126,12 +126,12 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         currentQuery={isEmptySqon(activeQuery) ? {} : activeQuery}
         total={variantResults.total}
         dictionary={getQueryBuilderDictionary(facetTransResolver)}
-        getResolvedQueryForCount={() => ({ op: 'and', content: [] })}
+        getResolvedQueryForCount={(sqon) => resolveSyntheticSqon(queryList, sqon)}
         fetchQueryCount={async (sqon) => {
           const { data } = await ArrangerApi.graphqlRequest<{ data: IVariantResultTree }>({
             query: GET_VARIANT_COUNT.loc?.source.body,
             variables: {
-              sqon,
+              sqon: resolveSyntheticSqon(queryList, sqon),
             },
           });
 

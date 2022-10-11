@@ -28,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:netlify": "npm ci && npm run build",
+    "build:netlify": "npm ci --legacy-peer-deps && npm run build",
     "test": "react-scripts test",
     "lint": "eslint $(git diff-index --name-only --diff-filter=d HEAD | grep \"[\\.js|\\.jsx|\\.tsx|\\.ts]$\" | xargs)",
     "lint:fix": "eslint --fix --rule 'no-console: 2'",
