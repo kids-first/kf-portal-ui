@@ -547,7 +547,7 @@ const en = {
           adressLine1: 'Adress Line 1',
           adressLine2: 'Adress Line 2',
           city: 'City',
-          state: 'State',
+          state: 'State or province',
           country: 'Country',
           zip: 'Zip',
         },
