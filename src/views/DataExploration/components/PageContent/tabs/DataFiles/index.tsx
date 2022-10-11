@@ -53,11 +53,9 @@ interface OwnProps {
 const getDefaultColumns = (): ProColumnType[] => [
   {
     key: 'lock',
-    title: (
-      <Tooltip title="File Authorization">
-        <LockOutlined />
-      </Tooltip>
-    ),
+    title: '',
+    icon: <LockOutlined />,
+    tooltip: 'File Authorization',
     align: 'center',
     /*  FIXME: To be used when data is complete. 
     <Tooltip title="Authorized">
@@ -74,11 +72,9 @@ const getDefaultColumns = (): ProColumnType[] => [
   },
   {
     key: 'controlled_access',
-    title: (
-      <Tooltip title="Data access">
-        <SafetyOutlined />
-      </Tooltip>
-    ),
+    title: '',
+    icon: <SafetyOutlined />,
+    tooltip: 'Data access',
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,

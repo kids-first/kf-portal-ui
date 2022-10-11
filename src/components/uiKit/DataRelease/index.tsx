@@ -4,7 +4,7 @@ import MultiLabel, {
   MultiLabelIconPositionEnum,
 } from '@ferlab/ui/core/components/labels/MultiLabel';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
-import { UserOutlined, ReadOutlined, DatabaseOutlined, FileTextOutlined } from '@ant-design/icons';
+import { UserOutlined, ReadOutlined, FileTextOutlined } from '@ant-design/icons';
 import TeamIcon from 'components/Icons/TeamIcon';
 import intl from 'react-intl-universal';
 import { useGlobals } from 'store/global';

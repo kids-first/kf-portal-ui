@@ -111,11 +111,8 @@ const defaultColumns: ProColumnType[] = [
     render: (studies: ArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
   },
   {
-    title: (
-      <Tooltip className="tooltip" title={intl.get('screen.variants.table.participant.tooltip')}>
-        {intl.get('screen.variants.table.participant.title')}
-      </Tooltip>
-    ),
+    title: intl.get('screen.variants.table.participant.title'),
+    tooltip: intl.get('screen.variants.table.participant.tooltip'),
     key: 'part',
     render: (record: IVariantEntity) => {
       const participantNumber = record.participant_number || 0;
@@ -147,11 +144,8 @@ const defaultColumns: ProColumnType[] = [
     },
   },
   {
-    title: (
-      <Tooltip className="tooltip" title={intl.get('screen.variants.table.frequence.tooltip')}>
-        {intl.get('screen.variants.table.frequence.title')}
-      </Tooltip>
-    ),
+    title: intl.get('screen.variants.table.frequence.title'),
+    tooltip: intl.get('screen.variants.table.frequence.tooltip'),
     dataIndex: 'participant_frequency',
     key: 'participant_frequency',
     render: (participantFrequency: number) =>
@@ -160,21 +154,15 @@ const defaultColumns: ProColumnType[] = [
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    title: (
-      <Tooltip className="tooltip" title={intl.get('screen.variants.table.alt.tooltip')}>
-        {intl.get('screen.variants.table.alt.title')}
-      </Tooltip>
-    ),
+    title: intl.get('screen.variants.table.alt.title'),
+    tooltip: intl.get('screen.variants.table.alt.tooltip'),
     dataIndex: 'frequencies',
     key: 'alternate',
     render: (frequencies: IExternalFrequenciesEntity) => frequencies?.internal?.upper_bound_kf?.ac,
   },
   {
-    title: (
-      <Tooltip className="tooltip" title={intl.get('screen.variants.table.homozygotes.tooltip')}>
-        {intl.get('screen.variants.table.homozygotes.title')}
-      </Tooltip>
-    ),
+    title: intl.get('screen.variants.table.homozygotes.title'),
+    tooltip: intl.get('screen.variants.table.homozygotes.tooltip'),
     dataIndex: 'frequencies',
     key: 'homozygotes',
     render: (frequencies: IExternalFrequenciesEntity) =>

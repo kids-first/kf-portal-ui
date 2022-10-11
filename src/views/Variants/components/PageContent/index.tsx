@@ -45,9 +45,6 @@ const addTagToFilter = (filter: ISavedFilter) => ({
   tag: VARIANT_FILTER_TAG,
 });
 
-const resolveSqonForVariants = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
-  mapFilterForVariant(resolveSyntheticSqon(queryList, activeQuery));
-
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
   const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
