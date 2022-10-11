@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
-import { DatabaseOutlined, FileTextOutlined, ReadOutlined, UserOutlined } from '@ant-design/icons';
+import { FileTextOutlined, ReadOutlined, UserOutlined } from '@ant-design/icons';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import LinkBox from './LinkBox';
 import { STATIC_ROUTES } from 'utils/routes';

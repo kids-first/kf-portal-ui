@@ -5,7 +5,7 @@ import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { deleteSavedFilter } from 'store/savedFilter/thunks';
-import { distanceInWords } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import EditModal from '../EditModal';
 import { setQueryBuilderState } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
@@ -56,7 +56,7 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
             }),
         }}
         description={intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
-          date: distanceInWords(new Date(), new Date(data.updated_date)),
+          date: formatDistance(new Date(), new Date(data.updated_date)),
         })}
       />
       <EditModal visible={modalVisible} onCancel={() => setModalVisible(false)} filter={data} />

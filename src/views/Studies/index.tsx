@@ -181,7 +181,7 @@ const Studies = () => {
     <div className={styles.studiesPage}>
       <SideBarFacet extendedMappingResults={studiesMappingResults} filterInfo={filterInfo} />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
-        <PageContent defaultColumns={columns} />
+        <PageContent defaultColumns={columns} extendedMappingResults={studiesMappingResults} />
       </ScrollContent>
     </div>
   );

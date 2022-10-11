@@ -23,7 +23,6 @@ import NotificationBanner from 'components/featureToggle/NotificationBanner';
 import { AlterTypes } from 'common/types';
 import { useKeycloak } from '@react-keycloak/web';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { DEFAULT_GRAVATAR_PLACEHOLDER } from 'common/constants';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'store/user/slice';

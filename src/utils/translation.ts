@@ -34,6 +34,7 @@ export const getFiltersDictionary = (): FiltersDict => ({
     greaterThanOrEqual: intl.get('global.filters.operators.greaterthanorequal'),
   },
   range: {
+    noData: 'no data',
     is: intl.get('global.filters.range.is'),
     min: 'min',
     max: 'max',
@@ -63,6 +64,7 @@ export const getQueryBuilderDictionary = (
           maximumLength: intl.get('components.querybuilder.header.modal.edit.input.maximumLength'),
         },
       },
+      saveThisFilter: intl.get('components.querybuilder.header.modal.saveThisFilter'),
       confirmUnsaved: {
         title: intl.get('components.querybuilder.header.modal.confirmUnsaved.title'),
         openSavedFilter: {
