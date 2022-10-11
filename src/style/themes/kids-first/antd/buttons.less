@@ -18,15 +18,6 @@
   border-left-color: @btn-disable-border;
 }
 
-.ant-btn-text {
-  color: @cyan-7;
-}
-
-.ant-btn-primary[disabled] {
-  background-color: @gray-3;
-  color: @body-3;
-}
-
 .@{btn-prefix-cls} {
   &.iconRight {
     display: flex;
@@ -147,13 +138,21 @@
         border-width: 2px;
       }
     }
+
+    &[disabled] {
+      background-color: @gray-3;
+      color: @body-3;
+    }
   }
 
   &-text {
+    color: @cyan-7;
     &:hover {
+      color: @cyan-7;
       background-color: @gray-2;
     }
     &:active {
+      color: @cyan-7;
       background-color: @gray-3;
     }
     &:focus-visible {
