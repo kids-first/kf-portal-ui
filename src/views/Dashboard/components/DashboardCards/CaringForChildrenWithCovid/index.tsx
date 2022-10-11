@@ -64,7 +64,7 @@ const CaringForChildrenWithCovid = ({ id, key, className = '' }: DashboardCardPr
         <Space direction="vertical" align="center">
           {FHIR.map(({ id, url, title, text, popoverText }) => (
             <div key={id} className={styles.listItem}>
-              <ExternalLink href={url} hasIcon={true}>
+              <ExternalLink className={styles.externalLink} href={url} hasIcon={true}>
                 {title}
               </ExternalLink>
               <p className={styles.text}>
