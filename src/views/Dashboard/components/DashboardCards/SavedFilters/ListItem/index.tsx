@@ -55,9 +55,13 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
               state: data.queries,
             }),
         }}
-        description={intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
-          date: formatDistance(new Date(), new Date(data.updated_date)),
-        })}
+        description={
+          data.updated_date
+            ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
+                date: formatDistance(new Date(), new Date(data.updated_date)),
+              })
+            : undefined
+        }
       />
       <EditModal visible={modalVisible} onCancel={() => setModalVisible(false)} filter={data} />
     </>

@@ -12,7 +12,7 @@ export type TUpdateSet = ISavedSet & {
 };
 
 export type IUserSetOutput = {
-  updated_date: string;
+  updated_date?: string;
   id: string;
   tag: string;
   size: number;

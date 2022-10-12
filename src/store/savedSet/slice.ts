@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUserSetOutput } from 'services/api/savedSet/models';
 import { initialState } from 'store/savedSet/types';
+import { sortByUpdateDate } from 'utils/dates';
 import { createSavedSet, deleteSavedSet, fetchSavedSet, updateSavedSet } from './thunks';
 
 export const SavedSetState: initialState = {
@@ -9,9 +9,6 @@ export const SavedSetState: initialState = {
   isUpdating: false,
   selectedId: undefined,
 };
-
-const sortByUpdateDate = (sets: IUserSetOutput[]) =>
-  sets.sort((a, b) => (new Date(a.updated_date) < new Date(b.updated_date) ? 0 : -1));
 
 const savedSetSlice = createSlice({
   name: 'user',
