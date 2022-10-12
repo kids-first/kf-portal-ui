@@ -33,6 +33,7 @@ import ApolloProvider from 'provider/ApolloProvider';
 import GradientAccent from 'components/uiKit/GradientAccent';
 import PersonaRegistration from 'views/Persona';
 import PersonaUpdateTermsAndConditions from 'views/Persona/updateTermsAndConditions';
+import FakeStorybook from 'views/FakeStorybook';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -118,6 +119,10 @@ const App = () => {
                   </ProtectedRoute>
                   <ProtectedRoute exact path={DYNAMIC_ROUTES.VARIANT} layout={PageLayout}>
                     <Variants />
+                  </ProtectedRoute>
+
+                  <ProtectedRoute exact path={STATIC_ROUTES.FAKE_STORYBOOK} layout={PageLayout}>
+                    <FakeStorybook />
                   </ProtectedRoute>
                   <Redirect from="*" to={STATIC_ROUTES.DASHBOARD} />
                 </Switch>
