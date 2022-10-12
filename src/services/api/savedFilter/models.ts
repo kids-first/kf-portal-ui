@@ -3,8 +3,8 @@ import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 export type TUserSavedFilter = ISavedFilter & {
   keycloak_id: string;
   tag: string;
-  creation_date: string;
-  updated_date: string;
+  creation_date?: string;
+  updated_date?: string;
 };
 
 export enum SavedFilterTag {

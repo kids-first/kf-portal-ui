@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TUserSavedFilter } from 'services/api/savedFilter/models';
 import { initialState } from 'store/savedFilter/types';
+import { sortByUpdateDate } from 'utils/dates';
 import {
   createSavedFilter,
   deleteSavedFilter,
@@ -18,9 +18,6 @@ export const SavedFilterState: initialState = {
   isUpdating: false,
   selectedId: undefined,
 };
-
-const sortByUpdateDate = (sets: TUserSavedFilter[]) =>
-  sets.sort((a, b) => (new Date(a.updated_date) < new Date(b.updated_date) ? 0 : -1));
 
 const savedFilterSlice = createSlice({
   name: 'user',

@@ -100,9 +100,13 @@ const ListItem = ({ data, icon }: OwnProps) => {
             });
           },
         }}
-        description={intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
-          date: formatDistance(new Date(), new Date(data.updated_date)),
-        })}
+        description={
+          data.updated_date
+            ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
+                date: formatDistance(new Date(), new Date(data.updated_date)),
+              })
+            : undefined
+        }
       />
       <CreateEditModal
         title={intl.get('components.savedSets.modal.edit.title')}
