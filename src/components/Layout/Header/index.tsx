@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import cx from 'classnames';
 import { PageHeader, Dropdown, Menu, Space, Typography } from 'antd';
 import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
 import {
@@ -30,7 +31,7 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import GradientAccent from 'components/uiKit/GradientAccent';
 
-import style from 'components/Layout/Header/index.module.scss';
+import styles from 'components/Layout/Header/index.module.scss';
 import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/featureToggle';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
@@ -58,7 +59,7 @@ const Header = () => {
     <>
       <GradientAccent />
       <NotificationBanner
-        className={style.siteWideBanner}
+        className={styles.siteWideBanner}
         featureToggleKey={FT_FLAG_KEY}
         type={getFTEnvVarByKey<AlterTypes>(BANNER_TYPE_KEY, 'warning')}
         message={getFTEnvVarByKey(BANNER_MSG_KEY)}
@@ -66,9 +67,9 @@ const Header = () => {
         closable
       />
       <PageHeader
-        title={<KidsFirstIcon className={style.logo} />}
+        title={<KidsFirstIcon className={styles.logo} />}
         subTitle={
-          <nav className={style.headerList}>
+          <nav className={styles.headerList}>
             <HeaderLink
               key="dashboard"
               currentPathName={currentPathName}
@@ -123,7 +124,6 @@ const Header = () => {
           />,
           <Dropdown
             key="resources"
-            className={style.dropdown}
             trigger={['click']}
             overlay={
               <Menu
@@ -133,8 +133,12 @@ const Header = () => {
                     disabled: false,
                     label: (
                       <Space size={8}>
-                        <GlobalOutlined className={style.icon} {...iconSize} />
-                        <ExternalLink key="website" href="https://kidsfirstdrc.org/">
+                        <GlobalOutlined className={styles.icon} {...iconSize} />
+                        <ExternalLink
+                          className={styles.externalLink}
+                          key="website"
+                          href="https://kidsfirstdrc.org/"
+                        >
                           {intl.get('layout.main.menu.website')}
                         </ExternalLink>
                       </Space>
@@ -144,8 +148,9 @@ const Header = () => {
                     key: 'documentation',
                     label: (
                       <Space size={8}>
-                        <FileSearchOutlined className={style.icon} {...iconSize} />
+                        <FileSearchOutlined className={styles.icon} {...iconSize} />
                         <ExternalLink
+                          className={styles.externalLink}
                           key="documentation"
                           href="https://www.notion.so/d3b/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a"
                         >
@@ -158,8 +163,12 @@ const Header = () => {
                     key: 'forum',
                     label: (
                       <Space size={8}>
-                        <MessageOutlined className={style.icon} {...iconSize} />
-                        <ExternalLink key="forum" href="https://forum.kidsfirstdrc.org/login">
+                        <MessageOutlined className={styles.icon} {...iconSize} />
+                        <ExternalLink
+                          className={styles.externalLink}
+                          key="forum"
+                          href="https://forum.kidsfirstdrc.org/login"
+                        >
                           {intl.get('layout.main.menu.forum')}
                         </ExternalLink>
                       </Space>
@@ -170,7 +179,11 @@ const Header = () => {
                     label: (
                       <Space size={8}>
                         <MailOutlined />
-                        <ExternalLink key="contact" href="https://kidsfirstdrc.org/contact/">
+                        <ExternalLink
+                          className={styles.externalLink}
+                          key="contact"
+                          href="https://kidsfirstdrc.org/contact/"
+                        >
                           {intl.get('layout.main.menu.contact')}
                         </ExternalLink>
                       </Space>
@@ -180,9 +193,13 @@ const Header = () => {
               />
             }
           >
-            <a className={style.resourcesMenuTrigger} onClick={(e) => e.preventDefault()} href="">
+            <a
+              className={cx(styles.resourcesMenuTrigger, styles.menuTrigger)}
+              onClick={(e) => e.preventDefault()}
+              href=""
+            >
               <ResourcesIcon {...iconSize} />
-              <span className={style.resources}>Resources</span>
+              <span className={styles.resources}>Resources</span>
               <DownOutlined />
             </a>
           </Dropdown>,
@@ -196,7 +213,7 @@ const Header = () => {
                     key: 'email',
                     disabled: true,
                     label: (
-                      <Space size={4} className={style.userMenuEmail}>
+                      <Space size={4} className={styles.userMenuEmail}>
                         <Typography.Text>Signed in with</Typography.Text>
                         <Typography.Text strong>{userInfo?.email}</Typography.Text>
                       </Space>
@@ -234,18 +251,22 @@ const Header = () => {
               />
             }
           >
-            <a className={style.userMenuTrigger} onClick={(e) => e.preventDefault()} href="">
+            <a
+              className={cx(styles.userMenuTrigger, styles.menuTrigger)}
+              onClick={(e) => e.preventDefault()}
+              href=""
+            >
               <Gravatar
                 circle
-                className={style.userGravatar}
+                className={styles.userGravatar}
                 email={tokenParsed.email || tokenParsed.identity_provider_identity}
               />
-              <span className={style.userName}>{userInfo?.first_name}</span>
+              <span className={styles.userName}>{userInfo?.first_name}</span>
               <DownOutlined />
             </a>
           </Dropdown>,
         ]}
-        className={style.mainHeader}
+        className={styles.mainHeader}
       />
     </>
   );
