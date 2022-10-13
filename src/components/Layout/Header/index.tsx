@@ -111,17 +111,17 @@ const Header = () => {
               icon={<LineStyleIcon height={14} width={14} />}
               title={intl.get('layout.main.menu.variants')}
             />
+            <HeaderLink
+              key="community"
+              currentPathName={currentPathName}
+              to={STATIC_ROUTES.COMMUNITY}
+              icon={<TeamOutlined />}
+              title={intl.get('layout.main.menu.community')}
+              featureToggleKey={FT_COMMUNITY}
+            />
           </nav>
         }
         extra={[
-          <HeaderLink
-            key="community"
-            currentPathName={currentPathName}
-            to={STATIC_ROUTES.COMMUNITY}
-            icon={<TeamOutlined />}
-            title={intl.get('layout.main.menu.community')}
-            featureToggleKey={FT_COMMUNITY}
-          />,
           <Dropdown
             key="resources"
             trigger={['click']}
