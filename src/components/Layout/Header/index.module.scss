@@ -89,6 +89,10 @@
   .menuTrigger {
     color: $purple-6;
 
+    &:global(.ant-dropdown-open) {
+      color: $purple-8;
+    }
+
     &:hover,
     &:focus,
     &:active,
