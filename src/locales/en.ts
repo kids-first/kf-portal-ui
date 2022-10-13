@@ -308,6 +308,52 @@ const en = {
       storage: 'Storage',
       files: 'Data Files',
     },
+    uploadIds: {
+      modal: {
+        title: 'Upload a {entity} list',
+        submittedColTitle: 'Submitted {entity} identifiers',
+        uploadBtnText: 'Upload a {entity} list',
+        mappedTo: 'Mapped To',
+        collapseTitle: 'Summary Table  ({matchCount} matched, {unMatchCount} unmatched)',
+        inputLabel: 'Copy-paste a list of identifiers or upload a file',
+        match: 'Matched ({count})',
+        unmatch: 'Unmatched ({count})',
+        tableMessage:
+          '{submittedCount} submitted identifiers mapped to {mappedCount} unique system identifiers',
+        matchTable: {
+          idcol: '{entity} ID',
+          participant: {
+            matchcol: 'Participant ID',
+            mappedcol: 'Study ID',
+          },
+          file: {
+            matchcol: 'File ID',
+            mappedcol: 'Study ID',
+          },
+          biospecimen: {
+            matchcol: 'Sample ID',
+            mappedcol: 'Study ID',
+          },
+        },
+        pillTitle: 'Uploaded List',
+        upload: {
+          fileBtn: 'Upload a file',
+          btn: 'Upload',
+        },
+        clearBtn: 'Clear',
+        cancelBtn: 'Cancel',
+        emptyTable: 'No data',
+        popover: {
+          title: 'Identifiers and File Formats',
+          identifiers: 'Identifiers',
+          separatedBy: {
+            title: 'Separated by',
+            values: 'comma, space, new line',
+          },
+          uploadFileFormats: 'Upload file formats',
+        },
+      },
+    },
   },
   layout: {
     main: {

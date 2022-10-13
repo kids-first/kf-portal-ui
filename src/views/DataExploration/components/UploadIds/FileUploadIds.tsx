@@ -19,7 +19,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
     entityId="file"
     entityIdTrans="File"
     entityIdentifiers="File ID"
-    placeHolder="e.g. GF_001CSF26, HTP.007855d5-e22e-405f-91f4-d54b4b8a9136.g.vcf.gz"
+    placeHolder="e.g. GF_2JAYWYDX, GF_TP6PG8Z0"
     fetchMatch={async (ids) => {
       const response = await ArrangerApi.graphqlRequest({
         query: CHECK_FILE_MATCH.loc?.source.body,

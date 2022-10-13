@@ -66,7 +66,7 @@ const Cavatica = ({ id, className = '' }: DashboardCardProps) => {
                 <Space align="start">
                   <SafetyOutlined className={styles.safetyIcon} />
                   <Text className={styles.notice}>
-                    {intl.get('screen.dashboard.cards.cavatica.connectedNotice')}{' '}
+                    {intl.get('screen.dashboard.cards.cavatica.connectedNotice')}
                     <Button
                       type="link"
                       size="small"

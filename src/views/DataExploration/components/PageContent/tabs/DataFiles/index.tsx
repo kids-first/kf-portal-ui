@@ -1,5 +1,5 @@
-import { IFileEntity, ITableFileEntity } from 'graphql/files/models';
-import { CloudUploadOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons';
+import { FileAccessType, IFileEntity, ITableFileEntity } from 'graphql/files/models';
+import { CloudUploadOutlined, LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
 import { IQueryResults } from 'graphql/models';
 import { IQueryConfig, TQueryConfigCb } from 'common/searchPageTypes';
 import {
@@ -18,7 +18,7 @@ import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { useEffect, useState } from 'react';
 import { formatFileSize } from 'utils/formatFileSize';
-import { Button, Modal, Tooltip } from 'antd';
+import { Button, Modal, Tag, Tooltip } from 'antd';
 import AnalyseModal from 'views/Dashboard/components/DashboardCards/Cavatica/AnalyseModal';
 import { fetchTsvReport } from 'store/report/thunks';
 import { INDEXES } from 'graphql/constants';
@@ -28,7 +28,7 @@ import intl from 'react-intl-universal';
 import { beginAnalyse } from 'store/fenceCavatica/thunks';
 import { useFenceCavatica } from 'store/fenceCavatica';
 import { connectToFence } from 'store/fenceConnection/thunks';
-import { FENCE_NAMES } from 'common/fenceTypes';
+import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { fenceCavaticaActions } from 'store/fenceCavatica/slice';
 import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 import { Link } from 'react-router-dom';
@@ -42,6 +42,8 @@ import SetsManagementDropdown from 'views/DataExploration/components/SetsManagem
 import { SetType } from 'services/api/savedSet/models';
 
 import styles from './index.module.scss';
+import { userHasAccessToFile } from 'utils/dataFiles';
+import { useFenceConnection } from 'store/fenceConnection';
 
 interface OwnProps {
   results: IQueryResults<IFileEntity[]>;
@@ -50,20 +52,30 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-const getDefaultColumns = (): ProColumnType[] => [
+const getDefaultColumns = (
+  fenceAcls: string[],
+  isConnectedToCavatica: boolean,
+  isConnectedToGen3: boolean,
+): ProColumnType[] => [
   {
     key: 'lock',
-    title: '',
-    icon: <LockOutlined />,
+    title: 'File Authorization',
+    iconTitle: <LockOutlined />,
     tooltip: 'File Authorization',
     align: 'center',
-    /*  FIXME: To be used when data is complete. 
-    <Tooltip title="Authorized">
-      <UnlockFilled className={styles.authorizedLock} />
-    </Tooltip>
-    */
-    render: (_) => {
-      return (
+    render: (record: IFileEntity) => {
+      const hasAccess = userHasAccessToFile(
+        record,
+        fenceAcls,
+        isConnectedToCavatica,
+        isConnectedToGen3,
+      );
+
+      return hasAccess ? (
+        <Tooltip title="Authorized">
+          <UnlockFilled className={styles.authorizedLock} />
+        </Tooltip>
+      ) : (
         <Tooltip title="Unauthorized">
           <LockOutlined className={styles.unauthorizedLock} />
         </Tooltip>
@@ -72,13 +84,24 @@ const getDefaultColumns = (): ProColumnType[] => [
   },
   {
     key: 'controlled_access',
-    title: '',
-    icon: <SafetyOutlined />,
     tooltip: 'Data access',
+    title: 'Data access',
+    iconTitle: <SafetyOutlined />,
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: (controlled_access: string) =>
+      !controlled_access ? (
+        '-'
+      ) : controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() ? (
+        <Tooltip title="Controlled">
+          <Tag color="geekblue">C</Tag>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Open">
+          <Tag color="green">O</Tag>
+        </Tooltip>
+      ),
   },
   {
     key: 'file_id',
@@ -193,6 +216,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     key: 'external_id',
     title: 'External File ID',
     dataIndex: 'external_id',
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -200,12 +224,14 @@ const getDefaultColumns = (): ProColumnType[] => [
     key: 'file_name',
     title: 'File Name',
     dataIndex: 'file_name',
+    defaultHidden: true,
     sorter: { multiple: 1 },
   },
   {
     key: 'platform',
     title: 'Platform',
     dataIndex: 'platform',
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -213,12 +239,14 @@ const getDefaultColumns = (): ProColumnType[] => [
     key: 'repository',
     title: 'Repository',
     dataIndex: 'repository',
+    defaultHidden: true,
     sorter: { multiple: 1 },
   },
   {
     key: 'acl',
     title: 'ACL',
     dataIndex: 'acl',
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: (acl: string[]) => acl?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -226,13 +254,15 @@ const getDefaultColumns = (): ProColumnType[] => [
     key: 'latest_did',
     title: 'Latest DID',
     dataIndex: 'latest_did',
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'access_urls',
-    title: 'Access Url',
+    title: 'Access URL',
     dataIndex: 'access_urls',
+    defaultHidden: true,
     sorter: { multiple: 1 },
   },
 ];
@@ -242,7 +272,7 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
   const { userInfo } = useUser();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const { isConnected, isInitializingAnalyse, beginAnalyseAfterConnection } = useFenceCavatica();
-  //FIXME const { fencesAllAcls, connectionStatus } = useFenceConnection();
+  const { fencesAllAcls, connectionStatus } = useFenceConnection();
   const [selectedAllResults, setSelectedAllResults] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<ITableFileEntity[]>([]);
@@ -303,13 +333,11 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
     <>
       <ProTable<ITableFileEntity>
         tableId="datafiles_table"
-        /*
-         * FIXME To be used when data is complete.
-         * fencesAllAcls,
-         * connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
-         * connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
-         * */
-        columns={getDefaultColumns()}
+        columns={getDefaultColumns(
+          fencesAllAcls,
+          connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
+          connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
+        )}
         initialSelectedKey={selectedKeys}
         wrapperClassName={styles.dataFilesTabWrapper}
         loading={results.loading}
@@ -340,13 +368,11 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
             dispatch(
               fetchTsvReport({
                 columnStates: userInfo?.config.data_exploration?.tables?.datafiles?.columns,
-                /*
-                * FIXME: To be used when data is complete.
-                * fencesAllAcls,
+                columns: getDefaultColumns(
+                  fencesAllAcls,
                   connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
                   connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
-                * */
-                columns: getDefaultColumns(),
+                ),
                 index: INDEXES.FILES,
                 sqon:
                   selectedAllResults || !selectedKeys.length
