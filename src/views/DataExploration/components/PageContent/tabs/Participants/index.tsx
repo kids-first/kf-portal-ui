@@ -281,6 +281,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'race',
     title: 'Race',
     dataIndex: 'race',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -290,6 +291,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'ethnicity',
     title: 'Ethnicity',
     dataIndex: 'ethnicity',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -299,6 +301,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'external_id',
     title: 'Participant External ID',
     dataIndex: 'external_id',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -308,6 +311,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'diagnosis_ncit',
     title: 'Diagnosis (NCIT)',
     dataIndex: 'diagnosis',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -319,6 +323,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'diagnosis_source_text',
     title: 'Diagnosis (Source Text)',
     dataIndex: 'diagnosis',
+    defaultHidden: true,
     render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
       const sourceTexts = mondo?.hits?.edges.map((m) => m.node.source_text);
 
@@ -339,6 +344,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'clinical_status',
     title: 'Clinical Status',
     dataIndex: 'diagnosis',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -349,6 +355,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'disease_related',
     title: 'Disease Related',
     dataIndex: 'outcomes',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -358,6 +365,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'vital_status',
     title: 'Vital Status',
     dataIndex: 'outcomes',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -368,6 +376,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'phenotypes_hpo_not_observed',
     title: 'Not Observed Phenotype (HPO)',
     dataIndex: 'phenotype',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -377,6 +386,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'source_text_phenotype',
     title: 'Observed Phenotype (Source Text)',
     dataIndex: 'phenotype',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -386,6 +396,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'observed_phenotype_age_at_event_days',
     title: 'Age at Diagnosis',
     dataIndex: 'observed_phenotype',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -399,6 +410,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'outcomes_age_at_event_days',
     title: 'Age at Outcome',
     dataIndex: 'outcomes',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
@@ -412,6 +424,7 @@ const defaultColumns: ProColumnType[] = [
     key: 'outcomes_age_at_event_days',
     title: 'Age at Observed Phenotype',
     dataIndex: 'phenotype',
+    defaultHidden: true,
     sorter: {
       multiple: 1,
     },
