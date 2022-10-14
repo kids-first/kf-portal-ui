@@ -66,8 +66,9 @@
     }
   }
 
-  .icon path {
-    fill: $gray-8;
+  .icon {
+    color: $gray-8;
+    font-size: 14px;
   }
 
   .userMenuTrigger {

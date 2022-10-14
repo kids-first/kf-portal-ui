@@ -95,10 +95,6 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         <Typography.Title className={styles.pageHeaderTitle} level={1}>
           {intl.get('screen.variants.title')}
         </Typography.Title>
-        <a href="#data-release" className={styles.dataReleaseTag}>
-          <span>Data release 1.0</span>
-          <OpenInNewIcon width={12} />
-        </a>
       </div>
 
       <QueryBuilder

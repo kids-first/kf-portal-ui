@@ -36,7 +36,6 @@ import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
 
-const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
@@ -108,7 +107,7 @@ const Header = () => {
                 STATIC_ROUTES.VARIANT_SUMMARY,
                 STATIC_ROUTES.VARIANT_VARIANTS,
               ]}
-              icon={<LineStyleIcon height={14} width={14} />}
+              icon={<LineStyleIcon />}
               title={intl.get('layout.main.menu.variants')}
             />
             <HeaderLink
@@ -133,7 +132,7 @@ const Header = () => {
                     disabled: false,
                     label: (
                       <Space size={8}>
-                        <GlobalOutlined className={styles.icon} {...iconSize} />
+                        <GlobalOutlined className={styles.icon} />
                         <ExternalLink
                           className={styles.externalLink}
                           key="website"
@@ -148,7 +147,7 @@ const Header = () => {
                     key: 'documentation',
                     label: (
                       <Space size={8}>
-                        <FileSearchOutlined className={styles.icon} {...iconSize} />
+                        <FileSearchOutlined className={styles.icon} />
                         <ExternalLink
                           className={styles.externalLink}
                           key="documentation"
@@ -163,7 +162,7 @@ const Header = () => {
                     key: 'forum',
                     label: (
                       <Space size={8}>
-                        <MessageOutlined className={styles.icon} {...iconSize} />
+                        <MessageOutlined className={styles.icon} />
                         <ExternalLink
                           className={styles.externalLink}
                           key="forum"
@@ -198,7 +197,7 @@ const Header = () => {
               onClick={(e) => e.preventDefault()}
               href=""
             >
-              <ResourcesIcon {...iconSize} />
+              <ResourcesIcon />
               <span className={styles.resources}>Resources</span>
               <DownOutlined />
             </a>
