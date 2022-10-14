@@ -4,8 +4,7 @@ import MultiLabel, {
   MultiLabelIconPositionEnum,
 } from '@ferlab/ui/core/components/labels/MultiLabel';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
-import { UserOutlined, ReadOutlined, FileTextOutlined } from '@ant-design/icons';
-import TeamIcon from 'components/Icons/TeamIcon';
+import { UserOutlined, ReadOutlined, FileTextOutlined, TeamOutlined } from '@ant-design/icons';
 import intl from 'react-intl-universal';
 import { useGlobals } from 'store/global';
 import { useEffect } from 'react';
@@ -53,7 +52,7 @@ const DataRelease = ({ className = '' }: OwnProps) => {
           <MultiLabel
             iconPosition={MultiLabelIconPositionEnum.Top}
             label={numberFormat(stats?.families!)}
-            Icon={<TeamIcon className={styles.dataReleaseIcon} />}
+            Icon={<TeamOutlined className={styles.dataReleaseIcon} />}
             className={styles.dataReleaseStatsLabel}
             subLabel={intl.get('components.dataRelease.families')}
           />

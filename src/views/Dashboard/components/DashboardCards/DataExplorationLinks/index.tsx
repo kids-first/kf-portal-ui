@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Row, Col, Button } from 'antd';
-import { FileTextOutlined, ReadOutlined, UserOutlined } from '@ant-design/icons';
+import { Row, Col } from 'antd';
+import { FileTextOutlined, ReadOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import LinkBox from './LinkBox';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -10,12 +10,9 @@ import { useDispatch } from 'react-redux';
 import { useGlobals } from 'store/global';
 import { fetchStats } from 'store/global/thunks';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
-import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 
 import styles from './index.module.scss';
 import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
-import TeamIcon from 'components/Icons/TeamIcon';
 
 const DataExplorationLinks = () => {
   const dispatch = useDispatch();
@@ -29,20 +26,7 @@ const DataExplorationLinks = () => {
   return (
     <GridCard
       wrapperClassName={styles.dataExplorationLinksWrapper}
-      title={
-        <CardHeader
-          id="data-exploration"
-          title="Data Exploration"
-          extra={[
-            <ExternalLink href="" key="data-release">
-              <Button type="link" className={styles.releaseNoteBtn}>
-                Data release 1.0
-                <ExternalLinkIcon />
-              </Button>
-            </ExternalLink>,
-          ]}
-        />
-      }
+      title={<CardHeader id="data-exploration" title="Data Exploration" />}
       className={styles.dataExplorationLinksCard}
       content={
         <Row gutter={[16, 16]}>
@@ -70,7 +54,7 @@ const DataExplorationLinks = () => {
               multiLabelClassName={styles.dataReleaseStatsLabel}
               label={numberFormat(stats?.families!)}
               subLabel={intl.get('components.dataRelease.families')}
-              icon={<TeamIcon className={styles.dataReleaseIcon} />}
+              icon={<TeamOutlined className={styles.dataReleaseIcon} />}
             />
           </Col>
           <Col flex="auto" className={styles.customCol}>

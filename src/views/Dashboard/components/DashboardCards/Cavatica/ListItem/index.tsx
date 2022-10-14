@@ -2,11 +2,11 @@ import cx from 'classnames';
 import { List, Space, Typography } from 'antd';
 import intl from 'react-intl-universal';
 import { TeamOutlined } from '@ant-design/icons';
-import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { TCavaticaProjectWithMembers } from 'store/fenceCavatica/types';
 
 import styles from './index.module.scss';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 
 interface OwnProps {
   id: any;
@@ -21,15 +21,9 @@ const CavaticaListItem = ({ id, data }: OwnProps) => {
     <List.Item key={id} className={cx('wrapped', styles.CavaticaListItem)}>
       <List.Item.Meta
         title={
-          <a
-            href={`${USER_BASE_URL}${data.id}`}
-            target="_blank"
-            rel="noreferrer"
-            className={styles.projectLink}
-          >
+          <ExternalLink className={styles.projectLink} href={`${USER_BASE_URL}${data.id}`} hasIcon>
             {data.name}
-            <ExternalLinkIcon className={styles.externalIcon} height={14} width={14} />
-          </a>
+          </ExternalLink>
         }
         className={styles.itemMeta}
       />
