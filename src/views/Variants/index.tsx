@@ -87,6 +87,7 @@ const filterGroups: {
           'consequences__consequences',
           'variant_external_reference',
           'chromosome',
+          'start',
           'zygosity',
           'transmissions',
         ],
@@ -114,8 +115,6 @@ const filterGroups: {
           'genes__omim__name',
           'genes__ddd__disease_name',
           'genes__cosmic__tumour_types_germline',
-          'clinvar__clin_sig',
-          'consequences__vep_impact',
         ],
       },
     ],
@@ -132,6 +131,8 @@ const filterGroups: {
           'consequences__predictions__dann_rankscore',
           'consequences__predictions__lrt_pred',
           'consequences__predictions__revel_rankscore',
+          'clinvar__clin_sig',
+          'consequences__vep_impact',
         ],
       },
     ],
@@ -139,7 +140,6 @@ const filterGroups: {
   [FilterTypes.Frequency]: {
     groups: [
       {
-        title: intl.get('screen.patientsnv.filter.grouptitle.publiccohorts'),
         facets: [
           'frequencies__internal__upper_bound_kf__af',
           'frequencies__gnomad_genomes_2_1__af',

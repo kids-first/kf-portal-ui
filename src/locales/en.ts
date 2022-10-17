@@ -27,7 +27,7 @@ const en = {
       genes: {
         emptyText: 'No gene found',
         placeholder: 'e.g. BRAF, ENSG00000157764',
-        title: 'Search by gene',
+        title: 'Search by Gene',
         tooltip: 'Enter a Gene Symbol, Gene Alias ​​or Ensemble ID',
       },
       variants: {
@@ -848,7 +848,7 @@ const en = {
     down_syndrome_status: 'Down Syndrome Status',
     down_syndrome_diagnosis: 'Down Syndrome Diagnosis',
     mondo: {
-      name: 'Diagnosis (MONDO)',
+      name: 'Diagnoses (MONDO)',
     },
     diagnosis: {
       affected_status: 'Clinical Status',
@@ -899,13 +899,14 @@ const en = {
     //Variants
     variant_class: 'Variant Type',
     type: 'Type',
-    variant_external_reference: 'Variant External reference',
+    variant_external_reference: 'External Reference',
     chromosome: 'Chromosome',
     position: 'Position',
     zygosity: 'Zygosity',
-    transmissions: 'Transmissions',
-    genePanels: 'Gene panels',
-    gene_external_reference: 'Gene External Reference',
+    transmissions: 'Transmission',
+    genePanels: 'Gene Panels',
+    start: 'Position',
+    gene_external_reference: 'External Reference',
     consequences: {
       consequences: 'Consequence',
       biotype: 'Gene Type',

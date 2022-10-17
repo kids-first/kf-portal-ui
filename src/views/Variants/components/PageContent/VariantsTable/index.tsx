@@ -61,7 +61,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'variant_class',
-    title: intl.get('screen.variants.table.variant_class'),
+    title: 'Type',
     dataIndex: 'variant_class',
     sorter: {
       multiple: 1,
