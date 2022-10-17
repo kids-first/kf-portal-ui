@@ -2,13 +2,20 @@
 @select-item-selected-font-weight: 400;
 
 .@{select-prefix-cls} {
+  &:focus-visible,
+  &:active,
+  &:hover,
+  &:focus {
+    border-color: @geekblue-4;
+  }
+
   &-selection-overflow-item {
     &.@{select-prefix-cls}-selection-overflow-item-rest {
       .@{select-prefix-cls}-selection-item {
-        background: @gray-3;
-        color: @body-1;
+        background: @cyan-7;
+        color: @gray-1;
         border: none;
-        height: 20px;
+        height: 21px;
         display: flex;
         align-items: center;
       }

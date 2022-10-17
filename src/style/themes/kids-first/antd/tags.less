@@ -1,6 +1,27 @@
+@tag-default-color: @cyan-7;
+
 .@{tag-prefix-cls} {
   border: none;
-  background-color: @gray-4;
+  background-color: @cyan-7;
+
+  .@{typography-prefix-cls} {
+    color: @gray-1;
+  }
+
+  .@{select-prefix-cls}-selection-item {
+    background: @cyan-7;
+    color: @gray-1;
+  }
+
+  &-close-icon {
+    opacity: 0.8;
+    color: @gray-1;
+
+    &:hover {
+      opacity: 1;
+      color: @gray-1;
+    }
+  }
 
   &:last-child {
     margin-right: 0;

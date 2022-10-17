@@ -24,7 +24,7 @@ import {
   setSavedFilterAsDefault,
   updateSavedFilter,
 } from 'store/savedFilter/thunks';
-import { combineExtendedMappings, mapFilterForVariant } from 'utils/fieldMapper';
+import { combineExtendedMappings } from 'utils/fieldMapper';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import VariantsTable from './VariantsTable';
@@ -33,7 +33,6 @@ import styles from './index.module.scss';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { ArrangerApi } from 'services/api/arranger';
 import { IVariantResultTree } from 'graphql/variants/models';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
 
 type OwnProps = {
