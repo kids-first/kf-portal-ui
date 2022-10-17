@@ -12,8 +12,8 @@ import {
   MessageOutlined,
   GlobalOutlined,
   MailOutlined,
+  LaptopOutlined,
 } from '@ant-design/icons';
-import ResourcesIcon from 'components/Icons/ResourcesIcon';
 import { DownOutlined } from '@ant-design/icons';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -197,7 +197,7 @@ const Header = () => {
               onClick={(e) => e.preventDefault()}
               href=""
             >
-              <ResourcesIcon />
+              <LaptopOutlined />
               <span className={styles.resources}>Resources</span>
               <DownOutlined />
             </a>

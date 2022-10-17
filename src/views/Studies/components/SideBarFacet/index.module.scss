@@ -2,8 +2,7 @@
 @import 'src/style/themes/kids-first/colors';
 
 .sideBarFacet {
-  margin-left: 16px;
-  padding-top: 12px;
+  padding-top: 10px;
   overflow-y: hidden;
   max-height: 100%;
   min-height: 100vh;
@@ -13,12 +12,14 @@
   border-right: 1px solid $gray-5;
 
   &.collapsed {
-    min-width: 24px;
-    width: 24px;
+    min-width: $sidebar-menu-collapsed-width;
+    width: $sidebar-menu-collapsed-width;
   }
 }
 
 .collapseIcon {
+  font-size: $sidebar-menu-item-icon-size;
+  color: $body-2;
   display: flex;
   justify-content: flex-start;
 }
@@ -36,9 +37,7 @@
 }
 
 .button {
-  margin: 2px;
-  height: 40px;
-  width: 48px;
+  width: 21px;
   color: $body-2;
 
   &:hover {

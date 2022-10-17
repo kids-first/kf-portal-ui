@@ -163,7 +163,7 @@ const Variants = () => {
     menuItems.push({
       key: '1',
       title: intl.get('screen.variants.sidemenu.participant'),
-      icon: <UserOutlined className={styles.sideMenuIcon} />,
+      icon: <UserOutlined />,
       panelContent: (
         <FilterList
           loading={participantMappingResults.loading}
@@ -182,7 +182,7 @@ const Variants = () => {
     menuItems.push({
       key: '2',
       title: intl.get('screen.variants.sidemenu.variant'),
-      icon: <LineStyleIcon className={styles.sideMenuIcon} />,
+      icon: <LineStyleIcon />,
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
@@ -200,7 +200,7 @@ const Variants = () => {
     menuItems.push({
       key: '3',
       title: intl.get('screen.variants.sidemenu.gene'),
-      icon: <GeneIcon className={styles.sideMenuIcon} />,
+      icon: <GeneIcon />,
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
@@ -218,7 +218,7 @@ const Variants = () => {
     menuItems.push({
       key: '4',
       title: intl.get('screen.variants.sidemenu.pathogenicity'),
-      icon: <DiseaseIcon className={styles.sideMenuIcon} />,
+      icon: <DiseaseIcon />,
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}
@@ -236,7 +236,7 @@ const Variants = () => {
     menuItems.push({
       key: '5',
       title: intl.get('screen.variants.sidemenu.frequency'),
-      icon: <FrequencyIcon className={styles.sideMenuIcon} />,
+      icon: <FrequencyIcon />,
       panelContent: (
         <FilterList
           loading={variantMappingResults.loading}

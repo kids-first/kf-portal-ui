@@ -48,11 +48,11 @@
 
     .communityBtn {
       padding: 0;
-      color: $blue-5;
-    }
+      color: $cyan-4;
 
-    .editButton {
-      color: $blue-5;
+      &:hover {
+        color: $cyan-5;
+      }
     }
   }
 
@@ -106,4 +106,22 @@
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
+}
+
+.linksContainer {
+  width: 100%;
+
+  .link {
+    width: 100%;
+    text-align: left;
+
+    & > span {
+      text-decoration: none !important;
+    }
+
+    &:hover {
+      background-color: $gray-2;
+      text-decoration: none;
+    }
+  }
 }

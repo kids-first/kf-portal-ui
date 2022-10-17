@@ -115,6 +115,16 @@ const FakeStorybook = () => (
         </Button>
         <Button size="small" type="primary" danger loading></Button>
       </Space>
+      <div>Ghost</div>
+      <Button ghost>Ghost</Button>
+      <Button ghost disabled>
+        Ghost(disabled)
+      </Button>
+      <div>Dashed</div>
+      <Button type="dashed">Dashed</Button>
+      <Button type="dashed" disabled>
+        Dashed(disabled)
+      </Button>
       <div>Text</div>
       <Button type="text">Button</Button>
       <div>Url</div>
