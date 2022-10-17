@@ -2,19 +2,18 @@ import { useEffect } from 'react';
 import { GlobalOutlined, LinkedinFilled } from '@ant-design/icons';
 import cx from 'classnames';
 import Empty from '@ferlab/ui/core/components/Empty';
-import { Alert, Col, Divider, List, Result, Row, Skeleton, Space, Typography } from 'antd';
+import { Alert, Button, Col, Divider, List, Result, Row, Skeleton, Space, Typography } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import Banner from './components/Banner';
 import intl from 'react-intl-universal';
 import AvatarHeader from './components/AvatarHeader';
 
 import styles from './index.module.scss';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { usePersona } from 'store/persona';
 import { fetchPersonaUserProfile } from 'store/persona/thunks';
 import { useDispatch } from 'react-redux';
 import { personaActions } from 'store/persona/slice';
-import { diseasesInterestOptions, studiesInterestOptions } from '../contants';
+import { memberRolesOptions, diseasesInterestOptions, studiesInterestOptions } from '../contants';
 
 const CommunityMember = () => {
   const dispatch = useDispatch();
@@ -34,6 +33,11 @@ const CommunityMember = () => {
     ),
   );
 
+  const memberRole =
+    personaUserInfo?.roles?.map(
+      (role) => memberRolesOptions.find((memberRole) => memberRole.key === role)?.value,
+    ) || [];
+
   useEffect(() => {
     if (profile !== undefined) {
       return;
@@ -48,6 +52,7 @@ const CommunityMember = () => {
     return () => {
       dispatch(personaActions.clearProfile());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!isLoading && !profile) {
@@ -97,7 +102,7 @@ const CommunityMember = () => {
             />
           ) : (
             <Row gutter={[80, 28]}>
-              <Col md={16}>
+              <Col md={18}>
                 <Row gutter={[28, 28]}>
                   <Col span={24}>
                     <Typography.Title level={4}>
@@ -106,7 +111,7 @@ const CommunityMember = () => {
                     <List
                       className={cx(styles.infoList, !profile?.roles?.length && styles.empty)}
                       itemLayout="horizontal"
-                      dataSource={profile?.roles ?? []}
+                      dataSource={memberRole}
                       renderItem={(role, index) => <li key={index}>{role}</li>}
                       locale={{
                         emptyText: (
@@ -167,24 +172,30 @@ const CommunityMember = () => {
                   )}
                 </Row>
               </Col>
-              <Col md={8}>
-                <Space direction="vertical">
+              <Col md={6}>
+                <Space className={styles.linksContainer} direction="vertical">
                   {profile?.linkedin && (
-                    <ExternalLink href={profile.linkedin}>
-                      <Space align="center">
-                        <LinkedinFilled />
-                        Linkedin
-                      </Space>
-                    </ExternalLink>
+                    <Button
+                      className={styles.link}
+                      href={profile.linkedin}
+                      type="link"
+                      target="_blank"
+                      icon={<LinkedinFilled />}
+                    >
+                      Linkedin
+                    </Button>
                   )}
 
                   {profile?.website && (
-                    <ExternalLink href={profile.website}>
-                      <Space align="center">
-                        <GlobalOutlined />
-                        Website
-                      </Space>
-                    </ExternalLink>
+                    <Button
+                      className={styles.link}
+                      href={profile.website}
+                      type="link"
+                      target="_blank"
+                      icon={<GlobalOutlined />}
+                    >
+                      Website
+                    </Button>
                   )}
                 </Space>
               </Col>

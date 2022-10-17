@@ -1,5 +1,6 @@
 @import 'src/style/themes/kids-first/colors';
 @import 'src/style/themes/kids-first/layout';
+@import 'src/style/themes/kids-first/theme.template';
 
 .dataReleaseContainer {
   display: flex;
@@ -9,7 +10,7 @@
   .dataReleaseIcon {
     margin-top: -1px;
     color: $cyan-4;
-    font-size: 24px;
+    font-size: $data-release-icon-font-size;
   }
 
   .dataReleaseStatsLabel {

@@ -11,4 +11,8 @@ const BiospecimenIcon = (props: IconProps) => (
     </svg>
   </Icon>
 );
+
+BiospecimenIcon.defaultProps = {
+  viewBox: '0 0 1024 1024',
+};
 export default BiospecimenIcon;

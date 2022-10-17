@@ -86,7 +86,7 @@ const RoleAndAffiliationCard = () => {
         <Form.Item
           className={formStyles.withCustomHelp}
           name={FORM_FIELDS.ROLES}
-          label={intl.get('screen.profileSettings.cards.roleAffiliation.iama')}
+          label={intl.get('screen.profileSettings.cards.roleAffiliation.role')}
           rules={[{ required: true }]}
         >
           <Checkbox.Group className={formStyles.checkBoxGroup}>

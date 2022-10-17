@@ -384,7 +384,7 @@ const en = {
   screen: {
     memberProfile: {
       notFound: 'User not found',
-      rolesTitle: 'I am',
+      rolesTitle: 'Role',
       noRoles: 'No roles',
       researchInterest: 'Research Interest',
       diseasesInterest: 'Disease areas of interest',
@@ -581,7 +581,7 @@ const en = {
         },
         roleAffiliation: {
           title: 'Role & Affiliation',
-          iama: 'I am a',
+          role: 'Role',
           checkAllThatApply: 'Check all that apply',
           institution: 'Institution or organization',
           institutionalEmail: 'Institutional email address',

@@ -74,7 +74,7 @@ const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: 
           </Title>
           <Form.Item
             name="roles"
-            label={intl.get('screen.profileSettings.cards.roleAffiliation.iama')}
+            label={intl.get('screen.profileSettings.cards.roleAffiliation.role')}
             rules={[{ required: true, message: 'This field is required' }]}
           >
             <Checkbox.Group>
