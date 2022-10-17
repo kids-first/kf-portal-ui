@@ -9,7 +9,6 @@ import { Space, Typography } from 'antd';
 import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useVariant } from 'graphql/variants/actions';
 import { isEmpty } from 'lodash';
-import OpenInNewIcon from 'components/Icons/OpenInIcon';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
