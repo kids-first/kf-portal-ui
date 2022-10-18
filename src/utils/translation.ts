@@ -4,6 +4,7 @@ import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/Quer
 import { IProTableDictionary } from '@ferlab/ui/core/components/ProTable/types';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { IUserSetOutput } from 'services/api/savedSet/models';
+import { numberWithCommas } from './string';
 
 export const getProTableDictionary = (): IProTableDictionary => ({
   itemCount: {
@@ -15,6 +16,7 @@ export const getProTableDictionary = (): IProTableDictionary => ({
     selectAllResults: 'Select all results',
     clear: 'Clear',
   },
+  numberFormat: numberWithCommas,
 });
 
 export const getFiltersDictionary = (): FiltersDict => ({
