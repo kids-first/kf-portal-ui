@@ -17,7 +17,7 @@ interface OwnProps {
 const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
   <EntityUploadIds
     entityId="participant"
-    entityIdTrans="Participant"
+    entityIdTrans="participant"
     entityIdentifiers="Participant ID"
     placeHolder="e.g. PT_03Y3K025, HTP0001, 10214"
     fetchMatch={async (ids) => {
@@ -45,9 +45,7 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
 
       return participants.map((participant) => ({
         key: participant.fhir_id,
-        submittedId: ids.find((id) =>
-          [participant.participant_id].includes(id),
-        )!,
+        submittedId: ids.find((id) => [participant.participant_id].includes(id))!,
         mappedTo: participant.study_id,
         matchTo: participant.participant_id,
       }));

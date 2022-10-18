@@ -76,6 +76,18 @@ const defaultColumns: ProColumnType[] = [
     render: (study: IParticipantStudy) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'study.external_id',
+    title: 'dbGaP',
+    dataIndex: 'external_id',
+    render: (externalId: string) => (
+      <ExternalLink
+        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${externalId}`}
+      >
+        {externalId}
+      </ExternalLink>
+    ),
+  },
+  {
     key: 'proband',
     title: 'Proband',
     dataIndex: 'is_proband',
@@ -95,9 +107,9 @@ const defaultColumns: ProColumnType[] = [
     render: (sex: string) => (
       <Tag
         color={
-          sex.toLowerCase() === SEX.FEMALE
+          sex?.toLowerCase() === SEX.FEMALE
             ? 'magenta'
-            : sex.toLowerCase() === SEX.MALE
+            : sex?.toLowerCase() === SEX.MALE
             ? 'geekblue'
             : ''
         }
@@ -117,7 +129,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'diagnosis.mondo_id_diagnosis',
-    title: 'Diagnosis (Mondo)',
+    title: 'Diagnosis (MONDO)',
     dataIndex: 'diagnosis',
     className: styles.diagnosisCell,
     render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
@@ -407,7 +419,7 @@ const defaultColumns: ProColumnType[] = [
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'outcomes_age_at_event_days',
+    key: 'outcomes_age_at_event_days.value',
     title: 'Age at Outcome',
     dataIndex: 'outcomes',
     defaultHidden: true,
@@ -421,7 +433,7 @@ const defaultColumns: ProColumnType[] = [
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'outcomes_age_at_event_days',
+    key: 'phenotype_age_at_event_days',
     title: 'Age at Observed Phenotype',
     dataIndex: 'phenotype',
     defaultHidden: true,
@@ -429,7 +441,7 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (phenotype: ArrangerResultsTree<IParticipantPhenotype>) =>
-      phenotype.hits?.edges?.map((e) => e.node.age_at_event_days)?.join(', ') ||
+      phenotype?.hits?.edges?.map((e) => e.node.age_at_event_days)?.join(', ') ||
       TABLE_EMPTY_PLACE_HOLDER,
   },
 ];

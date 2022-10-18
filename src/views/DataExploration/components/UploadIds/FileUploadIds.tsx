@@ -17,7 +17,7 @@ interface OwnProps {
 const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
   <EntityUploadIds
     entityId="file"
-    entityIdTrans="File"
+    entityIdTrans="file"
     entityIdentifiers="File ID"
     placeHolder="e.g. GF_2JAYWYDX, GF_TP6PG8Z0"
     fetchMatch={async (ids) => {

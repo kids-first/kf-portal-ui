@@ -16,7 +16,7 @@ const ParticipantSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       queryBuilderId={queryBuilderId}
       field="participant_id"
       index={INDEXES.PARTICIPANT}
-      placeholder={'e.g. PT_WFB3TQP4'}
+      placeholder="e.g. PT_1BCRHQVF"
       emptyDescription={'No participants found'}
       query={PARTICIPANT_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}

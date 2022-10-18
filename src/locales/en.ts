@@ -649,6 +649,8 @@ const en = {
     },
     dataExploration: {
       sidemenu: {
+        study: 'Study',
+        clinical: 'Clinical',
         participant: 'Participant',
         biospecimen: 'Biospecimen',
         datafiles: 'Data Files',
@@ -853,6 +855,7 @@ const en = {
     diagnosis: {
       affected_status: 'Clinical Status',
       mondo_id_diagnosis: 'Diagnosis (MONDO)',
+      ncit_id_diagnosis: 'Diagnosis (NCIT)',
       age_at_event_days: 'Age at Diagnosis',
       source_text: 'Diagnosis (Source Text)',
       source_text_tumor_location: 'Tumor Location (Source Text)',
@@ -973,7 +976,7 @@ const en = {
           main_category: 'Disease Type (ICD-10)',
         },
         tagged_mondo: {
-          main_category: 'Diagnosis (Mondo)',
+          main_category: 'Diagnosis (MONDO)',
         },
       },
       observed_phenotype_tagged: {
