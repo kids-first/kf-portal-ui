@@ -63,9 +63,6 @@ const defaultColumns: ProColumnType[] = [
     key: 'variant_class',
     title: 'Type',
     dataIndex: 'variant_class',
-    sorter: {
-      multiple: 1,
-    },
   },
   {
     key: 'rsnumber',
