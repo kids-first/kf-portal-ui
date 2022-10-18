@@ -31,6 +31,7 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 
 interface OwnProps {
   results: IQueryResults<IVariantEntity[]>;
@@ -47,7 +48,6 @@ const defaultColumns: ProColumnType[] = [
     key: 'hgvsg',
     dataIndex: 'hgvsg',
     className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
-    fixed: 'left',
     render: (hgvsg: string, entity: IVariantEntity) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
@@ -182,38 +182,42 @@ const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
   }, [JSON.stringify(filters)]);
 
   return (
-    <ProTable<ITableVariantEntity>
-      tableId="variants_table"
-      columns={defaultColumns}
-      wrapperClassName={styles.variantTabWrapper}
-      loading={results.loading}
-      initialSelectedKey={selectedKeys}
-      showSorterTooltip={false}
-      onChange={({ current, pageSize }, _, sorter) =>
-        setQueryConfig({
-          pageIndex: current!,
-          size: pageSize!,
-          sort: formatQuerySortList(sorter),
-        })
+    <GridCard
+      content={
+        <ProTable<ITableVariantEntity>
+          tableId="variants_table"
+          columns={defaultColumns}
+          wrapperClassName={styles.variantTabWrapper}
+          loading={results.loading}
+          initialSelectedKey={selectedKeys}
+          showSorterTooltip={false}
+          onChange={({ current, pageSize }, _, sorter) =>
+            setQueryConfig({
+              pageIndex: current!,
+              size: pageSize!,
+              sort: formatQuerySortList(sorter),
+            })
+          }
+          headerConfig={{
+            itemCount: {
+              pageIndex: queryConfig.pageIndex,
+              pageSize: queryConfig.size,
+              total: results.total,
+            },
+          }}
+          bordered
+          size="small"
+          pagination={{
+            current: queryConfig.pageIndex,
+            pageSize: queryConfig.size,
+            defaultPageSize: DEFAULT_PAGE_SIZE,
+            total: results.total,
+            onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
+          }}
+          dataSource={results.data.map((i) => ({ ...i, key: i.id }))}
+          dictionary={getProTableDictionary()}
+        />
       }
-      headerConfig={{
-        itemCount: {
-          pageIndex: queryConfig.pageIndex,
-          pageSize: queryConfig.size,
-          total: results.total,
-        },
-      }}
-      bordered
-      size="small"
-      pagination={{
-        current: queryConfig.pageIndex,
-        pageSize: queryConfig.size,
-        defaultPageSize: DEFAULT_PAGE_SIZE,
-        total: results.total,
-        onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
-      }}
-      dataSource={results.data.map((i) => ({ ...i, key: i.id }))}
-      dictionary={getProTableDictionary()}
     />
   );
 };
