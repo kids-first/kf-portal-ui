@@ -88,7 +88,7 @@ const SetSearch = ({
         filterOption={(input, option) =>
           option ? option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0 : false
         }
-        placeholder="Select a saved set"
+        placeholder="e.g. Select a saved set"
         mode="multiple"
         maxTagCount={1}
         value={values}

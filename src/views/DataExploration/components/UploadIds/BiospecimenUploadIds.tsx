@@ -18,7 +18,7 @@ interface OwnProps {
 const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
   <EntityUploadIds
     entityId="biospecimen"
-    entityIdTrans="Sample"
+    entityIdTrans="sample"
     entityIdentifiers="Sample ID"
     placeHolder="e.g. HTP0001B2_Whole blood, BS_011DYZ2J_DNA, 238981007"
     fetchMatch={async (ids) => {
@@ -44,7 +44,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
         response.data?.data?.biospecimen?.hits?.edges || [],
       );
 
-      return uniqBy(biospecimens, "sample_id").map((biospecimen) => ({
+      return uniqBy(biospecimens, 'sample_id').map((biospecimen) => ({
         key: biospecimen.fhir_id,
         submittedId: ids.find((id) => [biospecimen.sample_id].includes(id))!,
         mappedTo: biospecimen.sample_id,

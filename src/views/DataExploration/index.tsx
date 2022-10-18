@@ -1,6 +1,11 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
-import { FileSearchOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  FileSearchOutlined,
+  MedicineBoxOutlined,
+  ReadOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
@@ -26,9 +31,12 @@ import FileSetSearch from './components/FileSetSearch';
 import FileUploadIds from './components/UploadIds/FileUploadIds';
 import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileSearch from './components/FileSearch';
+import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 
 enum FilterTypes {
+  Study,
   Participant,
+  Clinical,
   Biospecimen,
   Datafiles,
 }
@@ -36,28 +44,36 @@ enum FilterTypes {
 const filterGroups: {
   [type: string]: FilterInfo;
 } = {
+  [FilterTypes.Study]: {
+    groups: [
+      {
+        facets: ['study__study_name', 'study__study_code', 'study__external_id', 'study__program'],
+      },
+    ],
+  },
   [FilterTypes.Participant]: {
     customSearches: [
       <ParticipantSearch key={0} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
       <ParticipantSetSearch key={1} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
+      <ParticipantUploadIds key={2} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
     ],
     groups: [
-      {
-        title: 'Study',
-        facets: ['study__study_name', 'study__study_code', 'study__external_id'],
-      },
       {
         title: 'Demographic',
         facets: ['is_proband', 'ethnicity', 'sex', 'race'],
       },
+    ],
+  },
+  [FilterTypes.Clinical]: {
+    groups: [
       {
-        title: 'Clinical',
         facets: [
           'diagnosis__affected_status',
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
           'diagnosis__mondo_id_diagnosis',
+          'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
           'phenotype__hpo_phenotype_observed',
           'phenotype__hpo_phenotype_not_observed',
@@ -112,9 +128,24 @@ const DataExploration = () => {
 
   const menuItems: ISidebarMenuItem[] = [
     {
+      key: 'study',
+      title: intl.get('screen.dataExploration.sidemenu.study'),
+      icon: <ReadOutlined />,
+      panelContent: (
+        <FilterList
+          key={INDEXES.STUDIES}
+          index={INDEXES.PARTICIPANT}
+          queryBuilderId={DATA_EXPLORATION_QB_ID}
+          extendedMappingResults={participantMappingResults}
+          filterInfo={filterGroups[FilterTypes.Study]}
+          filterMapper={mapFilterForParticipant}
+        />
+      ),
+    },
+    {
       key: TAB_IDS.PARTICIPANTS,
       title: intl.get('screen.dataExploration.sidemenu.participant'),
-      icon: <UserOutlined className={styles.sideMenuIcon} />,
+      icon: <UserOutlined />,
       panelContent: (
         <FilterList
           key={INDEXES.PARTICIPANT}
@@ -126,12 +157,27 @@ const DataExploration = () => {
         />
       ),
     },
+    {
+      key: 'clinical',
+      title: intl.get('screen.dataExploration.sidemenu.clinical'),
+      icon: <MedicineBoxOutlined />,
+      panelContent: (
+        <FilterList
+          key={INDEXES.CLINICAL}
+          index={INDEXES.PARTICIPANT}
+          queryBuilderId={DATA_EXPLORATION_QB_ID}
+          extendedMappingResults={participantMappingResults}
+          filterInfo={filterGroups[FilterTypes.Clinical]}
+          filterMapper={mapFilterForParticipant}
+        />
+      ),
+    },
     /*
     FIXME: to complete when data is complete.
     {
       key: TAB_IDS.BIOSPECIMENS,
       title: intl.get('screen.dataExploration.sidemenu.biospecimen'),
-      icon: <ExperimentOutlined className={styles.sideMenuIcon} />,
+      icon: <ExperimentOutlined />,
       panelContent: (
         <FilterList
           key={INDEXES.BIOSPECIMEN}
@@ -147,7 +193,7 @@ const DataExploration = () => {
     {
       key: TAB_IDS.DATA_FILES,
       title: intl.get('screen.dataExploration.sidemenu.datafiles'),
-      icon: <FileSearchOutlined className={styles.sideMenuIcon} />,
+      icon: <FileSearchOutlined />,
       panelContent: (
         <FilterList
           key={INDEXES.FILES}
