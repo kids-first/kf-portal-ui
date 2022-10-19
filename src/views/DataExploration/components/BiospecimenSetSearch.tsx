@@ -11,7 +11,7 @@ const BiospecimenSetSearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <SetSearch
       index={INDEXES.BIOSPECIMENS}
-      title="Saved Biospecimen Sets"
+      title="Saved biospecimen sets"
       queryBuilderId={DATA_EXPLORATION_QB_ID}
       type={SetType.BIOSPECIMEN}
       sqon={sqon}

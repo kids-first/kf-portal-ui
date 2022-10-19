@@ -11,7 +11,7 @@ const ParticipantSetSearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <SetSearch
       index={INDEXES.PARTICIPANT}
-      title="Saved Participant Sets"
+      title="Saved participant sets"
       queryBuilderId={DATA_EXPLORATION_QB_ID}
       type={SetType.PARTICIPANT}
       sqon={sqon}

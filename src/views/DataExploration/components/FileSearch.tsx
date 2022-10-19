@@ -16,8 +16,8 @@ const FileSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       queryBuilderId={queryBuilderId}
       field="file_id"
       index={INDEXES.FILES}
-      placeholder={'e.g. GF_001CSF26'}
-      emptyDescription={'No files found'}
+      placeholder="e.g. GF_001CSF26"
+      emptyDescription="No files found"
       query={FILE_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}
       optionsFormatter={(options, matchRegex, search) =>
@@ -31,7 +31,7 @@ const FileSearch = ({ queryBuilderId }: ICustomSearchProps) => {
           value: option.file_id,
         }))
       }
-      title={'Search by File ID'}
+      title="Search by file ID"
     />
   );
 };
