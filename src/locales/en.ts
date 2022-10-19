@@ -40,7 +40,7 @@ const en = {
       study: {
         emptyText: 'No study found',
         placeholder: 'e.g. KF DSD, Neuroblastoma',
-        title: 'Search studies',
+        title: 'Search by study',
         tooltip: 'Search by Study Code, Study Name, dbGaP Accession Number',
       },
     },
