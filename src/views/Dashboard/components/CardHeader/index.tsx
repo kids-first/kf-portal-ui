@@ -23,7 +23,7 @@ const CardHeader = ({ id, title, extra = [], withHandle = false, infoPopover }: 
         <DragHandle id={id} className={styles.dragHandle}>
           <HolderOutlined />
         </DragHandle>
-      )}{' '}
+      )}
       {title}
       {infoPopover && (
         <Popover
