@@ -9,7 +9,7 @@ import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
-import { Space, Tabs } from 'antd';
+import { Space, Tabs, Typography } from 'antd';
 import copy from 'copy-to-clipboard';
 import { INDEXES } from 'graphql/constants';
 import { useDataFiles } from 'graphql/files/actions';
@@ -52,6 +52,8 @@ import { numberWithCommas } from 'utils/string';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+
+const { Title } = Typography;
 
 export const MAX_TITLE_LENGTH = 200;
 type OwnProps = {
@@ -160,6 +162,9 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
 
   return (
     <Space direction="vertical" size={24} className={styles.dataExplorePageContent}>
+      <Title className={styles.title} level={4}>
+        {intl.get('screen.dataExploration.title')}
+      </Title>
       <QueryBuilder
         id={DATA_EXPLORATION_QB_ID}
         className="data-exploration-repo__query-builder"
