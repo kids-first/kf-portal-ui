@@ -1,4 +1,4 @@
-FROM node:18.8-alpine3.16 as build-stage
+FROM node:18.10.0-alpine3.15 as build-stage
 WORKDIR /app
 COPY package.json package-lock.json /app/
 RUN npm install --ignore-scripts && npm rebuild sass
