@@ -27,7 +27,7 @@ const en = {
       genes: {
         emptyText: 'No gene found',
         placeholder: 'e.g. BRAF, ENSG00000157764',
-        title: 'Search by Gene',
+        title: 'Search by gene',
         tooltip: 'Enter a Gene Symbol, Gene Alias ​​or Ensemble ID',
       },
       variants: {

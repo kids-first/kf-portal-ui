@@ -17,7 +17,7 @@ const ParticipantSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       field="participant_id"
       index={INDEXES.PARTICIPANT}
       placeholder="e.g. PT_1BCRHQVF"
-      emptyDescription={'No participants found'}
+      emptyDescription="No participants found"
       query={PARTICIPANT_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}
       optionsFormatter={(options, matchRegex, search) => {
@@ -31,7 +31,7 @@ const ParticipantSearch = ({ queryBuilderId }: ICustomSearchProps) => {
           value: option.participant_id,
         }));
       }}
-      title={'Search by Participant ID'}
+      title="Search by participant ID"
     />
   );
 };

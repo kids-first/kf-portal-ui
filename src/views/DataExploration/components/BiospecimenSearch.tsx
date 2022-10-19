@@ -18,8 +18,8 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       queryBuilderId={queryBuilderId}
       field="sample_id"
       index={INDEXES.BIOSPECIMENS}
-      placeholder={'e.g. BS_011DYZ2J, HTP0001B2_Plasma'}
-      emptyDescription={'No samples found'}
+      placeholder="e.g. BS_011DYZ2J, HTP0001B2_Plasma"
+      emptyDescription="No samples found"
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}
       optionsFormatter={(options, matchRegex, search) =>
@@ -33,7 +33,7 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
           value: option.sample_id,
         }))
       }
-      title={'Search by Sample ID'}
+      title="Search by sample ID"
     />
   );
 };
@@ -46,8 +46,8 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
       queryBuilderId={queryBuilderId}
       field="collection_sample_id"
       index={INDEXES.BIOSPECIMENS}
-      placeholder={'e.g. HTP0001B2_Whole blood, BS_1YEZ2XR4_Saliva'}
-      emptyDescription={'No collection ID found'}
+      placeholder="e.g. HTP0001B2_Whole blood, BS_1YEZ2XR4_Saliva"
+      emptyDescription="No collection ID found"
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}
       sqon={sqon}
       optionsFormatter={(options, matchRegex, search) =>
@@ -61,7 +61,7 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
           value: option.collection_sample_id,
         }))
       }
-      title={'Search by Collection ID'}
+      title="Search by collection ID"
     />
   );
 };

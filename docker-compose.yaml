@@ -1,7 +1,7 @@
 version: "3"
 services:
   frontend:
-    image: node:18.8-alpine3.16
+    image: node:18.10.0-alpine3.15
     working_dir: /code
     user: node
     volumes:
