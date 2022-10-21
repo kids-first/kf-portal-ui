@@ -21,14 +21,6 @@
 }
 
 .filterTag {
-  display: flex;
-  align-items: center;
-  background-color: $cyan-7;
-  color: $gray-1;
-  > * {
-    color: $gray-1;
-  }
-
   .filterTagText {
     max-width: 200px;
     overflow: hidden;

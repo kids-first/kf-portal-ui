@@ -1,16 +1,6 @@
 @import 'src/style/themes/kids-first/colors';
 
 .container {
-  .tag {
-    display: flex;
-    align-items: center;
-    background-color: $cyan-7;
-    color: $gray-1;
-    > * {
-      color: $gray-1;
-    }
-  }
-
   .search {
     width: 100%;
   }

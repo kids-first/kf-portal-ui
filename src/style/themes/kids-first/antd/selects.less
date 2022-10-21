@@ -10,6 +10,19 @@
   }
 
   &-selection-overflow-item {
+    .@{tag-prefix-cls} {
+      background: @cyan-7;
+      color: @gray-1;
+      border: none;
+      height: 21px;
+      display: flex;
+      align-items: center;
+
+      .@{typography-prefix-cls},
+      > * {
+        color: @gray-1;
+      }
+    }
     &.@{select-prefix-cls}-selection-overflow-item-rest {
       .@{select-prefix-cls}-selection-item {
         background: @cyan-7;
