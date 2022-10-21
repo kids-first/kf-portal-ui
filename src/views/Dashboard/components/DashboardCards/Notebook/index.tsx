@@ -23,7 +23,7 @@ const { Text } = Typography;
 
 const REFRESH_INTERVAL = 30000;
 
-const Notebook = ({ id, className = '' }: DashboardCardProps) => {
+const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
   const { url, isLoading, error, status } = useNotebook();
   const { groups } = useUser();
@@ -65,6 +65,7 @@ const Notebook = ({ id, className = '' }: DashboardCardProps) => {
         title={
           <CardHeader
             id={id}
+            key={key}
             title={intl.get('screen.dashboard.cards.notebook.title')}
             withHandle
           />
