@@ -412,10 +412,11 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) => {
-      // FIXME: wait for api the return the value
-      return TABLE_EMPTY_PLACE_HOLDER;
-    },
+    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+      diagnosis?.hits?.edges
+        ?.filter((e) => e.node?.age_at_event_days !== null)
+        .map((e) => e.node?.age_at_event_days)
+        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'outcomes_age_at_event_days.value',
