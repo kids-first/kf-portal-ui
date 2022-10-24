@@ -30,22 +30,26 @@
     color: @cyan-7;
 
     &:hover {
-      background-color: @gray-2;
+      color: @cyan-7;
+      background: @gray-2;
       border-color: @gray-5;
     }
 
     &:focus {
-      background-color: @gray-1;
+      color: @cyan-7;
+      background: @gray-1;
       border-color: @cyan-7;
     }
 
     &.@{dropdown-prefix-cls}-open,
     &:active {
-      background-color: @gray-3;
+      color: @cyan-7;
+      background: @gray-3;
       border-color: @gray-5;
     }
     &:focus-visible {
-      background-color: @gray-1;
+      color: @cyan-7;
+      background: @gray-1;
       border-color: @cyan-7;
       box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @cyan-7;
     }
@@ -60,7 +64,7 @@
       }
 
       &:hover {
-        background-color: @gray-2;
+        background: @gray-2;
         color: @red-7;
         border-color: @red-7;
       }
@@ -69,7 +73,7 @@
         border-color: @red-7;
       }
       &:active {
-        background-color: @gray-3;
+        background: @gray-3;
         color: @red-8;
         border-color: @red-8;
       }
@@ -78,24 +82,71 @@
         box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @red-6;
       }
     }
+
+    &.@{btn-prefix-cls}-background-ghost {
+      color: @gray-6;
+      border-color: @gray-6;
+      &:hover {
+        color: @cyan-5;
+        border-color: @cyan-5;
+      }
+      &:active {
+        color: @cyan-5;
+        border-color: @cyan-5;
+      }
+
+      &:focus,
+      &:focus-visible {
+        color: @cyan-5;
+        border-color: @cyan-5;
+        box-shadow: 0 0 0 2px @cyan-5;
+      }
+
+      &.@{btn-prefix-cls}-dangerous {
+        color: @red-4;
+        border-color: @red-4;
+        background: transparent !important;
+
+        &:hover {
+          color: @red-5;
+          border-color: @red-5;
+        }
+        &:active {
+          color: @red-5;
+          border-color: @red-5;
+        }
+
+        &:focus,
+        &:focus-visible {
+          color: @red-5;
+          border-color: @red-5;
+          box-shadow: 0 0 0 2px @red-5;
+        }
+      }
+    }
+
+    &[disabled] {
+      background: @gray-3;
+      color: @body-3;
+    }
   }
 
   &-primary {
     &.@{btn-prefix-cls}-loading {
       color: @gray-1;
-      background-color: @cyan-7;
+      background: @cyan-7;
     }
 
     &:hover {
-      background-color: @cyan-6;
+      background: @cyan-6;
       border-color: @cyan-6;
     }
     &:focus {
-      background-color: @cyan-6;
-      border-color: @cyan-6;
+      background: @cyan-8;
+      border-color: @cyan-8;
     }
     &:active {
-      background-color: @cyan-8;
+      background: @cyan-8;
       border-color: @cyan-8;
     }
     &:focus-visible {
@@ -103,79 +154,176 @@
     }
 
     &.@{btn-prefix-cls}-dangerous {
-      background-color: @red-6;
+      background: @red-6;
 
       &.@{btn-prefix-cls}-loading {
         color: @gray-1;
-        background-color: @red-7;
+        background: @red-7;
       }
 
       &:hover {
-        background-color: @red-7;
+        background: @red-7;
         border-color: @red-7;
       }
       &:focus {
-        background-color: @red-6;
+        background: @red-6;
         border-color: @red-6;
       }
       &:active {
-        background-color: @red-8;
+        background: @red-8;
         border-color: @red-8;
       }
       &:focus-visible {
-        background-color: @red-6;
+        background: @red-6;
         box-shadow: 0 0 0 2px @gray-1, 0 0 0 4px @red-7;
       }
     }
 
     &.@{btn-prefix-cls}-background-ghost {
-      border-color: @cyan-4;
       color: @cyan-4;
-
-      &:disabled {
-        border-color: @body-3;
-        color: @body-3;
-        background-color: transparent;
-
-        &:hover {
-          border-color: @body-3;
-          color: @body-3;
-          border-radius: 2px;
-          background-color: transparent;
-        }
-      }
+      border-color: @cyan-4;
+      background: transparent !important;
 
       &:hover {
-        border-color: @cyan-5;
         color: @cyan-5;
+        border-color: @cyan-5;
+      }
+      &:active {
+        color: @cyan-5;
+        border-color: @cyan-5;
       }
 
       &:focus,
       &:focus-visible {
-        border-color: @cyan-5;
         color: @cyan-5;
-        border-width: 2px;
+        border-color: @cyan-5;
+        box-shadow: 0 0 0 2px @cyan-5;
+      }
+
+      &.@{btn-prefix-cls}-dangerous {
+        color: @red-4;
+        border-color: @red-4;
+        background: transparent !important;
+
+        &:hover {
+          color: @red-5;
+          border-color: @red-5;
+        }
+        &:active {
+          color: @red-5;
+          border-color: @red-5;
+        }
+
+        &:focus,
+        &:focus-visible {
+          color: @red-5;
+          border-color: @red-5;
+          box-shadow: 0 0 0 2px @red-5;
+        }
       }
     }
 
     &[disabled] {
-      background-color: @gray-3;
+      border-color: @body-3;
       color: @body-3;
+    }
+  }
+
+  &-dashed {
+    color: @cyan-7;
+
+    &:hover {
+      color: @cyan-7;
+      background: @gray-2;
+      border-color: @gray-5;
+    }
+
+    &:active {
+      color: @cyan-7;
+      background: @gray-3;
+      border-color: @gray-5;
+    }
+
+    &:focus,
+    &:focus-visible {
+      color: @cyan-7;
+      outline-style: dashed;
+      outline-width: 2px;
+      outline-color: @cyan-7;
+    }
+
+    &.@{btn-prefix-cls}-background-ghost {
+      color: @gray-6;
+      border-color: @gray-6;
+
+      &:hover {
+        color: @cyan-5;
+        border-color: @cyan-5;
+      }
+      &:active {
+        color: @cyan-5;
+        border-color: @cyan-5;
+      }
+
+      &:focus,
+      &:focus-visible {
+        color: @cyan-5;
+        border-color: @cyan-5;
+        box-shadow: 0 0 0 2px @cyan-5;
+      }
+
+      &.@{btn-prefix-cls}-dangerous {
+        color: @red-4;
+        border-color: @red-4;
+        background: transparent !important;
+
+        &:hover {
+          color: @red-5;
+          border-color: @red-5;
+        }
+        &:active {
+          color: @red-5;
+          border-color: @red-5;
+        }
+
+        &:focus,
+        &:focus-visible {
+          color: @red-5;
+          border-color: @red-5;
+          box-shadow: 0 0 0 2px @red-5;
+        }
+      }
+    }
+
+    &[disabled] {
+      background: @gray-3;
+      border-color: @gray-5;
+      color: @body-3;
+
+      &:hover {
+        color: @body-3;
+      }
     }
   }
 
   &-text {
     color: @cyan-7;
+
     &:hover {
       color: @cyan-7;
-      background-color: @gray-2;
+      background: @gray-3;
     }
+
     &:active {
-      color: @cyan-7;
-      background-color: @gray-3;
+      color: @cyan-8;
+      background: @gray-3;
     }
+
+    &:focus,
     &:focus-visible {
-      box-shadow: 0 0 0 2px @body-2;
+      color: @cyan-7;
+      background: @gray-2;
+      box-shadow: 0 0 0 2px @cyan-7;
     }
 
     &.@{btn-prefix-cls}-dangerous:not(:disabled) {
@@ -183,13 +331,45 @@
         box-shadow: 0 0 0 2px @red-7;
       }
     }
+
+    &[disabled] {
+      color: @body-3;
+    }
   }
 
   &-link {
-    &:not(:disabled) {
-      span:not(:hover) {
-        text-decoration: underline;
+    span {
+      text-decoration: underline;
+    }
+
+    &:hover {
+      color: @cyan-7;
+
+      span {
+        text-decoration: none !important;
       }
+    }
+
+    &:active {
+      color: @cyan-8;
+
+      span {
+        text-decoration: none !important;
+      }
+    }
+
+    &:focus,
+    &:focus-visible {
+      color: @cyan-7;
+      box-shadow: 0 0 0 2px @cyan-7;
+
+      span {
+        text-decoration: none !important;
+      }
+    }
+
+    &[disabled] {
+      color: @body-3;
     }
   }
 }
