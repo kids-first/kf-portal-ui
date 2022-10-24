@@ -33,6 +33,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                     mondo_id_diagnosis
                     source_text
                     ncit_id_diagnosis
+                    age_at_event_days
                   }
                 }
               }
@@ -78,7 +79,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                     is_tagged
                     name
                     parents
-                    #                    age_at_event_days
+                    age_at_event_days
                   }
                 }
               }

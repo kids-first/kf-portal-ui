@@ -12,6 +12,7 @@ export interface IParticipantDiagnosis {
   source_text: string;
   ncit_id_diagnosis: string;
   affected_status: boolean;
+  age_at_event_days?: string;
 }
 
 export interface IParticipantPhenotype {
@@ -34,7 +35,7 @@ export interface IParticipantObservedPhenotype {
   is_tagged: boolean;
   is_leaf: boolean;
   parents: string[];
-  age_at_event_days: string[];
+  age_at_event_days: number[];
 }
 
 export interface IParticipantStudy {

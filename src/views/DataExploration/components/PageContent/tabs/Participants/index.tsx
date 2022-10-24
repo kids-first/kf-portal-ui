@@ -405,18 +405,17 @@ const defaultColumns: ProColumnType[] = [
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'observed_phenotype_age_at_event_days',
+    key: 'age_at_event_days',
     title: 'Age at Diagnosis',
-    dataIndex: 'observed_phenotype',
+    dataIndex: 'diagnosis',
     defaultHidden: true,
     sorter: {
       multiple: 1,
     },
-    render: (observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>) =>
-      observed_phenotype?.hits?.edges
-        ?.filter((e) => e.node.age_at_event_days)
-        ?.map((e) => e.node.age_at_event_days)
-        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
+    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) => {
+      // FIXME: wait for api the return the value
+      return TABLE_EMPTY_PLACE_HOLDER;
+    },
   },
   {
     key: 'outcomes_age_at_event_days.value',
@@ -432,17 +431,19 @@ const defaultColumns: ProColumnType[] = [
         ?.map((e) => e.node.age_at_event_days.value)
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
+
   {
-    key: 'phenotype_age_at_event_days',
+    key: 'observed_phenotype_age_at_event_days',
     title: 'Age at Observed Phenotype',
-    dataIndex: 'phenotype',
+    dataIndex: 'observed_phenotype',
     defaultHidden: true,
     sorter: {
       multiple: 1,
     },
-    render: (phenotype: ArrangerResultsTree<IParticipantPhenotype>) =>
-      phenotype?.hits?.edges?.map((e) => e.node.age_at_event_days)?.join(', ') ||
-      TABLE_EMPTY_PLACE_HOLDER,
+    render: (observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>) =>
+      observed_phenotype?.hits?.edges
+        ?.filter((e) => e.node.age_at_event_days.length > 0)
+        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 
