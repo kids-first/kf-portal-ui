@@ -84,8 +84,8 @@ const getDefaultColumns = (
   },
   {
     key: 'controlled_access',
-    tooltip: 'Data access',
-    title: 'Data access',
+    tooltip: 'Data Access',
+    title: 'Data Access',
     iconTitle: <SafetyOutlined />,
     dataIndex: 'controlled_access',
     align: 'center',
