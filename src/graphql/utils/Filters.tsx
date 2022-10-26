@@ -4,7 +4,7 @@ import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer'
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
 import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
 import { ExtendedMapping, ExtendedMappingResults, Aggregations } from 'graphql/models';
-import { getFilterType } from '@ferlab/ui/core/data/filters/utils';
+import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
 import {
   keyEnhance,
   keyEnhanceBooleanOnly,
@@ -125,40 +125,4 @@ export const getFilters = (aggregations: Aggregations | null, key: string): IFil
     ];
   }
   return [];
-};
-
-export const getFilterGroup = (
-  extendedMapping: ExtendedMapping | undefined,
-  aggregation: any,
-  rangeTypes: string[],
-  filterFooter: boolean,
-): IFilterGroup => {
-  if (isRangeAgg(aggregation)) {
-    return {
-      field: extendedMapping?.field || '',
-      title: intl
-        .get(`facets.${extendedMapping?.field}`)
-        .defaultMessage(extendedMapping?.displayName || ''),
-      type: getFilterType(extendedMapping?.type || ''),
-      config: {
-        min: aggregation.stats.min,
-        max: aggregation.stats.max,
-        rangeTypes: rangeTypes.map((r) => ({
-          name: r,
-          key: r,
-        })),
-      },
-    };
-  }
-
-  return {
-    field: extendedMapping?.field || '',
-    title: intl
-      .get(`facets.${extendedMapping?.field}`)
-      .defaultMessage(extendedMapping?.displayName || ''),
-    type: getFilterType(extendedMapping?.type || ''),
-    config: {
-      withFooter: filterFooter,
-    },
-  };
 };

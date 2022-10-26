@@ -3,13 +3,14 @@ import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer'
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
 import { ExtendedMapping, ExtendedMappingResults, GqlResults } from 'graphql/models';
-import { getFilterGroup, getFilters } from 'graphql/utils/Filters';
+import { getFilters } from 'graphql/utils/Filters';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import CustomFilterSelector from './CustomFilterSelector';
-import { getFiltersDictionary } from 'utils/translation';
+import { getFacetsDictionary, getFiltersDictionary } from 'utils/translation';
 import { TCustomFilterMapper } from '.';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { isUndefined } from 'lodash';
+import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
 
 type OwnProps = {
   classname: string;
@@ -20,6 +21,7 @@ type OwnProps = {
   extendedMappingResults: ExtendedMappingResults;
   filtersOpen?: boolean;
   filterMapper?: TCustomFilterMapper;
+  headerTooltip?: boolean;
 };
 
 const CustomFilterContainer = ({
@@ -31,6 +33,7 @@ const CustomFilterContainer = ({
   defaultOpen,
   extendedMappingResults,
   filterMapper,
+  headerTooltip,
 }: OwnProps) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -56,7 +59,15 @@ const CustomFilterContainer = ({
   };
 
   const aggregations = results?.aggregations ? results?.aggregations[filterKey] : {};
-  const filterGroup = getFilterGroup(found, aggregations, [], true);
+  const filterGroup = getFilterGroup(
+    found,
+    aggregations,
+    [],
+    true,
+    headerTooltip,
+    getFacetsDictionary(),
+  );
+
   const filters = results?.aggregations ? getFilters(results?.aggregations, filterKey) : [];
   const selectedFilters = results?.data
     ? getSelectedFilters({

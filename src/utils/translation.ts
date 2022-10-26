@@ -161,3 +161,63 @@ export const getQueryBuilderDictionary = (
     },
   },
 });
+
+// ADD intl trad
+export const getFacetsDictionary = () => ({
+  consequences: {
+    consequences: 'Consequence',
+    biotype: 'Gene Type',
+    vep_impact: 'VEP',
+    predictions: {
+      sift_pred: 'SIFT',
+      polyphen2_hvar_pred: 'PolyPhen-2 HVAR',
+      fathmm_pred: 'FATHMM',
+      cadd_rankscore: 'CADD',
+      lrt_pred: 'LRT',
+      revel_rankscore: 'REVEL',
+      dann_rankscore: 'DANN',
+    },
+  },
+  genes: {
+    hpo: {
+      hpo_term_label: 'HPO',
+    },
+    orphanet: {
+      panel: 'ORPHANET',
+    },
+    omim: {
+      name: 'OMIM',
+    },
+    ddd: {
+      disease_name: 'DDD',
+    },
+    cosmic: {
+      tumour_types_germline: 'COSMIC',
+    },
+  },
+  tooltips: {
+    consequences: {
+      vep_impact: 'Ensembl Variant Effect Predictor',
+      predictions: {
+        sift_pred: 'Sorting Intolerant From Tolerant',
+      },
+    },
+    genes: {
+      hpo: {
+        hpo_term_label: 'Human Phenotype Ontology',
+      },
+      orphanet: {
+        panel: 'ORPHANET',
+      },
+      omim: {
+        name: 'Online Mendelian Inheritance in Man ',
+      },
+      ddd: {
+        disease_name: 'Deciphering Developmental Disorders',
+      },
+      cosmic: {
+        tumour_types_germline: 'Catalogue Of Somatic Mutations In Cancer',
+      },
+    },
+  },
+});
