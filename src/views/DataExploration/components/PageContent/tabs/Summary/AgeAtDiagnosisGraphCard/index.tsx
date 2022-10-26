@@ -1,7 +1,6 @@
 import BarChart from 'components/uiKit/charts/Bar';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { INDEXES } from 'graphql/constants';
-import { useHistory } from 'react-router-dom';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { isEmpty } from 'lodash';
 import Empty from '@ferlab/ui/core/components/Empty';

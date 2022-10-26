@@ -5,6 +5,7 @@ import React from 'react';
 export interface FilterGroup {
   title?: string;
   facets: string[] | React.ReactNode[];
+  tooltips?: string[];
 }
 
 export interface FilterInfo {
