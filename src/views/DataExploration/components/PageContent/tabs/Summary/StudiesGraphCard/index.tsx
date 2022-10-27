@@ -12,10 +12,13 @@ import { PARTICIPANT_BY_STUDIES_QUERY } from 'graphql/summary/queries';
 import useApi from 'hooks/useApi';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import { BasicTooltip } from '@nivo/tooltip';
-import { capitalize, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+
+import styles from './index.module.scss';
+import { Col, Row } from 'antd';
 
 interface OwnProps {
   id: string;
@@ -62,6 +65,7 @@ const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
   return (
     <GridCard
       wrapperClassName={className}
+      contentClassName={styles.graphContentWrapper}
       theme="shade"
       loading={loading}
       loadingType="spinner"
@@ -73,24 +77,26 @@ const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
         />
       }
       content={
-        <>
-          {isEmpty(data) ? (
-            <Empty imageType="grid" />
-          ) : (
-            <PieChart
-              data={data}
-              onClick={(datum) => addToQuery('study__study_code', datum.id as string, history)}
-              tooltip={(value) => (
-                <BasicTooltip
-                  id={capitalize(value.datum.id.toString())}
-                  value={value.datum.value}
-                  color={value.datum.color}
-                />
-              )}
-              {...graphSetting}
-            />
-          )}
-        </>
+        <Row className={styles.graphRowWrapper}>
+          <Col md={24}>
+            {isEmpty(data) ? (
+              <Empty imageType="grid" />
+            ) : (
+              <PieChart
+                data={data}
+                onClick={(datum) => addToQuery('study__study_code', datum.id as string, history)}
+                tooltip={(value) => (
+                  <BasicTooltip
+                    id={value.datum.id.toString()}
+                    value={value.datum.value}
+                    color={value.datum.color}
+                  />
+                )}
+                {...graphSetting}
+              />
+            )}
+          </Col>
+        </Row>
       }
     />
   );

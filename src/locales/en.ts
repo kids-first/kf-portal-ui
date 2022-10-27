@@ -687,6 +687,7 @@ const en = {
             cardTitle: 'Demographics',
             sexTitle: 'Sex',
             raceTitle: 'Race',
+            familyComposition: 'Family Composition',
             ethnicityTitle: 'Ethnicity',
           },
           availableData: {
