@@ -184,6 +184,7 @@ const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
         <ProTable<ITableVariantEntity>
           tableId="variants_table"
           columns={defaultColumns}
+          enableRowSelection
           wrapperClassName={styles.variantTabWrapper}
           loading={results.loading}
           initialSelectedKey={selectedKeys}
