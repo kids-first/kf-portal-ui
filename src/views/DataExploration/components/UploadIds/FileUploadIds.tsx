@@ -39,7 +39,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
         },
       });
 
-      const files: IFileEntity[] = hydrateResults(response.data?.data?.file?.hits?.edges || []);
+      const files: IFileEntity[] = hydrateResults(response.data?.data?.files?.hits?.edges || []);
 
       return files.map((file) => ({
         key: file.fhir_id,
