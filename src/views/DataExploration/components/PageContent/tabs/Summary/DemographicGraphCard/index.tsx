@@ -106,18 +106,6 @@ const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
             )}
           </Col>
           <Col sm={12} md={12} lg={8}>
-            {isEmpty(raceData) ? (
-              <Empty imageType="grid" />
-            ) : (
-              <PieChart
-                title={intl.get('screen.dataExploration.tabs.summary.demographic.raceTitle')}
-                data={raceData}
-                onClick={(datum) => addToQuery('race', datum.id as string, history)}
-                {...graphSetting}
-              />
-            )}
-          </Col>
-          <Col sm={12} md={12} lg={8}>
             {isEmpty(enthicityData) ? (
               <Empty imageType="grid" />
             ) : (
@@ -125,6 +113,18 @@ const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
                 data={enthicityData}
                 onClick={(datum) => addToQuery('ethnicity', datum.id as string, history)}
+                {...graphSetting}
+              />
+            )}
+          </Col>
+          <Col sm={12} md={12} lg={8}>
+            {isEmpty(raceData) ? (
+              <Empty imageType="grid" />
+            ) : (
+              <PieChart
+                title={intl.get('screen.dataExploration.tabs.summary.demographic.raceTitle')}
+                data={raceData}
+                onClick={(datum) => addToQuery('race', datum.id as string, history)}
                 {...graphSetting}
               />
             )}
