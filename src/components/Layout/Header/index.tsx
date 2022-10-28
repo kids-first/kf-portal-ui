@@ -214,7 +214,9 @@ const Header = () => {
                     label: (
                       <Space size={4} className={styles.userMenuEmail}>
                         <Typography.Text>Signed in with</Typography.Text>
-                        <Typography.Text strong>{userInfo?.email}</Typography.Text>
+                        <Typography.Text strong>
+                          {tokenParsed.email || tokenParsed.identity_provider_identity}
+                        </Typography.Text>
                       </Space>
                     ),
                   },

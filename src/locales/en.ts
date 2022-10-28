@@ -564,7 +564,7 @@ const en = {
         identification: {
           title: 'Identification',
           alert:
-            'You are authenticated with <strong>{provider}</strong> using <strong>{email}</strong>. This email is never shown to the public and cannot be changed.',
+            'You are authenticated with <strong>{provider}</strong> using <strong>{email}</strong>. This {id} is never shown to the public and cannot be changed.',
           firstName: 'First name',
           yourFirstName: 'Your First Name',
           lastName: 'Last name',

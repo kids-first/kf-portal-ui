@@ -78,7 +78,9 @@ const IdentificationCard = () => {
           type="info"
           message={intl.getHTML('screen.profileSettings.cards.identification.alert', {
             provider: capitalize(tokenParsed.identity_provider),
-            email: personaUserInfo?.email,
+            email:
+              personaUserInfo?.email || tokenParsed.email || tokenParsed.identity_provider_identity,
+            id: personaUserInfo?.email ? 'email' : 'ID',
           })}
         />
         <Row gutter={24}>
