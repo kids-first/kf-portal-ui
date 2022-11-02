@@ -1,5 +1,5 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import { TPersonaUser, TPersonaUserUpdate } from './models';
+import { IPersonaUser, TPersonaUserUpdate } from './models';
 import { sendRequest } from 'services/api';
 import { omit } from 'lodash';
 
@@ -101,7 +101,7 @@ export const headers = {
 const fetch = () =>
   sendRequest<{
     data: {
-      self: TPersonaUser;
+      self: IPersonaUser;
     };
   }>({
     method: 'POST',
@@ -118,11 +118,11 @@ const fetch = () =>
     },
   });
 
-const create = (user: TPersonaUser) =>
+const create = (user: IPersonaUser) =>
   sendRequest<{
     data: {
       userCreate: {
-        record: TPersonaUser;
+        record: IPersonaUser;
       };
     };
   }>({
@@ -147,7 +147,7 @@ const update = (user: TPersonaUserUpdate) =>
   sendRequest<{
     data: {
       userUpdate: {
-        record: TPersonaUser;
+        record: IPersonaUser;
       };
     };
   }>({
@@ -171,7 +171,7 @@ const update = (user: TPersonaUserUpdate) =>
 const fetchProfile = (id: string) =>
   sendRequest<{
     data: {
-      user: TPersonaUser;
+      user: IPersonaUser;
     };
   }>({
     method: 'POST',
@@ -204,7 +204,7 @@ const search = ({
   interests?: string;
 }) =>
   sendRequest<{
-    publicMembers: TPersonaUser[];
+    publicMembers: IPersonaUser[];
     count: {
       public: number;
     };

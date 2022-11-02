@@ -10,17 +10,18 @@ import {
   diseasesInterestOptions,
   studiesInterestOptions,
 } from 'views/Community/contants';
+import { debounce } from 'lodash';
 
 interface OwnProps {
-  onMatchFilterChange: (value: string) => void;
-  onRoleFilterChange: (value: string) => void;
-  onDiseasesInterestFilterChange: (value: string) => void;
-  onStudiesInterestFilterChange: (value: string) => void;
+  onSearchFilterChange: (value: string) => void;
+  onRoleFilterChange: (value: string[]) => void;
+  onDiseasesInterestFilterChange: (value: string[]) => void;
+  onStudiesInterestFilterChange: (value: string[]) => void;
   hasFilters: boolean;
 }
 
 const FiltersBox = ({
-  onMatchFilterChange,
+  onSearchFilterChange,
   onRoleFilterChange,
   onDiseasesInterestFilterChange,
   onStudiesInterestFilterChange,
@@ -31,15 +32,17 @@ const FiltersBox = ({
   const [diseasesInterestFilter, setDiseasesInterestFilter] = useState<string[]>([]);
   const [studiesInterestFilter, setStudiesInterestFilter] = useState<string[]>([]);
 
-  useEffect(() => onRoleFilterChange(roleFilter.join(',')), [roleFilter, onRoleFilterChange]);
+  const onSearchDebouncedFilerChanged = debounce((value) => onSearchFilterChange(value), 300);
+
+  useEffect(() => onRoleFilterChange(roleFilter), [roleFilter, onRoleFilterChange]);
 
   useEffect(
-    () => onDiseasesInterestFilterChange(diseasesInterestFilter.join(',')),
+    () => onDiseasesInterestFilterChange(diseasesInterestFilter),
     [diseasesInterestFilter, onDiseasesInterestFilterChange],
   );
 
   useEffect(
-    () => onStudiesInterestFilterChange(studiesInterestFilter.join(',')),
+    () => onStudiesInterestFilterChange(studiesInterestFilter),
     [studiesInterestFilter, onStudiesInterestFilterChange],
   );
 
@@ -49,7 +52,7 @@ const FiltersBox = ({
         <ProLabel title={intl.get('screen.community.search.barPlaceholder')} />
         <div className={styles.filterContentWrapper}>
           <Input
-            onChange={(e) => onMatchFilterChange(e.currentTarget.value)}
+            onChange={(e) => onSearchDebouncedFilerChanged(e.currentTarget.value)}
             placeholder="e.g. Watson, Children's Hospital of Philadelphia"
           />
           <Button onClick={() => setFiltersVisible(!filtersVisible)}>
@@ -74,8 +77,8 @@ const FiltersBox = ({
                 setRoleFilter(roleFilter.filter((val) => val !== value))
               }
               options={memberRolesOptions.map((option) => ({
-                label: option,
-                value: option,
+                label: option.value,
+                value: option.value.toLocaleLowerCase(),
               }))}
               tagRender={({ onClose, value }) => (
                 <Tag
@@ -106,7 +109,7 @@ const FiltersBox = ({
               }
               options={diseasesInterestOptions.map((option) => ({
                 label: option.value,
-                value: option.value,
+                value: option.value.toLocaleLowerCase(),
               }))}
               tagRender={({ onClose, value }) => (
                 <Tag
@@ -138,7 +141,7 @@ const FiltersBox = ({
               }
               options={studiesInterestOptions.map((option) => ({
                 label: option.value,
-                value: option.value,
+                value: option.value.toLocaleLowerCase(),
               }))}
               tagRender={({ onClose, value }) => (
                 <Tag

@@ -1,20 +1,20 @@
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { Card, Space, Typography } from 'antd';
+import { IMemberEntity } from 'graphql/members/models';
 import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
-import { TPersonaUser } from 'services/api/persona/models';
 import { formatName } from 'views/Community/utils';
 
 import styles from './index.module.scss';
 
 interface OwnProps {
-  user: TPersonaUser;
+  user: IMemberEntity;
   match: string;
 }
 
 const MemberCard = ({ user, match }: OwnProps) => {
   return (
-    <Link key={user._id} className={styles.memberLink} to={`/member/${user._id}`}>
+    <Link key={user.id} className={styles.memberLink} to={`/member/${user.id}`}>
       <Card className={styles.memberCard}>
         <Space direction="vertical" align="center">
           <Gravatar className={styles.userGravatar} circle email={user.email || ''} />
