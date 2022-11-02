@@ -35,6 +35,7 @@ import styles from 'components/Layout/Header/index.module.scss';
 import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/featureToggle';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
+import { formatProvider } from 'auth/keycloak-api/utils';
 
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
@@ -215,7 +216,7 @@ const Header = () => {
                       <Space size={4} className={styles.userMenuEmail}>
                         <Typography.Text>Signed in with</Typography.Text>
                         <Typography.Text strong>
-                          {tokenParsed.email || tokenParsed.identity_provider_identity}
+                          {tokenParsed.email || formatProvider(tokenParsed.identity_provider)}
                         </Typography.Text>
                       </Space>
                     ),
