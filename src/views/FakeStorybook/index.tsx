@@ -225,7 +225,7 @@ const FakeStorybook = () => {
 
           {/* Link */}
           <Space direction="vertical">
-            <Text>Text</Text>
+            <Text>Link</Text>
             <Text>Large</Text>
             <Button type="link" href="#" size="large">
               Button
@@ -234,7 +234,7 @@ const FakeStorybook = () => {
               Button
             </Button>
             <Button type="link" href="#" size="large" loading></Button>
-            <Button type="link" href="#" size="large" disabled>
+            <Button type="link" size="large" disabled>
               Button
             </Button>
 
