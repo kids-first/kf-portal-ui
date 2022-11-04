@@ -4,11 +4,11 @@ import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { hydrateResults } from 'graphql/models';
 import { ArrangerApi } from 'services/api/arranger';
 import EntityUploadIds from './EntityUploadIds';
 import { IFileEntity } from 'graphql/files/models';
 import { CHECK_FILE_MATCH } from 'graphql/files/queries';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 
 interface OwnProps {
   queryBuilderId: string;

@@ -1,5 +1,4 @@
 import { Col, Row } from 'antd';
-import { RawAggregation } from 'graphql/models';
 import PieChart from 'components/uiKit/charts/Pie';
 import { toChartData } from 'utils/charts';
 import intl from 'react-intl-universal';
@@ -19,13 +18,14 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 
 import styles from './index.module.scss';
+import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   id: string;
   className?: string;
 }
 
-const transformData = (results: RawAggregation) => {
+const transformData = (results: TRawAggregation) => {
   const aggs = results?.data?.participant?.aggregations;
   return {
     race: (aggs?.race.buckets || []).map(toChartData),

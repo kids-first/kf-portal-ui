@@ -6,7 +6,6 @@ import { persistStore, persistReducer } from 'redux-persist';
 import EnvVariables from 'helpers/EnvVariables';
 import { RootState } from 'store/types';
 import createFilter from 'redux-persist-transform-filter';
-// Reducers
 import GlobalReducer from 'store/global';
 import UserReducer from 'store/user';
 import PersonaReducer from 'store/persona';
@@ -27,7 +26,7 @@ const persistConfig = {
   transforms: [createFilter('global', ['lang'])],
 };
 
-const rootReducer = combineReducers<RootState>({
+export const rootReducer = combineReducers<RootState>({
   global: GlobalReducer,
   persona: PersonaReducer,
   notebook: NotebookReducer,
@@ -40,7 +39,7 @@ const rootReducer = combineReducers<RootState>({
   fenceCavatica: FenceCavaticaReducer,
 });
 
-const store: any = configureStore({
+export const store: any = configureStore({
   reducer: persistReducer(persistConfig, rootReducer),
   devTools: devMode,
   middleware: (getDefaultMiddleware) => {
@@ -56,3 +55,6 @@ const persistor = persistStore(store);
 export default function getStoreConfig() {
   return { store, persistor };
 }
+
+export type AppStore = ReturnType<typeof store>;
+export type AppDispatch = AppStore['dispatch'];

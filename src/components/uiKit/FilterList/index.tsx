@@ -3,12 +3,12 @@ import { Button, Layout, Space, Spin, Typography } from 'antd';
 import CustomFilterContainer from './CustomFilterContainer';
 import intl from 'react-intl-universal';
 import { FilterGroup, FilterInfo } from './types';
-import { ExtendedMappingResults } from 'graphql/models';
 import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import cx from 'classnames';
 
 import styles from 'components/uiKit/FilterList/Filters.module.scss';
 import { isEmpty } from 'lodash';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 export type TCustomFilterMapper = (filters: ISqonGroupFilter) => ISyntheticSqon;
 
@@ -16,7 +16,7 @@ type OwnProps = {
   loading?: boolean;
   index: string;
   queryBuilderId: string;
-  extendedMappingResults: ExtendedMappingResults;
+  extendedMappingResults: IExtendedMappingResults;
   filterInfo: FilterInfo;
   filterMapper?: TCustomFilterMapper;
 };

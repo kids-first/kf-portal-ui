@@ -15,6 +15,7 @@ import { globalActions } from 'store/global';
 import { ArrangerApi } from 'services/api/arranger';
 import { ArrangerColumnStateResults } from 'services/api/arranger/models';
 import { INDEXES } from 'graphql/constants';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 
 export const SUPPORT_EMAIL = 'support@includedcc.org';
 
@@ -177,7 +178,7 @@ const fetchTsxReport = async (
           fileName: formattedFileName,
           fileType: 'tsv',
           sqon: args.sqon,
-          sort: sortIdField ? [{ field: sortIdField, order: 'asc' }] : [],
+          sort: sortIdField ? [{ field: sortIdField, order: SortDirection.Asc }] : [],
           index: args.index,
           columns: tsvColumnsConfigWithHeader.sort((a, b) => {
             return columnKeyOrdered.indexOf(a.field) > columnKeyOrdered.indexOf(b.field) ? 1 : -1;

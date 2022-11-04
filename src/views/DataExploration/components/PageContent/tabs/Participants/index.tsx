@@ -7,14 +7,12 @@ import {
   IParticipantStudy,
   ITableParticipantEntity,
 } from 'graphql/participants/models';
-import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
 import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
-import { IQueryConfig, TQueryConfigCb } from 'common/searchPageTypes';
 import { SEX, TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import {
@@ -48,6 +46,12 @@ import SetsManagementDropdown from 'views/DataExploration/components/SetsManagem
 import { SetType } from 'services/api/savedSet/models';
 
 import styles from './index.module.scss';
+import {
+  IQueryResults,
+  IQueryConfig,
+  TQueryConfigCb,
+  IArrangerResultsTree,
+} from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   results: IQueryResults<IParticipantEntity[]>;
@@ -132,7 +136,7 @@ const defaultColumns: ProColumnType[] = [
     title: 'Diagnosis (MONDO)',
     dataIndex: 'diagnosis',
     className: styles.diagnosisCell,
-    render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
+    render: (mondo: IArrangerResultsTree<IParticipantDiagnosis>) => {
       const mondoNames = mondo?.hits?.edges.map((m) => m.node.mondo_id_diagnosis);
       if (!mondoNames || mondoNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
@@ -166,7 +170,7 @@ const defaultColumns: ProColumnType[] = [
     title: 'Observed Phenotype (HPO)',
     dataIndex: 'phenotype',
     className: styles.phenotypeCell,
-    render: (phenotype: ArrangerResultsTree<IParticipantPhenotype>) => {
+    render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
       if (!phenotypeNames || phenotypeNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
@@ -327,7 +331,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
       diagnosis?.hits?.edges?.map((o) => o.node.ncit_id_diagnosis)?.join(', ') ||
       TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -336,7 +340,7 @@ const defaultColumns: ProColumnType[] = [
     title: 'Diagnosis (Source Text)',
     dataIndex: 'diagnosis',
     defaultHidden: true,
-    render: (mondo: ArrangerResultsTree<IParticipantDiagnosis>) => {
+    render: (mondo: IArrangerResultsTree<IParticipantDiagnosis>) => {
       const sourceTexts = mondo?.hits?.edges.map((m) => m.node.source_text);
 
       if (!sourceTexts || sourceTexts.length === 0) {
@@ -360,7 +364,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
       diagnosis?.hits?.edges?.map((dn) => dn.node.affected_status) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -381,7 +385,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (outcomes: ArrangerResultsTree<IParticipantOutcomes>) =>
+    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) =>
       outcomes?.hits?.edges?.map((o) => o.node.vital_status) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -392,7 +396,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_: ArrangerResultsTree<IParticipantPhenotype>) => TABLE_EMPTY_PLACE_HOLDER,
+    render: (_: IArrangerResultsTree<IParticipantPhenotype>) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'source_text_phenotype',
@@ -412,7 +416,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: ArrangerResultsTree<IParticipantDiagnosis>) =>
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
       diagnosis?.hits?.edges
         ?.filter((e) => e.node?.age_at_event_days !== null)
         .map((e) => e.node?.age_at_event_days)
@@ -426,7 +430,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (outcomes: ArrangerResultsTree<IParticipantOutcomes>) =>
+    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) =>
       outcomes?.hits?.edges
         ?.filter((e) => e.node.age_at_event_days?.value)
         ?.map((e) => e.node.age_at_event_days.value)
@@ -441,7 +445,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>) =>
+    render: (observed_phenotype: IArrangerResultsTree<IParticipantObservedPhenotype>) =>
       observed_phenotype?.hits?.edges
         ?.filter((e) => e.node.age_at_event_days.length > 0)
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,

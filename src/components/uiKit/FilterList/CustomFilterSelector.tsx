@@ -6,16 +6,16 @@ import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Spin } from 'antd';
 import { useEffect } from 'react';
 import useGetAggregations from 'hooks/graphql/useGetAggregations';
-import { ExtendedMappingResults } from 'graphql/models';
 import { AGGREGATION_QUERY } from 'graphql/queries';
 import { TCustomFilterMapper } from '.';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 type OwnProps = FilterSelectorProps & {
   index: string;
   queryBuilderId: string;
   filterKey: string;
   onDataLoaded: Function;
-  extendedMappingResults: ExtendedMappingResults;
+  extendedMappingResults: IExtendedMappingResults;
   filterMapper?: TCustomFilterMapper;
 };
 

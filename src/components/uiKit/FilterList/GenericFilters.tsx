@@ -1,17 +1,17 @@
 import { Layout, Spin } from 'antd';
 import { generateFilters } from 'graphql/utils/Filters';
 import useGetAggregations from 'hooks/graphql/useGetAggregations';
-import { ExtendedMappingResults } from 'graphql/models';
 import { AGGREGATION_QUERY } from 'graphql/queries';
 
 import styles from './Filters.module.scss';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 type OwnProps = {
   queryBuilderId: string;
   index: string;
   field: string;
   sqon: any;
-  extendedMappingResults: ExtendedMappingResults;
+  extendedMappingResults: IExtendedMappingResults;
 };
 
 const GenericFilters = ({

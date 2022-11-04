@@ -5,16 +5,16 @@ import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { useState } from 'react';
 
 import styles from './index.module.scss';
-import { ExtendedMappingResults } from 'graphql/models';
 import { STUDIES_REPO_QB_ID } from '../../utils/constant';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import { Button } from 'antd';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 type OwnProps = {
   className?: string;
-  extendedMappingResults: ExtendedMappingResults;
+  extendedMappingResults: IExtendedMappingResults;
   filterInfo: FilterInfo;
 };
 

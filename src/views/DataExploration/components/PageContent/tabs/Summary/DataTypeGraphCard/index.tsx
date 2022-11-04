@@ -1,4 +1,3 @@
-import { RawAggregation } from 'graphql/models';
 import { toChartData } from 'utils/charts';
 import BarChart from 'components/uiKit/charts/Bar';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -16,13 +15,14 @@ import CardHeader from 'views/Dashboard/components/CardHeader';
 import intl from 'react-intl-universal';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   id: string;
   className?: string;
 }
 
-const transformDataType = (results: RawAggregation) =>
+const transformDataType = (results: TRawAggregation) =>
   (results?.data?.participant?.aggregations?.files__data_type.buckets || []).map(toChartData);
 
 const graphSetting: any = {

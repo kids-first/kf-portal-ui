@@ -16,6 +16,12 @@ export const getProTableDictionary = (): IProTableDictionary => ({
     selectAllResults: 'Select all results',
     clear: 'Clear',
   },
+  pagination: {
+    first: intl.get('global.proTable.pagination.first'),
+    previous: intl.get('global.proTable.pagination.previous'),
+    next: intl.get('global.proTable.pagination.next'),
+    view: intl.get('global.proTable.pagination.view'),
+  },
   numberFormat: numberWithCommas,
 });
 

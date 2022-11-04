@@ -7,14 +7,13 @@ import {
   PlusOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
+import { IParticipantEntity } from 'graphql/participants/models';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
-import { IQueryResults } from 'graphql/models';
-import { IParticipantEntity } from 'graphql/participants/models';
-import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import CreateEditModal from 'views/Dashboard/components/DashboardCards/SavedSets/CreateEditModal';
 
 import ListAddIcon from 'components/Icons/ListAddIcon';
@@ -26,6 +25,7 @@ import { numberWithCommas } from 'utils/string';
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 
 import styles from './index.module.scss';
+import { IQueryResults } from '@ferlab/ui/core/graphql/types';
 
 type Props = {
   results: IQueryResults<IParticipantEntity[] | IFileEntity[] | IBiospecimenEntity[]>;

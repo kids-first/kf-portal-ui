@@ -1,12 +1,12 @@
 import { DocumentNode, TypedDocumentNode } from '@apollo/client';
-import { GqlResults } from 'graphql/models';
+import { IGqlResults } from '@ferlab/ui/core/graphql/types';
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
 
 const useGetAggregations = (
   variables: any,
   query: DocumentNode | TypedDocumentNode,
   index: string,
-): GqlResults<any> => {
+): IGqlResults<any> => {
   const { loading, result } = useLazyResultQuery<any>(query, {
     variables,
     fetchPolicy: 'no-cache',
