@@ -17,15 +17,6 @@ import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { SuggestionType } from 'services/api/arranger/models';
-import { mapFilterForParticipant, mapFilterForVariant } from 'utils/fieldMapper';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import {
-  FT_VARIANT_FACET_PARTICIPANT,
-  FT_VARIANT_FACET_VARIANT,
-  FT_VARIANT_FACET_GENE,
-  FT_VARIANT_FACET_PATHOGENICITY,
-  FT_VARIANT_FACET_FREQUENTY,
-} from 'common/featureToggle';
 
 import PageContent from './components/PageContent';
 import { SCROLL_WRAPPER_ID } from './utils/constants';
@@ -55,7 +46,7 @@ const filterGroups: {
     groups: [
       {
         facets: [
-          'study__study_code',
+          'studies__study_code',
           <TreeFacet
             type={'hpoTree'}
             field={'observed_phenotype'}
@@ -164,29 +155,23 @@ const filterGroups: {
 const Variants = () => {
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const variantMappingResults = useGetExtendedMappings(INDEXES.VARIANTS);
-  const menuItems: ISidebarMenuItem[] = [];
-
-  if (getFTEnvVarByKey(FT_VARIANT_FACET_PARTICIPANT) !== 'false') {
-    menuItems.push({
+  const menuItems: ISidebarMenuItem[] = [
+    {
       key: '1',
       title: intl.get('screen.variants.sidemenu.participant'),
       icon: <UserOutlined />,
       panelContent: (
         <FilterList
           loading={participantMappingResults.loading}
-          key={FilterKeys.PARTICIPANT}
-          index={INDEXES.PARTICIPANT}
+          key={FilterKeys.VARIANTS}
+          index={INDEXES.VARIANTS}
           queryBuilderId={VARIANT_REPO_QB_ID}
-          extendedMappingResults={participantMappingResults}
+          extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Participant]}
-          filterMapper={mapFilterForParticipant}
         />
       ),
-    });
-  }
-
-  if (getFTEnvVarByKey(FT_VARIANT_FACET_VARIANT) !== 'false') {
-    menuItems.push({
+    },
+    {
       key: '2',
       title: intl.get('screen.variants.sidemenu.variant'),
       icon: <LineStyleIcon />,
@@ -198,13 +183,10 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Variant]}
-          filterMapper={mapFilterForVariant}
         />
       ),
-    });
-  }
-  if (getFTEnvVarByKey(FT_VARIANT_FACET_GENE) !== 'false') {
-    menuItems.push({
+    },
+    {
       key: '3',
       title: intl.get('screen.variants.sidemenu.gene'),
       icon: <GeneIcon />,
@@ -216,13 +198,10 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Gene]}
-          filterMapper={mapFilterForVariant}
         />
       ),
-    });
-  }
-  if (getFTEnvVarByKey(FT_VARIANT_FACET_PATHOGENICITY) !== 'false') {
-    menuItems.push({
+    },
+    {
       key: '4',
       title: intl.get('screen.variants.sidemenu.pathogenicity'),
       icon: <DiseaseIcon />,
@@ -234,13 +213,10 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Pathogenicity]}
-          filterMapper={mapFilterForVariant}
         />
       ),
-    });
-  }
-  if (getFTEnvVarByKey(FT_VARIANT_FACET_FREQUENTY) !== 'false') {
-    menuItems.push({
+    },
+    {
       key: '5',
       title: intl.get('screen.variants.sidemenu.frequency'),
       icon: <FrequencyIcon />,
@@ -252,11 +228,10 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Frequency]}
-          filterMapper={mapFilterForVariant}
         />
       ),
-    });
-  }
+    },
+  ];
 
   return (
     <div className={styles.variantsLayout}>
