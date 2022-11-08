@@ -12,7 +12,6 @@ import { isEmpty } from 'lodash';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
-  VARIANT_FILTER_TAG,
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
 
@@ -33,6 +32,7 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { ArrangerApi } from 'services/api/arranger';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+import { SavedFilterTag } from 'services/api/savedFilter/models';
 
 type OwnProps = {
   variantMapping: ExtendedMappingResults;
@@ -40,13 +40,13 @@ type OwnProps = {
 
 const addTagToFilter = (filter: ISavedFilter) => ({
   ...filter,
-  tag: VARIANT_FILTER_TAG,
+  tag: SavedFilterTag.VARIANTS_VExP,
 });
 
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
   const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
-  const { savedFilters, defaultFilter } = useSavedFilter(VARIANT_FILTER_TAG);
+  const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VARIANTS_VExP);
 
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
