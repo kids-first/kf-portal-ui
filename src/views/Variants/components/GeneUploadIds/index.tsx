@@ -11,6 +11,8 @@ import { hydrateResults } from 'graphql/models';
 import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
+import { Descriptions } from 'antd';
+import styles from './index.module.scss';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -47,6 +49,27 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
         matchToFieldColTitle: intl.get('upload.gene.ids.modal.match.table.matchcol.title'),
         mappedToFieldColTitle: intl.get('upload.gene.ids.modal.match.table.mappedcol.title'),
       },
+    }}
+    popoverProps={{
+      title: intl.get('components.uploadIds.modal.popover.title'),
+      overlayClassName: styles.geneUploadIdsPopover,
+      content: (
+        <Descriptions column={1}>
+          <Descriptions.Item label={intl.get('components.uploadIds.modal.popover.identifiers')}>
+          {intl.get('upload.gene.ids.modal.identifiers')}
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={intl.get('components.uploadIds.modal.popover.separatedBy.title')}
+          >
+            {intl.get('components.uploadIds.modal.popover.separatedBy.values')}
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={intl.get('components.uploadIds.modal.popover.uploadFileFormats')}
+          >
+            {intl.get('components.uploadIds.modal.popover.fileFormats')}
+          </Descriptions.Item>
+        </Descriptions>
+      ),
     }}
     placeHolder="ex. ENSG00000157764, TP53"
     fetchMatch={async (ids) => {

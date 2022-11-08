@@ -350,6 +350,7 @@ const en = {
             title: 'Separated by',
             values: 'comma, space, new line',
           },
+          fileFormats: '.txt, .csv, .tsv',
           uploadFileFormats: 'Upload file formats',
         },
       },
