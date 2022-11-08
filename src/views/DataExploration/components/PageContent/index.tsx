@@ -22,7 +22,6 @@ import DataFilesTabs from 'views/DataExploration/components/PageContent/tabs/Dat
 import ParticipantsTab from 'views/DataExploration/components/PageContent/tabs/Participants';
 import SummaryTab from 'views/DataExploration/components/PageContent/tabs/Summary';
 import {
-  DATA_EPLORATION_FILTER_TAG,
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
@@ -52,6 +51,7 @@ import { numberWithCommas } from 'utils/string';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { SavedFilterTag } from 'services/api/savedFilter/models';
 
 const { Title } = Typography;
 
@@ -64,7 +64,7 @@ type OwnProps = {
 
 const addTagToFilter = (filter: ISavedFilter) => ({
   ...filter,
-  tag: DATA_EPLORATION_FILTER_TAG,
+  tag: SavedFilterTag.PARTICIPANTS_DExP,
 });
 
 const resolveSqonForParticipants = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
@@ -78,7 +78,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
   const history = useHistory();
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
-    useQBStateWithSavedFilters(DATA_EXPLORATION_QB_ID, DATA_EPLORATION_FILTER_TAG);
+    useQBStateWithSavedFilters(DATA_EXPLORATION_QB_ID, SavedFilterTag.PARTICIPANTS_DExP);
 
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,
