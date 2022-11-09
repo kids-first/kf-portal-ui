@@ -64,7 +64,7 @@ type OwnProps = {
 
 const addTagToFilter = (filter: ISavedFilter) => ({
   ...filter,
-  tag: SavedFilterTag.PARTICIPANTS_DExP,
+  tag: SavedFilterTag.ParticipantsExplorationPage,
 });
 
 const resolveSqonForParticipants = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
@@ -78,7 +78,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
   const history = useHistory();
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
-    useQBStateWithSavedFilters(DATA_EXPLORATION_QB_ID, SavedFilterTag.PARTICIPANTS_DExP);
+    useQBStateWithSavedFilters(DATA_EXPLORATION_QB_ID, SavedFilterTag.ParticipantsExplorationPage);
 
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,

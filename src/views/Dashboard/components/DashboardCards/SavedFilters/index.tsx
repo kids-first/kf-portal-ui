@@ -98,20 +98,20 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
       content={
         <Tabs
           className={cx(styles.setTabs, 'navNoMarginBtm')}
-          defaultActiveKey={SavedFilterTag.PARTICIPANTS_DExP}
+          defaultActiveKey={SavedFilterTag.ParticipantsExplorationPage}
         >
           <TabPane
-            key={SavedFilterTag.PARTICIPANTS_DExP}
+            key={SavedFilterTag.ParticipantsExplorationPage}
             tab={
               <div>
                 <UserOutlined />
                 Participants (
-                {savedFilters.filter((s) => s.tag === SavedFilterTag.PARTICIPANTS_DExP).length})
+                {savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage).length})
               </div>
             }
           >
             <SavedFilterListWrapper
-              tag={SavedFilterTag.PARTICIPANTS_DExP}
+              tag={SavedFilterTag.ParticipantsExplorationPage}
               savedFilters={savedFilters}
               fetchingError={fetchingError}
               isLoading={isLoading}
@@ -119,16 +119,16 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
           </TabPane>
 
           <TabPane
-            key={SavedFilterTag.VARIANTS_VExP}
+            key={SavedFilterTag.VariantsExplorationPage}
             tab={
               <div>
                 <LineStyleIcon height={14} width={14} />
-                Variants ({savedFilters.filter((s) => s.tag === SavedFilterTag.VARIANTS_VExP).length})
+                Variants ({savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage).length})
               </div>
             }
           >
             <SavedFilterListWrapper
-              tag={SavedFilterTag.VARIANTS_VExP}
+              tag={SavedFilterTag.VariantsExplorationPage}
               savedFilters={savedFilters}
               fetchingError={fetchingError}
               isLoading={isLoading}

@@ -8,8 +8,8 @@ export type TUserSavedFilter = ISavedFilter & {
 };
 
 export enum SavedFilterTag {
-  PARTICIPANTS_DExP = 'participants-data-exploration-page',
-  VARIANTS_VExP = 'variants-variants-exploration-page',
+  ParticipantsExplorationPage = 'participants-data-exploration-page',
+  VariantsExplorationPage = 'variants-variants-exploration-page',
 }
 
 export type TUserSavedFilterInsert = Omit<
