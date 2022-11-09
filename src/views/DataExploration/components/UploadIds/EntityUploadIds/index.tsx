@@ -80,7 +80,7 @@ const EntityUploadIds = ({
           <Descriptions.Item
             label={intl.get('components.uploadIds.modal.popover.uploadFileFormats')}
           >
-            .txt, .csv, .tsv
+            {intl.get('components.uploadIds.modal.popover.fileFormats')}
           </Descriptions.Item>
         </Descriptions>
       ),
