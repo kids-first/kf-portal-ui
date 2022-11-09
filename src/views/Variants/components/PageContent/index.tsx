@@ -40,13 +40,13 @@ type OwnProps = {
 
 const addTagToFilter = (filter: ISavedFilter) => ({
   ...filter,
-  tag: SavedFilterTag.VARIANTS_VExP,
+  tag: SavedFilterTag.VariantsExplorationPage,
 });
 
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
   const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
-  const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VARIANTS_VExP);
+  const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VariantsExplorationPage);
 
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
