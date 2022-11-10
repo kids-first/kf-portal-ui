@@ -925,10 +925,12 @@ const en = {
     genePanels: 'Gene Panels',
     start: 'Position',
     gene_external_reference: 'External Reference',
+    locus: 'Variant',
     consequences: {
       consequences: 'Consequence',
       biotype: 'Gene Type',
       vep_impact: 'VEP',
+      symbol: 'Gene Symbol',
       predictions: {
         sift_pred: 'SIFT',
         polyphen2_hvar_pred: 'PolyPhen-2 HVAR',

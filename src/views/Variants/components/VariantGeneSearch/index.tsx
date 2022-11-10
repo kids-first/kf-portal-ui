@@ -1,8 +1,12 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import intl from 'react-intl-universal';
-import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import useQueryBuilderState, {
+  updateActiveQueryField,
+} from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { ISqonGroupFilter, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import { findSqonValueByField } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
+import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
 import SearchAutocomplete, {
@@ -22,7 +26,8 @@ const getValue = (type: SuggestionType, option: Suggestion) =>
 
 const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
-  const selectedItems = useRef<string[]>([]);
+  const { activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
+  const field = type === SuggestionType.VARIANTS ? 'locus' : 'consequences.symbol';
 
   const handleSearch = async (searchText: string) => {
     const { data } = await ArrangerApi.searchSuggestions(type, searchText);
@@ -38,20 +43,20 @@ const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
   return (
     <SearchAutocomplete
       onSearch={(value) => handleSearch(value)}
-      onSelect={(values) => {
-        selectedItems.current = values;
-
-        return updateActiveQueryField({
+      onSelect={(values) =>
+        updateActiveQueryField({
           queryBuilderId,
-          field: intl.get(`filters.group.${type}`),
+          field,
           value: values,
           index: INDEXES.VARIANTS,
           merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-        });
-      }}
+        })
+      }
       placeHolder={intl.get(`global.search.${type}.placeholder`)}
       options={options}
-      selectedItems={selectedItems.current ?? []}
+      selectedItems={
+        (findSqonValueByField(field, activeQuery as ISqonGroupFilter) as string[]) ?? []
+      }
       title={intl.get(`global.search.${type}.title`)}
       emptyDescription={intl.get(`global.search.${type}.emptyText`)}
       tooltipText={intl.get(`global.search.${type}.tooltip`)}
