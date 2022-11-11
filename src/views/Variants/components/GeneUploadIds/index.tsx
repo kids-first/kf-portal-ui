@@ -5,13 +5,14 @@ import { MatchTableItem } from '@ferlab/ui/core/components/UploadIds/types';
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
 import { hydrateResults } from 'graphql/models';
 import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
-import { Descriptions } from 'antd';
+
 import styles from './index.module.scss';
 
 interface OwnProps {
@@ -56,7 +57,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
       content: (
         <Descriptions column={1}>
           <Descriptions.Item label={intl.get('components.uploadIds.modal.popover.identifiers')}>
-          {intl.get('upload.gene.ids.modal.identifiers')}
+            {intl.get('upload.gene.ids.modal.identifiers')}
           </Descriptions.Item>
           <Descriptions.Item
             label={intl.get('components.uploadIds.modal.popover.separatedBy.title')}
@@ -91,7 +92,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
         },
       });
 
-      const genes: IGeneEntity[] = hydrateResults(response.data?.data?.Genes?.hits?.edges || []);
+      const genes: IGeneEntity[] = hydrateResults(response.data?.data?.genes?.hits?.edges || []);
 
       const matchResults = ids.map((id, index) => {
         const gene = genes.find((gene) => [gene.symbol, gene.ensembl_gene_id].includes(id));
