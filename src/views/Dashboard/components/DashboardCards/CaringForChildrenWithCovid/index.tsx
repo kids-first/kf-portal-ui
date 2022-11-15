@@ -1,14 +1,15 @@
 import intl from 'react-intl-universal';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Space, Tooltip, Typography } from 'antd';
+
+import FHIR_ICON from 'components/assets/FHIR.png';
 
 import CardHeader from '../../CardHeader';
 import { DashboardCardProps } from '..';
 
 import styles from './index.module.scss';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
-import FHIR_ICON from 'components/assets/FHIR.png';
-import { InfoCircleOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -46,7 +47,7 @@ const CaringForChildrenWithCovid = ({ id, key, className = '' }: DashboardCardPr
         key={key}
         title={intl.get('screen.dashboard.cards.fhirDataResource.title')}
         infoPopover={{
-          title: intl.get('screen.dashboard.cards.fhirDataResource.title'),
+          title: intl.get('screen.dashboard.cards.fhirDataResource.infoPopover.title'),
           content: (
             <Space direction="vertical" className={styles.content} size={0}>
               <Text>
