@@ -1,8 +1,8 @@
-import { ArrangerResultsTree } from 'graphql/models';
+import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IStudiesEntity } from 'graphql/studies/models';
 
 export interface IVariantResultTree {
-  variants: ArrangerResultsTree<IVariantEntity>;
+  variants: IArrangerResultsTree<IVariantEntity>;
 }
 
 export enum Impact {
@@ -135,11 +135,11 @@ export interface IGeneEntity {
   name: string;
   omim_gene_id: string;
   symbol: string;
-  cosmic: ArrangerResultsTree<IGeneCosmic>;
-  ddd: ArrangerResultsTree<IGeneDdd>;
-  hpo: ArrangerResultsTree<IGeneHpo>;
-  omim: ArrangerResultsTree<IGeneOmim>;
-  orphanet: ArrangerResultsTree<IGeneOrphanet>;
+  cosmic: IArrangerResultsTree<IGeneCosmic>;
+  ddd: IArrangerResultsTree<IGeneDdd>;
+  hpo: IArrangerResultsTree<IGeneHpo>;
+  omim: IArrangerResultsTree<IGeneOmim>;
+  orphanet: IArrangerResultsTree<IGeneOrphanet>;
 }
 
 export interface IVariantEntity {
@@ -169,11 +169,11 @@ export interface IVariantEntity {
   variant_external_reference: string;
   vep_impacts: string;
   zygosity: string;
-  studies: ArrangerResultsTree<IStudiesEntity>;
-  consequences: ArrangerResultsTree<IConsequenceEntity>;
+  studies: IArrangerResultsTree<IStudiesEntity>;
+  consequences: IArrangerResultsTree<IConsequenceEntity>;
   clinvar: IClinVar;
   frequencies: IExternalFrequenciesEntity;
-  genes: ArrangerResultsTree<IGeneEntity>;
+  genes: IArrangerResultsTree<IGeneEntity>;
 }
 
 export type ITableVariantEntity = IVariantEntity & {

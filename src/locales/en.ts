@@ -92,6 +92,12 @@ const en = {
       of: 'of',
       selected: 'item selected',
       selectedPlural: 'items selected',
+      pagination: {
+        first: 'First',
+        previous: 'Prev.',
+        next: 'Next',
+        view: '{value} / view',
+      },
     },
   },
   api: {

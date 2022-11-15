@@ -1,22 +1,7 @@
 import { gql } from '@apollo/client';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { dotToUnderscore, underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-import { ExtendedMapping, ExtendedMappingResults } from './models';
-
-export type TSortDirection = 'asc' | 'desc';
-
-export type Sort = {
-  field: string;
-  order: TSortDirection;
-};
-
-export type QueryVariable = {
-  sqon?: ISyntheticSqon;
-  first?: number;
-  offset?: number;
-  sort?: Sort[];
-  pageSize?: number;
-};
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 export const INDEX_EXTENDED_MAPPING = (index: string) => gql`
 query ExtendedMapping_${index} {
@@ -29,7 +14,7 @@ query ExtendedMapping_${index} {
 export const AGGREGATION_QUERY = (
   index: string,
   aggList: string[],
-  mappingResults: ExtendedMappingResults,
+  mappingResults: IExtendedMappingResults,
 ) => {
   if (!mappingResults || mappingResults.loading) return gql``;
 
@@ -50,7 +35,7 @@ export const AGGREGATION_QUERY = (
     `;
 };
 
-const generateAggregations = (extendedMappingFields: ExtendedMapping[]) => {
+const generateAggregations = (extendedMappingFields: TExtendedMapping[]) => {
   const aggs = extendedMappingFields.map((f) => {
     if (['keyword', 'id'].includes(f.type)) {
       return (

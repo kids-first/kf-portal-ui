@@ -1,5 +1,5 @@
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { DocumentNode } from 'graphql';
-import { ExtendedMappingResults } from 'graphql/models';
 import React from 'react';
 
 export interface FilterGroup {
@@ -17,5 +17,5 @@ export interface FilterInfo {
 export type TAggregationFunction = (
   index: string,
   aggList: string[],
-  mappingResults: ExtendedMappingResults,
+  mappingResults: IExtendedMappingResults,
 ) => DocumentNode;

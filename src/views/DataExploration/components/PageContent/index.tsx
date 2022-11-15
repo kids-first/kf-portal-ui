@@ -13,7 +13,6 @@ import { Space, Tabs, Typography } from 'antd';
 import copy from 'copy-to-clipboard';
 import { INDEXES } from 'graphql/constants';
 import { useDataFiles } from 'graphql/files/actions';
-import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useParticipants } from 'graphql/participants/actions';
 import { IParticipantResultTree } from 'graphql/participants/models';
 import { GET_PARTICIPANT_COUNT } from 'graphql/participants/queries';
@@ -52,13 +51,16 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 
 const { Title } = Typography;
 
 export const MAX_TITLE_LENGTH = 200;
 type OwnProps = {
-  fileMapping: ExtendedMappingResults;
-  participantMapping: ExtendedMappingResults;
+  fileMapping: IExtendedMappingResults;
+  participantMapping: IExtendedMappingResults;
   tabId?: string;
 };
 
@@ -95,7 +97,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
     offset: participantQueryConfig.size * (participantQueryConfig.pageIndex - 1),
     sqon: participantResolvedSqon,
     sort: isEmpty(participantQueryConfig.sort)
-      ? [{ field: 'participant_id', order: 'asc' }]
+      ? [{ field: 'participant_id', order: SortDirection.Asc }]
       : participantQueryConfig.sort,
   });
 
@@ -104,7 +106,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
     offset: datafilesQueryConfig.size * (datafilesQueryConfig.pageIndex - 1),
     sqon: fileResolvedSqon,
     sort: isEmpty(datafilesQueryConfig.sort)
-      ? [{ field: 'file_id', order: 'asc' }]
+      ? [{ field: 'file_id', order: SortDirection.Asc }]
       : datafilesQueryConfig.sort,
   });
 
@@ -125,7 +127,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
     return title
       ? title
       : combineExtendedMappings([participantMapping, fileMapping])?.data?.find(
-          (mapping: ExtendedMapping) => key === mapping.field,
+          (mapping: TExtendedMapping) => key === mapping.field,
         )?.displayName || key;
   };
 

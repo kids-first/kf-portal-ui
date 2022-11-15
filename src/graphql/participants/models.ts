@@ -1,9 +1,9 @@
+import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
-import { ArrangerResultsTree } from 'graphql/models';
 
 export interface IParticipantResultTree {
-  participant: ArrangerResultsTree<IParticipantEntity>;
+  participant: IArrangerResultsTree<IParticipantEntity>;
 }
 
 export interface IParticipantDiagnosis {
@@ -78,7 +78,7 @@ export interface IParticipantEntity {
   is_proband: boolean;
   age_at_data_collection: number;
   nb_files: number;
-  files: ArrangerResultsTree<IFileEntity>;
+  files: IArrangerResultsTree<IFileEntity>;
   nb_biospecimens: number;
   study_id: string;
   release_id: string;
@@ -86,13 +86,13 @@ export interface IParticipantEntity {
   down_syndrome_diagnosis: string;
   ethnicity: string;
   study_external_id: string;
-  mondo: ArrangerResultsTree<IParticipantMondo>;
-  observed_phenotype: ArrangerResultsTree<IParticipantObservedPhenotype>;
-  diagnosis: ArrangerResultsTree<IParticipantDiagnosis>;
-  biospecimen: ArrangerResultsTree<IBiospecimenEntity>;
-  phenotype: ArrangerResultsTree<IParticipantPhenotype>;
+  mondo: IArrangerResultsTree<IParticipantMondo>;
+  observed_phenotype: IArrangerResultsTree<IParticipantObservedPhenotype>;
+  diagnosis: IArrangerResultsTree<IParticipantDiagnosis>;
+  biospecimen: IArrangerResultsTree<IBiospecimenEntity>;
+  phenotype: IArrangerResultsTree<IParticipantPhenotype>;
   race: string;
-  outcomes: ArrangerResultsTree<IParticipantOutcomes>;
+  outcomes: IArrangerResultsTree<IParticipantOutcomes>;
 }
 
 export type ITableParticipantEntity = IParticipantEntity & {

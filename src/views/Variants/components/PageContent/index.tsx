@@ -6,12 +6,11 @@ import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { Space, Typography } from 'antd';
-import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useVariant } from 'graphql/variants/actions';
-import { isEmpty } from 'lodash';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
+  DEFAULT_SORT_QUERY,
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
 
@@ -32,10 +31,14 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { ArrangerApi } from 'services/api/arranger';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 
 type OwnProps = {
-  variantMapping: ExtendedMappingResults;
+  variantMapping: IExtendedMappingResults;
 };
 
 const addTagToFilter = (filter: ISavedFilter) => ({
@@ -51,21 +54,40 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
-  const variantResults = useVariant({
-    first: variantQueryConfig.size,
-    offset: variantQueryConfig.size * (variantQueryConfig.pageIndex - 1),
-    sqon: variantResolvedSqon,
-    sort: isEmpty(variantQueryConfig.sort)
-      ? [
-          { field: 'max_impact_score', order: 'desc' },
-          { field: 'hgvsg', order: 'asc' },
-        ]
-      : variantQueryConfig.sort,
-  });
+  const variantResults = useVariant(
+    {
+      first: variantQueryConfig.size,
+      offset: DEFAULT_PAGE_INDEX,
+      searchAfter: variantQueryConfig.searchAfter,
+      sqon: variantResolvedSqon,
+      sort: tieBreaker({
+        sort: variantQueryConfig.sort,
+        defaultSort: DEFAULT_SORT_QUERY,
+        field: 'locus',
+        order: variantQueryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
+      }),
+    },
+    variantQueryConfig.operations,
+  );
+
+  useEffect(() => {
+    if (
+      variantQueryConfig.firstPageFlag !== undefined ||
+      variantQueryConfig.searchAfter === undefined
+    ) {
+      return;
+    }
+
+    setVariantQueryConfig({
+      ...variantQueryConfig,
+      firstPageFlag: variantQueryConfig.searchAfter,
+    });
+  }, [variantQueryConfig]);
 
   useEffect(() => {
     setVariantQueryConfig({
       ...variantQueryConfig,
+      searchAfter: undefined,
       pageIndex: DEFAULT_PAGE_INDEX,
     });
     // eslint-disable-next-line
@@ -76,7 +98,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
     return title
       ? title
       : combineExtendedMappings([variantMapping])?.data?.find(
-          (mapping: ExtendedMapping) => key === mapping.field,
+          (mapping: TExtendedMapping) => key === mapping.field,
         )?.displayName || key;
   };
 

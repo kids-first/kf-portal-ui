@@ -8,7 +8,6 @@ import { useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
-import { ArrangerResultsTree, IQueryResults } from 'graphql/models';
 import {
   IClinVar,
   IConsequenceNode,
@@ -17,10 +16,9 @@ import {
   IVariantEntity,
 } from 'graphql/variants/models';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
-import { DEFAULT_PAGE_SIZE, SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
+import { SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { IQueryConfig, TQueryConfigCb } from 'common/searchPageTypes';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { getProTableDictionary } from 'utils/translation';
 
@@ -28,10 +26,17 @@ import styles from './index.module.scss';
 import { IStudiesEntity } from 'graphql/studies/models';
 import { STATIC_ROUTES } from 'utils/routes';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import {
+  IQueryResults,
+  IArrangerResultsTree,
+  IQueryConfig,
+  TQueryConfigCb,
+} from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   results: IQueryResults<IVariantEntity[]>;
@@ -48,6 +53,9 @@ const defaultColumns: ProColumnType[] = [
     key: 'hgvsg',
     dataIndex: 'hgvsg',
     className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
+    sorter: {
+      multiple: 1,
+    },
     render: (hgvsg: string, entity: IVariantEntity) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
@@ -63,12 +71,18 @@ const defaultColumns: ProColumnType[] = [
     key: 'variant_class',
     title: 'Type',
     dataIndex: 'variant_class',
+    sorter: {
+      multiple: 1,
+    },
   },
   {
     key: 'rsnumber',
     title: intl.get('screen.variants.table.dbsnp'),
     dataIndex: 'rsnumber',
     className: styles.dbSnpTableCell,
+    sorter: {
+      multiple: 1,
+    },
     render: (rsNumber: string) =>
       rsNumber ? (
         <ExternalLink href={`https://www.ncbi.nlm.nih.gov/snp/${rsNumber}`}>
@@ -105,7 +119,7 @@ const defaultColumns: ProColumnType[] = [
     title: 'Studies',
     dataIndex: 'studies',
     key: 'studies',
-    render: (studies: ArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
+    render: (studies: IArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
   },
   {
     title: intl.get('screen.variants.table.participant.title'),
@@ -145,6 +159,9 @@ const defaultColumns: ProColumnType[] = [
     tooltip: intl.get('screen.variants.table.frequence.tooltip'),
     dataIndex: 'participant_frequency',
     key: 'participant_frequency',
+    sorter: {
+      multiple: 1,
+    },
     render: (participantFrequency: number) =>
       isNumber(participantFrequency)
         ? toExponentialNotation(participantFrequency)
@@ -167,9 +184,12 @@ const defaultColumns: ProColumnType[] = [
   },
 ];
 
+const DEFAULT_PAGE_INDEX = 1;
+
 const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [pageIndex, setPageIndex] = useState(DEFAULT_PAGE_INDEX);
 
   useEffect(() => {
     if (selectedKeys.length) {
@@ -189,16 +209,17 @@ const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
           loading={results.loading}
           initialSelectedKey={selectedKeys}
           showSorterTooltip={false}
-          onChange={({ current, pageSize }, _, sorter) =>
+          onChange={({ current }, _, sorter) => {
+            setPageIndex(DEFAULT_PAGE_INDEX);
             setQueryConfig({
-              pageIndex: current!,
-              size: pageSize!,
+              pageIndex: DEFAULT_PAGE_INDEX,
+              size: queryConfig.size!,
               sort: formatQuerySortList(sorter),
-            })
-          }
+            });
+          }}
           headerConfig={{
             itemCount: {
-              pageIndex: queryConfig.pageIndex,
+              pageIndex: pageIndex,
               pageSize: queryConfig.size,
               total: results.total,
             },
@@ -206,11 +227,15 @@ const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
           bordered
           size="small"
           pagination={{
-            current: queryConfig.pageIndex,
-            pageSize: queryConfig.size,
-            defaultPageSize: DEFAULT_PAGE_SIZE,
-            total: results.total,
-            onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
+            current: pageIndex,
+            queryConfig,
+            setQueryConfig,
+            onChange: (page: number, _) => {
+              scrollToTop(SCROLL_WRAPPER_ID);
+              setPageIndex(page);
+            },
+            searchAfter: results.searchAfter,
+            defaultViewPerQuery: PaginationViewPerQuery.Ten,
           }}
           dataSource={results.data.map((i) => ({ ...i, key: i.id }))}
           dictionary={getProTableDictionary()}

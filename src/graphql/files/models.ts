@@ -1,9 +1,9 @@
-import { ArrangerResultsTree } from 'graphql/models';
+import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IBiospecimenEntity } from '../biospecimens/models';
 
 export interface IFileResultTree {
-  files: ArrangerResultsTree<IFileEntity>;
+  files: IArrangerResultsTree<IFileEntity>;
 }
 
 export interface IFileStudyEntity {
@@ -48,8 +48,8 @@ export interface IFileEntity {
   sequencing_experiment: {
     experiment_strategy: string;
   };
-  participant: ArrangerResultsTree<IParticipantEntity>;
-  biospecimens: ArrangerResultsTree<IBiospecimenEntity>;
+  participant: IArrangerResultsTree<IParticipantEntity>;
+  biospecimens: IArrangerResultsTree<IBiospecimenEntity>;
   external_id: string;
 }
 

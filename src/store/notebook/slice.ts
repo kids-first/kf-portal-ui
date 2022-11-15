@@ -3,7 +3,7 @@ import { initialState } from './types';
 import { getNotebookClusterStatus, startNotebookCluster, stopNotebookCluster } from './thunks';
 import { NotebookApiStatus } from 'services/api/notebook/model';
 
-export const notebookState: initialState = {
+export const NotebookState: initialState = {
   isLoading: false,
   url: '',
   status: NotebookApiStatus.unverified,
@@ -11,14 +11,14 @@ export const notebookState: initialState = {
 
 const notebookSlice = createSlice({
   name: 'notebook',
-  initialState: notebookState,
+  initialState: NotebookState,
   reducers: {
     toggleLoading: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoading: action.payload,
     }),
     reset: () => ({
-      ...notebookState,
+      ...NotebookState,
     }),
     resetError: (state) => ({
       ...state,

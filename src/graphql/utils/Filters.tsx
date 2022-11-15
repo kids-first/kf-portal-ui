@@ -2,9 +2,8 @@ import intl from 'react-intl-universal';
 import { getFiltersDictionary } from 'utils/translation';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
-import { IFilter, IFilterGroup } from '@ferlab/ui/core/components/filters/types';
-import { ExtendedMapping, ExtendedMappingResults, Aggregations } from 'graphql/models';
-import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
+import { IFilter, TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
 import {
   keyEnhance,
   keyEnhanceBooleanOnly,
@@ -13,6 +12,7 @@ import {
 import { transformNameIfNeeded } from './nameTransformer';
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
+import { TAggregations, IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 export interface RangeAggs {
   stats: {
@@ -32,7 +32,6 @@ export interface TermAgg {
 export type Aggs = TermAggs | RangeAggs;
 
 const isTermAgg = (obj: TermAggs) => !!obj.buckets;
-const isRangeAgg = (obj: RangeAggs) => !!obj.stats;
 
 export const generateFilters = ({
   queryBuilderId,
@@ -46,8 +45,8 @@ export const generateFilters = ({
   index,
 }: {
   queryBuilderId: string;
-  aggregations: Aggregations;
-  extendedMapping: ExtendedMappingResults;
+  aggregations: TAggregations;
+  extendedMapping: IExtendedMappingResults;
   className: string;
   filtersOpen: boolean;
   filterFooter: boolean;
@@ -57,7 +56,7 @@ export const generateFilters = ({
 }) =>
   Object.keys(aggregations || []).map((key) => {
     const found = (extendedMapping?.data || []).find(
-      (f: ExtendedMapping) => f.field === underscoreToDot(key),
+      (f: TExtendedMapping) => f.field === underscoreToDot(key),
     );
 
     const filterGroup = getFilterGroup(found, aggregations[key], [], filterFooter);
@@ -98,7 +97,7 @@ export const generateFilters = ({
 const translateWhenNeeded = (group: string, key: string) =>
   intl.get(`facets.options.${group}.${keyEnhance(key)}`).defaultMessage(keyEnhance(key));
 
-export const getFilters = (aggregations: Aggregations | null, key: string): IFilter[] => {
+export const getFilters = (aggregations: TAggregations | null, key: string): IFilter[] => {
   if (!aggregations || !key) return [];
   if (isTermAgg(aggregations[key])) {
     return aggregations[key!].buckets

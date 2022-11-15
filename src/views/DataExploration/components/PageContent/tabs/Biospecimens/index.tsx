@@ -1,7 +1,5 @@
-import { IQueryResults } from 'graphql/models';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { IQueryConfig, TQueryConfigCb } from 'common/searchPageTypes';
 import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
@@ -15,7 +13,7 @@ import { getProTableDictionary } from 'utils/translation';
 import { useDispatch } from 'react-redux';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { Button, Tooltip } from 'antd';
+import { Button } from 'antd';
 import { ReportType } from 'services/api/reports/models';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
@@ -35,6 +33,7 @@ import SetsManagementDropdown from 'views/DataExploration/components/SetsManagem
 import { SetType } from 'services/api/savedSet/models';
 
 import styles from './index.module.scss';
+import { IQueryResults, IQueryConfig, TQueryConfigCb } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   results: IQueryResults<IBiospecimenEntity[]>;

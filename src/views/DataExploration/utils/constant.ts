@@ -1,4 +1,4 @@
-import { IQueryConfig } from 'common/searchPageTypes';
+import { IQueryConfig } from '@ferlab/ui/core/graphql/types';
 
 export const DATA_EXPLORATION_QB_ID = 'data-exploration-repo-key';
 

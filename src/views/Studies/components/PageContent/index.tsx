@@ -18,7 +18,6 @@ import {
   SCROLL_WRAPPER_ID,
   STUDIES_REPO_QB_ID,
 } from '../../utils/constant';
-import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 import { useEffect, useState } from 'react';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { useStudies } from 'graphql/studies/actions';
@@ -30,12 +29,14 @@ import { useUser } from 'store/user';
 import { ArrangerApi } from 'services/api/arranger';
 import { IStudiesResultTree } from 'graphql/studies/models';
 import { GET_STUDY_COUNT } from 'graphql/studies/queries';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 const { Title } = Typography;
 
 type OwnProps = {
   defaultColumns: ProColumnType<any>[];
-  extendedMappingResults?: ExtendedMappingResults;
+  extendedMappingResults?: IExtendedMappingResults;
 };
 
 const PageContent = ({
@@ -67,7 +68,7 @@ const PageContent = ({
     return title
       ? title
       : combineExtendedMappings([extendedMappingResults])?.data?.find(
-          (mapping: ExtendedMapping) => key === mapping.field,
+          (mapping: TExtendedMapping) => key === mapping.field,
         )?.displayName || key;
   };
 

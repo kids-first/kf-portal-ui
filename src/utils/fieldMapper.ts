@@ -1,3 +1,4 @@
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import {
   ISqonGroupFilter,
   ISyntheticSqon,
@@ -6,8 +7,8 @@ import {
   TSqonContent,
 } from '@ferlab/ui/core/data/sqon/types';
 import { isBooleanOperator, isEmptySqon } from '@ferlab/ui/core/data/sqon/utils';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { INDEXES } from 'graphql/constants';
-import { ExtendedMapping, ExtendedMappingResults } from 'graphql/models';
 
 interface IFieldPrefixMap {
   index: string;
@@ -89,8 +90,8 @@ export const mapFilterForBiospecimen = (sqonFilters: ISqonGroupFilter) =>
     },
   ]);
 
-export const combineExtendedMappings = (mappings: ExtendedMappingResults[]) => {
-  let concatMappings: ExtendedMapping[] = [];
+export const combineExtendedMappings = (mappings: IExtendedMappingResults[]) => {
+  let concatMappings: TExtendedMapping[] = [];
   mappings.forEach((mapping) => {
     concatMappings = concatMappings.concat(mapping.data);
   });

@@ -8,12 +8,12 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
-import { hydrateResults } from 'graphql/models';
 import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
 
 import styles from './index.module.scss';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 
 interface OwnProps {
   queryBuilderId: string;

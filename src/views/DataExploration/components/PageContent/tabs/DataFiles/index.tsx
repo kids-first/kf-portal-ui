@@ -1,7 +1,5 @@
 import { FileAccessType, IFileEntity, ITableFileEntity } from 'graphql/files/models';
 import { CloudUploadOutlined, LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
-import { IQueryResults } from 'graphql/models';
-import { IQueryConfig, TQueryConfigCb } from 'common/searchPageTypes';
 import {
   CAVATICA_FILE_BATCH_SIZE,
   DATA_EXPLORATION_QB_ID,
@@ -44,6 +42,7 @@ import { SetType } from 'services/api/savedSet/models';
 import styles from './index.module.scss';
 import { userHasAccessToFile } from 'utils/dataFiles';
 import { useFenceConnection } from 'store/fenceConnection';
+import { IQueryResults, IQueryConfig, TQueryConfigCb } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   results: IQueryResults<IFileEntity[]>;
