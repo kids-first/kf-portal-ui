@@ -5,6 +5,7 @@ import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Space, Tooltip, Typography } from 'antd';
 
 import FHIR_ICON from 'components/assets/FHIR.png';
+import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 
 import CardHeader from '../../CardHeader';
 import { DashboardCardProps } from '..';
@@ -52,6 +53,10 @@ const CaringForChildrenWithCovid = ({ id, key, className = '' }: DashboardCardPr
             <Space direction="vertical" className={styles.content} size={0}>
               <Text>
                 {intl.getHTML('screen.dashboard.cards.fhirDataResource.infoPopover.content')}{' '}
+                <PopoverContentLink
+                  externalHref="https://www.hl7.org/fhir/overview.html"
+                  title={intl.get('screen.dashboard.cards.fhirDataResource.infoPopover.readMore')}
+                />
               </Text>
             </Space>
           ),
