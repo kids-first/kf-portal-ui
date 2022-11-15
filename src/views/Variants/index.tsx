@@ -237,12 +237,7 @@ const Variants = () => {
     <div className={styles.variantsLayout}>
       <SidebarMenu className={styles.sideMenu} menuItems={menuItems} />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
-        <PageContent
-          variantMapping={{
-            data: [],
-            loading: false,
-          }}
-        />
+        <PageContent variantMapping={variantMappingResults} />
       </ScrollContent>
     </div>
   );
