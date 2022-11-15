@@ -1,12 +1,19 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Space, Typography } from 'antd';
 import { useVariant } from 'graphql/variants/actions';
+import { IVariantResultTree } from 'graphql/variants/models';
+import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
@@ -14,6 +21,10 @@ import {
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
 
+import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
+import { ArrangerApi } from 'services/api/arranger';
+import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { useSavedFilter } from 'store/savedFilter';
 import {
   createSavedFilter,
@@ -27,15 +38,6 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
-import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import { ArrangerApi } from 'services/api/arranger';
-import { IVariantResultTree } from 'graphql/variants/models';
-import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
-import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
-import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
-import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
-import { SortDirection } from '@ferlab/ui/core/graphql/constants';
-import { SavedFilterTag } from 'services/api/savedFilter/models';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -52,6 +54,10 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VariantsExplorationPage);
 
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
+  const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
+    undefined,
+  );
+
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
   const variantResults = useVariant(
@@ -135,6 +141,25 @@ const PageContent = ({ variantMapping }: OwnProps) => {
           onSaveFilter: handleOnSaveFilter,
           onDeleteFilter: handleOnDeleteFilter,
           onSetAsFavorite: handleOnSaveAsFavorite,
+        }}
+        facetFilterConfig={{
+          enable: true,
+          onFacetClick: (filter) => {
+            const index = filter.content.index!;
+            const field = filter.content.field;
+
+            setSelectedFilterContent(
+              <GenericFilters
+                queryBuilderId={VARIANT_REPO_QB_ID}
+                index={index}
+                field={dotToUnderscore(field)}
+                sqon={variantResolvedSqon}
+                extendedMappingResults={variantMapping}
+              />,
+            );
+          },
+          selectedFilterContent: selectedFilterContent,
+          blacklistedFacets: ['consequences.symbol', 'locus'],
         }}
         enableCombine
         enableShowHideLabels
