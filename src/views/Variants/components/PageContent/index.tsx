@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
+import copy from 'copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
@@ -38,6 +39,9 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
+import { getCurrentUrl } from 'utils/helper';
+import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
+import { globalActions } from 'store/global';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -114,6 +118,15 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const handleOnDeleteFilter = (id: string) => dispatch(deleteSavedFilter(id));
   const handleOnSaveAsFavorite = (filter: ISavedFilter) =>
     dispatch(setSavedFilterAsDefault(addTagToFilter(filter)));
+  const handleOnShareFilter = (filter: ISavedFilter) => {
+    copy(`${getCurrentUrl()}?${FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
+    dispatch(
+      globalActions.displayMessage({
+        content: 'Copied share url',
+        type: 'success',
+      }),
+    );
+  };
 
   return (
     <Space direction="vertical" size={24} className={styles.variantsPageContent}>
@@ -134,9 +147,12 @@ const PageContent = ({ variantMapping }: OwnProps) => {
             enableEditTitle: true,
             enableDuplicate: true,
             enableFavoriteFilter: false,
+            enableShare: true,
+            enableUndoChanges: true,
           },
           selectedSavedFilter: defaultFilter,
           savedFilters: savedFilters,
+          onShareFilter: handleOnShareFilter,
           onUpdateFilter: handleOnUpdateFilter,
           onSaveFilter: handleOnSaveFilter,
           onDeleteFilter: handleOnDeleteFilter,

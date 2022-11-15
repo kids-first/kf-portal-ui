@@ -1,13 +1,14 @@
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IQueryConfig, ISort } from '@ferlab/ui/core/graphql/types';
+import { SavedFilterTag } from 'services/api/savedFilter/models';
 
 export const SCROLL_WRAPPER_ID = 'variants-scroll-wrapper';
 
 // TODO : still needed, check when api are added
 export const VARIANT_REPO_QB_ID = 'kf-variant-repo-key';
 
-export const VARIANT_FILTER_TAG = 'variants-exploration';
+export const VARIANT_FILTER_TAG = SavedFilterTag.VariantsExplorationPage;
 
 export const DEFAULT_PAGE_INDEX = 0;
 export const DEFAULT_PAGE_SIZE = PaginationViewPerQuery.Ten;
