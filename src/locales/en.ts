@@ -507,8 +507,9 @@ const en = {
         fhirDataResource: {
           title: 'Kids First FHIR API',
           infoPopover: {
+            title: 'Query KF Data via FHIR API',
             content:
-              'FHIR & Data Resources for NIH’s Collaboration to Assess Risk and Identify LoNG-term outcomes for Children with COVID. Expanded clinical, treatment, and lab result data for these patients are available via the Kids First FHIR API.',
+              'The HL7® FHIR® format defines how clinical health data for research can be made interoperable across different computer systems via an API regardless of how it is stored in those systems. The NIH encourages biomedical investigators to use the FHIR standard to support exchange of data between NCPI’s participating platforms.',
           },
           caringApi: {
             title: '<i>CARING</i> Data FHIR API Endpoint',
