@@ -472,7 +472,7 @@ const en = {
           createNewProject: 'Create your first project',
           membersCount: '{count, plural, =0 {member} =1 {# member} other {# members}}',
           infoPopover: {
-            title: 'CAVATICA compute cloud platform',
+            title: 'CAVATICA Compute Cloud Platform',
             content:
               'CAVATICA is a cloud-based data analysis platform where data, results, and workflows are shared among the world’s research community.',
             readMore: 'Read more',
@@ -483,11 +483,21 @@ const en = {
           title: 'Saved Filters',
           noSavedFilters: 'You have no saved filters',
           lastSaved: 'Last saved: {date} ago',
+          infoPopover: {
+            content:
+              'A saved filter is a virtual query created by applying one or more filters to a search query. They can be saved and revisited for later use without having to manually reselect filters in the sidebar. You can create saved filters using the Query Management tool above the table of results in the',
+            title: 'Managing Saved Filters',
+          },
         },
         savedSets: {
           title: 'Saved Sets',
           noSavedFilters: 'You have no saved sets',
           lastSaved: 'Last saved: {date} ago',
+          infoPopover: {
+            content:
+              'A saved set is a set of one or more entity IDs that can be saved and revisited for later use without having to manually reselect entity IDs. You can create Participant, Biospecimen, and File saved sets at the top of the table of results in the',
+            title: 'Managing Saved Sets',
+          },
         },
         notebook: {
           title: 'Variant Workbench',
@@ -510,6 +520,7 @@ const en = {
             title: 'Query KF Data via FHIR API',
             content:
               'The HL7® FHIR® format defines how clinical health data for research can be made interoperable across different computer systems via an API regardless of how it is stored in those systems. The NIH encourages biomedical investigators to use the FHIR standard to support exchange of data between NCPI’s participating platforms.',
+            readMore: 'Read more',
           },
           caringApi: {
             title: '<i>CARING</i> Data FHIR API Endpoint',

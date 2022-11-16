@@ -1,22 +1,24 @@
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import cx from 'classnames';
-import { Tabs, List, Typography } from 'antd';
 import intl from 'react-intl-universal';
-import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
-import CardHeader from 'views/Dashboard/components/CardHeader';
-import Empty from '@ferlab/ui/core/components/Empty';
-import SavedFiltersListItem from './ListItem';
-import { useSavedFilter } from 'store/savedFilter';
-import { SavedFilterTag, TUserSavedFilter } from 'services/api/savedFilter/models';
-import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
-import { STATIC_ROUTES } from 'utils/routes';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 import { UserOutlined } from '@ant-design/icons';
+import Empty from '@ferlab/ui/core/components/Empty';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { List, Tabs, Typography } from 'antd';
+import cx from 'classnames';
+import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
+import CardHeader from 'views/Dashboard/components/CardHeader';
+import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
+
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import PopoverContentLink from 'components/uiKit/PopoverContentLink';
+import { SavedFilterTag, TUserSavedFilter } from 'services/api/savedFilter/models';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
+import { useSavedFilter } from 'store/savedFilter';
+import { STATIC_ROUTES } from 'utils/routes';
+
+import SavedFiltersListItem from './ListItem';
 
 import styles from './index.module.scss';
-import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -79,13 +81,10 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
           title={intl.get('screen.dashboard.cards.savedFilters.title')}
           withHandle
           infoPopover={{
-            title: 'Managing saved filters',
+            title: intl.get('screen.dashboard.cards.savedFilters.infoPopover.title'),
             content: (
               <Text>
-                A saved filter is a virtual query created by applying one or more filters to a
-                search query. They can be saved and revisited for later use without having to
-                manually reselect filters in the sidebar. You can create saved filters using the
-                Query Management tool above the table of results in the{' '}
+                {intl.get('screen.dashboard.cards.savedFilters.infoPopover.content')}{' '}
                 <PopoverContentLink
                   to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
                   title="Data Exploration page"
@@ -106,7 +105,11 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               <div>
                 <UserOutlined />
                 Participants (
-                {savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage).length})
+                {
+                  savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage)
+                    .length
+                }
+                )
               </div>
             }
           >
@@ -123,7 +126,12 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
             tab={
               <div>
                 <LineStyleIcon height={14} width={14} />
-                Variants ({savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage).length})
+                Variants (
+                {
+                  savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage)
+                    .length
+                }
+                )
               </div>
             }
           >
