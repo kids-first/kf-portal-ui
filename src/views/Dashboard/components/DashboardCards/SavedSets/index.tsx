@@ -31,17 +31,17 @@ const getItemList = (
   icon: ReactElement,
 ) => (
   <List<IUserSetOutput>
-    className={styles.savedFiltersList}
+    className={styles.savedSetsList}
     bordered
     locale={{
       emptyText: fetchingError ? (
         <CardErrorPlaceholder
-          title="Failed to Fetch Saved Filters"
+          title={intl.get('screen.dashboard.cards.savedSets.errorCard.failedToFetch')}
           subTitle={
             <Text>
-              Please refresh and try again or{' '}
+              {intl.get('screen.dashboard.cards.savedSets.errorCard.refresh')}{' '}
               <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
-                <Text>contact our support</Text>
+                <Text>{intl.get('screen.dashboard.cards.savedSets.errorCard.contactSupport')}</Text>
               </ExternalLink>
               .
             </Text>
@@ -94,7 +94,8 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             tab={
               <div>
                 <UserOutlined />
-                Participants ({savedSets.filter((s) => s.setType === SetType.PARTICIPANT).length})
+                {intl.get('screen.dashboard.cards.savedSets.tabs.participants')} (
+                {savedSets.filter((s) => s.setType === SetType.PARTICIPANT).length})
               </div>
             }
             key="participants"
@@ -111,7 +112,8 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             tab={
               <div>
                 <ExperimentOutlined />
-                Biospecimen ({savedSets.filter((s) => s.setType === SetType.BIOSPECIMEN).length})
+                {intl.get('screen.dashboard.cards.savedSets.tabs.biospecimens')} (
+                {savedSets.filter((s) => s.setType === SetType.BIOSPECIMEN).length})
               </div>
             }
             key="biospecimen"
@@ -128,7 +130,8 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             tab={
               <div>
                 <FileTextOutlined />
-                Files ({savedSets.filter((s) => s.setType === SetType.FILE).length})
+                {intl.get('screen.dashboard.cards.savedSets.tabs.files')} (
+                {savedSets.filter((s) => s.setType === SetType.FILE).length})
               </div>
             }
             key="files"

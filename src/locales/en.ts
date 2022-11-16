@@ -490,6 +490,16 @@ const en = {
           },
         },
         savedSets: {
+          errorCard: {
+            contactSupport: 'contact our support',
+            failedToFetch: 'Failed to fetch Saved Sets',
+            refresh: 'Please refresh and try again or',
+          },
+          tabs: {
+            biospecimens: 'Biospecimens',
+            files: 'Files',
+            participants: 'Participants',
+          },
           title: 'Saved Sets',
           noSavedFilters: 'You have no saved sets',
           lastSaved: 'Last saved: {date} ago',
