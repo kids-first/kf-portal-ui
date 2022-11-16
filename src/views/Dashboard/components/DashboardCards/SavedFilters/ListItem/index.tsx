@@ -1,4 +1,4 @@
-import { Modal, Typography } from 'antd';
+import { Modal } from 'antd';
 import { TUserSavedFilter } from 'services/api/savedFilter/models';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
@@ -10,25 +10,26 @@ import EditModal from '../EditModal';
 import { setQueryBuilderState } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import { FILTER_TAG_PAGE_MAPPING, FILTER_TAG_QB_ID_MAPPING } from 'common/queryBuilder';
-import ListItemWithActions from 'components/uiKit/list/ListItemWithActions';
+
+import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
+import { useHistory } from 'react-router-dom';
 
 interface OwnProps {
   id: any;
   data: TUserSavedFilter;
 }
 
-const { Text } = Typography;
-
 const SavedFiltersListItem = ({ data }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   return (
     <>
       <ListItemWithActions
         key={data.id}
-        onEditCb={() => setModalVisible(true)}
-        onDeleteCb={() =>
+        onEdit={() => setModalVisible(true)}
+        onDelete={() =>
           Modal.confirm({
             title: intl.get('components.querybuilder.header.popupConfirm.delete.title'),
             icon: <ExclamationCircleOutlined />,
@@ -39,22 +40,17 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
             onOk: () => dispatch(deleteSavedFilter(data.id)),
           })
         }
-        linkProps={{
-          to: {
-            pathname: FILTER_TAG_PAGE_MAPPING[data.tag],
-            search: `?${FILTER_ID_QUERY_PARAM_KEY}=${data.id}`,
-          },
-          content: (
-            <Text style={{ width: 400 }} ellipsis={{ tooltip: data.title }}>
-              {data.title}
-            </Text>
-          ),
-          onClick: () =>
-            setQueryBuilderState(FILTER_TAG_QB_ID_MAPPING[data.tag], {
-              active: data.queries[0].id,
-              state: data.queries,
-            }),
+        onClick={() => {
+          history.push(
+            `${FILTER_TAG_PAGE_MAPPING[data.tag]}?${FILTER_ID_QUERY_PARAM_KEY}=${data.id}`,
+          );
+
+          setQueryBuilderState(FILTER_TAG_QB_ID_MAPPING[data.tag], {
+            active: data.queries[0].id,
+            state: data.queries,
+          });
         }}
+        title={data.title}
         description={
           data.updated_date
             ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {

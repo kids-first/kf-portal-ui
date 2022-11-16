@@ -17,9 +17,10 @@ import { INDEXES } from 'graphql/constants';
 import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { getSetFieldId } from 'store/savedSet';
-import ListItemWithActions from 'components/uiKit/list/ListItemWithActions';
 
 import styles from './index.module.scss';
+import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
+import { useHistory } from 'react-router-dom';
 
 interface OwnProps {
   data: IUserSetOutput;
@@ -44,6 +45,7 @@ const redirectToPage = (setType: string) => {
 const ListItem = ({ data, icon }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onCancel = () => {
     setModalVisible(false);
@@ -54,8 +56,8 @@ const ListItem = ({ data, icon }: OwnProps) => {
       <ListItemWithActions
         key={data.id}
         className={styles.savedSetListItem}
-        onEditCb={() => setModalVisible(true)}
-        onDeleteCb={() =>
+        onEdit={() => setModalVisible(true)}
+        onDelete={() =>
           Modal.confirm({
             title: intl.get('components.savedSets.popupConfirm.delete.title'),
             icon: <ExclamationCircleOutlined />,
@@ -76,30 +78,25 @@ const ListItem = ({ data, icon }: OwnProps) => {
             </Col>
           </Row>
         }
-        linkProps={{
-          to: redirectToPage(data.setType),
-          content: (
-            <Text style={{ width: 400 }} ellipsis={{ tooltip: data.tag }}>
-              {data.tag}
-            </Text>
-          ),
-          onClick: () => {
-            const setValue = `${SET_ID_PREFIX}${data.id}`;
-            addQuery({
-              queryBuilderId: DATA_EXPLORATION_QB_ID,
-              query: generateQuery({
-                newFilters: [
-                  generateValueFilter({
-                    field: getSetFieldId(data.setType),
-                    value: [setValue],
-                    index: data.setType,
-                  }),
-                ],
-              }),
-              setAsActive: true,
-            });
-          },
+        onClick={() => {
+          history.push(redirectToPage(data.setType));
+
+          const setValue = `${SET_ID_PREFIX}${data.id}`;
+          addQuery({
+            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            query: generateQuery({
+              newFilters: [
+                generateValueFilter({
+                  field: getSetFieldId(data.setType),
+                  value: [setValue],
+                  index: data.setType,
+                }),
+              ],
+            }),
+            setAsActive: true,
+          });
         }}
+        title={data.tag}
         description={
           data.updated_date
             ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {
