@@ -5,15 +5,16 @@ import { MatchTableItem } from '@ferlab/ui/core/components/UploadIds/types';
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
 import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
+import { getStringFormats } from 'utils/string';
 
 import styles from './index.module.scss';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -81,10 +82,10 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
           offset: 0,
           sqon: generateQuery({
             operator: BooleanOperators.or,
-            newFilters: ['symbol', 'ensembl_gene_id'].map((field) =>
+            newFilters: ['symbol', 'ensembl_gene_id', 'alias'].map((field) =>
               generateValueFilter({
                 field,
-                value: ids,
+                value: ids.flatMap((id) => getStringFormats(id)),
                 index: INDEXES.GENES,
               }),
             ),
@@ -95,7 +96,15 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
       const genes: IGeneEntity[] = hydrateResults(response.data?.data?.genes?.hits?.edges || []);
 
       const matchResults = ids.map((id, index) => {
-        const gene = genes.find((gene) => [gene.symbol, gene.ensembl_gene_id].includes(id));
+        const gene = genes.find((gene) =>
+          getStringFormats(id).some(
+            (formattedId) =>
+              gene.symbol === formattedId ||
+              gene.ensembl_gene_id === formattedId ||
+              gene.alias?.includes(formattedId),
+          ),
+        );
+
         return gene
           ? {
               key: index.toString(),

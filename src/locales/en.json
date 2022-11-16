@@ -604,7 +604,7 @@
   "upload.gene.ids.modal.unmatch": "Unmatched ({count})",
   "upload.gene.ids.modal.table.message": "{submittedCount} submitted identifiers mapped to {mappedCount} unique system identifiers",
   "upload.gene.ids.modal.match.table.idcol.title": "Gene ID",
-  "upload.gene.ids.modal.match.table.matchcol.title": "ID ENSEMBL",
+  "upload.gene.ids.modal.match.table.matchcol.title": "Ensembl ID",
   "upload.gene.ids.modal.match.table.mappedcol.title": "Symbol",
   "upload.gene.ids.modal.pill.title": "Uploaded List",
   "upload.gene.ids.modal.upload.btn": "Upload",
