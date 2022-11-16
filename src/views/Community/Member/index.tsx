@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { GlobalOutlined, LinkedinFilled } from '@ant-design/icons';
 import cx from 'classnames';
 import Empty from '@ferlab/ui/core/components/Empty';
@@ -10,52 +9,33 @@ import AvatarHeader from './components/AvatarHeader';
 
 import styles from './index.module.scss';
 import { usePersona } from 'store/persona';
-import { fetchPersonaUserProfile } from 'store/persona/thunks';
-import { useDispatch } from 'react-redux';
-import { personaActions } from 'store/persona/slice';
 import { memberRolesOptions, diseasesInterestOptions, studiesInterestOptions } from '../contants';
+import { useMemberProfile } from 'graphql/members/actions';
 
 const CommunityMember = () => {
-  const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
-  const { personaUserInfo, isLoading, profile } = usePersona();
+  const { personaUserInfo, isLoading: personaLoading } = usePersona();
+  const { loading: profileLoading, profile } = useMemberProfile(id);
   const isOwner = personaUserInfo?._id === id;
 
-  const diseasesInterest = personaUserInfo?.interests?.filter((interest) =>
+  const diseasesInterest = profile?.interests?.filter((interest: string) =>
     diseasesInterestOptions.some(
       (diseasesInterest) => diseasesInterest.value.toLocaleLowerCase() === interest,
     ),
   );
 
-  const studiesInterest = personaUserInfo?.interests?.filter((interest) =>
+  const studiesInterest = profile?.interests?.filter((interest: string) =>
     studiesInterestOptions.some(
       (studiesInterest) => studiesInterest.value.toLocaleLowerCase() === interest,
     ),
   );
 
   const memberRole =
-    personaUserInfo?.roles?.map(
-      (role) => memberRolesOptions.find((memberRole) => memberRole.key === role)?.value,
+    profile?.roles?.map(
+      (role: string) => memberRolesOptions.find((memberRole) => memberRole.key === role)?.value,
     ) || [];
 
-  useEffect(() => {
-    if (profile !== undefined) {
-      return;
-    }
-
-    if (isOwner) {
-      dispatch(personaActions.setUserAsMember(personaUserInfo));
-    } else {
-      dispatch(fetchPersonaUserProfile({ id }));
-    }
-
-    return () => {
-      dispatch(personaActions.clearProfile());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!isLoading && !profile) {
+  if (!profileLoading && !profile && !personaLoading) {
     return (
       <Result
         className={styles.notFoundMember}
@@ -69,7 +49,7 @@ const CommunityMember = () => {
   return (
     <div className={styles.communityMemberWrapper}>
       {isOwner &&
-        !personaUserInfo.isPublic &&
+        !profile?.isPublic &&
         !window.sessionStorage.getItem('profileSettings.privateAlertHasBeenClosed') && (
           <Alert
             className={styles.privateAlert}
@@ -92,9 +72,9 @@ const CommunityMember = () => {
       <div className={styles.communityMember}>
         <Banner isOwnUser={isOwner} />
         <div className={styles.contentWrapper}>
-          <AvatarHeader user={profile} isLoading={isLoading} />
+          <AvatarHeader user={profile} isLoading={profileLoading} />
           <Divider className={styles.divider} />
-          {isLoading ? (
+          {profileLoading ? (
             <Skeleton
               paragraph={{
                 rows: 5,

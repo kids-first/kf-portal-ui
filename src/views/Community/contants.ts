@@ -1,3 +1,5 @@
+import { IQueryConfig } from '@ferlab/ui/core/graphql/types';
+
 export const memberRolesOptions = [
   {
     key: 'research',
@@ -138,3 +140,12 @@ export const studiesInterestOptions = [
     value: 'Congenital Diaphragmatic Hernia',
   },
 ];
+
+export const DEFAULT_PAGE_INDEX = 1;
+export const DEFAULT_PAGE_SIZE = 25;
+
+export const DEFAULT_QUERY_CONFIG: IQueryConfig = {
+  pageIndex: DEFAULT_PAGE_INDEX,
+  size: DEFAULT_PAGE_SIZE,
+  sort: [],
+};

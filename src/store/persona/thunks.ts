@@ -2,11 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { PersonaApi, TPersonaUserRequestPayload } from 'services/api/persona';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
-import { TPersonaUser, TPersonaUserUpdate } from 'services/api/persona/models';
+import { IPersonaUser, TPersonaUserUpdate } from 'services/api/persona/models';
 
 const createPersonaUser = createAsyncThunk<
-  TPersonaUser,
-  TPersonaUser,
+  IPersonaUser,
+  IPersonaUser,
   { rejectValue: string; state: RootState }
 >(
   'persona/create',
@@ -34,7 +34,7 @@ const createPersonaUser = createAsyncThunk<
 );
 
 const fetchPersonaUser = createAsyncThunk<
-  TPersonaUser,
+  IPersonaUser,
   TPersonaUserRequestPayload,
   { rejectValue: string; state: RootState }
 >(
@@ -59,7 +59,7 @@ const fetchPersonaUser = createAsyncThunk<
 );
 
 const fetchPersonaUserProfile = createAsyncThunk<
-  TPersonaUser,
+  IPersonaUser,
   {
     id: string;
   },
@@ -75,7 +75,7 @@ const fetchPersonaUserProfile = createAsyncThunk<
 });
 
 const updatePersonaUser = createAsyncThunk<
-  TPersonaUser,
+  IPersonaUser,
   {
     data: TPersonaUserUpdate;
     callback?: () => void;

@@ -1,6 +1,7 @@
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { Skeleton, Space, Typography } from 'antd';
-import { TPersonaUser } from 'services/api/persona/models';
+import { IMemberEntity } from 'graphql/members/models';
+import { IPersonaUser } from 'services/api/persona/models';
 import { formatCountryAndState, formatName } from 'views/Community/utils';
 
 import styles from '../index.module.scss';
@@ -8,7 +9,7 @@ import styles from '../index.module.scss';
 const { Title, Text } = Typography;
 
 interface OwnProps {
-  user?: TPersonaUser;
+  user?: IPersonaUser | IMemberEntity;
   isLoading?: boolean;
 }
 

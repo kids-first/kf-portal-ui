@@ -1,4 +1,4 @@
-export type TPersonaUser = {
+export interface IPersonaUser {
   _id?: string;
   title?: string;
   firstName: string;
@@ -35,10 +35,10 @@ export type TPersonaUser = {
   isPublic?: boolean;
   isActive?: boolean;
   hashedEmail?: boolean;
-};
+}
 
 export type TUserPersonaInsert = Omit<
-  TPersonaUser,
+  IPersonaUser,
   'id' | 'keycloak_id' | 'creation_date' | 'update_date'
 >;
 export type TPersonaUserUpdate = Partial<TUserPersonaInsert>;

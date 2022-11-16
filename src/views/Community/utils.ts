@@ -1,9 +1,10 @@
-import { TPersonaUser } from 'services/api/persona/models';
+import { IMemberEntity } from 'graphql/members/models';
+import { IPersonaUser } from 'services/api/persona/models';
 
-export const formatName = (user: TPersonaUser) =>
+export const formatName = (user: IPersonaUser | IMemberEntity) =>
   user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email;
 
-export const formatCountryAndState = (user: TPersonaUser) => {
+export const formatCountryAndState = (user: IPersonaUser | IMemberEntity) => {
   if (user.state && user.country) {
     return `${user.state}, ${user.country}`;
   }

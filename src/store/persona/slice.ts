@@ -6,7 +6,7 @@ import {
   fetchPersonaUserProfile,
   updatePersonaUser,
 } from 'store/persona/thunks';
-import { TPersonaUser } from 'services/api/persona/models';
+import { IPersonaUser } from 'services/api/persona/models';
 
 // Since api can return null for personaUserInfo, undefined must be set by default
 export const PersonaState: initialState = {
@@ -32,7 +32,7 @@ const personaSlice = createSlice({
       ...state,
       isLoading: action.payload,
     }),
-    setUserAsMember: (state, action: PayloadAction<TPersonaUser>) => ({
+    setUserAsMember: (state, action: PayloadAction<IPersonaUser>) => ({
       ...state,
       isLoading: false,
       profile: action.payload,

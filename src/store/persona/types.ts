@@ -1,8 +1,8 @@
-import { TPersonaUser } from 'services/api/persona/models';
+import { IPersonaUser } from 'services/api/persona/models';
 
 export type initialState = {
-  personaUserInfo?: TPersonaUser;
-  profile?: TPersonaUser;
+  personaUserInfo?: IPersonaUser;
+  profile?: IPersonaUser;
   isLoading: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
