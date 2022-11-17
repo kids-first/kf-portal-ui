@@ -94,8 +94,6 @@ export const SEARCH_VARIANT_QUERY = gql`
                         total
                         edges {
                           node {
-                            id
-                            score
                             tumour_types_germline
                           }
                         }
@@ -106,8 +104,6 @@ export const SEARCH_VARIANT_QUERY = gql`
                         total
                         edges {
                           node {
-                            #id
-                            #score
                             disease_name
                           }
                         }

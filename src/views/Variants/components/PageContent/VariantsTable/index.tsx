@@ -29,7 +29,7 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import {
   IQueryResults,
@@ -39,6 +39,8 @@ import {
 } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
+  pageIndex: number;
+  setPageIndex: (value: number) => void;
   results: IQueryResults<IVariantEntity[]>;
   setQueryConfig: TQueryConfigCb;
   queryConfig: IQueryConfig;
@@ -184,12 +186,15 @@ const defaultColumns: ProColumnType[] = [
   },
 ];
 
-const DEFAULT_PAGE_INDEX = 1;
-
-const VariantsTable = ({ results, setQueryConfig, queryConfig }: OwnProps) => {
+const VariantsTable = ({
+  results,
+  setQueryConfig,
+  queryConfig,
+  pageIndex,
+  setPageIndex,
+}: OwnProps) => {
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [pageIndex, setPageIndex] = useState(DEFAULT_PAGE_INDEX);
 
   useEffect(() => {
     if (selectedKeys.length) {

@@ -10,7 +10,9 @@ export const VARIANT_REPO_QB_ID = 'kf-variant-repo-key';
 
 export const VARIANT_FILTER_TAG = SavedFilterTag.VariantsExplorationPage;
 
-export const DEFAULT_PAGE_INDEX = 0;
+export const DEFAULT_OFFSET = 0;
+export const DEFAULT_PAGE_INDEX = 1;
+
 export const DEFAULT_PAGE_SIZE = PaginationViewPerQuery.Ten;
 
 export const DEFAULT_SORT_QUERY = [
@@ -19,7 +21,7 @@ export const DEFAULT_SORT_QUERY = [
 ] as ISort[];
 
 export const DEFAULT_QUERY_CONFIG: IQueryConfig = {
-  pageIndex: DEFAULT_PAGE_INDEX,
+  pageIndex: DEFAULT_OFFSET,
   size: DEFAULT_PAGE_SIZE,
   sort: DEFAULT_SORT_QUERY,
   searchAfter: undefined,
