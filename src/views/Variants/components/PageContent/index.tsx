@@ -16,6 +16,7 @@ import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
 import {
+  DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
   DEFAULT_QUERY_CONFIG,
   DEFAULT_SORT_QUERY,
@@ -56,18 +57,18 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
   const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
   const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VariantsExplorationPage);
-
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,
   );
+  const [pageIndex, setPageIndex] = useState(DEFAULT_PAGE_INDEX);
 
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
   const variantResults = useVariant(
     {
       first: variantQueryConfig.size,
-      offset: DEFAULT_PAGE_INDEX,
+      offset: DEFAULT_OFFSET,
       searchAfter: variantQueryConfig.searchAfter,
       sqon: variantResolvedSqon,
       sort: tieBreaker({
@@ -98,8 +99,9 @@ const PageContent = ({ variantMapping }: OwnProps) => {
     setVariantQueryConfig({
       ...variantQueryConfig,
       searchAfter: undefined,
-      pageIndex: DEFAULT_PAGE_INDEX,
     });
+
+    setPageIndex(DEFAULT_PAGE_INDEX);
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
 
@@ -196,6 +198,8 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         }}
       />
       <VariantsTable
+        pageIndex={pageIndex}
+        setPageIndex={setPageIndex}
         results={variantResults}
         setQueryConfig={setVariantQueryConfig}
         queryConfig={variantQueryConfig}
