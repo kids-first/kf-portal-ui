@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
-import copy from 'copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
@@ -12,6 +11,7 @@ import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/uti
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Space, Typography } from 'antd';
+import copy from 'copy-to-clipboard';
 import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
@@ -22,10 +22,12 @@ import {
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
 
+import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
+import { globalActions } from 'store/global';
 import { useSavedFilter } from 'store/savedFilter';
 import {
   createSavedFilter,
@@ -34,14 +36,12 @@ import {
   updateSavedFilter,
 } from 'store/savedFilter/thunks';
 import { combineExtendedMappings } from 'utils/fieldMapper';
+import { getCurrentUrl } from 'utils/helper';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
-import { getCurrentUrl } from 'utils/helper';
-import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
-import { globalActions } from 'store/global';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -175,7 +175,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
             );
           },
           selectedFilterContent: selectedFilterContent,
-          blacklistedFacets: ['consequences.symbol', 'locus'],
+          blacklistedFacets: ['consequences.symbol', 'consequences.symbol_id_1', 'locus'],
         }}
         enableCombine
         enableShowHideLabels
