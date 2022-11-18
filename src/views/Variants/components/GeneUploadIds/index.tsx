@@ -12,7 +12,6 @@ import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
 import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
-import { getStringFormats } from 'utils/string';
 
 import styles from './index.module.scss';
 
@@ -85,7 +84,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
             newFilters: ['symbol', 'ensembl_gene_id', 'alias'].map((field) =>
               generateValueFilter({
                 field,
-                value: ids.flatMap((id) => getStringFormats(id)),
+                value: ids,
                 index: INDEXES.GENES,
               }),
             ),
@@ -97,12 +96,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
 
       const matchResults = ids.map((id, index) => {
         const gene = genes.find((gene) =>
-          getStringFormats(id).some(
-            (formattedId) =>
-              gene.symbol === formattedId ||
-              gene.ensembl_gene_id === formattedId ||
-              gene.alias?.includes(formattedId),
-          ),
+          [gene.symbol, gene.ensembl_gene_id, gene.alias].flat().includes(id),
         );
 
         return gene
