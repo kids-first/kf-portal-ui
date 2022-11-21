@@ -9,7 +9,7 @@ import AvatarHeader from './components/AvatarHeader';
 
 import styles from './index.module.scss';
 import { usePersona } from 'store/persona';
-import { memberRolesOptions, diseasesInterestOptions, studiesInterestOptions } from '../contants';
+import { memberRolesOptions } from '../contants';
 import { useMemberProfile } from 'graphql/members/actions';
 
 const CommunityMember = () => {
@@ -17,18 +17,6 @@ const CommunityMember = () => {
   const { personaUserInfo, isLoading: personaLoading } = usePersona();
   const { loading: profileLoading, profile } = useMemberProfile(id);
   const isOwner = personaUserInfo?._id === id;
-
-  const diseasesInterest = profile?.interests?.filter((interest: string) =>
-    diseasesInterestOptions.some(
-      (diseasesInterest) => diseasesInterest.value.toLocaleLowerCase() === interest,
-    ),
-  );
-
-  const studiesInterest = profile?.interests?.filter((interest: string) =>
-    studiesInterestOptions.some(
-      (studiesInterest) => studiesInterest.value.toLocaleLowerCase() === interest,
-    ),
-  );
 
   const memberRole =
     profile?.roles?.map(
@@ -105,49 +93,22 @@ const CommunityMember = () => {
                       }}
                     />
                   </Col>
-                  {(diseasesInterest?.length! > 0 || studiesInterest?.length! > 0) && (
+                  {profile?.interests?.length! > 0 && (
                     <>
                       <Col span={24}>
                         <Typography.Title level={4}>
                           {intl.get('screen.memberProfile.researchInterest')}
                         </Typography.Title>
 
-                        {diseasesInterest?.length! > 0 && (
+                        {profile?.interests?.length! > 0 && (
                           <>
                             <Typography.Title level={5}>
                               {intl.get('screen.memberProfile.diseasesInterest')}
                             </Typography.Title>
-                            {diseasesInterest?.join(', ')}
+                            {profile?.interests?.join(', ')}
                           </>
                         )}
                       </Col>
-
-                      {studiesInterest?.length! > 0 && (
-                        <Col span={24}>
-                          <Typography.Title level={5}>
-                            {intl.get('screen.memberProfile.studiesInterest')}
-                          </Typography.Title>
-                          <List
-                            className={cx(
-                              styles.infoList,
-                              !studiesInterest?.length && styles.empty,
-                            )}
-                            itemLayout="horizontal"
-                            dataSource={studiesInterest}
-                            renderItem={(interest, index) => <li key={index}>{interest}</li>}
-                            locale={{
-                              emptyText: (
-                                <Empty
-                                  showImage={false}
-                                  description={intl.get('screen.memberProfile.noStudiesInterest')}
-                                  align="left"
-                                  noPadding
-                                />
-                              ),
-                            }}
-                          />
-                        </Col>
-                      )}
                     </>
                   )}
                 </Row>

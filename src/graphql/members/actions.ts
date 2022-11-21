@@ -34,6 +34,7 @@ export const useMemberProfile = (id: string): IMemberEntityProfile => {
         op: BooleanOperators.and,
       },
     },
+    fetchPolicy: 'no-cache',
   });
 
   return {

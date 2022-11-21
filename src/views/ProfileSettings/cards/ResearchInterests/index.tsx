@@ -1,7 +1,7 @@
 import { Form, Select, Tag, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { diseasesInterestOptions, studiesInterestOptions } from 'views/Community/contants';
+import { AreaOfInterestOptions } from 'views/Community/contants';
 import { useDispatch } from 'react-redux';
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
@@ -11,13 +11,11 @@ import intl from 'react-intl-universal';
 import { updatePersonaUser } from 'store/persona/thunks';
 
 enum FORM_FIELDS {
-  DISEASES = 'diseases',
-  STUDIES = 'studies',
+  INTERESTS = 'interests',
 }
 
 const initialChangedValues = {
-  [FORM_FIELDS.DISEASES]: false,
-  [FORM_FIELDS.STUDIES]: false,
+  [FORM_FIELDS.INTERESTS]: false,
 };
 
 const ResearchInterestsCard = () => {
@@ -26,31 +24,21 @@ const ResearchInterestsCard = () => {
   const { personaUserInfo } = usePersona();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
-  const [diseasesInterestFilter, setDiseasesInterestFilter] = useState<string[]>([]);
-  const [studiesInterestFilter, setStudiesInterestFilter] = useState<string[]>([]);
+  const [interestsFilter, setInterestsFilter] = useState<string[]>([]);
 
   const isValueChanged = () => Object.values(hasChanged).some((val) => val);
 
   const onDiscardChanges = () => {
     setHasChanged(initialChangedValues);
     form.setFieldsValue(initialValues.current);
-    setDiseasesInterestFilter([]);
-    setStudiesInterestFilter([]);
+    setInterestsFilter([]);
   };
 
   useEffect(() => {
-    const diseasesInterests = personaUserInfo?.interests?.filter((interest) =>
-      diseasesInterestOptions.some((disease) => disease.value.toLocaleLowerCase() === interest),
-    );
-    const studiesInterests = personaUserInfo?.interests?.filter((interest) =>
-      studiesInterestOptions.some((study) => study.value.toLocaleLowerCase() === interest),
-    );
     initialValues.current = {
-      [FORM_FIELDS.DISEASES]: diseasesInterests || [],
-      [FORM_FIELDS.STUDIES]: studiesInterests || [],
+      [FORM_FIELDS.INTERESTS]: personaUserInfo?.interests || [],
     };
-    setDiseasesInterestFilter(diseasesInterests || []);
-    setStudiesInterestFilter(studiesInterests || []);
+    setInterestsFilter(personaUserInfo?.interests || []);
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,7 +61,7 @@ const ResearchInterestsCard = () => {
             updatePersonaUser({
               data: {
                 ...personaUserInfo,
-                interests: values[FORM_FIELDS.DISEASES].concat(values[FORM_FIELDS.STUDIES]),
+                interests: values[FORM_FIELDS.INTERESTS],
               },
               callback: () => {
                 initialValues.current = values;
@@ -84,9 +72,11 @@ const ResearchInterestsCard = () => {
         }}
       >
         <Form.Item
-          name={FORM_FIELDS.DISEASES}
+          name={FORM_FIELDS.INTERESTS}
           label={
-            <ProLabel title={intl.get('screen.profileSettings.cards.researchInterests.diseases')} />
+            <ProLabel
+              title={intl.get('screen.profileSettings.cards.researchInterests.interests')}
+            />
           }
           required={false}
         >
@@ -95,42 +85,11 @@ const ResearchInterestsCard = () => {
             allowClear
             placeholder={intl.get('screen.community.search.selectPlaceholder')}
             maxTagCount={4}
-            onSelect={(value: string) =>
-              setDiseasesInterestFilter([...diseasesInterestFilter, value])
-            }
+            onSelect={(value: string) => setInterestsFilter([...interestsFilter, value])}
             onDeselect={(value: string) =>
-              setDiseasesInterestFilter(diseasesInterestFilter.filter((val) => val !== value))
+              setInterestsFilter(interestsFilter.filter((val) => val !== value))
             }
-            options={diseasesInterestOptions.map((option) => ({
-              label: option.value,
-              value: option.value.toLocaleLowerCase(),
-            }))}
-            tagRender={({ onClose, value }) => (
-              <Tag closable onClose={onClose} style={{ marginRight: 3 }}>
-                <Typography.Text>{value}</Typography.Text>
-              </Tag>
-            )}
-          />
-        </Form.Item>
-        <Form.Item
-          name={FORM_FIELDS.STUDIES}
-          label={
-            <ProLabel title={intl.get('screen.profileSettings.cards.researchInterests.studies')} />
-          }
-          required={false}
-        >
-          <Select
-            mode="multiple"
-            allowClear
-            placeholder={intl.get('screen.community.search.selectPlaceholder')}
-            maxTagCount={4}
-            onSelect={(value: string) =>
-              setStudiesInterestFilter([...studiesInterestFilter, value])
-            }
-            onDeselect={(value: string) =>
-              setStudiesInterestFilter(studiesInterestFilter.filter((val) => val !== value))
-            }
-            options={studiesInterestOptions.map((option) => ({
+            options={AreaOfInterestOptions.map((option) => ({
               label: option.value,
               value: option.value.toLocaleLowerCase(),
             }))}
