@@ -59,7 +59,6 @@ export function renderWithProviders(
   }: ExtendedRenderOptions = {},
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-    console.log('in'); //TODO: to remove
     intl.init({ locales, currentLocale: 'en-US' });
 
     return (

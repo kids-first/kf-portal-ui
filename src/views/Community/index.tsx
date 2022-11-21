@@ -15,12 +15,7 @@ import { generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 
 const { Title } = Typography;
 
-const resolveSqon = (
-  search: string,
-  roles: string[],
-  diseasesInterest: string[],
-  studiesInterest: string[],
-) => {
+const resolveSqon = (search: string, roles: string[], interests: string[]) => {
   const searchContent = [];
   const content = [];
 
@@ -60,18 +55,17 @@ const resolveSqon = (
       generateValueFilter({
         field: 'roles',
         value: roles,
-        operator: TermOperators.in,
+        operator: TermOperators.all,
       }),
     );
   }
 
-  if (studiesInterest.length > 0 || diseasesInterest.length) {
-    const interests = diseasesInterest.concat(studiesInterest);
+  if (interests.length) {
     content.push(
       generateValueFilter({
         field: 'searchableInterests.name.raw',
-        value: interests.filter((item, index) => interests.indexOf(item) === index),
-        operator: TermOperators.in,
+        value: interests,
+        operator: TermOperators.all,
       }),
     );
   }
@@ -86,12 +80,11 @@ const CommunityPage = () => {
   const [search, setSearch] = useState('');
   const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
-  const [diseasesInterestFilter, setDiseasesInterestFilter] = useState<string[]>([]);
-  const [studiesInterestFilter, setStudiesInterestFilter] = useState<string[]>([]);
+  const [interestsFilter, setInterestsFilter] = useState<string[]>([]);
   const { loading, data, total } = useMembers({
     first: queryConfig.size,
     offset: queryConfig.size * (queryConfig.pageIndex - 1),
-    sqon: resolveSqon(search, roleFilter, diseasesInterestFilter, studiesInterestFilter),
+    sqon: resolveSqon(search, roleFilter, interestsFilter),
   });
 
   return (
@@ -102,9 +95,8 @@ const CommunityPage = () => {
       <FiltersBox
         onSearchFilterChange={setSearch}
         onRoleFilterChange={setRoleFilter}
-        onDiseasesInterestFilterChange={setDiseasesInterestFilter}
-        onStudiesInterestFilterChange={setStudiesInterestFilter}
-        hasFilters={!!(roleFilter || diseasesInterestFilter)}
+        onInterestsFilterChange={setInterestsFilter}
+        hasFilters={roleFilter.length > 0 || interestsFilter.length > 0}
       />
       <Space className={styles.usersListWrapper} size={24} direction="vertical">
         <TableHeader
