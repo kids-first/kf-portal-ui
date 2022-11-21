@@ -170,6 +170,37 @@ export const getQueryBuilderDictionary = (
 
 // ADD intl trad
 export const getFacetsDictionary = () => ({
+  study: {
+    study_name: 'Study Name',
+    study_code: 'Study Code',
+    external_id: 'dbGaP Accession Number',
+  },
+  studies: {
+    study_code: 'Study Code',
+  },
+  is_proband: 'Proband',
+  variant_class: 'Variant Type',
+  diagnosis: {
+    affected_status: 'Clinical Status',
+    age_at_event_days: 'Age at Diagnosis',
+    mondo_id_diagnosis: 'Diagnosis (MONDO)',
+    ncit_id_diagnosis: 'Diagnosis (NCIT)',
+    source_text: 'Diagnosis (Source Text)',
+    source_text_tumor_location: 'Tumor Location (Source Text)',
+  },
+  outcomes: {
+    age_at_event_days: {
+      value: 'Age at Outcome',
+    },
+  },
+  phenotype: {
+    age_at_event_days: 'Age at Observed Phenotype',
+    hpo_phenotype_observed: 'Observed Phenotype (HPO)',
+    hpo_phenotype_not_observed: 'Not Observed Phenotype (HPO)',
+  },
+  clinvar: {
+    clin_sig: 'ClinVar',
+  },
   consequences: {
     consequences: 'Consequence',
     biotype: 'Gene Type',
@@ -199,6 +230,31 @@ export const getFacetsDictionary = () => ({
     },
     cosmic: {
       tumour_types_germline: 'COSMIC',
+    },
+  },
+  frequencies: {
+    internal: {
+      upper_bound_kf: {
+        af: 'KF Allele Frequency',
+      },
+    },
+    gnomad_genomes_2_1: {
+      af: 'gnomAD Genome 2.1',
+    },
+    gnomad_genomes_3_0: {
+      af: 'gnomAD Genome 3.0',
+    },
+    gnomad_genomes_3_1_1: {
+      af: 'gnomAD Genome 3.1',
+    },
+    gnomad_exomes_2_1: {
+      af: 'gnomAD Exome 2.1',
+    },
+    topmed: {
+      af: 'TopMed',
+    },
+    one_thousand_genomes: {
+      af: '1000 Genomes',
     },
   },
   tooltips: {
