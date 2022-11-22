@@ -2,7 +2,7 @@ import { IQueryConfig } from '@ferlab/ui/core/graphql/types';
 
 export const STUDIES_REPO_QB_ID = 'studies-repo-key';
 
-export const DEFAULT_PAGE_INDEX = 0;
+export const DEFAULT_PAGE_INDEX = 1;
 export const DEFAULT_PAGE_SIZE = 20;
 
 export const CAVATICA_FILE_BATCH_SIZE = 10000;
