@@ -9,7 +9,7 @@ import AvatarHeader from './components/AvatarHeader';
 
 import styles from './index.module.scss';
 import { usePersona } from 'store/persona';
-import { memberRolesOptions } from '../contants';
+import { areaOfInterestOptions, memberRolesOptions } from '../contants';
 import { useMemberProfile } from 'graphql/members/actions';
 
 const CommunityMember = () => {
@@ -94,22 +94,33 @@ const CommunityMember = () => {
                     />
                   </Col>
                   {profile?.interests?.length! > 0 && (
-                    <>
-                      <Col span={24}>
-                        <Typography.Title level={4}>
-                          {intl.get('screen.memberProfile.researchInterest')}
-                        </Typography.Title>
-
-                        {profile?.interests?.length! > 0 && (
-                          <>
-                            <Typography.Title level={5}>
-                              {intl.get('screen.memberProfile.diseasesInterest')}
-                            </Typography.Title>
-                            {profile?.interests?.join(', ')}
-                          </>
+                    <Col span={24}>
+                      <Typography.Title level={5}>
+                        {intl.get('screen.memberProfile.interests')}
+                      </Typography.Title>
+                      <List
+                        className={cx(styles.infoList, !profile?.interests?.length && styles.empty)}
+                        itemLayout="horizontal"
+                        dataSource={profile?.interests}
+                        renderItem={(interest, index) => (
+                          <li key={index}>
+                            {areaOfInterestOptions.find(
+                              (e) => e.toLocaleLowerCase() === interest,
+                            ) || interest}
+                          </li>
                         )}
-                      </Col>
-                    </>
+                        locale={{
+                          emptyText: (
+                            <Empty
+                              showImage={false}
+                              description={intl.get('screen.memberProfile.noStudiesInterest')}
+                              align="left"
+                              noPadding
+                            />
+                          ),
+                        }}
+                      />
+                    </Col>
                   )}
                 </Row>
               </Col>

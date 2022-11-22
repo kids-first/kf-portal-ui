@@ -1,7 +1,7 @@
 import { Form, Select, Tag, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { AreaOfInterestOptions } from 'views/Community/contants';
+import { areaOfInterestOptions } from 'views/Community/contants';
 import { useDispatch } from 'react-redux';
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
@@ -35,10 +35,15 @@ const ResearchInterestsCard = () => {
   };
 
   useEffect(() => {
+    const mappedInterests = (personaUserInfo?.interests || []).map(
+      (interest) =>
+        areaOfInterestOptions.find((e) => e.toLocaleLowerCase() === interest) || interest,
+    );
+
     initialValues.current = {
-      [FORM_FIELDS.INTERESTS]: personaUserInfo?.interests || [],
+      [FORM_FIELDS.INTERESTS]: mappedInterests || [],
     };
-    setInterestsFilter(personaUserInfo?.interests || []);
+    setInterestsFilter(mappedInterests || []);
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,13 +94,13 @@ const ResearchInterestsCard = () => {
             onDeselect={(value: string) =>
               setInterestsFilter(interestsFilter.filter((val) => val !== value))
             }
-            options={AreaOfInterestOptions.map((option) => ({
-              label: option.value,
-              value: option.value.toLocaleLowerCase(),
+            options={areaOfInterestOptions.map((option) => ({
+              label: option,
+              value: option,
             }))}
-            tagRender={({ onClose, value }) => (
+            tagRender={({ onClose, label }) => (
               <Tag closable onClose={onClose} style={{ marginRight: 3 }}>
-                <Typography.Text>{value}</Typography.Text>
+                <Typography.Text>{label}</Typography.Text>
               </Tag>
             )}
           />

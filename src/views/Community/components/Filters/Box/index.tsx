@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-import { memberRolesOptions, AreaOfInterestOptions } from 'views/Community/contants';
+import { memberRolesOptions, areaOfInterestOptions } from 'views/Community/contants';
 import { debounce } from 'lodash';
 
 interface OwnProps {
@@ -95,18 +95,18 @@ const FiltersBox = ({
                   previousInterestsFilter.filter((val) => val !== value),
                 )
               }
-              options={AreaOfInterestOptions.map((option) => ({
-                label: option.value,
-                value: option.value.toLocaleLowerCase(),
+              options={areaOfInterestOptions.map((option) => ({
+                label: option,
+                value: option.toLocaleLowerCase(),
               }))}
-              tagRender={({ onClose, value }) => (
+              tagRender={({ onClose, label }) => (
                 <Tag
                   className={styles.filterTag}
                   closable
                   onClose={onClose}
                   style={{ marginRight: 3 }}
                 >
-                  <Typography.Text className={styles.filterTagText}>{value}</Typography.Text>
+                  <Typography.Text className={styles.filterTagText}>{label}</Typography.Text>
                 </Tag>
               )}
             />
