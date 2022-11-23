@@ -1038,7 +1038,7 @@ const en = {
       biotype: 'Gene Type',
       vep_impact: 'VEP',
       symbol: 'Gene Symbol',
-      symbol_id_1: 'Genes ε',
+      symbol_id_1: 'Genes',
       predictions: {
         sift_pred: 'SIFT',
         polyphen2_hvar_pred: 'PolyPhen-2 HVAR',
