@@ -27,7 +27,7 @@ import {
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 
-import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
+import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
@@ -153,7 +153,7 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
   const handleOnSaveAsFavorite = (filter: ISavedFilter) =>
     dispatch(setSavedFilterAsDefault(addTagToFilter(filter)));
   const handleOnShareFilter = (filter: ISavedFilter) => {
-    copy(`${getCurrentUrl()}?${FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
+    copy(`${getCurrentUrl()}?${SHARED_FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
     dispatch(
       globalActions.displayMessage({
         content: 'Copied share url',
