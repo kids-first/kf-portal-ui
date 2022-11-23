@@ -141,6 +141,10 @@ export const getQueryBuilderDictionary = (
       return set ? set.tag : setId;
     },
     facetValueMapping: {
+      'consequences.predictions.sift_pred': {
+        T: 'Tolerated',
+        D: 'Damaging',
+      },
       down_syndrome_status: {
         D21: intl.get('facets.options.D21'),
         T21: intl.get('facets.options.T21'),
