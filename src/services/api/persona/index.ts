@@ -132,8 +132,8 @@ const create = (user: IPersonaUser) =>
     data: {
       variables: user,
       query: `
-        mutation($egoId: String!, $firstName: String, $lastName: String, $email: String, $acceptedTerms: Boolean, $acceptedKfOptIn: Boolean, $acceptedDatasetSubscriptionKfOptIn: Boolean) {
-          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email, acceptedTerms: $acceptedTerms, acceptedKfOptIn: $acceptedKfOptIn, acceptedDatasetSubscriptionKfOptIn: $acceptedDatasetSubscriptionKfOptIn}) {
+        mutation($egoId: String!, $firstName: String, $lastName: String, $email: String, $roles: [EnumUserModelRoles], $acceptedTerms: Boolean, $acceptedKfOptIn: Boolean, $acceptedDatasetSubscriptionKfOptIn: Boolean) {
+          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email, roles: $roles, acceptedTerms: $acceptedTerms, acceptedKfOptIn: $acceptedKfOptIn, acceptedDatasetSubscriptionKfOptIn: $acceptedDatasetSubscriptionKfOptIn}) {
             record {
               ${DEFAULT_FIELDS_SELF}
             }
