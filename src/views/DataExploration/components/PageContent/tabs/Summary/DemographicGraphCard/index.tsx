@@ -1,24 +1,24 @@
-import { Col, Row } from 'antd';
-import PieChart from 'components/uiKit/charts/Pie';
-import { toChartData } from 'utils/charts';
 import intl from 'react-intl-universal';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { INDEXES } from 'graphql/constants';
-import { useHistory } from 'react-router-dom';
-import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
-import CardHeader from 'views/Dashboard/components/CardHeader';
-import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
-import { DEMOGRAPHIC_QUERY } from 'graphql/summary/queries';
-import useApi from 'hooks/useApi';
-import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
-import { BasicTooltip } from '@nivo/tooltip';
-import { capitalize, isEmpty } from 'lodash';
 import Empty from '@ferlab/ui/core/components/Empty';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
+import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { BasicTooltip } from '@nivo/tooltip';
+import { Col, Row } from 'antd';
+import { INDEXES } from 'graphql/constants';
+import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
+import { DEMOGRAPHIC_QUERY } from 'graphql/summary/queries';
+import { capitalize, isEmpty } from 'lodash';
+import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
+import CardHeader from 'views/Dashboard/components/CardHeader';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+
+import PieChart from 'components/uiKit/charts/Pie';
+import useApi from 'hooks/useApi';
+import { toChartData } from 'utils/charts';
 
 import styles from './index.module.scss';
-import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   id: string;
@@ -44,7 +44,7 @@ const graphSetting = {
   },
 };
 
-const addToQuery = (field: string, key: string, history: any) =>
+const addToQuery = (field: string, key: string) =>
   updateActiveQueryField({
     queryBuilderId: DATA_EXPLORATION_QB_ID,
     field,
@@ -53,7 +53,6 @@ const addToQuery = (field: string, key: string, history: any) =>
   });
 
 const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
-  const history = useHistory();
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -93,7 +92,7 @@ const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.sexTitle')}
                 data={sexData}
-                onClick={(datum) => addToQuery('sex', datum.id as string, history)}
+                onClick={(datum) => addToQuery('sex', datum.id as string)}
                 tooltip={(value) => (
                   <BasicTooltip
                     id={capitalize(value.datum.id.toString())}
@@ -112,7 +111,7 @@ const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
                 data={enthicityData}
-                onClick={(datum) => addToQuery('ethnicity', datum.id as string, history)}
+                onClick={(datum) => addToQuery('ethnicity', datum.id as string)}
                 {...graphSetting}
               />
             )}
@@ -124,7 +123,7 @@ const DemographicsGraphCard = ({ id, className = '' }: OwnProps) => {
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.raceTitle')}
                 data={raceData}
-                onClick={(datum) => addToQuery('race', datum.id as string, history)}
+                onClick={(datum) => addToQuery('race', datum.id as string)}
                 {...graphSetting}
               />
             )}
