@@ -884,6 +884,9 @@ const en = {
       study_name: 'Study Name',
       external_id: 'dbGaP Accession Number',
     },
+    studies: {
+      study_code: 'Study Code',
+    },
     is_proband: 'Proband',
     study_id: 'Study Code',
     down_syndrome_status: 'Down Syndrome Status',
