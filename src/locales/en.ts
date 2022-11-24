@@ -679,7 +679,7 @@ const en = {
         clinical: 'Clinical',
         participant: 'Participant',
         biospecimen: 'Biospecimen',
-        datafiles: 'Data Files',
+        datafiles: 'Data File',
       },
       hpoTree: {
         modal: {
