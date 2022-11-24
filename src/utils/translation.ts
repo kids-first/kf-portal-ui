@@ -182,6 +182,14 @@ export const getFacetsDictionary = () => ({
   studies: {
     study_code: 'Study Code',
   },
+  start: 'Position',
+  acl: 'ACL',
+  sequencing_experiment: {
+    experiment_strategy: 'Experimental Strategy',
+  },
+  transmissions: 'Transmission',
+  controlled_access: 'Access',
+  is_harmonized: 'Harmonized Data',
   is_proband: 'Proband',
   variant_class: 'Variant Type',
   diagnosis: {
@@ -193,6 +201,7 @@ export const getFacetsDictionary = () => ({
     source_text_tumor_location: 'Tumor Location (Source Text)',
   },
   outcomes: {
+    vital_status: 'Vital Status',
     age_at_event_days: {
       value: 'Age at Outcome',
     },

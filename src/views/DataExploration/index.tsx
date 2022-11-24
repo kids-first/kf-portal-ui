@@ -59,7 +59,6 @@ const filterGroups: {
     ],
     groups: [
       {
-        title: 'Demographic',
         facets: ['is_proband', 'ethnicity', 'sex', 'race'],
       },
     ],
@@ -108,6 +107,7 @@ const filterGroups: {
       {
         facets: [
           'data_category',
+          'data_type',
           'sequencing_experiment__experiment_strategy',
           'file_format',
           'is_harmonized',
