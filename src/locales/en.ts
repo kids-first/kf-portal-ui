@@ -889,7 +889,7 @@ const en = {
     down_syndrome_status: 'Down Syndrome Status',
     down_syndrome_diagnosis: 'Down Syndrome Diagnosis',
     mondo: {
-      name: 'Diagnoses (MONDO)',
+      name: 'Diagnosis (MONDO)',
     },
     diagnosis: {
       affected_status: 'Clinical Status',

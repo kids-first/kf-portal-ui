@@ -595,7 +595,7 @@
   "prescription.analysis.choici.modal.consult.algo.3": "sur l'analyse sélectionnée avant de procéder au formulaire de prescription.",
   "upload.gene.ids.modal.title": "Upload a gene list",
   "upload.gene.ids.modal.submittedColTitle": "Submitted gene identifiers",
-  "upload.gene.ids.modal.uploadBtnText": "Upload gene list",
+  "upload.gene.ids.modal.uploadBtnText": "Upload a gene list",
   "upload.gene.ids.modal.mappedTo": "Mapped To",
   "upload.gene.ids.modal.collapseTitle": "Summary Table  ({matchCount} matched, {unMatchCount} unmatched)",
   "upload.gene.ids.modal.identifiers": "Gene Symbol, Gene Alias, Ensembl ID",
