@@ -1,11 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { tieBreaker } from '@ferlab/ui/core//components/ProTable/utils';
+import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
-import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
@@ -23,13 +22,12 @@ import {
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
 
-import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
+import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
-import { useSavedFilter } from 'store/savedFilter';
 import {
   createSavedFilter,
   deleteSavedFilter,
@@ -43,6 +41,7 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
+import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -55,8 +54,8 @@ const addTagToFilter = (filter: ISavedFilter) => ({
 
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
-  const { queryList, activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
-  const { savedFilters, defaultFilter } = useSavedFilter(SavedFilterTag.VariantsExplorationPage);
+  const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
+    useQBStateWithSavedFilters(VARIANT_REPO_QB_ID, SavedFilterTag.VariantsExplorationPage);
   const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,
@@ -121,7 +120,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const handleOnSaveAsFavorite = (filter: ISavedFilter) =>
     dispatch(setSavedFilterAsDefault(addTagToFilter(filter)));
   const handleOnShareFilter = (filter: ISavedFilter) => {
-    copy(`${getCurrentUrl()}?${FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
+    copy(`${getCurrentUrl()}?${SHARED_FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
     dispatch(
       globalActions.displayMessage({
         content: 'Copied share url',
@@ -152,8 +151,8 @@ const PageContent = ({ variantMapping }: OwnProps) => {
             enableShare: true,
             enableUndoChanges: true,
           },
-          selectedSavedFilter: defaultFilter,
-          savedFilters: savedFilters,
+          selectedSavedFilter: selectedSavedFilter,
+          savedFilters: savedFilterList,
           onShareFilter: handleOnShareFilter,
           onUpdateFilter: handleOnUpdateFilter,
           onSaveFilter: handleOnSaveFilter,
