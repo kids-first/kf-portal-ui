@@ -13,6 +13,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
             families_id
             ethnicity
             external_id
+            study_external_id
             family_type
             race
             files {

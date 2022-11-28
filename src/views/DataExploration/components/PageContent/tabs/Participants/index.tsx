@@ -80,16 +80,19 @@ const defaultColumns: ProColumnType[] = [
     render: (study: IParticipantStudy) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'study.external_id',
+    key: 'study_external_id',
     title: 'dbGaP',
-    dataIndex: 'external_id',
-    render: (externalId: string) => (
-      <ExternalLink
-        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${externalId}`}
-      >
-        {externalId}
-      </ExternalLink>
-    ),
+    dataIndex: 'study_external_id',
+    render: (study_external_id: string) =>
+      study_external_id ? (
+        <ExternalLink
+          href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${study_external_id}`}
+        >
+          {study_external_id}
+        </ExternalLink>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'proband',
