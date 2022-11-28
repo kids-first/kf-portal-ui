@@ -119,10 +119,12 @@ const filterGroups: {
   [FilterTypes.Pathogenicity]: {
     groups: [
       {
+        facets: ['clinvar__clin_sig', 'consequences__vep_impact'],
+        tooltips: ['consequences__vep_impact'],
+      },
+      {
         title: 'Predictions',
         facets: [
-          'clinvar__clin_sig',
-          'consequences__vep_impact',
           'consequences__predictions__sift_pred',
           'consequences__predictions__polyphen2_hvar_pred',
           'consequences__predictions__fathmm_pred',
@@ -131,7 +133,7 @@ const filterGroups: {
           'consequences__predictions__lrt_pred',
           'consequences__predictions__revel_rankscore',
         ],
-        tooltips: ['consequences__predictions__sift_pred', 'consequences__vep_impact'],
+        tooltips: ['consequences__predictions__sift_pred'],
       },
     ],
   },
