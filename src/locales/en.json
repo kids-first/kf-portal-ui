@@ -36,6 +36,7 @@
   "facets.options.zygosity.HET": "Heterozygote",
   "facets.options.zygosity.WT": "Wild Type",
   "facets.options.zygosity.HOM": "Homozygote",
+  "facets.options.zygosity.UNK": "Unknown",
   "family": "family",
   "father": "father",
   "female": "Female",

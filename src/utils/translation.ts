@@ -142,12 +142,32 @@ export const getQueryBuilderDictionary = (
     },
     facetValueMapping: {
       'consequences.predictions.sift_pred': {
-        T: 'Tolerated',
-        D: 'Damaging',
+        T: intl.get('facets.options.consequences__predictions__sift_pred.T'),
+        D: intl.get('facets.options.consequences__predictions__sift_pred.D'),
+      },
+      'consequences.predictions.polyphen2_hvar_pred': {
+        B: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.B'),
+        D: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.D'),
+        P: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.P'),
+      },
+      'consequences.predictions.fathmm_pred': {
+        T: intl.get('facets.options.consequences__predictions__fathmm_pred.T'),
+        D: intl.get('facets.options.consequences__predictions__fathmm_pred.D'),
+      },
+      'consequences.predictions.lrt_pred': {
+        N: intl.get('facets.options.consequences__predictions__lrt_pred.N'),
+        D: intl.get('facets.options.consequences__predictions__lrt_pred.D'),
+        U: intl.get('facets.options.consequences__predictions__lrt_pred.U'),
       },
       down_syndrome_status: {
         D21: intl.get('facets.options.D21'),
         T21: intl.get('facets.options.T21'),
+      },
+      zygosity: {
+        HET: intl.get('facets.options.zygosity.HET'),
+        WT: intl.get('facets.options.zygosity.WT'),
+        HOM: intl.get('facets.options.zygosity.HOM'),
+        UNK: intl.get('facets.options.zygosity.UNK'),
       },
     },
   },
