@@ -1,8 +1,11 @@
+@import 'src/style/themes/kids-first/colors';
+
 .collapseLikeFacet {
   .collapse {
     &,
     :global(.ant-collapse-item) {
       border: none;
+      color: $geekblue-7;
     }
 
     div[class$='-header'] {
