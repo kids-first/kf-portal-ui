@@ -4,10 +4,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactElement, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import {
-  DATA_EPLORATION_FILTER_TAG,
-  DATA_EXPLORATION_QB_ID,
-} from 'views/DataExploration/utils/constant';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { formatDistance } from 'date-fns';
 import CreateEditModal from '../CreateEditModal';
 import { deleteSavedSet } from 'store/savedSet/thunks';
@@ -21,6 +18,7 @@ import { getSetFieldId } from 'store/savedSet';
 import styles from './index.module.scss';
 import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
 import { useHistory } from 'react-router-dom';
+import { STATIC_ROUTES } from 'utils/routes';
 
 interface OwnProps {
   data: IUserSetOutput;
@@ -32,13 +30,13 @@ const { Text } = Typography;
 const redirectToPage = (setType: string) => {
   switch (setType) {
     case INDEXES.FILES:
-      return `${DATA_EPLORATION_FILTER_TAG}/datafiles`;
+      return STATIC_ROUTES.DATA_EXPLORATION_DATAFILES;
     case INDEXES.PARTICIPANT:
-      return `${DATA_EPLORATION_FILTER_TAG}/participants`;
+      return STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS;
     case INDEXES.BIOSPECIMENS:
-      return `${DATA_EPLORATION_FILTER_TAG}/biospecimens`;
+      return STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS;
     default:
-      return DATA_EPLORATION_FILTER_TAG;
+      return STATIC_ROUTES.DATA_EXPLORATION;
   }
 };
 
