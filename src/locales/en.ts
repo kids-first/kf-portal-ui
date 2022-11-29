@@ -944,14 +944,12 @@ const en = {
     //Variants
     variant_class: 'Variant Type',
     type: 'Type',
-    variant_external_reference: 'External Reference',
     chromosome: 'Chromosome',
     position: 'Position',
     zygosity: 'Zygosity',
     transmissions: 'Transmission',
     genePanels: 'Gene Panels',
     start: 'Position',
-    gene_external_reference: 'External Reference',
     locus: 'Variant',
     consequences: {
       consequences: 'Consequence',

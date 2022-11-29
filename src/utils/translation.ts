@@ -141,6 +141,10 @@ export const getQueryBuilderDictionary = (
       return set ? set.tag : setId;
     },
     facetValueMapping: {
+      variant_external_reference: {
+        DBSNP: intl.get('screen.variants.table.dbsnp'),
+        Clinvar: intl.get('filters.group.clinvar.clin_sig'),
+      },
       'consequences.predictions.sift_pred': {
         T: intl.get('facets.options.consequences__predictions__sift_pred.T'),
         D: intl.get('facets.options.consequences__predictions__sift_pred.D'),
