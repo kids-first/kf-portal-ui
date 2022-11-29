@@ -34,6 +34,7 @@ import GradientAccent from 'components/uiKit/GradientAccent';
 import PersonaRegistration from 'views/Persona';
 import PersonaUpdateTermsAndConditions from 'views/Persona/updateTermsAndConditions';
 import FakeStorybook from 'views/FakeStorybook';
+import ProfileView from 'views/Profile/View';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -42,7 +43,7 @@ const CommunityMember = loadable(() => import('views/Community/Member'), loadabl
 const Studies = loadable(() => import('views/Studies'), loadableProps);
 const DataExploration = loadable(() => import('views/DataExploration'), loadableProps);
 const Variants = loadable(() => import('views/Variants'), loadableProps);
-const ProfileSettings = loadable(() => import('views/ProfileSettings'), loadableProps);
+const ProfileSettings = loadable(() => import('views/Profile/Settings'), loadableProps);
 
 const App = () => {
   const lang = useLang();
@@ -107,6 +108,9 @@ const App = () => {
                   </ProtectedRoute>
                   <ProtectedRoute exact path={DYNAMIC_ROUTES.COMMUNITY_MEMBER} layout={PageLayout}>
                     <CommunityMember />
+                  </ProtectedRoute>
+                  <ProtectedRoute exact path={STATIC_ROUTES.PROFILE_VIEW} layout={PageLayout}>
+                    <ProfileView />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={STATIC_ROUTES.PROFILE_SETTINGS} layout={PageLayout}>
                     <ProfileSettings />

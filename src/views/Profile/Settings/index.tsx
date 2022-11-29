@@ -7,19 +7,16 @@ import styles from './index.module.scss';
 import RoleAndAffiliationCard from './cards/RoleAndAffiliation';
 import ResearchInterestsCard from './cards/ResearchInterests';
 import LocationCard from './cards/Location';
-import { usePersona } from 'store/persona';
 
 const { Title } = Typography;
 
 const ProfileSettings = () => {
-  const { personaUserInfo } = usePersona();
-
   return (
     <div className={styles.profileSettingsWrapper}>
       <Space size={16} direction="vertical" className={styles.profileSettings}>
         <div className={styles.profileSettingsHeader}>
           <Title level={4}>{intl.get('screen.profileSettings.title')}</Title>
-          <Link to={`/member/${personaUserInfo?._id}`}>
+          <Link to={`/profile/view`}>
             <Button type="primary">{intl.get('screen.profileSettings.viewProfile')}</Button>
           </Link>
         </div>
