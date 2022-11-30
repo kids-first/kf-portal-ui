@@ -93,7 +93,7 @@ const CreateProjectModal = ({
           rules={[{ required: true, type: 'string' }]}
           required={false}
         >
-          <Input placeholder="ex: Lorem ipsum dolor"></Input>
+          <Input placeholder="e.g. KF-NBL Neuroblastoma Aligned Reads"></Input>
         </Form.Item>
         <Form.Item
           name={FORM_FIELDS.PROJECT_BILLING_GROUP}
