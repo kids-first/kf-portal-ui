@@ -20,7 +20,7 @@ const BarChart = ({ title, height, ...rest }: OwnProps) => {
           {...rest}
           colors={rest.colors || getCommonColors()}
           colorBy="indexValue"
-          onMouseEnter={(_, e: any) => {
+          onMouseEnter={(_: any, e: any) => {
             if (rest.onMouseEnter) {
               rest.onMouseEnter(_, e);
             }
