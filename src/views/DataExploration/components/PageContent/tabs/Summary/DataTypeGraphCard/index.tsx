@@ -84,13 +84,13 @@ const DataTypeGraphCard = ({ id, className = '' }: OwnProps) => {
                 legendOffset: -120,
                 format: (title: string) => truncateString(title, 15),
               }}
-              tooltipLabel={(node) => node.data.id}
+              tooltipLabel={(node: any) => node.data.id}
               axisBottom={{
                 legend: '# of participants',
                 legendPosition: 'middle',
                 legendOffset: 35,
               }}
-              onClick={(datum) => addToQuery('data_type', datum.indexValue as string, history)}
+              onClick={(datum: any) => addToQuery('data_type', datum.indexValue as string, history)}
               {...graphSetting}
             />
           )}

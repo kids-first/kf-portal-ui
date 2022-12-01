@@ -1,0 +1,3 @@
+[submodule "storybook"]
+	path = storybook
+	url = https://github.com/lflangis/storybook.git

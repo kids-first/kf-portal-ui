@@ -136,7 +136,7 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
             <BarChart
               showCursor
               data={ageAtDiagnosisresults}
-              tooltipLabel={(node) => `Participant${node.data.value > 1 ? 's' : ''}`}
+              tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
               axisLeft={{
                 legend: '# Participants',
                 legendPosition: 'middle',
@@ -147,7 +147,7 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
                 legendPosition: 'middle',
                 legendOffset: 35,
               }}
-              onClick={(datum) =>
+              onClick={(datum: any) =>
                 addToQuery('diagnosis.age_at_event_days', datum.data.label as string)
               }
               {...graphSetting}

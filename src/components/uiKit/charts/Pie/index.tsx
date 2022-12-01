@@ -29,7 +29,7 @@ const PieChart = ({
           colors={rest.colors || getCommonColors()}
           enableArcLabels={enableArcLabels}
           enableArcLinkLabels={enableArcLinkLabels}
-          onMouseEnter={(_, e: any) => {
+          onMouseEnter={(_: any, e: any) => {
             if (rest.onMouseEnter) {
               rest.onMouseEnter(_, e);
             }

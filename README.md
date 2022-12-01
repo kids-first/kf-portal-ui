@@ -33,6 +33,19 @@
 - Follow the steps here: https://github.com/include-dcc/include-users-api/blob/main/README.md
 - Make sure to add the include keycloak config for the users-api in your `.env`
 
+
+
+## Storybook
+
+Run to install storybook submodules
+
+```git
+git submodule init
+git submodule update
+```
+
+
+
 ### Branch
 
 Namee structure is `type/SKFP-[github ticker number]/description`
@@ -41,7 +54,6 @@ e.g.
 
 ```
 "fix/SKFP-23432/issue-with-..."
-
 ```
 
 Supported types:
