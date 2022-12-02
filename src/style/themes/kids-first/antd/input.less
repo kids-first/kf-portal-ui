@@ -1,8 +1,4 @@
-@input-placeholder-color: @gray-6;
-@input-color: @gray-8;
 @input-color-default: @geekblue-4;
-@input-color-error: @red-8;
-@input-color-warning: @orange-7;
 @input-outline-offset: 0;
 
 // ---- MIXINS ---- //
@@ -10,12 +6,16 @@
   background: @background;
   border-color: @color;
 
+  &:hover {
+    border-color: @color;
+  }
+
   &-active,
   &:focus,
   &-focused {
     background: @gray-1;
     border-color: @color;
-    box-shadow: 0px 0px 0px 2px @color;
+    box-shadow: 0px 0px 4px rgba(red(@color), green(@color), blue(@color), 50%);
   }
 }
 
@@ -61,22 +61,9 @@
 // ---- ELEMENTS ---- //
 .ant-input-affix-wrapper:focus,
 .ant-input-affix-wrapper-focused {
-  box-shadow: 0px 0px 4px @input-color-default;
+  box-shadow: 0px 0px 4px
+    rgba(red(@input-color-default), green(@input-color-default), blue(@input-color-default), 50%);
   border-color: @input-color-default;
-}
-
-.@{select-prefix-cls} {
-  & {
-    &-focused:not(.ant-select-disabled),
-    &:focus:not(.ant-select-disabled) {
-      &.@{select-prefix-cls}:not(.ant-select-customize-input) {
-        .@{select-prefix-cls}-selector {
-          border-color: @input-color-default;
-          box-shadow: none;
-        }
-      }
-    }
-  }
 }
 
 .@{input-prefix-cls} {
@@ -92,16 +79,16 @@
     color: @body-3;
   }
 
+  &:hover {
+    border-color: @input-color-default;
+  }
+
+  &:focus,
+  &-active,
   &-focused {
     border-color: @input-color-default;
-    box-shadow: 0px 0px 0px 2px @input-color-default;
-  }
-  &-active {
-    border-color: @input-color-default;
-  }
-  &:focus {
-    box-shadow: none !important;
-    border-color: @input-color-default;
+    box-shadow: 0 0 4px
+      rgba(red(@input-color-default), green(@input-color-default), blue(@input-color-default), 50%);
   }
 
   &-number,
@@ -120,6 +107,21 @@
     &-wrapper-disabled {
       border-color: @gray-5 !important;
       background: @gray-3 !important;
+    }
+
+    &-wrapper {
+      .@{input-prefix-cls}-suffix,
+      .@{input-prefix-cls}-prefix {
+        color: @body-3;
+      }
+    }
+
+    &-wrapper:not(&-wrapper-disabled):hover {
+      border-color: @input-color-default;
+    }
+
+    &-wrapper-focused:not(&-wrapper-disabled) {
+      .input-wrapper-status-mixins(@gray-1, @input-color-default);
     }
 
     &-wrapper-status-error:not(&-wrapper-disabled):not(&-wrapper-borderless)&-wrapper {

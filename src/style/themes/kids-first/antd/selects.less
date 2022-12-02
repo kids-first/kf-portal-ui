@@ -1,12 +1,40 @@
 @select-item-selected-bg: @blue-1;
 @select-item-selected-font-weight: 400;
+@select-color-default: @geekblue-4;
 
 .@{select-prefix-cls} {
+  width: 100%;
+
+  &::placeholder {
+    color: @body-3;
+  }
+
+  &:hover {
+    border-color: @select-color-default;
+  }
+
+  &-focused,
   &:focus-visible,
   &:active,
-  &:hover,
   &:focus {
-    border-color: @geekblue-4;
+    border-color: @select-color-default;
+    box-shadow: 0 0 4px
+      rgba(
+        red(@select-color-default),
+        green(@select-color-default),
+        blue(@select-color-default),
+        50%
+      );
+  }
+
+  &-focused:not(.ant-select-disabled),
+  &:focus:not(.ant-select-disabled) {
+    &.@{select-prefix-cls}:not(.ant-select-customize-input) {
+      .@{select-prefix-cls}-selector {
+        border-color: @select-color-default;
+        box-shadow: none;
+      }
+    }
   }
 
   &-selection-overflow-item {

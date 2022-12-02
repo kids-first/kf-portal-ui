@@ -5,8 +5,6 @@ import take from 'lodash/take';
 import Empty from '@ferlab/ui/core/components/Empty';
 import SearchLabel from 'components/uiKit/search/SearchLabel';
 
-import styles from './index.module.scss';
-
 export type OptionsType = {
   value: string;
   label: string | React.ReactNode;
@@ -54,11 +52,10 @@ const SearchAutocomplete = ({
   }, [selectedItems]);
 
   return (
-    <div className={`${styles.container} ${className}`}>
+    <div className={className}>
       <SearchLabel title={title} tooltipText={tooltipText} />
       <Select
         allowClear
-        className={styles.search}
         filterOption={false}
         maxTagCount="responsive"
         mode="multiple"
@@ -79,7 +76,7 @@ const SearchAutocomplete = ({
         value={itemSelected}
         getPopupContainer={(trigger) => trigger.parentElement!}
         tagRender={({ onClose, value }) => (
-          <Tag className={styles.tag} closable onClose={onClose} style={{ marginRight: 3 }}>
+          <Tag closable onClose={onClose} style={{ marginRight: 3 }}>
             {value}
           </Tag>
         )}
