@@ -1,8 +1,13 @@
+import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/VariantEntity/types';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IStudiesEntity } from 'graphql/studies/models';
 
 export interface IVariantResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
+}
+
+export interface IVariantEntityResultTree {
+  variants: IArrangerResultsTree<IVariantEntityFerlab>;
 }
 
 export enum Impact {
@@ -72,7 +77,7 @@ export interface IConsequenceEntity {
   canonical: boolean;
   coding_dna_change: string;
   strand: string;
-  refseq_mrna_id: string[];
+  refseq_mrna_id: string;
   ensembl_transcript_id: string;
   ensembl_gene_id: string;
   predictions: IPredictionEntity;

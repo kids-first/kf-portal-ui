@@ -17,9 +17,7 @@ export enum STATIC_ROUTES {
   DATA_EXPLORATION_BIOSPECIMENS = '/data-exploration/biospecimens',
   DATA_EXPLORATION_DATAFILES = '/data-exploration/datafiles',
 
-  VARIANT = '/variant-exploration',
-  VARIANT_SUMMARY = '/variant-exploration/summary',
-  VARIANT_VARIANTS = '/variant-exploration/variants',
+  VARIANTS = '/variants',
 
   DCF_FENCE_REDIRECT = '/dcf_redirect',
   GEN3_FENCE_REDIRECT = '/gen3_redirect',
@@ -30,7 +28,7 @@ export enum STATIC_ROUTES {
 
 export enum DYNAMIC_ROUTES {
   DATA_EXPLORATION = '/data-exploration/:tab?',
-  VARIANT = '/variant-exploration/:tab?',
+  VARIANT_ENTITY = '/variants/:locus?',
   ERROR = '/error/:status?',
   COMMUNITY_MEMBER = '/member/:id',
 }
