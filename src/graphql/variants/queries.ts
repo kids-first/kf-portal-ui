@@ -242,6 +242,200 @@ export const SEARCH_VARIANT_QUERY = gql`
   }
 `;
 
+export const GET_VARIANT_ENTITY = gql`
+  query getVariantEntity($sqon: JSON) {
+    variants {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            id
+            alternate
+            chromosome
+            genome_build
+            hgvsg
+            locus
+            participant_number
+            participant_total_number
+            reference
+            rsnumber
+            start
+            variant_class
+            studies {
+              hits {
+                total
+                edges {
+                  node {
+                    participant_ids
+                    participant_number
+                    study_id
+                    frequencies {
+                      upper_bound_kf {
+                        ac
+                        homozygotes
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            consequences {
+              hits {
+                total
+                edges {
+                  node {
+                    symbol
+                    consequences
+                    vep_impact
+                    aa_change
+                    impact_score
+                    canonical
+                    coding_dna_change
+                    strand
+                    refseq_mrna_id
+                    ensembl_transcript_id
+                    ensembl_gene_id
+                    predictions {
+                      fathmm_pred
+                      lrt_pred
+                      lrt_converted_rankscore
+                      revel_rankscore
+                      sift_pred
+                      polyphen2_hvar_pred
+                      sift_converted_rankscore
+                      cadd_rankscore
+                      dann_rankscore
+                      fathmm_converted_rankscore
+                    }
+                    conservations {
+                      phylo_p17way_primate_rankscore
+                    }
+                  }
+                }
+              }
+            }
+            clinvar {
+              clin_sig
+              clinvar_id
+              conditions
+              inheritance
+            }
+            frequencies {
+              internal {
+                upper_bound_kf {
+                  ac
+                  homozygotes
+                }
+              }
+              topmed {
+                ac
+                af
+                an
+                homozygotes
+              }
+              one_thousand_genomes {
+                ac
+                af
+                an
+              }
+              gnomad_exomes_2_1 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              gnomad_genomes_2_1 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              gnomad_genomes_3_0 {
+                ac
+                af
+                an
+                homozygotes
+              }
+              gnomad_genomes_3_1_1 {
+                ac
+                af
+                an
+                homozygotes
+              }
+            }
+            genes {
+              hits {
+                total
+                edges {
+                  node {
+                    location
+                    omim_gene_id
+                    symbol
+                    cosmic {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            tumour_types_germline
+                          }
+                        }
+                      }
+                    }
+                    ddd {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            disease_name
+                          }
+                        }
+                      }
+                    }
+                    hpo {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            hpo_term_id
+                            hpo_term_label
+                          }
+                        }
+                      }
+                    }
+                    omim {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            omim_id
+                            name
+                            inheritance
+                          }
+                        }
+                      }
+                    }
+                    orphanet {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            panel
+                            inheritance
+                            disorder_id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_VARIANT_COUNT = gql`
   query getVariantsCount($sqon: JSON) {
     variants {

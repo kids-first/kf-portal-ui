@@ -3,11 +3,23 @@ import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
+import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { useFilters } from '@ferlab/ui/core/data/filters/utils';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import {
+  IArrangerResultsTree,
+  IQueryConfig,
+  IQueryResults,
+  TQueryConfigCb,
+} from '@ferlab/ui/core/graphql/types';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
+import { INDEXES } from 'graphql/constants';
+import { IStudiesEntity } from 'graphql/studies/models';
 import {
   IClinVar,
   IConsequenceNode,
@@ -15,28 +27,16 @@ import {
   ITableVariantEntity,
   IVariantEntity,
 } from 'graphql/variants/models';
+import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
 import { SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
+import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { IStudiesEntity } from 'graphql/studies/models';
-import { STATIC_ROUTES } from 'utils/routes';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { INDEXES } from 'graphql/constants';
-import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import {
-  IQueryResults,
-  IArrangerResultsTree,
-  IQueryConfig,
-  TQueryConfigCb,
-} from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   pageIndex: number;
@@ -61,9 +61,7 @@ const defaultColumns: ProColumnType[] = [
     render: (hgvsg: string, entity: IVariantEntity) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
-          <Link target="_blank" to={`/variant/entity/${entity.locus}`}>
-            {hgvsg}
-          </Link>
+          <Link to={`${STATIC_ROUTES.VARIANTS}/${entity.locus}`}>{hgvsg}</Link>
         </Tooltip>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER

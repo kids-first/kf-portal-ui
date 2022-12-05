@@ -1,41 +1,40 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import cx from 'classnames';
-import { PageHeader, Dropdown, Menu, Space, Typography } from 'antd';
-import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import {
-  ReadOutlined,
-  HomeOutlined,
   FileSearchOutlined,
-  TeamOutlined,
-  LogoutOutlined,
-  UserOutlined,
-  MessageOutlined,
   GlobalOutlined,
-  MailOutlined,
+  HomeOutlined,
   LaptopOutlined,
+  LogoutOutlined,
+  MailOutlined,
+  MessageOutlined,
+  ReadOutlined,
+  TeamOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { DownOutlined } from '@ant-design/icons';
-import HeaderLink from 'components/Layout/Header/HeaderLink';
-import { STATIC_ROUTES } from 'utils/routes';
-import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import intl from 'react-intl-universal';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import NotificationBanner from 'components/featureToggle/NotificationBanner';
-import { AlterTypes } from 'common/types';
-import { useKeycloak } from '@react-keycloak/web';
-import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'store/user/slice';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
-import GradientAccent from 'components/uiKit/GradientAccent';
+import { useKeycloak } from '@react-keycloak/web';
+import { Dropdown, Menu, PageHeader, Space, Typography } from 'antd';
+import { formatProvider } from 'auth/keycloak-api/utils';
+import cx from 'classnames';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 
-import styles from 'components/Layout/Header/index.module.scss';
 import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/featureToggle';
+import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
+import { AlterTypes } from 'common/types';
+import NotificationBanner from 'components/featureToggle/NotificationBanner';
+import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
+import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import HeaderLink from 'components/Layout/Header/HeaderLink';
+import styles from 'components/Layout/Header/index.module.scss';
+import GradientAccent from 'components/uiKit/GradientAccent';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
-import { formatProvider } from 'auth/keycloak-api/utils';
+import { userActions } from 'store/user/slice';
+import { STATIC_ROUTES } from 'utils/routes';
 
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
@@ -103,11 +102,7 @@ const Header = () => {
             <HeaderLink
               key="variant-data"
               currentPathName={currentPathName}
-              to={[
-                STATIC_ROUTES.VARIANT,
-                STATIC_ROUTES.VARIANT_SUMMARY,
-                STATIC_ROUTES.VARIANT_VARIANTS,
-              ]}
+              to={[STATIC_ROUTES.VARIANTS]}
               icon={<LineStyleIcon />}
               title={intl.get('layout.main.menu.variants')}
             />

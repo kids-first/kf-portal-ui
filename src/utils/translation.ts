@@ -1,10 +1,101 @@
 import intl from 'react-intl-universal';
 import { IDictionary as FiltersDict } from '@ferlab/ui/core/components/filters/types';
-import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { IProTableDictionary } from '@ferlab/ui/core/components/ProTable/types';
+import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/QueryBuilder/types';
+import { IVariantEntityDictionary } from '@ferlab/ui/core/pages/VariantEntity/types';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
+
 import { IUserSetOutput } from 'services/api/savedSet/models';
+
 import { numberWithCommas } from './string';
+
+export const getVariantEntityDictionary = (): IVariantEntityDictionary => ({
+  summary: {
+    summary: intl.get('screen.variants.summary.summary'),
+    type: intl.get('screen.variants.summary.type'),
+    chromosome: intl.get('screen.variants.summary.chromosome'),
+    position: intl.get('screen.variants.summary.position'),
+    cytobande: intl.get('screen.variants.summary.cytobande'),
+    alternativeAllele: intl.get('screen.variants.summary.alternativeAllele'),
+    altAllele: intl.get('screen.variants.summary.altAllele'),
+    referenceAllele: intl.get('screen.variants.summary.referenceAllele'),
+    refAllele: intl.get('screen.variants.summary.refAllele'),
+    referenceGenome: intl.get('screen.variants.summary.referenceGenome'),
+    studies: intl.get('screen.variants.summary.studies'),
+    participants: intl.get('screen.variants.summary.participants'),
+    genes: intl.get('screen.variants.summary.genes'),
+    omim: intl.get('screen.variants.summary.omim'),
+    clinVar: intl.get('screen.variants.summary.clinVar'),
+    gnomadGenome311: intl.get('screen.variants.summary.gnomadGenome311'),
+    dbSNP: intl.get('screen.variants.summary.dbSNP'),
+  },
+  consequences: {
+    consequence: intl.get('screen.variants.consequences.consequence'),
+    impactTag: {
+      modifier: intl.get('screen.variants.consequences.impactTag.modifier'),
+      low: intl.get('screen.variants.consequences.impactTag.low'),
+      moderate: intl.get('screen.variants.consequences.impactTag.moderate'),
+      high: intl.get('screen.variants.consequences.impactTag.high'),
+    },
+    aaColumnTooltip: intl.get('screen.variants.consequences.aaColumnTooltip'),
+    aaColumn: intl.get('screen.variants.consequences.aaColumn'),
+    cdnaChangeColumn: intl.get('screen.variants.consequences.cdnaChangeColumn'),
+    strand: intl.get('screen.variants.consequences.strand'),
+    vep: intl.get('screen.variants.consequences.vep'),
+    prediction: {
+      prediction: intl.get('screen.variants.consequences.prediction.prediction'),
+      sift: intl.get('screen.variants.consequences.prediction.sift'),
+      polyphen2: intl.get('screen.variants.consequences.prediction.polyphen2'),
+      fathmm: intl.get('screen.variants.consequences.prediction.fathmm'),
+      cadd: intl.get('screen.variants.consequences.prediction.cadd'),
+      dann: intl.get('screen.variants.consequences.prediction.dann'),
+      lrt: intl.get('screen.variants.consequences.prediction.lrt'),
+      revel: intl.get('screen.variants.consequences.prediction.revel'),
+    },
+    seeLess: intl.get('see.less'),
+    seeMore: intl.get('see.more'),
+    conservationColumn: intl.get('screen.variants.consequences.conservationColumn'),
+    transcript: intl.get('screen.variants.consequences.transcript'),
+    canonical: intl.get('screen.variants.consequences.canonical'),
+    refSeq: intl.get('screen.variants.consequences.refSeq'),
+    geneConsequences: intl.get('screen.variants.consequences.geneConsequences'),
+    gene: intl.get('screen.variants.consequences.gene'),
+    omim: intl.get('screen.variants.consequences.omim'),
+    hideTranscript: intl.get('screen.variants.consequences.hideTranscript'),
+    showTranscript: intl.get('screen.variants.consequences.showTranscript'),
+    noDataAvailable: intl.get('no.data.available'),
+  },
+  frequencies: {
+    frequence: intl.get('screen.variants.frequencies.frequence'),
+    kfStudies: intl.get('screen.variants.frequencies.kfStudies'),
+    publicCohorts: intl.get('screen.variants.frequencies.publicCohorts'),
+    studies: intl.get('screen.variants.frequencies.studies'),
+    domain: intl.get('screen.variants.frequencies.domain'),
+    participantsTooltip: intl.get('screen.variants.frequencies.participantsTooltip'),
+    participants: intl.get('screen.variants.frequencies.participants'),
+    frequency: intl.get('screen.variants.frequencies.frequency'),
+    frequencyTooltip: intl.get('screen.variants.frequencies.frequencyTooltip'),
+    altAlleles: intl.get('screen.variants.frequencies.altAlleles'),
+    altAllelesTooltip: intl.get('screen.variants.frequencies.altAllelesTooltip'),
+    homozygotes: intl.get('screen.variants.frequencies.homozygotes'),
+    homozygotesTooltip: intl.get('screen.variants.frequencies.homozygotesTooltip'),
+    total: intl.get('screen.variants.frequencies.total'),
+    cohort: intl.get('screen.variants.frequencies.cohort'),
+    altRef: intl.get('screen.variants.frequencies.altRef'),
+    altRefTooltip: intl.get('screen.variants.frequencies.altRefTooltip'),
+    noDataAvailable: intl.get('screen.variants.frequencies.noDataAvailable'),
+  },
+  pathogenicity: {
+    pathogenicity: intl.get('screen.variants.pathogenicity.pathogenicity'),
+    clinVar: intl.get('screen.variants.pathogenicity.clinVar'),
+    genePhenotype: intl.get('screen.variants.pathogenicity.genePhenotype'),
+    source: intl.get('screen.variants.pathogenicity.source'),
+    gene: intl.get('screen.variants.pathogenicity.gene'),
+    condition: intl.get('screen.variants.pathogenicity.condition'),
+    inheritance: intl.get('screen.variants.pathogenicity.inheritance'),
+    interpretation: intl.get('screen.variants.pathogenicity.interpretation'),
+  },
+});
 
 export const getProTableDictionary = (): IProTableDictionary => ({
   itemCount: {
