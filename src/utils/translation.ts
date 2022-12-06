@@ -2,8 +2,8 @@ import intl from 'react-intl-universal';
 import { IDictionary as FiltersDict } from '@ferlab/ui/core/components/filters/types';
 import { IProTableDictionary } from '@ferlab/ui/core/components/ProTable/types';
 import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/QueryBuilder/types';
-import { IVariantEntityDictionary } from '@ferlab/ui/core/pages/VariantEntity/types';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
+import { IVariantEntityDictionary } from '@ferlab/ui/core/pages/VariantEntity/types';
 
 import { IUserSetOutput } from 'services/api/savedSet/models';
 
@@ -389,6 +389,12 @@ export const getFacetsDictionary = () => ({
     consequences: {
       vep_impact: 'Ensembl Variant Effect Predictor',
       predictions: {
+        cadd_rankscore: 'Combined Annotation Dependent Depletion',
+        dann_rankscore: 'Deleterious Annotation of genetic variants using Neural Networks',
+        fathmm_pred: 'Functional Analysis Through Hidden Markov Models',
+        lrt_pred: 'Likelihood Ratio Test',
+        polyphen2_hvar_pred: 'Polymorphism Phenotyping v2 HumVar',
+        revel_rankscore: 'Rare Exome Variant Ensemble Learner',
         sift_pred: 'Sorting Intolerant From Tolerant',
       },
     },
