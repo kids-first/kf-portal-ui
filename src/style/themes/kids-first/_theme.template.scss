@@ -85,8 +85,8 @@ $grid-card-light-background-color: white;
 $grid-card-shade-background-color: $gray-2;
 
 // EMPTY
-$empty-image-color: $geekblue-2;
-$empty-content-color: $body-2;
+$empty-image-color: rgba(red($body-3), green($body-3), blue($body-3), 50%);
+$empty-content-color: $body-3;
 
 // Collapse
 $collapse-light-background-color: white;
