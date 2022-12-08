@@ -10,10 +10,10 @@ $query-default-action-default-color: $body-1;
 $query-default-action-hover-color: $body-1;
 $query-default-action-focus-color: $body-1;
 
-$query-builder-header-tools-icon-color: $gray-8;
-$query-builder-header-tools-icon-hover: $gray-8;
-$query-builder-header-tools-icon-focus: $gray-8;
-$query-builder-header-tools-icon-color-dirty: $orange-7;
+$query-builder-header-tools-icon-color: $body-3;
+$query-builder-header-tools-icon-hover: $body-3;
+$query-builder-header-tools-icon-focus: $body-3;
+$query-builder-header-tools-icon-color-dirty: $cyan-7;
 
 $query-builder-bg: $gray-1;
 $query-builder-border-color: $gray-4;
@@ -85,8 +85,8 @@ $grid-card-light-background-color: white;
 $grid-card-shade-background-color: $gray-2;
 
 // EMPTY
-$empty-image-color: $geekblue-2;
-$empty-content-color: $body-2;
+$empty-image-color: rgba(red($body-3), green($body-3), blue($body-3), 50%);
+$empty-content-color: $body-3;
 
 // Collapse
 $collapse-light-background-color: white;
