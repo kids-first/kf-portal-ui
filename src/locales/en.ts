@@ -242,7 +242,7 @@ const en = {
         },
         myFiltersDropdown: {
           title: 'My Filters',
-          manageMyFilter: 'Manage my filters',
+          manageMyFilter: 'Manage filters',
         },
         duplicateFilterTitleSuffix: 'COPY',
       },

@@ -2,7 +2,7 @@ module.exports = {
   webpackFinal: (config) => {
     config.module.rules.push({
       test: /\.tsx?$/,
-      // exclude: /node_modules/,
+      exclude: /node_modules/,
       use: [
         {
           loader: require.resolve('babel-loader'),
