@@ -211,6 +211,7 @@ const SetsManagementDropdown = ({
         )}
         placement="bottomLeft"
         trigger={['click']}
+        disabled={selectedKeys.length === 0 && !selectedAllResults}
         getPopupContainer={() =>
           document.getElementById(`${type}-set-dropdown-container`) as HTMLElement
         }
