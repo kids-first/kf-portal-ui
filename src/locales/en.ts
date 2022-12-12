@@ -726,7 +726,8 @@ const en = {
         domain: 'Domain',
         participants: 'Participants',
         participantsTooltip: '# of affected participants across Kids First studies',
-        participantsInfoIconTooltip: 'Due to participant confidentiality, links may return a smaller number than displayed',
+        participantsInfoIconTooltip:
+          'Due to participant confidentiality, links may return a smaller number than displayed',
         frequencyTooltip: 'Frequency of the variant across Kids First studies',
         frequency: 'Frequency',
         altAlleles: 'ALT Alleles',
@@ -768,7 +769,7 @@ const en = {
         create: 'Save as new set',
         add: 'Add to existing set',
         remove: 'Remove from existing set',
-        selected: '{count, plural, =1 {# {type}} other {# {type}s}} selected',
+        selected: '{count, plural, =0 {# {type}} =1 {# {type}} other {# {type}s}} selected',
       },
       hpoTree: {
         modal: {
