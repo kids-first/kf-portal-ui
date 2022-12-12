@@ -19,13 +19,13 @@ import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
-import { IStudiesEntity } from 'graphql/studies/models';
 import {
   IClinVar,
   IConsequenceNode,
   IExternalFrequenciesEntity,
   ITableVariantEntity,
   IVariantEntity,
+  IVariantStudyEntity,
 } from 'graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
@@ -119,7 +119,7 @@ const defaultColumns: ProColumnType[] = [
     title: 'Studies',
     dataIndex: 'studies',
     key: 'studies',
-    render: (studies: IArrangerResultsTree<IStudiesEntity>) => studies?.hits?.total || 0,
+    render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => studies?.hits?.total || 0,
   },
   {
     title: intl.get('screen.variants.table.participant.title'),
@@ -130,6 +130,11 @@ const defaultColumns: ProColumnType[] = [
       if (participantNumber <= 10) {
         return participantNumber;
       }
+
+      const participantIds = record.studies?.hits?.edges?.flatMap(
+        (study) => study.node.participant_ids,
+      );
+
       return (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
@@ -139,8 +144,8 @@ const defaultColumns: ProColumnType[] = [
               query: generateQuery({
                 newFilters: [
                   generateValueFilter({
-                    field: 'study_id',
-                    value: [record.study_id],
+                    field: 'participant_id',
+                    value: participantIds,
                     index: INDEXES.PARTICIPANT,
                   }),
                 ],

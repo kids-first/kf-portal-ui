@@ -1,6 +1,5 @@
-import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/VariantEntity/types';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
-import { IStudiesEntity } from 'graphql/studies/models';
+import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/VariantEntity/types';
 
 export interface IVariantResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
@@ -174,11 +173,24 @@ export interface IVariantEntity {
   variant_external_reference: string;
   vep_impacts: string;
   zygosity: string;
-  studies: IArrangerResultsTree<IStudiesEntity>;
+  studies: IArrangerResultsTree<IVariantStudyEntity>;
   consequences: IArrangerResultsTree<IConsequenceEntity>;
   clinvar: IClinVar;
   frequencies: IExternalFrequenciesEntity;
   genes: IArrangerResultsTree<IGeneEntity>;
+}
+
+export interface IVariantStudyEntity {
+  id: string;
+  acls: string[];
+  external_study_ids: string[];
+  frequencies: IVariantFrequenciesInternal;
+  participant_ids: string[];
+  participant_number: number;
+  score: number | null;
+  study_code: string;
+  study_id: string;
+  transmissions: string[];
 }
 
 export type ITableVariantEntity = IVariantEntity & {
