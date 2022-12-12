@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import {
   DownOutlined,
   ExperimentOutlined,
@@ -7,13 +8,14 @@ import {
   PlusOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { MenuClickEventHandler } from 'rc-menu/lib/interface';
-import { IParticipantEntity } from 'graphql/participants/models';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+import { IQueryResults } from '@ferlab/ui/core/graphql/types';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
+import { IParticipantEntity } from 'graphql/participants/models';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import CreateEditModal from 'views/Dashboard/components/DashboardCards/SavedSets/CreateEditModal';
 
 import ListAddIcon from 'components/Icons/ListAddIcon';
@@ -25,7 +27,6 @@ import { numberWithCommas } from 'utils/string';
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 
 import styles from './index.module.scss';
-import { IQueryResults } from '@ferlab/ui/core/graphql/types';
 
 type Props = {
   results: IQueryResults<IParticipantEntity[] | IFileEntity[] | IBiospecimenEntity[]>;
@@ -74,7 +75,7 @@ const modals = {
 };
 
 const ROW_SELECTION_LIMIT = 10000;
-const exceedLimit = (participantCount: number) => participantCount > ROW_SELECTION_LIMIT;
+const exceedLimit = (count: number) => count > ROW_SELECTION_LIMIT;
 
 const itemIcon = (type: string) => {
   switch (type) {
@@ -88,7 +89,7 @@ const itemIcon = (type: string) => {
 };
 
 const menu = (
-  participantCount: number,
+  count: number,
   onClick: MenuClickEventHandler,
   isEditDisabled: boolean,
   type: string,
@@ -100,16 +101,14 @@ const menu = (
       {
         key: 'participant-count',
         className: `${
-          exceedLimit(participantCount)
-            ? styles.saveSetOptionMenuInfoOver
-            : styles.saveSetOptionMenuInfo
+          exceedLimit(count) ? styles.saveSetOptionMenuInfoOver : styles.saveSetOptionMenuInfo
         }`,
         disabled: true,
         icon: itemIcon(type),
         label: (
           <>
             <span>
-              {participantCount} {type} selected
+              {intl.get('screen.dataExploration.setsManagementDropdown.selected', { count, type })}
             </span>
             <Tooltip
               arrowPointAtCenter
@@ -129,18 +128,18 @@ const menu = (
       {
         key: 'create',
         icon: <PlusOutlined />,
-        label: 'Save as new set',
+        label: intl.get('screen.dataExploration.setsManagementDropdown.create'),
       },
       {
         key: 'add_ids',
         icon: <ListAddIcon />,
-        label: 'Add to existing set',
+        label: intl.get('screen.dataExploration.setsManagementDropdown.add'),
         disabled: isEditDisabled,
       },
       {
         key: 'remove_ids',
         icon: <ListRemoveIcon />,
-        label: 'Remove from existing set',
+        label: intl.get('screen.dataExploration.setsManagementDropdown.remove'),
         disabled: isEditDisabled,
       },
     ]}
