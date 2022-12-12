@@ -284,16 +284,17 @@ export const GET_VARIANT_ENTITY = gql`
                 edges {
                   node {
                     symbol
+                    biotype
                     consequences
                     vep_impact
-                    aa_change
                     impact_score
                     canonical
-                    coding_dna_change
                     strand
                     refseq_mrna_id
                     ensembl_transcript_id
                     ensembl_gene_id
+                    hgvsc
+                    hgvsp
                     predictions {
                       fathmm_pred
                       lrt_pred
