@@ -88,6 +88,9 @@ const itemIcon = (type: string) => {
   }
 };
 
+const singularizeFilesSetType = (type: string) =>
+  type === SetType.FILES ? type.slice(0, -1) : type;
+
 const menu = (
   count: number,
   onClick: MenuClickEventHandler,
@@ -108,7 +111,10 @@ const menu = (
         label: (
           <>
             <span>
-              {intl.get('screen.dataExploration.setsManagementDropdown.selected', { count, type })}
+              {intl.get('screen.dataExploration.setsManagementDropdown.selected', {
+                count,
+                type: singularizeFilesSetType(type),
+              })}
             </span>
             <Tooltip
               arrowPointAtCenter
