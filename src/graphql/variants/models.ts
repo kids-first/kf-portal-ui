@@ -72,6 +72,7 @@ export interface IConsequenceEntity {
   consequences: string[];
   vep_impact: Impact;
   aa_change: string | undefined | null;
+  hgvsp: string | null;
   impact_score: number | null;
   canonical: boolean;
   coding_dna_change: string;

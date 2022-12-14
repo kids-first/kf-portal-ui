@@ -227,6 +227,7 @@ export const SEARCH_VARIANT_QUERY = gql`
                       fathmm_converted_rankscore
                     }
                     hgvsc
+                    hgvsp
                     consequences
                     vep_impact
                     symbol

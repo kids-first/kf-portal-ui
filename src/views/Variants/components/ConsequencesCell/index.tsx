@@ -1,4 +1,5 @@
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { IConsequenceEntity, Impact } from 'graphql/variants/models';
 
@@ -11,7 +12,6 @@ import { toKebabCase } from 'utils/helper';
 import { generateConsequencesDataLines } from './consequences';
 
 import style from './index.module.scss';
-import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 
 const impactToColorClassName = Object.freeze({
   [Impact.High]: <HighBadgeIcon svgClass={`${style.bullet} ${style.highImpact}`} />,
@@ -50,7 +50,7 @@ const ConsequencesCell = ({
                   </ExternalLink>
                 </span>
               )}
-              {node.aa_change && <span>{node.aa_change}</span>}
+              {node.hgvsp && <span>{node.hgvsp.split(':')[1]}</span>}
             </StackLayout>
           );
         }
