@@ -1,5 +1,27 @@
-import { FileAccessType, IFileEntity, ITableFileEntity } from 'graphql/files/models';
+import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { CloudUploadOutlined, LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
+import ProTable from '@ferlab/ui/core/components/ProTable';
+import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import useQueryBuilderState, {
+  addQuery,
+} from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { IQueryConfig, IQueryResults, TQueryConfigCb } from '@ferlab/ui/core/graphql/types';
+import { Button, Modal, Tag, Tooltip } from 'antd';
+import { INDEXES } from 'graphql/constants';
+import {
+  FileAccessType,
+  IFileEntity,
+  IFileStudyEntity,
+  ITableFileEntity,
+} from 'graphql/files/models';
+import AnalyseModal from 'views/Dashboard/components/DashboardCards/Cavatica/AnalyseModal';
+import CreateProjectModal from 'views/Dashboard/components/DashboardCards/Cavatica/CreateProjectModal';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   CAVATICA_FILE_BATCH_SIZE,
   DATA_EXPLORATION_QB_ID,
@@ -7,42 +29,26 @@ import {
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
+import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
+
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import ProTable from '@ferlab/ui/core/components/ProTable';
-import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { getProTableDictionary } from 'utils/translation';
-import { useDispatch } from 'react-redux';
+import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
+import { SetType } from 'services/api/savedSet/models';
+import { useFenceCavatica } from 'store/fenceCavatica';
+import { fenceCavaticaActions } from 'store/fenceCavatica/slice';
+import { beginAnalyse } from 'store/fenceCavatica/thunks';
+import { useFenceConnection } from 'store/fenceConnection';
+import { connectToFence } from 'store/fenceConnection/thunks';
+import { fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { useEffect, useState } from 'react';
+import { userHasAccessToFile } from 'utils/dataFiles';
 import { formatFileSize } from 'utils/formatFileSize';
-import { Button, Modal, Tag, Tooltip } from 'antd';
-import AnalyseModal from 'views/Dashboard/components/DashboardCards/Cavatica/AnalyseModal';
-import { fetchTsvReport } from 'store/report/thunks';
-import { INDEXES } from 'graphql/constants';
-import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
-import CreateProjectModal from 'views/Dashboard/components/DashboardCards/Cavatica/CreateProjectModal';
-import intl from 'react-intl-universal';
-import { beginAnalyse } from 'store/fenceCavatica/thunks';
-import { useFenceCavatica } from 'store/fenceCavatica';
-import { connectToFence } from 'store/fenceConnection/thunks';
-import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
-import { fenceCavaticaActions } from 'store/fenceCavatica/slice';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
-import { Link } from 'react-router-dom';
-import { STATIC_ROUTES } from 'utils/routes';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
-import useQueryBuilderState, {
-  addQuery,
-} from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
-import { SetType } from 'services/api/savedSet/models';
+import { STATIC_ROUTES } from 'utils/routes';
+import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { userHasAccessToFile } from 'utils/dataFiles';
-import { useFenceConnection } from 'store/fenceConnection';
-import { IQueryResults, IQueryConfig, TQueryConfigCb } from '@ferlab/ui/core/graphql/types';
 
 interface OwnProps {
   results: IQueryResults<IFileEntity[]>;
@@ -109,30 +115,34 @@ const getDefaultColumns = (
     sorter: { multiple: 1 },
   },
   {
-    key: 'study_code',
+    key: 'study.study_code',
     title: 'Study',
-    sorter: { multiple: 1 },
-    render: (record: IFileEntity) => record.study?.study_code || TABLE_EMPTY_PLACE_HOLDER,
+    sorter: {
+      multiple: 1,
+    },
+    dataIndex: 'study',
+    render: (study: IFileStudyEntity) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'category',
+    key: 'data_category',
     title: 'Data Category',
-    dataIndex: 'category',
     sorter: { multiple: 1 },
+    dataIndex: 'data_category',
+    render: (data_category: string) => data_category || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'data_type',
     title: 'Data Type',
-    dataIndex: 'datatype',
+    dataIndex: 'data_type',
     sorter: { multiple: 1 },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (data_type: string) => data_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'sequencing_experiment__experiment_strategy',
+    key: 'sequencing_experiment.experiment_strategy',
     title: 'Experimental Strategy',
     sorter: { multiple: 1 },
-    dataIndex: 'study',
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IFileEntity) =>
+      record.sequencing_experiment.experiment_strategy || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'file_format',
@@ -145,7 +155,7 @@ const getDefaultColumns = (
     title: 'Size',
     dataIndex: 'size',
     sorter: { multiple: 1 },
-    render: (size) => formatFileSize(size, { output: 'string' }),
+    render: (size: number) => formatFileSize(size, { output: 'string' }),
   },
   {
     key: 'nb_participants',
@@ -398,12 +408,14 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
               selectedAllResults={selectedAllResults}
               type={SetType.FILES}
               selectedKeys={selectedKeys}
+              key="file-set-management"
             />,
             <Button
               disabled={selectedKeys.length === 0}
               type="primary"
               icon={<CloudUploadOutlined />}
               loading={isInitializingAnalyse}
+              key="file-cavatica-upload"
               onClick={() => {
                 if (isConnected) {
                   if (

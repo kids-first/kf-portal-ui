@@ -21,7 +21,7 @@ import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
 import {
   IClinVar,
-  IConsequenceNode,
+  IConsequenceEntity,
   IExternalFrequenciesEntity,
   ITableVariantEntity,
   IVariantEntity,
@@ -97,7 +97,7 @@ const defaultColumns: ProColumnType[] = [
     title: intl.get('screen.variants.table.consequences'),
     dataIndex: 'consequences',
     width: 300,
-    render: (consequences: { hits: { edges: IConsequenceNode[] } }) => (
+    render: (consequences: IArrangerResultsTree<IConsequenceEntity>) => (
       <ConsequencesCell consequences={consequences?.hits?.edges || []} />
     ),
   },
@@ -124,7 +124,7 @@ const defaultColumns: ProColumnType[] = [
   {
     title: intl.get('screen.variants.table.participant.title'),
     tooltip: intl.get('screen.variants.table.participant.tooltip'),
-    key: 'part',
+    key: 'participant_number',
     render: (record: IVariantEntity) => {
       const participantNumber = record.participant_number || 0;
       if (participantNumber <= 10) {
@@ -238,7 +238,7 @@ const VariantsTable = ({
             current: pageIndex,
             queryConfig,
             setQueryConfig,
-            onChange: (page: number, _) => {
+            onChange: (page: number) => {
               scrollToTop(SCROLL_WRAPPER_ID);
               setPageIndex(page);
             },
