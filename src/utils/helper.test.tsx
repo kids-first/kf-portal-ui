@@ -1,7 +1,7 @@
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { SorterResult } from 'antd/lib/table/interface';
 
-import { convertToArray, formatQuerySortList, getOrderFromAntdValue } from './helper';
+import { formatQuerySortList, getOrderFromAntdValue } from './helper';
 
 describe('getOrderFromAntdValue()', () => {
   test('should return SortDirection.Asc for "ascend"', () => {
@@ -10,18 +10,6 @@ describe('getOrderFromAntdValue()', () => {
 
   test('should return SortDirection.Desc for any other value', () => {
     expect(getOrderFromAntdValue('foo')).toBe(SortDirection.Desc);
-  });
-});
-
-describe('convertToArray()', () => {
-  it('should return an array if input is an array', () => {
-    const array = [1, 2, 3];
-    expect(convertToArray(array)).toEqual(array);
-  });
-
-  it('should return an array if input is not an array', () => {
-    const value = 'Hello World';
-    expect(convertToArray(value)).toEqual([value]);
   });
 });
 

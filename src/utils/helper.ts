@@ -1,7 +1,6 @@
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { TSortableItems } from '@ferlab/ui/core/layout/SortableGrid/SortableItem';
 import { SorterResult } from 'antd/lib/table/interface';
-import { isArray } from 'lodash';
 
 export const scrollToTop = (scrollContentId: string) =>
   document
@@ -19,10 +18,8 @@ export const orderCardIfNeeded = (cards: TSortableItems[], userCardConfig: strin
 export const getOrderFromAntdValue = (order: string): SortDirection =>
   order === 'ascend' ? SortDirection.Asc : SortDirection.Desc;
 
-export const convertToArray = <T>(value: T | T[]) => (isArray(value) ? value : [value]);
-
 export const formatQuerySortList = (sorter: SorterResult<any> | SorterResult<any>[]) =>
-  convertToArray(sorter).map((sorter) => ({
+  [sorter].flat().map((sorter) => ({
     field: sorter.columnKey as string,
     order: getOrderFromAntdValue(sorter.order!),
   }));
