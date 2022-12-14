@@ -3,7 +3,7 @@ import { SorterResult } from 'antd/lib/table/interface';
 
 import { formatQuerySortList, getOrderFromAntdValue } from './helper';
 
-describe('getOrderFromAntdValue()', () => {
+describe(`${getOrderFromAntdValue.name}()`, () => {
   test('should return SortDirection.Asc for "ascend"', () => {
     expect(getOrderFromAntdValue('ascend')).toBe(SortDirection.Asc);
   });
@@ -13,7 +13,7 @@ describe('getOrderFromAntdValue()', () => {
   });
 });
 
-describe('formatQuerySortList()', () => {
+describe(`${formatQuerySortList.name}()`, () => {
   it('should handle a single sorter', () => {
     const sorter1: SorterResult<any> = {
       columnKey: 'field1',
