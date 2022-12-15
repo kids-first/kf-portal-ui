@@ -112,7 +112,7 @@ const defaultColumns: ProColumnType[] = [
     render: (clinVar: IClinVar) =>
       clinVar?.clin_sig && clinVar.clinvar_id ? (
         <ExternalLink href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}>
-          {clinVar.clin_sig.join(', ')}
+          {clinVar.clin_sig.join(', ').replaceAll('_', ' ')}
         </ExternalLink>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER

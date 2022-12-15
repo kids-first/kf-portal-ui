@@ -39,7 +39,7 @@ const ConsequencesCell = ({
             <StackLayout center key={index}>
               {pickImpactBadge(node.vep_impact)}
               <span key={index} className={style.detail}>
-                {node.consequences[0]}
+                {node.consequences[0].replaceAll('_', ' ')}
               </span>
               {node.symbol && (
                 <span key={toKebabCase(node.symbol)} className={style.symbol}>
