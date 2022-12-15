@@ -37,6 +37,9 @@ import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { useUser } from 'store/user';
+import { updateUserConfig } from 'store/user/thunks';
+import { useDispatch } from 'react-redux';
 
 interface OwnProps {
   pageIndex: number;
@@ -196,7 +199,9 @@ const VariantsTable = ({
   pageIndex,
   setPageIndex,
 }: OwnProps) => {
+  const dispatch = useDispatch();
   const { filters }: { filters: ISyntheticSqon } = useFilters();
+  const { userInfo } = useUser();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   useEffect(() => {
@@ -213,6 +218,7 @@ const VariantsTable = ({
           tableId="variants_table"
           columns={defaultColumns}
           enableRowSelection
+          initialColumnState={userInfo?.config.variant?.tables?.variants?.columns}
           wrapperClassName={styles.variantTabWrapper}
           loading={results.loading}
           initialSelectedKey={selectedKeys}
@@ -231,6 +237,19 @@ const VariantsTable = ({
               pageSize: queryConfig.size,
               total: results.total,
             },
+            enableColumnSort: true,
+            onColumnSortChange: (newState) =>
+              dispatch(
+                updateUserConfig({
+                  variant: {
+                    tables: {
+                      variants: {
+                        columns: newState,
+                      },
+                    },
+                  },
+                }),
+              ),
           }}
           bordered
           size="small"
