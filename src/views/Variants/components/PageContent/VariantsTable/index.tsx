@@ -119,6 +119,17 @@ const defaultColumns: ProColumnType[] = [
       ),
   },
   {
+    key: 'gnomad_genomes_3_1_1.af',
+    title: intl.get('screen.variants.table.gnomAD.title'),
+    tooltip: intl.get('screen.variants.table.gnomAD.tooltip'),
+    dataIndex: 'frequencies',
+    className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
+    render: (gnomad: IExternalFrequenciesEntity) =>
+      gnomad.gnomad_genomes_3_1_1.af
+        ? toExponentialNotation(gnomad.gnomad_genomes_3_1_1.af)
+        : TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     title: 'Studies',
     dataIndex: 'studies',
     key: 'studies',
