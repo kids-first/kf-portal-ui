@@ -128,7 +128,7 @@ const defaultColumns: ProColumnType[] = [
     title: intl.get('screen.variants.table.gnomAD.title'),
     tooltip: intl.get('screen.variants.table.gnomAD.tooltip'),
     dataIndex: 'frequencies',
-    className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
+    width: '7%',
     render: (gnomad: IExternalFrequenciesEntity) =>
       gnomad.gnomad_genomes_3_1_1.af
         ? toExponentialNotation(gnomad.gnomad_genomes_3_1_1.af)

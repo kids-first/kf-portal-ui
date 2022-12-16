@@ -1,16 +1,16 @@
 .variantTabWrapper {
-    display: flex;
+  display: flex;
 
-    :global(.ant-pagination) {
-        margin-bottom: 0;
-    }
+  :global(.ant-pagination) {
+    margin-bottom: 0;
+  }
 }
 
 .variantTableCellElipsis {
-    max-width: 200px;
-    width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow-wrap: unset;
-    white-space: nowrap;
+  max-width: 200px;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: unset;
+  white-space: nowrap;
 }
