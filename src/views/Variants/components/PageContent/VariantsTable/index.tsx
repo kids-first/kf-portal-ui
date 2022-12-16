@@ -112,11 +112,22 @@ const defaultColumns: ProColumnType[] = [
     render: (clinVar: IClinVar) =>
       clinVar?.clin_sig && clinVar.clinvar_id ? (
         <ExternalLink href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}>
-          {clinVar.clin_sig.join(', ')}
+          {clinVar.clin_sig.join(', ').replaceAll('_', ' ')}
         </ExternalLink>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
+  },
+  {
+    key: 'gnomad_genomes_3_1_1.af',
+    title: intl.get('screen.variants.table.gnomAD.title'),
+    tooltip: intl.get('screen.variants.table.gnomAD.tooltip'),
+    dataIndex: 'frequencies',
+    className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
+    render: (gnomad: IExternalFrequenciesEntity) =>
+      gnomad.gnomad_genomes_3_1_1.af
+        ? toExponentialNotation(gnomad.gnomad_genomes_3_1_1.af)
+        : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     title: 'Studies',

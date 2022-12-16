@@ -643,6 +643,10 @@ const en = {
       table: {
         consequences: 'Consequences',
         clinvar: 'ClinVar',
+        gnomAD: {
+          title: 'gnomAD',
+          tooltip: 'gnomAD 3.1.1 Allele Frequency',
+        },
         type: 'Type',
         variant_class: 'Variant class',
         variant_id: 'Variant ID',
