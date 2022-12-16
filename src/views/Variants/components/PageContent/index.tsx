@@ -17,6 +17,7 @@ import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
 import {
   DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_CONFIG,
   DEFAULT_SORT_QUERY,
   VARIANT_REPO_QB_ID,
@@ -42,6 +43,7 @@ import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
+import { useUser } from 'store/user';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -54,9 +56,13 @@ const addTagToFilter = (filter: ISavedFilter) => ({
 
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
+  const { userInfo } = useUser();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
     useQBStateWithSavedFilters(VARIANT_REPO_QB_ID, SavedFilterTag.VariantsExplorationPage);
-  const [variantQueryConfig, setVariantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
+  const [variantQueryConfig, setVariantQueryConfig] = useState({
+    ...DEFAULT_QUERY_CONFIG,
+    size: userInfo?.config.variant?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
+  });
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,
   );
