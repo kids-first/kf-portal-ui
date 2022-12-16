@@ -29,7 +29,7 @@ import {
 } from 'graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
-import { SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
+import { DEFAULT_PAGE_SIZE, SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
@@ -40,6 +40,7 @@ import styles from './index.module.scss';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { useDispatch } from 'react-redux';
+import { truncateString } from 'utils/string';
 
 interface OwnProps {
   pageIndex: number;
@@ -111,9 +112,13 @@ const defaultColumns: ProColumnType[] = [
     className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
     render: (clinVar: IClinVar) =>
       clinVar?.clin_sig && clinVar.clinvar_id ? (
-        <ExternalLink href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}>
-          {clinVar.clin_sig.join(', ').replaceAll('_', ' ')}
-        </ExternalLink>
+        <Tooltip placement="topLeft" title={clinVar.clin_sig.join(', ').replaceAll('_', ' ')}>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}
+          >
+            {truncateString(clinVar.clin_sig.join(', ').replaceAll('_', ' '), 29)}
+          </ExternalLink>
+        </Tooltip>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
@@ -273,7 +278,21 @@ const VariantsTable = ({
               setPageIndex(page);
             },
             searchAfter: results.searchAfter,
-            defaultViewPerQuery: PaginationViewPerQuery.Ten,
+            onViewQueryChange: (viewPerQuery: PaginationViewPerQuery) => {
+              dispatch(
+                updateUserConfig({
+                  variant: {
+                    tables: {
+                      variants: {
+                        ...userInfo?.config.variant?.tables?.variants,
+                        viewPerQuery,
+                      },
+                    },
+                  },
+                }),
+              );
+            },
+            defaultViewPerQuery: queryConfig.size,
           }}
           dataSource={results.data.map((i) => ({ ...i, key: i.id }))}
           dictionary={getProTableDictionary()}

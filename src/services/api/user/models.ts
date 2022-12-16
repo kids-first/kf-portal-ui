@@ -1,3 +1,4 @@
+import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
 
 export type TUser = {
@@ -27,7 +28,8 @@ export type TUser = {
 };
 
 export type TUserTableConfig = {
-  columns: TColumnStates;
+  columns?: TColumnStates;
+  viewPerQuery?: PaginationViewPerQuery;
 };
 
 export type TUserConfig = {
