@@ -973,6 +973,18 @@ const en = {
     file_id: 'File ID',
     // Participant
     participant_id: 'Participant ID',
+    participant_facet_ids: {
+      participant_fhir_id_1: 'Participant ID',
+      participant_fhir_id_2: 'Participant ID',
+    },
+    file_facet_ids: {
+      file_fhir_id_1: 'File ID',
+      file_fhir_id_2: 'File ID',
+    },
+    biospecimen_facet_ids: {
+      biospecimen_fhir_id_1: 'Sample ID',
+      biospecimen_fhir_id_2: 'Sample ID',
+    },
     study: {
       study_code: 'Study Code',
       study_name: 'Study Name',

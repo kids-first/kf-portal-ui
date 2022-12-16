@@ -88,7 +88,7 @@ const itemIcon = (type: string) => {
   }
 };
 
-const singularizeFilesSetType = (type: string) =>
+export const singularizeFilesSetType = (type: string) =>
   type === SetType.FILES ? type.slice(0, -1) : type;
 
 const menu = (
