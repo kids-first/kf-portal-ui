@@ -67,7 +67,7 @@
     "@dnd-kit/core": "^4.0.3",
     "@dnd-kit/sortable": "^5.1.0",
     "@ferlab/style": "^1.26.2",
-    "@ferlab/ui": "^4.8.2",
+    "@ferlab/ui": "^4.8.3",
     "@loadable/component": "^5.15.2",
     "@nivo/bar": "^0.79.1",
     "@nivo/core": "^0.80.0",
