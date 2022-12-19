@@ -1,3 +1,4 @@
+import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
@@ -112,11 +113,14 @@ const defaultColumns: ProColumnType[] = [
     className: cx(styles.variantTableCell, styles.variantTableCellElipsis),
     render: (clinVar: IClinVar) =>
       clinVar?.clin_sig && clinVar.clinvar_id ? (
-        <Tooltip placement="topLeft" title={clinVar.clin_sig.join(', ').replaceAll('_', ' ')}>
+        <Tooltip
+          placement="topLeft"
+          title={removeUnderscoreAndCapitalize(clinVar.clin_sig.join(', '))}
+        >
           <ExternalLink
             href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}
           >
-            {truncateString(clinVar.clin_sig.join(', ').replaceAll('_', ' '), 29)}
+            {truncateString(removeUnderscoreAndCapitalize(clinVar.clin_sig.join(', ')), 29)}
           </ExternalLink>
         </Tooltip>
       ) : (

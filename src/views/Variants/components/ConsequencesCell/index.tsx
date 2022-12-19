@@ -1,3 +1,4 @@
+import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
@@ -39,7 +40,7 @@ const ConsequencesCell = ({
             <StackLayout center key={index}>
               {pickImpactBadge(node.vep_impact)}
               <span key={index} className={style.detail}>
-                {node.consequences[0].replaceAll('_', ' ')}
+                {removeUnderscoreAndCapitalize(node.consequences[0])}
               </span>
               {node.symbol && (
                 <span key={toKebabCase(node.symbol)} className={style.symbol}>
