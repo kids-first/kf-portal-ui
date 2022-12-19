@@ -72,8 +72,8 @@ export const mapFilterForParticipant = (sqonFilters: ISqonGroupFilter) =>
 export const mapFilterForFiles = (sqonFilters: ISqonGroupFilter) =>
   recursiveMap(sqonFilters, [
     {
-      index: INDEXES.FILES,
-      prefix: 'files.',
+      index: INDEXES.PARTICIPANT,
+      prefix: 'participant.',
     },
   ]);
 
