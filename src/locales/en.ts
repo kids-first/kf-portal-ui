@@ -18,6 +18,10 @@ const filesFacets = {
 
 const en = {
   ...translations,
+  date: {
+    yearsDaysFormat:
+      '{years, plural, =0 {} =1 {# year} other {# years}} {days, plural, =0 {} =1 {# day} other {# days}}',
+  },
   global: {
     yes: 'Yes',
     no: 'No',
@@ -390,6 +394,66 @@ const en = {
     },
   },
   screen: {
+    participantEntity: {
+      proband: 'Proband',
+      familyMember: 'Family Member',
+      downloadData: 'Download clinical data',
+      summary: {
+        title: 'Summary',
+        id: 'ID',
+        externalId: 'Ext. Participant ID',
+        study: 'Study',
+        dbGaP: 'dbGaP',
+        pedcBioPortal: 'PedcBioPortal',
+        diagnosisCategory: 'Diagnosis Category',
+        familyComposition: 'Family Composition',
+        proband: 'Proband',
+        vitalStatus: 'Vital Status',
+      },
+      profil: {
+        title: 'Profil',
+        race: 'Race',
+        ethnicity: 'Ethnicity',
+        sex: 'Sex',
+        vitalStatus: 'Viral Status',
+        deceased_date: 'Age at death',
+      },
+      family: {
+        title: 'Family',
+        id: 'Participant ID',
+        affectedStatus: 'Affected Status',
+        relationship: 'Family Relationship',
+      },
+      diagnosis: {
+        title: 'Diagnosis',
+        age: {
+          title: 'Age',
+          tooltip: 'Age at Diagnosis in days',
+        },
+        category: 'Diagnosis Category',
+        sourceText: 'Diagnosis (Source Text)',
+        sharedTerm: 'MONDO Shared Term',
+        ncit: 'Diagnosis (NCIT)',
+        mondo: 'Diagnosis (MONDO)',
+      },
+      phenotype: {
+        title: 'Phenotype',
+        hpoPhenotypeObserved: 'Phenotype (HPO)',
+        sourceText: 'Phenotype (Source Text)',
+        age: {
+          title: 'Age',
+          tooltip: 'Age at Phenotype in days',
+        },
+        interpretation: 'Interpretation',
+        sharedTerm: 'HPO Term',
+      },
+      biospecimen: {
+        title: 'Biospecimen',
+      },
+      dataFile: {
+        title: 'Data File',
+      },
+    },
     memberProfile: {
       notFound: 'User not found',
       rolesTitle: 'Role',

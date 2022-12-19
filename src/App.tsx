@@ -36,6 +36,7 @@ import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import { useLang } from 'store/global';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
+import ParticipantEntity from 'views/ParticipantEntity';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -123,6 +124,13 @@ const App = () => {
                   </ProtectedRoute>
                   <ProtectedRoute exact path={DYNAMIC_ROUTES.DATA_EXPLORATION} layout={PageLayout}>
                     <DataExploration />
+                  </ProtectedRoute>
+                  <ProtectedRoute
+                    exact
+                    path={DYNAMIC_ROUTES.PARTICIPANT_ENTITY}
+                    layout={PageLayout}
+                  >
+                    <ParticipantEntity />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={STATIC_ROUTES.VARIANTS} layout={PageLayout}>
                     <Variants />

@@ -12,7 +12,6 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { IQueryResults } from '@ferlab/ui/core/graphql/types';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
-import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';

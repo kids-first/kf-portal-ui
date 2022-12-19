@@ -1,8 +1,19 @@
 import { IQueryResults, IQueryVariable } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+import { INDEXES } from 'graphql/constants';
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
-import { IParticipantEntity, IParticipantResultTree } from './models';
-import { SEARCH_PARTICIPANT_QUERY } from './queries';
+import {
+  IParticipantEntity,
+  IParticipantEntityFamilyMemberReturn,
+  IParticipantResultTree,
+  IUseParticipantEntityProps,
+  IUseParticipantEntityReturn,
+} from './models';
+import {
+  GET_PARTICIPANT_ENTITY,
+  SEARCH_PARTICIPANT_FAMILY_MEMBER_QUERY,
+  SEARCH_PARTICIPANT_QUERY,
+} from './queries';
 
 export const useParticipants = (
   variables?: IQueryVariable,
@@ -15,5 +26,50 @@ export const useParticipants = (
     loading,
     data: hydrateResults(result?.participant?.hits?.edges || []),
     total: result?.participant?.hits?.total || 0,
+  };
+};
+
+export const useParticipantEntity = ({
+  field,
+  values,
+}: IUseParticipantEntityProps): IUseParticipantEntityReturn => {
+  const sqon = {
+    content: [{ content: { field, value: values, index: INDEXES.PARTICIPANT }, op: 'in' }],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(GET_PARTICIPANT_ENTITY, {
+    variables: { sqon },
+  });
+
+  const data = result?.participant?.hits?.edges[0].node;
+
+  return {
+    loading,
+    data,
+  };
+};
+
+export const useParticipantsFamily = (familyId: string): IParticipantEntityFamilyMemberReturn => {
+  const sqon = {
+    content: [
+      {
+        content: { field: 'families_id', value: [familyId], index: INDEXES.PARTICIPANT },
+        op: 'in',
+      },
+    ],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(
+    SEARCH_PARTICIPANT_FAMILY_MEMBER_QUERY,
+    {
+      variables: { sqon },
+    },
+  );
+
+  return {
+    loading,
+    members: hydrateResults(result?.participant?.hits?.edges || []),
   };
 };
