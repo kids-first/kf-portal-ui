@@ -641,7 +641,10 @@ const en = {
       },
       title: 'Variants Exploration',
       table: {
-        consequences: 'Consequences',
+        consequences: {
+          title: 'Consequences',
+          tooltip: 'Functional consequences of genetic variations annotated using VEP',
+        },
         clinvar: 'ClinVar',
         gnomAD: {
           title: 'gnomAD',
