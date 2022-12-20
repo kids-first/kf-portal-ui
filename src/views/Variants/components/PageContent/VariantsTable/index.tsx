@@ -1,6 +1,6 @@
-import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
@@ -16,6 +16,7 @@ import {
   IQueryResults,
   TQueryConfigCb,
 } from '@ferlab/ui/core/graphql/types';
+import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
@@ -33,15 +34,14 @@ import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
 import { DEFAULT_PAGE_SIZE, SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { useUser } from 'store/user';
+import { updateUserConfig } from 'store/user/thunks';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
+import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { useUser } from 'store/user';
-import { updateUserConfig } from 'store/user/thunks';
-import { useDispatch } from 'react-redux';
-import { truncateString } from 'utils/string';
 
 interface OwnProps {
   pageIndex: number;
@@ -99,9 +99,10 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'consequences',
-    title: intl.get('screen.variants.table.consequences'),
+    title: intl.get('screen.variants.table.consequences.title'),
     dataIndex: 'consequences',
     width: 300,
+    tooltip: intl.get('screen.variants.table.consequences.tooltip'),
     render: (consequences: IArrangerResultsTree<IConsequenceEntity>) => (
       <ConsequencesCell consequences={consequences?.hits?.edges || []} />
     ),
