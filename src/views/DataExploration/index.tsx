@@ -32,6 +32,8 @@ import FileUploadIds from './components/UploadIds/FileUploadIds';
 import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileSearch from './components/FileSearch';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
+import TreeFacet from 'views/DataExploration/components/TreeFacet';
+import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 enum FilterTypes {
   Study,
@@ -71,10 +73,14 @@ const filterGroups: {
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
-          'diagnosis__mondo_id_diagnosis',
+          <TreeFacet type={'mondoTree'} field={'mondo'} titleFormatter={formatMondoTitleAndCode} />,
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
-          'phenotype__hpo_phenotype_observed',
+          <TreeFacet //TODO phenotype__hpo_phenotype_observed',
+            type={'hpoTree'}
+            field={'observed_phenotype'}
+            titleFormatter={formatHpoTitleAndCode}
+          />,
           'phenotype__hpo_phenotype_not_observed',
           'diagnosis__source_text_tumor_location',
           'outcomes__vital_status',
