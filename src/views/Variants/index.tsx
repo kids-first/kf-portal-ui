@@ -3,8 +3,6 @@ import { UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
-import TreeFacet from 'views/DataExploration/components/TreeFacet';
-import { formatHpoTitleAndCode, formatMondoTitleAndCode } from 'views/DataExploration/utils/helper';
 import GenesUploadIds from 'views/Variants/components/GeneUploadIds';
 import VariantGeneSearch from 'views/Variants/components/VariantGeneSearch';
 import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
@@ -47,18 +45,6 @@ const filterGroups: {
       {
         facets: [
           'studies__study_code',
-          <TreeFacet
-            type={'hpoTree'}
-            field={'observed_phenotype'}
-            titleFormatter={formatHpoTitleAndCode}
-            key={'observed_phenotype'}
-          />,
-          <TreeFacet
-            type={'mondoTree'}
-            field={'mondo'}
-            titleFormatter={formatMondoTitleAndCode}
-            key={'mondo'}
-          />,
         ],
       },
     ],

@@ -37,6 +37,7 @@
   "facets.options.zygosity.WT": "Wild Type",
   "facets.options.zygosity.HOM": "Homozygote",
   "facets.options.zygosity.UNK": "Unknown",
+  "facets.observed_phenotype.name": "Observed Phenotype (HPO)",
   "family": "family",
   "father": "father",
   "female": "Female",
