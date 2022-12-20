@@ -76,7 +76,7 @@ const filterGroups: {
           <TreeFacet type={'mondoTree'} field={'mondo'} titleFormatter={formatMondoTitleAndCode} />,
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
-          <TreeFacet //TODO phenotype__hpo_phenotype_observed',
+          <TreeFacet
             type={'hpoTree'}
             field={'observed_phenotype'}
             titleFormatter={formatHpoTitleAndCode}
