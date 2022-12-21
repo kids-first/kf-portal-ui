@@ -58,6 +58,7 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
         index: INDEXES.PARTICIPANT,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+        isUploadedList: true,
       })
     }
   />
