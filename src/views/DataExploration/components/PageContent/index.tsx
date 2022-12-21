@@ -4,11 +4,14 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FileTextOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Space, Tabs, Typography } from 'antd';
 import copy from 'copy-to-clipboard';
 import { INDEXES } from 'graphql/constants';
@@ -31,6 +34,7 @@ import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
+import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
 import {
   createSavedFilter,
@@ -50,10 +54,6 @@ import { numberWithCommas } from 'utils/string';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { SavedFilterTag } from 'services/api/savedFilter/models';
-import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
-import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
-import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 
 const { Title } = Typography;
 
@@ -208,11 +208,14 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
           selectedFilterContent: selectedFilterContent,
           blacklistedFacets: [
             'participant_id',
+            'participant_facet_ids.participant_fhir_id_1',
+            'participant_facet_ids.participant_fhir_id_2',
             'sample_id',
             'file_id',
-            'participant_fhir_id',
-            'biospecimen_fhir_id',
-            'file_fhir_id',
+            'file_facet_ids.file_fhir_id_1',
+            'file_facet_ids.file_fhir_id_2',
+            'biospecimen_facet_ids.biospecimen_fhir_id_1',
+            'biospecimen_facet_ids.biospecimen_fhir_id_2',
           ],
         }}
         enableCombine
