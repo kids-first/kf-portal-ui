@@ -327,7 +327,7 @@ const defaultColumns: ProColumnType[] = [
     render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'diagnosis_ncit',
+    key: 'diagnosis.ncit_id_diagnosis',
     title: 'Diagnosis (NCIT)',
     dataIndex: 'diagnosis',
     defaultHidden: true,
@@ -335,11 +335,15 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
-      diagnosis?.hits?.edges?.map((o) => o.node.ncit_id_diagnosis)?.join(', ') ||
-      TABLE_EMPTY_PLACE_HOLDER,
+      diagnosis?.hits?.edges
+        ?.reduce<string[]>((ncitIds, diagnosis) => {
+          diagnosis.node.ncit_id_diagnosis && ncitIds.push(diagnosis.node.ncit_id_diagnosis);
+          return ncitIds;
+        }, [])
+        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'diagnosis_source_text',
+    key: 'diagnosis.source_text',
     title: 'Diagnosis (Source Text)',
     dataIndex: 'diagnosis',
     defaultHidden: true,
@@ -381,7 +385,7 @@ const defaultColumns: ProColumnType[] = [
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'vital_status',
+    key: 'outcomes.vital_status',
     title: 'Vital Status',
     dataIndex: 'outcomes',
     defaultHidden: true,
@@ -412,7 +416,7 @@ const defaultColumns: ProColumnType[] = [
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'age_at_event_days',
+    key: 'diagnosis.age_at_event_days',
     title: 'Age at Diagnosis',
     dataIndex: 'diagnosis',
     defaultHidden: true,
@@ -426,7 +430,7 @@ const defaultColumns: ProColumnType[] = [
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'outcomes_age_at_event_days.value',
+    key: 'outcomes.age_at_event_days.value',
     title: 'Age at Outcome',
     dataIndex: 'outcomes',
     defaultHidden: true,
@@ -441,7 +445,7 @@ const defaultColumns: ProColumnType[] = [
   },
 
   {
-    key: 'observed_phenotype_age_at_event_days',
+    key: 'observed_phenotype.age_at_event_days',
     title: 'Age at Observed Phenotype',
     dataIndex: 'observed_phenotype',
     defaultHidden: true,
@@ -450,7 +454,10 @@ const defaultColumns: ProColumnType[] = [
     },
     render: (observed_phenotype: IArrangerResultsTree<IParticipantObservedPhenotype>) =>
       observed_phenotype?.hits?.edges
-        ?.filter((e) => e.node.age_at_event_days.length > 0)
+        ?.reduce<number[][]>((ages, phenotype) => {
+          phenotype.node.age_at_event_days.length && ages.push(phenotype.node.age_at_event_days);
+          return ages;
+        }, [])
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
@@ -575,7 +582,7 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
         total: results.total,
         onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
       }}
-      dataSource={results.data.map((i) => ({ ...i, key: i.participant_id }))}
+      dataSource={results.data.map((i, index) => ({ ...i, key: `${i.participant_id}:${index}` }))}
       dictionary={getProTableDictionary()}
     />
   );
