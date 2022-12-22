@@ -3,12 +3,14 @@ import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { INDEXES } from 'graphql/constants';
-import { ArrangerApi } from 'services/api/arranger';
-import EntityUploadIds from './EntityUploadIds';
 import { IFileEntity } from 'graphql/files/models';
 import { CHECK_FILE_MATCH } from 'graphql/files/queries';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+
+import { ArrangerApi } from 'services/api/arranger';
+
+import EntityUploadIds from './EntityUploadIds';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -56,6 +58,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
         index: INDEXES.FILES,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+        isUploadedList: true,
       })
     }
   />
