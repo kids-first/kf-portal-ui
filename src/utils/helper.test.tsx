@@ -36,4 +36,8 @@ describe(`${formatQuerySortList.name}()`, () => {
       { field: 'field3', order: 'asc' },
     ]);
   });
+
+  it('should handle an empty sorter', () => {
+    expect(formatQuerySortList({})).toEqual([]);
+  });
 });
