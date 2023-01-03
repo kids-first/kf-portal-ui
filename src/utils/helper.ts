@@ -1,6 +1,7 @@
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { TSortableItems } from '@ferlab/ui/core/layout/SortableGrid/SortableItem';
 import { SorterResult } from 'antd/lib/table/interface';
+import { isEmpty } from 'lodash';
 
 export const scrollToTop = (scrollContentId: string) =>
   document
@@ -19,10 +20,12 @@ export const getOrderFromAntdValue = (order: string): SortDirection =>
   order === 'ascend' ? SortDirection.Asc : SortDirection.Desc;
 
 export const formatQuerySortList = (sorter: SorterResult<any> | SorterResult<any>[]) =>
-  [sorter].flat().map((sorter) => ({
-    field: sorter.columnKey as string,
-    order: getOrderFromAntdValue(sorter.order!),
-  }));
+  isEmpty(sorter)
+    ? []
+    : [sorter].flat().map((sorter) => ({
+        field: sorter.columnKey as string,
+        order: getOrderFromAntdValue(sorter.order!),
+      }));
 
 export const getCurrentUrl = () =>
   window.location.protocol + '//' + window.location.host + window.location.pathname;
