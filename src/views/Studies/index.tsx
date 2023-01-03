@@ -42,10 +42,10 @@ const filterInfo: FilterInfo = {
 
 const columns: ProColumnType<any>[] = [
   {
-    key: 'study_id',
+    key: 'study_code',
     title: 'Code',
     render: (record: IStudiesEntity) => (
-      <ExternalLink href={record.website}>{record.study_id}</ExternalLink>
+      <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
     ),
   },
   {
