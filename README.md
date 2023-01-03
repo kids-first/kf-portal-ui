@@ -33,7 +33,13 @@
 - Follow the steps here: https://github.com/include-dcc/include-users-api/blob/main/README.md
 - Make sure to add the include keycloak config for the users-api in your `.env`
 
+### Running the PERSONA API locally
+- Clone: https://github.com/kids-first/kf-persona
+- Follow the steps here: https://github.com/kids-first/kf-persona#readme
+- Make sure to add the REACT_APP_PERSONA_API value to your `.env`
 
+### Running NGINX locally
+- Follow the steps here: https://github.com/kids-first/kf-portal-ui/blob/2.0/dev_tools/nginx/README.md
 
 ## Storybook
 
@@ -48,7 +54,7 @@ git submodule update
 
 ### Branch
 
-Namee structure is `type/SKFP-[github ticker number]/description`
+Name structure is `type/SKFP-[github ticker number]/description`
 
 e.g.
 
