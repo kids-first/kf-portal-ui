@@ -91,7 +91,7 @@
       rgba(red(@input-color-default), green(@input-color-default), blue(@input-color-default), 50%);
   }
 
-  &-number,
+  &-number-status-error:not(&-disabled):not(&-borderless).@{input-prefix-cls}-number,
   &-status-error:not(&-disabled):not(&-borderless)& {
     .input-status-mixins(@red-1, @red-8);
   }
