@@ -204,6 +204,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
       />
       <VariantsTable
         pageIndex={pageIndex}
+        sqon={variantResolvedSqon}
         setPageIndex={setPageIndex}
         results={variantResults}
         setQueryConfig={setVariantQueryConfig}

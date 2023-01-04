@@ -19,6 +19,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 import ListItem from './ListItem';
 
 import styles from './index.module.scss';
+import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -137,6 +138,18 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             key="files"
           >
             {getItemList(SetType.FILES, savedSets, fetchingError, isLoading, <FileTextOutlined />)}
+          </TabPane>
+          <TabPane
+            tab={
+              <div>
+                <LineStyleIcon />
+                {intl.get('screen.dashboard.cards.savedSets.tabs.variants')} (
+                {savedSets.filter((s) => s.setType === SetType.VARIANT).length})
+              </div>
+            }
+            key="variants"
+          >
+            {getItemList(SetType.VARIANT, savedSets, fetchingError, isLoading, <LineStyleIcon />)}
           </TabPane>
         </Tabs>
       }

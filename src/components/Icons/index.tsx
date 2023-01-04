@@ -1,8 +1,8 @@
 export type IconProps = {
   alt?: string;
-  height?: number;
+  height?: number | string;
   style?: object;
-  width?: number;
+  width?: number | string;
   className?: string;
   svgClass?: string;
 };

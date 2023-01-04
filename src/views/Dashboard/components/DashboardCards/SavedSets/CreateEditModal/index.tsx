@@ -84,7 +84,7 @@ const CreateEditModal = ({
       } else {
         dispatch(
           createSavedSet({
-            idField: 'fhir_id',
+            idField: setType !== SetType.VARIANT ? 'fhir_id' : 'locus',
             projectId: PROJECT_ID,
             sort: [],
             sqon: sqon!,

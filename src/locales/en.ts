@@ -497,6 +497,7 @@ const en = {
             biospecimens: 'Biospecimens',
             files: 'Files',
             participants: 'Participants',
+            variants: 'Variants',
           },
           title: 'Saved Sets',
           noSavedFilters: 'You have no saved sets',
