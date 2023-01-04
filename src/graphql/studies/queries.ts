@@ -33,6 +33,7 @@ export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
         edges {
           node {
             study_id
+            study_code
             study_name
             external_id
           }
