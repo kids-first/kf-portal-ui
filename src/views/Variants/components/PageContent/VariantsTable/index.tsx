@@ -8,7 +8,7 @@ import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagi
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { useFilters } from '@ferlab/ui/core/data/filters/utils';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import {
   IArrangerResultsTree,
@@ -18,7 +18,7 @@ import {
 } from '@ferlab/ui/core/graphql/types';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Tooltip } from 'antd';
+import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
 import {
@@ -31,7 +31,7 @@ import {
 } from 'graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
-import { DEFAULT_PAGE_SIZE, SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
+import { SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { useUser } from 'store/user';
@@ -42,9 +42,15 @@ import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
+import { SetType } from 'services/api/savedSet/models';
+import { DownloadOutlined } from '@ant-design/icons';
+import { fetchReport } from 'store/report/thunks';
+import { ReportType } from 'services/api/reports/models';
 
 interface OwnProps {
   pageIndex: number;
+  sqon?: ISqonGroupFilter;
   setPageIndex: (value: number) => void;
   results: IQueryResults<IVariantEntity[]>;
   setQueryConfig: TQueryConfigCb;
@@ -215,6 +221,7 @@ const defaultColumns: ProColumnType[] = [
 
 const VariantsTable = ({
   results,
+  sqon,
   setQueryConfig,
   queryConfig,
   pageIndex,
@@ -224,6 +231,40 @@ const VariantsTable = ({
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const { userInfo } = useUser();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedAllResults, setSelectedAllResults] = useState(false);
+
+  const getCurrentSqon = (): any =>
+    selectedAllResults || !selectedKeys.length
+      ? sqon
+      : generateQuery({
+          newFilters: [
+            generateValueFilter({
+              field: 'locus',
+              value: selectedKeys,
+            }),
+          ],
+        });
+
+  const menu = (
+    <Menu
+      onClick={(e) =>
+        dispatch(
+          fetchReport({
+            data: {
+              sqon: getCurrentSqon(),
+              name: e.key,
+            },
+          }),
+        )
+      }
+      items={[
+        {
+          key: ReportType.CLINICAL_DATA,
+          label: 'Selected variant',
+        },
+      ]}
+    />
+  );
 
   useEffect(() => {
     if (selectedKeys.length) {
@@ -271,6 +312,26 @@ const VariantsTable = ({
                   },
                 }),
               ),
+            onSelectAllResultsChange: setSelectedAllResults,
+            onSelectedRowsChange: (keys) => setSelectedKeys(keys),
+            extra: [
+              <SetsManagementDropdown
+                results={results}
+                selectedKeys={selectedKeys}
+                selectedAllResults={selectedAllResults}
+                sqon={sqon}
+                type={SetType.VARIANT}
+                key="variants-set-management"
+              />,
+              <Dropdown
+                disabled={selectedKeys.length === 0}
+                overlay={menu}
+                placement="bottomLeft"
+                key={'download-clinical-data-dropdown'}
+              >
+                <Button icon={<DownloadOutlined />}>Download clinical data</Button>
+              </Dropdown>,
+            ],
           }}
           bordered
           size="small"
