@@ -582,7 +582,7 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
         total: results.total,
         onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
       }}
-      dataSource={results.data.map((i, index) => ({ ...i, key: `${i.participant_id}:${index}` }))}
+      dataSource={results.data.map((i) => ({ ...i, key: i.participant_id }))}
       dictionary={getProTableDictionary()}
     />
   );
