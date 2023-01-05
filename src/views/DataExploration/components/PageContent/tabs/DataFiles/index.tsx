@@ -25,11 +25,11 @@ import SetsManagementDropdown from 'views/DataExploration/components/SetsManagem
 import {
   CAVATICA_FILE_BATCH_SIZE,
   DATA_EXPLORATION_QB_ID,
+  DATA_FILES_SAVED_SETS_FIELD,
   DEFAULT_PAGE_SIZE,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
@@ -289,6 +289,7 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
+      setSelectedRows([]);
     }
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
@@ -304,7 +305,15 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
-      : generateSelectionSqon(TAB_IDS.DATA_FILES, selectedKeys);
+      : generateQuery({
+          newFilters: [
+            generateValueFilter({
+              field: DATA_FILES_SAVED_SETS_FIELD,
+              index: INDEXES.FILES,
+              value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
+            }),
+          ],
+        });
 
   const onCavaticaConnectionRequired = () =>
     Modal.confirm({
@@ -383,10 +392,7 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
                   connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
                 ),
                 index: INDEXES.FILES,
-                sqon:
-                  selectedAllResults || !selectedKeys.length
-                    ? sqon
-                    : generateSelectionSqon(TAB_IDS.DATA_FILES, selectedKeys),
+                sqon: getCurrentSqon(),
               }),
             ),
           onColumnSortChange: (newState) =>
@@ -403,6 +409,7 @@ const DataFilesTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps) 
             ),
           extra: [
             <SetsManagementDropdown
+              idField="fhir_id"
               results={results}
               sqon={getCurrentSqon()}
               selectedAllResults={selectedAllResults}

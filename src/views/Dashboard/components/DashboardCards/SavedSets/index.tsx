@@ -20,6 +20,8 @@ import ListItem from './ListItem';
 
 import styles from './index.module.scss';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -30,6 +32,7 @@ const getItemList = (
   fetchingError: boolean,
   isLoading: boolean,
   icon: ReactElement,
+  queryBuilderId = DATA_EXPLORATION_QB_ID,
 ) => (
   <List<IUserSetOutput>
     className={styles.savedSetsList}
@@ -57,7 +60,7 @@ const getItemList = (
     }}
     dataSource={fetchingError ? [] : savedSets.filter((s) => s.setType === type)}
     loading={isLoading}
-    renderItem={(item) => <ListItem data={item} icon={icon} />}
+    renderItem={(item) => <ListItem data={item} icon={icon} queryBuilderId={queryBuilderId} />}
   />
 );
 
@@ -149,7 +152,14 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             }
             key="variants"
           >
-            {getItemList(SetType.VARIANT, savedSets, fetchingError, isLoading, <LineStyleIcon />)}
+            {getItemList(
+              SetType.VARIANT,
+              savedSets,
+              fetchingError,
+              isLoading,
+              <LineStyleIcon />,
+              VARIANT_REPO_QB_ID,
+            )}
           </TabPane>
         </Tabs>
       }

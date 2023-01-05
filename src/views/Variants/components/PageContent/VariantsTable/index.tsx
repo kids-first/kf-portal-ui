@@ -31,7 +31,7 @@ import {
 } from 'graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
-import { SCROLL_WRAPPER_ID } from 'views/Variants/utils/constants';
+import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { useUser } from 'store/user';
@@ -45,7 +45,7 @@ import styles from './index.module.scss';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { SetType } from 'services/api/savedSet/models';
 import { DownloadOutlined } from '@ant-design/icons';
-import { fetchReport } from 'store/report/thunks';
+import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { ReportType } from 'services/api/reports/models';
 
 interface OwnProps {
@@ -231,6 +231,7 @@ const VariantsTable = ({
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const { userInfo } = useUser();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IVariantEntity[]>([]);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
 
   const getCurrentSqon = (): any =>
@@ -240,7 +241,8 @@ const VariantsTable = ({
           newFilters: [
             generateValueFilter({
               field: 'locus',
-              value: selectedKeys,
+              index: INDEXES.VARIANTS,
+              value: selectedRows.map((row) => row.locus),
             }),
           ],
         });
@@ -269,6 +271,7 @@ const VariantsTable = ({
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
+      setSelectedRows([]);
     }
     // eslint-disable-next-line
   }, [JSON.stringify(filters)]);
@@ -312,14 +315,28 @@ const VariantsTable = ({
                   },
                 }),
               ),
+
+            onTableExportClick: () =>
+              dispatch(
+                fetchTsvReport({
+                  columnStates: userInfo?.config.variant?.tables?.variants?.columns,
+                  columns: defaultColumns,
+                  index: INDEXES.VARIANTS,
+                  sqon: getCurrentSqon(),
+                }),
+              ),
             onSelectAllResultsChange: setSelectedAllResults,
-            onSelectedRowsChange: (keys) => setSelectedKeys(keys),
+            onSelectedRowsChange: (keys, selectedRows) => {
+              setSelectedKeys(keys);
+              setSelectedRows(selectedRows);
+            },
             extra: [
               <SetsManagementDropdown
+                idField={VARIANT_SAVED_SETS_FIELD}
                 results={results}
                 selectedKeys={selectedKeys}
                 selectedAllResults={selectedAllResults}
-                sqon={sqon}
+                sqon={getCurrentSqon()}
                 type={SetType.VARIANT}
                 key="variants-set-management"
               />,

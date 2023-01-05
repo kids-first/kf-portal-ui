@@ -13,6 +13,7 @@ import intl from 'react-intl-universal';
 const FORM_NAME = 'add-remove-set';
 
 type OwnProps = {
+  idField: string;
   hideModalCb: Function;
   userSets: IUserSetOutput[];
   sqon?: ISqonGroupFilter;
@@ -42,7 +43,14 @@ const formTitle = (setActionType: string, type: SetType) => {
   }
 };
 
-const AddRemoveSaveSetModal = ({ hideModalCb, userSets, setActionType, sqon, type }: OwnProps) => {
+const AddRemoveSaveSetModal = ({
+  idField,
+  hideModalCb,
+  userSets,
+  setActionType,
+  sqon,
+  type,
+}: OwnProps) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
   const [hasSetSelection, setHasSetSelection] = useState(false);
@@ -67,7 +75,7 @@ const AddRemoveSaveSetModal = ({ hideModalCb, userSets, setActionType, sqon, typ
           updateSavedSet({
             id: setId,
             subAction: setActionType,
-            idField: type !== SetType.VARIANT ? 'fhir_id' : 'locus',
+            idField,
             projectId: PROJECT_ID,
             sqon: sqon!,
             onCompleteCb: onSuccessCreateCb,
