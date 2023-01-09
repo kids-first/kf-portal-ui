@@ -6,7 +6,6 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
-  DATA_EXPLORATION_QB_ID,
   DATA_FILES_SAVED_SETS_FIELD,
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
