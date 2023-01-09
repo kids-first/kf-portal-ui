@@ -82,11 +82,11 @@ const modals = {
 const ROW_SELECTION_LIMIT = 10000;
 const exceedLimit = (count: number) => count > ROW_SELECTION_LIMIT;
 
-const itemIcon = (type: string) => {
+export const itemIcon = (type: string) => {
   switch (type) {
-    case INDEXES.BIOSPECIMENS:
+    case SetType.BIOSPECIMEN:
       return <ExperimentOutlined width="14px" height="14px" />;
-    case INDEXES.FILES:
+    case SetType.FILES:
       return <FileTextOutlined width="14px" height="14px" />;
     case SetType.VARIANT:
       return <LineStyleIcon width="14px" height="14px" />;
@@ -95,7 +95,7 @@ const itemIcon = (type: string) => {
   }
 };
 
-export const singuralizeSetTypeIfNeeded = (type: string) =>
+export const singularizeSetTypeIfNeeded = (type: string) =>
   type === SetType.FILES || type === SetType.VARIANT ? type.slice(0, -1) : type;
 
 const menu = (
@@ -120,7 +120,7 @@ const menu = (
             <span>
               {intl.get('screen.dataExploration.setsManagementDropdown.selected', {
                 count,
-                type: singuralizeSetTypeIfNeeded(type),
+                type: singularizeSetTypeIfNeeded(type),
               })}
             </span>
             <Tooltip
@@ -196,7 +196,7 @@ const SetsManagementDropdown = ({
     <div id={`${type}-set-dropdown-container`}>
       {modal.showModalSave && sqon && (
         <CreateEditModal
-          title={`Save ${singuralizeSetTypeIfNeeded(type).toLocaleUpperCase()} Set`}
+          title={`Save ${singularizeSetTypeIfNeeded(type).toLocaleUpperCase()} Set`}
           idField={idField}
           sqon={sqon}
           setType={type}
@@ -233,7 +233,7 @@ const SetsManagementDropdown = ({
         }
       >
         <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
-          {`Save ${singuralizeSetTypeIfNeeded(type)} set`}
+          {`Save ${singularizeSetTypeIfNeeded(type)} set`}
           <DownOutlined />
         </Button>
       </Dropdown>

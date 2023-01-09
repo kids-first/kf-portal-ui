@@ -5,6 +5,7 @@ import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { UserOutlined } from '@ant-design/icons';
 
 import styles from './index.module.scss';
+import { singularizeSetTypeIfNeeded, itemIcon } from '..';
 
 type OwnProps = {
   formName: string;
@@ -25,7 +26,7 @@ const UserSetsForm = ({
 }: OwnProps) => (
   <Form form={form} name={formName} onFinish={onFinish} layout="vertical">
     <Form.Item
-      label={`${type.charAt(0).toUpperCase() + type.slice(1)} Set`}
+      label={singularizeSetTypeIfNeeded(type).toLocaleLowerCase()}
       name="setId"
       className={styles.setEditFormItem}
     >
@@ -34,9 +35,7 @@ const UserSetsForm = ({
           <Select.Option key={s.id} value={s.id}>
             <Row>
               <Col className={styles.setDropdownName}>{s.tag}</Col>
-              <Col style={{ paddingRight: 2 }}>
-                <UserOutlined />
-              </Col>
+              <Col style={{ paddingRight: 2 }}>{itemIcon(type)}</Col>
               <Col>
                 <div className={'secondary-text-color'}>{s.size}</div>
               </Col>

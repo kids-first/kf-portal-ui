@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { singuralizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown';
+import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown';
 
 import { SetType } from 'services/api/savedSet/models';
 
@@ -18,7 +18,7 @@ export const getSetFieldId = (type: SetType) => {
   }
 
   if (type === SetType.FILES) {
-    return `${singuralizeSetTypeIfNeeded(type)}_facet_ids.${singuralizeSetTypeIfNeeded(
+    return `${singularizeSetTypeIfNeeded(type)}_facet_ids.${singularizeSetTypeIfNeeded(
       type,
     )}_fhir_id_1`;
   }
