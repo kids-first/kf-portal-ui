@@ -1,6 +1,7 @@
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import {
+  BIOSPECIMENS_SAVED_SETS_FIELD,
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
   SCROLL_WRAPPER_ID,
@@ -20,7 +21,6 @@ import { useEffect, useState } from 'react';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { INDEXES } from 'graphql/constants';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 import { Link, useHistory } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -205,10 +205,12 @@ const BioSpecimenTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IBiospecimenEntity[]>([]);
 
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
+      setSelectedRows([]);
     }
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
@@ -216,7 +218,15 @@ const BioSpecimenTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
-      : generateSelectionSqon(TAB_IDS.BIOSPECIMENS, selectedKeys);
+      : generateQuery({
+          newFilters: [
+            generateValueFilter({
+              field: BIOSPECIMENS_SAVED_SETS_FIELD,
+              index: INDEXES.BIOSPECIMENS,
+              value: selectedRows.map((row) => row[BIOSPECIMENS_SAVED_SETS_FIELD]),
+            }),
+          ],
+        });
 
   return (
     <ProTable
@@ -244,7 +254,10 @@ const BioSpecimenTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps
         enableColumnSort: true,
         enableTableExport: true,
         onSelectAllResultsChange: setSelectedAllResults,
-        onSelectedRowsChange: (keys) => setSelectedKeys(keys),
+        onSelectedRowsChange: (keys, rows) => {
+          setSelectedKeys(keys);
+          setSelectedRows(rows);
+        },
         onColumnSortChange: (newState) =>
           dispatch(
             updateUserConfig({
@@ -268,6 +281,7 @@ const BioSpecimenTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProps
           ),
         extra: [
           <SetsManagementDropdown
+            idField="fhir_id"
             results={results}
             sqon={getCurrentSqon()}
             selectedAllResults={selectedAllResults}

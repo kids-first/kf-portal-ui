@@ -4,7 +4,12 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactElement, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import {
+  BIOSPECIMENS_SAVED_SETS_FIELD,
+  DATA_EXPLORATION_QB_ID,
+  DATA_FILES_SAVED_SETS_FIELD,
+  PARTICIPANTS_SAVED_SETS_FIELD,
+} from 'views/DataExploration/utils/constant';
 import { formatDistance } from 'date-fns';
 import CreateEditModal from '../CreateEditModal';
 import { deleteSavedSet } from 'store/savedSet/thunks';
@@ -19,10 +24,12 @@ import styles from './index.module.scss';
 import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
 import { useHistory } from 'react-router-dom';
 import { STATIC_ROUTES } from 'utils/routes';
+import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
 
 interface OwnProps {
   data: IUserSetOutput;
   icon: ReactElement;
+  queryBuilderId: string;
 }
 
 const { Text } = Typography;
@@ -35,12 +42,27 @@ const redirectToPage = (setType: string) => {
       return STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS;
     case INDEXES.BIOSPECIMENS:
       return STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS;
+    case INDEXES.VARIANTS:
+      return STATIC_ROUTES.VARIANTS;
     default:
       return STATIC_ROUTES.DATA_EXPLORATION;
   }
 };
 
-const ListItem = ({ data, icon }: OwnProps) => {
+const getIdField = (setType: string) => {
+  switch (setType) {
+    case INDEXES.FILES:
+      return DATA_FILES_SAVED_SETS_FIELD;
+    case INDEXES.PARTICIPANT:
+      return PARTICIPANTS_SAVED_SETS_FIELD;
+    case INDEXES.BIOSPECIMENS:
+      return BIOSPECIMENS_SAVED_SETS_FIELD;
+    default:
+      return VARIANT_SAVED_SETS_FIELD;
+  }
+};
+
+const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -81,7 +103,7 @@ const ListItem = ({ data, icon }: OwnProps) => {
 
           const setValue = `${SET_ID_PREFIX}${data.id}`;
           addQuery({
-            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            queryBuilderId: queryBuilderId,
             query: generateQuery({
               newFilters: [
                 generateValueFilter({
@@ -104,6 +126,7 @@ const ListItem = ({ data, icon }: OwnProps) => {
         }
       />
       <CreateEditModal
+        idField={getIdField(data.setType)}
         title={intl.get('components.savedSets.modal.edit.title')}
         setType={data.setType}
         hideModalCb={onCancel}

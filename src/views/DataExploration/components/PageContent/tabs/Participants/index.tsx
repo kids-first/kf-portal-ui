@@ -34,13 +34,12 @@ import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
   SCROLL_WRAPPER_ID,
-  TAB_IDS,
+  PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
 import {
   extractMondoTitleAndCode,
   extractPhenotypeTitleAndCode,
 } from 'views/DataExploration/utils/helper';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 
 import { SEX, TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { ReportType } from 'services/api/reports/models';
@@ -468,10 +467,12 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IParticipantEntity[]>([]);
 
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
+      setSelectedRows([]);
     }
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
@@ -479,7 +480,15 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
-      : generateSelectionSqon(TAB_IDS.PARTICIPANTS, selectedKeys);
+      : generateQuery({
+          newFilters: [
+            generateValueFilter({
+              field: PARTICIPANTS_SAVED_SETS_FIELD,
+              index: INDEXES.PARTICIPANT,
+              value: selectedRows.map((row) => row[PARTICIPANTS_SAVED_SETS_FIELD]),
+            }),
+          ],
+        });
 
   const menu = (
     <Menu
@@ -553,9 +562,13 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
             }),
           ),
         onSelectAllResultsChange: setSelectedAllResults,
-        onSelectedRowsChange: (keys) => setSelectedKeys(keys),
+        onSelectedRowsChange: (keys, rows) => {
+          setSelectedKeys(keys);
+          setSelectedRows(rows);
+        },
         extra: [
           <SetsManagementDropdown
+            idField="fhir_id"
             results={results}
             selectedKeys={selectedKeys}
             selectedAllResults={selectedAllResults}

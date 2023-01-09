@@ -31,6 +31,7 @@ import { IVariantEntity } from 'graphql/variants/models';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
 type Props = {
+  idField: string;
   results: IQueryResults<
     IParticipantEntity[] | IFileEntity[] | IBiospecimenEntity[] | IVariantEntity[]
   >;
@@ -94,8 +95,8 @@ const itemIcon = (type: string) => {
   }
 };
 
-export const singularizeFilesSetType = (type: string) =>
-  type === SetType.FILES ? type.slice(0, -1) : type;
+export const singuralizeSetTypeIfNeeded = (type: string) =>
+  type === SetType.FILES || type === SetType.VARIANT ? type.slice(0, -1) : type;
 
 const menu = (
   count: number,
@@ -119,7 +120,7 @@ const menu = (
             <span>
               {intl.get('screen.dataExploration.setsManagementDropdown.selected', {
                 count,
-                type: singularizeFilesSetType(type),
+                type: singuralizeSetTypeIfNeeded(type),
               })}
             </span>
             <Tooltip
@@ -167,6 +168,7 @@ const getSetCount = (selected: string[], total: number, allSelected: boolean) =>
 };
 
 const SetsManagementDropdown = ({
+  idField,
   results,
   sqon,
   type,
@@ -194,7 +196,8 @@ const SetsManagementDropdown = ({
     <div id={`${type}-set-dropdown-container`}>
       {modal.showModalSave && sqon && (
         <CreateEditModal
-          title={`Save ${type.charAt(0).toUpperCase() + type.slice(1)} Set`}
+          title={`Save ${singuralizeSetTypeIfNeeded(type).toLocaleUpperCase()} Set`}
+          idField={idField}
           sqon={sqon}
           setType={type}
           hideModalCb={() => setModal(modals.hideAll)}
@@ -204,6 +207,7 @@ const SetsManagementDropdown = ({
       )}
       {modal.showModalAddDelete && (
         <AddRemoveSaveSetModal
+          idField={idField}
           sqon={sqon}
           setActionType={modal.actionType}
           hideModalCb={() => {
@@ -229,7 +233,7 @@ const SetsManagementDropdown = ({
         }
       >
         <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
-          {`Save ${type} set`}
+          {`Save ${singuralizeSetTypeIfNeeded(type)} set`}
           <DownOutlined />
         </Button>
       </Dropdown>

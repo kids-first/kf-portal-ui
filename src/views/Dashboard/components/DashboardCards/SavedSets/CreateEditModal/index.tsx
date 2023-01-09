@@ -19,6 +19,7 @@ const SET_NAME_KEY = 'nameSet';
 
 type OwnProps = {
   title: string;
+  idField: string;
   visible?: boolean;
   saveSetActionType: SetActionType;
   hideModalCb?: Function;
@@ -29,6 +30,7 @@ type OwnProps = {
 };
 
 const CreateEditModal = ({
+  idField,
   sqon,
   hideModalCb,
   title,
@@ -84,7 +86,7 @@ const CreateEditModal = ({
       } else {
         dispatch(
           createSavedSet({
-            idField: setType !== SetType.VARIANT ? 'fhir_id' : 'locus',
+            idField,
             projectId: PROJECT_ID,
             sort: [],
             sqon: sqon!,

@@ -3,6 +3,8 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IQueryConfig, ISort } from '@ferlab/ui/core/graphql/types';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 
+export const VARIANT_SAVED_SETS_FIELD = 'locus';
+
 export const SCROLL_WRAPPER_ID = 'variants-scroll-wrapper';
 
 // TODO : still needed, check when api are added
