@@ -16,8 +16,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <GlobalSearch<IStudiesEntity>
       queryBuilderId={queryBuilderId}
-      field="study_code"
-      searchFields={['study_code', 'study_name', 'study_id', 'external_id']}
+      field="search_text"
       tooltipText={intl.getHTML('global.search.study.tooltip')}
       index={INDEXES.STUDIES}
       placeholder={intl.get(`global.search.study.placeholder`)}

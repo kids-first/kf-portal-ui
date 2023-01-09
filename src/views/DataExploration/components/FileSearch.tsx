@@ -14,7 +14,7 @@ const FileSearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <GlobalSearch<IFileEntity>
       queryBuilderId={queryBuilderId}
-      field="file_id"
+      field="search_text"
       index={INDEXES.FILES}
       placeholder="e.g. GF_001CSF26"
       emptyDescription="No files found"

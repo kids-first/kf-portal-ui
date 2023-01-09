@@ -9,7 +9,6 @@ import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ArrangerApi } from 'services/api/arranger';
 import { DocumentNode } from 'graphql';
 import { ISuggestionPayload } from 'services/api/arranger/models';
-import { toPascalCase } from 'utils/helper';
 
 interface IGlobalSearch<T> {
   query: DocumentNode;
@@ -48,12 +47,7 @@ const Search = <T,>({
         newFilters: searchKey.map((key) =>
           generateValueFilter({
             field: key,
-            value: [
-              `${search}*`,
-              `${search.toUpperCase()}*`,
-              `${search.toLowerCase()}*`,
-              `${toPascalCase(search)}*`,
-            ],
+            value: [`${search}*`],
             index,
           }),
         ),

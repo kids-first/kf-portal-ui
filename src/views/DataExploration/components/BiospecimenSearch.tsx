@@ -16,7 +16,7 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
-      field="sample_id"
+      field="sample_id" // @todo: search_text, see when implemented
       index={INDEXES.BIOSPECIMENS}
       placeholder="e.g. BS_011DYZ2J, HTP0001B2_Plasma"
       emptyDescription="No samples found"
@@ -44,7 +44,7 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
   return (
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
-      field="collection_sample_id"
+      field="collection_sample_id" // @todo: search_text, see when implemented
       index={INDEXES.BIOSPECIMENS}
       placeholder="e.g. HTP0001B2_Whole blood, BS_1YEZ2XR4_Saliva"
       emptyDescription="No collection ID found"

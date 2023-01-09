@@ -35,8 +35,3 @@ export const toKebabCase = (str: string) => {
   const match: string[] = (str && str.match(KEBAB_REGEX)) || [];
   return match.map((x: string) => x.toLowerCase()).join('-');
 };
-
-export const toPascalCase = (str: string) =>
-  str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
-    return g1.toUpperCase() + g2.toLowerCase();
-  });
