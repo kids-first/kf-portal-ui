@@ -1060,7 +1060,7 @@ const en = {
     transmissions: 'Transmission',
     genePanels: 'Gene Panels',
     start: 'Position',
-    locus: 'Variant',
+    locus: 'Variant ID',
     consequences: {
       consequences: 'Consequence',
       biotype: 'Gene Type',

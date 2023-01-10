@@ -62,7 +62,8 @@ export const getVariantEntityDictionary = (): IVariantEntityDictionary => ({
     gene: intl.get('screen.variants.consequences.gene'),
     omim: intl.get('screen.variants.consequences.omim'),
     hideTranscript: intl.get('screen.variants.consequences.hideTranscript'),
-    showTranscript: (count: number) => intl.get('screen.variants.consequences.showTranscript', { count }),
+    showTranscript: (count: number) =>
+      intl.get('screen.variants.consequences.showTranscript', { count }),
     noDataAvailable: intl.get('no.data.available'),
   },
   frequencies: {
@@ -70,7 +71,9 @@ export const getVariantEntityDictionary = (): IVariantEntityDictionary => ({
     publicCohorts: intl.get('screen.variants.frequencies.publicCohorts'),
     studies: intl.get('screen.variants.frequencies.studies'),
     domain: intl.get('screen.variants.frequencies.domain'),
-    participantsInfoIconTooltip: intl.get('screen.variants.frequencies.participantsInfoIconTooltip'),
+    participantsInfoIconTooltip: intl.get(
+      'screen.variants.frequencies.participantsInfoIconTooltip',
+    ),
     participantsTooltip: intl.get('screen.variants.frequencies.participantsTooltip'),
     participants: intl.get('screen.variants.frequencies.participants'),
     frequency: intl.get('screen.variants.frequencies.frequency'),

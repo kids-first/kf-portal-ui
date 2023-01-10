@@ -28,7 +28,6 @@ import {
   DATA_FILES_SAVED_SETS_FIELD,
   DEFAULT_PAGE_SIZE,
   SCROLL_WRAPPER_ID,
-  TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';

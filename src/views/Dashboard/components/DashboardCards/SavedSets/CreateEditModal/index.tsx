@@ -7,7 +7,10 @@ import filtersToName from 'common/sqonToName';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import intl from 'react-intl-universal';
 import { PROJECT_ID, useSavedSet } from 'store/savedSet';
-import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
+import {
+  SetActionType,
+  singularizeSetTypeIfNeeded,
+} from 'views/DataExploration/components/SetsManagementDropdown';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 
 import styles from './index.module.scss';
@@ -121,7 +124,7 @@ const CreateEditModal = ({
     }
 
     if (hasSelectedKeys) {
-      let newName = `${setType.charAt(0).toUpperCase() + setType.slice(1)} Set`;
+      let newName = `${singularizeSetTypeIfNeeded(setType)} Set`;
       return resolveConflictNames(newName);
     }
 
