@@ -44,6 +44,7 @@ import VariantsTable from './VariantsTable';
 import styles from './index.module.scss';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { useUser } from 'store/user';
+import { useSavedSet } from 'store/savedSet';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -57,6 +58,7 @@ const addTagToFilter = (filter: ISavedFilter) => ({
 const PageContent = ({ variantMapping }: OwnProps) => {
   const dispatch = useDispatch();
   const { userInfo } = useUser();
+  const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
     useQBStateWithSavedFilters(VARIANT_REPO_QB_ID, SavedFilterTag.VariantsExplorationPage);
   const [variantQueryConfig, setVariantQueryConfig] = useState({
@@ -189,7 +191,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         IconTotal={<LineStyleIcon width={18} height={18} />}
         currentQuery={isEmptySqon(activeQuery) ? {} : activeQuery}
         total={variantResults.total}
-        dictionary={getQueryBuilderDictionary(facetTransResolver)}
+        dictionary={getQueryBuilderDictionary(facetTransResolver, savedSets)}
         getResolvedQueryForCount={(sqon) => resolveSyntheticSqon(queryList, sqon)}
         fetchQueryCount={async (sqon) => {
           const { data } = await ArrangerApi.graphqlRequest<{ data: IVariantResultTree }>({
