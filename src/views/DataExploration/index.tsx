@@ -34,6 +34,8 @@ import FileSearch from './components/FileSearch';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
+import { RemoteComponentList } from 'store/remote/types';
+import TreeFacetModal from './components/TreeFacet/TreeFacetModal';
 
 enum FilterTypes {
   Study,
@@ -73,11 +75,15 @@ const filterGroups: {
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
-          <TreeFacet type={'mondoTree'} field={'mondo'} titleFormatter={formatMondoTitleAndCode} />,
+          <TreeFacet
+            type={RemoteComponentList.MondoTree}
+            field={'mondo'}
+            titleFormatter={formatMondoTitleAndCode}
+          />,
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
           <TreeFacet
-            type={'hpoTree'}
+            type={RemoteComponentList.HPOTree}
             field={'observed_phenotype'}
             titleFormatter={formatHpoTitleAndCode}
           />,
@@ -215,6 +221,16 @@ const DataExploration = () => {
 
   return (
     <div className={styles.dataExplorationLayout}>
+      <TreeFacetModal
+        type={RemoteComponentList.MondoTree}
+        field={'mondo'}
+        titleFormatter={formatMondoTitleAndCode}
+      />
+      <TreeFacetModal
+        type={RemoteComponentList.HPOTree}
+        field={'observed_phenotype'}
+        titleFormatter={formatHpoTitleAndCode}
+      />
       <SidebarMenu
         className={styles.sideMenu}
         menuItems={menuItems} /* defaultSelectedKey={tab} */

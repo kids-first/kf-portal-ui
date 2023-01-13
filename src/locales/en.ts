@@ -799,7 +799,6 @@ const en = {
         searchPlaceholder: 'Search for ontology term - min 3 characters',
         emptySelection: 'Select items from the left-hand pane in order to add to your query.',
         tags: {
-          exact: 'Participants with this exact term',
           all: 'Participants including descendant terms',
         },
       },

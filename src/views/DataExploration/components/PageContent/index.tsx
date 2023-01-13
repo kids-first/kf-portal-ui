@@ -8,7 +8,7 @@ import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { IRemoteComponent, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
@@ -54,6 +54,7 @@ import { numberWithCommas } from 'utils/string';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { remoteSliceActions } from 'store/remote/slice';
 
 const { Title } = Typography;
 
@@ -234,6 +235,9 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
           });
 
           return data?.data?.participant.hits.total ?? 0;
+        }}
+        remoteComponentMapping={(remoteComponent: IRemoteComponent) => {
+          dispatch(remoteSliceActions.openRemoteComponent(remoteComponent));
         }}
       />
       <Tabs
