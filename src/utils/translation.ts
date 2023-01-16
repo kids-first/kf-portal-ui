@@ -143,6 +143,7 @@ export const getFiltersDictionary = (): FiltersDict => ({
     max: 'max',
   },
   checkBox: {
+    noData: 'no data',
     searchPlaceholder: intl.get('global.filters.checkbox.placeholder'),
   },
   messages: {

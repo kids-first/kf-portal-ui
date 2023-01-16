@@ -25,6 +25,7 @@ import { ReportState } from 'store/report';
 import { SavedFilterState } from 'store/savedFilter';
 import { SavedSetState } from 'store/savedSet';
 import { UserState } from 'store/user';
+import { RemoteState } from 'store/remote';
 import { ConfigProvider } from 'antd';
 import ApolloProvider from 'provider/ApolloProvider';
 import { GraphqlBackend } from 'provider/types';
@@ -53,6 +54,7 @@ export function renderWithProviders(
       savedFilter: SavedFilterState,
       savedSet: SavedSetState,
       fenceCavatica: FenceCavaticaState,
+      remote: RemoteState,
     },
     store = setupStore,
     ...renderOptions

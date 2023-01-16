@@ -8,6 +8,7 @@ import { ReportInitialState } from './report';
 import { FenceCavaticaInitialState } from './fenceCavatica';
 import { fenceStudiesInitialState } from './fenceStudies';
 import { NotebookInitialState } from './notebook';
+import { RemoteInitialState } from './remote';
 
 export type RootState = {
   global: GlobalInitialState;
@@ -20,4 +21,5 @@ export type RootState = {
   savedFilter: SavedFilterInitialState;
   savedSet: SavedSetInitialState;
   fenceCavatica: FenceCavaticaInitialState;
+  remote: RemoteInitialState;
 };

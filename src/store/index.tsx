@@ -16,6 +16,7 @@ import SavedSetReducer from 'store/savedSet';
 import FenceCavaticaReducer from 'store/fenceCavatica';
 import FenceStudiesReducer from 'store/fenceStudies';
 import NotebookReducer from 'store/notebook';
+import RemoteReducer from 'store/remote';
 
 const devMode = EnvVariables.configFor('ENV') === 'development';
 
@@ -37,6 +38,7 @@ export const rootReducer = combineReducers<RootState>({
   savedFilter: SavedFilterReducer,
   savedSet: SavedSetReducer,
   fenceCavatica: FenceCavaticaReducer,
+  remote: RemoteReducer,
 });
 
 export const store: any = configureStore({
