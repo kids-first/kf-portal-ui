@@ -1,5 +1,6 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IParticipantEntity } from 'graphql/participants/models';
+
 import { IBiospecimenEntity } from '../biospecimens/models';
 
 export interface IFileResultTree {
@@ -25,32 +26,41 @@ export interface IFileStudyEntity {
 export interface IFileEntity {
   key?: string;
   id: string;
-  fhir_id: string;
-  score: number;
   acl: string[];
+  biospecimens: IArrangerResultsTree<IBiospecimenEntity>;
   controlled_access: string;
   access_urls: string;
   data_category: string;
   data_type: string;
+  external_id: string;
+  fhir_document_reference: string;
+  fhir_id: string;
   file_format: string;
   file_id: string;
-  size: number;
   file_name: string;
-  repository: string;
-  study: IFileStudyEntity;
-  nb_participants: number;
-  nb_biospecimens: number;
-  fhir_document_reference: string;
+  hashes: {
+    etag: string;
+    md5: string;
+  };
   index?: {
     urls: string;
     file_name: string;
   };
+  is_harmonized: boolean;
+  nb_participants: number;
+  nb_biospecimens: number;
+  participants: IArrangerResultsTree<IParticipantEntity>;
+  repository: string;
+  study: IFileStudyEntity;
+  score: number;
   sequencing_experiment: {
     experiment_strategy: string;
+    instrument_model: string;
+    library_name: string;
+    library_strand: string;
+    platform: string;
   };
-  participant: IArrangerResultsTree<IParticipantEntity>;
-  biospecimens: IArrangerResultsTree<IBiospecimenEntity>;
-  external_id: string;
+  size: number;
 }
 
 export enum FileAccessType {

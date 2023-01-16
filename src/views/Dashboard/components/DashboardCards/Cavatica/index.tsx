@@ -1,24 +1,26 @@
+import { useEffect } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import { DisconnectOutlined, PlusOutlined, SafetyOutlined } from '@ant-design/icons';
+import Empty from '@ferlab/ui/core/components/Empty';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, List, Space } from 'antd';
-import intl from 'react-intl-universal';
-import { DisconnectOutlined, PlusOutlined, SafetyOutlined } from '@ant-design/icons';
-import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import Text from 'antd/lib/typography/Text';
-import CavaticaListItem from './ListItem';
-import Empty from '@ferlab/ui/core/components/Empty';
 import CardConnectPlaceholder from 'views/Dashboard/components/CardConnectPlaceholder';
+import CardHeader from 'views/Dashboard/components/CardHeader';
+import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
+
+import { FENCE_NAMES } from 'common/fenceTypes';
+import CreateProjectModal from 'components/Cavatica/CreateProjectModal';
 import CavaticaIcon from 'components/Icons/CavaticaIcon';
+import PopoverContentLink from 'components/uiKit/PopoverContentLink';
+import { useFenceCavatica } from 'store/fenceCavatica';
 import { fenceCavaticaActions } from 'store/fenceCavatica/slice';
-import { useDispatch } from 'react-redux';
-import CreateProjectModal from './CreateProjectModal';
+import { fetchAllProjects } from 'store/fenceCavatica/thunks';
 import { TCavaticaProjectWithMembers } from 'store/fenceCavatica/types';
 import { connectToFence, disconnectFromFence } from 'store/fenceConnection/thunks';
-import { FENCE_NAMES } from 'common/fenceTypes';
-import { useFenceCavatica } from 'store/fenceCavatica';
-import { useEffect } from 'react';
-import { fetchAllProjects } from 'store/fenceCavatica/thunks';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
+
+import CavaticaListItem from './ListItem';
 
 import styles from './index.module.scss';
 
