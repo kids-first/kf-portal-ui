@@ -42,6 +42,61 @@ export const SEARCH_FILES_QUERY = gql`
   }
 `;
 
+export const GET_FILE_ENTITY = gql`
+  query getFileEntity($sqon: JSON) {
+    files {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            id
+            access_urls
+            # biospecimens {
+            #   hits {
+            #     total
+            #     edges {
+            #       node {
+            #         sample_id
+            #         sample_type
+            #         participant {
+            #           external_id
+            #           is_proband
+            #           participant_id
+            #         }
+            #       }
+            #     }
+            #   }
+            # }
+            controlled_access
+            data_category
+            data_type
+            file_id
+            file_name
+            file_format
+            is_harmonized
+            hashes {
+              etag
+            }
+            nb_biospecimens
+            nb_participants
+            sequencing_experiment {
+              experiment_strategy
+              instrument_model
+              library_name
+              library_strand
+              platform
+            }
+            size
+            study {
+              study_name
+              study_code
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CHECK_FILE_MATCH = gql`
   query fetchMatchFile($sqon: JSON, $first: Int, $offset: Int) {
     files {

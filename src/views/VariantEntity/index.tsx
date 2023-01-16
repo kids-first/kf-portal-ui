@@ -4,6 +4,7 @@ import { INDEXES } from 'graphql/constants';
 import { useVariantEntity } from 'graphql/variants/actions';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
+import Spinner from 'components/uiKit/Spinner';
 import { STATIC_ROUTES } from 'utils/routes';
 import { getVariantEntityDictionary } from 'utils/translation';
 
@@ -23,11 +24,17 @@ export default function VariantEntity() {
   };
 
   return (
-    <VariantEntityPage
-      variant={data}
-      loading={loading}
-      participantQueryParams={participantQueryParams}
-      dictionary={getVariantEntityDictionary()}
-    />
+    <>
+      {data ? (
+        <VariantEntityPage
+          variant={data}
+          loading={loading}
+          participantQueryParams={participantQueryParams}
+          dictionary={getVariantEntityDictionary()}
+        />
+      ) : (
+        <Spinner size={'large'} />
+      )}
+    </>
   );
 }

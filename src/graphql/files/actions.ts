@@ -1,8 +1,11 @@
 import { IQueryVariable } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+import { INDEXES } from 'graphql/constants';
+
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
-import { IFileResultTree } from './models';
-import { SEARCH_FILES_QUERY } from './queries';
+
+import { IFileEntity, IFileResultTree } from './models';
+import { GET_FILE_ENTITY, SEARCH_FILES_QUERY } from './queries';
 
 export const useDataFiles = (variables?: IQueryVariable) => {
   const { loading, result } = useLazyResultQuery<IFileResultTree>(SEARCH_FILES_QUERY, {
@@ -13,5 +16,33 @@ export const useDataFiles = (variables?: IQueryVariable) => {
     loading,
     data: hydrateResults(result?.files?.hits?.edges || []),
     total: result?.files?.hits?.total || 0,
+  };
+};
+
+interface IUseFileProps {
+  field: string;
+  value: string;
+}
+
+interface IUseFileReturn {
+  loading: boolean;
+  data?: IFileEntity;
+}
+
+export const useFileEntity = ({ field, value }: IUseFileProps): IUseFileReturn => {
+  const sqon = {
+    content: [{ content: { field, value, index: INDEXES.FILES }, op: 'in' }],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IFileResultTree>(GET_FILE_ENTITY, {
+    variables: { sqon },
+  });
+
+  const data = result?.files?.hits?.edges[0]?.node || undefined;
+
+  return {
+    loading,
+    data,
   };
 };
