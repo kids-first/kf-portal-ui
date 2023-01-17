@@ -1159,7 +1159,7 @@ const en = {
       },
       participant_sample: {
         collection_id: 'Collection ID',
-        collection_type: 'Collection Type',
+        collection_sample_type: 'Collection Sample Type',
         external_collection_id: 'External Collection ID',
         external_participant_id: 'External Participant ID',
         external_sample_id: 'External Sample ID',

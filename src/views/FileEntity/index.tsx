@@ -1,19 +1,18 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
-import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
-import EntityPage, { EntityDescriptions, EntityTable } from '@ferlab/ui/core/pages/EntityPage';
-import { IBiospecimenEntity } from 'graphql/biospecimens/models';
+import EntityPage, { EntityDescriptions } from '@ferlab/ui/core/pages/EntityPage';
 import { useFileEntity } from 'graphql/files/actions';
 
-import getBiospecimensColumns from './utils/getBiospecimensColumns';
 import getDataAccessItems from './utils/getDataAccessItems';
 import getDataTypeItems from './utils/getDataTypeItems';
 import getExperimentalProcedureItems from './utils/getExperimentalProcedureItems';
+import getLinks from './utils/getLinks';
 import getSummaryItems from './utils/getSummaryItems';
+import BiospecimenTable from './BiospecimenTable';
 import SummaryHeader from './SummaryHeader';
 import FileEntityTitle from './Title';
 
-enum SectionId {
+export enum SectionId {
   SUMMARY = 'summary',
   DATA_ACCESS = 'data-access',
   DATA_TYPE = 'data-type',
@@ -22,20 +21,6 @@ enum SectionId {
 }
 
 export default function FileEntity() {
-  const links: IAnchorLink[] = [
-    { href: `#${SectionId.SUMMARY}`, title: intl.get('entities.file.summary.title') },
-    { href: `#${SectionId.DATA_ACCESS}`, title: intl.get('entities.file.data_access.title') },
-    { href: `#${SectionId.DATA_TYPE}`, title: intl.get('entities.file.data_type.title') },
-    {
-      href: `#${SectionId.PARTICIPANT_SAMPLE}`,
-      title: intl.get('entities.file.participant_sample.title'),
-    },
-    {
-      href: `#${SectionId.EXPERIMENTAL_PROCEDURE}`,
-      title: intl.get('entities.file.experimental_procedure.title'),
-    },
-  ];
-
   const { file_id } = useParams<{ file_id: string }>();
 
   const { data, loading } = useFileEntity({
@@ -43,12 +28,9 @@ export default function FileEntity() {
     value: file_id,
   });
 
-  const biospecimens: IBiospecimenEntity[] =
-    data?.biospecimens?.hits?.edges?.map((e) => ({ key: e.node.sample_id, ...e.node })) || [];
-
   return (
     <EntityPage
-      links={links}
+      links={getLinks()}
       pageId={'file-entity-page'}
       data={data}
       loading={loading}
@@ -77,18 +59,9 @@ export default function FileEntity() {
         title={intl.get('entities.file.data_type.title')}
         header={intl.get('entities.file.data_type.title')}
       />
-      <EntityTable
-        id={SectionId.PARTICIPANT_SAMPLE}
-        loading={loading}
-        data={biospecimens}
-        title={intl.get('entities.file.participant_sample.title')}
-        header={intl.get('entities.file.participant_sample.title')}
-        columns={getBiospecimensColumns()}
-        headerConfig={{
-          enableTableExport: true,
-          enableColumnSort: true,
-        }}
-      />
+
+      <BiospecimenTable data={data} loading={loading} />
+
       <EntityDescriptions
         id={SectionId.EXPERIMENTAL_PROCEDURE}
         loading={loading}
