@@ -37,7 +37,7 @@ const getBiospecimensColumns = (): ProColumnType[] => [
   },
   {
     key: 'composition',
-    title: intl.get('entities.file.participant_sample.collection_type'),
+    title: intl.get('entities.file.participant_sample.collection_sample_type'),
     render: (composition: string) => TABLE_EMPTY_PLACE_HOLDER, // TODO
   },
   {
