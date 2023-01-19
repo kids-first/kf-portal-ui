@@ -96,7 +96,7 @@ const getDefaultColumns = (
         </Tooltip>
       ) : (
         <Tooltip title="Open">
-          <Tag color="green">O</Tag>
+          <Tag color="green">R</Tag>
         </Tooltip>
       ),
   },
