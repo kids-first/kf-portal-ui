@@ -17,12 +17,11 @@ import {
   IQueryResults,
   TQueryConfigCb,
 } from '@ferlab/ui/core/graphql/types';
-import { Button, Dropdown, Menu, Tag } from 'antd';
+import { Button, Dropdown, Menu, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import {
   IParticipantDiagnosis,
   IParticipantEntity,
-  IParticipantObservedPhenotype,
   IParticipantOutcomes,
   IParticipantPhenotype,
   IParticipantStudy,
@@ -52,6 +51,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { readableDistanceByDays } from 'utils/dates';
 
 interface OwnProps {
   results: IQueryResults<IParticipantEntity[]>;
@@ -68,6 +68,11 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
+    render: (id: string) => (
+      <Tooltip placement="topLeft" title={id}>
+        <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${id}`}>{id}</Link>
+      </Tooltip>
+    ),
   },
   {
     key: 'study.study_code',
@@ -415,20 +420,6 @@ const defaultColumns: ProColumnType[] = [
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'diagnosis.age_at_event_days',
-    title: 'Age at Diagnosis',
-    dataIndex: 'diagnosis',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
-      diagnosis?.hits?.edges
-        ?.filter((e) => e.node?.age_at_event_days !== null)
-        .map((e) => e.node?.age_at_event_days)
-        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'outcomes.age_at_event_days.value',
     title: 'Age at Outcome',
     dataIndex: 'outcomes',
@@ -439,25 +430,8 @@ const defaultColumns: ProColumnType[] = [
     render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) =>
       outcomes?.hits?.edges
         ?.filter((e) => e.node.age_at_event_days?.value)
-        ?.map((e) => e.node.age_at_event_days.value)
-        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
-  },
-
-  {
-    key: 'observed_phenotype.age_at_event_days',
-    title: 'Age at Observed Phenotype',
-    dataIndex: 'observed_phenotype',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (observed_phenotype: IArrangerResultsTree<IParticipantObservedPhenotype>) =>
-      observed_phenotype?.hits?.edges
-        ?.reduce<number[][]>((ages, phenotype) => {
-          phenotype.node.age_at_event_days.length && ages.push(phenotype.node.age_at_event_days);
-          return ages;
-        }, [])
-        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
+        ?.map((e) => readableDistanceByDays(e.node.age_at_event_days.value))
+        ?.join(',\n') || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 

@@ -6,13 +6,17 @@ export interface IParticipantResultTree {
   participant: IArrangerResultsTree<IParticipantEntity>;
 }
 
+export interface IParticipantFamilyMemberResultTree {
+  participant: IArrangerResultsTree<IParticipantEntityFamilyMember>;
+}
+
 export interface IParticipantDiagnosis {
   id: string;
   mondo_id_diagnosis: string;
   source_text: string;
   ncit_id_diagnosis: string;
   affected_status: boolean;
-  age_at_event_days?: string;
+  age_at_event_days: number;
 }
 
 export interface IParticipantPhenotype {
@@ -74,6 +78,7 @@ export interface IParticipantEntity {
   participant_id: string;
   study: IParticipantStudy;
   down_syndrome_status: string;
+  families_id: string;
   family_type: string;
   is_proband: boolean;
   age_at_data_collection: number;
@@ -94,7 +99,32 @@ export interface IParticipantEntity {
   race: string;
   outcomes: IArrangerResultsTree<IParticipantOutcomes>;
 }
+export interface IParticipantEntityFamilyMember {
+  id: string; //weird constraint imposed.
+  participant_id: string;
+  family_type: string;
+}
+
+export interface IParticipantEntityFamilyMemberReturn {
+  loading: boolean;
+  members: IParticipantEntityFamilyMember[];
+}
 
 export type ITableParticipantEntity = IParticipantEntity & {
   key: string;
 };
+
+export interface IUseParticipantEntityProps {
+  field: string;
+  values: string[];
+}
+
+export interface IUseParticipantEntityReturn {
+  loading: boolean;
+  data?: IParticipantEntity;
+}
+
+export interface IUseParticipantEntityFamilyReturn {
+  loading: boolean;
+  data?: IParticipantEntity[];
+}

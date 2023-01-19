@@ -2,7 +2,6 @@ import { Col, Form, Row, Select } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { FormInstance } from 'antd/lib/form';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
-import { UserOutlined } from '@ant-design/icons';
 
 import styles from './index.module.scss';
 import { singularizeSetTypeIfNeeded, itemIcon } from '..';
