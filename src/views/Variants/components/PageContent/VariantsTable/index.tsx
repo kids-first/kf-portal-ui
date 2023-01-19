@@ -18,7 +18,7 @@ import {
 } from '@ferlab/ui/core/graphql/types';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Button, Dropdown, Menu, Tooltip } from 'antd';
+import { Menu, Tooltip } from 'antd';
 import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
 import {
@@ -44,9 +44,7 @@ import { getProTableDictionary } from 'utils/translation';
 import styles from './index.module.scss';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { SetType } from 'services/api/savedSet/models';
-import { DownloadOutlined } from '@ant-design/icons';
-import { fetchReport, fetchTsvReport } from 'store/report/thunks';
-import { ReportType } from 'services/api/reports/models';
+import { fetchReport } from 'store/report/thunks';
 
 interface OwnProps {
   pageIndex: number;
@@ -259,12 +257,6 @@ const VariantsTable = ({
           }),
         )
       }
-      items={[
-        {
-          key: ReportType.CLINICAL_DATA,
-          label: 'Selected variant',
-        },
-      ]}
     />
   );
 
@@ -315,16 +307,6 @@ const VariantsTable = ({
                   },
                 }),
               ),
-
-            onTableExportClick: () =>
-              dispatch(
-                fetchTsvReport({
-                  columnStates: userInfo?.config.variant?.tables?.variants?.columns,
-                  columns: defaultColumns,
-                  index: INDEXES.VARIANTS,
-                  sqon: getCurrentSqon(),
-                }),
-              ),
             onSelectAllResultsChange: setSelectedAllResults,
             onSelectedRowsChange: (keys, selectedRows) => {
               setSelectedKeys(keys);
@@ -340,14 +322,6 @@ const VariantsTable = ({
                 type={SetType.VARIANT}
                 key="variants-set-management"
               />,
-              <Dropdown
-                disabled={selectedKeys.length === 0}
-                overlay={menu}
-                placement="bottomLeft"
-                key={'download-clinical-data-dropdown'}
-              >
-                <Button icon={<DownloadOutlined />}>Download clinical data</Button>
-              </Dropdown>,
             ],
           }}
           bordered
