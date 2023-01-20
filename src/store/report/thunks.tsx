@@ -89,8 +89,8 @@ const fetchTsvReport = createAsyncThunk<void, TFetchTSVArgs, { rejectValue: stri
     );
 
     try {
-      const filename = `[include-${args.index}-table]-YYYY-MM-DD`;
-      const formattedFileName = format(new Date(), `${filename}[.tsv]`);
+      const formattedDate = format(new Date(), 'yyyy-MM-dd');
+      const formattedFileName = `kidsfirst-${args.index}-table-${formattedDate}.tsv`;
 
       const { data, error } = await ArrangerApi.columnStates({
         query: getColumnStateQuery(args.index),

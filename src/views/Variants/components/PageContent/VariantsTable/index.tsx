@@ -245,21 +245,6 @@ const VariantsTable = ({
           ],
         });
 
-  const menu = (
-    <Menu
-      onClick={(e) =>
-        dispatch(
-          fetchReport({
-            data: {
-              sqon: getCurrentSqon(),
-              name: e.key,
-            },
-          }),
-        )
-      }
-    />
-  );
-
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
