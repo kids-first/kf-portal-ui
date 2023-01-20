@@ -45,7 +45,7 @@ const generateReport = (config: ReportConfig) => {
     data: {
       sqon: reportSqon,
       projectId: arrangerProjectId,
-      filename: format(new Date(), `[${name}_]YYYYMMDD[.xlsx]`),
+      filename: format(new Date(), `[${name}_]yyyymmDD[.xlsx]`),
     },
     headers: headers(),
   });
