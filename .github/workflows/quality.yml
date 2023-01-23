@@ -1,0 +1,72 @@
+name: Quality
+
+on:
+  pull_request:
+    branches: [2.0]
+
+jobs:
+  build:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.16'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+  linter:
+    name: Run Linter
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.16'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Run linter
+        run: npm run lint
+  tests:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.16'
+      - name: use cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Run tests
+        run: npm run test:github
+  coverage:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: ArtiomTr/jest-coverage-report-action@v2
+          id: coverage
+          with:
+            test-script: npm run coverage:changed
+            output: report-markdown
+        - uses: marocchino/sticky-pull-request-comment@v2
+          with:
+            header: PR Coverage
+            message: ${{ steps.coverage.outputs.report }}
