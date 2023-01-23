@@ -14,6 +14,7 @@ import copy from 'copy-to-clipboard';
 import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+
 import {
   DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
