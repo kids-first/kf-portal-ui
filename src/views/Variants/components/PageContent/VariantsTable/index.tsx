@@ -18,7 +18,7 @@ import {
 } from '@ferlab/ui/core/graphql/types';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Menu, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
 import {
@@ -44,7 +44,6 @@ import { getProTableDictionary } from 'utils/translation';
 import styles from './index.module.scss';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { SetType } from 'services/api/savedSet/models';
-import { fetchReport } from 'store/report/thunks';
 
 interface OwnProps {
   pageIndex: number;

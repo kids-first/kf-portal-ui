@@ -31,6 +31,7 @@ import { IStudiesResultTree } from 'graphql/studies/models';
 import { GET_STUDY_COUNT } from 'graphql/studies/queries';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
+import { updateUserConfig } from 'store/user/thunks';
 
 const { Title } = Typography;
 
@@ -130,6 +131,18 @@ const PageContent = ({
                 total,
               },
               enableColumnSort: true,
+              onColumnSortChange: (newState) =>
+                dispatch(
+                  updateUserConfig({
+                    study: {
+                      tables: {
+                        study: {
+                          columns: newState,
+                        },
+                      },
+                    },
+                  }),
+                ),
               enableTableExport: true,
               onTableExportClick: () => {
                 dispatch(

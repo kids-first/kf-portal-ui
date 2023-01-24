@@ -17,6 +17,7 @@ import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
 import PageContent from './components/PageContent';
 import StudySearch from './components/StudySearch';
+import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -58,11 +59,13 @@ const columns: ProColumnType<any>[] = [
     key: 'program',
     title: 'Program',
     dataIndex: 'program',
+    render: (program: string) => program || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'domain',
     title: 'Domain',
     dataIndex: 'domain',
+    render: (domain: string) => domain || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'external_id',
@@ -150,27 +153,29 @@ const columns: ProColumnType<any>[] = [
     title: 'Clinical',
     align: 'center',
     render: (record: IStudiesEntity) =>
-      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+      hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'genomic',
     title: 'Genomics',
     align: 'center',
-    render: (record: IStudiesEntity) => hasDataCategory(record.data_category, DataCategory.GENOMIC),
+    render: (record: IStudiesEntity) =>
+      hasDataCategory(record.data_category, DataCategory.GENOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'transcriptomic',
     title: 'Transcriptomics',
     align: 'center',
     render: (record: IStudiesEntity) =>
-      hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC),
+      hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC) ||
+      TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'proteomic',
     title: 'Proteomics',
     align: 'center',
     render: (record: IStudiesEntity) =>
-      hasDataCategory(record.data_category, DataCategory.PROTEOMIC),
+      hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 
