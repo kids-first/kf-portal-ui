@@ -27,7 +27,9 @@ import { SavedSetState } from 'store/savedSet';
 import { UserState } from 'store/user';
 import { RemoteState } from 'store/remote';
 import { ConfigProvider } from 'antd';
-import ApolloProvider from 'provider/ApolloProvider';
+// import ApolloProvider from 'provider/ApolloProvider';
+import { MockedProvider } from "@apollo/client/testing";
+
 import { GraphqlBackend } from 'provider/types';
 
 const locales = {
@@ -66,7 +68,7 @@ export function renderWithProviders(
     return (
       <Provider store={store}>
         <ConfigProvider locale={enUS} renderEmpty={() => <Empty imageType="grid" />}>
-          <ApolloProvider backend={GraphqlBackend.ARRANGER}>{children}</ApolloProvider>
+          <MockedProvider>{children}</MockedProvider>
         </ConfigProvider>
       </Provider>
     );
