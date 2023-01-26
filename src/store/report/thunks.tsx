@@ -141,6 +141,8 @@ const idField = (index: string) => {
       return 'file_id';
     case INDEXES.BIOSPECIMENS:
       return 'sample_id';
+    case INDEXES.STUDIES:
+      return 'study_code';
     default:
       return undefined;
   }
