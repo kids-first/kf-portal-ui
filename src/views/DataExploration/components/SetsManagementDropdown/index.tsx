@@ -195,7 +195,9 @@ const SetsManagementDropdown = ({
     <div id={`${type}-set-dropdown-container`}>
       {modal.showModalSave && sqon && (
         <CreateEditModal
-          title={`Save ${singularizeSetTypeIfNeeded(type).toLocaleUpperCase()} Set`}
+          title={intl.get('screen.dataExploration.setsManagementDropdown.newTitle', {
+            filter: singularizeSetTypeIfNeeded(type).toLocaleLowerCase(),
+          })}
           idField={idField}
           sqon={sqon}
           setType={type}

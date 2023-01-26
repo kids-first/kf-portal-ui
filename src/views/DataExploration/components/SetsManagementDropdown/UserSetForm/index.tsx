@@ -1,4 +1,5 @@
 import { Col, Form, Row, Select } from 'antd';
+import intl from 'react-intl-universal';
 import { Store } from 'antd/lib/form/interface';
 import { FormInstance } from 'antd/lib/form';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
@@ -25,7 +26,9 @@ const UserSetsForm = ({
 }: OwnProps) => (
   <Form form={form} name={formName} onFinish={onFinish} layout="vertical">
     <Form.Item
-      label={singularizeSetTypeIfNeeded(type).toLocaleLowerCase()}
+      label={intl.get('components.savedSets.modal.edit.label', {
+        type: singularizeSetTypeIfNeeded(type).toLocaleLowerCase(),
+      })}
       name="setId"
       className={styles.setEditFormItem}
     >
