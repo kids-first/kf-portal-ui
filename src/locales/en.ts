@@ -202,7 +202,7 @@ const en = {
       header: {
         modal: {
           edit: {
-            title: 'Save this filter',
+            title: 'Edit filter',
             okText: 'Save',
             cancelText: 'Cancel',
             input: {
@@ -282,8 +282,9 @@ const en = {
     savedSets: {
       modal: {
         edit: {
-          title: 'Save this Set',
+          title: 'Edit set',
           okText: 'Save',
+          label: '{type} set',
           cancelText: 'Cancel',
           input: {
             label: 'Set name',
@@ -294,6 +295,7 @@ const en = {
         add: {
           title: 'Add to a {type} set',
           okText: 'Add to set',
+          name: 'Set name',
           cancelText: 'Cancel',
         },
         remove: {
@@ -839,6 +841,8 @@ const en = {
         datafiles: 'Data File',
       },
       setsManagementDropdown: {
+        newTitle: 'Save {filter} set',
+        editTitle: 'Edit {filter} set',
         create: 'Save as new set',
         add: 'Add to existing set',
         remove: 'Remove from existing set',
