@@ -1,12 +1,13 @@
-import { Form, Input, Modal } from 'antd';
-import { TUserSavedFilter } from 'services/api/savedFilter/models';
-import { WarningFilled } from '@ant-design/icons';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { WarningFilled } from '@ant-design/icons';
+import { Form, Input, Modal } from 'antd';
+import { MAX_TITLE_LENGTH } from 'views/DataExploration/components/PageContent';
+
+import { TUserSavedFilter } from 'services/api/savedFilter/models';
 import { updateSavedFilter } from 'store/savedFilter/thunks';
 
 import styles from './index.module.scss';
-import { MAX_TITLE_LENGTH } from 'views/DataExploration/components/PageContent';
 
 interface OwnProps {
   visible?: boolean;
@@ -27,6 +28,7 @@ const EditModal = ({ visible = false, onCancel, filter }: OwnProps) => {
       }}
       visible={visible}
       onOk={() => editForm.submit()}
+      okText={intl.get('components.querybuilder.header.modal.edit.okText')}
     >
       <Form
         form={editForm}
