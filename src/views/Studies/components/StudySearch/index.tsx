@@ -36,6 +36,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
         }))
       }
       title={intl.get(`global.search.study.title`)}
+      isWildCard={true}
     />
   );
 };
