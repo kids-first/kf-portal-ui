@@ -25,6 +25,7 @@ interface OwnProps<T> {
   handleSearch?: TCustomHandleSearch<T>;
   limit?: number;
   optionsFormatter: (options: T[], matchRegex: RegExp, search: string) => OptionsType[];
+  isWildCard?: boolean;
 }
 
 const GlobalSearch = <T,>({
@@ -39,6 +40,7 @@ const GlobalSearch = <T,>({
   sqon,
   optionsFormatter,
   tooltipText,
+  isWildCard = false,
 }: OwnProps<T>) => (
   <Search<T>
     onSelect={(values) =>
@@ -67,6 +69,7 @@ const GlobalSearch = <T,>({
       )
     }
     title={title}
+    isWildCard={isWildCard}
   />
 );
 

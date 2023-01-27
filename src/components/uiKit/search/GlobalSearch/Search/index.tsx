@@ -3,7 +3,11 @@ import SearchAutocomplete, {
   ISearchAutocomplete,
   OptionsType,
 } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import {
+  generateWildCardValueFilter,
+  generateQuery,
+  generateValueFilter,
+} from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ArrangerApi } from 'services/api/arranger';
@@ -18,6 +22,7 @@ interface IGlobalSearch<T> {
   searchValueTransformer?: (search: string) => string;
   onSelect: (values: string[]) => void;
   customHandleSearch?: TCustomHandleSearch<T>;
+  isWildCard?: boolean;
 }
 
 export type TCustomHandleSearch<T> = (searchText: string) => Promise<ISuggestionPayload<T>>;
@@ -33,6 +38,7 @@ const Search = <T,>({
   setCurrentOptions,
   searchValueTransformer,
   customHandleSearch,
+  isWildCard = false,
   ...props
 }: TGlobalSearch<T>) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
@@ -42,16 +48,29 @@ const Search = <T,>({
       const results = await customHandleSearch(search);
       setOptions(setCurrentOptions(results.suggestions, search));
     } else {
-      const searchFilter = generateQuery({
-        operator: BooleanOperators.or,
-        newFilters: searchKey.map((key) =>
-          generateValueFilter({
-            field: key,
-            value: [`${search}*`],
-            index,
-          }),
-        ),
-      });
+      const payload = isWildCard
+        ? {
+            operator: BooleanOperators.or,
+            newFilters: searchKey.map((key) =>
+              generateWildCardValueFilter({
+                fields: [key],
+                value: [`*${search}*`],
+                index,
+              }),
+            ),
+          }
+        : {
+            operator: BooleanOperators.or,
+            newFilters: searchKey.map((key) =>
+              generateValueFilter({
+                field: key,
+                value: [`${search}*`],
+                index,
+              }),
+            ),
+          };
+
+      const searchFilter = generateQuery(payload);
 
       const { data } = await ArrangerApi.graphqlRequest<any>({
         query: query.loc?.source.body,
