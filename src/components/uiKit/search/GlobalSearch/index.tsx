@@ -1,11 +1,12 @@
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { findSqonValueByField } from '@ferlab/ui/core/data/sqon/utils';
-import Search, { TCustomHandleSearch } from 'components/uiKit/search/GlobalSearch/Search';
-import { OptionsType } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
 import { DocumentNode } from 'graphql';
 import { INDEXES } from 'graphql/constants';
 import { get } from 'lodash';
+
+import Search, { TCustomHandleSearch } from 'components/uiKit/search/GlobalSearch/Search';
+import { OptionsType } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
 
 export interface ICustomSearchProps {
   queryBuilderId: string;
@@ -25,7 +26,6 @@ interface OwnProps<T> {
   handleSearch?: TCustomHandleSearch<T>;
   limit?: number;
   optionsFormatter: (options: T[], matchRegex: RegExp, search: string) => OptionsType[];
-  isWildCard?: boolean;
 }
 
 const GlobalSearch = <T,>({
@@ -40,7 +40,6 @@ const GlobalSearch = <T,>({
   sqon,
   optionsFormatter,
   tooltipText,
-  isWildCard = false,
 }: OwnProps<T>) => (
   <Search<T>
     onSelect={(values) =>
@@ -69,7 +68,6 @@ const GlobalSearch = <T,>({
       )
     }
     title={title}
-    isWildCard={isWildCard}
   />
 );
 
