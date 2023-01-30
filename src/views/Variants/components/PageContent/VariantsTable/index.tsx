@@ -29,11 +29,13 @@ import {
   IVariantEntity,
   IVariantStudyEntity,
 } from 'graphql/variants/models';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
 import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { SetType } from 'services/api/savedSet/models';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
@@ -42,8 +44,6 @@ import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
-import { SetType } from 'services/api/savedSet/models';
 
 interface OwnProps {
   pageIndex: number;
@@ -104,7 +104,6 @@ const defaultColumns: ProColumnType[] = [
     key: 'consequences',
     title: intl.get('screen.variants.table.consequences.title'),
     dataIndex: 'consequences',
-    width: 300,
     tooltip: intl.get('screen.variants.table.consequences.tooltip'),
     render: (consequences: IArrangerResultsTree<IConsequenceEntity>) => (
       <ConsequencesCell consequences={consequences?.hits?.edges || []} />
@@ -136,7 +135,6 @@ const defaultColumns: ProColumnType[] = [
     title: intl.get('screen.variants.table.gnomAD.title'),
     tooltip: intl.get('screen.variants.table.gnomAD.tooltip'),
     dataIndex: 'frequencies',
-    width: '7%',
     render: (gnomad: IExternalFrequenciesEntity) =>
       gnomad.gnomad_genomes_3_1_1.af
         ? toExponentialNotation(gnomad.gnomad_genomes_3_1_1.af)

@@ -1,7 +1,7 @@
-import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { IConsequenceEntity, Impact } from 'graphql/variants/models';
 
 import HighBadgeIcon from 'components/Icons/VariantBadgeIcons/HighBadgeIcon';
@@ -37,7 +37,7 @@ const ConsequencesCell = ({
 
         if (node.consequences) {
           return (
-            <StackLayout center key={index}>
+            <StackLayout className={style.stackLayout} center key={index}>
               {pickImpactBadge(node.vep_impact)}
               <span key={index} className={style.detail}>
                 {removeUnderscoreAndCapitalize(node.consequences[0])}

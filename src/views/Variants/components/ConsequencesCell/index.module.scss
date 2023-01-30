@@ -1,5 +1,9 @@
 @import 'src/style/themes/kids-first/colors';
 
+.stackLayout {
+  min-width: 375px;
+}
+
 .consequenceUl {
   list-style: none;
   padding: 0;
@@ -27,6 +31,8 @@
 
 .bullet {
   margin-right: 8px;
+  min-width: 10px;
+  min-height: 10px;
 }
 
 .symbol {
