@@ -3,12 +3,12 @@ import { ReadOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { INDEXES } from 'graphql/constants';
+import { IStudiesEntity } from 'graphql/studies/models';
+import { SEARCH_STUDIES_BY_ID_AND_NAME_QUERY } from 'graphql/studies/queries';
 
 import GlobalSearch, { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
 import { highlightSearchMatch } from 'components/uiKit/search/GlobalSearch/utils';
 import SelectItem from 'components/uiKit/select/SelectItem';
-import { SEARCH_STUDIES_BY_ID_AND_NAME_QUERY } from 'graphql/studies/queries';
-import { IStudiesEntity } from 'graphql/studies/models';
 
 const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
   const { activeQuery } = useQueryBuilderState(queryBuilderId);
@@ -36,7 +36,6 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
         }))
       }
       title={intl.get(`global.search.study.title`)}
-      isWildCard={true}
     />
   );
 };
