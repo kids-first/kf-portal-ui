@@ -37,7 +37,9 @@ const finishButtonText = (type: string) => {
 const formTitle = (setActionType: string, type: SetType) => {
   switch (setActionType) {
     case SetActionType.ADD_IDS:
-      return intl.get('components.savedSets.modal.add.title', { type });
+      return intl.get('components.savedSets.modal.add.title', {
+        type: singularizeSetTypeIfNeeded(type).toLocaleLowerCase(),
+      });
     case SetActionType.REMOVE_IDS:
       return intl.get('components.savedSets.modal.remove.title', {
         type: singularizeSetTypeIfNeeded(type).toLocaleLowerCase(),
