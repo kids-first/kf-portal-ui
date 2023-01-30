@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { UserOutlined } from '@ant-design/icons';
+import { FileSearchOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -103,8 +103,8 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
             key={SavedFilterTag.ParticipantsExplorationPage}
             tab={
               <div>
-                <UserOutlined />
-                Participants (
+                <FileSearchOutlined />
+                Data Exploration (
                 {
                   savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage)
                     .length
