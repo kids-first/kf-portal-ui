@@ -5,10 +5,10 @@ import { useFileEntity } from 'graphql/files/actions';
 
 import getDataAccessItems from './utils/getDataAccessItems';
 import getDataTypeItems from './utils/getDataTypeItems';
-import getExperimentalProcedureItems from './utils/getExperimentalProcedureItems';
 import getLinks from './utils/getLinks';
 import getSummaryItems from './utils/getSummaryItems';
 import BiospecimenTable from './BiospecimenTable';
+import ExperimentalProcedure from './ExperimentalProcedure';
 import SummaryHeader from './SummaryHeader';
 import FileEntityTitle from './Title';
 
@@ -23,7 +23,7 @@ export enum SectionId {
 export default function FileEntity() {
   const { file_id } = useParams<{ file_id: string }>();
 
-  const { data, loading } = useFileEntity({
+  const { file, loading } = useFileEntity({
     field: 'file_id',
     value: file_id,
   });
@@ -32,43 +32,37 @@ export default function FileEntity() {
     <EntityPage
       links={getLinks()}
       pageId={'file-entity-page'}
-      data={data}
+      data={file}
       loading={loading}
       emptyText={intl.get('no.data.available')}
     >
-      <FileEntityTitle file={data} loading={loading} />
+      <FileEntityTitle file={file} loading={loading} />
 
       <EntityDescriptions
         id={SectionId.SUMMARY}
         loading={loading}
-        descriptions={getSummaryItems(data)}
+        descriptions={getSummaryItems(file)}
         header={intl.get('entities.file.summary.title')}
-        subheader={<SummaryHeader file={data} />}
+        subheader={<SummaryHeader file={file} />}
       />
       <EntityDescriptions
         id={SectionId.DATA_ACCESS}
         loading={loading}
-        descriptions={getDataAccessItems(data)}
+        descriptions={getDataAccessItems(file)}
         title={intl.get('entities.file.data_access.title')}
         header={intl.get('entities.file.data_access.title')}
       />
       <EntityDescriptions
         id={SectionId.DATA_TYPE}
         loading={loading}
-        descriptions={getDataTypeItems(data)}
+        descriptions={getDataTypeItems(file)}
         title={intl.get('entities.file.data_type.title')}
         header={intl.get('entities.file.data_type.title')}
       />
 
-      <BiospecimenTable data={data} loading={loading} />
+      <BiospecimenTable file={file} loading={loading} />
 
-      <EntityDescriptions
-        id={SectionId.EXPERIMENTAL_PROCEDURE}
-        loading={loading}
-        descriptions={getExperimentalProcedureItems(data)}
-        title={intl.get('entities.file.experimental_procedure.title')}
-        header={intl.get('entities.file.experimental_procedure.title')}
-      />
+      <ExperimentalProcedure file={file} loading={loading} />
     </EntityPage>
   );
 }

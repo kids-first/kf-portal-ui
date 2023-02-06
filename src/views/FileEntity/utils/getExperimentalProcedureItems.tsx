@@ -1,13 +1,15 @@
 import intl from 'react-intl-universal';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
-import { IFileEntity } from 'graphql/files/models';
+import { ISequencingExperiment } from 'graphql/files/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
-const getExperimentalProcedureItems = (file?: IFileEntity): IEntityDescriptionsItem[] => [
+const getExperimentalProcedureItems = (
+  sequencingExperiment?: ISequencingExperiment,
+): IEntityDescriptionsItem[] => [
   {
     label: intl.get('entities.file.experimental_procedure.experimental_strategy'),
-    value: file?.sequencing_experiment.experiment_strategy || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.experiment_strategy || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.sequencing_type'),
@@ -15,19 +17,19 @@ const getExperimentalProcedureItems = (file?: IFileEntity): IEntityDescriptionsI
   },
   {
     label: intl.get('entities.file.experimental_procedure.platform'),
-    value: file?.sequencing_experiment.platform || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.platform || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.instrument_model'),
-    value: file?.sequencing_experiment.instrument_model || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.instrument_model || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.library_strand'),
-    value: file?.sequencing_experiment.library_strand || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.library_strand || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.library_name'),
-    value: file?.sequencing_experiment.library_name || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.library_name || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.total_reads'),
@@ -55,7 +57,7 @@ const getExperimentalProcedureItems = (file?: IFileEntity): IEntityDescriptionsI
   },
   {
     label: intl.get('entities.file.experimental_procedure.sequencing_center_id'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.external_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 

@@ -11,16 +11,16 @@ import getBiospecimensColumns from '../utils/getBiospecimensColumns';
 import { SectionId } from '..';
 
 interface OwnProps {
-  data?: IFileEntity;
+  file?: IFileEntity;
   loading: boolean;
 }
 
-const BiospecimenTable = ({ data, loading }: OwnProps) => {
+const BiospecimenTable = ({ file, loading }: OwnProps) => {
   const { userInfo } = useUser();
   const dispatch = useDispatch();
 
   const biospecimens: IBiospecimenEntity[] =
-    data?.biospecimens?.hits?.edges?.map((e) => ({ key: e.node.sample_id, ...e.node })) || [];
+    file?.biospecimens?.hits?.edges?.map((e) => ({ key: e.node.sample_id, ...e.node })) || [];
 
   return (
     <EntityTable

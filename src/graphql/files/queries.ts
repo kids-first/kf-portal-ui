@@ -33,7 +33,13 @@ export const SEARCH_FILES_QUERY = gql`
               study_code
             }
             sequencing_experiment {
-              experiment_strategy
+              hits {
+                edges {
+                  node {
+                    experiment_strategy
+                  }
+                }
+              }
             }
           }
         }
@@ -50,22 +56,6 @@ export const GET_FILE_ENTITY = gql`
           node {
             id
             access_urls
-            # biospecimens {
-            #   hits {
-            #     total
-            #     edges {
-            #       node {
-            #         sample_id
-            #         sample_type
-            #         participant {
-            #           external_id
-            #           is_proband
-            #           participant_id
-            #         }
-            #       }
-            #     }
-            #   }
-            # }
             controlled_access
             data_category
             data_type
@@ -79,11 +69,20 @@ export const GET_FILE_ENTITY = gql`
             nb_biospecimens
             nb_participants
             sequencing_experiment {
-              experiment_strategy
-              instrument_model
-              library_name
-              library_strand
-              platform
+              hits {
+                edges {
+                  node {
+                    sequencing_experiment_id
+                    experiment_strategy
+                    experiment_date
+                    library_name
+                    library_strand
+                    platform
+                    instrument_model
+                    external_id
+                  }
+                }
+              }
             }
             size
             study {
