@@ -1,10 +1,10 @@
-import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/VariantEntity/types';
 import {
   IQueryOperationsConfig,
   IQueryResults,
   IQueryVariable,
 } from '@ferlab/ui/core/graphql/types';
 import { computeSearchAfter, hydrateResults } from '@ferlab/ui/core/graphql/utils';
+import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/EntityPage/type';
 import { INDEXES } from 'graphql/constants';
 
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
@@ -38,7 +38,10 @@ interface IUseVariantEntityReturn {
   data?: IVariantEntityFerlab;
 }
 
-export const useVariantEntity = ({ field, values }: IUseVariantEntityProps): IUseVariantEntityReturn => {
+export const useVariantEntity = ({
+  field,
+  values,
+}: IUseVariantEntityProps): IUseVariantEntityReturn => {
   const sqon = {
     content: [{ content: { field, value: values, index: INDEXES.VARIANTS }, op: 'in' }],
     op: 'and',

@@ -32,8 +32,8 @@ import SetsManagementDropdown from 'views/DataExploration/components/SetsManagem
 import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
-  SCROLL_WRAPPER_ID,
   PARTICIPANTS_SAVED_SETS_FIELD,
+  SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
 import {
   extractMondoTitleAndCode,
@@ -46,12 +46,12 @@ import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { readableDistanceByDays } from 'utils/dates';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { readableDistanceByDays } from 'utils/dates';
 
 interface OwnProps {
   results: IQueryResults<IParticipantEntity[]>;

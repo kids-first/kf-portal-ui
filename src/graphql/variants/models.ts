@@ -1,5 +1,5 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
-import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/VariantEntity/types';
+import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/EntityPage/type';
 
 export interface IVariantResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
@@ -18,20 +18,6 @@ export enum Impact {
 
 export interface IConservationsEntity {
   phylo_p17way_primate_rankscore: number;
-}
-
-export interface IPredictionEntity {
-  fathmm_pred: number;
-  lrt_pred: string;
-  lrt_converted_rankscore: number;
-  revel_rankscore: number;
-  sift_pred: string;
-  polyphen2_hvar_pred: string;
-  polyphen2_hvar_rankscore: number;
-  sift_converted_rankscore: number;
-  cadd_rankscore: number;
-  dann_rankscore: number;
-  fathmm_converted_rankscore: number;
 }
 
 export interface IBoundType {
@@ -63,6 +49,18 @@ export interface IExternalFrequenciesEntity {
 
 export interface IConsequenceNode {
   node: IConsequenceEntity;
+}
+export interface IPredictionEntity {
+  fathmm_pred: number;
+  lrt_pred: string;
+  lrt_converted_rankscore: number;
+  revel_rankscore: number;
+  sift_pred: string;
+  polyphen2_hvar_pred: string;
+  sift_converted_rankscore: number;
+  cadd_rankscore: number;
+  dann_rankscore: number;
+  fathmm_converted_rankscore: number;
 }
 
 export interface IConsequenceEntity {

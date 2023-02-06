@@ -16,6 +16,7 @@ import {
   IQueryResults,
   TQueryConfigCb,
 } from '@ferlab/ui/core/graphql/types';
+import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Tooltip } from 'antd';
@@ -55,7 +56,6 @@ interface OwnProps {
 }
 
 const isNumber = (n: number) => n && !Number.isNaN(n);
-const toExponentialNotation = (n: number, fractionDigits = 2) => n.toExponential(fractionDigits);
 
 const defaultColumns: ProColumnType[] = [
   {
