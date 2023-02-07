@@ -136,7 +136,7 @@ const getDefaultColumns = (
     sorter: { multiple: 1 },
     render: (record: IFileEntity) =>
       record.sequencing_experiment
-        ? record.sequencing_experiment?.hits?.edges
+        ? record.sequencing_experiment.hits?.edges
             .map((edge) => edge.node.experiment_strategy)
             .join(', ')
         : TABLE_EMPTY_PLACE_HOLDER,
