@@ -26,7 +26,7 @@ interface IUseFileProps {
 
 interface IUseFileReturn {
   loading: boolean;
-  data?: IFileEntity;
+  file?: IFileEntity;
 }
 
 export const useFileEntity = ({ field, value }: IUseFileProps): IUseFileReturn => {
@@ -39,10 +39,10 @@ export const useFileEntity = ({ field, value }: IUseFileProps): IUseFileReturn =
     variables: { sqon },
   });
 
-  const data = result?.files?.hits?.edges[0]?.node || undefined;
+  const file = result?.files?.hits?.edges[0]?.node || undefined;
 
   return {
     loading,
-    data,
+    file,
   };
 };

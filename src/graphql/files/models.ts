@@ -23,6 +23,22 @@ export interface IFileStudyEntity {
   controlled_access: string[];
 }
 
+export interface ISequencingExperiment {
+  id: string;
+  sequencing_experiment_id: string;
+  experiment_strategy: string;
+  experiment_date?: string;
+  center: string;
+  library_name: string;
+  library_prep: string;
+  library_selection: string;
+  library_strand: string;
+  platform: string;
+  instrument_model: string;
+  external_id?: string;
+  sequencing_center_id: string;
+}
+
 export interface IFileEntity {
   key?: string;
   id: string;
@@ -53,13 +69,7 @@ export interface IFileEntity {
   repository: string;
   study: IFileStudyEntity;
   score: number;
-  sequencing_experiment: {
-    experiment_strategy: string;
-    instrument_model: string;
-    library_name: string;
-    library_strand: string;
-    platform: string;
-  };
+  sequencing_experiment: IArrangerResultsTree<ISequencingExperiment>;
   size: number;
 }
 

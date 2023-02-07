@@ -58,6 +58,7 @@ export type TUserConfig = {
   files?: {
     tables?: {
       biospecimens?: TUserTableConfig;
+      experimental_procedures?: TUserTableConfig;
     };
   };
   dashboard?: {
