@@ -35,10 +35,10 @@ const ExperimentalProcedureTable = ({ file, loading }: OwnProps) => {
       headerConfig={{
         enableTableExport: true,
         enableColumnSort: true,
-        onColumnSortChange: (newState) =>
+        onColumnSortChange: (newColumns) =>
           dispatch(
             updateUserConfig({
-              files: { tables: { experimental_procedures: { columns: newState } } },
+              files: { tables: { experimental_procedures: { columns: newColumns } } },
             }),
           ),
       }}
