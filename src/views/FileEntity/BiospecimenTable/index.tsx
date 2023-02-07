@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
+import { SectionId } from 'views/FileEntity';
+import getBiospecimensColumns from 'views/FileEntity/utils/getBiospecimensColumns';
 
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-
-import getBiospecimensColumns from '../utils/getBiospecimensColumns';
-import { SectionId } from '..';
 
 interface OwnProps {
   file?: IFileEntity;

@@ -2,12 +2,11 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { IFileEntity, ISequencingExperiment } from 'graphql/files/models';
+import { SectionId } from 'views/FileEntity';
+import getExperimentalProcedureColumns from 'views/FileEntity/utils/getExperimentalProcedureColumns';
 
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-
-import { SectionId } from '../..';
-import getExperimentalProcedureColumns from '../../utils/getExperimentalProcedureColumns';
 
 interface OwnProps {
   file?: IFileEntity;
