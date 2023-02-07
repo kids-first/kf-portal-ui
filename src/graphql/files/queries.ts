@@ -68,6 +68,36 @@ export const GET_FILE_ENTITY = gql`
             }
             nb_biospecimens
             nb_participants
+
+            participants {
+              hits {
+                total
+                edges {
+                  node {
+                    biospecimens {
+                      hits {
+                        edges {
+                          node {
+                            sample_id
+                            sample_type
+                            collection_sample_id
+                            collection_sample_type
+                          }
+                        }
+                      }
+                    }
+                    external_id
+                    is_proband
+                    participant_id
+                    study {
+                      study_code
+                      external_id
+                    }
+                  }
+                }
+              }
+            }
+
             sequencing_experiment {
               hits {
                 edges {

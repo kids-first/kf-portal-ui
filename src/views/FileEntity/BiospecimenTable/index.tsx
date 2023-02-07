@@ -1,10 +1,12 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
-import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
-import { SectionId } from 'views/FileEntity';
-import getBiospecimensColumns from 'views/FileEntity/utils/getBiospecimensColumns';
+import { SectionId } from 'views/FileEntity/utils/anchorLinks';
+import {
+  getBiospecimenColumns,
+  getBiospecimensFromFile,
+} from 'views/FileEntity/utils/biospecimens';
 
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
@@ -18,8 +20,7 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
   const { userInfo } = useUser();
   const dispatch = useDispatch();
 
-  const biospecimens: IBiospecimenEntity[] =
-    file?.biospecimens?.hits?.edges?.map((e) => ({ key: e.node.sample_id, ...e.node })) || [];
+  const biospecimens = getBiospecimensFromFile(file);
 
   return (
     <EntityTable
@@ -28,7 +29,7 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
       data={biospecimens}
       title={intl.get('entities.file.participant_sample.title')}
       header={intl.get('entities.file.participant_sample.title')}
-      columns={getBiospecimensColumns()}
+      columns={getBiospecimenColumns()}
       initialColumnState={userInfo?.config.files?.tables?.biospecimens?.columns}
       headerConfig={{
         enableTableExport: true,
