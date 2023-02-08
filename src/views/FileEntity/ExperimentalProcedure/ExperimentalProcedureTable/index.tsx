@@ -2,7 +2,7 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { IFileEntity, ISequencingExperiment } from 'graphql/files/models';
-import { SectionId } from 'views/FileEntity';
+import { SectionId } from 'views/FileEntity/utils/anchorLinks';
 import getExperimentalProcedureColumns from 'views/FileEntity/utils/getExperimentalProcedureColumns';
 
 import { useUser } from 'store/user';

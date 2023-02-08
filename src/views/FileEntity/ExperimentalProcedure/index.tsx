@@ -1,8 +1,8 @@
 import intl from 'react-intl-universal';
 import { EntityDescriptions } from '@ferlab/ui/core/pages/EntityPage';
 import { IFileEntity } from 'graphql/files/models';
-import { SectionId } from 'views/FileEntity';
 import ExperimentalProcedureTable from 'views/FileEntity/ExperimentalProcedure/ExperimentalProcedureTable';
+import { SectionId } from 'views/FileEntity/utils/anchorLinks';
 import getExperimentalProcedureItems from 'views/FileEntity/utils/getExperimentalProcedureItems';
 
 interface OwnProps {

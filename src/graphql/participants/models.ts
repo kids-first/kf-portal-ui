@@ -94,7 +94,7 @@ export interface IParticipantEntity {
   mondo: IArrangerResultsTree<IParticipantMondo>;
   observed_phenotype: IArrangerResultsTree<IParticipantObservedPhenotype>;
   diagnosis: IArrangerResultsTree<IParticipantDiagnosis>;
-  biospecimen: IArrangerResultsTree<IBiospecimenEntity>;
+  biospecimens: IArrangerResultsTree<IBiospecimenEntity>;
   phenotype: IArrangerResultsTree<IParticipantPhenotype>;
   race: string;
   outcomes: IArrangerResultsTree<IParticipantOutcomes>;

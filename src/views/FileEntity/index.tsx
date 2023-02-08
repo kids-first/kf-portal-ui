@@ -2,23 +2,14 @@ import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import EntityPage, { EntityDescriptions } from '@ferlab/ui/core/pages/EntityPage';
 import { useFileEntity } from 'graphql/files/actions';
-
-import getDataAccessItems from './utils/getDataAccessItems';
-import getDataTypeItems from './utils/getDataTypeItems';
-import getLinks from './utils/getLinks';
-import getSummaryItems from './utils/getSummaryItems';
-import BiospecimenTable from './BiospecimenTable';
-import ExperimentalProcedure from './ExperimentalProcedure';
-import SummaryHeader from './SummaryHeader';
-import FileEntityTitle from './Title';
-
-export enum SectionId {
-  SUMMARY = 'summary',
-  DATA_ACCESS = 'data-access',
-  DATA_TYPE = 'data-type',
-  PARTICIPANT_SAMPLE = 'participant-sample',
-  EXPERIMENTAL_PROCEDURE = 'experimental-procedure',
-}
+import BiospecimenTable from 'views/FileEntity/BiospecimenTable';
+import ExperimentalProcedure from 'views/FileEntity/ExperimentalProcedure';
+import SummaryHeader from 'views/FileEntity/SummaryHeader';
+import FileEntityTitle from 'views/FileEntity/Title';
+import { getLinks, SectionId } from 'views/FileEntity/utils/anchorLinks';
+import getDataAccessItems from 'views/FileEntity/utils/getDataAccessItems';
+import getDataTypeItems from 'views/FileEntity/utils/getDataTypeItems';
+import getSummaryItems from 'views/FileEntity/utils/getSummaryItems';
 
 export default function FileEntity() {
   const { file_id } = useParams<{ file_id: string }>();

@@ -53,7 +53,7 @@ const getExperimentalProcedureItems = (
   },
   {
     label: intl.get('entities.file.experimental_procedure.experiment_date'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.experiment_date || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.sequencing_center_id'),

@@ -13,7 +13,7 @@ export interface IFileStudyEntity {
   fhir_id: string;
   study_code: string;
   study_name: string;
-  investigator_id: string;
+  external_id: string;
   experimental_strategy: string[];
   family_count: number;
   participant_count: number;
