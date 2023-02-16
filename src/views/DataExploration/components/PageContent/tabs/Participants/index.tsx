@@ -27,13 +27,14 @@ import {
   IParticipantStudy,
   ITableParticipantEntity,
 } from 'graphql/participants/models';
+import { makeUniqueCleanWords } from 'helpers';
 import { capitalize } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_PAGE_SIZE,
-  SCROLL_WRAPPER_ID,
   PARTICIPANTS_SAVED_SETS_FIELD,
+  SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
 import {
   extractMondoTitleAndCode,
@@ -46,12 +47,12 @@ import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { readableDistanceByDays } from 'utils/dates';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
-import { readableDistanceByDays } from 'utils/dates';
 
 interface OwnProps {
   results: IQueryResults<IParticipantEntity[]>;
@@ -137,7 +138,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'diagnosis.mondo_id_diagnosis',
@@ -152,7 +153,7 @@ const defaultColumns: ProColumnType[] = [
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
-          dataSource={mondoNames}
+          dataSource={makeUniqueCleanWords(mondoNames)}
           renderItem={(mondo_id, index): React.ReactNode => {
             const mondoInfo = extractMondoTitleAndCode(mondo_id);
             return mondoInfo ? (
@@ -186,7 +187,7 @@ const defaultColumns: ProColumnType[] = [
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
-          dataSource={phenotypeNames}
+          dataSource={makeUniqueCleanWords(phenotypeNames)}
           renderItem={(hpo_id_phenotype, index): React.ReactNode => {
             const phenotypeInfo = extractPhenotypeTitleAndCode(hpo_id_phenotype);
 
@@ -222,7 +223,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'pedcbioportal',
@@ -231,7 +232,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'nb_biospecimens',
@@ -341,7 +342,10 @@ const defaultColumns: ProColumnType[] = [
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
       diagnosis?.hits?.edges
         ?.reduce<string[]>((ncitIds, diagnosis) => {
-          diagnosis.node.ncit_id_diagnosis && ncitIds.push(diagnosis.node.ncit_id_diagnosis);
+          const dxId = diagnosis.node.ncit_id_diagnosis;
+          if (dxId && !ncitIds.includes(dxId)) {
+            return [...ncitIds, dxId];
+          }
           return ncitIds;
         }, [])
         ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
@@ -357,11 +361,10 @@ const defaultColumns: ProColumnType[] = [
       if (!sourceTexts || sourceTexts.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
-
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
-          dataSource={sourceTexts}
+          dataSource={makeUniqueCleanWords(sourceTexts)}
           renderItem={(sourceText, index): React.ReactNode => <div key={index}>{sourceText}</div>}
         />
       );
@@ -386,7 +389,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'outcomes.vital_status',
@@ -407,7 +410,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_: IArrangerResultsTree<IParticipantPhenotype>) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'source_text_phenotype',
@@ -417,7 +420,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (_) => TABLE_EMPTY_PLACE_HOLDER,
+    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'outcomes.age_at_event_days.value',
