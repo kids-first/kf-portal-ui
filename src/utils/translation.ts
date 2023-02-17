@@ -3,102 +3,50 @@ import { IDictionary as FiltersDict } from '@ferlab/ui/core/components/filters/t
 import { IProTableDictionary } from '@ferlab/ui/core/components/ProTable/types';
 import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
-import { IVariantEntityDictionary } from '@ferlab/ui/core/pages/VariantEntity/types';
 
 import { IUserSetOutput } from 'services/api/savedSet/models';
 
 import { numberWithCommas } from './string';
 
-export const getVariantEntityDictionary = (): IVariantEntityDictionary => ({
-  summary: {
-    summary: intl.get('screen.variants.summary.summary'),
-    type: intl.get('screen.variants.summary.type'),
-    chromosome: intl.get('screen.variants.summary.chromosome'),
-    position: intl.get('screen.variants.summary.position'),
-    cytoband: intl.get('screen.variants.summary.cytoband'),
-    alternativeAllele: intl.get('screen.variants.summary.alternativeAllele'),
-    altAllele: intl.get('screen.variants.summary.altAllele'),
-    referenceAllele: intl.get('screen.variants.summary.referenceAllele'),
-    refAllele: intl.get('screen.variants.summary.refAllele'),
-    referenceGenome: intl.get('screen.variants.summary.referenceGenome'),
-    studies: intl.get('screen.variants.summary.studies'),
-    participants: intl.get('screen.variants.summary.participants'),
-    genes: intl.get('screen.variants.summary.genes'),
-    omim: intl.get('screen.variants.summary.omim'),
-    clinVar: intl.get('screen.variants.summary.clinVar'),
-    gnomadGenome311: intl.get('screen.variants.summary.gnomadGenome311'),
-    dbSNP: intl.get('screen.variants.summary.dbSNP'),
+export const getEntityExpandableTableMultiple = () => ({
+  hideTranscript: intl.get('screen.variants.consequences.hideTranscript'),
+  showTranscript: (count: number) =>
+    intl.get('screen.variants.consequences.showTranscript', { count }),
+  seeLess: intl.get('see.less'),
+  seeMore: intl.get('see.more'),
+  noDataAvailable: intl.get('no.data.available'),
+});
+
+export const getEntityConsequenceDictionary = () => ({
+  consequence: intl.get('screen.variants.consequences.consequence'),
+  impactTag: {
+    modifier: intl.get('screen.variants.consequences.impactTag.modifier'),
+    low: intl.get('screen.variants.consequences.impactTag.low'),
+    moderate: intl.get('screen.variants.consequences.impactTag.moderate'),
+    high: intl.get('screen.variants.consequences.impactTag.high'),
   },
-  consequences: {
-    consequence: intl.get('screen.variants.consequences.consequence'),
-    impactTag: {
-      modifier: intl.get('screen.variants.consequences.impactTag.modifier'),
-      low: intl.get('screen.variants.consequences.impactTag.low'),
-      moderate: intl.get('screen.variants.consequences.impactTag.moderate'),
-      high: intl.get('screen.variants.consequences.impactTag.high'),
-    },
-    aaColumnTooltip: intl.get('screen.variants.consequences.aaColumnTooltip'),
-    aaColumn: intl.get('screen.variants.consequences.aaColumn'),
-    cdnaChangeColumn: intl.get('screen.variants.consequences.cdnaChangeColumn'),
-    strand: intl.get('screen.variants.consequences.strand'),
-    vep: intl.get('screen.variants.consequences.vep'),
-    predictions: {
-      predictions: intl.get('screen.variants.consequences.predictions.predictions'),
-      sift: intl.get('screen.variants.consequences.predictions.sift'),
-      polyphen2: intl.get('screen.variants.consequences.predictions.polyphen2'),
-      fathmm: intl.get('screen.variants.consequences.predictions.fathmm'),
-      cadd: intl.get('screen.variants.consequences.predictions.cadd'),
-      dann: intl.get('screen.variants.consequences.predictions.dann'),
-      lrt: intl.get('screen.variants.consequences.predictions.lrt'),
-      revel: intl.get('screen.variants.consequences.predictions.revel'),
-    },
-    seeLess: intl.get('see.less'),
-    seeMore: intl.get('see.more'),
-    conservationColumn: intl.get('screen.variants.consequences.conservationColumn'),
-    transcript: intl.get('screen.variants.consequences.transcript'),
-    canonical: intl.get('screen.variants.consequences.canonical'),
-    refSeq: intl.get('screen.variants.consequences.refSeq'),
-    geneConsequence: intl.get('screen.variants.consequences.geneConsequence'),
-    gene: intl.get('screen.variants.consequences.gene'),
-    omim: intl.get('screen.variants.consequences.omim'),
-    hideTranscript: intl.get('screen.variants.consequences.hideTranscript'),
-    showTranscript: (count: number) =>
-      intl.get('screen.variants.consequences.showTranscript', { count }),
-    noDataAvailable: intl.get('no.data.available'),
+  aaColumnTooltip: intl.get('screen.variants.consequences.aaColumnTooltip'),
+  aaColumn: intl.get('screen.variants.consequences.aaColumn'),
+  cdnaChangeColumn: intl.get('screen.variants.consequences.cdnaChangeColumn'),
+  strand: intl.get('screen.variants.consequences.strand'),
+  vep: intl.get('screen.variants.consequences.vep'),
+  predictions: {
+    predictions: intl.get('screen.variants.consequences.predictions.predictions'),
+    sift: intl.get('screen.variants.consequences.predictions.sift'),
+    polyphen2: intl.get('screen.variants.consequences.predictions.polyphen2'),
+    fathmm: intl.get('screen.variants.consequences.predictions.fathmm'),
+    cadd: intl.get('screen.variants.consequences.predictions.cadd'),
+    dann: intl.get('screen.variants.consequences.predictions.dann'),
+    lrt: intl.get('screen.variants.consequences.predictions.lrt'),
+    revel: intl.get('screen.variants.consequences.predictions.revel'),
   },
-  frequencies: {
-    kfStudies: intl.get('screen.variants.frequencies.kfStudies'),
-    publicCohorts: intl.get('screen.variants.frequencies.publicCohorts'),
-    studies: intl.get('screen.variants.frequencies.studies'),
-    domain: intl.get('screen.variants.frequencies.domain'),
-    participantsInfoIconTooltip: intl.get(
-      'screen.variants.frequencies.participantsInfoIconTooltip',
-    ),
-    participantsTooltip: intl.get('screen.variants.frequencies.participantsTooltip'),
-    participants: intl.get('screen.variants.frequencies.participants'),
-    frequency: intl.get('screen.variants.frequencies.frequency'),
-    frequencyTooltip: intl.get('screen.variants.frequencies.frequencyTooltip'),
-    altAlleles: intl.get('screen.variants.frequencies.altAlleles'),
-    altAllelesTooltip: intl.get('screen.variants.frequencies.altAllelesTooltip'),
-    homozygotes: intl.get('screen.variants.frequencies.homozygotes'),
-    homozygotesTooltip: intl.get('screen.variants.frequencies.homozygotesTooltip'),
-    total: intl.get('screen.variants.frequencies.total'),
-    cohort: intl.get('screen.variants.frequencies.cohort'),
-    altRef: intl.get('screen.variants.frequencies.altRef'),
-    altRefTooltip: intl.get('screen.variants.frequencies.altRefTooltip'),
-    noDataAvailable: intl.get('screen.variants.frequencies.noDataAvailable'),
-  },
-  pathogenicity: {
-    pathogenicity: intl.get('screen.variants.pathogenicity.pathogenicity'),
-    clinVar: intl.get('screen.variants.pathogenicity.clinVar'),
-    genePhenotype: intl.get('screen.variants.pathogenicity.genePhenotype'),
-    source: intl.get('screen.variants.pathogenicity.source'),
-    gene: intl.get('screen.variants.pathogenicity.gene'),
-    condition: intl.get('screen.variants.pathogenicity.condition'),
-    inheritance: intl.get('screen.variants.pathogenicity.inheritance'),
-    inheritances: intl.get('screen.variants.pathogenicity.inheritances'),
-    interpretation: intl.get('screen.variants.pathogenicity.interpretation'),
-  },
+  conservationColumn: intl.get('screen.variants.consequences.conservationColumn'),
+  transcript: intl.get('screen.variants.consequences.transcript'),
+  canonical: intl.get('screen.variants.consequences.canonical'),
+  refSeq: intl.get('screen.variants.consequences.refSeq'),
+  geneConsequence: intl.get('screen.variants.consequences.geneConsequence'),
+  gene: intl.get('screen.variants.consequences.gene'),
+  omim: intl.get('screen.variants.consequences.omim'),
 });
 
 export const getProTableDictionary = (): IProTableDictionary => ({

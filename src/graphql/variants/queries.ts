@@ -269,6 +269,7 @@ export const GET_VARIANT_ENTITY = gql`
                     participant_ids
                     participant_number
                     study_id
+                    study_code
                     frequencies {
                       upper_bound_kf {
                         ac

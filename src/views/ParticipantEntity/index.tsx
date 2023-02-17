@@ -1,20 +1,22 @@
 import intl from 'react-intl-universal';
-import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
-import { useParticipantEntity, useParticipantsFamily } from 'graphql/participants/actions';
 import { useHistory, useParams } from 'react-router-dom';
+import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import EntityPageWrapper, {
   EntityDescriptions,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
 import EntityTable from '@ferlab/ui/core/pages/EntityPage/EntityTable';
 import { Button, Tag } from 'antd';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { INDEXES } from 'graphql/constants';
+import { useParticipantEntity, useParticipantsFamily } from 'graphql/participants/actions';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+
 import { STATIC_ROUTES } from 'utils/routes';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+
 import { getDiagnosisDefaultColumns } from './utils/diagnosis';
 import { getFamilyDefaultColumns } from './utils/family';
 import { getPhenotypeDefaultColumns } from './utils/phenotype';
@@ -58,7 +60,7 @@ const ParticipantEntity = () => {
 
   return (
     <EntityPageWrapper
-      pageId="particpant-entity-page"
+      pageId="participant-entity-page"
       links={links}
       data={data}
       loading={loading}

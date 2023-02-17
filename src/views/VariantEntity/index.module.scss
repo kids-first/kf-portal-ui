@@ -1,0 +1,22 @@
+@import 'src/style/themes/kids-first/theme.template';
+
+.predictionLabel {
+  margin-right: 4px;
+}
+
+.canonicalIcon {
+  color: $canonical-icon-color;
+}
+
+.dotted {
+  border-bottom: 1px dotted;
+}
+
+.variantTag {
+  color: $variant-tag-color;
+  background-color: $variant-tag-bg-color;
+}
+
+.titleIcon {
+  font-size: 24px;
+}
