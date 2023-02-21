@@ -130,7 +130,7 @@ interface IGeneOrphanet {
 export interface IGeneEntity {
   id: any;
   score: number;
-  alias: string;
+  alias: string[];
   ensembl_gene_id: string;
   entrez_gene_id: number;
   hgnc: string;
