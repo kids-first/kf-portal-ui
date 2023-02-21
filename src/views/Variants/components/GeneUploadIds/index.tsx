@@ -73,7 +73,7 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
       ),
     }}
     placeHolder="ex. ENSG00000157764, TP53"
-    fetchMatch={async (ids) => {
+    fetchMatch={async (ids: string[]) => {
       const response = await ArrangerApi.graphqlRequest({
         query: CHECK_GENE_MATCH_QUERY.loc?.source.body,
         variables: {
@@ -94,32 +94,40 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
 
       const genes: IGeneEntity[] = hydrateResults(response.data?.data?.genes?.hits?.edges || []);
 
-      const matchResults = ids.map((id, index) => {
-        const gene = genes.find((gene) =>
-          [gene.symbol, gene.ensembl_gene_id, gene.alias].flat().includes(id),
-        );
+      return genes?.flatMap((gene) => {
+        const matchedIds: string[] = ids.filter((id: string) => {
+          const lowerCaseId = id.toLocaleLowerCase();
+          const lowerCaseAliases = gene.alias.map((alias) => alias.toLocaleLowerCase());
 
-        return gene
-          ? {
-              key: index.toString(),
-              submittedId: id,
-              mappedTo: gene.symbol,
-              matchTo: gene.ensembl_gene_id,
-            }
-          : undefined;
+          return (
+            gene.symbol.toLocaleLowerCase() === lowerCaseId ||
+            gene.ensembl_gene_id.toLocaleLowerCase() === lowerCaseId ||
+            lowerCaseAliases.includes(lowerCaseId)
+          );
+        });
+
+        return matchedIds.map((id, index) => ({
+          key: `${gene.omim_gene_id}:${index}`,
+          submittedId: id,
+          mappedTo: gene.symbol,
+          matchTo: gene.ensembl_gene_id,
+        }));
       });
-
-      return matchResults.filter((x) => !!x) as MatchTableItem[];
     }}
-    onUpload={(match) =>
-      updateActiveQueryField({
+    onUpload={(matches: MatchTableItem[]) => {
+      const uniqueMatches = matches.filter(
+        (match, index, currentMatch) =>
+          index === currentMatch.findIndex((m) => m.mappedTo === match.mappedTo),
+      );
+
+      return updateActiveQueryField({
         queryBuilderId,
         field: 'consequences.symbol',
-        value: match.map((value) => value.mappedTo),
+        value: uniqueMatches.map((match) => match.mappedTo),
         index: INDEXES.VARIANTS,
         merge_strategy: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
-      })
-    }
+      });
+    }}
   />
 );
 
