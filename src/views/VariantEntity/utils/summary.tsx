@@ -7,6 +7,8 @@ import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
+import styles from '../index.module.scss';
+
 export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns[] => [
   {
     column: {
@@ -42,6 +44,7 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
               ? variant.genes.hits.edges.map((gene) => (
                   <ExternalLink
                     key={gene.node.symbol}
+                    className={styles.geneExternalLink}
                     href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${gene.node.symbol}`}
                   >
                     {gene.node.symbol}
