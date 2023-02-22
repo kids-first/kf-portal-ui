@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -20,24 +21,25 @@ import {
 } from 'views/DataExploration/utils/OntologyTree';
 import { PhenotypeStore } from 'views/DataExploration/utils/PhenotypeStore';
 
+import { useRemote } from 'store/remote';
+import { remoteSliceActions } from 'store/remote/slice';
+import { RemoteComponentList } from 'store/remote/types';
+
 import { findChildrenKey, generateTree, getExpandedKeys, isChecked, searchInTree } from './helpers';
 
 import styles from './index.module.scss';
-import { useRemote } from 'store/remote';
-import { RemoteComponentList } from 'store/remote/types';
-import { remoteSliceActions } from 'store/remote/slice';
-import { useDispatch } from 'react-redux';
 
 const AUTO_EXPAND_TREE = 1;
 const MIN_SEARCH_TEXT_LENGTH = 3;
 
 type Props = {
   type: RemoteComponentList;
-  field: string;
+  modalField: string;
+  queryBuilderField: string;
   titleFormatter?: TTitleFormatter;
 };
 
-const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
+const TreeFacetModal = ({ type, modalField, queryBuilderField, titleFormatter }: Props) => {
   const dispatch = useDispatch();
   const { visible } = useRemote(type);
   const [isLoading, setIsLoading] = useState(false);
@@ -119,20 +121,20 @@ const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
       setExpandedKeys(getInitialExpandedKeys([treeData!]));
       updateActiveQueryField({
         queryBuilderId: DATA_EXPLORATION_QB_ID,
-        field: `${field}.name`,
+        field: queryBuilderField,
         value: [],
         remoteComponent: {
           id: type,
           props: {
             visible: true,
-            field,
+            field: modalField,
           },
         },
       });
     } else {
       updateActiveQueryField({
         queryBuilderId: DATA_EXPLORATION_QB_ID,
-        field: `${field}.name`,
+        field: queryBuilderField,
         value: results,
         operator,
         index: INDEXES.PARTICIPANT,
@@ -141,7 +143,7 @@ const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
           id: type,
           props: {
             visible: true,
-            field,
+            field: modalField,
           },
         },
       });
@@ -159,12 +161,12 @@ const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
 
   useEffect(() => {
     if (visible) {
-      const filteredParticipantSqon = removeFieldFromSqon(`${field}.name`, sqon);
+      const filteredParticipantSqon = removeFieldFromSqon(queryBuilderField, sqon);
 
       setIsLoading(true);
       phenotypeStore.current
         .fetch({
-          field,
+          field: modalField,
           sqon: filteredParticipantSqon,
           titleFormatter,
         })
@@ -178,7 +180,7 @@ const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
             setRootNode(rootNode);
 
             const flatTree = getFlattenTree(rootNode!);
-            const selectedValues = findSqonValueByField(`${field}.name`, sqon);
+            const selectedValues = findSqonValueByField(queryBuilderField, sqon);
 
             if (selectedValues) {
               const targetKeys = flatTree
@@ -221,8 +223,8 @@ const TreeFacetModal = ({ type, field, titleFormatter }: Props) => {
                   label: 'Any of',
                 },
                 {
-                  key: TermOperators.in,
-                  label: 'Any of',
+                  key: TermOperators.all,
+                  label: 'All of',
                 },
                 {
                   key: TermOperators['some-not-in'],
