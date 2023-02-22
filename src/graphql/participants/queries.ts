@@ -12,6 +12,8 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
             is_proband
             families_id
             ethnicity
+            nb_files
+            nb_biospecimens
             external_id
             study_external_id
             family_type
