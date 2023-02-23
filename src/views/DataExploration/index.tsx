@@ -10,6 +10,7 @@ import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/Sideba
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
 import PageContent from 'views/DataExploration/components/PageContent';
+import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
   DATA_EXPLORATION_QB_ID,
   SCROLL_WRAPPER_ID,
@@ -19,23 +20,22 @@ import {
 import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
+import { RemoteComponentList } from 'store/remote/types';
 import { mapFilterForFiles, mapFilterForParticipant } from 'utils/fieldMapper';
 
-import ParticipantSearch from './components/ParticipantSearch';
-import ParticipantSetSearch from './components/ParticipantSetSearch';
-
-import styles from './index.module.scss';
 import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
-import FileSetSearch from './components/FileSetSearch';
-import FileUploadIds from './components/UploadIds/FileUploadIds';
-import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileSearch from './components/FileSearch';
-import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
-import TreeFacet from 'views/DataExploration/components/TreeFacet';
-import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
-import { RemoteComponentList } from 'store/remote/types';
+import FileSetSearch from './components/FileSetSearch';
+import ParticipantSearch from './components/ParticipantSearch';
+import ParticipantSetSearch from './components/ParticipantSetSearch';
 import TreeFacetModal from './components/TreeFacet/TreeFacetModal';
+import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
+import FileUploadIds from './components/UploadIds/FileUploadIds';
+import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
+import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
+
+import styles from './index.module.scss';
 
 enum FilterTypes {
   Study,
@@ -223,12 +223,14 @@ const DataExploration = () => {
     <div className={styles.dataExplorationLayout}>
       <TreeFacetModal
         type={RemoteComponentList.MondoTree}
-        field={'mondo'}
+        modalField={'mondo'}
+        queryBuilderField={'mondo.name'}
         titleFormatter={formatMondoTitleAndCode}
       />
       <TreeFacetModal
         type={RemoteComponentList.HPOTree}
-        field={'observed_phenotype'}
+        modalField={'observed_phenotype'}
+        queryBuilderField={'phenotype.hpo_phenotype_observed'}
         titleFormatter={formatHpoTitleAndCode}
       />
       <SidebarMenu
