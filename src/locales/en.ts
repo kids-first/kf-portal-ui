@@ -104,6 +104,11 @@ const en = {
       },
     },
   },
+  maintenance: {
+    title: 'We are currently down for maintenance',
+    subtitle:
+      'We apologize for any inconvenience and appreciate your understanding while we work to bring the portal back online.',
+  },
   api: {
     savedFilter: {
       error: {

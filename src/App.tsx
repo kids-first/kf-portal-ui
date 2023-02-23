@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -6,11 +7,13 @@ import {
   Switch,
 } from 'react-router-dom';
 import Empty from '@ferlab/ui/core/components/Empty';
+import MaintenancePage from '@ferlab/ui/core/pages/MaintenancePage';
 import loadable from '@loadable/component';
 import { useKeycloak } from '@react-keycloak/web';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
+import { getEnvVarByKey } from 'helpers/EnvVariables';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import ProtectedRoute from 'ProtectedRoute';
 import ApolloProvider from 'provider/ApolloProvider';
@@ -20,6 +23,7 @@ import ErrorPage from 'views/Error';
 import FakeStorybook from 'views/FakeStorybook';
 import FenceRedirect from 'views/FenceRedirect';
 import Login from 'views/Login';
+import ParticipantEntity from 'views/ParticipantEntity';
 import PersonaRegistration from 'views/Persona';
 import PersonaUpdateTermsAndConditions from 'views/Persona/updateTermsAndConditions';
 import ProfileView from 'views/Profile/View';
@@ -36,7 +40,6 @@ import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import { useLang } from 'store/global';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
-import ParticipantEntity from 'views/ParticipantEntity';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -53,6 +56,15 @@ const App = () => {
   const lang = useLang();
   const { keycloak, initialized } = useKeycloak();
   const keycloakIsReady = keycloak && initialized;
+
+  if (getEnvVarByKey('MAINTENANCE_MODE') === 'true') {
+    return (
+      <MaintenancePage
+        title={intl.get('maintenance.title')}
+        subtitle={intl.get('maintenance.subtitle')}
+      />
+    );
+  }
 
   return (
     <ConfigProvider
