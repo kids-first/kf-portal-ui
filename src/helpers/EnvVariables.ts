@@ -25,6 +25,8 @@ export default class EnvironmentVariables {
     USER_SNAP_API_KEY: process.env.REACT_APP_USER_SNAP_API_KEY,
     //REPORT
     REPORTS_API_URL: process.env.REACT_APP_REPORTS_API_URL,
+    // MAINTENANCE
+    MAINTENANCE_MODE: process.env.REACT_APP_MAINTENANCE_MODE,
   };
 
   static configFor(key: string): string {
