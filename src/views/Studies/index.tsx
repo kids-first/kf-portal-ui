@@ -34,7 +34,7 @@ const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
 
 const filterInfo: FilterInfo = {
-  customSearches: [<StudySearch queryBuilderId={STUDIES_REPO_QB_ID} />],
+  customSearches: [<StudySearch key={1} queryBuilderId={STUDIES_REPO_QB_ID} />],
   defaultOpenFacets: ['program', 'data_category', 'experimental_strategy', 'family_data'],
   groups: [
     {
