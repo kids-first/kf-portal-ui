@@ -1,23 +1,25 @@
-import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { Link } from 'react-router-dom';
-import { STATIC_ROUTES } from 'utils/routes';
-import { IStudiesEntity } from 'graphql/studies/models';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { INDEXES } from 'graphql/constants';
 import { CheckOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
+import { INDEXES } from 'graphql/constants';
+import { IStudiesEntity } from 'graphql/studies/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
-import styles from './index.module.scss';
-import SideBarFacet from './components/SideBarFacet';
-import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
-import { FilterInfo } from 'components/uiKit/FilterList/types';
-import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
-import PageContent from './components/PageContent';
-import StudySearch from './components/StudySearch';
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
+import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
+import { STATIC_ROUTES } from 'utils/routes';
+
+import PageContent from './components/PageContent';
+import SideBarFacet from './components/SideBarFacet';
+import StudySearch from './components/StudySearch';
+import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
+
+import styles from './index.module.scss';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',
@@ -94,8 +96,8 @@ const columns: ProColumnType<any>[] = [
               query: generateQuery({
                 newFilters: [
                   generateValueFilter({
-                    field: 'study_id',
-                    value: [record.study_id],
+                    field: 'study.study_code',
+                    value: [record.study_code],
                     index: INDEXES.PARTICIPANT,
                   }),
                 ],
@@ -126,8 +128,8 @@ const columns: ProColumnType<any>[] = [
               query: generateQuery({
                 newFilters: [
                   generateValueFilter({
-                    field: 'study_id',
-                    value: [record.study_id],
+                    field: 'study.study_code',
+                    value: [record.study_code],
                     index: INDEXES.PARTICIPANT,
                   }),
                 ],
