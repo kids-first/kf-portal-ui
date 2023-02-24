@@ -16,7 +16,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
   return (
     <GlobalSearch<IStudiesEntity>
       queryBuilderId={queryBuilderId}
-      field="search_text"
+      field="study_code"
       tooltipText={intl.getHTML('global.search.study.tooltip')}
       index={INDEXES.STUDIES}
       placeholder={intl.get(`global.search.study.placeholder`)}
@@ -32,7 +32,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
               caption={highlightSearchMatch(option.study_name, matchRegex, search)}
             />
           ),
-          value: option.study_id,
+          value: option.study_code,
         }))
       }
       title={intl.get(`global.search.study.title`)}
