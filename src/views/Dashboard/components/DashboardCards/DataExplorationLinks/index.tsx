@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
-import { Row, Col } from 'antd';
-import { FileTextOutlined, ReadOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import LinkBox from './LinkBox';
-import { STATIC_ROUTES } from 'utils/routes';
 import intl from 'react-intl-universal';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import { useDispatch } from 'react-redux';
+import { FileTextOutlined, ReadOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { Col, Row } from 'antd';
+import CardHeader from 'views/Dashboard/components/CardHeader';
+
+import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 import { useGlobals } from 'store/global';
 import { fetchStats } from 'store/global/thunks';
-import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
+import { STATIC_ROUTES } from 'utils/routes';
+
+import LinkBox from './LinkBox';
 
 import styles from './index.module.scss';
-import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 
 const DataExplorationLinks = () => {
   const dispatch = useDispatch();
@@ -50,6 +52,7 @@ const DataExplorationLinks = () => {
           </Col>
           <Col flex="auto" className={styles.customCol}>
             <LinkBox
+              disabled
               href=""
               multiLabelClassName={styles.dataReleaseStatsLabel}
               label={numberFormat(stats?.families!)}
