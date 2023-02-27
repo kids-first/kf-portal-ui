@@ -230,7 +230,7 @@ const DataExploration = () => {
       <TreeFacetModal
         type={RemoteComponentList.HPOTree}
         modalField={'observed_phenotype'}
-        queryBuilderField={'phenotype.hpo_phenotype_observed'}
+        queryBuilderField={'observed_phenotype.name'}
         titleFormatter={formatHpoTitleAndCode}
       />
       <SidebarMenu
