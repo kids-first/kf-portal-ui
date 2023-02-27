@@ -1,10 +1,12 @@
-import EnvironmentVariables from 'helpers/EnvVariables';
-import keycloak from 'auth/keycloak-api/keycloak';
-import { ReportConfig, ReportType } from './models';
-import isEmpty from 'lodash/isEmpty';
-import { format } from 'date-fns';
-import downloader from 'common/downloader';
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
+import keycloak from 'auth/keycloak-api/keycloak';
+import { format } from 'date-fns';
+import EnvironmentVariables from 'helpers/EnvVariables';
+import isEmpty from 'lodash/isEmpty';
+
+import downloader from 'common/downloader';
+
+import { ReportConfig, ReportType } from './models';
 
 const REPORT_API_URL = EnvironmentVariables.configFor('REPORTS_API_URL');
 const arrangerProjectId = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
@@ -15,11 +17,25 @@ const REPORTS_ROUTES = {
   [ReportType.BIOSEPCIMEN_DATA]: `${REPORT_API_URL}/reports/biospecimen-data`,
 };
 
+const joinWithPadding = (l: number[]) => l.reduce((xs, x) => xs + `${x}`.padStart(2, '0'), '');
+const makeFilenameDatePart = (date = new Date()) => {
+  const prefixes = joinWithPadding([
+    date.getUTCFullYear(),
+    date.getUTCMonth() + 1,
+    date.getUTCDate(),
+  ]);
+  const suffixes = joinWithPadding([
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  ]);
+  return `${prefixes}T${suffixes}Z`;
+};
+
 const headers = () => ({
   'Content-Type': 'application/json',
   Accept: '*/*',
   Authorization: `Bearer ${keycloak.token}`,
-  'Accept-Encoding': 'gzip, deflate, br',
 });
 
 const generateReport = (config: ReportConfig) => {
@@ -43,9 +59,10 @@ const generateReport = (config: ReportConfig) => {
     method: 'POST',
     responseType: 'blob',
     data: {
+      isKfNext: true,
       sqon: reportSqon,
       projectId: arrangerProjectId,
-      filename: format(new Date(), `[${name}_]yyyymmDD[.xlsx]`),
+      filename: `kf_${name}_${makeFilenameDatePart(new Date())}.xlsx`,
     },
     headers: headers(),
   });
