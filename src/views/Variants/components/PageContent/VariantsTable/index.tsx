@@ -150,6 +150,9 @@ const defaultColumns: ProColumnType[] = [
     title: intl.get('screen.variants.table.participant.title'),
     tooltip: intl.get('screen.variants.table.participant.tooltip'),
     key: 'participant_number',
+    sorter: {
+      multiple: 1,
+    },
     render: (record: IVariantEntity) => {
       const participantNumber = record.participant_number || 0;
       if (participantNumber <= 10) {
@@ -200,17 +203,22 @@ const defaultColumns: ProColumnType[] = [
   {
     title: intl.get('screen.variants.table.alt.title'),
     tooltip: intl.get('screen.variants.table.alt.tooltip'),
-    dataIndex: 'frequencies',
-    key: 'alternate',
-    render: (frequencies: IExternalFrequenciesEntity) => frequencies?.internal?.upper_bound_kf?.ac,
+    key: 'internal',
+    dataIndex: ['frequencies', 'internal', 'upper_bound_kf', 'ac'],
+    sorter: {
+      multiple: 1,
+    },
+    render: (ac: string) => ac,
   },
   {
     title: intl.get('screen.variants.table.homozygotes.title'),
     tooltip: intl.get('screen.variants.table.homozygotes.tooltip'),
-    dataIndex: 'frequencies',
+    dataIndex: ['frequencies', 'internal', 'upper_bound_kf', 'homozygotes'],
     key: 'homozygotes',
-    render: (frequencies: IExternalFrequenciesEntity) =>
-      frequencies?.internal?.upper_bound_kf?.homozygotes,
+    sorter: {
+      multiple: 1,
+    },
+    render: (homozygotes: string) => homozygotes,
   },
 ];
 
