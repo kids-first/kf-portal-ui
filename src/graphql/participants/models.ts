@@ -6,10 +6,6 @@ export interface IParticipantResultTree {
   participant: IArrangerResultsTree<IParticipantEntity>;
 }
 
-export interface IParticipantFamilyMemberResultTree {
-  participant: IArrangerResultsTree<IParticipantEntityFamilyMember>;
-}
-
 export interface IParticipantDiagnosis {
   id: string;
   mondo_id_diagnosis: string;
@@ -70,6 +66,17 @@ export interface IParticipantOutcomes {
   };
 }
 
+export interface IParticipantFamilyRelations {
+  id: string;
+  related_participant_id: string;
+  relation: string;
+}
+
+export interface IParticipantFamily {
+  family_id: string;
+  family_relations: IArrangerResultsTree<IParticipantFamilyRelations>;
+}
+
 export interface IParticipantEntity {
   id: string; //weird constraint imposed.
   fhir_id: string;
@@ -80,6 +87,7 @@ export interface IParticipantEntity {
   down_syndrome_status: string;
   families_id: string;
   family_type: string;
+  family: IParticipantFamily;
   is_proband: boolean;
   age_at_data_collection: number;
   nb_files: number;
@@ -98,16 +106,6 @@ export interface IParticipantEntity {
   phenotype: IArrangerResultsTree<IParticipantPhenotype>;
   race: string;
   outcomes: IArrangerResultsTree<IParticipantOutcomes>;
-}
-export interface IParticipantEntityFamilyMember {
-  id: string; //weird constraint imposed.
-  participant_id: string;
-  family_type: string;
-}
-
-export interface IParticipantEntityFamilyMemberReturn {
-  loading: boolean;
-  members: IParticipantEntityFamilyMember[];
 }
 
 export type ITableParticipantEntity = IParticipantEntity & {

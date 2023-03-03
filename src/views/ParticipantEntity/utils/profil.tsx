@@ -1,9 +1,10 @@
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
-import { Tag } from 'antd';
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { IParticipantEntity } from 'graphql/participants/models';
+import { IParticipantEntity, IParticipantOutcomes } from 'graphql/participants/models';
+import ColorTag, { ColorTagType } from '@ferlab/ui/core/components/ColorTag';
 import intl from 'react-intl-universal';
+import { capitalize } from 'lodash';
 
 export const getProfilItems = (participant?: IParticipantEntity): IEntityDescriptionsItem[] => {
   const outcomes = hydrateResults(participant?.outcomes.hits.edges || []);
@@ -18,13 +19,13 @@ export const getProfilItems = (participant?: IParticipantEntity): IEntityDescrip
       value: participant?.ethnicity || TABLE_EMPTY_PLACE_HOLDER,
     },
     {
+      value: <ColorTag type={ColorTagType.Gender} value={capitalize(participant?.sex)} /> || TABLE_EMPTY_PLACE_HOLDER,
       label: intl.get('screen.participantEntity.profil.sex'),
-      value: participant?.sex || TABLE_EMPTY_PLACE_HOLDER,
     },
     {
       label: intl.get('screen.participantEntity.profil.vitalStatus'),
       value: outcomes.length
-        ? outcomes.map(({ vital_status }) => <Tag key={vital_status}>{vital_status}</Tag>)
+        ? outcomes.map(({ vital_status }: IParticipantOutcomes, index: number) => <ColorTag key={`${vital_status}-${index}`} value={vital_status} type={ColorTagType.VitalStatus} />)
         : TABLE_EMPTY_PLACE_HOLDER,
     },
   ];

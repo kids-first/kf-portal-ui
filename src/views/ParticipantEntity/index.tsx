@@ -7,12 +7,13 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import EntityPageWrapper, {
   EntityDescriptions,
+  EntityTableMultiple,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
 import EntityTable from '@ferlab/ui/core/pages/EntityPage/EntityTable';
 import { Button, Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { useParticipantEntity, useParticipantsFamily } from 'graphql/participants/actions';
+import { useParticipantEntity } from 'graphql/participants/actions';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { STATIC_ROUTES } from 'utils/routes';
@@ -22,6 +23,12 @@ import { getFamilyDefaultColumns } from './utils/family';
 import { getPhenotypeDefaultColumns } from './utils/phenotype';
 import { getProfilItems } from './utils/profil';
 import { getSummaryItems } from './utils/summary';
+import { getFilesDataTypeInfo, getFilesByExperimentalStrategy, getDataTypeColumns, getExperimentalStrategyColumns } from './utils/files';
+import { IFileEntity } from 'graphql/files/models';
+import { fetchReport } from 'store/report/thunks';
+import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
+import { useDispatch } from 'react-redux';
+import { ReportType } from 'services/api/reports/models';
 
 enum SectionId {
   SUMMARY = 'summary',
@@ -35,12 +42,19 @@ enum SectionId {
 
 const ParticipantEntity = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
   const { data, loading } = useParticipantEntity({
     field: 'participant_id',
     values: [id],
   });
-  const { members, loading: memberLoading } = useParticipantsFamily(data?.families_id || '');
+  const familyMembers = hydrateResults(data?.family?.family_relations?.hits?.edges || []);
+  const files: IFileEntity[] = data?.files?.hits.edges.map(({ node }) => node) || [];
+  const dataTypeInfoData = getFilesDataTypeInfo(files, data?.participant_id);
+  const experimentalStrategyData = getFilesByExperimentalStrategy(
+    files,
+    data?.participant_id,
+  );
 
   const links: IAnchorLink[] = [
     { href: `#${SectionId.SUMMARY}`, title: intl.get('screen.participantEntity.summary.title') },
@@ -79,7 +93,16 @@ const ParticipantEntity = () => {
             )
           }
           extra={
-            <Button type="primary" icon={<DownloadOutlined />}>
+            <Button type="primary" icon={<DownloadOutlined />} onClick={() => {
+              dispatch(
+                fetchReport({
+                  data: {
+                    sqon: generateSelectionSqon(INDEXES.PARTICIPANT, [id]),
+                    name: ReportType.CLINICAL_DATA,
+                  },
+                }),
+              )
+            }}>
               {intl.get('screen.participantEntity.downloadData')}
             </Button>
           }
@@ -87,7 +110,6 @@ const ParticipantEntity = () => {
         <EntityDescriptions
           id={SectionId.SUMMARY}
           loading={loading}
-          title={intl.get('screen.participantEntity.summary.title')}
           header={intl.get('screen.participantEntity.summary.title')}
           descriptions={getSummaryItems(data)}
         />
@@ -103,8 +125,8 @@ const ParticipantEntity = () => {
         {data?.families_id && (
           <EntityTable
             id={SectionId.SUMMARY}
-            loading={memberLoading}
-            data={members}
+            loading={loading}
+            data={familyMembers}
             title={intl.get('screen.participantEntity.family.title')}
             header={
               <>
@@ -160,15 +182,25 @@ const ParticipantEntity = () => {
           title={intl.get('screen.participantEntity.biospecimen.title')}
           defaultColumns={familyDefaultColumns}
         /> */}
-        {/* 
-        <EntityTable
-          id={SectionId.DATAFILE}
+
+        <EntityTableMultiple
+          id={id}
           loading={loading}
-          data={hydrateResults(data?.files.hits.edges || [])}
-          title={intl.get('screen.participantEntity.dataFile.title')}
-          header={intl.get('screen.participantEntity.dataFile.title')}
-          columns={dataFileDefaultColumns}
-        /> */}
+          title={intl.get('screen.participantEntity.files.dataFile')}
+          header={intl.get('screen.participantEntity.files.dataFile')}
+          tables={[
+            {
+              columns: getDataTypeColumns(files.length),
+              data: dataTypeInfoData,
+              subTitle: intl.get('screen.participantEntity.files.numberByDataTypes'),
+            },
+            {
+              columns: getExperimentalStrategyColumns(files.length),
+              data: experimentalStrategyData,
+              subTitle: intl.get('screen.participantEntity.files.numberByExperimentalStrategy'),
+            },
+          ]}
+        />
       </>
     </EntityPageWrapper>
   );

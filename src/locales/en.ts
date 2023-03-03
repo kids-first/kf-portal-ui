@@ -56,6 +56,7 @@ const en = {
         less: 'Less',
         more: 'More',
         apply: 'Apply',
+        dictionary: 'Dictionary'
       },
       operators: {
         between: 'Between',
@@ -422,7 +423,7 @@ const en = {
         race: 'Race',
         ethnicity: 'Ethnicity',
         sex: 'Sex',
-        vitalStatus: 'Viral Status',
+        vitalStatus: 'Vital Status',
         deceased_date: 'Age at death',
       },
       family: {
@@ -457,8 +458,30 @@ const en = {
       biospecimen: {
         title: 'Biospecimen',
       },
-      dataFile: {
-        title: 'Data File',
+      files: {
+        files: 'Files',
+        dataFile: 'Data File',
+        dataType: 'Data Type',
+        numberByDataTypes: 'File counts by Data Type',
+        numberByDataTypesTooltip: 'Total number of files associated with the participant',
+        totalNumberOfFiles: '(n={count})',
+        numberByExperimentalStrategy: 'File counts by Experimental Strategy',
+        sequencing_experiment: {
+          experimental_strategy: 'Experimental Strategy',
+          type_of_sequencing: 'Sequencing Type',
+          read_length: 'Read Length',
+          platform: 'Platform',
+          capture_kit: 'Capture Kit',
+          sequencer_id: 'Sequencer',
+          run_date: 'Date (yyyy-mm-dd)',
+          run_name: 'Run',
+          labAliquotID: 'Aliquot',
+          bio_informatic_analysis: 'ID',
+          workflow_name: 'Pipeline',
+          workflow_version: 'Version',
+          genome_build: 'Genome Build',
+          analysis_id: 'Analysis ID',
+        },
       },
     },
     memberProfile: {

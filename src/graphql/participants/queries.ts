@@ -114,6 +114,20 @@ export const GET_PARTICIPANT_ENTITY = gql`
               study_id
               study_name
             }
+            family {
+                family_id
+                family_relations {
+                    hits {
+                        total
+                        edges {
+                            node {
+                                relation
+                                related_participant_id
+                            }
+                        }
+                    }
+                }
+            }
             diagnosis {
               hits {
                 total
@@ -173,53 +187,21 @@ export const GET_PARTICIPANT_ENTITY = gql`
                 }
               }
             }
-            # files {
-            # hits {
-            # total
-            # edges {
-            # fhir_id
-            # biospecimens
-            # study_id
-            # release_id
-            # category
-            # status
-            # relatesTo
-            # access_urls
-            # acl
-            # external_id
-            # file_format
-            # file_name
-            # file_id
-            # is_harmonized
-            # repository
-            # urls
-            # sequencing_experiment
-            # file_facet_ids
-            # }
-            # }
-            # }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const SEARCH_PARTICIPANT_FAMILY_MEMBER_QUERY = gql`
-  query searchParticipantFamilyMember($sqon: JSON) {
-    participant {
-      hits(filters: $sqon) {
-        total
-        edges {
-          node {
-            participant_id
-            family_type
-            diagnosis {
+            files {
               hits {
                 total
                 edges {
                   node {
-                    affected_status
+                    data_type
+                    sequencing_experiment {
+                      hits {
+                        edges {
+                          node {
+                            experiment_strategy
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }

@@ -11,6 +11,7 @@ import useQueryBuilderState, {
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import ColorTag, { ColorTagType } from '@ferlab/ui/core/components/ColorTag';
 import {
   IArrangerResultsTree,
   IQueryConfig,
@@ -53,6 +54,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
+import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 interface OwnProps {
   results: IQueryResults<IParticipantEntity[]>;
@@ -118,17 +120,7 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (sex: string) => (
-      <Tag
-        color={
-          sex?.toLowerCase() === SEX.FEMALE
-            ? 'magenta'
-            : sex?.toLowerCase() === SEX.MALE
-            ? 'geekblue'
-            : ''
-        }
-      >
-        {capitalize(sex)}
-      </Tag>
+      <ColorTag type={ColorTagType.Gender} value={capitalize(sex)} />
     ),
   },
   {
@@ -228,11 +220,20 @@ const defaultColumns: ProColumnType[] = [
   {
     key: 'pedcbioportal',
     title: 'PedcBioPortal',
-    dataIndex: 'pedcbioportal',
     sorter: {
       multiple: 1,
     },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: ITableParticipantEntity) => {
+      const studyId = mapStudyToPedcBioportal(record.study?.study_code);
+
+      if (!studyId) {
+        return TABLE_EMPTY_PLACE_HOLDER;
+      }
+
+      return <ExternalLink href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=${studyId}&caseId=${record?.participant_id}`}>
+        {record?.participant_id}
+      </ExternalLink>
+    }
   },
   {
     key: 'nb_biospecimens',
@@ -458,14 +459,14 @@ const ParticipantsTab = ({ results, setQueryConfig, queryConfig, sqon }: OwnProp
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-          newFilters: [
-            generateValueFilter({
-              field: PARTICIPANTS_SAVED_SETS_FIELD,
-              index: INDEXES.PARTICIPANT,
-              value: selectedRows.map((row) => row[PARTICIPANTS_SAVED_SETS_FIELD]),
-            }),
-          ],
-        });
+        newFilters: [
+          generateValueFilter({
+            field: PARTICIPANTS_SAVED_SETS_FIELD,
+            index: INDEXES.PARTICIPANT,
+            value: selectedRows.map((row) => row[PARTICIPANTS_SAVED_SETS_FIELD]),
+          }),
+        ],
+      });
 
   const menu = (
     <Menu
