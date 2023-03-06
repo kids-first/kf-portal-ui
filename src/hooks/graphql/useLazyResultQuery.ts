@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   DocumentNode,
   OperationVariables,
@@ -5,10 +6,13 @@ import {
   TypedDocumentNode,
   useQuery,
 } from '@apollo/client';
-import { IBaseQueryResults } from 'hooks/graphql/type';
-import { useEffect, useState } from 'react';
 
-const useLazyResultQuery = <TData = any, TVariables = OperationVariables>(
+import { IBaseQueryResults } from 'hooks/graphql/type';
+
+const useLazyResultQuery = <
+  TData = any,
+  TVariables extends OperationVariables = OperationVariables,
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options?: QueryHookOptions<TData, TVariables>,
 ): IBaseQueryResults<TData> => {
@@ -24,7 +28,10 @@ const useLazyResultQuery = <TData = any, TVariables = OperationVariables>(
  *
  * see example here: /views/screens/variant/Entity/index.tsx
  */
-export const useLazyResultQueryOnLoadOnly = <TData = any, TVariables = OperationVariables>(
+export const useLazyResultQueryOnLoadOnly = <
+  TData = any,
+  TVariables extends OperationVariables = OperationVariables,
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options?: QueryHookOptions<TData, TVariables>,
 ) => {

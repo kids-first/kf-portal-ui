@@ -1,10 +1,10 @@
 version: "3"
 services:
   frontend:
-    image: node:18.10.0-alpine3.15
-    working_dir: /code
-    user: node
-    volumes:
-      - .:/code
-    command: sh -c 'npm install && npm run start'
-    network_mode: "host"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
