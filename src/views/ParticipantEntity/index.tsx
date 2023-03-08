@@ -11,7 +11,7 @@ import EntityPageWrapper, {
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
 import EntityTable from '@ferlab/ui/core/pages/EntityPage/EntityTable';
-import { Button, Tag } from 'antd';
+import { Button, Dropdown, Menu, Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipantEntity } from 'graphql/participants/actions';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -29,6 +29,8 @@ import { fetchReport } from 'store/report/thunks';
 import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 import { useDispatch } from 'react-redux';
 import { ReportType } from 'services/api/reports/models';
+
+import styles from './index.module.scss';
 
 enum SectionId {
   SUMMARY = 'summary',
@@ -72,6 +74,32 @@ const ParticipantEntity = () => {
     { href: `#${SectionId.DATAFILE}`, title: intl.get('screen.participantEntity.dataFile.title') },
   ];
 
+
+  const downloadClinicalMenu = (
+    <Menu
+      onClick={(e) =>
+        dispatch(
+          fetchReport({
+            data: {
+              sqon: generateSelectionSqon(INDEXES.PARTICIPANT, [id]),
+              name: e.key,
+            },
+          }),
+        )
+      }
+      items={[
+        {
+          key: ReportType.CLINICAL_DATA,
+          label: 'Selected participants',
+        },
+        {
+          key: ReportType.CLINICAL_DATA_FAM,
+          label: 'Selected participants & families',
+        },
+      ]}
+    />
+  );
+
   return (
     <EntityPageWrapper
       pageId="participant-entity-page"
@@ -93,18 +121,14 @@ const ParticipantEntity = () => {
             )
           }
           extra={
-            <Button type="primary" icon={<DownloadOutlined />} onClick={() => {
-              dispatch(
-                fetchReport({
-                  data: {
-                    sqon: generateSelectionSqon(INDEXES.PARTICIPANT, [id]),
-                    name: ReportType.CLINICAL_DATA,
-                  },
-                }),
-              )
-            }}>
-              {intl.get('screen.participantEntity.downloadData')}
-            </Button>
+            <Dropdown
+              className={styles.dropdown}
+              overlay={downloadClinicalMenu}
+              placement="bottomLeft"
+              key={'download-clinical-data-dropdown'}
+            >
+              <Button icon={<DownloadOutlined />}>{intl.get('screen.participantEntity.downloadData')}</Button>
+            </Dropdown>
           }
         />
         <EntityDescriptions
