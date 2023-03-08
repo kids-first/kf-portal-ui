@@ -4,14 +4,12 @@ import { INDEXES } from 'graphql/constants';
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
 import {
   IParticipantEntity,
-  IParticipantEntityFamilyMemberReturn,
   IParticipantResultTree,
   IUseParticipantEntityProps,
   IUseParticipantEntityReturn,
 } from './models';
 import {
   GET_PARTICIPANT_ENTITY,
-  SEARCH_PARTICIPANT_FAMILY_MEMBER_QUERY,
   SEARCH_PARTICIPANT_QUERY,
 } from './queries';
 
@@ -50,26 +48,3 @@ export const useParticipantEntity = ({
   };
 };
 
-export const useParticipantsFamily = (familyId: string): IParticipantEntityFamilyMemberReturn => {
-  const sqon = {
-    content: [
-      {
-        content: { field: 'families_id', value: [familyId], index: INDEXES.PARTICIPANT },
-        op: 'in',
-      },
-    ],
-    op: 'and',
-  };
-
-  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(
-    SEARCH_PARTICIPANT_FAMILY_MEMBER_QUERY,
-    {
-      variables: { sqon },
-    },
-  );
-
-  return {
-    loading,
-    members: hydrateResults(result?.participant?.hits?.edges || []),
-  };
-};
