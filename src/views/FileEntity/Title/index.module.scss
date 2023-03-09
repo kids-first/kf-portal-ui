@@ -1,5 +1,13 @@
 @import 'src/style/themes/kids-first/colors';
 
+.popOverContent {
+    max-width: 420px;
+}
+
+.contentLink {
+    display: inline;
+}
+
 .locked {
     color: $body-3;
 }

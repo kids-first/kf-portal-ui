@@ -1,7 +1,7 @@
 import intl from 'react-intl-universal';
 import { FileTextOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
 import { EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
-import { Button, Space, Tooltip } from 'antd';
+import { Button, Popover, Space, Tooltip } from 'antd';
 import { IFileEntity } from 'graphql/files/models';
 
 import { FENCE_CONNECTION_STATUSES } from 'common/fenceTypes';
@@ -10,6 +10,7 @@ import { useFenceConnection } from 'store/fenceConnection';
 import { userHasAccessToFile } from 'utils/dataFiles';
 
 import styles from './index.module.scss';
+import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 
 interface OwnProps {
   file?: IFileEntity;
@@ -32,13 +33,25 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
     text: file?.file_id,
     icon: <FileTextOutlined />,
     tag: hasAccess ? (
-      <Tooltip title={intl.get('entities.file.unlocked')}>
+      <Popover
+        placement='bottom'
+        overlayClassName={styles.popOverContent}
+        title={intl.get('entities.file.fileAuthorization')}
+        content={intl.get('entities.file.unlocked')}>
         <UnlockFilled className={styles.unlocked} />
-      </Tooltip>
+      </Popover>
     ) : (
-      <Tooltip title={intl.get('entities.file.locked')}>
+      <Popover
+        overlayClassName={styles.popOverContent}
+        title={intl.get('entities.file.fileAuthorization')}
+        content={
+          <span>
+            {intl.get('entities.file.locked')}
+            <PopoverContentLink className={styles.contentLink} externalHref="https://d3b.notion.site/Applying-for-Access-ffed3a85b29741388b30a1ad0687003f" title={intl.get('entities.file.fileReadMore')} />
+          </span>
+        }>
         <LockOutlined className={styles.locked} />
-      </Tooltip>
+      </Popover>
     ),
     extra: (
       <Space>
