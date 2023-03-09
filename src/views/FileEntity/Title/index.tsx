@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { FileImageOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
+import { FileTextOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
 import { EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
 import { Button, Space, Tooltip } from 'antd';
 import { IFileEntity } from 'graphql/files/models';
@@ -21,16 +21,16 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
 
   const hasAccess = file
     ? userHasAccessToFile(
-        file,
-        fencesAllAcls,
-        connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
-        connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
-      )
+      file,
+      fencesAllAcls,
+      connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
+      connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
+    )
     : false;
 
   const title = {
     text: file?.file_id,
-    icon: <FileImageOutlined />,
+    icon: <FileTextOutlined />,
     tag: hasAccess ? (
       <Tooltip title={intl.get('entities.file.unlocked')}>
         <UnlockFilled className={styles.unlocked} />

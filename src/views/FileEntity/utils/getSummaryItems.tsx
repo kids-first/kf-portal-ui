@@ -3,6 +3,8 @@ import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
 import { IFileEntity } from 'graphql/files/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import ColorTag, { ColorTagType } from '@ferlab/ui/core/components/ColorTag';
+import { formatFileSize } from 'utils/formatFileSize';
 
 const getSummaryItems = (file?: IFileEntity): IEntityDescriptionsItem[] => [
   {
@@ -21,11 +23,11 @@ const getSummaryItems = (file?: IFileEntity): IEntityDescriptionsItem[] => [
   },
   {
     label: intl.get('entities.file.summary.format'),
-    value: file?.file_format || TABLE_EMPTY_PLACE_HOLDER,
+    value: <ColorTag type={ColorTagType.Other}>{file?.file_format}</ColorTag> || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.summary.size'),
-    value: file?.size || TABLE_EMPTY_PLACE_HOLDER,
+    value: formatFileSize(file?.size, { output: 'string' }) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.summary.url'),
