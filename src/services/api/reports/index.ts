@@ -1,6 +1,5 @@
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import keycloak from 'auth/keycloak-api/keycloak';
-import { format } from 'date-fns';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import isEmpty from 'lodash/isEmpty';
 

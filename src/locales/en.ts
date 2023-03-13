@@ -20,7 +20,7 @@ const en = {
   ...translations,
   date: {
     yearsDaysFormat:
-      '{years, plural, =0 {} =1 {# year} other {# years}} {days, plural, =0 {} =1 {# day} other {# days}}',
+      '{years, plural, =0 {} =1 {# <span style="font-size: 12px">year</span>} other {# <span style="font-size: 12px">years</span>}} {days, plural, =0 {} =1 {# <span style="font-size: 12px">day</span>} other {# <span style="font-size: 12px">days</span>}}',
   },
   global: {
     yes: 'Yes',
@@ -56,7 +56,7 @@ const en = {
         less: 'Less',
         more: 'More',
         apply: 'Apply',
-        dictionary: 'Dictionary'
+        dictionary: 'Dictionary',
       },
       operators: {
         between: 'Between',
@@ -406,6 +406,10 @@ const en = {
       proband: 'Proband',
       familyMember: 'Family Member',
       downloadData: 'Download clinical data',
+      summaryHeader: {
+        studies: '{count, plural, =0 {Study} =1 {Study} other {Studies}}',
+        files: '{count, plural, =0 {File} =1 {File} other {Files}}',
+      },
       summary: {
         title: 'Summary',
         id: 'ID',
@@ -418,8 +422,8 @@ const en = {
         proband: 'Proband',
         vitalStatus: 'Vital Status',
       },
-      profil: {
-        title: 'Profil',
+      profile: {
+        title: 'Profile',
         race: 'Race',
         ethnicity: 'Ethnicity',
         sex: 'Sex',
@@ -436,11 +440,12 @@ const en = {
         title: 'Diagnosis',
         age: {
           title: 'Age',
-          tooltip: 'Age at Diagnosis in days',
+          tooltip: 'Age at Diagnosis',
         },
         category: 'Diagnosis Category',
         sourceText: 'Diagnosis (Source Text)',
         sharedTerm: 'MONDO Shared Term',
+        sharedTermTooltip: '# of participants with this exact MONDO term',
         ncit: 'Diagnosis (NCIT)',
         mondo: 'Diagnosis (MONDO)',
       },
@@ -450,7 +455,7 @@ const en = {
         sourceText: 'Phenotype (Source Text)',
         age: {
           title: 'Age',
-          tooltip: 'Age at Phenotype in days',
+          tooltip: 'Age at Phenotype',
         },
         interpretation: 'Interpretation',
         sharedTerm: 'HPO Term',
@@ -459,8 +464,9 @@ const en = {
         title: 'Biospecimen',
       },
       files: {
+        title: 'Data Files',
         files: 'Files',
-        dataFile: 'Data File',
+        dataFile: 'Data Files',
         dataType: 'Data Type',
         numberByDataTypes: 'File counts by Data Type',
         numberByDataTypesTooltip: 'Total number of files associated with the participant',

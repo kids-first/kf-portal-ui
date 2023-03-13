@@ -55,6 +55,14 @@ export type TUserConfig = {
       variants?: TUserTableConfig;
     };
   };
+  participant?: {
+    tables?: {
+      family?: TUserTableConfig;
+      diagnosis?: TUserTableConfig;
+      phenotype?: TUserTableConfig;
+      biospecimens?: TUserTableConfig;
+    };
+  };
   files?: {
     tables?: {
       biospecimens?: TUserTableConfig;

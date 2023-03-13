@@ -233,14 +233,14 @@ const VariantsTable = ({
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-          newFilters: [
-            generateValueFilter({
-              field: 'locus',
-              index: INDEXES.VARIANTS,
-              value: selectedRows.map((row) => row.locus),
-            }),
-          ],
-        });
+        newFilters: [
+          generateValueFilter({
+            field: 'locus',
+            index: INDEXES.VARIANTS,
+            value: selectedRows.map((row) => row.locus),
+          }),
+        ],
+      });
 
   useEffect(() => {
     if (selectedKeys.length) {
