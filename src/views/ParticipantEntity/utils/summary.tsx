@@ -40,16 +40,20 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
     },
     {
       label: intl.get('screen.participantEntity.summary.study'),
-      value: participant?.study.study_name ? (
-        <Link
-          className={underlineLinkStyles.underlineLink}
-          to={`${DYNAMIC_ROUTES.STUDY_ENTITY}/${participant?.study.study_code}`}
-        >
-          {participant?.study.study_name} ({participant?.study.study_code})
-        </Link>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+      value: participant?.study.study_name
+        ? `${participant?.study.study_name} (${participant?.study.study_code})`
+        : TABLE_EMPTY_PLACE_HOLDER,
+      // @TODO: should be used when study page is done
+      // value: participant?.study.study_name ? (
+      //   <Link
+      //     className={underlineLinkStyles.underlineLink}
+      //     to={`${DYNAMIC_ROUTES.STUDY_ENTITY}/${participant?.study.study_code}`}
+      //   >
+      //     {participant?.study.study_name} ({participant?.study.study_code})
+      //   </Link>
+      // ) : (
+      //   TABLE_EMPTY_PLACE_HOLDER
+      // ),
     },
     {
       label: intl.get('screen.participantEntity.summary.dbGaP'),
