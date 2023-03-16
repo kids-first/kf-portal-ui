@@ -2,10 +2,11 @@ import intl from 'react-intl-universal';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
-import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { IParticipantPhenotype } from 'graphql/participants/models';
 import { capitalize } from 'lodash';
 import { extractPhenotypeTitleAndCode } from 'views/DataExploration/utils/helper';
+
+import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { readableDistanceByDays } from 'utils/dates';
 
 export const getPhenotypeDefaultColumns = (): ProColumnType[] => [

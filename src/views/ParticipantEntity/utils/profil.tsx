@@ -11,19 +11,19 @@ export const getProfilItems = (participant?: IParticipantEntity): IEntityDescrip
 
   return [
     {
-      label: intl.get('screen.participantEntity.profil.race'),
+      label: intl.get('screen.participantEntity.profile.race'),
       value: participant?.race || TABLE_EMPTY_PLACE_HOLDER,
     },
     {
-      label: intl.get('screen.participantEntity.profil.ethnicity'),
+      label: intl.get('screen.participantEntity.profile.ethnicity'),
       value: participant?.ethnicity || TABLE_EMPTY_PLACE_HOLDER,
     },
     {
       value: <ColorTag type={ColorTagType.Gender} value={capitalize(participant?.sex)} /> || TABLE_EMPTY_PLACE_HOLDER,
-      label: intl.get('screen.participantEntity.profil.sex'),
+      label: intl.get('screen.participantEntity.profile.sex'),
     },
     {
-      label: intl.get('screen.participantEntity.profil.vitalStatus'),
+      label: intl.get('screen.participantEntity.profile.vitalStatus'),
       value: outcomes.length
         ? outcomes.map(({ vital_status }: IParticipantOutcomes, index: number) => <ColorTag key={`${vital_status}-${index}`} value={vital_status} type={ColorTagType.VitalStatus} />)
         : TABLE_EMPTY_PLACE_HOLDER,

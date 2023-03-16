@@ -23,7 +23,7 @@ export const sortByUpdateDate = <
   });
 
 export const readableDistanceByDays = (distanceInDays: number | string) =>
-  intl.get('date.yearsDaysFormat', {
+  intl.getHTML('date.yearsDaysFormat', {
     years: Math.floor(Number(distanceInDays) / LEAP_YEARS),
     days: Math.floor(Number(distanceInDays) % LEAP_YEARS),
   });

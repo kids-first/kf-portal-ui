@@ -1,21 +1,24 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ReportApi } from 'services/api/reports';
-import { ReportConfig } from 'services/api/reports/models';
 import intl from 'react-intl-universal';
+import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import keycloak from 'auth/keycloak-api/keycloak';
-import { v4 } from 'uuid';
-import { getColumnStateQuery } from '../../graphql/reports/queries';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
-import { getDefaultContentType } from 'common/downloader';
+import { INDEXES } from 'graphql/constants';
 import { startCase } from 'lodash';
-import { TFetchTSVArgs } from './types';
-import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { globalActions } from 'store/global';
+import { v4 } from 'uuid';
+
+import { getDefaultContentType } from 'common/downloader';
 import { ArrangerApi } from 'services/api/arranger';
 import { ArrangerColumnStateResults } from 'services/api/arranger/models';
-import { INDEXES } from 'graphql/constants';
-import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { ReportApi } from 'services/api/reports';
+import { ReportConfig } from 'services/api/reports/models';
+import { globalActions } from 'store/global';
+
+import { getColumnStateQuery } from '../../graphql/reports/queries';
+
+import { TFetchTSVArgs } from './types';
 
 export const SUPPORT_EMAIL = 'support@includedcc.org';
 
@@ -182,9 +185,9 @@ const fetchTsxReport = async (
           sqon: args.sqon,
           sort: sortIdField ? [{ field: sortIdField, order: SortDirection.Asc }] : [],
           index: args.index,
-          columns: tsvColumnsConfigWithHeader.sort((a, b) => {
-            return columnKeyOrdered.indexOf(a.field) > columnKeyOrdered.indexOf(b.field) ? 1 : -1;
-          }),
+          columns: tsvColumnsConfigWithHeader.sort((a, b) =>
+            columnKeyOrdered.indexOf(a.field) > columnKeyOrdered.indexOf(b.field) ? 1 : -1,
+          ),
         },
       ],
     }),

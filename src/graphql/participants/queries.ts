@@ -115,18 +115,18 @@ export const GET_PARTICIPANT_ENTITY = gql`
               study_name
             }
             family {
-                family_id
-                family_relations {
-                    hits {
-                        total
-                        edges {
-                            node {
-                                relation
-                                related_participant_id
-                            }
-                        }
+              family_id
+              family_relations {
+                hits {
+                  total
+                  edges {
+                    node {
+                      relation
+                      related_participant_id
                     }
+                  }
                 }
+              }
             }
             diagnosis {
               hits {

@@ -11,6 +11,7 @@ export interface IParticipantDiagnosis {
   mondo_id_diagnosis: string;
   source_text: string;
   ncit_id_diagnosis: string;
+  diagnosis_category?: string;
   affected_status: boolean;
   age_at_event_days: number;
 }

@@ -1,16 +1,18 @@
 import intl from 'react-intl-universal';
-import { IFileEntity } from 'graphql/files/models';
+import { Link } from 'react-router-dom';
+import { blue } from '@ant-design/colors';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
-import { STATIC_ROUTES } from 'utils/routes';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { blue } from '@ant-design/colors';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { Progress } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { Link } from 'react-router-dom';
+import { IFileEntity } from 'graphql/files/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+
+import styleThemeColors from 'style/themes/kids-first/colors.module.scss';
+import { STATIC_ROUTES } from 'utils/routes';
 
 interface IFileInfoByType {
   key: string;
@@ -39,7 +41,15 @@ export const getFilesDataTypeInfo = (files: IFileEntity[], participant_id?: stri
 
 /** Computed all experimental strategy. Only count once per file */
 export const getFilesByExperimentalStrategy = (files: IFileEntity[], participant_id?: string) => {
-  const experimentalStrategyFilteredResult: { [key: string]: number } = {};
+  const experimentalStrategyFilteredResult: { [key: string]: number } = {
+    WXS: 0,
+    WGS: 0,
+    'RNA-Seq': 0,
+    Methylation: 0,
+    'miRNA-Seq': 0,
+    'Linked-Read WGS (10x Chromium)': 0,
+    'Targeted Sequencing': 0,
+  };
 
   // Create a list of all experiment strategy available
   for (const file of files) {
@@ -56,18 +66,16 @@ export const getFilesByExperimentalStrategy = (files: IFileEntity[], participant
         experimentalStrategyFilteredResult[se] = 0;
       }
       experimentalStrategyFilteredResult[se] += 1;
-    })
+    });
   }
 
-  return Object.keys(experimentalStrategyFilteredResult).map(key => (
-    {
-      key,
-      value: key,
-      nb_files: experimentalStrategyFilteredResult[key],
-      proportion_of_files: (experimentalStrategyFilteredResult[key] / files.length) * 100,
-      participant_id: participant_id || '',
-    }
-  ));
+  return Object.keys(experimentalStrategyFilteredResult).map((key) => ({
+    key,
+    value: key,
+    nb_files: experimentalStrategyFilteredResult[key],
+    proportion_of_files: (experimentalStrategyFilteredResult[key] / files.length) * 100,
+    participant_id: participant_id || '',
+  }));
 };
 
 export const getExperimentalStrategyColumns = (files_nb: number): ProColumnType<any>[] => [
@@ -115,7 +123,7 @@ export const getExperimentalStrategyColumns = (files_nb: number): ProColumnType<
     title: intl.get('screen.participantEntity.files.totalNumberOfFiles', { count: files_nb }),
     tooltip: intl.get('screen.participantEntity.files.numberByDataTypesTooltip'),
     render: (percent: number) => (
-      <Progress percent={percent} showInfo={false} strokeColor={blue[5]} />
+      <Progress percent={percent} showInfo={false} strokeColor={styleThemeColors.blueBase} />
     ),
   },
 ];
@@ -165,7 +173,7 @@ export const getDataTypeColumns = (files_nb: number): ProColumnType<any>[] => [
     title: intl.get('screen.participantEntity.files.totalNumberOfFiles', { count: files_nb }),
     tooltip: intl.get('screen.participantEntity.files.numberByDataTypesTooltip'),
     render: (percent: number) => (
-      <Progress percent={percent} showInfo={false} strokeColor={blue[5]} />
+      <Progress percent={percent} showInfo={false} strokeColor={styleThemeColors.blueBase} />
     ),
   },
 ];

@@ -76,7 +76,7 @@ export const getFiltersDictionary = (): FiltersDict => ({
     less: intl.get('global.filters.actions.less'),
     more: intl.get('global.filters.actions.more'),
     none: intl.get('global.filters.actions.none'),
-    dictionary: intl.get('global.filters.actions.dictionary')
+    dictionary: intl.get('global.filters.actions.dictionary'),
   },
   operators: {
     between: intl.get('global.filters.operators.between'),

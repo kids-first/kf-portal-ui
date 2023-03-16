@@ -2,13 +2,14 @@ import intl from 'react-intl-universal';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
-import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { IParticipantDiagnosis } from 'graphql/participants/models';
 import { capitalize } from 'lodash';
 import {
   extractMondoTitleAndCode,
   extractNcitTissueTitleAndCode,
 } from 'views/DataExploration/utils/helper';
+
+import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { readableDistanceByDays } from 'utils/dates';
 
 export const getDiagnosisDefaultColumns = (): ProColumnType[] => [
@@ -98,15 +99,13 @@ export const getDiagnosisDefaultColumns = (): ProColumnType[] => [
   {
     key: 'diagnosis_category',
     title: intl.get('screen.participantEntity.diagnosis.category'),
+    tooltip: intl.get('screen.participantEntity.diagnosis.sharedTermTooltip'),
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
   // TODO: Need to be added
   {
     key: 'diagnosis_mondo_shared_term',
     title: intl.get('screen.participantEntity.diagnosis.sharedTerm'),
-    sorter: {
-      multiple: 1,
-    },
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
