@@ -25,6 +25,7 @@ import {
 } from './utils/files';
 import { getProfilItems } from './utils/profil';
 import { getSummaryItems } from './utils/summary';
+import BiospecimensTable from './BiospecimensTable';
 import DiagnosisTable from './DiagnosisTable';
 import FamilyTable, { MIN_FAMILY_NUMBER } from './FamilyTable';
 import PhenotypesTable from './PhenotypeTable';
@@ -49,6 +50,7 @@ const ParticipantEntity = () => {
     field: 'participant_id',
     values: [id],
   });
+
   const files: IFileEntity[] = data?.files?.hits.edges.map(({ node }) => node) || [];
   const dataTypeInfoData = getFilesDataTypeInfo(files, data?.participant_id);
   const experimentalStrategyData = getFilesByExperimentalStrategy(files, data?.participant_id);
@@ -70,7 +72,10 @@ const ParticipantEntity = () => {
       href: `#${SectionId.PHENOTYPE}`,
       title: intl.get('screen.participantEntity.phenotype.title'),
     },
-    // { href: `#${SectionId.BIOSPECIMEN}`, title: intl.get('screen.participantEntity.biospecimen.title') },
+    {
+      href: `#${SectionId.BIOSPECIMEN}`,
+      title: intl.get('screen.participantEntity.biospecimen.title'),
+    },
     { href: `#${SectionId.DATAFILE}`, title: intl.get('screen.participantEntity.files.title') },
   ];
 
@@ -151,6 +156,7 @@ const ParticipantEntity = () => {
         <FamilyTable participant={data} loading={loading} />
         <DiagnosisTable participant={data} loading={loading} />
         <PhenotypesTable participant={data} loading={loading} />
+        <BiospecimensTable id={id} />
 
         <EntityTableMultiple
           id={SectionId.DATAFILE}

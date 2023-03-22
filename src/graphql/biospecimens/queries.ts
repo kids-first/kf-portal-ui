@@ -2,32 +2,31 @@ import { gql } from '@apollo/client';
 
 export const SEARCH_BIOSPECIMEN_QUERY = gql`
   query searchBiospecimen($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
-    biospecimen {
+    biospecimens {
       hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
         total
         edges {
           node {
             id
-            container_id
-            status
             sample_id
+            container_id
             sample_type
-            parent_sample_id
             parent_sample_type
-            collection_sample_id
-            collection_sample_type
             age_at_biospecimen_collection
-            laboratory_procedure
-            volume_ul
-            volume_unit
-            biospecimen_storage
-            study_id
+            ncit_anatomy_site_id
+            anatomy_site
+            ncit_id_tissue_type
+            tissue_type_source_text
+            consent_type
+            diagnosis_mondo
             nb_files
-
+            study {
+              study_code
+            }
             participant {
               participant_id
+              external_id
             }
-
             files {
               hits {
                 total
@@ -40,9 +39,41 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
   }
 `;
 
+export const GET_PARTICIPANT_BIOSPECIMENS = gql`
+  query searchParticipantBiospecimen($sqon: JSON) {
+    biospecimens {
+      hits(filters: $sqon) {
+        total
+        edges {
+          node {
+            id
+            sample_id
+            sample_type
+            parent_sample_type
+            age_at_biospecimen_collection
+            ncit_anatomy_site_id
+            anatomy_site
+            ncit_id_tissue_type
+            tissue_type_source_text
+            consent_type
+
+            participant {
+              participant_id
+            }
+
+            parent_0 {
+              sample_id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CHECK_BIOSPECIMEN_MATCH = gql`
   query fetchMatchBiospecimen($sqon: JSON, $first: Int, $offset: Int) {
-    biospecimen {
+    biospecimens {
       hits(filters: $sqon, first: $first, offset: $offset) {
         edges {
           node {
@@ -59,7 +90,7 @@ export const CHECK_BIOSPECIMEN_MATCH = gql`
 
 export const BIOSPECIMEN_SEARCH_BY_ID_QUERY = gql`
   query searchBiospecimenById($sqon: JSON) {
-    biospecimen {
+    biospecimens {
       hits(filters: $sqon) {
         edges {
           node {

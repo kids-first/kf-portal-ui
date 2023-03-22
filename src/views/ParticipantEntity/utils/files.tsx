@@ -123,7 +123,12 @@ export const getExperimentalStrategyColumns = (files_nb: number): ProColumnType<
     title: intl.get('screen.participantEntity.files.totalNumberOfFiles', { count: files_nb }),
     tooltip: intl.get('screen.participantEntity.files.numberByDataTypesTooltip'),
     render: (percent: number) => (
-      <Progress percent={percent} showInfo={false} strokeColor={styleThemeColors.blueBase} />
+      <Progress
+        percent={percent}
+        showInfo={false}
+        strokeColor={styleThemeColors.blueBase}
+        trailColor={styleThemeColors.grayBase}
+      />
     ),
   },
 ];
@@ -173,7 +178,12 @@ export const getDataTypeColumns = (files_nb: number): ProColumnType<any>[] => [
     title: intl.get('screen.participantEntity.files.totalNumberOfFiles', { count: files_nb }),
     tooltip: intl.get('screen.participantEntity.files.numberByDataTypesTooltip'),
     render: (percent: number) => (
-      <Progress percent={percent} showInfo={false} strokeColor={styleThemeColors.blueBase} />
+      <Progress
+        percent={percent}
+        showInfo={false}
+        strokeColor={styleThemeColors.blueBase}
+        trailColor={styleThemeColors.grayBase}
+      />
     ),
   },
 ];

@@ -118,12 +118,12 @@ export interface IUseParticipantEntityProps {
   values: string[];
 }
 
-export interface IUseParticipantEntityReturn {
+export interface IUseParticipantEntityResults {
   loading: boolean;
   data?: IParticipantEntity;
 }
 
-export interface IUseParticipantEntityFamilyReturn {
+export interface IUseParticipantEntityFamilyResults {
   loading: boolean;
   data?: IParticipantEntity[];
 }
