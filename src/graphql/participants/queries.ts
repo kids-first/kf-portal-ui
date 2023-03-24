@@ -1,11 +1,18 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_PARTICIPANT_QUERY = gql`
-  query searchParticipant($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
+  query searchParticipant(
+    $sqon: JSON
+    $first: Int
+    $offset: Int
+    $sort: [Sort]
+    $searchAfter: JSON
+  ) {
     participant {
-      hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
+      hits(filters: $sqon, first: $first, offset: $offset, sort: $sort, searchAfter: $searchAfter) {
         total
         edges {
+          searchAfter
           node {
             participant_id
             sex
@@ -247,6 +254,7 @@ export const GET_PARTICIPANT_COUNT = gql`
     }
   }
 `;
+
 export const CHECK_PARTICIPANT_MATCH = gql`
   query fetchMatchParticipant($sqon: JSON, $first: Int, $offset: Int) {
     participant {

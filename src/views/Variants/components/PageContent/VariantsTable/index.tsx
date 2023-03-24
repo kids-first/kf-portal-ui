@@ -233,14 +233,14 @@ const VariantsTable = ({
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-        newFilters: [
-          generateValueFilter({
-            field: 'locus',
-            index: INDEXES.VARIANTS,
-            value: selectedRows.map((row) => row.locus),
-          }),
-        ],
-      });
+          newFilters: [
+            generateValueFilter({
+              field: 'locus',
+              index: INDEXES.VARIANTS,
+              value: selectedRows.map((row) => row.locus),
+            }),
+          ],
+        });
 
   useEffect(() => {
     if (selectedKeys.length) {
@@ -262,7 +262,7 @@ const VariantsTable = ({
           loading={results.loading}
           initialSelectedKey={selectedKeys}
           showSorterTooltip={false}
-          onChange={({ current }, _, sorter) => {
+          onChange={(_pagination, _filter, sorter) => {
             setPageIndex(DEFAULT_PAGE_INDEX);
             setQueryConfig({
               pageIndex: DEFAULT_PAGE_INDEX,

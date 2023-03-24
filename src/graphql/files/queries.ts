@@ -1,11 +1,12 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH_FILES_QUERY = gql`
-  query searchFiles($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
+  query searchFiles($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort], $searchAfter: JSON) {
     files {
-      hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
+      hits(filters: $sqon, first: $first, offset: $offset, sort: $sort, searchAfter: $searchAfter) {
         total
         edges {
+          searchAfter
           node {
             id
             external_id
@@ -121,6 +122,16 @@ export const GET_FILE_ENTITY = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const GET_FILE_COUNT = gql`
+  query getFileCount($sqon: JSON) {
+    files {
+      hits(filters: $sqon) {
+        total
       }
     }
   }
