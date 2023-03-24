@@ -30,7 +30,7 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
           {intl.get('screen.participantEntity.summary.externalId')}
           <Tooltip
             className={styles.info}
-            title={intl.get('screen.participantEntity.summary.externalId')}
+            title={intl.get('screen.participantEntity.summary.externalIdTooltips')}
           >
             <InfoCircleOutlined size={14} />
           </Tooltip>
@@ -83,8 +83,8 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
       label: intl.get('screen.participantEntity.summary.diagnosisCategory'),
       value: diagnosis.filter(({ diagnosis_category }) => !!diagnosis_category).length
         ? diagnosis.map(({ diagnosis_category }: IParticipantDiagnosis, index: number) => (
-            <Tag key={`${diagnosis_category}-${index}`}>{diagnosis_category}</Tag>
-          ))
+          <Tag key={`${diagnosis_category}-${index}`}>{diagnosis_category}</Tag>
+        ))
         : TABLE_EMPTY_PLACE_HOLDER,
     },
     {

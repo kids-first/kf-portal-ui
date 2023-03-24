@@ -1,6 +1,7 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import {
+  ExperimentOutlined,
   FileSearchOutlined,
   MedicineBoxOutlined,
   ReadOutlined,
@@ -21,7 +22,11 @@ import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { RemoteComponentList } from 'store/remote/types';
-import { mapFilterForFiles, mapFilterForParticipant } from 'utils/fieldMapper';
+import {
+  mapFilterForBiospecimen,
+  mapFilterForFiles,
+  mapFilterForParticipant,
+} from 'utils/fieldMapper';
 
 import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
@@ -136,7 +141,7 @@ const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILES);
-  //FIXME const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
+  const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMENS);
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -184,16 +189,14 @@ const DataExploration = () => {
         />
       ),
     },
-    /*
-    FIXME: to complete when data is complete.
     {
       key: TAB_IDS.BIOSPECIMENS,
       title: intl.get('screen.dataExploration.sidemenu.biospecimen'),
       icon: <ExperimentOutlined />,
       panelContent: (
         <FilterList
-          key={INDEXES.BIOSPECIMEN}
-          index={INDEXES.BIOSPECIMEN}
+          key={INDEXES.BIOSPECIMENS}
+          index={INDEXES.BIOSPECIMENS}
           queryBuilderId={DATA_EXPLORATION_QB_ID}
           extendedMappingResults={biospecimenMappingResults}
           filterInfo={filterGroups[FilterTypes.Biospecimen]}
@@ -201,7 +204,6 @@ const DataExploration = () => {
         />
       ),
     },
-*/
     {
       key: TAB_IDS.DATA_FILES,
       title: intl.get('screen.dataExploration.sidemenu.datafiles'),
@@ -240,7 +242,7 @@ const DataExploration = () => {
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
         <PageContent
           fileMapping={fileMappingResults}
-          //TODO biospecimenMapping={biospecimenMappingResults}
+          biospecimenMapping={biospecimenMappingResults}
           participantMapping={participantMappingResults}
           tabId={tab}
         />

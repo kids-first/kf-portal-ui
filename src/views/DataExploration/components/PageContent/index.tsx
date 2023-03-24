@@ -3,7 +3,12 @@ import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { FileTextOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  ExperimentOutlined,
+  FileTextOutlined,
+  PieChartOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
@@ -14,6 +19,7 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Space, Tabs, Typography } from 'antd';
 import copy from 'copy-to-clipboard';
+import { useBiospecimen } from 'graphql/biospecimens/actions';
 import { INDEXES } from 'graphql/constants';
 import { useDataFiles } from 'graphql/files/actions';
 import { useParticipants } from 'graphql/participants/actions';
@@ -36,6 +42,7 @@ import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
+import { remoteSliceActions } from 'store/remote/slice';
 import {
   createSavedFilter,
   deleteSavedFilter,
@@ -45,6 +52,7 @@ import {
 import { useSavedSet } from 'store/savedSet';
 import {
   combineExtendedMappings,
+  mapFilterForBiospecimen,
   mapFilterForFiles,
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
@@ -53,14 +61,16 @@ import { STATIC_ROUTES } from 'utils/routes';
 import { numberWithCommas } from 'utils/string';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
+import BioSpecimenTab from './tabs/Biospecimens';
+
 import styles from './index.module.scss';
-import { remoteSliceActions } from 'store/remote/slice';
 
 const { Title } = Typography;
 
 export const MAX_TITLE_LENGTH = 200;
 type OwnProps = {
   fileMapping: IExtendedMappingResults;
+  biospecimenMapping: IExtendedMappingResults;
   participantMapping: IExtendedMappingResults;
   tabId?: string;
 };
@@ -73,10 +83,18 @@ const addTagToFilter = (filter: ISavedFilter) => ({
 const resolveSqonForParticipants = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
   mapFilterForParticipant(resolveSyntheticSqon(queryList, activeQuery));
 
+const resolveSqonForBiospecimens = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
+  mapFilterForBiospecimen(resolveSyntheticSqon(queryList, activeQuery));
+
 const resolveSqonForFiles = (queryList: ISyntheticSqon[], activeQuery: ISyntheticSqon) =>
   mapFilterForFiles(resolveSyntheticSqon(queryList, activeQuery));
 
-const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY }: OwnProps) => {
+const PageContent = ({
+  fileMapping,
+  biospecimenMapping,
+  participantMapping,
+  tabId = TAB_IDS.SUMMARY,
+}: OwnProps) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { savedSets } = useSavedSet();
@@ -88,9 +106,11 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
   );
 
   const [participantQueryConfig, setParticipantQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
+  const [biospecimenQueryConfig, setBiospecimenQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const [datafilesQueryConfig, setDatafilesQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
 
   const participantResolvedSqon = resolveSqonForParticipants(queryList, activeQuery);
+  const biospecimenResolvedSqon = resolveSqonForBiospecimens(queryList, activeQuery);
   const fileResolvedSqon = resolveSqonForFiles(queryList, activeQuery);
 
   const participantResults = useParticipants({
@@ -111,6 +131,15 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
       : datafilesQueryConfig.sort,
   });
 
+  const biospecimenResults = useBiospecimen({
+    first: biospecimenQueryConfig.size,
+    offset: biospecimenQueryConfig.size * (biospecimenQueryConfig.pageIndex - 1),
+    sqon: biospecimenResolvedSqon,
+    sort: isEmpty(biospecimenQueryConfig.sort)
+      ? [{ field: 'sample_id', order: SortDirection.Asc }]
+      : biospecimenQueryConfig.sort,
+  });
+
   useEffect(() => {
     setParticipantQueryConfig({
       ...participantQueryConfig,
@@ -127,24 +156,30 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
     const title = intl.get(`facets.${key}`);
     return title
       ? title
-      : combineExtendedMappings([participantMapping, fileMapping])?.data?.find(
+      : combineExtendedMappings([participantMapping, fileMapping, biospecimenMapping])?.data?.find(
           (mapping: TExtendedMapping) => key === mapping.field,
         )?.displayName || key;
   };
 
   const getSqonAndMappingByIndex = (index: INDEXES) => {
-    switch (index) {
-      case INDEXES.FILES:
-        return {
-          sqon: fileResolvedSqon,
-          mapping: fileMapping,
-        };
-      default:
-        return {
-          sqon: participantResolvedSqon,
-          mapping: participantMapping,
-        };
+    if (index === INDEXES.FILES) {
+      return {
+        sqon: fileResolvedSqon,
+        mapping: fileMapping,
+      };
     }
+
+    if (index === INDEXES.BIOSPECIMENS) {
+      return {
+        sqon: biospecimenResolvedSqon,
+        mapping: biospecimenMapping,
+      };
+    }
+
+    return {
+      sqon: participantResolvedSqon,
+      mapping: participantMapping,
+    };
   };
 
   const handleOnUpdateFilter = (filter: ISavedFilter) => dispatch(updateSavedFilter(filter));
@@ -277,6 +312,24 @@ const PageContent = ({ fileMapping, participantMapping, tabId = TAB_IDS.SUMMARY 
             setQueryConfig={setParticipantQueryConfig}
             queryConfig={participantQueryConfig}
             sqon={participantResolvedSqon}
+          />
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab={
+            <span>
+              <ExperimentOutlined />
+              {intl.get('screen.dataExploration.tabs.biospecimens.title', {
+                count: numberWithCommas(biospecimenResults.total),
+              })}
+            </span>
+          }
+          key={TAB_IDS.BIOSPECIMENS}
+        >
+          <BioSpecimenTab
+            results={biospecimenResults}
+            setQueryConfig={setBiospecimenQueryConfig}
+            queryConfig={biospecimenQueryConfig}
+            sqon={biospecimenResolvedSqon}
           />
         </Tabs.TabPane>
         <Tabs.TabPane

@@ -3,7 +3,7 @@ import { IFileEntity } from 'graphql/files/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 
 export interface IBiospecimenResultTree {
-  biospecimen: IArrangerResultsTree<IBiospecimenEntity>;
+  biospecimens: IArrangerResultsTree<IBiospecimenEntity>;
 }
 
 export interface IBiospecimenEntity {

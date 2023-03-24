@@ -5,7 +5,7 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -17,6 +17,8 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 import { getFamilyDefaultColumns } from '../utils/family';
 import { SectionId } from '..';
+
+import styles from './index.module.scss';
 
 export const MIN_FAMILY_NUMBER = 1;
 const COLUMNS_PREFIX = 'family.family_relations.';
@@ -63,29 +65,34 @@ const FamilyTable = ({ participant, loading }: OwnProps) => {
       data={familyMembers}
       title={intl.get('screen.participantEntity.family.title')}
       header={
-        <>
+        <Space size={4} className={styles.header}>
           {intl.get('screen.participantEntity.family.title')}
-          <Button
-            type="link"
-            onClick={() => {
-              history.push(STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS);
-              addQuery({
-                queryBuilderId: DATA_EXPLORATION_QB_ID,
-                query: generateQuery({
-                  newFilters: [
-                    generateValueFilter({
-                      field: 'families_id',
-                      value: participant?.families_id ? [participant?.families_id] : [],
-                      index: INDEXES.PARTICIPANT,
-                    }),
-                  ],
-                }),
-              });
-            }}
-          >
-            ({participant?.families_id})
-          </Button>
-        </>
+          <span>
+            (
+            <Button
+              type="link"
+              className={styles.link}
+              onClick={() => {
+                history.push(STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS);
+                addQuery({
+                  queryBuilderId: DATA_EXPLORATION_QB_ID,
+                  query: generateQuery({
+                    newFilters: [
+                      generateValueFilter({
+                        field: 'families_id',
+                        value: participant?.families_id ? [participant?.families_id] : [],
+                        index: INDEXES.PARTICIPANT,
+                      }),
+                    ],
+                  }),
+                });
+              }}
+            >
+              {participant?.families_id}
+            </Button>
+            )
+          </span>
+        </Space>
       }
       columns={getFamilyDefaultColumns()}
       initialColumnState={initialColumnState}
