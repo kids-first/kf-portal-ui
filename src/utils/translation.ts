@@ -86,8 +86,12 @@ export const getFiltersDictionary = (): FiltersDict => ({
     greaterThanOrEqual: intl.get('global.filters.operators.greaterthanorequal'),
   },
   range: {
-    noData: 'no data',
+    actualInterval: 'Actual Interval',
+    noData: 'No Data',
+    from: 'from',
+    to: 'to',
     is: intl.get('global.filters.range.is'),
+    unit: 'unit',
     min: 'min',
     max: 'max',
   },
