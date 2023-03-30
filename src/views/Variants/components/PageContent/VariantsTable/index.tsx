@@ -310,6 +310,7 @@ const VariantsTable = ({
           size="small"
           pagination={{
             current: pageIndex,
+            onShowSizeChange: () => {},
             queryConfig,
             setQueryConfig,
             onChange: (page: number) => {

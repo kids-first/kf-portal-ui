@@ -1,8 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { resetSearchAfterQueryConfig, tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { dotToUnderscore } from '@ferlab/ui/core/data/arranger/formatting';
@@ -14,7 +14,6 @@ import copy from 'copy-to-clipboard';
 import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
-
 import {
   DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
@@ -27,6 +26,7 @@ import {
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
+import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
@@ -36,6 +36,8 @@ import {
   setSavedFilterAsDefault,
   updateSavedFilter,
 } from 'store/savedFilter/thunks';
+import { useSavedSet } from 'store/savedSet';
+import { useUser } from 'store/user';
 import { combineExtendedMappings } from 'utils/fieldMapper';
 import { getCurrentUrl } from 'utils/helper';
 import { getQueryBuilderDictionary } from 'utils/translation';
@@ -43,9 +45,6 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 import VariantsTable from './VariantsTable';
 
 import styles from './index.module.scss';
-import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
-import { useUser } from 'store/user';
-import { useSavedSet } from 'store/savedSet';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
@@ -62,7 +61,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
     useQBStateWithSavedFilters(VARIANT_REPO_QB_ID, SavedFilterTag.VariantsExplorationPage);
-  const [variantQueryConfig, setVariantQueryConfig] = useState({
+  const [queryConfig, setQueryConfig] = useState({
     ...DEFAULT_QUERY_CONFIG,
     size: userInfo?.config.variant?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
   });
@@ -73,42 +72,41 @@ const PageContent = ({ variantMapping }: OwnProps) => {
 
   const variantResolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
-  const variantResults = useVariant(
+  const results = useVariant(
     {
-      first: variantQueryConfig.size,
+      first: queryConfig.size,
       offset: DEFAULT_OFFSET,
-      searchAfter: variantQueryConfig.searchAfter,
+      searchAfter: queryConfig.searchAfter,
       sqon: variantResolvedSqon,
       sort: tieBreaker({
-        sort: variantQueryConfig.sort,
+        sort: queryConfig.sort,
         defaultSort: DEFAULT_SORT_QUERY,
         field: 'locus',
-        order: variantQueryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
+        order: queryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
       }),
     },
-    variantQueryConfig.operations,
+    queryConfig.operations,
   );
 
   useEffect(() => {
-    if (
-      variantQueryConfig.firstPageFlag !== undefined ||
-      variantQueryConfig.searchAfter === undefined
-    ) {
+    if (queryConfig.firstPageFlag !== undefined || queryConfig.searchAfter === undefined) {
       return;
     }
 
-    setVariantQueryConfig({
-      ...variantQueryConfig,
-      firstPageFlag: variantQueryConfig.searchAfter,
+    setQueryConfig({
+      ...queryConfig,
+      firstPageFlag: queryConfig.searchAfter,
     });
-  }, [variantQueryConfig]);
+  }, [queryConfig]);
 
   useEffect(() => {
-    setVariantQueryConfig({
-      ...variantQueryConfig,
-      searchAfter: undefined,
-    });
-
+    resetSearchAfterQueryConfig(
+      {
+        ...DEFAULT_QUERY_CONFIG,
+        size: userInfo?.config.variant?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
+      },
+      setQueryConfig,
+    );
     setPageIndex(DEFAULT_PAGE_INDEX);
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
@@ -191,7 +189,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         enableShowHideLabels
         IconTotal={<LineStyleIcon width={18} height={18} />}
         currentQuery={isEmptySqon(activeQuery) ? {} : activeQuery}
-        total={variantResults.total}
+        total={results.total}
         dictionary={getQueryBuilderDictionary(facetTransResolver, savedSets)}
         getResolvedQueryForCount={(sqon) => resolveSyntheticSqon(queryList, sqon)}
         fetchQueryCount={async (sqon) => {
@@ -209,9 +207,9 @@ const PageContent = ({ variantMapping }: OwnProps) => {
         pageIndex={pageIndex}
         sqon={variantResolvedSqon}
         setPageIndex={setPageIndex}
-        results={variantResults}
-        setQueryConfig={setVariantQueryConfig}
-        queryConfig={variantQueryConfig}
+        results={results}
+        setQueryConfig={setQueryConfig}
+        queryConfig={queryConfig}
       />
     </Space>
   );

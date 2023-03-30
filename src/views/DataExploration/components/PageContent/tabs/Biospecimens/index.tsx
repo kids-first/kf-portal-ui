@@ -6,7 +6,7 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
+import { resetSearchAfterQueryConfig, tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import useQueryBuilderState, {
   addQuery,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -216,6 +216,19 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
       setSelectedKeys([]);
       setSelectedRows([]);
     }
+
+    resetSearchAfterQueryConfig(
+      {
+        ...DEFAULT_QUERY_CONFIG,
+        sort: DEFAULT_BIOSPECIMEN_QUERY_SORT,
+        size:
+          userInfo?.config?.data_exploration?.tables?.biospecimens?.viewPerQuery ||
+          DEFAULT_PAGE_SIZE,
+      },
+      setQueryConfig,
+    );
+    setPageIndex(DEFAULT_PAGE_INDEX);
+
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
 
@@ -229,14 +242,6 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
       firstPageFlag: queryConfig.searchAfter,
     });
   }, [queryConfig]);
-
-  useEffect(() => {
-    if (selectedKeys.length) {
-      setSelectedKeys([]);
-      setSelectedRows([]);
-    }
-    // eslint-disable-next-line
-  }, [JSON.stringify(activeQuery)]);
 
   return (
     <ProTable

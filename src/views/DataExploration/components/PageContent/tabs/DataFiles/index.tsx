@@ -5,7 +5,7 @@ import { LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
+import { resetSearchAfterQueryConfig, tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import useQueryBuilderState, {
   addQuery,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -326,6 +326,18 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
       setSelectedKeys([]);
       setSelectedRows([]);
     }
+
+    resetSearchAfterQueryConfig(
+      {
+        ...DEFAULT_QUERY_CONFIG,
+        sort: DEFAULT_FILE_QUERY_SORT,
+        size:
+          userInfo?.config?.data_exploration?.tables?.participants?.viewPerQuery ||
+          DEFAULT_PAGE_SIZE,
+      },
+      setQueryConfig,
+    );
+    setPageIndex(DEFAULT_PAGE_INDEX);
     // eslint-disable-next-line
   }, [JSON.stringify(activeQuery)]);
 
