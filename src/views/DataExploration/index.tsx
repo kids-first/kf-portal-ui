@@ -81,6 +81,7 @@ const filterGroups: {
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
           <TreeFacet
+            key="mondo-tree"
             type={RemoteComponentList.MondoTree}
             field={'mondo'}
             titleFormatter={formatMondoTitleAndCode}
@@ -88,6 +89,7 @@ const filterGroups: {
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
           <TreeFacet
+            key="observed-phoenotype-tree"
             type={RemoteComponentList.HPOTree}
             field={'observed_phenotype'}
             titleFormatter={formatHpoTitleAndCode}
@@ -102,14 +104,19 @@ const filterGroups: {
   [FilterTypes.Biospecimen]: {
     customSearches: [
       <BiospecimenSearch key={0} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
-      <BiospecimenCollectionSearch key={1} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
+      // <BiospecimenCollectionSearch key={1} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
       <BiospecimenSetSearch key={2} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
       <BiospecimenUploadIds key={3} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
     ],
     groups: [
       {
         facets: [
-          'sample_type', // Incorrect: just a placeholder
+          'sample_type',
+          'consent_type',
+          'participant__diagnosis__mondo_id_diagnosis',
+          'participant__diagnosis__ncit_id_diagnosis',
+          'method_of_sample_procurement',
+          'ncit_id_tissue_type',
         ],
       },
     ],
