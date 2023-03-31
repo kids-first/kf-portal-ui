@@ -470,7 +470,7 @@ const en = {
         dataFile: 'Data File',
         dataType: 'Data Type',
         numberByDataTypes: 'File counts by Data Type',
-        numberByDataTypesTooltip: 'Total number of files associated with the participant',
+        numberByDataTypesTooltip: 'Total number of files associated to with the participant',
         totalNumberOfFiles: '(n={count})',
         numberByExperimentalStrategy: 'File counts by Experimental Strategy',
         sequencing_experiment: {
