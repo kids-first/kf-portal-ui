@@ -23,3 +23,5 @@ export const SHARED_FILTER_ID_QUERY_PARAM_KEY = 'sharedFilterId';
 export const DEFAULT_GRAVATAR_PLACEHOLDER = `${EnvironmentVariables.configFor(
   'WEB_ROOT',
 )}/avatar-placeholder.png`;
+
+export const MAX_ITEMS_QUERY = 10000;
