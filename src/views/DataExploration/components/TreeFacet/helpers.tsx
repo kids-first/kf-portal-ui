@@ -1,6 +1,7 @@
-import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
-import TreeNodeTitle from './TreeNodeTitle';
 import { Typography } from 'antd';
+import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
+
+import TreeNodeTitle from './TreeNodeTitle';
 
 import styles from './index.module.scss';
 
@@ -56,7 +57,7 @@ export const searchInTree = (
   treeNode: TreeNode,
   hitTreeNodes: string[] = [],
 ) => {
-  const cleanSearchText = searchText.replace(/[-/\\^$*+?.()|[\]{}]/g, '');
+  const cleanSearchText = searchText.replace(/[-\\^$*+?.()|[\]{}]/g, '');
   const regex = new RegExp('\\b(\\w*' + cleanSearchText + '\\w*)\\b', 'gi');
   const text = treeNode.title;
   const key = treeNode.key;
@@ -82,11 +83,11 @@ export const searchInTree = (
       const [before, hit, after] = treeNode.title.split(regex);
       if (hit) {
         treeNode.name = (
-            <Typography.Text>
-              {before}
-              <div className={styles.highlight}>{hit}</div>
-              {after}
-            </Typography.Text>
+          <Typography.Text>
+            {before}
+            <div className={styles.highlight}>{hit}</div>
+            {after}
+          </Typography.Text>
         );
       }
     }
