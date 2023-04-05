@@ -2,6 +2,7 @@ import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { ReadOutlined, UserOutlined } from '@ant-design/icons';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { FieldOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { IVariantEntity } from '@ferlab/ui/core/pages/EntityPage/type';
 import { Tooltip } from 'antd';
@@ -36,6 +37,7 @@ const SummaryHeader = ({ variant }: OwnProps) => {
                   field: 'study.study_code',
                   value: variant ? [] : [],
                   index: INDEXES.VARIANTS,
+                  operator: FieldOperators.between,
                 }),
               ],
             }),
@@ -63,6 +65,7 @@ const SummaryHeader = ({ variant }: OwnProps) => {
                     field: 'participant_id',
                     value: variant ? [] : [],
                     index: INDEXES.PARTICIPANT,
+                    operator: FieldOperators.between,
                   }),
                 ],
               }),

@@ -112,6 +112,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
             is_proband
             families_id
             ethnicity
+            nb_biospecimens
             external_id
             study_external_id
             family_type
