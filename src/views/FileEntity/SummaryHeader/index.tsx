@@ -2,6 +2,7 @@ import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { ReadOutlined, UserOutlined } from '@ant-design/icons';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { FieldOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
@@ -35,6 +36,7 @@ const SummaryHeader = ({ file }: OwnProps) => {
                   field: 'study.study_code',
                   value: file ? [file.study.study_code] : [],
                   index: INDEXES.PARTICIPANT,
+                  operator: FieldOperators.between,
                 }),
               ],
             }),
@@ -60,6 +62,7 @@ const SummaryHeader = ({ file }: OwnProps) => {
                   field: 'file_id',
                   value: file ? [file.file_id] : [],
                   index: INDEXES.FILES,
+                  operator: FieldOperators.between,
                 }),
               ],
             }),
@@ -73,7 +76,27 @@ const SummaryHeader = ({ file }: OwnProps) => {
           {intl.get('entities.file.summary.participants', { count: participantCount })}
         </span>
       </Link>
-      <Link to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS} className={styles.link}>
+      <Link
+        to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+        className={styles.link}
+        onClick={() =>
+          addQuery({
+            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            query: generateQuery({
+              newFilters: [
+                generateValueFilter({
+                  field: 'sample_id',
+                  value: file ? [file.file_id] : [],
+                  index: INDEXES.FILES,
+                  operator: FieldOperators.between,
+                  overrideValuesName: 'Biospecimen ID',
+                }),
+              ],
+            }),
+            setAsActive: true,
+          })
+        }
+      >
         <BiospecimenIcon className={styles.icon} />
         <span className={styles.entityCount}>{biospecimenCount}</span>
         <span className={styles.text}>
