@@ -10,10 +10,14 @@ import { ReportConfig, ReportType } from './models';
 const REPORT_API_URL = EnvironmentVariables.configFor('REPORTS_API_URL');
 const arrangerProjectId = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
 
-const REPORTS_ROUTES = {
+export const REPORTS_ROUTES = {
   [ReportType.CLINICAL_DATA]: `${REPORT_API_URL}/reports/clinical-data`,
   [ReportType.CLINICAL_DATA_FAM]: `${REPORT_API_URL}/reports/family-clinical-data`,
   [ReportType.BIOSEPCIMEN_DATA]: `${REPORT_API_URL}/reports/biospecimen-data`,
+  [ReportType.FILE_MANIFEST]: `${REPORT_API_URL}/reports/file-manifest`,
+  [ReportType.FILE_MANIFEST_STATS]: `${REPORT_API_URL}/reports/file-manifest/stats`,
+  [ReportType.FILE_REQUEST_ACCESS]: `${REPORT_API_URL}/reports/file-request-access`,
+  [ReportType.FILE_REQUEST_ACCESS_STATS]: `${REPORT_API_URL}/reports/file-request-access/stats`,
 };
 
 const joinWithPadding = (l: number[]) => l.reduce((xs, x) => xs + `${x}`.padStart(2, '0'), '');
@@ -31,7 +35,7 @@ const makeFilenameDatePart = (date = new Date()) => {
   return `${prefixes}T${suffixes}Z`;
 };
 
-const headers = () => ({
+export const headers = () => ({
   'Content-Type': 'application/json',
   Accept: '*/*',
   Authorization: `Bearer ${keycloak.token}`,

@@ -33,9 +33,10 @@ import {
   SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
 
-import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { MAX_ITEMS_QUERY, TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { FENCE_CONNECTION_STATUSES } from 'common/fenceTypes';
 import CavaticaAnalyzeButton from 'components/Cavatica/AnalyzeButton';
+import DownloadFileManifestModal from 'components/uiKit/reports/DownloadFileManifestModal';
 import { SetType } from 'services/api/savedSet/models';
 import { useFenceConnection } from 'store/fenceConnection';
 import { fetchTsvReport } from 'store/report/thunks';
@@ -141,8 +142,8 @@ const getDefaultColumns = (
     render: (record: IFileEntity) =>
       record.sequencing_experiment
         ? record.sequencing_experiment.hits?.edges
-            .map((edge) => edge.node.experiment_strategy)
-            .join(', ')
+          .map((edge) => edge.node.experiment_strategy)
+          .join(', ')
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -307,19 +308,22 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
     },
     queryConfig.operations,
   );
+  const hasTooManyFiles =
+    selectedKeys.length > MAX_ITEMS_QUERY ||
+    (selectedAllResults && results.total > MAX_ITEMS_QUERY);
 
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-          newFilters: [
-            generateValueFilter({
-              field: DATA_FILES_SAVED_SETS_FIELD,
-              index: INDEXES.FILES,
-              value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
-            }),
-          ],
-        });
+        newFilters: [
+          generateValueFilter({
+            field: DATA_FILES_SAVED_SETS_FIELD,
+            index: INDEXES.FILES,
+            value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
+          }),
+        ],
+      });
 
   useEffect(() => {
     if (selectedKeys.length) {
@@ -429,6 +433,12 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               fileIds={selectedAllResults ? [] : selectedKeys}
               sqon={sqon}
               key="file-cavatica-upload"
+            />,
+            <DownloadFileManifestModal
+              key="download-file-manifest"
+              sqon={getCurrentSqon()}
+              isDisabled={!selectedKeys.length && !selectedAllResults}
+              hasTooManyFiles={hasTooManyFiles}
             />,
           ],
         }}

@@ -1,0 +1,34 @@
+@import 'src/style/themes/kids-first/colors';
+
+.notStriped {
+  background-color: inherit !important;
+}
+
+.modal {
+  max-height: 600px;
+  width: 740px !important;
+}
+
+.subText {
+  font-size: 12px;
+  line-height: 20px;
+  color: $gray-7
+}
+
+.table {
+    margin-top: 30px;
+}
+
+.tooMuchFilesIcon {
+  font-size: 21px !important;
+  margin-top: 2px;
+}
+
+.tooMuchFiles {
+  *[class$="-alert-message"] {
+    font-weight: 600;
+  }
+
+  margin-top: 30px;
+  color: $red-8;
+}
