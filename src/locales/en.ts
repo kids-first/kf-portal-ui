@@ -189,7 +189,7 @@ const en = {
         title: 'File manifest',
         okText: 'Download',
         cancel: 'Cancel',
-        text: `Download a manifest of the selected files which can be used for bulk downloading using Cavatica’s <a target="_blank" href="https://docs.cavatica.org/docs/import-from-a-drs-server">Import from an GA4GH Data Repository Service (DRS)</a>. This manifest also includes additional information, including the participant and samples associated with these files`,
+        text: `Download a manifest of the selected files which can be used for bulk downloading using Cavatica’s <a target="_blank" href="https://docs.cavatica.org/docs/import-from-a-drs-server" style="text-decoration: underline;">Import from an GA4GH Data Repository Service (DRS)</a>. This manifest also includes additional information, including the participant and samples associated with these files.`,
         subText: 'In development and will be available soon.',
         textCheckbox: `Include data files of the same type for the participants' related family members for this selection.`,
         summary: 'Summary',

@@ -53,7 +53,7 @@ const DownloadFileManifestModal = ({
           dispatch(
             fetchReport({
               data: {
-                name: ReportType.FILE_MANIFEST,
+                name: isFamilyChecked ? ReportType.CLINICAL_DATA_FAM : ReportType.CLINICAL_DATA,
                 sqon,
                 withFamily: isFamilyChecked,
               },

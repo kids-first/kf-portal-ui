@@ -65,7 +65,7 @@ const generateReport = (config: ReportConfig) => {
       isKfNext: true,
       sqon: reportSqon,
       projectId: arrangerProjectId,
-      filename: `kf_${name}_${makeFilenameDatePart(new Date())}.xlsx`,
+      filename: `kf_${name}_${makeFilenameDatePart(new Date())}`,
     },
     headers: headers(),
   });
