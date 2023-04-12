@@ -42,8 +42,6 @@ export const headers = () => ({
 });
 
 const generateReport = (config: ReportConfig) => {
-  const name = config.name;
-
   //TODO do we need google analytics tracking?
   let reportSqon;
 
@@ -58,14 +56,14 @@ const generateReport = (config: ReportConfig) => {
 
   return downloader({
     // @ts-ignore
-    url: REPORTS_ROUTES[name],
+    url: REPORTS_ROUTES[config.name],
     method: 'POST',
     responseType: 'blob',
     data: {
       isKfNext: true,
       sqon: reportSqon,
       projectId: arrangerProjectId,
-      filename: `kf_${name}_${makeFilenameDatePart(new Date())}`,
+      filename: `kf_${config.fileName || config.name}_${makeFilenameDatePart(new Date())}`,
     },
     headers: headers(),
   });
