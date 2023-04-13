@@ -54,9 +54,7 @@ const DownloadFileManifestModal = ({
             fetchReport({
               data: {
                 name: ReportType.FILE_MANIFEST,
-                fileName: isFamilyChecked
-                  ? `family${ReportType.FILE_MANIFEST}`
-                  : ReportType.FILE_MANIFEST,
+                fileName: isFamilyChecked ? `familyManifest` : ReportType.FILE_MANIFEST,
                 sqon,
                 withFamily: isFamilyChecked,
               },
