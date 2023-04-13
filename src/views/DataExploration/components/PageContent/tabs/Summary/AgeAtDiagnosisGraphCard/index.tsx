@@ -1,18 +1,18 @@
-import BarChart from 'components/uiKit/charts/Bar';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { INDEXES } from 'graphql/constants';
-import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
-import { isEmpty } from 'lodash';
-import Empty from '@ferlab/ui/core/components/Empty';
-import { AGE_AT_DIAGNOSIS_QUERY } from 'graphql/summary/queries';
-import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
-import useApi from 'hooks/useApi';
-import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import intl from 'react-intl-universal';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
+import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
+import { INDEXES } from 'graphql/constants';
+import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
+import { AGE_AT_DIAGNOSIS_QUERY } from 'graphql/summary/queries';
+import { isEmpty } from 'lodash';
+import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+
+import BarChart from 'components/uiKit/charts/Bar';
+import useApi from 'hooks/useApi';
 
 interface OwnProps {
   id: string;
@@ -48,44 +48,44 @@ const graphSetting: any = {
 
 const buildSqonFromRange = (rangeValue: string) => {
   switch (rangeValue) {
-    case '_0to1':
-      return {
-        op: RangeOperators['<='],
-        value: [364],
-      };
+  case '_0to1':
+    return {
+      op: RangeOperators['<='],
+      value: [364],
+    };
 
-    case '_1to5':
-      return {
-        op: RangeOperators['between'],
-        value: [365, 1824],
-      };
-    case '_5to10':
-      return {
-        op: RangeOperators['between'],
-        value: [1825, 3649],
-      };
+  case '_1to5':
+    return {
+      op: RangeOperators['between'],
+      value: [365, 1824],
+    };
+  case '_5to10':
+    return {
+      op: RangeOperators['between'],
+      value: [1825, 3649],
+    };
 
-    case '_10to15':
-      return {
-        op: RangeOperators['between'],
-        value: [3650, 5474],
-      };
-    case '_15to18':
-      return {
-        op: RangeOperators['between'],
-        value: [5475, 6569],
-      };
+  case '_10to15':
+    return {
+      op: RangeOperators['between'],
+      value: [3650, 5474],
+    };
+  case '_15to18':
+    return {
+      op: RangeOperators['between'],
+      value: [5475, 6569],
+    };
 
-    case '_18plus':
-      return {
-        op: RangeOperators['>='],
-        value: [6570],
-      };
-    default:
-      return {
-        op: undefined,
-        value: [ArrangerValues.missing],
-      };
+  case '_18plus':
+    return {
+      op: RangeOperators['>='],
+      value: [6570],
+    };
+  default:
+    return {
+      op: undefined,
+      value: [ArrangerValues.missing],
+    };
   }
 };
 
@@ -118,11 +118,13 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
   return (
     <GridCard
       wrapperClassName={className}
+      contentClassName={className}
       theme="shade"
       loading={loading}
       loadingType="spinner"
+      resizable
       title={
-        <CardHeader
+        <GridCardHeader
           id={id}
           title={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
           withHandle

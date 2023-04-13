@@ -1,5 +1,6 @@
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
+import { TSerializedResizableGridLayoutConfig } from '@ferlab/ui/core/layout/ResizableGridLayout';
 
 export type TUser = {
   id: string;
@@ -40,9 +41,7 @@ export type TUserConfig = {
       datafiles?: TUserTableConfig;
     };
     summary?: {
-      cards?: {
-        order?: string[];
-      };
+      layouts?: TSerializedResizableGridLayoutConfig[];
     };
   };
   study?: {
