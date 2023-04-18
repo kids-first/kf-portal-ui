@@ -1,6 +1,9 @@
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from 'views/DataExploration/utils/helper';
 
-export const transformNameIfNeeded = (field: string, name: string) => {
+export const transformNameIfNeeded = (field: string, name: string, oldKey?: string) => {
+  if (field === 'chromosome') {
+    return oldKey;
+  }
   if (field === 'mondo__name') {
     return formatMondoTitleAndCode(name);
   }
