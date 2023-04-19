@@ -1,53 +1,33 @@
 import { useState } from 'react';
-import TableHeader from '@ferlab/ui/core/components/ProTable/Header';
 import intl from 'react-intl-universal';
-import { Space, Typography, List } from 'antd';
-import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
-import { scrollToTop } from 'utils/helper';
-import FiltersBox from './components/Filters/Box';
-
-import styles from './index.module.scss';
-import MemberCard from './components/MemberCard';
-import { useMembers } from 'graphql/members/actions';
-import { DEFAULT_QUERY_CONFIG } from './contants';
+import TableHeader from '@ferlab/ui/core/components/ProTable/Header';
 import { BooleanOperators, TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { List, Space, Typography } from 'antd';
+import { useMembers } from 'graphql/members/actions';
+
+import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
+import { scrollToTop } from 'utils/helper';
+
+import FiltersBox from './components/Filters/Box';
+import MemberCard from './components/MemberCard';
+import { DEFAULT_QUERY_CONFIG } from './contants';
+
+import styles from './index.module.scss';
 
 const { Title } = Typography;
 
 const resolveSqon = (search: string, roles: string[], interests: string[]) => {
-  const searchContent = [];
   const content = [];
 
   if (search.length > 0) {
-    searchContent.push(
+    content.push(
       generateValueFilter({
-        field: 'firstName',
-        value: [search],
+        field: 'searchText',
+        value: [`${search}*`],
         operator: TermOperators.in,
       }),
     );
-
-    searchContent.push(
-      generateValueFilter({
-        field: 'lastName',
-        value: [search],
-        operator: TermOperators.in,
-      }),
-    );
-
-    searchContent.push(
-      generateValueFilter({
-        field: 'institution',
-        value: [search],
-        operator: TermOperators.in,
-      }),
-    );
-
-    content.push({
-      content: searchContent,
-      op: BooleanOperators.or,
-    });
   }
 
   if (roles.length > 0) {
@@ -55,7 +35,7 @@ const resolveSqon = (search: string, roles: string[], interests: string[]) => {
       generateValueFilter({
         field: 'roles',
         value: roles,
-        operator: TermOperators.all,
+        operator: TermOperators.in,
       }),
     );
   }
@@ -65,7 +45,7 @@ const resolveSqon = (search: string, roles: string[], interests: string[]) => {
       generateValueFilter({
         field: 'searchableInterests.name.raw',
         value: interests,
-        operator: TermOperators.all,
+        operator: TermOperators.in,
       }),
     );
   }
