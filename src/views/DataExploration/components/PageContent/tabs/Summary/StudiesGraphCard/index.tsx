@@ -3,7 +3,7 @@ import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
 import { BasicTooltip } from '@nivo/tooltip';
 import { Col, Row } from 'antd';
 import { INDEXES } from 'graphql/constants';
@@ -11,7 +11,6 @@ import useParticipantResolvedSqon from 'graphql/participants/useParticipantResol
 import { PARTICIPANT_BY_STUDIES_QUERY } from 'graphql/summary/queries';
 import { isEmpty } from 'lodash';
 import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import PieChart from 'components/uiKit/charts/Pie';
@@ -68,8 +67,9 @@ const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
       theme="shade"
       loading={loading}
       loadingType="spinner"
+      resizable
       title={
-        <CardHeader
+        <GridCardHeader
           id={id}
           title={intl.get('screen.dataExploration.tabs.summary.studies.cardTitle')}
           withHandle

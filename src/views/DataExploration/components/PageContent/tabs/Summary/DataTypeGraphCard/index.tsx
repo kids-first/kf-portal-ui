@@ -1,21 +1,21 @@
-import { toChartData } from 'utils/charts';
-import BarChart from 'components/uiKit/charts/Bar';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { truncateString } from 'utils/string';
-import { INDEXES } from 'graphql/constants';
-import { useHistory } from 'react-router-dom';
-import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
-import { isEmpty } from 'lodash';
-import Empty from '@ferlab/ui/core/components/Empty';
-import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
-import useApi from 'hooks/useApi';
-import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
-import { DATATYPE_QUERY } from 'graphql/summary/queries';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import intl from 'react-intl-universal';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { useHistory } from 'react-router-dom';
+import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
+import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
+import { INDEXES } from 'graphql/constants';
+import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
+import { DATATYPE_QUERY } from 'graphql/summary/queries';
+import { isEmpty } from 'lodash';
+import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+
+import BarChart from 'components/uiKit/charts/Bar';
+import useApi from 'hooks/useApi';
+import { toChartData } from 'utils/charts';
+import { truncateString } from 'utils/string';
 
 interface OwnProps {
   id: string;
@@ -65,7 +65,7 @@ const DataTypeGraphCard = ({ id, className = '' }: OwnProps) => {
       loading={loading}
       loadingType="spinner"
       title={
-        <CardHeader
+        <GridCardHeader
           id={id}
           title={intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle')}
           withHandle
