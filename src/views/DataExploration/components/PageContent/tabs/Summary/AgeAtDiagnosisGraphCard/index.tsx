@@ -40,7 +40,7 @@ const graphSetting: any = {
   height: 300,
   margin: {
     bottom: 45,
-    left: 125,
+    left: 60,
   },
   enableLabel: false,
   layout: 'vertical',
@@ -48,44 +48,44 @@ const graphSetting: any = {
 
 const buildSqonFromRange = (rangeValue: string) => {
   switch (rangeValue) {
-  case '_0to1':
-    return {
-      op: RangeOperators['<='],
-      value: [364],
-    };
+    case '_0to1':
+      return {
+        op: RangeOperators['<='],
+        value: [364],
+      };
 
-  case '_1to5':
-    return {
-      op: RangeOperators['between'],
-      value: [365, 1824],
-    };
-  case '_5to10':
-    return {
-      op: RangeOperators['between'],
-      value: [1825, 3649],
-    };
+    case '_1to5':
+      return {
+        op: RangeOperators['between'],
+        value: [365, 1824],
+      };
+    case '_5to10':
+      return {
+        op: RangeOperators['between'],
+        value: [1825, 3649],
+      };
 
-  case '_10to15':
-    return {
-      op: RangeOperators['between'],
-      value: [3650, 5474],
-    };
-  case '_15to18':
-    return {
-      op: RangeOperators['between'],
-      value: [5475, 6569],
-    };
+    case '_10to15':
+      return {
+        op: RangeOperators['between'],
+        value: [3650, 5474],
+      };
+    case '_15to18':
+      return {
+        op: RangeOperators['between'],
+        value: [5475, 6569],
+      };
 
-  case '_18plus':
-    return {
-      op: RangeOperators['>='],
-      value: [6570],
-    };
-  default:
-    return {
-      op: undefined,
-      value: [ArrangerValues.missing],
-    };
+    case '_18plus':
+      return {
+        op: RangeOperators['>='],
+        value: [6570],
+      };
+    default:
+      return {
+        op: undefined,
+        value: [ArrangerValues.missing],
+      };
   }
 };
 

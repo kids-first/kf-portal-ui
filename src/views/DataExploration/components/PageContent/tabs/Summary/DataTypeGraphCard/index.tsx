@@ -64,6 +64,7 @@ const DataTypeGraphCard = ({ id, className = '' }: OwnProps) => {
       theme="shade"
       loading={loading}
       loadingType="spinner"
+      resizable
       title={
         <GridCardHeader
           id={id}
