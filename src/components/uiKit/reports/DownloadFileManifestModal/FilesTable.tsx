@@ -26,7 +26,7 @@ export const getDataTypeColumns = (): ProColumnType<any>[] => [
   {
     key: 'value',
     dataIndex: 'value',
-    title: 'Data type',
+    title: 'Data Type',
     render: (label: string) => label || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
