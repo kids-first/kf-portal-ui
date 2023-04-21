@@ -30,6 +30,21 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       minW: 5,
       minH: 4,
     },
+    md: {
+      h: 4,
+      w: 6,
+      x: 0,
+    },
+    sm: {
+      h: 4,
+      w: 5,
+      x: 0,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+    },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.mondo.cardTitle'),
@@ -49,6 +64,22 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       minW: 5,
       minH: 4,
     },
+    md: {
+      h: 4,
+      w: 6,
+      x: 6,
+    },
+    sm: {
+      h: 4,
+      w: 5,
+      x: 5,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 4,
+    },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.studies.cardTitle'),
@@ -62,6 +93,24 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       minW: 3,
       minH: 4,
     },
+    md: {
+      h: 4,
+      w: 3,
+      x: 0,
+      y: 4,
+    },
+    sm: {
+      h: 4,
+      w: 3,
+      x: 0,
+      y: 4,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 8,
+    },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.demographic.cardTitle'),
@@ -74,6 +123,24 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       y: 4,
       minW: 4,
       minH: 4,
+    },
+    md: {
+      h: 4,
+      w: 4,
+      x: 3,
+      y: 4,
+    },
+    sm: {
+      h: 4,
+      w: 7,
+      x: 3,
+      y: 4,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 12,
     },
   },
   {
@@ -94,6 +161,24 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       minW: 4,
       minH: 4,
     },
+    md: {
+      h: 4,
+      w: 5,
+      x: 7,
+      y: 4,
+    },
+    sm: {
+      h: 4,
+      w: 5,
+      x: 0,
+      y: 8,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 16,
+    },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle'),
@@ -113,6 +198,24 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       minW: 4,
       minH: 4,
     },
+    md: {
+      h: 4,
+      w: 5,
+      x: 0,
+      y: 8,
+    },
+    sm: {
+      h: 4,
+      w: 5,
+      x: 5,
+      y: 8,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 20,
+    },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle'),
@@ -125,6 +228,24 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       y: 8,
       minW: 4,
       minH: 4,
+    },
+    md: {
+      h: 4,
+      w: 7,
+      x: 5,
+      y: 8,
+    },
+    sm: {
+      h: 4,
+      w: 10,
+      x: 6,
+      y: 12,
+    },
+    xs: {
+      h: 4,
+      w: 6,
+      x: 0,
+      y: 24,
     },
   },
 ];
