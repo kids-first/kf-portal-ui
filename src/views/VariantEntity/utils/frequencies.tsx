@@ -34,8 +34,8 @@ type TInternalRow = {
 
 export const getFrequenciesItems = (): ProColumnType[] => [
   {
-    dataIndex: 'study_id',
-    key: 'study_id',
+    dataIndex: 'study_code',
+    key: 'study_code',
     title: intl.get('screen.variants.frequencies.studies'),
     render: (study_id: string) => study_id,
   },
