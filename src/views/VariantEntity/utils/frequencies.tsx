@@ -37,7 +37,6 @@ export const getFrequenciesItems = (): ProColumnType[] => [
     dataIndex: 'study_code',
     key: 'study_code',
     title: intl.get('screen.variants.frequencies.studies'),
-    render: (study_id: string) => study_id,
   },
   {
     title: intl.get('screen.variants.frequencies.participants'),

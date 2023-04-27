@@ -88,7 +88,7 @@ export const getExperimentalStrategyColumns = (files_nb: number): ProColumnType<
     key: 'nb_files',
     title: intl.get('screen.participantEntity.files.files'),
     render: (filesInfo: IFileInfoByType) =>
-      (
+      filesInfo && filesInfo.nb_files > 0 ? (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
           onClick={() =>
@@ -114,7 +114,9 @@ export const getExperimentalStrategyColumns = (files_nb: number): ProColumnType<
         >
           {filesInfo.nb_files}
         </Link>
-      ) || TABLE_EMPTY_PLACE_HOLDER,
+      ) : (
+        filesInfo?.nb_files ?? TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'proportion_of_files',
@@ -143,7 +145,7 @@ export const getDataTypeColumns = (files_nb: number): ProColumnType<any>[] => [
     key: 'nb_files',
     title: intl.get('screen.participantEntity.files.files'),
     render: (filesInfo: IFileInfoByType) =>
-      (
+      filesInfo && filesInfo.nb_files > 0 ? (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
           onClick={() =>
@@ -169,7 +171,9 @@ export const getDataTypeColumns = (files_nb: number): ProColumnType<any>[] => [
         >
           {filesInfo.nb_files}
         </Link>
-      ) || TABLE_EMPTY_PLACE_HOLDER,
+      ) : (
+        filesInfo?.nb_files ?? TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'proportion_of_files',
