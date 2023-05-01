@@ -3,11 +3,7 @@ import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer'
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
 import { IFilter, TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import {
-  keyEnhance,
-  keyEnhanceBooleanOnly,
-  underscoreToDot,
-} from '@ferlab/ui/core/data/arranger/formatting';
+import { keyEnhance, underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { IExtendedMappingResults, TAggregations } from '@ferlab/ui/core/graphql/types';
@@ -101,18 +97,21 @@ const translateWhenNeeded = (group: string, key: string) =>
 
 export const getFilters = (aggregations: TAggregations | null, key: string): IFilter[] => {
   if (!aggregations || !key) return [];
+
   if (isTermAgg(aggregations[key])) {
     return aggregations[key!].buckets
       .map((f: any) => {
-        const translatedKey = translateWhenNeeded(key, f.key);
-        const name = translatedKey ? translatedKey : f.key;
+        const enhanceKey = f.key_as_string ?? f.key;
+        const translatedKey = translateWhenNeeded(key, enhanceKey);
+        const name = translatedKey ? translatedKey : enhanceKey;
+
         return {
           data: {
             count: f.doc_count,
-            key: keyEnhanceBooleanOnly(f.key),
+            key: enhanceKey,
           },
           id: f.key,
-          name: transformNameIfNeeded(key, name, f.key),
+          name: transformNameIfNeeded(key, name),
         };
       })
       .filter((f: any) => !(f.name === ''));
