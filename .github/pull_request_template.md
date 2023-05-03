@@ -1,4 +1,4 @@
-#[BUG | FEATUER | DOC] [TITLE]
+#[BUG | FEATURE | DOC] [TITLE]
 
 - closes #3242
 
@@ -13,7 +13,10 @@ Acceptance Criterias
 - [ ] QA Done
 - [ ] Design/UI Approved from design
 
-## Screenshot (Before and After)
+## Screenshot 
+### Before
+
+### After
 
 
 ## QA
