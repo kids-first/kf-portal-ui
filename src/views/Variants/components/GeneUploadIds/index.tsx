@@ -97,11 +97,11 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
       return genes?.flatMap((gene) => {
         const matchedIds: string[] = ids.filter((id: string) => {
           const lowerCaseId = id.toLocaleLowerCase();
-          const lowerCaseAliases = gene.alias.map((alias) => alias.toLocaleLowerCase());
+          const lowerCaseAliases = (gene.alias || []).map((alias) => alias.toLocaleLowerCase());
 
           return (
-            gene.symbol.toLocaleLowerCase() === lowerCaseId ||
-            gene.ensembl_gene_id.toLocaleLowerCase() === lowerCaseId ||
+            gene.symbol?.toLocaleLowerCase() === lowerCaseId ||
+            gene.ensembl_gene_id?.toLocaleLowerCase() === lowerCaseId ||
             lowerCaseAliases.includes(lowerCaseId)
           );
         });
