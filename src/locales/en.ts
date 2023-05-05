@@ -707,9 +707,9 @@ const en = {
           title: 'Identification',
           alert:
             'You are authenticated with <strong>{provider}</strong> using <strong>{email}</strong>. This {id} is never shown to the public and cannot be changed.',
-          firstName: 'First name',
+          firstName: 'First Name',
           yourFirstName: 'Your First Name',
-          lastName: 'Last name',
+          lastName: 'Last Name',
           yourLastName: 'Your Last Name',
           website: 'Website',
           editPhotoModalTitle: 'Edit photo',
