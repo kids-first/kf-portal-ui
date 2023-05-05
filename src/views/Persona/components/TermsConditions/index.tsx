@@ -1,11 +1,11 @@
 import { useHistory } from 'react-router-dom';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-import { Space, Typography, Button, Form, Checkbox, Row } from 'antd';
-
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { Button, Checkbox, Form, Row, Space, Typography } from 'antd';
+
+import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.scss';
-import { STATIC_ROUTES } from 'utils/routes';
 
 const { Title } = Typography;
 
@@ -22,15 +22,16 @@ export const TermsConditionsContent = () => (
       agree to the Terms and Conditions of Services defined herein and where applicable the terms
       defined by the{' '}
       <a
+        className={styles.link}
         href="https://osp.od.nih.gov/wp-content/uploads/Genomic_Data_User_Code_of_Conduct.pdf"
         target="_blank"
         rel="noreferrer"
       >
-        NIH Genomic Data User Code of Conduct.
+        NIH Genomic Data User Code of Conduct
       </a>
-      These terms include, but are not limited to:
+      . These terms include, but are not limited to:
     </div>
-    <ul>
+    <ol>
       <li>
         You will request controlled-access datasets solely in connection with the research project
         described in an approved Data Access Request for each dataset;
@@ -47,6 +48,7 @@ export const TermsConditionsContent = () => (
       <li>
         You will adhere to computer security practices in compliance with{' '}
         <a
+          className={styles.link}
           href="https://sharing.nih.gov/sites/default/files/flmngr/NIH_Best_Practices_for_Controlled-Access_Data_Subject_to_the_NIH_GDS_Policy.pdf"
           target="_blank"
           rel="noreferrer"
@@ -65,11 +67,16 @@ export const TermsConditionsContent = () => (
         Certification, breach of data security, or other data management incidents contrary to the
         terms of data access.
       </li>
-    </ul>
+    </ol>
     <div>
       DRC terms and conditions may be changed at any time via a public posting of revisions to the
       Services. As a user, you agree to review the{' '}
-      <a href="https://kidsfirstdrc.org/policies/" target="_blank" rel="noreferrer">
+      <a
+        className={styles.link}
+        href="https://kidsfirstdrc.org/policies/"
+        target="_blank"
+        rel="noreferrer"
+      >
         Terms & Conditions and Privacy Policies
       </a>{' '}
       each time you use the Services so that you are aware of any modifications made to these
@@ -90,20 +97,29 @@ export const TermsConditionsContent = () => (
     </div>
     <ul>
       <li>
-        NIH Genomic Data Sharing Policy:
-        <a href="https://grants.nih.gov/grants/guide/notice-files/NOT-OD-14-124.html">
+        NIH Genomic Data Sharing Policy:{' '}
+        <a
+          className={styles.link}
+          href="https://grants.nih.gov/grants/guide/notice-files/NOT-OD-14-124.html"
+        >
           https://grants.nih.gov/grants/guide/notice-files/NOT-OD-14-124.html
         </a>{' '}
-        dbGaP Request Procedures to Access Individual-Level Data:
-        <a href="https://dbgap.ncbi.nlm.nih.gov/aa/dbgap_request_process.pdf">
+        dbGaP Request Procedures to Access Individual-Level Data:{' '}
+        <a
+          className={styles.link}
+          href="https://dbgap.ncbi.nlm.nih.gov/aa/dbgap_request_process.pdf"
+        >
           https://dbgap.ncbi.nlm.nih.gov/aa/dbgap_request_process.pdf
         </a>
       </li>
     </ul>
     <div>
       If you have any questions about these terms, conditions or the practices of this site or any
-      of the other Services, please contact us at
-      <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
+      of the other Services, please contact us at{' '}
+      <a className={styles.link} href="mailto:support@kidsfirstdrc.org">
+        support@kidsfirstdrc.org
+      </a>
+      .
     </div>
   </Space>
 );
@@ -131,7 +147,7 @@ const TermsConditions = ({ isMultiStep = false, hidden = false, onFinish }: OwnP
           className={styles.card}
           title={
             <div className={styles.termsCardHeader}>
-              <Title level={5}>Kids First Portal Terms & Conditions</Title>
+              <Title level={5}>Terms & Conditions</Title>
               <span className={styles.lastUpdateDate}>Last Update: 11/22/2021</span>
             </div>
           }
