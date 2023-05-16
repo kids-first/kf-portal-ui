@@ -22,7 +22,6 @@ import { formatProvider } from 'auth/keycloak-api/utils';
 import cx from 'classnames';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 
-import { FT_COMMUNITY, FT_DASHBOARD, FT_EXPLORE_DATA, FT_STUDIES } from 'common/featureToggle';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { AlterTypes } from 'common/types';
 import NotificationBanner from 'components/featureToggle/NotificationBanner';
@@ -75,7 +74,6 @@ const Header = () => {
               to={STATIC_ROUTES.DASHBOARD}
               icon={<HomeOutlined />}
               title={intl.get('layout.main.menu.dashboard')}
-              featureToggleKey={FT_DASHBOARD}
             />
             <HeaderLink
               key="studies"
@@ -83,7 +81,6 @@ const Header = () => {
               to={STATIC_ROUTES.STUDIES}
               icon={<ReadOutlined />}
               title={intl.get('layout.main.menu.studies')}
-              featureToggleKey={FT_STUDIES}
             />
             <HeaderLink
               key="explore-data"
@@ -97,7 +94,6 @@ const Header = () => {
               ]}
               icon={<FileSearchOutlined />}
               title={intl.get('layout.main.menu.explore')}
-              featureToggleKey={FT_EXPLORE_DATA}
             />
             <HeaderLink
               key="variant-data"
@@ -115,7 +111,6 @@ const Header = () => {
             to={STATIC_ROUTES.COMMUNITY}
             icon={<TeamOutlined />}
             title={intl.get('layout.main.menu.community')}
-            featureToggleKey={FT_COMMUNITY}
           />,
           <Dropdown
             key="resources"

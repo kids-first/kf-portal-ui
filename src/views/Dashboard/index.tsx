@@ -1,23 +1,25 @@
-import { Space, Typography } from 'antd';
-import { useUser } from 'store/user';
 import intl from 'react-intl-universal';
-import SortableGrid from '@ferlab/ui/core/layout/SortableGrid';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import { AlterTypes } from 'common/types';
-import NotificationBanner from 'components/featureToggle/NotificationBanner';
-import { dashboardCards } from './components/DashboardCards';
 import { useDispatch } from 'react-redux';
-import { updateUserConfig } from 'store/user/thunks';
-import DataExplorationLinks from './components/DashboardCards/DataExplorationLinks';
-import { orderCardIfNeeded } from 'utils/helper';
+import SortableGrid from '@ferlab/ui/core/layout/SortableGrid';
+import { Space, Typography } from 'antd';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
+
 import {
   FT_DASHBOARD_BANNER,
-  FT_DASHBOARD_BANNER_TYPE,
   FT_DASHBOARD_BANNER_MSG,
+  FT_DASHBOARD_BANNER_TYPE,
 } from 'common/featureToggle';
+import { AlterTypes } from 'common/types';
+import NotificationBanner from 'components/featureToggle/NotificationBanner';
+import FencesConnectionModal from 'components/uiKit/Fences/Modal';
+import { useUser } from 'store/user';
+import { updateUserConfig } from 'store/user/thunks';
+import { orderCardIfNeeded } from 'utils/helper';
+
+import { dashboardCards } from './components/DashboardCards';
+import DataExplorationLinks from './components/DashboardCards/DataExplorationLinks';
 
 import styles from './index.module.scss';
-import FencesConnectionModal from 'components/uiKit/Fences/Modal';
 
 const { Title } = Typography;
 
