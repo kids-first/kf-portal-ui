@@ -40,7 +40,7 @@ const BiospecimensTable = ({ id }: OwnProps) => {
         <EntityTableRedirectLink
           key="1"
           to={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
-          icon={<ExternalLinkIcon width={14} />}
+          icon={<ExternalLinkIcon width="14px" />}
           onClick={() =>
             addQuery({
               queryBuilderId: DATA_EXPLORATION_QB_ID,

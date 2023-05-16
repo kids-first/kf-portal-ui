@@ -1,8 +1,9 @@
-import useFeatureToggle from "hooks/useFeatureToggle";
-import { Alert, AlertProps } from "antd";
-import parseHTML from "html-react-parser";
+import { Alert, AlertProps } from 'antd';
+import parseHTML from 'html-react-parser';
 
-type OwnProps = Omit<AlertProps, "afterClose"> & {
+import useFeatureToggle from 'hooks/useFeatureToggle';
+
+type OwnProps = Omit<AlertProps, 'afterClose'> & {
   featureToggleKey: string;
 };
 
@@ -14,11 +15,7 @@ const NotificationBanner = ({ featureToggleKey, ...rest }: OwnProps) => {
       {isEnabled && (
         <Alert
           {...rest}
-          message={
-            typeof rest.message === "string"
-              ? parseHTML(rest.message)
-              : rest.message
-          }
+          message={typeof rest.message === 'string' ? parseHTML(rest.message) : rest.message}
           afterClose={hideFeature}
         />
       )}

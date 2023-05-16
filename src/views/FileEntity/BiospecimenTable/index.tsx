@@ -54,7 +54,7 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
               setAsActive: true,
             })
           }
-          icon={<ExternalLinkIcon width={14} />}
+          icon={<ExternalLinkIcon width="14px" />}
         >
           {intl.get('global.viewInDataExploration')}
         </EntityTableRedirectLink>,
