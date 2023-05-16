@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import BarChart from '@ferlab/ui/core/components/Charts/Bar';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
@@ -11,11 +12,9 @@ import { isEmpty } from 'lodash';
 import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
-import BarChart from 'components/uiKit/charts/Bar';
 import useApi from 'hooks/useApi';
 
 interface OwnProps {
-  id: string;
   className?: string;
 }
 
@@ -37,10 +36,11 @@ const transformAgeAtDiagnosis = (results: DiagnosisQueryResult) =>
   }));
 
 const graphSetting: any = {
-  height: 300,
   margin: {
+    top: 12,
     bottom: 45,
     left: 60,
+    right: 24,
   },
   enableLabel: false,
   layout: 'vertical',
@@ -100,7 +100,7 @@ const addToQuery = (field: string, key: string) => {
   });
 };
 
-const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
+const AgeAtDiagnosisGraphCard = ({ className = '' }: OwnProps) => {
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -125,7 +125,7 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
       resizable
       title={
         <GridCardHeader
-          id={id}
+          id="age-at-diagnosis-gird-card-header"
           title={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
           withHandle
         />
@@ -136,7 +136,6 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
             <Empty imageType="grid" size="large" />
           ) : (
             <BarChart
-              showCursor
               data={ageAtDiagnosisresults}
               tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
               axisLeft={{
@@ -152,7 +151,14 @@ const AgeAtDiagnosisGraphCard = ({ id, className = '' }: OwnProps) => {
               onClick={(datum: any) =>
                 addToQuery('diagnosis.age_at_event_days', datum.data.label as string)
               }
-              {...graphSetting}
+              margin={{
+                top: 12,
+                bottom: 45,
+                left: 60,
+                right: 24,
+              }}
+              enableLabel={false}
+              layout="vertical"
             />
           )}
         </>
