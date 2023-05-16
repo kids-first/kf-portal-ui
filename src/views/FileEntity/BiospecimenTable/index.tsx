@@ -1,7 +1,12 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
+import ExternalLinkIcon from '@ferlab/ui/core/components/ExternalLink/ExternalLinkIcon';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { EntityTable, EntityTableRedirectLink } from '@ferlab/ui/core/pages/EntityPage';
+import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { SectionId } from 'views/FileEntity/utils/anchorLinks';
 import {
   getBiospecimenColumns,
@@ -10,6 +15,7 @@ import {
 
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { STATIC_ROUTES } from 'utils/routes';
 
 interface OwnProps {
   file?: IFileEntity;
@@ -27,7 +33,32 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
       id={SectionId.PARTICIPANT_SAMPLE}
       loading={loading}
       data={biospecimens}
+      total={biospecimens.length}
       title={intl.get('entities.file.participant_sample.title')}
+      titleExtra={[
+        <EntityTableRedirectLink
+          key="1"
+          to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+          onClick={() =>
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'file_id',
+                    value: file ? [file.file_id] : [],
+                    index: INDEXES.FILES,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            })
+          }
+          icon={<ExternalLinkIcon width={14} />}
+        >
+          {intl.get('global.viewInDataExploration')}
+        </EntityTableRedirectLink>,
+      ]}
       header={intl.get('entities.file.participant_sample.title')}
       columns={getBiospecimenColumns()}
       initialColumnState={userInfo?.config.files?.tables?.biospecimens?.columns}

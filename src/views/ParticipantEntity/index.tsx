@@ -3,19 +3,25 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
+import ExternalLinkIcon from '@ferlab/ui/core/components/ExternalLink/ExternalLinkIcon';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import EntityPageWrapper, {
   EntityDescriptions,
   EntityTableMultiple,
+  EntityTableRedirectLink,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
 import { Button, Dropdown, Menu, Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { useParticipantEntity } from 'graphql/participants/actions';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 
 import { ReportType } from 'services/api/reports/models';
 import { fetchReport } from 'store/report/thunks';
+import { STATIC_ROUTES } from 'utils/routes';
 
 import {
   getDataTypeColumns,
@@ -161,7 +167,32 @@ const ParticipantEntity = () => {
         <EntityTableMultiple
           id={SectionId.DATAFILE}
           loading={loading}
+          total={files.length}
           title={intl.get('screen.participantEntity.files.dataFile')}
+          titleExtra={[
+            <EntityTableRedirectLink
+              key="1"
+              to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
+              onClick={() =>
+                addQuery({
+                  queryBuilderId: DATA_EXPLORATION_QB_ID,
+                  query: generateQuery({
+                    newFilters: [
+                      generateValueFilter({
+                        field: 'participant_id',
+                        value: [id],
+                        index: INDEXES.PARTICIPANT,
+                      }),
+                    ],
+                  }),
+                  setAsActive: true,
+                })
+              }
+              icon={<ExternalLinkIcon width={14} />}
+            >
+              {intl.get('global.viewInDataExploration')}
+            </EntityTableRedirectLink>,
+          ]}
           header={intl.get('screen.participantEntity.files.dataFile')}
           tables={[
             {

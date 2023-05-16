@@ -4,13 +4,12 @@ import { FileTextOutlined, ReadOutlined } from '@ant-design/icons';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
+import { IParticipantEntity } from 'graphql/participants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.scss';
-import { IParticipantEntity } from 'graphql/participants/models';
-
 
 interface OwnProps {
   data?: IParticipantEntity;
