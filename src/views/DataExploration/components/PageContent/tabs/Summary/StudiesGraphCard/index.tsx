@@ -1,10 +1,10 @@
 import intl from 'react-intl-universal';
+import PieChart from '@ferlab/ui/core/components/Charts/Pie';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
 import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
-import { BasicTooltip } from '@nivo/tooltip';
 import { Col, Row } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
@@ -13,29 +13,20 @@ import { isEmpty } from 'lodash';
 import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
-import PieChart from 'components/uiKit/charts/Pie';
+import { getCommonColors } from 'common/charts';
 import useApi from 'hooks/useApi';
 import { toChartData } from 'utils/charts';
 
 import styles from './index.module.scss';
 
+const colors = getCommonColors();
+
 interface OwnProps {
-  id: string;
   className?: string;
 }
 
 const transformData = (results: TRawAggregation) =>
   (results?.data?.participant?.aggregations?.study__study_code.buckets || []).map(toChartData);
-
-const graphSetting = {
-  height: 175,
-  margin: {
-    top: 12,
-    bottom: 12,
-    left: 12,
-    right: 12,
-  },
-};
 
 const addToQuery = (field: string, key: string) =>
   updateActiveQueryField({
@@ -45,7 +36,7 @@ const addToQuery = (field: string, key: string) =>
     index: INDEXES.PARTICIPANT,
   });
 
-const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
+const StudiesGraphCard = ({ className = '' }: OwnProps) => {
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -70,7 +61,7 @@ const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
       resizable
       title={
         <GridCardHeader
-          id={id}
+          id="studies-graph-header"
           title={intl.get('screen.dataExploration.tabs.summary.studies.cardTitle')}
           withHandle
         />
@@ -84,14 +75,7 @@ const StudiesGraphCard = ({ id, className = '' }: OwnProps) => {
               <PieChart
                 data={data}
                 onClick={(datum) => addToQuery('study.study_code', datum.id as string)}
-                tooltip={(value) => (
-                  <BasicTooltip
-                    id={value.datum.id.toString()}
-                    value={value.datum.value}
-                    color={value.datum.color}
-                  />
-                )}
-                {...graphSetting}
+                colors={colors}
               />
             )}
           </Col>

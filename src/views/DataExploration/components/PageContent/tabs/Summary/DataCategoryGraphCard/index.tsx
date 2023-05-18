@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { useHistory } from 'react-router-dom';
+import BarChart from '@ferlab/ui/core/components/Charts/Bar';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
@@ -12,30 +12,18 @@ import { isEmpty } from 'lodash';
 import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
-import BarChart from 'components/uiKit/charts/Bar';
 import useApi from 'hooks/useApi';
 import { toChartData } from 'utils/charts';
 import { truncateString } from 'utils/string';
 
 interface OwnProps {
-  id: string;
   className?: string;
 }
 
 const transformDataCategory = (results: TRawAggregation) =>
   (results?.data?.participant?.aggregations?.files__data_category.buckets || []).map(toChartData);
 
-const graphSetting: any = {
-  height: 294,
-  margin: {
-    bottom: 45,
-    left: 125,
-  },
-  enableLabel: false,
-  layout: 'horizontal',
-};
-
-const addToQuery = (field: string, key: string, history: any) =>
+const addToQuery = (field: string, key: string) =>
   updateActiveQueryField({
     queryBuilderId: DATA_EXPLORATION_QB_ID,
     field,
@@ -43,8 +31,7 @@ const addToQuery = (field: string, key: string, history: any) =>
     index: INDEXES.FILES,
   });
 
-const DataCategoryGraphCard = ({ id, className = '' }: OwnProps) => {
-  const history = useHistory();
+const DataCategoryGraphCard = ({ className = '' }: OwnProps) => {
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -56,6 +43,7 @@ const DataCategoryGraphCard = ({ id, className = '' }: OwnProps) => {
       },
     },
   });
+
   const dataCategoryResults = transformDataCategory(result);
 
   return (
@@ -67,7 +55,7 @@ const DataCategoryGraphCard = ({ id, className = '' }: OwnProps) => {
       resizable
       title={
         <GridCardHeader
-          id={id}
+          id="data-category-header"
           title={intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle')}
           withHandle
         />
@@ -82,7 +70,7 @@ const DataCategoryGraphCard = ({ id, className = '' }: OwnProps) => {
               axisLeft={{
                 legend: 'Data Category',
                 legendPosition: 'middle',
-                legendOffset: -120,
+                legendOffset: -110,
                 format: (title: string) => truncateString(title, 15),
               }}
               tooltipLabel={(node: any) => node.data.id}
@@ -91,10 +79,15 @@ const DataCategoryGraphCard = ({ id, className = '' }: OwnProps) => {
                 legendPosition: 'middle',
                 legendOffset: 35,
               }}
-              onClick={(datum: any) =>
-                addToQuery('data_category', datum.indexValue as string, history)
-              }
-              {...graphSetting}
+              onClick={(datum: any) => addToQuery('data_category', datum.indexValue as string)}
+              enableLabel={false}
+              layout="horizontal"
+              margin={{
+                bottom: 45,
+                left: 125,
+                right: 12,
+                top: 12,
+              }}
             />
           )}
         </>
