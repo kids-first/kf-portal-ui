@@ -1,6 +1,9 @@
 export const DEMOGRAPHIC_QUERY = `
   query AggregationDemographicInfo($sqon: JSON) {
     participant {
+      hits(filters: $sqon) {
+        total
+      }
       aggregations(filters: $sqon, aggregations_filter_themselves: true) {
         sex {
           buckets {
@@ -28,6 +31,9 @@ export const DEMOGRAPHIC_QUERY = `
 export const DATATYPE_QUERY = `
   query($sqon: JSON) {
     participant {
+      hits(filters: $sqon) {
+        total
+      }
       aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
         files__data_type {
           buckets {
@@ -43,6 +49,9 @@ export const DATATYPE_QUERY = `
 export const PARTICIPANT_BY_STUDIES_QUERY = `
   query($sqon: JSON) {
     participant {
+      hits(filters: $sqon) {
+        total
+      }
       aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
         study__study_code {
           buckets {
@@ -58,6 +67,9 @@ export const PARTICIPANT_BY_STUDIES_QUERY = `
 export const DATA_CATEGORY_QUERY = `
   query($sqon: JSON) {
     participant {
+      hits(filters: $sqon) {
+        total
+      }
       aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
         files__data_category {
           buckets {
@@ -73,6 +85,9 @@ export const DATA_CATEGORY_QUERY = `
 export const AGE_AT_DIAGNOSIS_QUERY = `
     query($sqon: JSON) {
       participant {
+        hits(filters: $sqon) {
+          total
+        }
         _0to1: hits(
           filters: {
             op: "and"

@@ -1,11 +1,11 @@
-import { Button, Space, Tree, Typography } from 'antd';
-import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
 import intl from 'react-intl-universal';
-import { INDEXES } from 'graphql/constants';
-import { RegexExtractPhenotype } from 'views/DataExploration/utils/PhenotypeStore';
-import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import { Button, Space, Tree, Typography } from 'antd';
+import { INDEXES } from 'graphql/constants';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
+import { RegexExtractPhenotype } from 'views/DataExploration/utils/PhenotypeStore';
 
 import styles from './index.module.scss';
 
@@ -77,19 +77,19 @@ const TreePanel = ({
         className={styles.phenotypeTree}
         treeData={treeData!}
         onSelect={(keys) => {
-          if (keys.length) {
-            const key = getPath(keys[0] as string, treeData!).join('-');
-            getSelectedPhenotype({
-              title: keys[0] as string,
-              name: keys[0] as string,
-              key,
-              children: [],
-              valueText: 0,
-            });
-            updateSunburst(key);
-          } else {
+          if (!keys.length) {
             return {};
           }
+
+          const key = getPath(keys[0] as string, treeData!).join('-');
+          getSelectedPhenotype({
+            title: keys[0] as string,
+            name: keys[0] as string,
+            key,
+            children: [],
+            valueText: 0,
+          });
+          updateSunburst(key);
         }}
       />
     </Space>

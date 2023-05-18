@@ -3,8 +3,8 @@ import BarChart from '@ferlab/ui/core/components/Charts/Bar';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
-import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
-import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
+import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
+import { aggregationToChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import { DATATYPE_QUERY } from 'graphql/summary/queries';
@@ -13,15 +13,8 @@ import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import useApi from 'hooks/useApi';
-import { toChartData } from 'utils/charts';
 import { truncateString } from 'utils/string';
-
-interface OwnProps {
-  className?: string;
-}
-
-const transformDataType = (results: TRawAggregation) =>
-  (results?.data?.participant?.aggregations?.files__data_type.buckets || []).map(toChartData);
+import { getResizableGridDictionary } from 'utils/translation';
 
 const addToQuery = (field: string, key: string) =>
   updateActiveQueryField({
@@ -31,7 +24,7 @@ const addToQuery = (field: string, key: string) =>
     index: INDEXES.FILES,
   });
 
-const DataTypeGraphCard = ({ className = '' }: OwnProps) => {
+const DataTypeGraphCard = () => {
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -43,22 +36,50 @@ const DataTypeGraphCard = ({ className = '' }: OwnProps) => {
       },
     },
   });
-  const dataTypeResults = transformDataType(result);
+  const dataTypeResults = aggregationToChartData(
+    result?.data?.participant?.aggregations?.files__data_type.buckets,
+    result?.data?.participant?.hits?.total,
+  );
 
   return (
-    <GridCard
-      wrapperClassName={className}
+    <ResizableGridCard
+      dictionary={getResizableGridDictionary()}
       theme="shade"
       loading={loading}
       loadingType="spinner"
-      resizable
-      title={
-        <GridCardHeader
-          id="data-type-header"
-          title={intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle')}
-          withHandle
+      headerTitle={intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle')}
+      tsvSettings={{
+        data: [dataTypeResults],
+      }}
+      modalContent={
+        <BarChart
+          data={dataTypeResults}
+          axisLeft={{
+            legend: 'Data Types',
+            legendPosition: 'middle',
+            legendOffset: -128,
+            format: (title: string) => truncateString(title, 15),
+          }}
+          tooltipLabel={(node: any) => node.data.id}
+          axisBottom={{
+            legend: '# of participants',
+            legendPosition: 'middle',
+            legendOffset: 35,
+          }}
+          onClick={(datum: any) => addToQuery('data_type', datum.indexValue as string)}
+          margin={{
+            bottom: 45,
+            left: 140,
+            right: 12,
+            top: 12,
+          }}
+          layout="horizontal"
         />
       }
+      modalSettings={{
+        width: 800,
+        height: 400,
+      }}
       content={
         <>
           {isEmpty(dataTypeResults) ? (
@@ -85,7 +106,6 @@ const DataTypeGraphCard = ({ className = '' }: OwnProps) => {
                 right: 12,
                 top: 12,
               }}
-              enableLabel={false}
               layout="horizontal"
             />
           )}

@@ -920,6 +920,15 @@ const en = {
       tabs: {
         summary: {
           title: 'Summary',
+          download: {
+            fileNameTemplate: 'kidsfirst-%name-chart-%date.%extension',
+            fileNameDateFormat: 'yyyy-MM-dd',
+            download: 'Download',
+            preview: 'Download Preview - ',
+            data: 'Download Data',
+            svg: 'Download SVG',
+            png: 'Download PNG',
+          },
           demographic: {
             cardTitle: 'Demographics',
             sexTitle: 'Sex',

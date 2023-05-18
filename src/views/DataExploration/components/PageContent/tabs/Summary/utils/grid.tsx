@@ -15,13 +15,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.observed_phenotype.cardTitle'),
     id: 'observed_phenotype',
-    component: (
-      <SunburstGraphCard
-        id="1"
-        className={cx(styles.summaryGrapCard, styles.sunburstGraphCard)}
-        field="observed_phenotype"
-      />
-    ),
+    component: <SunburstGraphCard field="observed_phenotype" />,
     base: {
       h: 4,
       w: 8,
@@ -29,7 +23,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       y: 0,
       minW: 5,
       minH: 4,
-      static: true,
+      isResizable: false,
     },
     md: {
       h: 4,
@@ -50,13 +44,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.mondo.cardTitle'),
     id: 'mondo',
-    component: (
-      <SunburstGraphCard
-        id="1"
-        className={cx(styles.summaryGrapCard, styles.sunburstGraphCard)}
-        field="mondo"
-      />
-    ),
+    component: <SunburstGraphCard field="mondo" />,
     base: {
       h: 4,
       w: 8,
@@ -64,7 +52,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       y: 0,
       minW: 5,
       minH: 4,
-      static: true,
+      isResizable: false,
     },
     md: {
       h: 4,
@@ -86,7 +74,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.demographic.cardTitle'),
     id: 'demographics-graph-card',
-    component: <DemographicsGraphCard className={styles.summaryGrapCard} />,
+    component: <DemographicsGraphCard />,
     base: {
       h: 2,
       w: 6,
@@ -117,12 +105,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle'),
     id: 'age-at-diagnosis-graph-card',
-    component: (
-      <AgeAtDiagnosisGraphCard
-        key="age-at-diagnosis-graph-card"
-        className={styles.summaryGrapCard}
-      />
-    ),
+    component: <AgeAtDiagnosisGraphCard />,
     base: {
       h: 2,
       w: 5,
@@ -153,9 +136,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle'),
     id: 'data-category-graph-card',
-    component: (
-      <DataCategoryGraphCard key="data-category-graph-card" className={styles.summaryGrapCard} />
-    ),
+    component: <DataCategoryGraphCard />,
     base: {
       h: 2,
       w: 5,
@@ -186,7 +167,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.studies.cardTitle'),
     id: 'studies-graph-card',
-    component: <StudiesGraphCard className={styles.summaryGrapCard} />,
+    component: <StudiesGraphCard />,
     base: {
       h: 3,
       w: 4,
@@ -217,7 +198,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle'),
     id: 'data-type-graph-card',
-    component: <DataTypeGraphCard className={styles.summaryGrapCard} />,
+    component: <DataTypeGraphCard />,
     base: {
       h: 3,
       w: 6,
