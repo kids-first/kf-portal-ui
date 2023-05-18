@@ -3,13 +3,15 @@ import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { INDEXES } from 'graphql/constants';
-import { ArrangerApi } from 'services/api/arranger';
-import EntityUploadIds from './EntityUploadIds';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { CHECK_BIOSPECIMEN_MATCH } from 'graphql/biospecimens/queries';
+import { INDEXES } from 'graphql/constants';
 import { uniqBy } from 'lodash';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+
+import { ArrangerApi } from 'services/api/arranger';
+
+import EntityUploadIds from './EntityUploadIds';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -41,7 +43,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
       });
 
       const biospecimens: IBiospecimenEntity[] = hydrateResults(
-        response.data?.data?.biospecimen?.hits?.edges || [],
+        response.data?.data?.biospecimens?.hits?.edges || [],
       );
 
       return uniqBy(biospecimens, 'sample_id').map((biospecimen) => ({
