@@ -1,15 +1,14 @@
-import Empty from '@ferlab/ui/core/components/Empty';
-import { Form, Input, Modal, Select, Typography } from 'antd';
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import Empty from '@ferlab/ui/core/components/Empty';
+import { Form, Input, Modal, Select } from 'antd';
+
 import { useFenceCavatica } from 'store/fenceCavatica';
 import { fenceCavaticaActions } from 'store/fenceCavatica/slice';
 import { createProjet, fetchAllBillingGroups } from 'store/fenceCavatica/thunks';
-import intl from 'react-intl-universal';
 
 import styles from './index.module.scss';
-
-const { Text } = Typography;
 
 interface OwnProps {
   openAnalyseModalOnClose?: boolean;
@@ -89,7 +88,7 @@ const CreateProjectModal = ({
       >
         <Form.Item
           name={FORM_FIELDS.PROJECT_NAME}
-          label={<Text strong>Project name</Text>}
+          label="Project name"
           rules={[{ required: true, type: 'string' }]}
           required={false}
         >
@@ -97,7 +96,7 @@ const CreateProjectModal = ({
         </Form.Item>
         <Form.Item
           name={FORM_FIELDS.PROJECT_BILLING_GROUP}
-          label={<Text strong>Project billing group</Text>}
+          label="Project billing group"
           rules={[{ required: true, type: 'string' }]}
           required={false}
           className={styles.billingGroupItem}
