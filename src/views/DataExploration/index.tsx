@@ -28,7 +28,7 @@ import {
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
 
-import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
+import { BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
 import FileSearch from './components/FileSearch';
 import FileSetSearch from './components/FileSetSearch';
