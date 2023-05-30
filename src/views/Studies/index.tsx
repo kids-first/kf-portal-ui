@@ -47,9 +47,12 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'study_code',
     title: 'Code',
-    render: (record: IStudiesEntity) => (
-      <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
-    ),
+    render: (record: IStudiesEntity) =>
+      record?.website ? (
+        <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
+      ) : (
+        record?.study_code || ''
+      ),
   },
   {
     key: 'study_name',
