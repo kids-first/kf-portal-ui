@@ -51,7 +51,7 @@ const columns: ProColumnType<any>[] = [
       record?.website ? (
         <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
       ) : (
-        record?.study_code || ''
+        record?.study_code || TABLE_EMPTY_PLACE_HOLDER
       ),
   },
   {
