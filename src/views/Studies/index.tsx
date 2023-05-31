@@ -13,6 +13,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { STATIC_ROUTES } from 'utils/routes';
+import { numberWithCommas } from 'utils/string';
 
 import PageContent from './components/PageContent';
 import SideBarFacet from './components/SideBarFacet';
@@ -106,10 +107,10 @@ const columns: ProColumnType<any>[] = [
             })
           }
         >
-          {participantCount}
+          {numberWithCommas(participantCount)}
         </Link>
       ) : (
-        participantCount || 0
+        numberWithCommas(participantCount) || 0
       );
     },
   },
@@ -138,10 +139,10 @@ const columns: ProColumnType<any>[] = [
             })
           }
         >
-          {biospecimenCount}
+          {numberWithCommas(biospecimenCount)}
         </Link>
       ) : (
-        biospecimenCount || 0
+        numberWithCommas(biospecimenCount) || 0
       );
     },
   },
@@ -149,6 +150,7 @@ const columns: ProColumnType<any>[] = [
     key: 'family_count',
     title: 'Families',
     dataIndex: 'family_count',
+    render: (family_count: number) => numberWithCommas(family_count) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'clinical',

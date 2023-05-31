@@ -8,6 +8,7 @@ import { useMembers } from 'graphql/members/actions';
 
 import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
 import { scrollToTop } from 'utils/helper';
+import { numberWithCommas } from 'utils/string';
 
 import FiltersBox from './components/Filters/Box';
 import MemberCard from './components/MemberCard';
@@ -82,7 +83,7 @@ const CommunityPage = () => {
         <TableHeader
           pageIndex={queryConfig.pageIndex}
           pageSize={queryConfig.size}
-          total={total}
+          total={+numberWithCommas(total)}
           dictionary={{
             itemCount: {
               results: 'Members',
