@@ -110,7 +110,7 @@ const columns: ProColumnType<any>[] = [
           {numberWithCommas(participantCount)}
         </Link>
       ) : (
-        numberWithCommas(participantCount) || 0
+        participantCount || 0
       );
     },
   },
@@ -142,7 +142,7 @@ const columns: ProColumnType<any>[] = [
           {numberWithCommas(biospecimenCount)}
         </Link>
       ) : (
-        numberWithCommas(biospecimenCount) || 0
+        biospecimenCount || 0
       );
     },
   },
@@ -150,7 +150,8 @@ const columns: ProColumnType<any>[] = [
     key: 'family_count',
     title: 'Families',
     dataIndex: 'family_count',
-    render: (family_count: number) => numberWithCommas(family_count) || TABLE_EMPTY_PLACE_HOLDER,
+    render: (family_count: number) =>
+      family_count ? numberWithCommas(family_count) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'clinical',
