@@ -83,7 +83,7 @@ const CommunityPage = () => {
         <TableHeader
           pageIndex={queryConfig.pageIndex}
           pageSize={queryConfig.size}
-          total={+numberWithCommas(total)}
+          total={total}
           dictionary={{
             itemCount: {
               results: 'Members',
@@ -94,6 +94,7 @@ const CommunityPage = () => {
               selected: '',
               selectedPlural: '',
             },
+            numberFormat: numberWithCommas,
           }}
         ></TableHeader>
         <List
