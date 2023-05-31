@@ -102,7 +102,7 @@ export const getDiagnosisDefaultColumns = (): ProColumnType[] => [
     tooltip: intl.get('screen.participantEntity.diagnosis.sharedTermTooltip'),
     render: (_) => TABLE_EMPTY_PLACE_HOLDER,
   },
-  // TODO: Need to be added
+  // TODO: Need to be added and format thousandth with comma
   {
     key: 'diagnosis_mondo_shared_term',
     title: intl.get('screen.participantEntity.diagnosis.sharedTerm'),

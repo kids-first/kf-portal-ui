@@ -1,29 +1,32 @@
-import { Col, Modal, Row, Typography } from 'antd';
-import { IUserSetOutput } from 'services/api/savedSet/models';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactElement, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { Col, Modal, Row, Typography } from 'antd';
+import { formatDistance } from 'date-fns';
+import { INDEXES } from 'graphql/constants';
+import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
   DATA_FILES_SAVED_SETS_FIELD,
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
-import { formatDistance } from 'date-fns';
-import CreateEditModal from '../CreateEditModal';
-import { deleteSavedSet } from 'store/savedSet/thunks';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { INDEXES } from 'graphql/constants';
-import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
-import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
+import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
+
+import { IUserSetOutput } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';
+import { deleteSavedSet } from 'store/savedSet/thunks';
+import { STATIC_ROUTES } from 'utils/routes';
+import { numberWithCommas } from 'utils/string';
+
+import CreateEditModal from '../CreateEditModal';
 
 import styles from './index.module.scss';
-import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
-import { useHistory } from 'react-router-dom';
-import { STATIC_ROUTES } from 'utils/routes';
-import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
 
 interface OwnProps {
   data: IUserSetOutput;
@@ -90,7 +93,7 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
         extra={
           <Row gutter={8} className={styles.countDisplay}>
             <Col>
-              <Text className={styles.count}>{data.size}</Text>
+              <Text className={styles.count}>{numberWithCommas(data.size)}</Text>
             </Col>
             <Col>
               <Text type="secondary">{icon}</Text>
