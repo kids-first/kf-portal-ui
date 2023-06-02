@@ -4,7 +4,7 @@ import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
-import GridCard, { GridCardHeader } from '@ferlab/ui/core/view/v2/GridCard';
+import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import { AGE_AT_DIAGNOSIS_QUERY } from 'graphql/summary/queries';
@@ -13,10 +13,7 @@ import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import useApi from 'hooks/useApi';
-
-interface OwnProps {
-  className?: string;
-}
+import { getResizableGridDictionary } from 'utils/translation';
 
 type DiagnosisQueryResult = {
   data: {
@@ -28,23 +25,17 @@ type DiagnosisQueryResult = {
   };
 };
 
-const transformAgeAtDiagnosis = (results: DiagnosisQueryResult) =>
-  Object.keys(results?.data?.participant || {}).map((key) => ({
-    id: intl.get(`screen.dataExploration.tabs.summary.ageAtDiagnosis.${key}`),
-    label: key,
-    value: results?.data?.participant[key]?.total || 0,
-  }));
+const KEY_TO_IGNORES = ['hits'];
 
-const graphSetting: any = {
-  margin: {
-    top: 12,
-    bottom: 45,
-    left: 60,
-    right: 24,
-  },
-  enableLabel: false,
-  layout: 'vertical',
-};
+const transformAgeAtDiagnosis = (results: DiagnosisQueryResult, total?: number) =>
+  Object.keys(results?.data?.participant || {})
+    .map((key) => ({
+      id: intl.get(`screen.dataExploration.tabs.summary.ageAtDiagnosis.${key}`),
+      label: key,
+      value: results?.data?.participant[key]?.total || 0,
+      frequency: total ? (results?.data?.participant[key]?.total || 0 * 100) / total : 0,
+    }))
+    .filter((e) => !KEY_TO_IGNORES.includes(e.label));
 
 const buildSqonFromRange = (rangeValue: string) => {
   switch (rangeValue) {
@@ -100,7 +91,7 @@ const addToQuery = (field: string, key: string) => {
   });
 };
 
-const AgeAtDiagnosisGraphCard = ({ className = '' }: OwnProps) => {
+const AgeAtDiagnosisGraphCard = () => {
   const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
@@ -113,23 +104,48 @@ const AgeAtDiagnosisGraphCard = ({ className = '' }: OwnProps) => {
     },
   });
 
-  const ageAtDiagnosisresults = transformAgeAtDiagnosis(result);
+  const ageAtDiagnosisresults = transformAgeAtDiagnosis(result, result?.hits?.total);
 
   return (
-    <GridCard
-      wrapperClassName={className}
-      contentClassName={className}
+    <ResizableGridCard
       theme="shade"
       loading={loading}
       loadingType="spinner"
-      resizable
-      title={
-        <GridCardHeader
-          id="age-at-diagnosis-gird-card-header"
-          title={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
-          withHandle
+      dictionary={getResizableGridDictionary()}
+      headerTitle={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
+      tsvSettings={{
+        data: [ageAtDiagnosisresults],
+      }}
+      modalContent={
+        <BarChart
+          data={ageAtDiagnosisresults}
+          tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
+          axisLeft={{
+            legend: '# Participants',
+            legendPosition: 'middle',
+            legendOffset: -45,
+          }}
+          axisBottom={{
+            legend: 'Age at Diagnosis (years)',
+            legendPosition: 'middle',
+            legendOffset: 35,
+          }}
+          onClick={(datum: any) =>
+            addToQuery('diagnosis.age_at_event_days', datum.data.label as string)
+          }
+          margin={{
+            top: 12,
+            bottom: 45,
+            left: 60,
+            right: 24,
+          }}
+          layout="vertical"
         />
       }
+      modalSettings={{
+        width: 800,
+        height: 300,
+      }}
       content={
         <>
           {isEmpty(ageAtDiagnosisresults) ? (
@@ -157,7 +173,6 @@ const AgeAtDiagnosisGraphCard = ({ className = '' }: OwnProps) => {
                 left: 60,
                 right: 24,
               }}
-              enableLabel={false}
               layout="vertical"
             />
           )}

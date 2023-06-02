@@ -1,6 +1,12 @@
 import * as d3 from 'd3';
+import { RegexExtractPhenotype } from 'views/DataExploration/utils/PhenotypeStore';
 
 const WITH_FONT_COMPENSATION = 20;
+const SUNBURST_PADDING_BOTTOM = 24;
+const LEGEND_MARGIN_TOP = 16;
+const LEGEND_MAX_HEIGHT = 140;
+
+const INNER_CIRCLE_MULTIPLIER = 1.35;
 
 const regexTermNumber = /^[(]HP:\d+\)$/;
 const fillOpacityWithChild = 1;
@@ -16,14 +22,17 @@ const SunburstD3 = (
     centerTitleFormatter: (node) => {},
     centerSubtitleFormatter: (node) => {},
     centerDescriptionFormatter: (node) => {},
+    legendFormatter: (node) => {},
   },
   type,
+  previewMode,
 ) => {
   const {
     tooltipFormatter,
     centerTitleFormatter,
     centerSubtitleFormatter,
     centerDescriptionFormatter,
+    legendFormatter,
   } = formatters;
   const width = config.width || 300;
   const height = config.height || 300;
@@ -80,7 +89,11 @@ const SunburstD3 = (
   const color = d3.scaleOrdinal(colors ? colors : d3['schemeSet1']);
   root.each((d) => (d.current = d));
 
-  const svg = d3.select(ref.current).style('width', width).style('height', height);
+  const svg = d3
+    .select(ref.current)
+    .style('width', width)
+    .style('height', height + SUNBURST_PADDING_BOTTOM)
+    .style('z-index', '1000');
 
   svg.selectAll('*').remove();
 
@@ -116,15 +129,18 @@ const SunburstD3 = (
     .style('z-index', '1000');
 
   const mouseoverTooltip = function (d) {
+    if (previewMode) return;
     Tooltip.style('display', 'block');
     d3.select(this).style('stroke', 'black').style('opacity', 1);
   };
   const mousemoveTooltip = function (d) {
+    if (previewMode) return;
     Tooltip.html(tooltipFormatter(d.data))
       .style('left', d3.event.offsetX + 25 + 'px')
       .style('top', d3.event.offsetY + 25 + 'px');
   };
   const mouseoutTooltip = function () {
+    if (previewMode) return;
     Tooltip.style('display', 'none');
   };
 
@@ -153,7 +169,7 @@ const SunburstD3 = (
   const parent = g
     .append('circle')
     .datum(root)
-    .attr('r', radius * 1.5)
+    .attr('r', radius * INNER_CIRCLE_MULTIPLIER)
     .attr('fill', 'none')
     .attr('pointer-events', 'all')
     .attr('text-anchor', 'middle')
@@ -177,13 +193,37 @@ const SunburstD3 = (
       .style('cursor', 'pointer')
       .call(wrap);
   }
-  g.append('circle')
+
+  if (previewMode && legendFormatter) {
+    g.attr('transform', () => `translate(${[width / 2, height / 2]})`);
+    d3.select(ref.current).style('height', height + LEGEND_MAX_HEIGHT);
+
+    var legendText = svg
+      .append('text')
+      .lower()
+      .datum(root)
+      .text((d) => legendFormatter(d.data))
+      .attr('x', (d) => d.x0)
+      .attr('y', config.height + LEGEND_MARGIN_TOP)
+      .attr('text-anchor', 'middle')
+      .attr('transform', () => `translate(${width / 2} 0)`)
+      .style('font-size', '12px')
+      .style('font-weight', '400')
+      .attr('fill', '#2b388f');
+  }
+
+  var innerCircle = g
+    .append('circle')
     .raise()
     .datum(root)
     .lower()
-    .attr('r', radius * 1.5)
+    .attr('r', radius * INNER_CIRCLE_MULTIPLIER)
     .attr('fill', 'white')
     .attr('text-anchor', 'middle');
+
+  if (previewMode) {
+    innerCircle.attr('fill', '#f9f9fb');
+  }
 
   // ACTIONS
   function wrap(selection, data) {
@@ -284,6 +324,41 @@ const SunburstD3 = (
     });
   }
 
+  function wrapLegend(selection, data) {
+    // there is no centering of text with svg, need to do it manually
+    selection.each(function () {
+      let legendText = d3.select(this),
+        words = (legendText.text().match(RegexExtractPhenotype) || []).reverse(),
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = legendText.attr('y') - 10,
+        dy = 0;
+
+      let tspan = legendText
+        .text(null)
+        .append('tspan') // reset text, now hold in text variable
+        .attr('x', 0)
+        .attr('y', y)
+        .attr('dy', dy + 'em');
+
+      for (const word of words) {
+        var legendTSpan = legendText.append('tspan');
+        legendTSpan
+          .text(word)
+          .attr('x', 0)
+          .attr('y', y)
+          .attr('fill', '#5a77a0')
+          .style('font-size', '12px')
+          .style('font-weight', '400')
+          .attr('dy', ++lineNumber * lineHeight + dy + 'em');
+
+        tspan.text(''); // cleanup remaining parent text before quiting
+      }
+
+      legendText.select('tspan:last-child').style('font-weight', '600');
+    });
+  }
+
   function clicked(p) {
     parent.datum(p.parent || root);
     root.each(
@@ -345,6 +420,13 @@ const SunburstD3 = (
       .text(() => centerTitleFormatter(textData.data))
       .call((selection) => {
         wrap(selection, textData.data);
+      });
+
+    if (!previewMode || !legendFormatter) return;
+    legendText
+      .text(() => legendFormatter(textData.data))
+      .call((selection) => {
+        wrapLegend(selection, textData.data);
       });
   };
 
