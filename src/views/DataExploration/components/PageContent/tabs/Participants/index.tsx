@@ -16,6 +16,7 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Button, Dropdown, Menu, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
@@ -265,7 +266,7 @@ const defaultColumns: ProColumnType[] = [
             })
           }
         >
-          {nb_biospecimens}
+          {numberWithCommas(nb_biospecimens)}
         </Link>
       ) : (
         nb_biospecimens
@@ -298,7 +299,7 @@ const defaultColumns: ProColumnType[] = [
             })
           }
         >
-          {record.nb_files}
+          {numberWithCommas(record.nb_files)}
         </Link>
       ) : (
         record.nb_files || 0
@@ -475,14 +476,14 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-        newFilters: [
-          generateValueFilter({
-            field: PARTICIPANTS_SAVED_SETS_FIELD,
-            index: INDEXES.PARTICIPANT,
-            value: selectedRows.map((row) => row[PARTICIPANTS_SAVED_SETS_FIELD]),
-          }),
-        ],
-      });
+          newFilters: [
+            generateValueFilter({
+              field: PARTICIPANTS_SAVED_SETS_FIELD,
+              index: INDEXES.PARTICIPANT,
+              value: selectedRows.map((row) => row[PARTICIPANTS_SAVED_SETS_FIELD]),
+            }),
+          ],
+        });
 
   const menu = (
     <Menu

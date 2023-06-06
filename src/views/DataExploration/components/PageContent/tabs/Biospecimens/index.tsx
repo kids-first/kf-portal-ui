@@ -13,6 +13,7 @@ import useQueryBuilderState, {
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Button } from 'antd';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
@@ -89,11 +90,14 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     title: 'Participant ID',
     dataIndex: ['participant', 'participant_id'],
     sorter: { multiple: 1 },
-    render: (participant_id: string) => (
-      <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${participant_id}`}>
-        {participant_id}
-      </Link>
-    ),
+    render: (participant_id: string) =>
+      participant_id ? (
+        <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${participant_id}`}>
+          {participant_id}
+        </Link>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'container_id',
@@ -152,7 +156,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
             })
           }
         >
-          {nbFiles}
+          {numberWithCommas(nbFiles)}
         </Link>
       ) : (
         nbFiles
@@ -164,7 +168,8 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     title: 'External Participant ID',
     dataIndex: 'participant',
     defaultHidden: true,
-    render: (participant: IParticipantEntity) => participant.external_id,
+    render: (participant: IParticipantEntity) =>
+      participant?.external_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 
@@ -202,7 +207,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-        newFilters: [
+          newFilters: [
             generateValueFilter({
               field: BIOSPECIMENS_SAVED_SETS_FIELD,
               index: INDEXES.BIOSPECIMENS,

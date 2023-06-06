@@ -1,7 +1,8 @@
 import intl from 'react-intl-universal';
 import UploadIds from '@ferlab/ui/core/components/UploadIds';
-import { Descriptions } from 'antd';
 import { TFetchMatchFunc, TOnUpload } from '@ferlab/ui/core/components/UploadIds/types';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
+import { Descriptions } from 'antd';
 
 import styles from './index.module.scss';
 
@@ -39,17 +40,17 @@ const EntityUploadIds = ({
       modalCancelText: intl.get('components.uploadIds.modal.cancelBtn'),
       collapseTitle: (matchCount, unMatchCount) =>
         intl.get('components.uploadIds.modal.collapseTitle', {
-          matchCount,
-          unMatchCount,
+          matchCount: numberWithCommas(matchCount),
+          unMatchCount: numberWithCommas(unMatchCount),
         }),
       matchTabTitle: (matchCount) =>
-        intl.get('components.uploadIds.modal.match', { count: matchCount }),
+        intl.get('components.uploadIds.modal.match', { count: numberWithCommas(matchCount) }),
       unmatchTabTitle: (unmatchcount) =>
-        intl.get('components.uploadIds.modal.unmatch', { count: unmatchcount }),
+        intl.get('components.uploadIds.modal.unmatch', { count: numberWithCommas(unmatchcount) }),
       tablesMessage: (submittedCount, mappedCount) =>
         intl.get('components.uploadIds.modal.tableMessage', {
-          submittedCount,
-          mappedCount,
+          submittedCount: numberWithCommas(submittedCount),
+          mappedCount: numberWithCommas(mappedCount),
         }),
       inputLabel: intl.get('components.uploadIds.modal.inputLabel'),
       matchTable: {
