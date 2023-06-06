@@ -12,6 +12,7 @@ import useQueryBuilderState, {
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useDataFiles } from 'graphql/files/actions';
@@ -92,10 +93,11 @@ const getDefaultColumns = (
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,
-    render: (controlled_access: string) =>
-      !controlled_access ? (
-        '-'
-      ) : controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() ? (
+    render: (controlled_access: string) => {
+      if (!controlled_access) {
+        return TABLE_EMPTY_PLACE_HOLDER;
+      }
+      return controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() ? (
         <Tooltip title="Controlled">
           <Tag color="geekblue">C</Tag>
         </Tooltip>
@@ -103,14 +105,20 @@ const getDefaultColumns = (
         <Tooltip title="Open">
           <Tag color="green">R</Tag>
         </Tooltip>
-      ),
+      );
+    },
   },
   {
     key: 'file_id',
     title: 'File ID',
     dataIndex: 'file_id',
     sorter: { multiple: 1 },
-    render: (file_id: string) => <Link to={`${STATIC_ROUTES.FILES}/${file_id}`}>{file_id}</Link>,
+    render: (file_id: string) =>
+      file_id ? (
+        <Link to={`${STATIC_ROUTES.FILES}/${file_id}`}>{file_id}</Link>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'study.study_code',
@@ -142,8 +150,8 @@ const getDefaultColumns = (
     render: (record: IFileEntity) =>
       record.sequencing_experiment
         ? record.sequencing_experiment.hits?.edges
-          .map((edge) => edge.node.experiment_strategy)
-          .join(', ')
+            .map((edge) => edge.node.experiment_strategy)
+            .join(', ')
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -151,6 +159,7 @@ const getDefaultColumns = (
     title: 'Format',
     dataIndex: 'file_format',
     sorter: { multiple: 1 },
+    render: (file_format: string) => (file_format ? file_format : TABLE_EMPTY_PLACE_HOLDER),
   },
   {
     key: 'size',
@@ -184,7 +193,7 @@ const getDefaultColumns = (
             })
           }
         >
-          {nb_participants}
+          {numberWithCommas(nb_participants)}
         </Link>
       ) : (
         nb_participants
@@ -216,7 +225,7 @@ const getDefaultColumns = (
             })
           }
         >
-          {nb_biospecimens}
+          {numberWithCommas(nb_biospecimens)}
         </Link>
       ) : (
         nb_biospecimens
@@ -316,14 +325,14 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
     selectedAllResults || !selectedKeys.length
       ? sqon
       : generateQuery({
-        newFilters: [
-          generateValueFilter({
-            field: DATA_FILES_SAVED_SETS_FIELD,
-            index: INDEXES.FILES,
-            value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
-          }),
-        ],
-      });
+          newFilters: [
+            generateValueFilter({
+              field: DATA_FILES_SAVED_SETS_FIELD,
+              index: INDEXES.FILES,
+              value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
+            }),
+          ],
+        });
 
   useEffect(() => {
     if (selectedKeys.length) {

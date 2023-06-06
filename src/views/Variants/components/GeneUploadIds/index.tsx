@@ -6,6 +6,7 @@ import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
@@ -33,16 +34,17 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
       modalCancelText: intl.get('upload.gene.ids.modal.cancel.btn'),
       collapseTitle: (matchCount, unMatchCount) =>
         intl.get('upload.gene.ids.modal.collapseTitle', {
-          matchCount,
-          unMatchCount,
+          matchCount: numberWithCommas(matchCount),
+          unMatchCount: numberWithCommas(unMatchCount),
         }),
-      matchTabTitle: (matchCount) => intl.get('upload.gene.ids.modal.match', { count: matchCount }),
+      matchTabTitle: (matchCount) =>
+        intl.get('upload.gene.ids.modal.match', { count: numberWithCommas(matchCount) }),
       unmatchTabTitle: (unmatchcount) =>
-        intl.get('upload.gene.ids.modal.unmatch', { count: unmatchcount }),
+        intl.get('upload.gene.ids.modal.unmatch', { count: numberWithCommas(unmatchcount) }),
       tablesMessage: (submittedCount, mappedCount) =>
         intl.get('upload.gene.ids.modal.table.message', {
-          submittedCount,
-          mappedCount,
+          submittedCount: numberWithCommas(submittedCount),
+          mappedCount: numberWithCommas(mappedCount),
         }),
       inputLabel: intl.get('upload.gene.ids.modal.input.label'),
       matchTable: {

@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import Empty from '@ferlab/ui/core/components/Empty';
 import MaintenancePage from '@ferlab/ui/core/pages/MaintenancePage';
+import { setLocale } from '@ferlab/ui/core/utils/localeUtils';
 import loadable from '@loadable/component';
 import { useKeycloak } from '@react-keycloak/web';
 import { ConfigProvider } from 'antd';
@@ -56,6 +57,8 @@ const App = () => {
   const lang = useLang();
   const { keycloak, initialized } = useKeycloak();
   const keycloakIsReady = keycloak && initialized;
+
+  setLocale(lang);
 
   if (getEnvVarByKey('MAINTENANCE_MODE') === 'true') {
     return (
