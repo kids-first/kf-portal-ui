@@ -1,6 +1,5 @@
-import 'tests/mocks/matchMedia.mock';
+import '../../../../tests/mocks/matchMedia.mock';
 
-import { render, screen } from '@testing-library/react';
 import { renderWithProviders } from 'tests/setupTests';
 
 import PageContent from './index';
