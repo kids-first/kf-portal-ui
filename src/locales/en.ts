@@ -921,7 +921,7 @@ const en = {
         summary: {
           title: 'Summary',
           download: {
-            fileNameTemplate: 'kidsfirst-%name-chart-%date.%extension',
+            fileNameTemplate: 'kidsfirst-%name-%type-%date%extension',
             fileNameDateFormat: 'yyyy-MM-dd',
             download: 'Download',
             preview: 'Download Preview - ',
