@@ -57,7 +57,12 @@ export const generateFilters = ({
       (f: TExtendedMapping) => f.field === underscoreToDot(key),
     );
 
-    const filterGroup = getFilterGroup(found, aggregations[key], [], filterFooter);
+    const filterGroup = getFilterGroup({
+      extendedMapping: found,
+      aggregation: aggregations[key],
+      rangeTypes: [],
+      filterFooter,
+    });
     const filters = getFilters(aggregations, key);
     const selectedFilters = getSelectedFilters({
       queryBuilderId,
