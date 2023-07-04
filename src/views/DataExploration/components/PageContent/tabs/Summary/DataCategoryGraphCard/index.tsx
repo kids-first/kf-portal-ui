@@ -3,7 +3,6 @@ import BarChart from '@ferlab/ui/core/components/Charts/Bar';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
-import { TRawAggregation } from '@ferlab/ui/core/graphql/types';
 import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
 import { aggregationToChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { INDEXES } from 'graphql/constants';
@@ -16,6 +15,8 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import useApi from 'hooks/useApi';
 import { truncateString } from 'utils/string';
 import { getResizableGridDictionary } from 'utils/translation';
+
+import { DATA_CATEGORY_GRAPH_CARD_ID, UID } from '../utils/grid';
 
 const addToQuery = (field: string, key: string) =>
   updateActiveQueryField({
@@ -45,6 +46,8 @@ const DataCategoryGraphCard = () => {
 
   return (
     <ResizableGridCard
+      gridUID={UID}
+      id={DATA_CATEGORY_GRAPH_CARD_ID}
       theme="shade"
       loading={loading}
       loadingType="spinner"

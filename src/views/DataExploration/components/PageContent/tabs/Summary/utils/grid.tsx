@@ -1,6 +1,5 @@
 import intl from 'react-intl-universal';
 import { IResizableGridLayoutConfig } from '@ferlab/ui/core/layout/ResizableGridLayout';
-import cx from 'classnames';
 
 import AgeAtDiagnosisGraphCard from '../AgeAtDiagnosisGraphCard';
 import DataCategoryGraphCard from '../DataCategoryGraphCard';
@@ -9,13 +8,20 @@ import DemographicsGraphCard from '../DemographicGraphCard';
 import StudiesGraphCard from '../StudiesGraphCard';
 import SunburstGraphCard from '../SunburstGraphCard';
 
-import styles from '../index.module.scss';
+export const UID = 'summary';
+export const OBSERVED_PHENOTYPE_ID = 'observed_phenotype';
+export const MONDO_ID = 'mondo';
+export const DEMOGRAPHICS_GRAPH_CARD_ID = 'demographics-graph-card';
+export const AGE_AT_DIAGNOSIS_GRAPH_CARD_ID = 'age-at-diagnosis-graph-card';
+export const DATA_CATEGORY_GRAPH_CARD_ID = 'data-category-graph-card';
+export const STUDIES_GRAPH_CARD_ID = 'studies-graph-card';
+export const DATA_TYPE_GRAPH_CARD_ID = 'data-type-graph-card';
 
 export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   {
     title: intl.get('screen.dataExploration.tabs.summary.observed_phenotype.cardTitle'),
-    id: 'observed_phenotype',
-    component: <SunburstGraphCard field="observed_phenotype" />,
+    id: OBSERVED_PHENOTYPE_ID,
+    component: <SunburstGraphCard id={OBSERVED_PHENOTYPE_ID} field="observed_phenotype" />,
     base: {
       h: 4,
       w: 8,
@@ -43,8 +49,8 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.mondo.cardTitle'),
-    id: 'mondo',
-    component: <SunburstGraphCard field="mondo" />,
+    id: MONDO_ID,
+    component: <SunburstGraphCard id={MONDO_ID} field="mondo" />,
     base: {
       h: 4,
       w: 8,
@@ -73,7 +79,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.demographic.cardTitle'),
-    id: 'demographics-graph-card',
+    id: DEMOGRAPHICS_GRAPH_CARD_ID,
     component: <DemographicsGraphCard />,
     base: {
       h: 2,
@@ -87,24 +93,22 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 2,
       w: 4,
       x: 0,
-      y: 4,
     },
     sm: {
       h: 2,
       w: 5,
       x: 0,
-      y: 4,
     },
     xs: {
       h: 2,
       w: 6,
       x: 0,
-      y: 12,
+      y: 8,
     },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle'),
-    id: 'age-at-diagnosis-graph-card',
+    id: AGE_AT_DIAGNOSIS_GRAPH_CARD_ID,
     component: <AgeAtDiagnosisGraphCard />,
     base: {
       h: 2,
@@ -118,24 +122,22 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 2,
       w: 4,
       x: 4,
-      y: 4,
     },
     sm: {
       h: 2,
       w: 5,
       x: 5,
-      y: 8,
     },
     xs: {
       h: 2,
       w: 6,
       x: 0,
-      y: 16,
+      y: 10,
     },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle'),
-    id: 'data-category-graph-card',
+    id: DATA_CATEGORY_GRAPH_CARD_ID,
     component: <DataCategoryGraphCard />,
     base: {
       h: 2,
@@ -149,30 +151,29 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 2,
       w: 4,
       x: 8,
-      y: 4,
     },
     sm: {
       h: 2,
       w: 5,
       x: 0,
-      y: 12,
+      y: 6,
     },
     xs: {
       h: 2,
       w: 6,
       x: 0,
-      y: 20,
+      y: 12,
     },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.studies.cardTitle'),
-    id: 'studies-graph-card',
+    id: STUDIES_GRAPH_CARD_ID,
     component: <StudiesGraphCard />,
     base: {
       h: 3,
       w: 4,
       x: 0,
-      y: 8,
+      y: 6,
       minW: 2,
       minH: 2,
     },
@@ -180,7 +181,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 3,
       w: 4,
       x: 0,
-      y: 8,
+      y: 6,
     },
     sm: {
       h: 2,
@@ -192,18 +193,18 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 4,
       w: 6,
       x: 0,
-      y: 8,
+      y: 14,
     },
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle'),
-    id: 'data-type-graph-card',
+    id: DATA_TYPE_GRAPH_CARD_ID,
     component: <DataTypeGraphCard />,
     base: {
       h: 3,
       w: 6,
       x: 4,
-      y: 8,
+      y: 6,
       minW: 2,
       minH: 2,
     },
@@ -211,19 +212,18 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 3,
       w: 7,
       x: 4,
-      y: 8,
     },
     sm: {
       h: 4,
       w: 10,
       x: 0,
-      y: 16,
+      y: 8,
     },
     xs: {
       h: 4,
       w: 6,
       x: 0,
-      y: 24,
+      y: 18,
     },
   },
 ];

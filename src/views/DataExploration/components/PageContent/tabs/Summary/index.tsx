@@ -7,7 +7,7 @@ import { Space } from 'antd';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 
-import { getDefaultLayouts } from './utils/grid';
+import { getDefaultLayouts, UID } from './utils/grid';
 
 import styles from './index.module.scss';
 
@@ -19,6 +19,7 @@ const SummaryTab = () => {
   return (
     <Space className={styles.wrapper} direction="vertical">
       <ResizableGridLayout
+        uid={UID}
         defaultLayouts={defaultLayouts}
         layouts={userInfo?.config.data_exploration?.summary?.layouts}
         onReset={(layouts: TSerializedResizableGridLayoutConfig[]) => {

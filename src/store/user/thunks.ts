@@ -45,28 +45,28 @@ const updateUser = createAsyncThunk<
   {
     data: TUserUpdate;
     callback?: () => void;
-      },
+  },
   { rejectValue: string }
-      >(
-      'user/update',
-      async (args, thunkAPI) => {
-        const { data, error } = await UserApi.update(args.data);
+>(
+  'user/update',
+  async (args, thunkAPI) => {
+    const { data, error } = await UserApi.update(args.data);
 
-        return handleThunkApiReponse({
-          error,
-          data: data!,
-          reject: thunkAPI.rejectWithValue,
-          onSuccess: args.callback,
-        });
-      },
-      {
-        condition: (args) => {
-          if (Object.keys(args.data).length < 1) {
-            return false;
-          }
-        },
-      },
-      );
+    return handleThunkApiReponse({
+      error,
+      data: data!,
+      reject: thunkAPI.rejectWithValue,
+      onSuccess: args.callback,
+    });
+  },
+  {
+    condition: (args) => {
+      if (Object.keys(args.data).length < 1) {
+        return false;
+      }
+    },
+  },
+);
 
 const updateUserConfig = createAsyncThunk<
   TUserConfig,
