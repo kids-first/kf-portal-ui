@@ -8,13 +8,16 @@ import { PhenotypeStore } from 'views/DataExploration/utils/PhenotypeStore';
 
 import { getResizableGridDictionary } from 'utils/translation';
 
+import { UID } from '../utils/grid';
+
 import SunburstGraph from './GraphContent';
 
 interface OwnProps {
+  id: string;
   field: string;
 }
 
-const SunburstGraphCard = ({ field }: OwnProps) => {
+const SunburstGraphCard = ({ id, field }: OwnProps) => {
   const [currentNode, setCurrentNode] = useState<TreeNode>();
   const phenotypeStore = useRef<PhenotypeStore | undefined>(new PhenotypeStore());
   const updateModalSunburst = useRef<(key: any) => void>();
@@ -44,6 +47,8 @@ const SunburstGraphCard = ({ field }: OwnProps) => {
 
   return (
     <ResizableGridCard
+      gridUID={UID}
+      id={id}
       dictionary={getResizableGridDictionary()}
       theme="shade"
       loading={false}

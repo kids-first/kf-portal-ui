@@ -17,6 +17,8 @@ import { getCommonColors } from 'common/charts';
 import useApi from 'hooks/useApi';
 import { getResizableGridDictionary } from 'utils/translation';
 
+import { STUDIES_GRAPH_CARD_ID, UID } from '../utils/grid';
+
 import styles from './index.module.scss';
 
 const colors = getCommonColors();
@@ -49,6 +51,8 @@ const StudiesGraphCard = () => {
 
   return (
     <ResizableGridCard
+      gridUID={UID}
+      id={STUDIES_GRAPH_CARD_ID}
       dictionary={getResizableGridDictionary()}
       contentClassName={styles.graphContentWrapper}
       theme="shade"

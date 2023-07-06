@@ -15,6 +15,8 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import useApi from 'hooks/useApi';
 import { getResizableGridDictionary } from 'utils/translation';
 
+import { AGE_AT_DIAGNOSIS_GRAPH_CARD_ID, UID } from '../utils/grid';
+
 type DiagnosisQueryResult = {
   data: {
     [key: string]: {
@@ -108,6 +110,8 @@ const AgeAtDiagnosisGraphCard = () => {
 
   return (
     <ResizableGridCard
+      gridUID={UID}
+      id={AGE_AT_DIAGNOSIS_GRAPH_CARD_ID}
       theme="shade"
       loading={loading}
       loadingType="spinner"
