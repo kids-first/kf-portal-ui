@@ -925,7 +925,7 @@ const en = {
             fileNameDateFormat: 'yyyy-MM-dd',
             download: 'Download',
             preview: 'Download Preview - ',
-            data: 'Download Data',
+            data: 'Download data',
             svg: 'Download SVG',
             png: 'Download PNG',
           },
