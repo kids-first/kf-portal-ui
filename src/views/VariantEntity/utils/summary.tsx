@@ -60,11 +60,10 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
           {
             label: intl.get('screen.variants.summary.omim'),
             value: variant?.genes?.hits?.edges?.length
-              ? variant.genes.hits.edges.map((gene) => {
-                  if (!gene?.node?.omim_gene_id) {
-                    return;
-                  }
-                  return (
+              ? variant.genes.hits.edges.map((gene) =>
+                  !gene?.node?.omim_gene_id ? (
+                    TABLE_EMPTY_PLACE_HOLDER
+                  ) : (
                     <ExternalLink
                       key={gene.node.omim_gene_id}
                       className={styles.geneExternalLink}
@@ -72,8 +71,8 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
                     >
                       {gene.node.omim_gene_id}
                     </ExternalLink>
-                  );
-                })
+                  ),
+                )
               : TABLE_EMPTY_PLACE_HOLDER,
           },
           {
