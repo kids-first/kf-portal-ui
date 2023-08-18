@@ -9,6 +9,23 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 import styles from '../index.module.scss';
 
+const omimValue = (variant?: IVariantEntity) => {
+  const genes = variant?.genes?.hits?.edges || [];
+  const genesOmimFiltered = genes.filter((gene) => gene?.node?.omim_gene_id);
+  return genesOmimFiltered.length
+    ? genesOmimFiltered.map((gene) => (
+        <ExternalLink
+          key={gene.node.omim_gene_id}
+          className={styles.geneExternalLink}
+          href={`https://omim.org/entry/${genesOmimFiltered[0].node.omim_gene_id}`}
+          data-cy="Summary_OMIM_ExternalLink"
+        >
+          {gene.node.omim_gene_id}
+        </ExternalLink>
+      ))
+    : TABLE_EMPTY_PLACE_HOLDER;
+};
+
 export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns[] => [
   {
     column: {
@@ -59,22 +76,7 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
           },
           {
             label: intl.get('screen.variants.summary.omim'),
-            value: variant?.genes?.hits?.edges?.length
-              ? variant.genes.hits.edges.map((gene) => {
-                  if (!gene?.node?.omim_gene_id) {
-                    return;
-                  }
-                  return (
-                    <ExternalLink
-                      key={gene.node.omim_gene_id}
-                      className={styles.geneExternalLink}
-                      href={`https://omim.org/entry/${gene.node.omim_gene_id}`}
-                    >
-                      {gene.node.omim_gene_id}
-                    </ExternalLink>
-                  );
-                })
-              : TABLE_EMPTY_PLACE_HOLDER,
+            value: omimValue(variant),
           },
           {
             label: intl.get('screen.variants.summary.clinVar'),
