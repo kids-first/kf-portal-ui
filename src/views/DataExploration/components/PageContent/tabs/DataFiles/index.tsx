@@ -55,7 +55,7 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-const getDefaultColumns = (
+export const getDefaultColumns = (
   fenceAcls: string[],
   isConnectedToCavatica: boolean,
   isConnectedToGen3: boolean,
@@ -148,11 +148,9 @@ const getDefaultColumns = (
     title: 'Experimental Strategy',
     sorter: { multiple: 1 },
     render: (record: IFileEntity) =>
-      record.sequencing_experiment
-        ? record.sequencing_experiment.hits?.edges
-            .map((edge) => edge.node.experiment_strategy)
-            .join(', ')
-        : TABLE_EMPTY_PLACE_HOLDER,
+      (record.sequencing_experiment &&
+        record.sequencing_experiment.hits?.edges.at(0)?.node.experiment_strategy) ||
+      TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'file_format',
