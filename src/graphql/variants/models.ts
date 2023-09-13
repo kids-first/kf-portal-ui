@@ -57,6 +57,7 @@ export interface IPredictionEntity {
   revel_rankscore: number;
   sift_pred: string;
   polyphen2_hvar_pred: string;
+  polyphen2_hvar_rankscore: number;
   sift_converted_rankscore: number;
   cadd_rankscore: number;
   dann_rankscore: number;

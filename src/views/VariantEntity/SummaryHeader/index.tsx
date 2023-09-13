@@ -22,7 +22,9 @@ interface OwnProps {
 const SummaryHeader = ({ variant }: OwnProps) => {
   const studyCount = variant?.studies.hits.total || 0;
   const participantCount = variant?.participant_number || 0;
-
+  const studies = variant
+    ? variant.studies.hits.edges.filter((s) => s.node.study_code !== undefined)
+    : [];
   return (
     <div className={styles.container}>
       <Link
@@ -35,7 +37,8 @@ const SummaryHeader = ({ variant }: OwnProps) => {
               newFilters: [
                 generateValueFilter({
                   field: 'study.study_code',
-                  value: variant ? [] : [],
+                  value:
+                    studies.length > 0 ? (studies.map((s) => s.node.study_code) as string[]) : [],
                   index: INDEXES.VARIANTS,
                 }),
               ],
