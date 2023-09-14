@@ -113,7 +113,6 @@
     "@storybook/testing-library": "^0.0.13",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",
-    "@types/react-test-renderer": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
     "babel-plugin-named-exports-order": "^0.0.2",
@@ -137,7 +136,6 @@
     "prettier": "^2.0.5",
     "prettier-eslint": "^10.1.1",
     "prop-types": "^15.8.1",
-    "react-test-renderer": "^17.0.2",
     "ts-jest": "^29.1.0",
     "webpack": "^5.75.0"
   }
