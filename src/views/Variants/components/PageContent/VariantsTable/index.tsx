@@ -154,15 +154,15 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (record: IVariantEntity) => {
-      const participantNumber = record.participant_number || 0;
+      const participantNumber = record.participant_number_visible || 0;
       if (participantNumber <= 10) {
         return participantNumber;
       }
 
-      const participantIds = record.studies?.hits?.edges?.flatMap(
-        (study) => study.node.participant_ids,
+      const participantIds: string[] = record.studies?.hits?.edges?.flatMap(
+        (study) => study.node.participant_ids !== null ? study.node.participant_ids : []
       );
-
+      
       return (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
