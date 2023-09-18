@@ -14,9 +14,9 @@ export const useDataFiles = (variables?: IQueryVariable, operations?: IQueryOper
 
   return {
     loading,
-    data: hydrateResults(result?.files?.hits?.edges || [], operations?.previous),
-    total: result?.files?.hits?.total || 0,
-    searchAfter: computeSearchAfter(result?.files?.hits?.edges || [], operations),
+    data: hydrateResults(result?.file?.hits?.edges || [], operations?.previous),
+    total: result?.file?.hits?.total || 0,
+    searchAfter: computeSearchAfter(result?.file?.hits?.edges || [], operations),
   };
 };
 
@@ -25,7 +25,7 @@ export const useTotalDataFiles = (variables?: IQueryVariable): number => {
     variables,
   });
 
-  return result?.files?.hits?.total || 0;
+  return result?.file?.hits?.total || 0;
 };
 
 interface IUseFileProps {
@@ -48,7 +48,7 @@ export const useFileEntity = ({ field, value }: IUseFileProps): IUseFileReturn =
     variables: { sqon },
   });
 
-  const file = result?.files?.hits?.edges[0]?.node || undefined;
+  const file = result?.file?.hits?.edges[0]?.node || undefined;
 
   return {
     loading,
