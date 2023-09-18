@@ -26,9 +26,9 @@ export const useBiospecimen = (
 
   return {
     loading,
-    data: hydrateResults(result?.biospecimens?.hits?.edges || [], operations?.previous),
-    total: result?.biospecimens?.hits?.total || 0,
-    searchAfter: computeSearchAfter(result?.biospecimens?.hits?.edges || [], operations),
+    data: hydrateResults(result?.biospecimen?.hits?.edges || [], operations?.previous),
+    total: result?.biospecimen?.hits?.total || 0,
+    searchAfter: computeSearchAfter(result?.biospecimen?.hits?.edges || [], operations),
   };
 };
 
@@ -37,7 +37,7 @@ export const useTotalBiospecimens = (variables?: IQueryVariable): number => {
     variables,
   });
 
-  return result?.biospecimens?.hits?.total || 0;
+  return result?.biospecimen?.hits?.total || 0;
 };
 
 export const useBiospecimenParticipant = ({
@@ -57,7 +57,7 @@ export const useBiospecimenParticipant = ({
 
   return {
     loading,
-    data: hydrateResults(result?.biospecimens?.hits?.edges || []),
-    total: result?.biospecimens?.hits?.total || 0,
+    data: hydrateResults(result?.biospecimen?.hits?.edges || []),
+    total: result?.biospecimen?.hits?.total || 0,
   };
 };

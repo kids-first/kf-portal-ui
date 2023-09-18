@@ -8,7 +8,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
     $sort: [Sort]
     $searchAfter: JSON
   ) {
-    biospecimens {
+    biospecimen {
       hits(filters: $sqon, first: $first, offset: $offset, sort: $sort, searchAfter: $searchAfter) {
         total
         edges {
@@ -48,7 +48,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
 
 export const GET_PARTICIPANT_BIOSPECIMENS = gql`
   query searchParticipantBiospecimen($sqon: JSON) {
-    biospecimens {
+    biospecimen {
       hits(filters: $sqon) {
         total
         edges {
@@ -80,7 +80,7 @@ export const GET_PARTICIPANT_BIOSPECIMENS = gql`
 
 export const GET_BIOSPECIMEN_COUNT = gql`
   query getBiospecimenCount($sqon: JSON) {
-    biospecimens {
+    biospecimen {
       hits(filters: $sqon) {
         total
       }
@@ -90,7 +90,7 @@ export const GET_BIOSPECIMEN_COUNT = gql`
 
 export const CHECK_BIOSPECIMEN_MATCH = gql`
   query fetchMatchBiospecimen($sqon: JSON, $first: Int, $offset: Int) {
-    biospecimens {
+    biospecimen {
       hits(filters: $sqon, first: $first, offset: $offset) {
         edges {
           node {
@@ -107,7 +107,7 @@ export const CHECK_BIOSPECIMEN_MATCH = gql`
 
 export const BIOSPECIMEN_SEARCH_BY_ID_QUERY = gql`
   query searchBiospecimenById($sqon: JSON) {
-    biospecimens {
+    biospecimen {
       hits(filters: $sqon) {
         edges {
           node {

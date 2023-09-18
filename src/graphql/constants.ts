@@ -1,9 +1,9 @@
 export enum INDEXES {
-  STUDIES = 'studies',
+  STUDIES = 'study',
   CLINICAL = 'clinical',
   PARTICIPANT = 'participant',
-  FILES = 'files',
-  BIOSPECIMENS = 'biospecimens',
+  FILES = 'file',
+  BIOSPECIMENS = 'biospecimen',
   VARIANTS = 'variants',
   GENES = 'genes',
 }

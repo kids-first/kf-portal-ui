@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const SEARCH_STUDIES_QUERY = gql`
   query searchStudy($sqon: JSON, $first: Int, $offset: Int, $sort: [Sort]) {
-    studies {
+    study {
       hits(filters: $sqon, first: $first, offset: $offset, sort: $sort) {
         total
         edges {
@@ -28,7 +28,7 @@ export const SEARCH_STUDIES_QUERY = gql`
 
 export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
   query searchStudyById($sqon: JSON) {
-    studies {
+    study {
       hits(filters: $sqon) {
         edges {
           node {
@@ -45,7 +45,7 @@ export const SEARCH_STUDIES_BY_ID_AND_NAME_QUERY = gql`
 
 export const GET_STUDY_COUNT = gql`
   query getStudiesCount($sqon: JSON) {
-    studies {
+    study {
       hits(filters: $sqon) {
         total
       }

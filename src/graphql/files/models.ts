@@ -4,7 +4,7 @@ import { IParticipantEntity } from 'graphql/participants/models';
 import { IBiospecimenEntity } from '../biospecimens/models';
 
 export interface IFileResultTree {
-  files: IArrangerResultsTree<IFileEntity>;
+  file: IArrangerResultsTree<IFileEntity>;
 }
 
 export interface IFileStudyEntity {

@@ -11,7 +11,7 @@ export const useStudies = (variables?: IQueryVariable) => {
 
   return {
     loading,
-    data: hydrateResults(result?.studies?.hits?.edges || []),
-    total: result?.studies?.hits?.total || 0,
+    data: hydrateResults(result?.study?.hits?.edges || []),
+    total: result?.study?.hits?.total || 0,
   };
 };

@@ -105,7 +105,7 @@ const PageContent = ({
             },
           });
 
-          return data?.data?.studies.hits.total ?? 0;
+          return data?.data?.study.hits.total ?? 0;
         }}
       />
       <GridCard
