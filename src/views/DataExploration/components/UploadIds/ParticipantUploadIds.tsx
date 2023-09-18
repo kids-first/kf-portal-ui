@@ -54,7 +54,7 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
         return matchedIds.map((id, index) => ({
           key: `${participant.fhir_id}:${index}`,
           submittedId: id,
-          mappedTo: participant.study_id,
+          mappedTo: participant.study.study_code,
           matchTo: participant.participant_id,
           value: participant.fhir_id,
         }));

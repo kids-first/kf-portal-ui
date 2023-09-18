@@ -264,7 +264,9 @@ export const CHECK_PARTICIPANT_MATCH = gql`
             fhir_id
             participant_id
             external_id
-            study_id
+            study {
+              study_code
+            }
           }
         }
       }
