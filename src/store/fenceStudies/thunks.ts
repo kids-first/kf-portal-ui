@@ -45,7 +45,7 @@ const fetchFenceStudies = createAsyncThunk<
 
     const { authorizedStudies, error: studiesCountError } = isEmpty(studies)
       ? { authorizedStudies: [], error: undefined }
-      : await getStudiesCountByNameAndAcl(studies!, args.userAcls);
+      : await getStudiesCountByNameAndAcl(studies!);
 
     return handleThunkApiReponse({
       error: authStudyError || studiesCountError,
@@ -79,7 +79,6 @@ const fetchFenceStudies = createAsyncThunk<
 
 const getStudiesCountByNameAndAcl = async (
   studies: TFenceStudiesIdsAndCount,
-  userAcls: string[],
 ): Promise<{
   error?: AxiosError;
   authorizedStudies?: TFenceStudy[];
@@ -90,8 +89,10 @@ const getStudiesCountByNameAndAcl = async (
     (obj, studyId) => ({
       ...obj,
       [`${replaceDashByUnderscore(studyId)}_sqon`]: {
-        op: TermOperators.in,
-        content: { field: 'participants.study.study_id', value: [studyId] },
+        op: BooleanOperators.and,
+        content: [
+          { content: { field: 'participants.study_id', value: [studyId] }},
+        ],
       },
     }),
     {},
