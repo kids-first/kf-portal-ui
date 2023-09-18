@@ -7,14 +7,15 @@ import { capitalize } from 'lodash';
 import { extractPhenotypeTitleAndCode } from 'views/DataExploration/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { readableDistanceByDays } from 'utils/dates';
 
-export const getPhenotypeDefaultColumns = (): ProColumnType[] => [
+import AgeCell from '../AgeCell';
+import HpoParticipantCount from '../PhenotypeTable/HpoParticipantCount';
+const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   {
     key: 'hpo_phenotype_observed',
-    title: intl.get('screen.participantEntity.phenotype.hpoPhenotypeObserved'),
+    title: intl.get('entities.participant.phenotype_hpo'),
     render: (phenotype: IParticipantPhenotype) => {
-      const phenotypeNames = phenotype.hpo_phenotype_observed;
+      const phenotypeNames = phenotype?.hpo_phenotype_observed;
       if (!phenotypeNames || phenotypeNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
@@ -42,27 +43,33 @@ export const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     },
   },
   {
-    key: 'hpo_phenotype_source_text',
-    title: intl.get('screen.participantEntity.phenotype.sourceText'),
-    render: (phenotype: IParticipantPhenotype) => TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'interpretation',
-    title: intl.get('screen.participantEntity.phenotype.interpretation'),
-    render: (phenotype: IParticipantPhenotype) => TABLE_EMPTY_PLACE_HOLDER,
+    key: 'source_text',
+    title: intl.get('entities.participant.source_text'),
+    render: (phenotype: IParticipantPhenotype) =>
+      phenotype?.source_text ? phenotype.source_text : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'age_at_event_days',
-    title: intl.get('screen.participantEntity.phenotype.age.title'),
-    tooltip: intl.get('screen.participantEntity.phenotype.age.tooltip'),
-    render: (phenotype: IParticipantPhenotype) =>
-      phenotype.age_at_event_days
-        ? readableDistanceByDays(phenotype.age_at_event_days)
-        : TABLE_EMPTY_PLACE_HOLDER,
+    title: intl.get('entities.participant.age'),
+    tooltip: intl.get('entities.participant.age_tooltip_phenotype'),
+    render: (diagnosis: IParticipantPhenotype) =>
+      diagnosis.age_at_event_days ? (
+        <AgeCell ageInDays={diagnosis.age_at_event_days} />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
-    key: 'shared_term',
-    title: intl.get('screen.participantEntity.phenotype.sharedTerm'),
-    render: (phenotype: IParticipantPhenotype) => TABLE_EMPTY_PLACE_HOLDER,
+    key: 'hpo_term',
+    title: intl.get('entities.participant.hpo_term'),
+    tooltip: intl.get('entities.participant.hpo_term_tooltip'),
+    render: (diagnosis: IParticipantPhenotype) =>
+      diagnosis?.hpo_phenotype_observed ? (
+        <HpoParticipantCount phenotype={diagnosis.hpo_phenotype_observed} />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
 ];
+
+export default getPhenotypeDefaultColumns;

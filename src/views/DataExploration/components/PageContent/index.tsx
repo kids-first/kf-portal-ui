@@ -112,14 +112,14 @@ const PageContent = ({
   };
 
   const getSqonAndMappingByIndex = (index: INDEXES) => {
-    if (index === INDEXES.FILES) {
+    if (index === INDEXES.FILE) {
       return {
         sqon: fileResolvedSqon,
         mapping: fileMapping,
       };
     }
 
-    if (index === INDEXES.BIOSPECIMENS) {
+    if (index === INDEXES.BIOSPECIMEN) {
       return {
         sqon: biospecimenResolvedSqon,
         mapping: biospecimenMapping,

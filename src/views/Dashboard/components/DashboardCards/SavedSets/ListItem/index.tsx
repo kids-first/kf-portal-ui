@@ -38,11 +38,11 @@ const { Text } = Typography;
 
 const redirectToPage = (setType: string) => {
   switch (setType) {
-    case INDEXES.FILES:
+    case INDEXES.FILE:
       return STATIC_ROUTES.DATA_EXPLORATION_DATAFILES;
     case INDEXES.PARTICIPANT:
       return STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS;
-    case INDEXES.BIOSPECIMENS:
+    case INDEXES.BIOSPECIMEN:
       return STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS;
     case INDEXES.VARIANTS:
       return STATIC_ROUTES.VARIANTS;
@@ -53,11 +53,11 @@ const redirectToPage = (setType: string) => {
 
 const getIdField = (setType: string) => {
   switch (setType) {
-    case INDEXES.FILES:
+    case INDEXES.FILE:
       return DATA_FILES_SAVED_SETS_FIELD;
     case INDEXES.PARTICIPANT:
       return PARTICIPANTS_SAVED_SETS_FIELD;
-    case INDEXES.BIOSPECIMENS:
+    case INDEXES.BIOSPECIMEN:
       return BIOSPECIMENS_SAVED_SETS_FIELD;
     default:
       return VARIANT_SAVED_SETS_FIELD;

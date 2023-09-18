@@ -136,13 +136,58 @@ const fetchTsvReport = createAsyncThunk<void, TFetchTSVArgs, { rejectValue: stri
   },
 );
 
+const generateLocalTsvReport = createAsyncThunk<
+  void,
+  {
+    index: string;
+    fileName?: string;
+    headers: ProColumnType[];
+    cols: { key: string; visible: boolean }[];
+    rows: any[];
+  },
+  { rejectValue: string }
+>('report/generate/tsv', async (args, thunkAPI) => {
+  // !! This function assumes that it is called only when the table is not empty. Said otherwise, data is never empty !!
+  const messageKey = 'report_pending';
+
+  try {
+    const formattedDate = format(new Date(), 'yyyy-MM-dd');
+    const formattedFileName = `include-${args.fileName ?? args.index}-table-${formattedDate}.tsv`;
+
+    const visibleKeys = (args.cols || []).filter((c) => c.visible).map((c) => c.key);
+    const visibleHeaders = args.headers.filter((h) => visibleKeys.includes(h.key));
+    const visibleTitle = visibleHeaders.map((h) => h.title);
+    const visibleRows = (args.rows || []).reduce(
+      (rs, r) => [...rs, visibleHeaders.map((h) => r[h.key])],
+      [],
+    );
+
+    const shapeIsOK = visibleRows.every((r: unknown[]) => r.length === visibleTitle.length);
+    if (!shapeIsOK) {
+      showErrorReportNotif(thunkAPI);
+      return thunkAPI.rejectWithValue('error');
+    }
+
+    const doc: string = [visibleTitle, ...visibleRows]
+      .reduce((text, row) => text + '\n' + row.join('\t'), '')
+      .trimStart();
+
+    saveAs(new Blob([doc], { type: 'text/plain;charset=utf-8' }), formattedFileName);
+
+    thunkAPI.dispatch(globalActions.destroyMessages([messageKey]));
+  } catch {
+    thunkAPI.dispatch(globalActions.destroyMessages([messageKey]));
+    showErrorReportNotif(thunkAPI);
+  }
+});
+
 const idField = (index: string) => {
   switch (index) {
     case INDEXES.PARTICIPANT:
       return 'participant_id';
-    case INDEXES.FILES:
+    case INDEXES.FILE:
       return 'file_id';
-    case INDEXES.BIOSPECIMENS:
+    case INDEXES.BIOSPECIMEN:
       return 'sample_id';
     case INDEXES.STUDIES:
       return 'study_code';
@@ -215,4 +260,4 @@ const getTitleFromColumns = (columns: ProColumnType[], field: string) => {
   return column.title;
 };
 
-export { fetchReport, fetchTsvReport };
+export { fetchReport, fetchTsvReport, generateLocalTsvReport };

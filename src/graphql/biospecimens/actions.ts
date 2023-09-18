@@ -45,7 +45,7 @@ export const useBiospecimenParticipant = ({
   values,
 }: IUseParticipantEntityProps): IQueryResults<IBiospecimenEntity[]> => {
   const sqon = {
-    content: [{ content: { field, value: values, index: INDEXES.BIOSPECIMENS }, op: 'in' }],
+    content: [{ content: { field, value: values, index: INDEXES.BIOSPECIMEN }, op: 'in' }],
     op: 'and',
   };
   const { loading, result } = useLazyResultQuery<IBiospecimenResultTree>(

@@ -3,7 +3,7 @@ import { ReadOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { INDEXES } from 'graphql/constants';
-import { IStudiesEntity } from 'graphql/studies/models';
+import { IStudyEntity } from 'graphql/studies/models';
 import { SEARCH_STUDIES_BY_ID_AND_NAME_QUERY } from 'graphql/studies/queries';
 
 import GlobalSearch, { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
@@ -14,7 +14,7 @@ const StudySearch = ({ queryBuilderId }: ICustomSearchProps) => {
   const { activeQuery } = useQueryBuilderState(queryBuilderId);
 
   return (
-    <GlobalSearch<IStudiesEntity>
+    <GlobalSearch<IStudyEntity>
       queryBuilderId={queryBuilderId}
       field="search_text"
       tooltipText={intl.getHTML('global.search.study.tooltip')}

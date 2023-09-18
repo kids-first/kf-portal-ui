@@ -1,10 +1,10 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 
-export interface IStudiesResultTree {
-  study: IArrangerResultsTree<IStudiesEntity>;
+export interface IStudyResultTree {
+  study: IArrangerResultsTree<IStudyEntity>;
 }
 
-export interface IStudiesEntity {
+export interface IStudyEntity {
   id: string;
   study_id: string;
   study_code: string;

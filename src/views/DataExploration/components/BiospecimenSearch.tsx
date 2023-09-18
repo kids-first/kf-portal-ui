@@ -1,14 +1,15 @@
 import { ExperimentOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
-import GlobalSearch, { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
-import { highlightSearchMatch } from 'components/uiKit/search/GlobalSearch/utils';
-import SelectItem from 'components/uiKit/select/SelectItem';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { BIOSPECIMEN_SEARCH_BY_ID_QUERY } from 'graphql/biospecimens/queries';
 import useBiospecimenResolvedSqon from 'graphql/biospecimens/useBiospecimenResolvedSqon';
 import { INDEXES } from 'graphql/constants';
 import { uniqBy } from 'lodash';
+
+import GlobalSearch, { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
+import { highlightSearchMatch } from 'components/uiKit/search/GlobalSearch/utils';
+import SelectItem from 'components/uiKit/select/SelectItem';
 
 const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
   const { activeQuery } = useQueryBuilderState(queryBuilderId);
@@ -17,7 +18,7 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
       field="sample_id" // @todo: search_text, see when implemented
-      index={INDEXES.BIOSPECIMENS}
+      index={INDEXES.BIOSPECIMEN}
       placeholder="e.g. BS_011DYZ2J, HTP0001B2_Plasma"
       emptyDescription="No samples found"
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}
@@ -45,7 +46,7 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
       field="collection_sample_id" // @todo: search_text, see when implemented
-      index={INDEXES.BIOSPECIMENS}
+      index={INDEXES.BIOSPECIMEN}
       placeholder="e.g. HTP0001B2_Whole blood, BS_1YEZ2XR4_Saliva"
       emptyDescription="No collection ID found"
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}

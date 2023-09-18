@@ -147,8 +147,8 @@ const filterGroups: {
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
-  const fileMappingResults = useGetExtendedMappings(INDEXES.FILES);
-  const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMENS);
+  const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
+  const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -202,8 +202,8 @@ const DataExploration = () => {
       icon: <ExperimentOutlined />,
       panelContent: (
         <FilterList
-          key={INDEXES.BIOSPECIMENS}
-          index={INDEXES.BIOSPECIMENS}
+          key={INDEXES.BIOSPECIMEN}
+          index={INDEXES.BIOSPECIMEN}
           queryBuilderId={DATA_EXPLORATION_QB_ID}
           extendedMappingResults={biospecimenMappingResults}
           filterInfo={filterGroups[FilterTypes.Biospecimen]}
@@ -217,8 +217,8 @@ const DataExploration = () => {
       icon: <FileSearchOutlined />,
       panelContent: (
         <FilterList
-          key={INDEXES.FILES}
-          index={INDEXES.FILES}
+          key={INDEXES.FILE}
+          index={INDEXES.FILE}
           queryBuilderId={DATA_EXPLORATION_QB_ID}
           extendedMappingResults={fileMappingResults}
           filterInfo={filterGroups[FilterTypes.Datafiles]}

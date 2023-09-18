@@ -1,23 +1,30 @@
-import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { IFileEntity } from 'graphql/files/models';
+import { ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
+import { IStudyEntity } from 'graphql/studies/models';
 
 export interface IBiospecimenResultTree {
-  biospecimen: IArrangerResultsTree<IBiospecimenEntity>;
+  biospecimen: ArrangerResultsTree<IBiospecimenEntity>;
+}
+
+export enum Status {
+  AVAILABLE = 'available',
+  UNAVAILABLE = 'unavailable',
 }
 
 export interface IBiospecimenEntity {
   key?: string;
   id: string;
   fhir_id: string;
-  status: string;
+  status: Status;
   score: number;
-  volume_ul: number;
+  volume: number;
   volume_unit: string;
   container_id: string;
   age_at_biospecimen_collection: number;
   biospecimen_storage: string;
   study_id: string;
+  study: IStudyEntity;
   laboratory_procedure: string;
   collection_sample_id: string;
   collection_sample_type: string;
@@ -25,7 +32,7 @@ export interface IBiospecimenEntity {
   parent_sample_type: string;
   sample_id: string;
   sample_type: string;
-  files: IArrangerResultsTree<IFileEntity>;
+  files: ArrangerResultsTree<IFileEntity>;
   nb_files: number;
   participant: IParticipantEntity;
 }

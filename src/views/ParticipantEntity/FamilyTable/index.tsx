@@ -1,134 +1,160 @@
+//letting these comments to help should we merge both portals: //*COPIED AS-IS FROM INCLUDE*
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+import { Link } from 'react-router-dom';
+import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
-import { Button, Space } from 'antd';
+import { Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
+/*
+//*COPIED AS-IS FROM INCLUDE*
+import { useParticipantEntity } from 'graphql/participants/actions';
+*/
 import { IParticipantEntity } from 'graphql/participants/models';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { IFamilyRelationToProband } from 'graphql/participants/models';
+/*
+//*COPIED AS-IS FROM INCLUDE*
+import { GET_PARTICIPANT_DOWN_SYNDROME_STATUS } from 'graphql/participants/queries';
+*/
+import { capitalize } from 'lodash';
 
-import { fetchTsvReport } from 'store/report/thunks';
+import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
+import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
-import { getFamilyDefaultColumns } from '../utils/family';
-import { SectionId } from '..';
+import { SectionId } from '../utils/anchorLinks';
 
-import styles from './index.module.scss';
-
-export const MIN_FAMILY_NUMBER = 1;
-const COLUMNS_PREFIX = 'family.family_relations.';
-
-export enum Relation {
-  mother = 'mother',
-  father = 'father',
-  proband = 'proband',
-  other = 'other',
-  self = 'self',
-}
+import FamilyIdLink from './FamilyIdLink';
 
 interface OwnProps {
-  participant?: IParticipantEntity;
-  loading: boolean;
+  participant: IParticipantEntity;
+  familyMembers: IFamilyRelationToProband[];
 }
 
-const FamilyTable = ({ participant, loading }: OwnProps) => {
-  const history = useHistory();
+const sortMembersForDisplay = (selectedParticipantId: string, ms: IFamilyRelationToProband[]) => {
+  if (!ms?.length) {
+    return [];
+  }
+  const first = ms.find((m) => m.participant_id === selectedParticipantId);
+  const others = ms.filter((m) => m.participant_id !== selectedParticipantId);
+  //cond <first && others> must always be true, but still, adding a defensive check
+  return first && others ? [{ ...first }, ...others] : ms;
+};
+
+const getFamilyColumns = (current_participant_id: string): ProColumnType[] => [
+  {
+    key: 'participant_id',
+    dataIndex: 'participant_id',
+    title: intl.get('entities.participant.participant_id'),
+    render: (participant_id: string) => {
+      if (participant_id === current_participant_id) {
+        return participant_id;
+      }
+
+      return participant_id ? (
+        <Link to={`${STATIC_ROUTES.PARTICIPANT}/${participant_id}`}>{participant_id}</Link>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      );
+    },
+  },
+  {
+    key: 'role',
+    dataIndex: 'role',
+    title: intl.get('entities.participant.family_relationship'),
+    render: (role: string) =>
+      role ? (
+        <Tag color={role.includes('proband') ? 'purple' : ''}>{capitalize(role)}</Tag>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  } /*
+  //*COPIED AS-IS FROM INCLUDE*
+  ,
+  {
+    key: 'down_syndrome_status',
+    dataIndex: 'down_syndrome_status',
+    title: intl.get('entities.participant.down_syndrome_status'),
+    render: (status: string) => (status ? <div>{status}</div> : TABLE_EMPTY_PLACE_HOLDER),
+  },*/,
+];
+
+const FamilyTable = ({ familyMembers = [], participant }: OwnProps) => {
+  /*
+  //*COPIED AS-IS FROM INCLUDE*
+  const { loading: loadDownSyndromStatus, /!*participants: participantsWithDownSyndromeStatus = []*!/ } =
+    useParticipantEntity({
+      value: familyMembers.map((x) => x.participant_id),
+      query: GET_PARTICIPANT_DOWN_SYNDROME_STATUS,
+    });*/
   const { userInfo } = useUser();
   const dispatch = useDispatch();
 
-  const participantId = participant?.participant_id || '';
-  const familyMembers = [
-    { id: participantId, relation: Relation.self, related_participant_id: participantId },
-    ...hydrateResults(participant?.family?.family_relations?.hits?.edges || []),
-  ];
+  const familyDefaultColumns = getFamilyColumns(participant.participant_id);
 
-  if (!participant?.families_id || familyMembers.length <= MIN_FAMILY_NUMBER) {
-    return <></>;
-  }
+  const userColumnPreferences = userInfo?.config?.participants?.tables?.family?.columns || [];
+  const userColumnPreferencesOrDefault = userColsHaveSameKeyAsDefaultCols(
+    userColumnPreferences,
+    familyDefaultColumns,
+  )
+    ? [...userColumnPreferences]
+    : familyDefaultColumns.map((c, index) => ({
+        visible: true,
+        index,
+        key: c.key,
+      }));
 
-  const initialColumnState = (userInfo?.config.participant?.tables?.family?.columns || []).map(
-    (column) => ({
-      ...column,
-      key: column.key.replace(COLUMNS_PREFIX, ''),
-    }),
-  );
+  const sortedFamilyMembers = sortMembersForDisplay(participant.participant_id, familyMembers);
+
+  const rows = sortedFamilyMembers.map((x) => ({
+    key: x.participant_id,
+    participant_id: x.participant_id,
+    role: x.role,
+    /* //*COPIED AS-IS FROM INCLUDE*
+     down_syndrome_status: participantsWithDownSyndromeStatus.find(
+      (y) => y.participant_id === x.participant_id,
+    )?.down_syndrome_status,*/
+  }));
 
   return (
     <EntityTable
       id={SectionId.FAMILY}
-      loading={loading}
-      data={familyMembers}
-      title={intl.get('screen.participantEntity.family.title')}
-      header={
-        <Space size={4} className={styles.header}>
-          {intl.get('screen.participantEntity.family.title')}
-          <span>
-            (
-            <Button
-              type="link"
-              className={styles.link}
-              onClick={() => {
-                history.push(STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS);
-                addQuery({
-                  queryBuilderId: DATA_EXPLORATION_QB_ID,
-                  query: generateQuery({
-                    newFilters: [
-                      generateValueFilter({
-                        field: 'families_id',
-                        value: participant?.families_id ? [participant?.families_id] : [],
-                        index: INDEXES.PARTICIPANT,
-                      }),
-                    ],
-                  }),
-                });
-              }}
-            >
-              {participant?.families_id}
-            </Button>
-            )
-          </span>
-        </Space>
-      }
-      columns={getFamilyDefaultColumns()}
-      initialColumnState={initialColumnState}
+      loading={false}
+      /*
+      //*COPIED AS-IS FROM INCLUDE*
+      loading={loadDownSyndromStatus}
+       */
+      data={rows}
+      title={intl.get('entities.participant.family')}
+      header={[
+        intl.get('entities.participant.family_id'),
+        ' (',
+        <FamilyIdLink key={1} familyId={participant.family.family_id} />,
+        ')',
+      ]}
+      columns={getFamilyColumns(participant.participant_id)}
+      initialColumnState={userColumnPreferencesOrDefault}
       headerConfig={{
         enableTableExport: true,
         enableColumnSort: true,
         onColumnSortChange: (newState) =>
           dispatch(
-            updateUserConfig({
-              participant: {
-                tables: {
-                  family: {
-                    columns: newState.map((column) => ({
-                      ...column,
-                      key: `${COLUMNS_PREFIX}${column.key}`,
-                    })),
-                  },
-                },
-              },
-            }),
+            updateUserConfig({ participants: { tables: { family: { columns: newState } } } }),
           ),
         onTableExportClick: () =>
           dispatch(
-            fetchTsvReport({
-              columnStates: userInfo?.config.participant?.tables?.family?.columns,
-              columns: getFamilyDefaultColumns(),
+            generateLocalTsvReport({
+              fileName: 'family',
               index: INDEXES.PARTICIPANT,
-              sqon: generateQuery({
-                newFilters: [
-                  generateValueFilter({
-                    field: 'participant_id',
-                    index: INDEXES.PARTICIPANT,
-                    value: participant?.participant_id ? [participant?.participant_id] : [],
-                  }),
-                ],
-              }),
+              headers: familyDefaultColumns,
+              cols: userColumnPreferencesOrDefault.map((x) => ({
+                visible: x.visible,
+                key: x.key,
+              })),
+              rows,
             }),
           ),
       }}

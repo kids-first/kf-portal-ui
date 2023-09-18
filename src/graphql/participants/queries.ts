@@ -102,104 +102,47 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
 `;
 
 export const GET_PARTICIPANT_ENTITY = gql`
-  query getParticpantEntity($sqon: JSON) {
+  query getParticipantEntity($sqon: JSON) {
     participant {
       hits(filters: $sqon) {
         edges {
           node {
-            participant_id
-            sex
-            is_proband
-            families_id
-            ethnicity
-            external_id
-            study_external_id
-            family_type
-            race
-            study {
-              study_code
-              study_id
-              study_name
-            }
-            family {
-              family_id
-              family_relations {
-                hits {
-                  total
-                  edges {
-                    node {
-                      relation
-                      related_participant_id
-                    }
-                  }
-                }
-              }
-            }
+            id
             diagnosis {
               hits {
-                total
                 edges {
                   node {
                     mondo_id_diagnosis
                     source_text
-                    ncit_id_diagnosis
                     age_at_event_days
+                    diagnosis_id
                   }
                 }
               }
             }
-            outcomes {
-              hits {
-                total
-                edges {
-                  node {
-                    fhir_id
-                    release_id
-                    study_id
-                    participant_fhir_id
-                    vital_status
-                    observation_id
-                    age_at_event_days {
-                      value
-                      units
+            down_syndrome_status
+            ethnicity
+            external_id
+            family {
+              family_id
+              relations_to_proband {
+                hits {
+                  edges {
+                    node {
+                      role
+                      participant_id
                     }
                   }
                 }
               }
             }
-            phenotype {
-              hits {
-                total
-                edges {
-                  node {
-                    fhir_id
-                    hpo_phenotype_observed
-                    #                    is_observed
-                    age_at_event_days
-                  }
-                }
-              }
-            }
-            observed_phenotype {
-              hits {
-                total
-                edges {
-                  node {
-                    is_leaf
-                    is_tagged
-                    name
-                    parents
-                    age_at_event_days
-                  }
-                }
-              }
-            }
+            family_type
             files {
               hits {
                 total
                 edges {
                   node {
-                    data_type
+                    data_category
                     sequencing_experiment {
                       hits {
                         edges {
@@ -209,10 +152,58 @@ export const GET_PARTICIPANT_ENTITY = gql`
                         }
                       }
                     }
+                    biospecimens {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            age_at_biospecimen_collection
+                            sample_id
+                            sample_type
+                            parent_sample_id
+                            parent_sample_type
+                            collection_sample_id
+                            collection_sample_type
+                            container_id
+                            volume
+                            volume_unit
+                            laboratory_procedure
+                            biospecimen_storage
+                            fhir_id
+                            status
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
             }
+
+            nb_biospecimens
+            nb_files
+            participant_id
+            phenotype {
+              hits {
+                edges {
+                  node {
+                    age_at_event_days
+                    fhir_id
+                    hpo_phenotype_observed
+                    observed
+                    source_text
+                  }
+                }
+              }
+            }
+            race
+            study {
+              study_name
+              external_id
+              study_code
+            }
+            study_id
+            sex
           }
         }
       }
@@ -280,6 +271,25 @@ export const PARTICIPANT_SEARCH_BY_ID_QUERY = gql`
         edges {
           node {
             participant_id
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_DATA_FILE_AGG = gql`
+  query getDataFileAgg($sqon: JSON) {
+    file {
+      aggregations(filters: $sqon, include_missing: false) {
+        exp_strategies: sequencing_experiment__experiment_strategy {
+          buckets {
+            key
+          }
+        }
+        data_category {
+          buckets {
+            key
           }
         }
       }

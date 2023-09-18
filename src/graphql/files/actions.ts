@@ -40,7 +40,7 @@ interface IUseFileReturn {
 
 export const useFileEntity = ({ field, value }: IUseFileProps): IUseFileReturn => {
   const sqon = {
-    content: [{ content: { field, value, index: INDEXES.FILES }, op: 'in' }],
+    content: [{ content: { field, value, index: INDEXES.FILE }, op: 'in' }],
     op: 'and',
   };
 

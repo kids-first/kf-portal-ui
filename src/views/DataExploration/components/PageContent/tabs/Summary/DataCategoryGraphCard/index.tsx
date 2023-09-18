@@ -23,7 +23,7 @@ const addToQuery = (field: string, key: string) =>
     queryBuilderId: DATA_EXPLORATION_QB_ID,
     field,
     value: [key.toLowerCase() === 'no data' ? ArrangerValues.missing : key],
-    index: INDEXES.FILES,
+    index: INDEXES.FILE,
   });
 
 const DataCategoryGraphCard = () => {

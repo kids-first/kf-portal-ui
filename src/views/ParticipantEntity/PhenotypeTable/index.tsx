@@ -1,60 +1,67 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { INDEXES } from 'graphql/constants';
-import { IParticipantEntity } from 'graphql/participants/models';
+import { IParticipantEntity, IParticipantPhenotype } from 'graphql/participants/models';
 
-import { fetchTsvReport } from 'store/report/thunks';
+import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
-import { getPhenotypeDefaultColumns } from '../utils/phenotype';
-import { SectionId } from '..';
-
-const COLUMNS_PREFIX = 'phenotype.';
+import { SectionId } from '../utils/anchorLinks';
+import getPhenotypeDefaultColumns from '../utils/getPhenotypeColumns';
 
 interface OwnProps {
   participant?: IParticipantEntity;
   loading: boolean;
 }
 
-const PhenotypesTable = ({ participant, loading }: OwnProps) => {
+// 'hpo term', at this moment, is computed at the table cell level.
+// To avoid refactoring, the field is simply excluded from the tsv.
+const cbExcludeHpoTermKey = (c: { key: string }) => c.key !== 'hpo_term';
+
+const PhenotypeTable = ({ participant, loading }: OwnProps) => {
   const { userInfo } = useUser();
   const dispatch = useDispatch();
-  const phenotypes = hydrateResults(participant?.phenotype?.hits?.edges || []);
 
-  const initialColumnState = (userInfo?.config.participant?.tables?.phenotype?.columns || []).map(
-    (column) => ({
-      ...column,
-      key: column.key.replace(COLUMNS_PREFIX, ''),
-    }),
-  );
+  const phenotype: IParticipantPhenotype[] =
+    participant?.phenotype?.hits?.edges?.map((e) => ({ key: e.node.fhir_id, ...e.node })) || [];
+
+  const phenotypesDefaultColumns = getPhenotypeDefaultColumns();
+
+  const userColumnPreferences = userInfo?.config?.participants?.tables?.phenotype?.columns || [];
+  const userColumnPreferencesOrDefault = userColsHaveSameKeyAsDefaultCols(
+    userColumnPreferences,
+    phenotypesDefaultColumns,
+  )
+    ? [...userColumnPreferences]
+    : phenotypesDefaultColumns.map((c, index) => ({
+        visible: true,
+        index,
+        key: c.key,
+      }));
 
   return (
     <EntityTable
       id={SectionId.PHENOTYPE}
       loading={loading}
-      data={phenotypes}
-      total={phenotypes.length}
-      title={intl.get('screen.participantEntity.phenotype.title')}
-      header={intl.get('screen.participantEntity.phenotype.title')}
-      columns={getPhenotypeDefaultColumns()}
-      initialColumnState={initialColumnState}
+      data={phenotype}
+      total={phenotype.length}
+      title={intl.get('entities.participant.phenotype')}
+      header={intl.get('entities.participant.phenotype')}
+      columns={phenotypesDefaultColumns}
+      initialColumnState={userColumnPreferencesOrDefault}
       headerConfig={{
         enableTableExport: true,
         enableColumnSort: true,
         onColumnSortChange: (newState) =>
           dispatch(
             updateUserConfig({
-              participant: {
+              participants: {
                 tables: {
                   phenotype: {
-                    columns: newState.map((column) => ({
-                      ...column,
-                      key: `${COLUMNS_PREFIX}${column.key}`,
-                    })),
+                    columns: newState,
                   },
                 },
               },
@@ -62,19 +69,15 @@ const PhenotypesTable = ({ participant, loading }: OwnProps) => {
           ),
         onTableExportClick: () =>
           dispatch(
-            fetchTsvReport({
-              columnStates: userInfo?.config.participant?.tables?.phenotype?.columns,
-              columns: getPhenotypeDefaultColumns(),
+            generateLocalTsvReport({
+              fileName: 'phenotypes',
               index: INDEXES.PARTICIPANT,
-              sqon: generateQuery({
-                newFilters: [
-                  generateValueFilter({
-                    field: 'participant_id',
-                    index: INDEXES.PARTICIPANT,
-                    value: participant?.participant_id ? [participant?.participant_id] : [],
-                  }),
-                ],
-              }),
+              headers: phenotypesDefaultColumns.filter(cbExcludeHpoTermKey),
+              cols: userColumnPreferencesOrDefault.filter(cbExcludeHpoTermKey).map((x) => ({
+                visible: x.visible,
+                key: x.key,
+              })),
+              rows: phenotype,
             }),
           ),
       }}
@@ -82,4 +85,4 @@ const PhenotypesTable = ({ participant, loading }: OwnProps) => {
   );
 };
 
-export default PhenotypesTable;
+export default PhenotypeTable;

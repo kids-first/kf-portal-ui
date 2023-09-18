@@ -159,10 +159,10 @@ const defaultColumns: ProColumnType[] = [
         return participantNumber;
       }
 
-      const participantIds: string[] = record.studies?.hits?.edges?.flatMap(
-        (study) => study.node.participant_ids !== null ? study.node.participant_ids : []
+      const participantIds: string[] = record.studies?.hits?.edges?.flatMap((study) =>
+        study.node.participant_ids !== null ? study.node.participant_ids : [],
       );
-      
+
       return (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
@@ -265,7 +265,7 @@ const VariantsTable = ({
           tableId="variants_table"
           columns={defaultColumns}
           enableRowSelection
-          initialColumnState={userInfo?.config.variant?.tables?.variants?.columns}
+          initialColumnState={userInfo?.config.variants?.tables?.variants?.columns}
           wrapperClassName={styles.variantTabWrapper}
           loading={results.loading}
           initialSelectedKey={selectedKeys}
@@ -288,7 +288,7 @@ const VariantsTable = ({
             onColumnSortChange: (newState) =>
               dispatch(
                 updateUserConfig({
-                  variant: {
+                  variants: {
                     tables: {
                       variants: {
                         columns: newState,
@@ -328,10 +328,10 @@ const VariantsTable = ({
             onViewQueryChange: (viewPerQuery: PaginationViewPerQuery) => {
               dispatch(
                 updateUserConfig({
-                  variant: {
+                  variants: {
                     tables: {
                       variants: {
-                        ...userInfo?.config.variant?.tables?.variants,
+                        ...userInfo?.config.variants?.tables?.variants,
                         viewPerQuery,
                       },
                     },

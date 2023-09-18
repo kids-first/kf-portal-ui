@@ -55,7 +55,7 @@ import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { readableDistanceByDays } from 'utils/dates';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
-import { STATIC_ROUTES } from 'utils/routes';
+import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
@@ -72,10 +72,8 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (id: string) => (
-      <Tooltip placement="topLeft" title={id}>
-        <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${id}`}>{id}</Link>
-      </Tooltip>
+    render: (participant_id: string) => (
+      <Link to={`${STATIC_ROUTES.PARTICIPANTS}/${participant_id}`}>{participant_id}</Link>
     ),
   },
   {

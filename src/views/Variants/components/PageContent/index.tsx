@@ -63,7 +63,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
     useQBStateWithSavedFilters(VARIANT_REPO_QB_ID, SavedFilterTag.VariantsExplorationPage);
   const [queryConfig, setQueryConfig] = useState({
     ...DEFAULT_QUERY_CONFIG,
-    size: userInfo?.config.variant?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
+    size: userInfo?.config.variants?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
   });
   const [selectedFilterContent, setSelectedFilterContent] = useState<ReactElement | undefined>(
     undefined,
@@ -103,7 +103,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
     resetSearchAfterQueryConfig(
       {
         ...DEFAULT_QUERY_CONFIG,
-        size: userInfo?.config.variant?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
+        size: userInfo?.config.variants?.tables?.variants?.viewPerQuery || DEFAULT_PAGE_SIZE,
       },
       setQueryConfig,
     );
