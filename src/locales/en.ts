@@ -551,10 +551,11 @@ const en = {
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
           connectedNotice:
-            'You have access to the following KIDS FIRST controlled data through your NIH credentials.',
+            'You have access to the following Kids First controlled data.',
           disconnectedNotice:
-            'Access controlled-access data by connecting your account using your NIH Credentials',
+            'To access controlled study files, connect to our data repository partners using your NIH credentials.',
           disconnect: 'Disconnect',
+          manageConnections: 'Manage your connections',
           noAvailableStudies: 'No available studies',
           authorization: 'Authorization',
           of: 'of',

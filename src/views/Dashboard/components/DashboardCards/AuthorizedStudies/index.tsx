@@ -80,7 +80,9 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     className={styles.disconnectBtn}
                     loading={connectionLoading}
                   >
-                    {intl.get('screen.dashboard.cards.authorizedStudies.disconnect')}
+                    {loadingStudiesForFences.length === 0 ? 
+                      intl.get('screen.dashboard.cards.authorizedStudies.disconnect'):
+                      intl.get('screen.dashboard.cards.authorizedStudies.manageConnections')}
                   </Button>
                 </Text>
               </Space>
