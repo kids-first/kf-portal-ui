@@ -17,7 +17,7 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Dropdown, Menu, Tooltip } from 'antd';
+import { Button, Dropdown, Menu } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
 import {
@@ -55,7 +55,7 @@ import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { readableDistanceByDays } from 'utils/dates';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
-import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
+import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
