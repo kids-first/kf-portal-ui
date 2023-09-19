@@ -550,8 +550,7 @@ const en = {
         },
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
-          connectedNotice:
-            'You have access to the following Kids First controlled data.',
+          connectedNotice: 'You have access to the following Kids First controlled data.',
           disconnectedNotice:
             'To access controlled study files, connect to our data repository partners using your NIH credentials.',
           disconnect: 'Disconnect',
@@ -1118,6 +1117,9 @@ const en = {
       study_code: 'Study Code',
       study_name: 'Study Name',
       external_id: 'dbGaP Accession Number',
+    },
+    family: {
+      family_id: 'Family ID',
     },
     studies: {
       study_code: 'Study Code',
