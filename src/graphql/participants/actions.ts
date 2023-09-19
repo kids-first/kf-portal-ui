@@ -9,12 +9,20 @@ import { INDEXES } from 'graphql/constants';
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
 
 import {
+  IDataFile,
+  IDataFileResultTree,
   IParticipantEntity,
   IParticipantResultTree,
   IUseParticipantEntityProps,
   IUseParticipantEntityResults,
 } from './models';
-import { GET_PARTICIPANT_COUNT, GET_PARTICIPANT_ENTITY, SEARCH_PARTICIPANT_QUERY } from './queries';
+import {
+  GET_DATA_FILE_AGG,
+  GET_PARTICIPANT_COUNT,
+  GET_PARTICIPANT_ENTITY,
+  SEARCH_PARTICIPANT_QUERY,
+} from './queries';
+import { DocumentNode } from '@apollo/client';
 
 export const useParticipants = (
   variables?: IQueryVariable,
@@ -40,23 +48,75 @@ export const useTotalParticipants = (variables?: IQueryVariable): number => {
   return result?.participant?.hits?.total || 0;
 };
 
-export const useParticipantEntity = ({
-  field,
-  values,
-}: IUseParticipantEntityProps): IUseParticipantEntityResults => {
+interface IUseParticipantProps {
+  field?: string;
+  value?: string | string[];
+  query?: DocumentNode;
+}
+
+export const useParticipantsFromField = ({
+  field = 'participant_id',
+  value,
+  query = GET_PARTICIPANT_COUNT,
+}: IUseParticipantProps): {
+  loading: boolean;
+  participants?: IParticipantEntity[];
+  total: number;
+} => {
   const sqon = {
-    content: [{ content: { field, value: values, index: INDEXES.PARTICIPANT }, op: 'in' }],
+    content: [{ content: { field, value, index: INDEXES.PARTICIPANT }, op: 'in' }],
     op: 'and',
   };
 
-  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(GET_PARTICIPANT_ENTITY, {
+  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(query, {
     variables: { sqon },
   });
 
-  const data = result?.participant?.hits?.edges[0].node;
+  return {
+    loading,
+    participants: hydrateResults(result?.participant?.hits?.edges || []),
+    total: result?.participant?.hits?.total || 0,
+  };
+};
+
+export const useParticipantEntity = ({
+  field = 'participant_id',
+  value,
+  query = GET_PARTICIPANT_ENTITY,
+}: IUseParticipantProps): { loading: boolean; participants?: IParticipantEntity[] } => {
+  const sqon = {
+    content: [{ content: { field, value: [value].flat(), index: INDEXES.PARTICIPANT }, op: 'in' }],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IParticipantResultTree>(query, {
+    variables: { sqon },
+  });
+
+  const participants = result?.participant?.hits?.edges?.map((x) => x.node) || undefined;
 
   return {
     loading,
-    data,
+    participants,
+  };
+};
+
+export const useDataFileAgg = (
+  query = GET_DATA_FILE_AGG,
+): { loading: boolean; dataFileAgg?: IDataFile } => {
+  const sqon = {
+    content: [],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IDataFileResultTree>(query, {
+    variables: { sqon },
+  });
+
+  const dataFileAgg = result?.file?.aggregations || undefined;
+
+  return {
+    loading,
+    dataFileAgg,
   };
 };

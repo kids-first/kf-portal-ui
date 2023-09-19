@@ -1,214 +1,69 @@
 import intl from 'react-intl-universal';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { DownloadOutlined, UserOutlined } from '@ant-design/icons';
-import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
-import ExternalLinkIcon from '@ferlab/ui/core/components/ExternalLink/ExternalLinkIcon';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import EntityPageWrapper, {
-  EntityDescriptions,
-  EntityTableMultiple,
-  EntityTableRedirectLink,
-  EntityTitle,
-} from '@ferlab/ui/core/pages/EntityPage';
-import { Button, Dropdown, Menu, Tag } from 'antd';
-import { INDEXES } from 'graphql/constants';
-import { IFileEntity } from 'graphql/files/models';
+import EntityPage, { EntityDescriptions } from '@ferlab/ui/core/pages/EntityPage';
 import { useParticipantEntity } from 'graphql/participants/actions';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
+import { IFamilyRelationToProband } from 'graphql/participants/models';
 
-import { ReportType } from 'services/api/reports/models';
-import { fetchReport } from 'store/report/thunks';
-import { STATIC_ROUTES } from 'utils/routes';
-
-import {
-  getDataTypeColumns,
-  getExperimentalStrategyColumns,
-  getFilesByExperimentalStrategy,
-  getFilesDataTypeInfo,
-} from './utils/files';
-import { getProfilItems } from './utils/profil';
+import { getLinks, SectionId } from './utils/anchorLinks';
+import getProfileItems from './utils/getProfileItems';
 import { getSummaryItems } from './utils/summary';
-import BiospecimensTable from './BiospecimensTable';
+import BiospecimenTable from './BiospecimenTable';
 import DiagnosisTable from './DiagnosisTable';
-import FamilyTable, { MIN_FAMILY_NUMBER } from './FamilyTable';
-import PhenotypesTable from './PhenotypeTable';
+import FamilyTable from './FamilyTable';
+import FileTable from './FileTable';
+import PhenotypeTable from './PhenotypeTable';
 import SummaryHeader from './SummaryHeader';
-
-import styles from './index.module.scss';
-
-export enum SectionId {
-  SUMMARY = 'summary',
-  PROFIL = 'profil',
-  FAMILY = 'family',
-  DIAGNOSIS = 'diagnosis',
-  PHENOTYPE = 'phenotype',
-  BIOSPECIMEN = 'biospecimen',
-  DATAFILE = 'datafile',
-}
+import ParticipantEntityTitle from './Title';
 
 const ParticipantEntity = () => {
-  const dispatch = useDispatch();
-  const { id } = useParams<{ id: string }>();
-  const { data, loading } = useParticipantEntity({
+  const { participant_id } = useParams<{ participant_id: string }>();
+
+  const { participants, loading } = useParticipantEntity({
     field: 'participant_id',
-    values: [id],
+    value: participant_id,
   });
+  const participant = participants ? participants[0] : undefined;
 
-  const files: IFileEntity[] = data?.files?.hits.edges.map(({ node }) => node) || [];
-  const dataTypeInfoData = getFilesDataTypeInfo(files, data?.participant_id);
-  const experimentalStrategyData = getFilesByExperimentalStrategy(files, data?.participant_id);
-  const totalFamilyMembers = data?.family?.family_relations?.hits?.total || 0;
-
-  const links: IAnchorLink[] = [
-    { href: `#${SectionId.SUMMARY}`, title: intl.get('screen.participantEntity.summary.title') },
-    { href: `#${SectionId.PROFIL}`, title: intl.get('screen.participantEntity.profile.title') },
-    {
-      href: `#${SectionId.FAMILY}`,
-      title: intl.get('screen.participantEntity.family.title'),
-      hidden: !data?.families_id || totalFamilyMembers <= MIN_FAMILY_NUMBER,
-    },
-    {
-      href: `#${SectionId.DIAGNOSIS}`,
-      title: intl.get('screen.participantEntity.diagnosis.title'),
-    },
-    {
-      href: `#${SectionId.PHENOTYPE}`,
-      title: intl.get('screen.participantEntity.phenotype.title'),
-    },
-    {
-      href: `#${SectionId.BIOSPECIMEN}`,
-      title: intl.get('screen.participantEntity.biospecimen.title'),
-    },
-    { href: `#${SectionId.DATAFILE}`, title: intl.get('screen.participantEntity.files.title') },
-  ];
-
-  const downloadClinicalMenu = (
-    <Menu
-      onClick={(e) =>
-        dispatch(
-          fetchReport({
-            data: {
-              sqon: generateSelectionSqon(INDEXES.PARTICIPANT, [id]),
-              name: e.key,
-            },
-          }),
-        )
-      }
-      items={[
-        {
-          key: ReportType.CLINICAL_DATA,
-          label: 'Selected participants',
-        },
-        {
-          key: ReportType.CLINICAL_DATA_FAM,
-          label: 'Selected participants & families',
-        },
-      ]}
-    />
-  );
+  const familyMembers: IFamilyRelationToProband[] =
+    participant?.family?.relations_to_proband?.hits?.edges?.map((x) => ({ ...x.node })) || [];
+  const showFamilyTable = !loading && familyMembers.length > 0;
 
   return (
-    <EntityPageWrapper
-      pageId="participant-entity-page"
-      links={links}
-      data={data}
+    <EntityPage
+      links={getLinks(showFamilyTable)}
+      pageId={'participant-entity-page'}
+      data={participant}
       loading={loading}
       emptyText={intl.get('no.data.available')}
     >
-      <>
-        <EntityTitle
-          text={id}
-          icon={<UserOutlined />}
-          loading={loading}
-          tag={
-            data?.is_proband ? (
-              <Tag>{intl.get('screen.participantEntity.proband')}</Tag>
-            ) : (
-              <Tag>{intl.get('screen.participantEntity.familyMember')}</Tag>
-            )
-          }
-          extra={
-            <Dropdown
-              className={styles.dropdown}
-              overlay={downloadClinicalMenu}
-              placement="bottomLeft"
-              key={'download-clinical-data-dropdown'}
-            >
-              <Button icon={<DownloadOutlined />}>
-                {intl.get('screen.participantEntity.downloadData')}
-              </Button>
-            </Dropdown>
-          }
-        />
-        <EntityDescriptions
-          id={SectionId.SUMMARY}
-          subheader={<SummaryHeader data={data} />}
-          loading={loading}
-          header={intl.get('screen.participantEntity.summary.title')}
-          descriptions={getSummaryItems(data)}
-        />
+      <ParticipantEntityTitle participant={participant} loading={loading} />
 
-        <EntityDescriptions
-          id={SectionId.PROFIL}
-          loading={loading}
-          title={intl.get('screen.participantEntity.profile.title')}
-          header={intl.get('screen.participantEntity.profile.title')}
-          descriptions={getProfilItems(data)}
-        />
+      <EntityDescriptions
+        id={SectionId.SUMMARY}
+        loading={loading}
+        descriptions={getSummaryItems(participant)}
+        header={intl.get('entities.global.summary')}
+        subheader={<SummaryHeader participant={participant} />}
+      />
 
-        <FamilyTable participant={data} loading={loading} />
-        <DiagnosisTable participant={data} loading={loading} />
-        <PhenotypesTable participant={data} loading={loading} />
-        <BiospecimensTable id={id} />
+      <EntityDescriptions
+        id={SectionId.PROFILE}
+        loading={loading}
+        descriptions={getProfileItems(participant)}
+        title={intl.get('entities.participant.profile')}
+        header={intl.get('entities.participant.profile')}
+      />
 
-        <EntityTableMultiple
-          id={SectionId.DATAFILE}
-          loading={loading}
-          total={files.length}
-          title={intl.get('screen.participantEntity.files.dataFile')}
-          titleExtra={[
-            <EntityTableRedirectLink
-              key="1"
-              to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
-              onClick={() =>
-                addQuery({
-                  queryBuilderId: DATA_EXPLORATION_QB_ID,
-                  query: generateQuery({
-                    newFilters: [
-                      generateValueFilter({
-                        field: 'participant_id',
-                        value: [id],
-                        index: INDEXES.PARTICIPANT,
-                      }),
-                    ],
-                  }),
-                  setAsActive: true,
-                })
-              }
-              icon={<ExternalLinkIcon width="14px" />}
-            >
-              {intl.get('global.viewInDataExploration')}
-            </EntityTableRedirectLink>,
-          ]}
-          header={intl.get('screen.participantEntity.files.dataFile')}
-          tables={[
-            {
-              columns: getDataTypeColumns(files.length),
-              data: dataTypeInfoData,
-              subTitle: intl.get('screen.participantEntity.files.numberByDataTypes'),
-            },
-            {
-              columns: getExperimentalStrategyColumns(files.length),
-              data: experimentalStrategyData,
-              subTitle: intl.get('screen.participantEntity.files.numberByExperimentalStrategy'),
-            },
-          ]}
-        />
-      </>
-    </EntityPageWrapper>
+      {showFamilyTable && <FamilyTable familyMembers={familyMembers} participant={participant!} />}
+
+      <DiagnosisTable participant={participant} loading={loading} />
+
+      <PhenotypeTable participant={participant} loading={loading} />
+
+      <BiospecimenTable participant={participant} loading={loading} />
+
+      <FileTable participant={participant} loading={loading} />
+    </EntityPage>
   );
 };
 

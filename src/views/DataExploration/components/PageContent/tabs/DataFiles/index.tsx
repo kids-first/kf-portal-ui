@@ -183,7 +183,7 @@ export const getDefaultColumns = (
                   generateValueFilter({
                     field: 'file_id',
                     value: [record.file_id],
-                    index: INDEXES.FILES,
+                    index: INDEXES.FILE,
                   }),
                 ],
               }),
@@ -215,7 +215,7 @@ export const getDefaultColumns = (
                   generateValueFilter({
                     field: 'file_id',
                     value: [record.file_id],
-                    index: INDEXES.FILES,
+                    index: INDEXES.FILE,
                   }),
                 ],
               }),
@@ -326,7 +326,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
           newFilters: [
             generateValueFilter({
               field: DATA_FILES_SAVED_SETS_FIELD,
-              index: INDEXES.FILES,
+              index: INDEXES.FILE,
               value: selectedRows.map((row) => row[DATA_FILES_SAVED_SETS_FIELD]),
             }),
           ],
@@ -408,7 +408,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
                   connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
                   connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
                 ),
-                index: INDEXES.FILES,
+                index: INDEXES.FILE,
                 sqon: getCurrentSqon(),
               }),
             ),

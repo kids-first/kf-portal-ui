@@ -47,7 +47,7 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
                   generateValueFilter({
                     field: 'file_id',
                     value: file ? [file.file_id] : [],
-                    index: INDEXES.FILES,
+                    index: INDEXES.FILE,
                   }),
                 ],
               }),

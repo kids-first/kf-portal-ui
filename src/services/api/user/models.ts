@@ -26,6 +26,8 @@ export type TUser = {
   commercial_use_reason: string;
   config: TUserConfig;
   linkedin?: string;
+  research_area_description?: string;
+  profile_image_key?: string | null;
 };
 
 export type TUserTableConfig = {
@@ -44,33 +46,33 @@ export type TUserConfig = {
       layouts?: TSerializedResizableGridLayoutConfig[];
     };
   };
-  study?: {
-    tables?: {
-      study?: TUserTableConfig;
-    };
-  };
-  variant?: {
-    tables?: {
-      variants?: TUserTableConfig;
-    };
-  };
-  participant?: {
-    tables?: {
-      family?: TUserTableConfig;
-      diagnosis?: TUserTableConfig;
-      phenotype?: TUserTableConfig;
-      biospecimens?: TUserTableConfig;
-    };
-  };
   files?: {
     tables?: {
       biospecimens?: TUserTableConfig;
       experimental_procedures?: TUserTableConfig;
     };
   };
+  participants?: {
+    tables?: {
+      diagnosis?: TUserTableConfig;
+      family?: TUserTableConfig;
+      phenotype?: TUserTableConfig;
+      biospecimens?: TUserTableConfig;
+    };
+  };
   dashboard?: {
     cards?: {
       order?: string[];
+    };
+  };
+  variants?: {
+    tables?: {
+      variants?: TUserTableConfig;
+    };
+  };
+  study?: {
+    tables?: {
+      study?: TUserTableConfig;
     };
   };
 };

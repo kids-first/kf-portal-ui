@@ -6,7 +6,7 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
-import { IStudiesEntity } from 'graphql/studies/models';
+import { IStudyEntity } from 'graphql/studies/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
@@ -48,7 +48,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'study_code',
     title: 'Code',
-    render: (record: IStudiesEntity) =>
+    render: (record: IStudyEntity) =>
       record?.website ? (
         <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
       ) : (
@@ -88,7 +88,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'participant_count',
     title: 'Participants',
-    render: (record: IStudiesEntity) => {
+    render: (record: IStudyEntity) => {
       const participantCount = record.participant_count;
 
       return participantCount ? (
@@ -120,7 +120,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'biospecimen_count',
     title: 'Biospecimens',
-    render: (record: IStudiesEntity) => {
+    render: (record: IStudyEntity) => {
       const biospecimenCount = record.biospecimen_count;
 
       return biospecimenCount ? (
@@ -160,21 +160,21 @@ const columns: ProColumnType<any>[] = [
     key: 'clinical',
     title: 'Clinical',
     align: 'center',
-    render: (record: IStudiesEntity) =>
+    render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'genomic',
     title: 'Genomics',
     align: 'center',
-    render: (record: IStudiesEntity) =>
+    render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.GENOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'transcriptomic',
     title: 'Transcriptomics',
     align: 'center',
-    render: (record: IStudiesEntity) =>
+    render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC) ||
       TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -182,7 +182,7 @@ const columns: ProColumnType<any>[] = [
     key: 'proteomic',
     title: 'Proteomics',
     align: 'center',
-    render: (record: IStudiesEntity) =>
+    render: (record: IStudyEntity) =>
       hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];

@@ -27,7 +27,7 @@ import { fetchTsvReport } from 'store/report/thunks';
 import { INDEXES } from 'graphql/constants';
 import { useUser } from 'store/user';
 import { ArrangerApi } from 'services/api/arranger';
-import { IStudiesResultTree } from 'graphql/studies/models';
+import { IStudyResultTree } from 'graphql/studies/models';
 import { GET_STUDY_COUNT } from 'graphql/studies/queries';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
@@ -98,7 +98,7 @@ const PageContent = ({
         dictionary={getQueryBuilderDictionary(facetTransResolver)}
         getResolvedQueryForCount={(sqon) => resolveSyntheticSqon(queryList, sqon)}
         fetchQueryCount={async (sqon) => {
-          const { data } = await ArrangerApi.graphqlRequest<{ data: IStudiesResultTree }>({
+          const { data } = await ArrangerApi.graphqlRequest<{ data: IStudyResultTree }>({
             query: GET_STUDY_COUNT.loc?.source.body,
             variables: {
               sqon: resolveSyntheticSqon(queryList, sqon),

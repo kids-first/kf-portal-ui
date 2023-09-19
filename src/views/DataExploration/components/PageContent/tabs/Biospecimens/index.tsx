@@ -148,7 +148,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
                   generateValueFilter({
                     field: 'sample_id',
                     value: [record.sample_id],
-                    index: INDEXES.BIOSPECIMENS,
+                    index: INDEXES.BIOSPECIMEN,
                   }),
                 ],
               }),
@@ -210,7 +210,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
           newFilters: [
             generateValueFilter({
               field: BIOSPECIMENS_SAVED_SETS_FIELD,
-              index: INDEXES.BIOSPECIMENS,
+              index: INDEXES.BIOSPECIMEN,
               value: selectedRows.map((row) => row[BIOSPECIMENS_SAVED_SETS_FIELD]),
             }),
           ],
@@ -296,13 +296,13 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             fetchTsvReport({
               columnStates: userInfo?.config.data_exploration?.tables?.biospecimens?.columns,
               columns: getDefaultColumns(),
-              index: INDEXES.BIOSPECIMENS,
+              index: INDEXES.BIOSPECIMEN,
               sqon: getCurrentSqon(),
             }),
           ),
         extra: [
           <SetsManagementDropdown
-            key={INDEXES.BIOSPECIMENS}
+            key={INDEXES.BIOSPECIMEN}
             idField="fhir_id"
             results={results}
             sqon={getCurrentSqon()}

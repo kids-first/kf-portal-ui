@@ -59,7 +59,7 @@ const SummaryHeader = ({ file }: OwnProps) => {
                 generateValueFilter({
                   field: 'file_id',
                   value: file ? [file.file_id] : [],
-                  index: INDEXES.FILES,
+                  index: INDEXES.FILE,
                 }),
               ],
             }),

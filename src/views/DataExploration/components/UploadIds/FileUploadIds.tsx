@@ -63,7 +63,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
         queryBuilderId,
         field: 'file_facet_ids.file_fhir_id_2',
         value: matches.map((match) => match.value!),
-        index: INDEXES.FILES,
+        index: INDEXES.FILE,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
         isUploadedList: true,

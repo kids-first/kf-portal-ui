@@ -4,57 +4,48 @@
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between;  
   margin-bottom: 20px;
   gap: 24px;
 }
 
 .link {
-  display: flex;
-  padding: 8px 16px;
-  border: 1px solid $gray-5;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    width: 100%;
+    align-items: baseline;
+    justify-content: center;
+    
+    padding: 8px 16px;
+    border: 1px solid $gray-5;
 
-  &:hover {
-    background: $gray-2;
-  }
+    &:hover {
+        background: $gray-2;
+    }
 }
 
-.participantDisabled {
-  display: flex;
-  height: 54px;
-  padding: 8px 16px;
-  border: 1px solid $gray-5;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: $gray-1;
-  }
-}
-
-.icon,
-.entityCount {
-  color: $geekblue-7;
+.icon, .count, .readOutlinedIcon {
+    color: $gray-9;
 }
 
 .icon {
-  font-size: $data-release-icon-font-size;
-  margin-bottom: 3px;
+    font-size: 20px;
 }
 
-.entityCount {
-  font-size: 24px;
-  line-height: 32px;
-  font-weight: 600;
-  margin: 0 4px 0 8px;
+.readOutlinedIcon {
+    font-size: 21px;
+    position: relative;
+    top: 3px;
+}
+
+.count {   
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 4px 0 8px;
+    line-height: 32px;
 }
 
 .text {
-  color: $body-2;
-  line-height: 32px;
-  margin-top: 4px;
+    line-height: 22px;
+    color: $gray-7;
+    font-size: 14px;    
 }

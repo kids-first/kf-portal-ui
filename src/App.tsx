@@ -140,11 +140,7 @@ const App = () => {
                   <ProtectedRoute exact path={DYNAMIC_ROUTES.DATA_EXPLORATION} layout={PageLayout}>
                     <DataExploration />
                   </ProtectedRoute>
-                  <ProtectedRoute
-                    exact
-                    path={DYNAMIC_ROUTES.PARTICIPANT_ENTITY}
-                    layout={PageLayout}
-                  >
+                  <ProtectedRoute exact path={DYNAMIC_ROUTES.PARTICIPANT_ENTITY} layout={PageLayout}>
                     <ParticipantEntity />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={STATIC_ROUTES.VARIANTS} layout={PageLayout}>
