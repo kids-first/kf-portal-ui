@@ -39,3 +39,6 @@ export enum DYNAMIC_ROUTES {
   ERROR = '/error/:status?',
   COMMUNITY_MEMBER = '/member/:id',
 }
+
+export const goToParticipantEntityPage = (participantID: string) =>
+  `${STATIC_ROUTES.PARTICIPANTS}/${participantID}`;
