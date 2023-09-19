@@ -22,7 +22,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { STATIC_ROUTES } from 'utils/routes';
+import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
 import { SectionId } from '../utils/anchorLinks';
@@ -55,7 +55,7 @@ const getFamilyColumns = (current_participant_id: string): ProColumnType[] => [
       }
 
       return participant_id ? (
-        <Link to={`${STATIC_ROUTES.PARTICIPANT}/${participant_id}`}>{participant_id}</Link>
+        <Link to={goToParticipantEntityPage(participant_id)}>{participant_id}</Link>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       );
