@@ -18,7 +18,7 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     render: (phenotype: IParticipantPhenotype) => {
       const phenotypeNames =
         phenotype?.hpo_phenotype_observed || phenotype?.hpo_phenotype_not_observed;
-      if (!phenotypeNames || phenotypeNames.length === 0) {
+      if (!phenotypeNames) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
       return (
