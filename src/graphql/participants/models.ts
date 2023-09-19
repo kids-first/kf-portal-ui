@@ -1,5 +1,4 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
-import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
 import { IStudyEntity } from 'graphql/studies/models';
 
@@ -15,14 +14,6 @@ export interface IParticipantDiagnosis {
   diagnosis_category?: string;
   affected_status: boolean;
   diagnosis_id: string;
-}
-
-export interface IParticipantPhenotype {
-  id: string;
-  age_at_event_days: number;
-  fhir_id: string;
-  hpo_phenotype_observed: string;
-  is_observed: boolean;
 }
 
 export interface IParticipantMondo {
@@ -78,7 +69,6 @@ export interface IParticipantFamily {
   family_id: string;
   relations_to_proband: IArrangerResultsTree<IFamilyRelationToProband>;
 }
-
 
 export type ITableParticipantEntity = IParticipantEntity & {
   key: string;
@@ -219,4 +209,3 @@ export interface IDataFileResultTree {
   };
   loading: boolean;
 }
-

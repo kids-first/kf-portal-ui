@@ -2,6 +2,7 @@ import intl from 'react-intl-universal';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
+import { Tag } from 'antd';
 import { IParticipantPhenotype } from 'graphql/participants/models';
 import { capitalize } from 'lodash';
 import { extractPhenotypeTitleAndCode } from 'views/DataExploration/utils/helper';
@@ -15,7 +16,8 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     key: 'hpo_phenotype_observed',
     title: intl.get('entities.participant.phenotype_hpo'),
     render: (phenotype: IParticipantPhenotype) => {
-      const phenotypeNames = phenotype?.hpo_phenotype_observed;
+      const phenotypeNames =
+        phenotype?.hpo_phenotype_observed || phenotype?.hpo_phenotype_not_observed;
       if (!phenotypeNames || phenotypeNames.length === 0) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
@@ -47,28 +49,43 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.source_text'),
     render: (phenotype: IParticipantPhenotype) =>
       phenotype?.source_text ? phenotype.source_text : TABLE_EMPTY_PLACE_HOLDER,
+    width: '30%',
+  },
+  {
+    key: 'phenotypes_tagged.is_observed',
+    title: intl.get('entities.participant.interpretation'),
+    render: (phenotype: IParticipantPhenotype) => (
+      <Tag color={phenotype?.observed || phenotype.hpo_phenotype_observed ? 'green' : ''}>
+        {phenotype?.observed || phenotype.hpo_phenotype_observed
+          ? intl.get('entities.participant.observed')
+          : intl.get('entities.participant.not_observed')}
+      </Tag>
+    ),
+    width: '15%',
   },
   {
     key: 'age_at_event_days',
     title: intl.get('entities.participant.age'),
     tooltip: intl.get('entities.participant.age_tooltip_phenotype'),
-    render: (diagnosis: IParticipantPhenotype) =>
-      diagnosis.age_at_event_days ? (
-        <AgeCell ageInDays={diagnosis.age_at_event_days} />
+    render: (phenotype: IParticipantPhenotype) =>
+      phenotype.age_at_event_days ? (
+        <AgeCell ageInDays={phenotype.age_at_event_days} />
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
+    width: '10%',
   },
   {
     key: 'hpo_term',
     title: intl.get('entities.participant.hpo_term'),
     tooltip: intl.get('entities.participant.hpo_term_tooltip'),
-    render: (diagnosis: IParticipantPhenotype) =>
-      diagnosis?.hpo_phenotype_observed ? (
-        <HpoParticipantCount phenotype={diagnosis.hpo_phenotype_observed} />
+    render: (phenotype: IParticipantPhenotype) =>
+      phenotype?.hpo_phenotype_observed ? (
+        <HpoParticipantCount phenotype={phenotype.hpo_phenotype_observed} />
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
+    width: '10%',
   },
 ];
 

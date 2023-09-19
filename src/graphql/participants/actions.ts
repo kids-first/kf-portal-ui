@@ -1,3 +1,4 @@
+import { DocumentNode } from '@apollo/client';
 import {
   IQueryOperationsConfig,
   IQueryResults,
@@ -13,8 +14,6 @@ import {
   IDataFileResultTree,
   IParticipantEntity,
   IParticipantResultTree,
-  IUseParticipantEntityProps,
-  IUseParticipantEntityResults,
 } from './models';
 import {
   GET_DATA_FILE_AGG,
@@ -22,7 +21,6 @@ import {
   GET_PARTICIPANT_ENTITY,
   SEARCH_PARTICIPANT_QUERY,
 } from './queries';
-import { DocumentNode } from '@apollo/client';
 
 export const useParticipants = (
   variables?: IQueryVariable,

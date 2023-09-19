@@ -550,8 +550,7 @@ const en = {
         },
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
-          connectedNotice:
-            'You have access to the following Kids First controlled data.',
+          connectedNotice: 'You have access to the following Kids First controlled data.',
           disconnectedNotice:
             'To access controlled study files, connect to our data repository partners using your NIH credentials.',
           disconnect: 'Disconnect',
@@ -1414,9 +1413,12 @@ const en = {
       family_unit: 'Family Unit',
       hpo_term: 'HPO Term',
       hpo_term_tooltip: '# of participants with this exact HPO term',
+      interpretation: 'Interpretation',
       mondo_diagnosis: 'Diagnosis (MONDO)',
       mondo_term: 'MONDO Term',
       mondo_term_tooltip: '# of participants with this exact MONDO term',
+      not_observed: 'Not observed',
+      observed: 'Observed',
       other: 'Other',
       participant_id: 'Participant ID',
       phenotype: 'Phenotype',
@@ -1425,7 +1427,7 @@ const en = {
       profile: 'Profile',
       race: 'Race',
       sex: 'Sex',
-      source_text: 'Condition (Source Text)',
+      source_text: 'Phenotype (Source Text)',
       trio: 'Trio',
       trio_plus: ' Trio+',
       trisomy: 'T21: "Trisomy 21"',
