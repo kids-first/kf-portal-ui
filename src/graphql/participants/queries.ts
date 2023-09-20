@@ -158,19 +158,26 @@ export const GET_PARTICIPANT_ENTITY = gql`
                         edges {
                           node {
                             age_at_biospecimen_collection
-                            sample_id
-                            sample_type
-                            parent_sample_id
-                            parent_sample_type
+                            anatomy_site
+                            biospecimen_storage
                             collection_sample_id
                             collection_sample_type
+                            consent_type
                             container_id
+                            dbgap_consent_code
+                            fhir_id
+                            laboratory_procedure
+                            ncit_anatomy_site_id
+                            ncit_id_tissue_type
+                            parent_sample_id
+                            parent_sample_type
+                            sample_id
+                            sample_type
+                            source_text_tumor_location
+                            status
+                            tissue_type_source_text
                             volume
                             volume_unit
-                            laboratory_procedure
-                            biospecimen_storage
-                            fhir_id
-                            status
                           }
                         }
                       }
@@ -179,7 +186,6 @@ export const GET_PARTICIPANT_ENTITY = gql`
                 }
               }
             }
-
             nb_biospecimens
             nb_files
             participant_id
@@ -193,6 +199,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                     hpo_phenotype_observed_text
                     hpo_phenotype_not_observed
                     hpo_phenotype_not_observed_text
+                    # TODO FIX to is_observed graphql broken
                     observed
                     source_text
                   }
