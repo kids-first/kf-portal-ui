@@ -169,6 +169,13 @@ const en = {
       },
     },
     report: {
+      clinicalData: {
+        download: 'Download clinical data',
+        family:
+          '{count, plural, =0 {Selected participant & family} =1 {Selected participant & family} other {Selected participants & families}}',
+        participant:
+          '{count, plural, =0 {Selected participant} =1 {Selected participant} other {Selected participants}}',
+      },
       error: {
         title: 'Error',
         message: 'We were unable to generate the report at this time. Please try again later or ',
