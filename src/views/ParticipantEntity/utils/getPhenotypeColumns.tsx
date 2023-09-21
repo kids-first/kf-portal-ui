@@ -45,7 +45,7 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   },
   {
     key: 'source_text',
-    title: intl.get('entities.participant.source_text'),
+    title: intl.get('entities.participant.phenotype_source_text'),
     render: (phenotype: IParticipantPhenotype) =>
       phenotype?.source_text ? phenotype.source_text : TABLE_EMPTY_PLACE_HOLDER,
     width: '30%',

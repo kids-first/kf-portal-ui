@@ -116,6 +116,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                     source_text
                     age_at_event_days
                     diagnosis_id
+                    ncit_id_diagnosis
                   }
                 }
               }
