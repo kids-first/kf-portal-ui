@@ -13,11 +13,10 @@ import AgeCell from '../AgeCell';
 import HpoParticipantCount from '../PhenotypeTable/HpoParticipantCount';
 const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   {
-    key: 'hpo_phenotype_observed',
+    key: 'hpo_phenotype',
     title: intl.get('entities.participant.phenotype_hpo'),
     render: (phenotype: IParticipantPhenotype) => {
-      const phenotypeNames =
-        phenotype?.hpo_phenotype_observed || phenotype?.hpo_phenotype_not_observed;
+      const phenotypeNames = phenotype?.hpo_phenotype;
       if (!phenotypeNames) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
@@ -52,7 +51,7 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     width: '30%',
   },
   {
-    key: 'phenotypes_tagged.is_observed',
+    key: 'observed',
     title: intl.get('entities.participant.interpretation'),
     render: (phenotype: IParticipantPhenotype) => (
       <Tag color={phenotype?.observed || phenotype.hpo_phenotype_observed ? 'green' : ''}>

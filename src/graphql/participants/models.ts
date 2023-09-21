@@ -102,6 +102,7 @@ export interface IParticipantPhenotype {
   age_at_event_days: number;
   source_text: string;
   fhir_id: string;
+  hpo_phenotype: string;
   hpo_phenotype_observed: string;
   hpo_phenotype_observed_text: string;
   hpo_phenotype_not_observed: string;

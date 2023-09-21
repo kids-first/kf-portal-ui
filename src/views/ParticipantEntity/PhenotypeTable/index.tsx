@@ -26,7 +26,12 @@ const PhenotypeTable = ({ participant, loading }: OwnProps) => {
   const dispatch = useDispatch();
 
   const phenotype: IParticipantPhenotype[] =
-    participant?.phenotype?.hits?.edges?.map((e) => ({ key: e.node.fhir_id, ...e.node })) || [];
+    participant?.phenotype?.hits?.edges?.map((e) => ({
+      key: e.node.fhir_id,
+      ...e.node,
+      // TODO maybe fix this in back but no time and needed to have it in TSV export
+      hpo_phenotype: e.node.hpo_phenotype_observed || e.node.hpo_phenotype_not_observed,
+    })) || [];
 
   const phenotypesDefaultColumns = getPhenotypeDefaultColumns();
 
