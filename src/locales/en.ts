@@ -1418,7 +1418,7 @@ const en = {
       dbgap: 'dbGaP',
       diagnosis: 'Diagnosis',
       disomy: 'D21: "Disomy 21, euploid"',
-      down_syndrome_status: 'Down Syndrome Status',
+      down_syndrome_status: 'Vital Status',
       duo: 'Duo',
       ethnicity: 'Ethnicity',
       external_id: 'Ext. Participant ID',
