@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { CheckOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
@@ -31,15 +32,16 @@ const enum DataCategory {
   IMMUNE_MAP = 'Immune-Map',
 }
 
-const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
-  dataCategory ? dataCategory.includes(category) ? <CheckOutlined /> : undefined : undefined;
+const hasDataCategory = (dataCategory: string[], category: DataCategory) => 
+  dataCategory && dataCategory.includes(`${category}s`) ? <CheckOutlined /> : undefined;
+
 
 const filterInfo: FilterInfo = {
   customSearches: [<StudySearch key={1} queryBuilderId={STUDIES_REPO_QB_ID} />],
-  defaultOpenFacets: ['program', 'data_category', 'experimental_strategy', 'family_data'],
+  defaultOpenFacets: ['program', 'domain', 'data_category', 'experimental_strategy', 'family_data'],
   groups: [
     {
-      facets: ['program', 'data_category', 'experimental_strategy', 'family_data'],
+      facets: ['program', 'domain', 'data_category', 'experimental_strategy', 'family_data'],
     },
   ],
 };
@@ -71,7 +73,8 @@ const columns: ProColumnType<any>[] = [
     key: 'domain',
     title: 'Domain',
     dataIndex: 'domain',
-    render: (domain: string) => domain || TABLE_EMPTY_PLACE_HOLDER,
+    render: (domain: string) => intl.get(`facets.options.domain.${domain}`, domain)  || domain || TABLE_EMPTY_PLACE_HOLDER,
+    width: 182,
   },
   {
     key: 'external_id',
@@ -158,13 +161,6 @@ const columns: ProColumnType<any>[] = [
     dataIndex: 'family_count',
     render: (family_count: number) =>
       family_count ? numberWithCommas(family_count) : TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'clinical',
-    title: 'Clinical',
-    align: 'center',
-    render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'genomic',

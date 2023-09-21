@@ -9,7 +9,7 @@ import { STUDIES_REPO_QB_ID } from '../../utils/constant';
 import FilterList from 'components/uiKit/FilterList';
 import { INDEXES } from 'graphql/constants';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 type OwnProps = {
@@ -39,14 +39,16 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
       <ScrollContent>
         {!collapsed && (
           <div className={styles.content}>
-            <FilterList
+           { extendedMappingResults.loading
+            ? <Spin className={styles.filterLoader} spinning />
+            : <FilterList
               loading={loading}
               key={INDEXES.STUDIES}
               index={INDEXES.STUDIES}
               queryBuilderId={STUDIES_REPO_QB_ID}
               extendedMappingResults={extendedMappingResults}
               filterInfo={filterInfo}
-            />
+            />}
           </div>
         )}
       </ScrollContent>

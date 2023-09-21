@@ -97,7 +97,7 @@ export const generateFilters = ({
     );
   });
 
-const translateWhenNeeded = (group: string, key: string) =>
+const translateWhenNeeded = (group: string, key: string) => 
   intl.get(`facets.options.${group}.${keyEnhance(key)}`).defaultMessage(keyEnhance(key));
 
 export const getFilters = (aggregations: TAggregations | null, key: string): IFilter[] => {

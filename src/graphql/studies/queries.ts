@@ -8,6 +8,7 @@ export const SEARCH_STUDIES_QUERY = gql`
         edges {
           node {
             id
+            domain
             study_id
             study_code
             study_name
