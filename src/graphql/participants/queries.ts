@@ -186,6 +186,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                 }
               }
             }
+            is_proband
             nb_biospecimens
             nb_files
             participant_id
