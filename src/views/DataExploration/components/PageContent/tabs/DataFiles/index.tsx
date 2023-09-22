@@ -430,7 +430,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               results={results}
               sqon={getCurrentSqon()}
               selectedAllResults={selectedAllResults}
-              type={SetType.FILES}
+              type={SetType.FILE}
               selectedKeys={selectedKeys}
               key="file-set-management"
             />,

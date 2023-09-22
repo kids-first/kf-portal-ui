@@ -6,6 +6,8 @@ export interface FilterGroup {
   title?: string;
   facets: string[] | React.ReactNode[];
   tooltips?: string[];
+  noDataOption?: string[];
+  intervalDecimal?: { [key: string]: number };
 }
 
 export interface FilterInfo {

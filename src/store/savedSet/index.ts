@@ -17,7 +17,7 @@ export const getSetFieldId = (type: SetType) => {
     return VARIANT_SAVED_SETS_FIELD;
   }
 
-  if (type === SetType.FILES) {
+  if (type === SetType.FILE) {
     return `${singularizeSetTypeIfNeeded(type)}_facet_ids.${singularizeSetTypeIfNeeded(
       type,
     )}_fhir_id_1`;
