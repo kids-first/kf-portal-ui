@@ -1,12 +1,12 @@
-import { Button, Input, Select, Space, Tag, Typography } from 'antd';
-import ProLabel from '@ferlab/ui/core/components/ProLabel';
-import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
+import { CaretDownFilled, CaretUpFilled } from '@ant-design/icons';
+import ProLabel from '@ferlab/ui/core/components/ProLabel';
+import { Button, Input, Select, Space, Tag, Typography } from 'antd';
+import { debounce } from 'lodash';
+import { areaOfInterestOptions, memberRolesOptions } from 'views/Community/contants';
 
 import styles from './index.module.scss';
-import { memberRolesOptions, areaOfInterestOptions } from 'views/Community/contants';
-import { debounce } from 'lodash';
 
 interface OwnProps {
   onSearchFilterChange: (value: string) => void;
@@ -57,6 +57,7 @@ const FiltersBox = ({
               className={styles.filterMultiSelect}
               mode="multiple"
               allowClear
+              onClear={() => setRoleFilter([])}
               placeholder={intl.get('screen.community.search.selectPlaceholder')}
               maxTagCount="responsive"
               value={roleFilter}
@@ -86,6 +87,7 @@ const FiltersBox = ({
               className={styles.filterMultiSelect}
               mode="multiple"
               allowClear
+              onClear={() => setInterestsFilter([])}
               placeholder={intl.get('screen.community.search.selectPlaceholder')}
               maxTagCount="responsive"
               value={interestsFilter}
