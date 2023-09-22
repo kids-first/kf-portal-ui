@@ -77,13 +77,16 @@ const columns: ProColumnType<any>[] = [
     key: 'external_id',
     title: 'dbGaP',
     dataIndex: 'external_id',
-    render: (externalId: string) => (
-      <ExternalLink
-        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${externalId}`}
-      >
-        {externalId}
-      </ExternalLink>
-    ),
+    render: (externalId: string) =>
+      externalId ? (
+        <ExternalLink
+          href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${externalId}`}
+        >
+          {externalId}
+        </ExternalLink>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'participant_count',
