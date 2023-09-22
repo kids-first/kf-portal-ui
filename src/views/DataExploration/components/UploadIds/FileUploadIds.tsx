@@ -42,7 +42,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
         },
       });
 
-      const files: IFileEntity[] = hydrateResults(response.data?.data?.files?.hits?.edges || []);
+      const files: IFileEntity[] = hydrateResults(response.data?.data?.file?.hits?.edges || []);
 
       return files?.flatMap((file) => {
         const matchedIds: string[] = ids.filter(
