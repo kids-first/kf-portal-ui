@@ -51,13 +51,11 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     width: '30%',
   },
   {
-    key: 'observed',
+    key: 'is_observed',
     title: intl.get('entities.participant.interpretation'),
     render: (phenotype: IParticipantPhenotype) => (
-      // TODO when field is_observed ready: <Tag color={phenotype?.is_observed ? 'green' : ''}>
-      // graphql broken
-      <Tag color={phenotype?.observed ? 'green' : ''}>
-        {phenotype?.observed
+      <Tag color={phenotype?.is_observed ? 'green' : ''}>
+        {phenotype?.is_observed
           ? intl.get('entities.participant.observed')
           : intl.get('entities.participant.not_observed')}
       </Tag>

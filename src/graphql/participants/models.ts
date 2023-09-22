@@ -107,7 +107,7 @@ export interface IParticipantPhenotype {
   hpo_phenotype_observed_text: string;
   hpo_phenotype_not_observed: string;
   hpo_phenotype_not_observed_text: string;
-  observed: boolean;
+  is_observed: boolean;
 }
 
 export interface IParticipantBiospecimen {
