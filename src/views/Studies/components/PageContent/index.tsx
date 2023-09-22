@@ -21,17 +21,11 @@ import { fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { combineExtendedMappings } from 'utils/fieldMapper';
-import { formatQuerySortList, scrollToTop } from 'utils/helper';
+import { formatQuerySortList } from 'utils/helper';
 import { getProTableDictionary } from 'utils/translation';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
-import {
-  DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_CONFIG,
-  SCROLL_WRAPPER_ID,
-  STUDIES_REPO_QB_ID,
-} from '../../utils/constant';
+import { DEFAULT_PAGE_INDEX, DEFAULT_QUERY_CONFIG, STUDIES_REPO_QB_ID } from '../../utils/constant';
 
 import styles from './index.module.scss';
 
@@ -41,6 +35,8 @@ type OwnProps = {
   defaultColumns: ProColumnType<any>[];
   extendedMappingResults?: IExtendedMappingResults;
 };
+
+const PAGE_SIZE = 50;
 
 const PageContent = ({
   defaultColumns = [],
@@ -53,8 +49,8 @@ const PageContent = ({
   const resolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
   const { loading, total, data } = useStudies({
-    first: queryConfig.size,
-    offset: queryConfig.size * (queryConfig.pageIndex - 1),
+    first: PAGE_SIZE,
+    offset: PAGE_SIZE * (queryConfig.pageIndex - 1),
     sqon: resolvedSqon,
   });
 
@@ -129,7 +125,7 @@ const PageContent = ({
             headerConfig={{
               itemCount: {
                 pageIndex: queryConfig.pageIndex,
-                pageSize: queryConfig.size,
+                pageSize: PAGE_SIZE,
                 total,
               },
               enableColumnSort: true,
@@ -159,13 +155,6 @@ const PageContent = ({
             }}
             size="small"
             dataSource={data.map((i) => ({ ...i, key: i.id }))}
-            pagination={{
-              current: queryConfig.pageIndex,
-              pageSize: queryConfig.size,
-              defaultPageSize: DEFAULT_PAGE_SIZE,
-              total: total,
-              onChange: () => scrollToTop(SCROLL_WRAPPER_ID),
-            }}
             dictionary={getProTableDictionary()}
           />
         }
