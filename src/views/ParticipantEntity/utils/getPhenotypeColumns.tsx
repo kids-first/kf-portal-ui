@@ -45,7 +45,7 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   },
   {
     key: 'source_text',
-    title: intl.get('entities.participant.source_text'),
+    title: intl.get('entities.participant.phenotype_source_text'),
     render: (phenotype: IParticipantPhenotype) =>
       phenotype?.source_text ? phenotype.source_text : TABLE_EMPTY_PLACE_HOLDER,
     width: '30%',
@@ -54,8 +54,10 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     key: 'observed',
     title: intl.get('entities.participant.interpretation'),
     render: (phenotype: IParticipantPhenotype) => (
-      <Tag color={phenotype?.observed || phenotype.hpo_phenotype_observed ? 'green' : ''}>
-        {phenotype?.observed || phenotype.hpo_phenotype_observed
+      // TODO when field is_observed ready: <Tag color={phenotype?.is_observed ? 'green' : ''}>
+      // graphql broken
+      <Tag color={phenotype?.observed ? 'green' : ''}>
+        {phenotype?.observed
           ? intl.get('entities.participant.observed')
           : intl.get('entities.participant.not_observed')}
       </Tag>

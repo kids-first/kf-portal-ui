@@ -3,6 +3,8 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
 import { Tag, Tooltip } from 'antd';
 import { FamilyType, IParticipantEntity } from 'graphql/participants/models';
+import { capitalize } from 'lodash';
+import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
@@ -43,20 +45,49 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
     value: participant?.study.external_id ? (
       <ExternalLink
         className={styles.link}
-        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${participant?.study.external_id}`}
+        href={`https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=${participant.study.external_id}`}
       >
-        {participant?.study.external_id}
+        {participant.study.external_id}
       </ExternalLink>
     ) : (
       TABLE_EMPTY_PLACE_HOLDER
     ),
   },
   {
+    label: intl.get('entities.participant.pedcBioPortal'),
+    value:
+      participant?.participant_id &&
+      participant.study?.study_code &&
+      mapStudyToPedcBioportal(participant.study.study_code) ? (
+        <ExternalLink
+          href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=${mapStudyToPedcBioportal(
+            participant.study.study_code,
+          )}&caseId=${participant.participant_id}`}
+        >
+          {participant.participant_id}
+        </ExternalLink>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  },
+
+  {
     label: intl.get('entities.participant.family_unit'),
     value: participant?.family_type ? (
-      <Tag color="cyan">{familyTypeText[participant.family_type]}</Tag>
+      <Tag color="cyan">{capitalize(participant.family_type)}</Tag>
     ) : (
       TABLE_EMPTY_PLACE_HOLDER
     ),
+  },
+  {
+    label: intl.get('entities.participant.proband'),
+    value:
+      participant?.is_proband || participant?.is_proband === false ? (
+        <Tag color={participant.is_proband ? 'green' : ''}>
+          {capitalize(participant.is_proband.toString())}
+        </Tag>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
 ];

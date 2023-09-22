@@ -22,7 +22,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
+import { goToParticipantEntityPage } from 'utils/routes';
 import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
 import { SectionId } from '../utils/anchorLinks';
@@ -130,7 +130,7 @@ const FamilyTable = ({ familyMembers = [], participant }: OwnProps) => {
       data={rows}
       title={intl.get('entities.participant.family')}
       header={[
-        intl.get('entities.participant.family_id'),
+        intl.get('entities.participant.family'),
         ' (',
         <FamilyIdLink key={1} familyId={participant.family.family_id} />,
         ')',

@@ -26,12 +26,6 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       ),
   },
   {
-    key: 'container_id',
-    title: intl.get('entities.biospecimen.container_id'),
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.container_id || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'sample_type',
     title: intl.get('entities.biospecimen.sample_type'),
     render: (biospecimen: IBiospecimenEntity) =>
@@ -50,6 +44,48 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (biospecimen: IBiospecimenEntity) => (
       <AgeCell ageInDays={biospecimen?.age_at_biospecimen_collection} />
     ),
+  },
+  {
+    key: 'ncit_anatomy_site_id',
+    title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'anatomy_site',
+    title: intl.get('entities.biospecimen.anatomical_site'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'ncit_id_tissue_type',
+    title: intl.get('entities.biospecimen.tissue_type_NCIT'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'tissue_type_source_text',
+    title: intl.get('entities.biospecimen.tissue_type'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'source_text_tumor_location',
+    title: intl.get('entities.biospecimen.source_text_tumor_location'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.source_text_tumor_location || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'dbgap_consent_code',
+    title: intl.get('entities.biospecimen.dbgap_consent_code'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.dbgap_consent_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'volume',
@@ -75,20 +111,6 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       }
       return status === Status.AVAILABLE ? intl.get('global.yes') : intl.get('global.no');
     },
-  },
-  {
-    key: 'laboratory_procedure',
-    title: intl.get('entities.biospecimen.laboratory_procedure'),
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.laboratory_procedure || TABLE_EMPTY_PLACE_HOLDER,
-    defaultHidden: true,
-  },
-  {
-    key: 'biospecimen_storage',
-    title: intl.get('entities.biospecimen.biospecimen_storage'),
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.biospecimen_storage || TABLE_EMPTY_PLACE_HOLDER,
-    defaultHidden: true,
   },
   {
     key: 'parent_sample_id',

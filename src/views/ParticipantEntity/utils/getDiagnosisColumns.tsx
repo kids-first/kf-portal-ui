@@ -40,8 +40,22 @@ const getDiagnosisDefaultColumns = (): ProColumnType[] => [
     },
   },
   {
+    key: 'ncit_id_diagnosis',
+    title: intl.get('entities.participant.diagnosis_NCIT'),
+    render: (diagnosis: IParticipantDiagnosis) =>
+      diagnosis?.ncit_id_diagnosis ? (
+        <ExternalLink
+          href={`http://purl.obolibrary.org/obo/${diagnosis.ncit_id_diagnosis.replace(':', '_')}`}
+        >
+          {diagnosis.ncit_id_diagnosis}
+        </ExternalLink>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  },
+  {
     key: 'source_text',
-    title: intl.get('entities.participant.source_text'),
+    title: intl.get('entities.participant.diagnosis_source_text'),
     render: (diagnosis: IParticipantDiagnosis) => {
       const sourceTexts = diagnosis?.source_text;
 

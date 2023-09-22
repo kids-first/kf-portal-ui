@@ -4,48 +4,50 @@
 .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;  
+  justify-content: space-between;
   margin-bottom: 20px;
   gap: 24px;
 }
 
 .link {
-    display: flex;
-    width: 100%;
-    align-items: baseline;
-    justify-content: center;
-    
-    padding: 8px 16px;
-    border: 1px solid $gray-5;
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: center;
 
-    &:hover {
-        background: $gray-2;
-    }
+  padding: 8px 16px;
+  border: 1px solid $gray-5;
+
+  &:hover {
+    background: $gray-2;
+  }
 }
 
-.icon, .count, .readOutlinedIcon {
-    color: $gray-9;
+.icon,
+.count,
+.readOutlinedIcon {
+  color: $geekblue-7;
 }
 
 .icon {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .readOutlinedIcon {
-    font-size: 21px;
-    position: relative;
-    top: 3px;
+  font-size: 21px;
+  position: relative;
+  top: 3px;
 }
 
-.count {   
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0 4px 0 8px;
-    line-height: 32px;
+.count {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 4px 0 8px;
+  line-height: 32px;
 }
 
 .text {
-    line-height: 22px;
-    color: $gray-7;
-    font-size: 14px;    
+  line-height: 22px;
+  color: $gray-7;
+  font-size: 14px;
 }

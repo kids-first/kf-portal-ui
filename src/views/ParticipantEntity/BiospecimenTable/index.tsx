@@ -7,7 +7,6 @@ import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
-import DownloadDataButton from 'components/Biospecimens/DownloadDataButton';
 import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
@@ -81,12 +80,6 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
       columns={biospecimensDefaultColumns}
       initialColumnState={userColumnPreferencesOrDefault}
       headerConfig={{
-        extra: [
-          <DownloadDataButton
-            biospecimenIds={[...biospecimens.map((biospecimen) => biospecimen.sample_id)]}
-            key="downloadSampleData"
-          />,
-        ],
         enableTableExport: true,
         enableColumnSort: true,
         onColumnSortChange: (newState) =>
