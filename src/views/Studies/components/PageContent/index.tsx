@@ -1,16 +1,30 @@
-import ProTable from '@ferlab/ui/core/components/ProTable';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { ReadOutlined } from '@ant-design/icons';
-import { Space, Typography } from 'antd';
-import { getProTableDictionary } from 'utils/translation';
+import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
-import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
-import { combineExtendedMappings } from 'utils/fieldMapper';
-
-import styles from './index.module.scss';
+import { useDispatch } from 'react-redux';
+import { ReadOutlined } from '@ant-design/icons';
+import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import ProTable from '@ferlab/ui/core/components/ProTable';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
+import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { Space, Typography } from 'antd';
+import { INDEXES } from 'graphql/constants';
+import { useStudies } from 'graphql/studies/actions';
+import { IStudyResultTree } from 'graphql/studies/models';
+import { GET_STUDY_COUNT } from 'graphql/studies/queries';
+
+import { ArrangerApi } from 'services/api/arranger';
+import { fetchTsvReport } from 'store/report/thunks';
+import { useUser } from 'store/user';
+import { updateUserConfig } from 'store/user/thunks';
+import { combineExtendedMappings } from 'utils/fieldMapper';
+import { formatQuerySortList, scrollToTop } from 'utils/helper';
+import { getProTableDictionary } from 'utils/translation';
 import { getQueryBuilderDictionary } from 'utils/translation';
+
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE,
@@ -18,20 +32,8 @@ import {
   SCROLL_WRAPPER_ID,
   STUDIES_REPO_QB_ID,
 } from '../../utils/constant';
-import { useEffect, useState } from 'react';
-import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { useStudies } from 'graphql/studies/actions';
-import { formatQuerySortList, scrollToTop } from 'utils/helper';
-import { useDispatch } from 'react-redux';
-import { fetchTsvReport } from 'store/report/thunks';
-import { INDEXES } from 'graphql/constants';
-import { useUser } from 'store/user';
-import { ArrangerApi } from 'services/api/arranger';
-import { IStudyResultTree } from 'graphql/studies/models';
-import { GET_STUDY_COUNT } from 'graphql/studies/queries';
-import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
-import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
-import { updateUserConfig } from 'store/user/thunks';
+
+import styles from './index.module.scss';
 
 const { Title } = Typography;
 
