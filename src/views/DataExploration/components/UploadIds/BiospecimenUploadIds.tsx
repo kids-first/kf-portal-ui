@@ -43,7 +43,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
       });
 
       const biospecimens: IBiospecimenEntity[] = hydrateResults(
-        response.data?.data?.biospecimens?.hits?.edges || [],
+        response.data?.data?.biospecimen?.hits?.edges || [],
       );
 
       return uniqBy(biospecimens, 'sample_id').map((biospecimen) => ({
