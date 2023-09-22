@@ -1,0 +1,15 @@
+@import 'src/style/themes/kids-first/colors';
+
+.searchLabel {
+  &.variants {
+    background-color: $purple-2;
+  }
+
+  &.genes {
+    background-color: $geekblue-2;
+  }
+}
+
+.variantSearchLocus {
+  font-weight: 500;
+}

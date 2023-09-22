@@ -135,12 +135,12 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
               <div>
                 <FileTextOutlined />
                 {intl.get('screen.dashboard.cards.savedSets.tabs.files')} (
-                {savedSets.filter((s) => s.setType === SetType.FILES).length})
+                {savedSets.filter((s) => s.setType === SetType.FILE).length})
               </div>
             }
             key="files"
           >
-            {getItemList(SetType.FILES, savedSets, fetchingError, isLoading, <FileTextOutlined />)}
+            {getItemList(SetType.FILE, savedSets, fetchingError, isLoading, <FileTextOutlined />)}
           </TabPane>
           <TabPane
             tab={

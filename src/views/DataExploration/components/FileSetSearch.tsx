@@ -15,7 +15,7 @@ const FileSetSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       index={INDEXES.FILE}
       title="Saved file sets"
       queryBuilderId={DATA_EXPLORATION_QB_ID}
-      type={SetType.FILES}
+      type={SetType.FILE}
       sqon={sqon}
       emptyDescription={'No file sets found'}
     />
