@@ -30,6 +30,7 @@ import {
   DEFAULT_QUERY_CONFIG,
   SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
+import AgeCell from 'views/ParticipantEntity/AgeCell';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { ReportType } from 'services/api/reports/models';
@@ -37,7 +38,6 @@ import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { readableDistanceByDays } from 'utils/dates';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
@@ -112,9 +112,11 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     tooltip: 'Age at Biospecimen Collection',
     dataIndex: 'age_at_biospecimen_collection',
     render: (age_at_biospecimen_collection) =>
-      age_at_biospecimen_collection
-        ? readableDistanceByDays(age_at_biospecimen_collection)
-        : TABLE_EMPTY_PLACE_HOLDER,
+      age_at_biospecimen_collection ? (
+        <AgeCell ageInDays={age_at_biospecimen_collection} />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'diagnosis_mondo',

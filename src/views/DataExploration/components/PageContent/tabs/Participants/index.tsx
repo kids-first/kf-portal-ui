@@ -109,7 +109,7 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     className: styles.studyIdCell,
-    render: (isProband: boolean) => (isProband ? `true` : `false`), //|| TABLE_EMPTY_PLACE_HOLDER,
+    render: (isProband: boolean) => (!!isProband).toString(),
   },
   {
     key: 'sex',
@@ -118,7 +118,12 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (sex: string) => <ColorTag type={ColorTagType.Gender} value={capitalize(sex)} />,
+    render: (sex: string) =>
+      sex ? (
+        <ColorTag type={ColorTagType.Gender} value={capitalize(sex)} />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'diagnosis_category',
@@ -170,7 +175,8 @@ const defaultColumns: ProColumnType[] = [
     className: styles.phenotypeCell,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
-      if (!phenotypeNames || phenotypeNames.length === 0) {
+      const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
+      if (!phenotypeNames || !hasPhenotypeName) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
       return (
@@ -373,17 +379,6 @@ const defaultColumns: ProColumnType[] = [
     },
   },
   {
-    key: 'clinical_status',
-    title: 'Clinical Status',
-    dataIndex: 'diagnosis',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
-      diagnosis?.hits?.edges?.map((dn) => dn.node.affected_status) || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'disease_related',
     title: 'Disease Related',
     dataIndex: 'outcomes',
@@ -401,8 +396,11 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) =>
-      outcomes?.hits?.edges?.map((o) => o.node.vital_status) || TABLE_EMPTY_PLACE_HOLDER,
+    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) => {
+      const hasVitalStatus = outcomes?.hits?.edges?.some((o) => o.node.vital_status);
+      if (!hasVitalStatus) return TABLE_EMPTY_PLACE_HOLDER;
+      return [...new Set(outcomes?.hits?.edges?.map((o) => o.node.vital_status))];
+    },
   },
   {
     key: 'phenotypes_hpo_not_observed',
