@@ -765,6 +765,11 @@ const en = {
       },
       title: 'Variants Exploration',
       table: {
+        mostDeleteriousConsequence: {
+          title: 'Most Deleterious Consequence',
+          tooltip: 'Functional consequences of genetic variations annotated using VEP',
+        },
+        // TODO remove when new variant ETL will be used
         consequences: {
           title: 'Consequences',
           tooltip: 'Functional consequences of genetic variations annotated using VEP',
@@ -1130,6 +1135,8 @@ const en = {
     },
     studies: {
       study_code: 'Study Code',
+      zygosity: 'Zygosity',
+      transmission: 'Transmission',
     },
     is_proband: 'Proband',
     study_id: 'Study Code',
@@ -1212,6 +1219,28 @@ const en = {
       },
     },
     genes: {
+      consequences: {
+        consequence: 'Consequence',
+        vep_impact: 'VEP',
+        predictions: {
+          cadd_score: 'CADD (Raw)',
+          cadd_phred: 'CADD (Phred)',
+          dann_score: 'DANN',
+          fathmm_pred: 'FATHMM',
+          lrt_pred: 'LRT',
+          polyphen2_hvar_pred: 'PolyPhen-2 HVAR',
+          revel_score: 'REVEL',
+          sift_pred: 'SIFT',
+        },
+      },
+      biotype: 'Gene Type',
+      gnomad: {
+        pli: 'gnomAD pLI',
+        loeuf: 'gnomAD LOEUF',
+      },
+      spliceai: {
+        ds: 'SpliceAI',
+      },
       hpo: {
         hpo_term_label: 'HPO',
       },
@@ -1230,6 +1259,28 @@ const en = {
     },
     clinvar: {
       clin_sig: 'ClinVar',
+    },
+    external_frequencies: {
+      gnomad_genomes_2_1_1: {
+        af: 'gnomAD Genome 2.1.1',
+      },
+      gnomad_genomes_3: {
+        af: 'gnomAD Genome 3.1.2',
+      },
+      gnomad_exomes_2_1_1: {
+        af: 'gnomAD Exome 2.1.1',
+      },
+      topmed_bravo: {
+        af: 'TopMed',
+      },
+      thousand_genomes: {
+        af: '1000 Genomes',
+      },
+    },
+    internal_frequencies: {
+      total: {
+        af: 'KF Allele Frequency',
+      },
     },
     frequencies: {
       internal: {
