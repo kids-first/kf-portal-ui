@@ -19,8 +19,8 @@ const filesFacets = {
 const en = {
   ...translations,
   date: {
-    yearsDaysFormat:
-      '{years, plural, =0 {} =1 {# <span style="font-size: 12px">year</span>} other {# <span style="font-size: 12px">years</span>}} {days, plural, =0 {} =1 {# <span style="font-size: 12px">day</span>} other {# <span style="font-size: 12px">days</span>}}',
+    years: '{years, plural, =0 {} =1 {year} other {years}}',
+    days: '{days, plural, =0 {} =1 {day} other {days}}',
   },
   global: {
     viewInDataExploration: 'View in data exploration',
