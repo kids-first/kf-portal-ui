@@ -109,7 +109,7 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     className: styles.studyIdCell,
-    render: (isProband: boolean) => (isProband ? `true` : `false`),
+    render: (isProband: boolean) => (!!isProband).toString(),
   },
   {
     key: 'sex',
@@ -175,8 +175,8 @@ const defaultColumns: ProColumnType[] = [
     className: styles.phenotypeCell,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
-      const hasPhenotypeName = phenotypeNames?.filter((name) => name);
-      if (!phenotypeNames || hasPhenotypeName.length === 0) {
+      const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
+      if (!phenotypeNames || !hasPhenotypeName) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
       return (
@@ -397,9 +397,9 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) => {
-      const vitalStatus = outcomes?.hits?.edges?.filter((o) => o.node.vital_status);
-      if (!vitalStatus.length) return TABLE_EMPTY_PLACE_HOLDER;
-      return outcomes?.hits?.edges?.map((o) => o.node.vital_status);
+      const hasVitalStatus = outcomes?.hits?.edges?.some((o) => o.node.vital_status);
+      if (!hasVitalStatus) return TABLE_EMPTY_PLACE_HOLDER;
+      return [...new Set(outcomes?.hits?.edges?.map((o) => o.node.vital_status))];
     },
   },
   {
