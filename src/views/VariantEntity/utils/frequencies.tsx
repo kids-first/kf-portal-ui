@@ -70,6 +70,7 @@ export const getFrequenciesItems = (): ProColumnType[] => [
                 value: row.participant_ids || [],
               });
             }}
+            className={styles.frequencyParticipantLink}
           >
             {numberWithCommas(row.participant_number || 0)}
           </Button>
