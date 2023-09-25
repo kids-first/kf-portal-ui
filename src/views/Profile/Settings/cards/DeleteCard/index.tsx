@@ -1,7 +1,8 @@
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Button, Typography, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import GridCard from '@ferlab/ui/core/view/v2/GridCard';
+import { Button, Modal, Typography } from 'antd';
+
 import { deleteUser } from 'store/user/thunks';
 
 const { Text, Title } = Typography;
@@ -35,7 +36,7 @@ const DeleteCard = () => {
       }
       content={
         <Text>
-          You will no longer be able to sign into the INCLUDE data portal. All of your saved sets
+          You will no longer be able to sign into the KIDS FIRST data portal. All of your saved sets
           and queries will be lost. You can create a new account at any time.
         </Text>
       }

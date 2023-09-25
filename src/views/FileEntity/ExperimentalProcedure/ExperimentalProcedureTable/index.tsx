@@ -1,12 +1,15 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
+import { INDEXES } from 'graphql/constants';
 import { IFileEntity, ISequencingExperiment } from 'graphql/files/models';
 import { SectionId } from 'views/FileEntity/utils/anchorLinks';
 import getExperimentalProcedureColumns from 'views/FileEntity/utils/getExperimentalProcedureColumns';
 
+import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
 interface OwnProps {
   file?: IFileEntity;
@@ -23,6 +26,20 @@ const ExperimentalProcedureTable = ({ file, loading }: OwnProps) => {
       ...e.node,
     })) || [];
 
+  const experimentalProcedureDefaultColumns = getExperimentalProcedureColumns();
+  const userColumnPreferences =
+    userInfo?.config?.files?.tables?.experimental_procedures?.columns || [];
+  const userColumnPreferencesOrDefault = userColsHaveSameKeyAsDefaultCols(
+    userColumnPreferences,
+    experimentalProcedureDefaultColumns,
+  )
+    ? [...userColumnPreferences]
+    : experimentalProcedureDefaultColumns.map((c, index) => ({
+        visible: true,
+        index,
+        key: c.key,
+      }));
+
   return (
     <EntityTable
       id={SectionId.EXPERIMENTAL_PROCEDURE}
@@ -30,7 +47,7 @@ const ExperimentalProcedureTable = ({ file, loading }: OwnProps) => {
       data={sequencingExperiments}
       title={intl.get('entities.file.experimental_procedure.title')}
       header={intl.get('entities.file.experimental_procedure.title')}
-      columns={getExperimentalProcedureColumns()}
+      columns={experimentalProcedureDefaultColumns}
       initialColumnState={userInfo?.config.files?.tables?.experimental_procedures?.columns}
       headerConfig={{
         enableTableExport: true,
@@ -39,6 +56,19 @@ const ExperimentalProcedureTable = ({ file, loading }: OwnProps) => {
           dispatch(
             updateUserConfig({
               files: { tables: { experimental_procedures: { columns: newColumns } } },
+            }),
+          ),
+        onTableExportClick: () =>
+          dispatch(
+            generateLocalTsvReport({
+              fileName: 'experimentalProcedure',
+              index: INDEXES.FILE,
+              headers: experimentalProcedureDefaultColumns,
+              cols: userColumnPreferencesOrDefault.map((x) => ({
+                visible: x.visible,
+                key: x.key,
+              })),
+              rows: sequencingExperiments,
             }),
           ),
       }}

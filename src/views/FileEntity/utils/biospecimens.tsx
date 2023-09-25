@@ -2,7 +2,6 @@ import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { IFileEntity } from 'graphql/files/models';
-import { IParticipantStudy } from 'graphql/participants/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -22,10 +21,10 @@ export const getBiospecimenColumns = (): ProColumnType[] => [
       ),
   },
   {
-    key: 'study.study_code',
-    dataIndex: 'study',
+    key: 'study_code',
     title: intl.get('entities.file.participant_sample.study'),
-    render: (study?: IParticipantStudy) => study?.study_code || TABLE_EMPTY_PLACE_HOLDER,
+    dataIndex: 'study_code',
+    render: (study_code) => study_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'is_proband',
@@ -105,7 +104,7 @@ export const getBiospecimensFromFile = (file?: IFileEntity) => {
       participant_id: participant.participant_id,
       is_proband: participant.is_proband,
       external_id: participant.external_id,
-      study: participant.study,
+      study_code: participant.study.study_code,
       ...biospecimen.node,
     })),
   );

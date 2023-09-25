@@ -152,7 +152,7 @@ const generateLocalTsvReport = createAsyncThunk<
 
   try {
     const formattedDate = format(new Date(), 'yyyy-MM-dd');
-    const formattedFileName = `include-${args.fileName ?? args.index}-table-${formattedDate}.tsv`;
+    const formattedFileName = `kidsfirst-${args.fileName ?? args.index}-table-${formattedDate}.tsv`;
 
     const visibleKeys = (args.cols || []).filter((c) => c.visible).map((c) => c.key);
     const visibleHeaders = args.headers.filter((h) => visibleKeys.includes(h.key));

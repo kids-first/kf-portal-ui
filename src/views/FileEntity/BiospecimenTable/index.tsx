@@ -13,9 +13,11 @@ import {
   getBiospecimensFromFile,
 } from 'views/FileEntity/utils/biospecimens';
 
+import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
+import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
 interface OwnProps {
   file?: IFileEntity;
@@ -27,6 +29,18 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
   const dispatch = useDispatch();
 
   const biospecimens = getBiospecimensFromFile(file);
+  const biospecimenDefaultColumns = getBiospecimenColumns();
+  const userColumnPreferences = userInfo?.config?.files?.tables?.biospecimens?.columns || [];
+  const userColumnPreferencesOrDefault = userColsHaveSameKeyAsDefaultCols(
+    userColumnPreferences,
+    biospecimenDefaultColumns,
+  )
+    ? [...userColumnPreferences]
+    : biospecimenDefaultColumns.map((c, index) => ({
+        visible: true,
+        index,
+        key: c.key,
+      }));
 
   return (
     <EntityTable
@@ -60,7 +74,7 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
         </EntityTableRedirectLink>,
       ]}
       header={intl.get('entities.file.participant_sample.title')}
-      columns={getBiospecimenColumns()}
+      columns={biospecimenDefaultColumns}
       initialColumnState={userInfo?.config.files?.tables?.biospecimens?.columns}
       headerConfig={{
         enableTableExport: true,
@@ -68,6 +82,19 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
         onColumnSortChange: (newState) =>
           dispatch(
             updateUserConfig({ files: { tables: { biospecimens: { columns: newState } } } }),
+          ),
+        onTableExportClick: () =>
+          dispatch(
+            generateLocalTsvReport({
+              fileName: 'participantSample',
+              index: INDEXES.BIOSPECIMEN,
+              headers: biospecimenDefaultColumns,
+              cols: userColumnPreferencesOrDefault.map((x) => ({
+                visible: x.visible,
+                key: x.key,
+              })),
+              rows: biospecimens,
+            }),
           ),
       }}
     />
