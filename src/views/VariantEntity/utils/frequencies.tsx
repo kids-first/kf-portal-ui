@@ -137,6 +137,7 @@ export const getFrequenciesTableSummaryColumns = (
                 value: (studies || []).map((s) => s.participant_ids || []).flat(),
               });
             }}
+            className={styles.frequencyParticipantLink}
           >
             {numberWithCommas(variant?.participant_number || 0)}
           </Button>

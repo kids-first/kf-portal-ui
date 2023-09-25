@@ -85,6 +85,7 @@ export const getFrequenciesItems = (): ProColumnType[] => [
                 setAsActive: true,
               })
             }
+            className={styles.frequencyParticipantLink}
           >
             {numberWithCommas(row.total?.pc || 0)}
           </Button>
@@ -149,6 +150,7 @@ export const getFrequenciesTableSummaryColumns = (
                 setAsActive: true,
               })
             }
+            className={styles.frequencyParticipantLink}
           >
             {numberWithCommas(totalNbOfParticipants)}
           </Button>
