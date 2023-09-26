@@ -150,19 +150,9 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
                 operator: BooleanOperators.or,
                 newFilters: [
                   generateValueFilter({
-                    field: 'participants.biospecimens.sample_id',
-                    value: [record.sample_id],
-                    index: INDEXES.FILE,
-                  }),
-                  generateValueFilter({
                     field: 'sample_id',
                     value: [record.sample_id],
                     index: INDEXES.BIOSPECIMEN,
-                  }),
-                  generateValueFilter({
-                    field: 'files.biospecimens.sample_id',
-                    value: [record.sample_id],
-                    index: INDEXES.PARTICIPANT,
                   }),
                 ],
               }),
