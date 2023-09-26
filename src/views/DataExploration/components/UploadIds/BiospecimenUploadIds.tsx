@@ -49,8 +49,8 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
       return uniqBy(biospecimens, 'sample_id').map((biospecimen) => ({
         key: biospecimen.fhir_id,
         submittedId: ids.find((id) => [biospecimen.sample_id].includes(id))!,
-        mappedTo: biospecimen.sample_id,
-        matchTo: biospecimen.study_id,
+        matchTo: biospecimen.sample_id,
+        mappedTo: biospecimen.study.study_code,
       }));
     }}
     onUpload={(match) =>

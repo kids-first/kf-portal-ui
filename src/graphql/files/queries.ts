@@ -147,6 +147,7 @@ export const CHECK_FILE_MATCH = gql`
             file_id
             study {
               study_id
+              study_code
             }
           }
         }
