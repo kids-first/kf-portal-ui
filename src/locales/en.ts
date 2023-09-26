@@ -1191,6 +1191,7 @@ const en = {
 
     //Other
     collection_sample_type: 'Collection Sample Type',
+    collection_sample_id: 'Collection ID',
 
     //Variants
     variant_class: 'Variant Type',
@@ -1446,6 +1447,7 @@ const en = {
       biospecimen_storage: 'Biospecimen Storage',
       collection_id: 'Collection ID',
       collection_sample_type: 'Collection Sample Type',
+      consent_type: 'Consent Type',
       container_id: 'Container ID',
       count: '{count, plural, =0 {Biospecimen} =1 {Biospecimen} other {Biospecimens}}',
       dbgap_consent_code: 'Consent Code (dbGaP)',

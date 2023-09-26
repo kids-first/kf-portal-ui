@@ -41,4 +41,5 @@ export interface IBiospecimenEntity {
   tissue_type_source_text: string;
   source_text_tumor_location: string;
   dbgap_consent_code: string;
+  consent_type: string;
 }
