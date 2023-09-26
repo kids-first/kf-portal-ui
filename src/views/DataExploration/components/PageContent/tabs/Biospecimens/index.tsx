@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
@@ -32,6 +31,7 @@ import {
   SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
 import AgeCell from 'views/ParticipantEntity/AgeCell';
+import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { ReportType } from 'services/api/reports/models';
@@ -40,7 +40,7 @@ import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
-import { STATIC_ROUTES } from 'utils/routes';
+import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
@@ -50,13 +50,18 @@ interface OwnProps {
 }
 
 const getDefaultColumns = (): ProColumnType<any>[] => [
-  // @TODDO: should open SummaryEntity page when implemented
   {
     key: 'sample_id',
     title: 'Sample ID',
-    dataIndex: 'sample_id',
     sorter: { multiple: 1 },
-    render: (sample_id: string) => sample_id || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) =>
+      record?.sample_id && record.participant?.participant_id ? (
+        <Link to={goToParticipantEntityPage(record.participant.participant_id)}>
+          {record.sample_id}
+        </Link>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'study.study_code',
@@ -89,28 +94,37 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'participant.participant_id',
     title: 'Participant ID',
-    dataIndex: ['participant', 'participant_id'],
     sorter: { multiple: 1 },
-    render: (participant_id: string) =>
-      participant_id ? (
-        <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${participant_id}`}>
-          {participant_id}
+    render: (record: IBiospecimenEntity) =>
+      record?.participant?.participant_id ? (
+        <Link to={goToParticipantEntityPage(record.participant.participant_id)}>
+          {record.participant.participant_id}
         </Link>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
   },
   {
-    key: 'container_id',
-    title: 'Container ID',
-    dataIndex: 'container_id',
-    defaultHidden: true,
-    render: (container_id: string) => container_id || TABLE_EMPTY_PLACE_HOLDER,
+    key: 'collection_sample_id',
+    title: 'Collection ID',
+    dataIndex: 'collection_sample_id',
+    render: (collection_sample_id) =>
+      collection_sample_id ? (
+        <CollectionIdLink collectionId={collection_sample_id} />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  },
+  {
+    key: 'collection_sample_type',
+    title: 'Collection Sample Type',
+    dataIndex: 'collection_sample_type',
+    render: (collection_sample_type) => collection_sample_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'age_at_biospecimen_collection',
     title: 'Age',
-    tooltip: 'Age at Biospecimen Collection',
+    tooltip: 'Age at Biospecimen Collection (days)',
     dataIndex: 'age_at_biospecimen_collection',
     render: (age_at_biospecimen_collection) =>
       age_at_biospecimen_collection ? (
@@ -119,20 +133,27 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
         TABLE_EMPTY_PLACE_HOLDER
       ),
   },
+  // TODO back implementation needed
+  // {
+  //   key: 'diagnosis.mondo_id_diagnosis',
+  //   title: 'Histological Diagnosis (MONDO)',
+  //   dataIndex: ['diagnosis', 'mondo_id_diagnosis'],
+  //   render: (mondo_id_diagnosis: string) =>
+  //     mondo_id_diagnosis ? (
+  //       <ExternalLink
+  //         href={`http://purl.obolibrary.org/obo/MONDO_${mondo_id_diagnosis.split(':')[1]}`}
+  //       >
+  //         {mondo_id_diagnosis}
+  //       </ExternalLink>
+  //     ) : (
+  //       TABLE_EMPTY_PLACE_HOLDER
+  //     ),
+  // },
   {
-    key: 'diagnosis_mondo',
-    title: 'Histological Diagnosis (MONDO)',
-    dataIndex: 'diagnosis_mondo',
-    render: (diagnosis_mondo: string) =>
-      diagnosis_mondo ? (
-        <ExternalLink
-          href={`http://purl.obolibrary.org/obo/MONDO_${diagnosis_mondo.split(':')[1]}`}
-        >
-          {diagnosis_mondo}
-        </ExternalLink>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    key: 'status',
+    title: 'Sample Availability',
+    dataIndex: 'status',
+    render: (status) => status || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'nb_files',
@@ -174,6 +195,77 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     defaultHidden: true,
     render: (participant: IParticipantEntity) =>
       participant?.external_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'ncit_anatomy_site_id',
+    title: 'Anatomical Site (NCIT)',
+    dataIndex: 'ncit_anatomy_site_id',
+    defaultHidden: true,
+    render: (ncit_anatomy_site_id) => ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'anatomy_site',
+    title: 'Anatomical Site (Source Text)',
+    dataIndex: 'anatomy_site',
+    defaultHidden: true,
+    render: (anatomy_site) => anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'ncit_id_tissue_type',
+    title: 'Tissue Type (NCIT)',
+    dataIndex: 'ncit_id_tissue_type',
+    defaultHidden: true,
+    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'tissue_type_source_text',
+    title: 'Tissue Type (Source Text)',
+    dataIndex: 'tissue_type_source_text',
+    defaultHidden: true,
+    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'dbgap_consent_code',
+    title: 'dbGaP Consent Code',
+    dataIndex: 'dbgap_consent_code',
+    defaultHidden: true,
+    render: (dbgap_consent_code) => dbgap_consent_code || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'consent_type',
+    title: 'Consent Type',
+    dataIndex: 'consent_type',
+    defaultHidden: true,
+    render: (consent_type) => consent_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'method_of_sample_procurement',
+    title: 'Method of Sample Procurement',
+    dataIndex: 'method_of_sample_procurement',
+    defaultHidden: true,
+    render: (method_of_sample_procurement) =>
+      method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'volume',
+    title: 'Volume',
+    dataIndex: 'volume',
+    defaultHidden: true,
+    render: (volume) => volume || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'volume_unit',
+    title: 'Volume Unit',
+    dataIndex: 'volume_unit',
+    defaultHidden: true,
+    render: (volume_unit) => volume_unit || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'external_sample_id',
+    title: 'External Sample ID',
+    dataIndex: 'external_sample_id',
+    defaultHidden: true,
+    render: (external_sample_id) => external_sample_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 

@@ -27,6 +27,14 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             consent_type
             diagnosis_mondo
             nb_files
+            collection_sample_id
+            collection_sample_type
+            status
+            dbgap_consent_code
+            method_of_sample_procurement
+            volume
+            volume_unit
+            external_sample_id
             study {
               study_code
             }
@@ -37,6 +45,19 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             files {
               hits {
                 total
+                edges {
+                  node {
+                    sequencing_experiment {
+                      hits {
+                        edges {
+                          node {
+                            sequencing_center_id
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
