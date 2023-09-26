@@ -10,6 +10,7 @@ import { resetSearchAfterQueryConfig, tieBreaker } from '@ferlab/ui/core/compone
 import useQueryBuilderState, {
   addQuery,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
@@ -146,6 +147,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
             addQuery({
               queryBuilderId: DATA_EXPLORATION_QB_ID,
               query: generateQuery({
+                operator: BooleanOperators.or,
                 newFilters: [
                   generateValueFilter({
                     field: 'sample_id',
