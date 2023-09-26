@@ -9,7 +9,7 @@ import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
+import { CHECK_GENE_MATCH_QUERY2 as CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
 import { IGeneEntity } from 'graphql/variants2/models';
 
 import { ArrangerApi } from 'services/api/arranger';

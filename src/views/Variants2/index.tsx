@@ -54,6 +54,7 @@ const filterGroups: {
         type={SuggestionType.VARIANTS}
         queryBuilderId={VARIANT_REPO_QB_ID}
       />,
+      <GenesUploadIds key="genes_upload_ids" queryBuilderId={VARIANT_REPO_QB_ID} />
     ],
     groups: [
       {
