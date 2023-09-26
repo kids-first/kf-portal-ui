@@ -88,6 +88,13 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       biospecimen?.dbgap_consent_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'consent_type',
+    title: intl.get('entities.biospecimen.consent_type'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen?.consent_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'volume',
     title: intl.get('entities.biospecimen.volume'),
     render: (biospecimen: IBiospecimenEntity) => biospecimen?.volume || TABLE_EMPTY_PLACE_HOLDER,
