@@ -82,14 +82,13 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
           first: 1000,
           offset: 0,
           sqon: generateQuery({
-            operator: BooleanOperators.or,
-            newFilters: ['symbol', 'ensembl_gene_id', 'alias'].map((field) =>
+            newFilters: [
               generateValueFilter({
-                field,
+                field: 'search_text',
                 value: ids,
                 index: INDEXES.GENES,
               }),
-            ),
+            ],
           }),
         },
       });

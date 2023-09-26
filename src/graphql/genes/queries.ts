@@ -16,3 +16,20 @@ export const CHECK_GENE_MATCH_QUERY = gql`
     }
   }
 `;
+
+export const CHECK_GENE_MATCH_QUERY2 = gql`
+  query CheckGenesMatch($sqon: JSON, $first: Int, $offset: Int) {
+    genes: genes2 {
+      hits(filters: $sqon, first: $first, offset: $offset) {
+        edges {
+          node {
+            symbol
+            omim_gene_id
+            alias
+            ensembl_gene_id
+          }
+        }
+      }
+    }
+  }
+`;
