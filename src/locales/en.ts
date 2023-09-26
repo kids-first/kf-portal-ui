@@ -1306,7 +1306,6 @@ const en = {
         af: '1000 Genomes',
       },
     },
-
     // Studies
     domain: 'Study Domain',
     population: 'Population',

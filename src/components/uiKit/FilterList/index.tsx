@@ -1,15 +1,20 @@
 import { useState } from 'react';
+import { Button, Layout, Space, Typography } from 'antd';
 import intl from 'react-intl-universal';
-import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
-import { Button, Layout, Space, Spin, Typography } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 
-import styles from 'components/uiKit/FilterList/Filters.module.scss';
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
+import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import useGetAggregations from 'hooks/graphql/useGetAggregations';
+import { AGGREGATION_QUERY } from 'graphql/queries';
+import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 
 import CustomFilterContainer from './CustomFilterContainer';
 import { FilterGroup, FilterInfo } from './types';
+
+import styles from 'components/uiKit/FilterList/Filters.module.scss';
 
 export type TCustomFilterMapper = (filters: ISqonGroupFilter) => ISyntheticSqon;
 
@@ -45,9 +50,24 @@ const FilterList = ({
   filterMapper,
 }: OwnProps) => {
   const [filtersOpen, setFiltersOpen] = useState<boolean | undefined>(isAllFacetOpen(filterInfo));
+  const { queryList, activeQuery } = useQueryBuilderState(queryBuilderId);
 
-  if (extendedMappingResults.loading) {
-    return <Spin className={styles.filterLoader} spinning />;
+  const filters = filterInfo.groups.flatMap(g => g.facets) as string[];
+  const resolvedSqon = filterMapper
+    ? filterMapper(resolveSyntheticSqon(queryList, activeQuery))
+    : resolveSyntheticSqon(queryList, activeQuery);
+    
+  const aggQuery = AGGREGATION_QUERY(index, filters, extendedMappingResults);
+  const aggResults = useGetAggregations(
+    {
+      sqon: resolvedSqon,
+    },
+    aggQuery,
+    index,
+  );
+
+  if (aggResults.loading) {
+    return <></>;
   }
 
   return (
@@ -78,15 +98,15 @@ const FilterList = ({
               typeof facet === 'string' ? (
                 <CustomFilterContainer
                   key={facet}
+                  filter={facet}
                   index={index}
                   queryBuilderId={queryBuilderId}
                   classname={cx(styles.customFilterContainer, styles.filter)}
-                  filterKey={facet}
                   extendedMappingResults={extendedMappingResults}
                   filtersOpen={filtersOpen}
                   defaultOpen={filterInfo.defaultOpenFacets?.includes(facet) ? true : undefined}
-                  filterMapper={filterMapper}
                   headerTooltip={group.tooltips?.includes(facet)}
+                  results={aggResults}
                 />
               ) : (
                 <div key={i + ii} className={cx(styles.customFilterWrapper, styles.filter)}>

@@ -6,6 +6,7 @@ export interface IStudyResultTree {
 
 export interface IStudyEntity {
   id: string;
+  domain: string;
   study_id: string;
   study_code: string;
   study_name: string;
@@ -17,3 +18,4 @@ export interface IStudyEntity {
   data_category: string[];
   website: string;
 }
+
