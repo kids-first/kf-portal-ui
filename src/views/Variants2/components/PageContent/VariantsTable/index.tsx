@@ -107,9 +107,9 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'consequences',
-    title: intl.get('screen.variants.table.consequences.title'),
+    title: intl.get('screen.variants.table.mostDeleteriousConsequence.title'),
     dataIndex: 'genes',
-    tooltip: intl.get('screen.variants.table.consequences.tooltip'),
+    tooltip: intl.get('screen.variants.table.mostDeleteriousConsequence.tooltip'),
     render: (genes: IArrangerResultsTree<IGeneEntity>) => {
       const geneWithPickedConsequence = genes?.hits?.edges?.find((e) =>
         (e.node.consequences || [])?.hits?.edges?.some((e) => e.node?.picked),
