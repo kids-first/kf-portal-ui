@@ -52,7 +52,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
         return matchedIds.map((id, index) => ({
           key: `${file.fhir_id}:${index}`,
           submittedId: id,
-          mappedTo: file.study.study_id,
+          mappedTo: file.study.study_code,
           matchTo: file.file_id,
           value: file.fhir_id,
         }));

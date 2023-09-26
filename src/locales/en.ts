@@ -364,15 +364,15 @@ const en = {
           idcol: '{entity} ID',
           participant: {
             matchcol: 'Participant ID',
-            mappedcol: 'Study ID',
+            mappedcol: 'Study',
           },
           file: {
             matchcol: 'File ID',
-            mappedcol: 'Study ID',
+            mappedcol: 'Study',
           },
           biospecimen: {
             matchcol: 'Sample ID',
-            mappedcol: 'Study ID',
+            mappedcol: 'Study',
           },
         },
         pillTitle: 'Uploaded List',

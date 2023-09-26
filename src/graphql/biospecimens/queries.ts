@@ -96,7 +96,10 @@ export const CHECK_BIOSPECIMEN_MATCH = gql`
           node {
             fhir_id
             sample_id
-            study_id
+            study {
+              study_id
+              study_code
+            }
             container_id
           }
         }
