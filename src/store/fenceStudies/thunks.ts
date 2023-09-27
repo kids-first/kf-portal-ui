@@ -168,7 +168,7 @@ const getAuthStudyIdsAndCounts = async (
   const { data, error } = await ArrangerApi.graphqlRequest<any>({
     query: `
     query AuthorizedStudyIdsAndCount($sqon: JSON) {
-      files {
+      file {
         aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false){
           participants__study__study_id {
             buckets
