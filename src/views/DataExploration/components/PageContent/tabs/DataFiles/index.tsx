@@ -240,7 +240,6 @@ export const getDefaultColumns = (
   {
     key: 'platform',
     title: 'Platform',
-    // dataIndex: 'platform',
     defaultHidden: true,
     sorter: { multiple: 1 },
     render: (record: IFileEntity) =>
