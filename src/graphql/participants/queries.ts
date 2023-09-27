@@ -190,6 +190,16 @@ export const GET_PARTICIPANT_ENTITY = gql`
             is_proband
             nb_biospecimens
             nb_files
+            outcomes {
+              hits {
+                total
+                edges {
+                  node {
+                    vital_status
+                  }
+                }
+              }
+            }
             participant_id
             phenotype {
               hits {

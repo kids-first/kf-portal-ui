@@ -197,6 +197,7 @@ export interface IParticipantEntity {
   study: IStudyEntity;
   family: IParticipantFamily;
   biospecimens: IArrangerResultsTree<IParticipantBiospecimen>;
+  outcomes: IArrangerResultsTree<IParticipantOutcomes>;
 }
 
 export interface IDataFile {

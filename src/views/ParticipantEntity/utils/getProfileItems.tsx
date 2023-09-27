@@ -1,10 +1,8 @@
 import intl from 'react-intl-universal';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
-import { Tag, Tooltip } from 'antd';
+import { Tag } from 'antd';
 import { IParticipantEntity, Sex } from 'graphql/participants/models';
 import { capitalize } from 'lodash';
-
-import styles from '../styles/styles.module.scss';
 
 const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsItem[] => [
   {
@@ -32,20 +30,8 @@ const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsI
     ),
   },
   {
-    label: (
-      <Tooltip
-        className={styles.tooltip}
-        title={
-          <>
-            <div>{intl.get('entities.participant.trisomy')}</div>
-            <div>{intl.get('entities.participant.disomy')}</div>
-          </>
-        }
-      >
-        {intl.get('entities.participant.down_syndrome_status')}
-      </Tooltip>
-    ),
-    value: participant?.down_syndrome_status,
+    label: intl.get('entities.participant.vital_status'),
+    value: [...new Set(participant?.outcomes?.hits?.edges?.map((o) => o.node.vital_status))],
   },
 ];
 
