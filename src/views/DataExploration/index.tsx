@@ -28,7 +28,7 @@ import {
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
 
-import { BiospecimenSearch } from './components/BiospecimenSearch';
+import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
 import FileSearch from './components/FileSearch';
 import FileSetSearch from './components/FileSetSearch';
@@ -56,7 +56,13 @@ const filterGroups: {
   [FilterTypes.Study]: {
     groups: [
       {
-        facets: ['study__study_name', 'study__study_code', 'study__program', 'study__external_id'],
+        facets: [
+          'study__study_name',
+          'study__study_code',
+          'study__program',
+          'study__domain',
+          'study__external_id',
+        ],
       },
     ],
   },
@@ -76,7 +82,6 @@ const filterGroups: {
     groups: [
       {
         facets: [
-          'diagnosis__affected_status',
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
@@ -88,6 +93,7 @@ const filterGroups: {
           />,
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
+          'family_type',
           <TreeFacet
             key="observed-phoenotype-tree"
             type={RemoteComponentList.HPOTree}
@@ -95,6 +101,7 @@ const filterGroups: {
             titleFormatter={formatHpoTitleAndCode}
           />,
           'phenotype__hpo_phenotype_not_observed',
+          'phenotype__source_text',
           'diagnosis__source_text_tumor_location',
           'outcomes__vital_status',
         ],
@@ -104,7 +111,7 @@ const filterGroups: {
   [FilterTypes.Biospecimen]: {
     customSearches: [
       <BiospecimenSearch key={0} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
-      // <BiospecimenCollectionSearch key={1} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
+      <BiospecimenCollectionSearch key={1} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
       <BiospecimenSetSearch key={2} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
       <BiospecimenUploadIds key={3} queryBuilderId={DATA_EXPLORATION_QB_ID} />,
     ],
@@ -112,11 +119,20 @@ const filterGroups: {
       {
         facets: [
           'sample_type',
+          'collection_sample_type',
+          'age_at_biospecimen_collection',
+          'status',
+          'ncit_anatomy_site_id',
+          'anatomy_site',
           'consent_type',
-          'participant__diagnosis__mondo_id_diagnosis',
-          'participant__diagnosis__ncit_id_diagnosis',
+          'dbgap_consent_code',
+          'diagnosis_mondo',
+          'diagnosis_ncit',
+          'source_text',
+          'source_text_tumor_location',
           'method_of_sample_procurement',
           'ncit_id_tissue_type',
+          'tissue_type_source_text',
         ],
       },
     ],
@@ -130,13 +146,16 @@ const filterGroups: {
     groups: [
       {
         facets: [
+          'controlled_access',
           'data_category',
           'data_type',
           'sequencing_experiment__experiment_strategy',
           'file_format',
-          'is_harmonized',
+          'sequencing_experiment__platform',
+          'sequencing_experiment__instrument_model',
+          'sequencing_experiment__library_strand',
+          'sequencing_experiment__is_paired_end',
           'repository',
-          'controlled_access',
           'acl',
         ],
       },
