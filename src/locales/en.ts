@@ -1306,7 +1306,7 @@ const en = {
       },
     },
     // Studies
-    domain: 'Study Domain',
+    domain: 'Domain',
     population: 'Population',
     donors: {
       diagnoses: {

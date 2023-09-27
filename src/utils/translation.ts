@@ -222,6 +222,11 @@ export const getQueryBuilderDictionary = (
         HOM: intl.get('facets.options.zygosity.HOM'),
         UNK: intl.get('facets.options.zygosity.UNK'),
       },
+      domain: {
+        CANCER: intl.get('facets.options.domain.CANCER'),
+        BIRTHDEFECT: intl.get('facets.options.domain.BIRTHDEFECT'), 
+        CANCERANDBIRTHDEFECT: intl.get('facets.options.domain.CANCERANDBIRTHDEFECT'), 
+      },
     },
   },
   actions: {
