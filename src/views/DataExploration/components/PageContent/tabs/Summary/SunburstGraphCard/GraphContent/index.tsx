@@ -14,6 +14,7 @@ import {
   generateNavTreeFormKey,
   PhenotypeStore,
   RegexExtractPhenotype,
+  TARGET_ROOT_PHENO,
 } from 'views/DataExploration/utils/PhenotypeStore';
 
 import { getCommonColors } from 'common/charts';
@@ -42,13 +43,19 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
     setIsLoading(true);
     phenotypeStore.current?.fetch({ field, sqon }).then(() => {
       const rootNode = phenotypeStore.current?.getRootNode();
+      const targetRootIndex =
+        rootNode?.children.findIndex((e) => e.name === TARGET_ROOT_PHENO) || 0;
+
+      const targetedRootNode =
+        targetRootIndex >= 0 ? rootNode?.children[targetRootIndex] : rootNode;
+
       setCurrentNode(rootNode);
       setTreeData(rootNode ? [lightTreeNodeConstructor(rootNode.key!)] : []);
 
       setIsLoading(false);
       updateSunburst.current = SunburstD3(
         sunburstRef,
-        rootNode,
+        targetedRootNode,
         { depth: 2, colors: getCommonColors(), width, height },
         getSelectedPhenotype,
         {
