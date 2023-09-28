@@ -341,18 +341,15 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
+      const idsAlreadyAdded: string[] = [];
       const ncitLinks = diagnosis?.hits?.edges?.reduce<React.ReactNode[]>((ncitIds, diagnosis) => {
         const dxId = diagnosis.node.ncit_id_diagnosis;
-        if (dxId && dxId.startsWith('NCIT:') && !ncitIds.includes(dxId)) {
+        if (dxId && dxId.startsWith('NCIT:') && !idsAlreadyAdded.includes(dxId)) {
+          idsAlreadyAdded.push(dxId);
           return [
             ...ncitIds,
             <>
-              <ExternalLink
-                // eslint-disable-next-line max-len
-                href={`https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code=${dxId.substring(
-                  5,
-                )}`}
-              >
+              <ExternalLink href={`http://purl.obolibrary.org/obo/${dxId.replace(':', '_')}`}>
                 {dxId}
               </ExternalLink>{' '}
             </>,
