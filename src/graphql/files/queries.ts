@@ -38,6 +38,7 @@ export const SEARCH_FILES_QUERY = gql`
                 edges {
                   node {
                     experiment_strategy
+                    platform
                   }
                 }
               }

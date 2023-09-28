@@ -17,10 +17,11 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Dropdown, Menu } from 'antd';
+import { Button, Dropdown, Menu, Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
 import {
+  FamilyType,
   IParticipantDiagnosis,
   IParticipantEntity,
   IParticipantOutcomes,
@@ -126,15 +127,6 @@ const defaultColumns: ProColumnType[] = [
       ),
   },
   {
-    key: 'diagnosis_category',
-    title: 'Diagnosis Category',
-    dataIndex: 'diagnosis',
-    sorter: {
-      multiple: 1,
-    },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'diagnosis.mondo_id_diagnosis',
     title: 'Diagnosis (MONDO)',
     dataIndex: 'diagnosis',
@@ -212,13 +204,14 @@ const defaultColumns: ProColumnType[] = [
     render: (families_id: string) => families_id || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'family_composition',
+    key: 'family_type',
     title: 'Family Composition',
-    dataIndex: 'family_composition',
+    dataIndex: 'family_type',
     sorter: {
       multiple: 1,
     },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (family_type: FamilyType) =>
+      family_type ? <Tag color="cyan">{capitalize(family_type)}</Tag> : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'pedcbioportal',
@@ -347,16 +340,29 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) =>
-      diagnosis?.hits?.edges
-        ?.reduce<string[]>((ncitIds, diagnosis) => {
-          const dxId = diagnosis.node.ncit_id_diagnosis;
-          if (dxId && !ncitIds.includes(dxId)) {
-            return [...ncitIds, dxId];
-          }
-          return ncitIds;
-        }, [])
-        ?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
+      const ncitLinks = diagnosis?.hits?.edges?.reduce<React.ReactNode[]>((ncitIds, diagnosis) => {
+        const dxId = diagnosis.node.ncit_id_diagnosis;
+        if (dxId && dxId.startsWith('NCIT:') && !ncitIds.includes(dxId)) {
+          return [
+            ...ncitIds,
+            <>
+              <ExternalLink
+                // eslint-disable-next-line max-len
+                href={`https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code=${dxId.substring(
+                  5,
+                )}`}
+              >
+                {dxId}
+              </ExternalLink>{' '}
+            </>,
+          ];
+        }
+        return ncitIds;
+      }, []);
+
+      return ncitLinks?.length ? ncitLinks : TABLE_EMPTY_PLACE_HOLDER;
+    },
   },
   {
     key: 'diagnosis.source_text',
@@ -377,16 +383,6 @@ const defaultColumns: ProColumnType[] = [
         />
       );
     },
-  },
-  {
-    key: 'disease_related',
-    title: 'Disease Related',
-    dataIndex: 'outcomes',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'outcomes.vital_status',

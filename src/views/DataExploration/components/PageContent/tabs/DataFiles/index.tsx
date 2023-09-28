@@ -231,14 +231,6 @@ export const getDefaultColumns = (
     },
   },
   {
-    key: 'external_id',
-    title: 'External File ID',
-    dataIndex: 'external_id',
-    defaultHidden: true,
-    sorter: { multiple: 1 },
-    render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'file_name',
     title: 'File Name',
     dataIndex: 'file_name',
@@ -248,10 +240,10 @@ export const getDefaultColumns = (
   {
     key: 'platform',
     title: 'Platform',
-    dataIndex: 'platform',
     defaultHidden: true,
     sorter: { multiple: 1 },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IFileEntity) =>
+      record.sequencing_experiment?.hits?.edges?.[0]?.node?.platform || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'repository',
@@ -267,14 +259,6 @@ export const getDefaultColumns = (
     defaultHidden: true,
     sorter: { multiple: 1 },
     render: (acl: string[]) => acl?.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'latest_did',
-    title: 'Latest DID',
-    dataIndex: 'latest_did',
-    defaultHidden: true,
-    sorter: { multiple: 1 },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'access_urls',
