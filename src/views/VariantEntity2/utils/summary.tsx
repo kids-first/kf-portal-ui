@@ -85,10 +85,9 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
             },
             {
               label: intl.get('screen.variants.summary.clinVar'),
-              value:
-                removeUnderscoreAndCapitalize(
-                  variant?.clinvar?.clin_sig.join(', ') || TABLE_EMPTY_PLACE_HOLDER,
-                ) || TABLE_EMPTY_PLACE_HOLDER,
+              value: variant?.clinvar?.clin_sig
+                ? removeUnderscoreAndCapitalize(variant?.clinvar?.clin_sig.join(', '))
+                : TABLE_EMPTY_PLACE_HOLDER,
             },
             {
               label: intl.get('screen.variants.summary.participants'),
