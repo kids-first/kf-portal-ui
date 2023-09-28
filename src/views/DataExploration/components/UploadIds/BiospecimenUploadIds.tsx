@@ -63,10 +63,11 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
       updateActiveQueryField({
         queryBuilderId,
         field: 'biospecimen_facet_ids.biospecimen_fhir_id_2',
-        value: match.map((value) => value.key),
+        value: match.map((value) => value.value!),
         index: INDEXES.BIOSPECIMEN,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+        isUploadedList: true,
       })
     }
   />
