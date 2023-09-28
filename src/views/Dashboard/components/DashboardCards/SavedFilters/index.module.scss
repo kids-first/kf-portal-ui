@@ -17,6 +17,7 @@
 
   :global(.ant-tabs-content) {
     height: 100%;
+    overflow: auto;
   }
 
   :global(.ant-tabs-tab) {
