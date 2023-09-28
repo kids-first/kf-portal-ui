@@ -103,7 +103,7 @@ const getStudiesCountByNameAndAcl = async (
     query StudyCountByNamesAndAcl(${studyIds.map(
       (studyId) => `$${replaceDashByUnderscore(studyId)}_sqon: JSON`,
     )}) {          
-      files {
+      file {
         ${studyIds
           .map(
             (studyId) => `
@@ -215,7 +215,7 @@ const getAuthStudyIdsAndCounts = async (
 
   const {
     data: {
-      files: {
+      file: {
         aggregations: {
           participants__study__study_id: { buckets },
         },
