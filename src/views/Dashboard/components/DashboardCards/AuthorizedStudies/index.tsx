@@ -1,28 +1,30 @@
+import { useEffect } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import { DisconnectOutlined, SafetyOutlined } from '@ant-design/icons';
+import Empty from '@ferlab/ui/core/components/Empty';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, List, Space } from 'antd';
-import intl from 'react-intl-universal';
-import { DisconnectOutlined, SafetyOutlined } from '@ant-design/icons';
-import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
-import CardHeader from 'views/Dashboard/components/CardHeader';
 import Text from 'antd/lib/typography/Text';
-import AuthorizedStudiesListItem from './ListItem';
-import Empty from '@ferlab/ui/core/components/Empty';
 import CardConnectPlaceholder from 'views/Dashboard/components/CardConnectPlaceholder';
-import { disconnectFromFence } from 'store/fenceConnection/thunks';
+import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
+import CardHeader from 'views/Dashboard/components/CardHeader';
+import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
+
 import { FENCE_NAMES } from 'common/fenceTypes';
-import { useDispatch } from 'react-redux';
-import { TFenceStudy } from 'store/fenceStudies/types';
-import { fenceConnectionActions } from 'store/fenceConnection/slice';
-import { useFenceStudies } from 'store/fenceStudies';
-import { useEffect } from 'react';
-import { fetchAllFenceStudies } from 'store/fenceStudies/thunks';
 import PopoverContentLink from 'components/uiKit/PopoverContentLink';
+import { connectToFence, disconnectFromFence } from 'store/fenceConnection/thunks';
+import { useFenceStudies } from 'store/fenceStudies';
+import { fetchAllFenceStudies } from 'store/fenceStudies/thunks';
+import { TFenceStudy } from 'store/fenceStudies/types';
+
+import AuthorizedStudiesListItem from './ListItem';
 
 import styles from './index.module.scss';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const { loadingStudiesForFences, fenceStudiesAcls, isConnected, connectionLoading } =
+  const { loadingStudiesForFences, fenceStudiesAcls, isConnected, hasErrors, connectionLoading } =
     useFenceStudies();
   const fenceStudiesLoading = loadingStudiesForFences.length > 0;
 
@@ -65,7 +67,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       }
       content={
         <div className={styles.authorizedWrapper}>
-          {isConnected && !fenceStudiesLoading && (
+          {isConnected && !hasErrors && !fenceStudiesLoading && (
             <Space className={styles.authenticatedHeader} direction="horizontal">
               <Space align="start">
                 <SafetyOutlined className={styles.safetyIcon} />
@@ -94,7 +96,9 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
             itemLayout="vertical"
             loading={fenceStudiesLoading || connectionLoading}
             locale={{
-              emptyText: isConnected ? (
+              emptyText: hasErrors ? (
+                <CardErrorPlaceholder />
+              ) : isConnected ? (
                 <Empty
                   imageType="grid"
                   description={intl.get(
@@ -108,13 +112,12 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     'screen.dashboard.cards.authorizedStudies.disconnectedNotice',
                   )}
                   btnProps={{
-                    onClick: () =>
-                      dispatch(fenceConnectionActions.setConnectionModalParams({ open: true })),
+                    onClick: () => dispatch(connectToFence(FENCE_NAMES.gen3)),
                   }}
                 />
               ),
             }}
-            dataSource={isConnected ? fenceStudiesAcls : []}
+            dataSource={isConnected && !hasErrors ? fenceStudiesAcls : []}
             renderItem={(item) => <AuthorizedStudiesListItem id={item.id} data={item} />}
           ></List>
         </div>

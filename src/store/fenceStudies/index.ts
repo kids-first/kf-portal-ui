@@ -1,7 +1,9 @@
-import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
-import { isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+
+import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { useFenceConnection } from 'store/fenceConnection';
+
 import { fenceStudiesSelector } from './selector';
 import { computeAllFencesAuthStudies } from './thunks';
 
