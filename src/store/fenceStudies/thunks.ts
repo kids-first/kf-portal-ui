@@ -1,14 +1,16 @@
-import flatMap from 'lodash/flatMap';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ALL_STUDIES_FENCE_NAMES, FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
-import { isEmpty } from 'lodash';
-import { RootState } from 'store/types';
-import { TFenceStudies, TFenceStudiesIdsAndCount, TFenceStudy } from './types';
-import { AxiosError } from 'axios';
-import { handleThunkApiReponse } from 'store/utils';
-import { ArrangerApi } from 'services/api/arranger';
-import { FileAccessType } from 'graphql/files/models';
 import { BooleanOperators, TermOperators } from '@ferlab/ui/core/data/sqon/operators';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
+import { FileAccessType } from 'graphql/files/models';
+import { isEmpty } from 'lodash';
+import flatMap from 'lodash/flatMap';
+
+import { ALL_STUDIES_FENCE_NAMES, FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
+import { ArrangerApi } from 'services/api/arranger';
+import { RootState } from 'store/types';
+import { handleThunkApiReponse } from 'store/utils';
+
+import { TFenceStudies, TFenceStudiesIdsAndCount, TFenceStudy } from './types';
 
 const fetchAllFenceStudies = createAsyncThunk<
   void,
@@ -89,10 +91,10 @@ const getStudiesCountByNameAndAcl = async (
     (obj, studyId) => ({
       ...obj,
       [`${replaceDashByUnderscore(studyId)}_sqon`]: {
-        op: BooleanOperators.and,
         content: [
-          { content: { field: 'participants.study_id', value: [studyId] }},
+          { content: { field: 'participants.study_id', value: [studyId] }, op: TermOperators.in },
         ],
+        op: BooleanOperators.and,
       },
     }),
     {},
@@ -119,6 +121,11 @@ const getStudiesCountByNameAndAcl = async (
               buckets{
                 key
                 doc_count
+              }
+            } 
+            participants__study__study_code{
+              buckets{
+                key
               }
             } 
           }
@@ -152,6 +159,7 @@ const getStudiesCountByNameAndAcl = async (
         studyShortName: agg['participants__study__study_name']['buckets'][0]['key'],
         totalFiles: agg['participants__study__study_name']['buckets'][0]['doc_count'],
         id,
+        code: agg['participants__study__study_code']['buckets'][0]['key'],
         authorizedFiles: studies[id].authorizedFiles,
       };
     }),
