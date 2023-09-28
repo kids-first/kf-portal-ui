@@ -73,7 +73,25 @@ const SummaryHeader = ({ file }: OwnProps) => {
           {intl.get('entities.file.summary.participants', { count: participantCount })}
         </span>
       </Link>
-      <Link to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS} className={styles.link}>
+      <Link
+        to={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
+        className={styles.link}
+        onClick={() =>
+          addQuery({
+            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            query: generateQuery({
+              newFilters: [
+                generateValueFilter({
+                  field: 'file_id',
+                  value: file ? [file.file_id] : [],
+                  index: INDEXES.FILE,
+                }),
+              ],
+            }),
+            setAsActive: true,
+          })
+        }
+      >
         <BiospecimenIcon className={styles.icon} />
         <span className={styles.entityCount}>{biospecimenCount}</span>
         <span className={styles.text}>
