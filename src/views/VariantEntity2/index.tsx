@@ -102,7 +102,7 @@ export default function VariantEntity() {
           columns={getFrequenciesItems()}
           data={variantStudies}
           title={intl.get('screen.variants.frequencies.frequency')}
-          header={intl.get('screen.variants.frequencies.includeStudies')}
+          header={intl.get('screen.variants.frequencies.kfStudies')}
           loading={loading}
           summaryColumns={getFrequenciesTableSummaryColumns(data, variantStudies)}
         />
