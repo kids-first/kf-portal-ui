@@ -120,6 +120,7 @@ export const GET_FILE_ENTITY = gql`
             study {
               study_name
               study_code
+              external_id
             }
           }
         }
