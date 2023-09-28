@@ -68,15 +68,36 @@ const CommunityPage = () => {
     sqon: resolveSqon(search, roleFilter, interestsFilter),
   });
 
+  const onSearchFilterChange = (search: string) => {
+    if (search.length > 0) {
+      setQueryConfig(DEFAULT_QUERY_CONFIG);
+    }
+    setSearch(search);
+  };
+
+  const onRoleFilterChange = (roles: string[]) => {
+    if (roles.length > 0) {
+      setQueryConfig(DEFAULT_QUERY_CONFIG);
+    }
+    setRoleFilter(roles);
+  };
+
+  const onInterestsFilterChange = (interests: string[]) => {
+    if (interests.length > 0) {
+      setQueryConfig(DEFAULT_QUERY_CONFIG);
+    }
+    setInterestsFilter(interests);
+  };
+
   return (
     <Space direction="vertical" size={24} className={styles.communityWrapper}>
       <Title className={styles.title} level={4}>
         {intl.get('screen.community.title')}
       </Title>
       <FiltersBox
-        onSearchFilterChange={setSearch}
-        onRoleFilterChange={setRoleFilter}
-        onInterestsFilterChange={setInterestsFilter}
+        onSearchFilterChange={onSearchFilterChange}
+        onRoleFilterChange={onRoleFilterChange}
+        onInterestsFilterChange={onInterestsFilterChange}
         hasFilters={roleFilter.length > 0 || interestsFilter.length > 0}
       />
       <Space className={styles.usersListWrapper} size={24} direction="vertical">
@@ -111,6 +132,7 @@ const CommunityPage = () => {
           className={styles.membersList}
           pagination={{
             total: total,
+            current: queryConfig.pageIndex,
             pageSize: queryConfig.size,
             onChange: (page) => {
               setQueryConfig({
