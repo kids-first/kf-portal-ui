@@ -7,7 +7,6 @@ import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { CHECK_BIOSPECIMEN_MATCH } from 'graphql/biospecimens/queries';
 import { INDEXES } from 'graphql/constants';
-import { uniqBy } from 'lodash';
 
 import { ArrangerApi } from 'services/api/arranger';
 
@@ -46,12 +45,19 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
         response.data?.data?.biospecimen?.hits?.edges || [],
       );
 
-      return uniqBy(biospecimens, 'sample_id').map((biospecimen) => ({
-        key: biospecimen.fhir_id,
-        submittedId: ids.find((id) => [biospecimen.sample_id].includes(id))!,
-        matchTo: biospecimen.sample_id,
-        mappedTo: biospecimen.study.study_code,
-      }));
+      return biospecimens?.flatMap((biospecimen) => {
+        const matchedIds: string[] = ids.filter(
+          (id: string) => biospecimen.sample_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
+        );
+
+        return matchedIds.map((id, index) => ({
+          key: `${biospecimen.fhir_id}:${index}`,
+          submittedId: id,
+          matchTo: biospecimen.sample_id,
+          mappedTo: biospecimen.study.study_code,
+          value: biospecimen.fhir_id,
+        }));
+      });
     }}
     onUpload={(match) =>
       updateActiveQueryField({
