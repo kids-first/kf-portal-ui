@@ -813,6 +813,7 @@ const en = {
         cytoband: 'Cytoband',
         referenceGenome: 'Reference Genome',
         studies: 'Studies',
+        studiesTooltip: 'Frequency of the variant across KF studies',
         participants: 'Participants',
         participantsTooltip:
           'Due to participant confidentiality, redirect to the Data Exploration page if the number of affected participants across Kids First cohorts ≥ 10',
@@ -820,6 +821,7 @@ const en = {
         omim: 'OMIM',
         clinVar: 'ClinVar',
         gnomadGenome311: 'gnomAD Genome (v3.1.1)',
+        gnomadGenome312: 'gnomAD Genome (v3.1.2)',
         dbSNP: 'dbSNP',
       },
       consequences: {
