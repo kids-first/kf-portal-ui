@@ -78,13 +78,11 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     size="small"
                     danger
                     icon={<DisconnectOutlined />}
-                    onClick={() => dispatch(disconnectFromFence(FENCE_NAMES.gen3))}
+                    onClick={() => dispatch(connectToFence(FENCE_NAMES.gen3))}
                     className={styles.disconnectBtn}
                     loading={connectionLoading}
                   >
-                    {loadingStudiesForFences.length === 0 ? 
-                      intl.get('screen.dashboard.cards.authorizedStudies.disconnect'):
-                      intl.get('screen.dashboard.cards.authorizedStudies.manageConnections')}
+                      {intl.get('screen.dashboard.cards.authorizedStudies.manageConnections')}
                   </Button>
                 </Text>
               </Space>
