@@ -1344,7 +1344,6 @@ const en = {
       summary: 'Summary',
     },
     file: {
-      manifest: 'Manifest',
       fileAuthorization: 'File Authorization',
       fileReadMore: 'applying for data access.',
       locked:

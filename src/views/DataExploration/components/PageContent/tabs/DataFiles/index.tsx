@@ -418,18 +418,18 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               selectedKeys={selectedKeys}
               key="file-set-management"
             />,
+            <DownloadFileManifestModal
+              key="download-file-manifest"
+              sqon={getCurrentSqon()}
+              isDisabled={!selectedKeys.length && !selectedAllResults}
+              hasTooManyFiles={hasTooManyFiles}
+            />,
             <CavaticaAnalyzeButton
               disabled={selectedKeys.length === 0 && !selectedAllResults}
               type="primary"
               fileIds={selectedAllResults ? [] : selectedKeys}
               sqon={sqon}
               key="file-cavatica-upload"
-            />,
-            <DownloadFileManifestModal
-              key="download-file-manifest"
-              sqon={getCurrentSqon()}
-              isDisabled={!selectedKeys.length && !selectedAllResults}
-              hasTooManyFiles={hasTooManyFiles}
             />,
           ],
         }}
