@@ -1485,7 +1485,7 @@ const en = {
       diagnosis_NCIT: 'Diagnosis (NCIT)',
       diagnosis_source_text: 'Diagnosis (Source Text)',
       disomy: 'D21: "Disomy 21, euploid"',
-      down_syndrome_status: 'Vital Status',
+      vital_status: 'Vital Status',
       duo: 'Duo',
       ethnicity: 'Ethnicity',
       external_id: 'Ext. Participant ID',
