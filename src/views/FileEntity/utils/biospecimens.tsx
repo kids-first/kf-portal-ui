@@ -4,7 +4,7 @@ import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { IFileEntity } from 'graphql/files/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { STATIC_ROUTES } from 'utils/routes';
+import { goToParticipantEntityPage } from 'utils/routes';
 
 export const getBiospecimenColumns = (): ProColumnType[] => [
   {
@@ -13,9 +13,7 @@ export const getBiospecimenColumns = (): ProColumnType[] => [
     title: intl.get('entities.file.participant_sample.participant_id'),
     render: (participant_id: string) =>
       participant_id ? (
-        <Link to={`${STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}/${participant_id}`}>
-          {participant_id}
-        </Link>
+        <Link to={goToParticipantEntityPage(participant_id)}>{participant_id}</Link>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
