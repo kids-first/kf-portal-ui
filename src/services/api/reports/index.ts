@@ -64,6 +64,7 @@ const generateReport = (config: ReportConfig) => {
       sqon: reportSqon,
       projectId: arrangerProjectId,
       filename: `kf_${config.fileName || config.name}_${makeFilenameDatePart(new Date())}`,
+      withFamily: config.withFamily,
     },
     headers: headers(),
   });
