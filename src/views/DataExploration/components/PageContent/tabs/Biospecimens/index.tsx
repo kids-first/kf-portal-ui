@@ -54,14 +54,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     key: 'sample_id',
     title: 'Sample ID',
     sorter: { multiple: 1 },
-    render: (record: IBiospecimenEntity) =>
-      record?.sample_id && record.participant?.participant_id ? (
-        <Link to={goToParticipantEntityPage(record.participant.participant_id)}>
-          {record.sample_id}
-        </Link>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    render: (record: IBiospecimenEntity) => record?.sample_id || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'study.study_code',
