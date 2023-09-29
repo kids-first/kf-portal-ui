@@ -114,12 +114,6 @@ const connectToFence = createAsyncThunk<
       }, TEN_MINUTES_IN_MS);
     });
   },
-  {
-    condition: (fence, { getState }) =>
-      [FENCE_CONNECTION_STATUSES.unknown, FENCE_CONNECTION_STATUSES.disconnected].includes(
-        getState().fenceConnection.connectionStatus[fence],
-      ),
-  },
 );
 
 const disconnectFromFence = createAsyncThunk<any, FENCE_NAMES>(
