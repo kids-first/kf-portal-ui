@@ -10,11 +10,12 @@ import EntityPageWrapper, {
 import { makeClinvarRows } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
-import { useVariantEntity } from '../../graphql/variants/actions';
-import { IVariantStudyEntity } from '../../graphql/variants/models';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { getEntityExpandableTableMultiple } from 'utils/translation';
+
+import { useVariantEntity } from '../../graphql/variants/actions';
+import { IVariantStudyEntity } from '../../graphql/variants/models';
 
 import EntityGeneConsequences from './FerlabComponent/EntityGeneConsequence';
 import EntityPublicCohortTable from './FerlabComponent/EntityPublicCohortTable';
@@ -102,7 +103,7 @@ export default function VariantEntity() {
           columns={getFrequenciesItems()}
           data={variantStudies}
           title={intl.get('screen.variants.frequencies.frequency')}
-          header={intl.get('screen.variants.frequencies.includeStudies')}
+          header={intl.get('screen.variants.frequencies.kfStudies')}
           loading={loading}
           summaryColumns={getFrequenciesTableSummaryColumns(data, variantStudies)}
         />

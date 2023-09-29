@@ -6,10 +6,11 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { IVariantEntity } from '../../../graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { STATIC_ROUTES } from 'utils/routes';
+
+import { IVariantEntity } from '../../../graphql/variants/models';
 
 import styles from './index.module.scss';
 
