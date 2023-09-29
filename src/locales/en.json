@@ -26,7 +26,7 @@
   "facets.options.genes__consequences__predictions__sift_pred.T": "Tolerated",
   "facets.options.genes__consequences__predictions__sift_pred.D": "Damaging",
   "facets.options.genes__consequences__predictions__polyphen2_hvar_pred.B": "Benign",
-  "facets.options.genes__consequences__predictions__polyphen2_hvar_pred.D": "Probably Damaging",
+  "facets.options.genes__consequences__predictions__polyphen2_hvar_pred.D": "Damaging",
   "facets.options.genes__consequences__predictions__polyphen2_hvar_pred.P": "Possibly Damaging",
   "facets.options.genes__consequences__predictions__fathmm_pred.T": "Tolerated",
   "facets.options.genes__consequences__predictions__fathmm_pred.D": "Damaging",
