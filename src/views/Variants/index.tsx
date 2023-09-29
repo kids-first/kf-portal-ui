@@ -3,9 +3,6 @@ import { UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
-import GenesUploadIds from './components/GeneUploadIds';
-import VariantGeneSearch from './components/VariantGeneSearch';
-import { VARIANT_REPO_QB_ID } from './utils/constants';
 
 import DiseaseIcon from 'components/Icons/DiseaseIcon';
 import FrequencyIcon from 'components/Icons/FrequencyIcon';
@@ -16,7 +13,10 @@ import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { SuggestionType } from 'services/api/arranger/models';
 
+import GenesUploadIds from './components/GeneUploadIds';
 import PageContent from './components/PageContent';
+import VariantGeneSearch from './components/VariantGeneSearch';
+import { VARIANT_REPO_QB_ID } from './utils/constants';
 import { SCROLL_WRAPPER_ID } from './utils/constants';
 
 import styles from './index.module.scss';
@@ -54,7 +54,6 @@ const filterGroups: {
         type={SuggestionType.VARIANTS}
         queryBuilderId={VARIANT_REPO_QB_ID}
       />,
-      <GenesUploadIds key="genes_upload_ids" queryBuilderId={VARIANT_REPO_QB_ID} />
     ],
     groups: [
       {
