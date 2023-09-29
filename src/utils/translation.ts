@@ -194,33 +194,33 @@ export const getQueryBuilderDictionary = (
         DBSNP: intl.get('screen.variants.table.dbsnp'),
         Clinvar: intl.get('filters.group.clinvar.clin_sig'),
       },
-      'consequences.predictions.sift_pred': {
-        T: intl.get('facets.options.consequences__predictions__sift_pred.T'),
-        D: intl.get('facets.options.consequences__predictions__sift_pred.D'),
+      'genes.consequences.predictions.sift_pred': {
+        T: intl.get('facets.options.genes__consequences__predictions__sift_pred.T'),
+        D: intl.get('facets.options.genes__consequences__predictions__sift_pred.D'),
       },
-      'consequences.predictions.polyphen2_hvar_pred': {
-        B: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.B'),
-        D: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.D'),
-        P: intl.get('facets.options.consequences__predictions__polyphen2_hvar_pred.P'),
+      'genes.consequences.predictions.polyphen2_hvar_pred': {
+        B: intl.get('facets.options.genes__consequences__predictions__polyphen2_hvar_pred.B'),
+        D: intl.get('facets.options.genes__consequences__predictions__polyphen2_hvar_pred.D'),
+        P: intl.get('facets.options.genes__consequences__predictions__polyphen2_hvar_pred.P'),
       },
-      'consequences.predictions.fathmm_pred': {
-        T: intl.get('facets.options.consequences__predictions__fathmm_pred.T'),
-        D: intl.get('facets.options.consequences__predictions__fathmm_pred.D'),
+      'genes.consequences.predictions.fathmm_pred': {
+        T: intl.get('facets.options.genes__consequences__predictions__fathmm_pred.T'),
+        D: intl.get('facets.options.genes__consequences__predictions__fathmm_pred.D'),
       },
-      'consequences.predictions.lrt_pred': {
-        N: intl.get('facets.options.consequences__predictions__lrt_pred.N'),
-        D: intl.get('facets.options.consequences__predictions__lrt_pred.D'),
-        U: intl.get('facets.options.consequences__predictions__lrt_pred.U'),
+      'genes.consequences.predictions.lrt_pred': {
+        N: intl.get('facets.options.genes__consequences__predictions__lrt_pred.N'),
+        D: intl.get('facets.options.genes__consequences__predictions__lrt_pred.D'),
+        U: intl.get('facets.options.genes__consequences__predictions__lrt_pred.U'),
       },
       down_syndrome_status: {
         D21: intl.get('facets.options.D21'),
         T21: intl.get('facets.options.T21'),
       },
-      zygosity: {
-        HET: intl.get('facets.options.zygosity.HET'),
-        WT: intl.get('facets.options.zygosity.WT'),
-        HOM: intl.get('facets.options.zygosity.HOM'),
-        UNK: intl.get('facets.options.zygosity.UNK'),
+      'studies.zygosity': {
+        HET: intl.get('facets.options.studies__zygosity.HET'),
+        WT: intl.get('facets.options.studies__zygosity.WT'),
+        HOM: intl.get('facets.options.studies__zygosity.HOM'),
+        UNK: intl.get('facets.options.studies__zygosity.UNK'),
       },
       domain: {
         CANCER: intl.get('facets.options.domain.CANCER'),
