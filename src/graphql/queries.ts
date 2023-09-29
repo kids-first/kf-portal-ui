@@ -18,11 +18,7 @@ export const AGGREGATION_QUERY = (
 ) => {
   if (!mappingResults || mappingResults.loading) return gql``;
 
-  const aggListDotNotation = aggList.map((i) => {
-    if (typeof i === 'string') {
-      return underscoreToDot(i);
-    }
-  });
+  const aggListDotNotation = aggList.map((i) => underscoreToDot(i));
 
   const extendedMappingsFields = aggListDotNotation.flatMap((i) =>
     (mappingResults?.data || []).filter((e) => e.field === i),
