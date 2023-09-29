@@ -12,6 +12,7 @@ import { CHECK_PARTICIPANT_MATCH } from 'graphql/participants/queries';
 import { ArrangerApi } from 'services/api/arranger';
 
 import EntityUploadIds from './EntityUploadIds';
+import { extractUploadValues } from './utils';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -64,7 +65,7 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
       updateActiveQueryField({
         queryBuilderId,
         field: 'participant_facet_ids.participant_fhir_id_2',
-        value: matches.map((match) => match.value!),
+        value: extractUploadValues(matches, 'value'),
         index: INDEXES.PARTICIPANT,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
