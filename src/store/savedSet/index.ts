@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown2';
+import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown';
 
 import { SetType } from 'services/api/savedSet/models';
 

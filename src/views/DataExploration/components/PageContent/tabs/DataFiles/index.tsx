@@ -22,7 +22,7 @@ import {
   IFileStudyEntity,
   ITableFileEntity,
 } from 'graphql/files/models';
-import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown2';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   DATA_EXPLORATION_QB_ID,
   DATA_FILES_SAVED_SETS_FIELD,

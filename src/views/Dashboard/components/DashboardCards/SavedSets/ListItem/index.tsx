@@ -10,7 +10,7 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { Col, Modal, Row, Typography } from 'antd';
 import { formatDistance } from 'date-fns';
 import { INDEXES } from 'graphql/constants';
-import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown2';
+import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
   DATA_FILES_SAVED_SETS_FIELD,

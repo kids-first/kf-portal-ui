@@ -33,11 +33,9 @@ import {
   IVariantEntity,
   IVariantInternalFrequencies,
   IVariantStudyEntity,
-} from '../../../../../graphql/variants/models';
-import SetsManagementDropdown2 from 'views/DataExploration/components/SetsManagementDropdown2';
+} from 'graphql/variants/models';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
-import ConsequencesCell from '../../../components/ConsequencesCell';
-import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from '../../../utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { SetType } from 'services/api/savedSet/models';
@@ -47,6 +45,9 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
+
+import ConsequencesCell from '../../../components/ConsequencesCell';
+import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from '../../../utils/constants';
 
 import styles from './index.module.scss';
 
@@ -355,7 +356,7 @@ const VariantsTable = ({
               setSelectedRows(selectedRows);
             },
             extra: [
-              <SetsManagementDropdown2
+              <SetsManagementDropdown
                 idField={VARIANT_SAVED_SETS_FIELD}
                 results={results}
                 selectedKeys={selectedKeys}
