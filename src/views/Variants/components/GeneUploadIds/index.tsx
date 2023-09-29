@@ -9,8 +9,8 @@ import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
-import { CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
-import { IGeneEntity } from 'graphql/variants/models';
+import { CHECK_GENE_MATCH_QUERY2 as CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
+import { IGeneEntity } from '../../../../graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
 
@@ -82,12 +82,15 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
           first: 1000,
           offset: 0,
           sqon: generateQuery({
+            operator: BooleanOperators.or,
             newFilters: [
-              generateValueFilter({
-                field: 'search_text',
-                value: ids,
-                index: INDEXES.GENES,
-              }),
+              {
+                ...generateValueFilter({
+                  field: 'search_text',
+                  value: ids,
+                  index: INDEXES.GENES,
+                }),
+              },
             ],
           }),
         },
@@ -123,10 +126,11 @@ const GenesUploadIds = ({ queryBuilderId }: OwnProps) => (
 
       return updateActiveQueryField({
         queryBuilderId,
-        field: 'consequences.symbol',
+        field: 'genes.symbol',
         value: uniqueMatches.map((match) => match.mappedTo),
         index: INDEXES.VARIANTS,
         merge_strategy: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        isUploadedList: true,
       });
     }}
   />

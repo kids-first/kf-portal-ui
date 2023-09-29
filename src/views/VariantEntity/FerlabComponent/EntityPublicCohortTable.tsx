@@ -1,6 +1,6 @@
 import { EntityTable, IEntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { isExternalCohortsTableEmpty } from '@ferlab/ui/core/pages/EntityPage/utils/frequencies';
-import { IExternalFrequenciesEntity } from 'graphql/variants2/models';
+import { IExternalFrequenciesEntity } from '../../../graphql/variants/models';
 
 import { makeRowFromFrequencies } from './EntityPublicCohortTable.utils';
 

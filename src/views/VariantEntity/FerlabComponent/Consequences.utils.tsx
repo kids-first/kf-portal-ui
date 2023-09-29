@@ -1,4 +1,4 @@
-import { IPredictionEntity } from 'graphql/variants2/models';
+import { IPredictionEntity } from '../../../graphql/variants/models';
 
 export const getPredictionScore = (
   predictions: IPredictionEntity,

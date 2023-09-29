@@ -19,7 +19,7 @@ export const CHECK_GENE_MATCH_QUERY = gql`
 
 export const CHECK_GENE_MATCH_QUERY2 = gql`
   query CheckGenesMatch($sqon: JSON, $first: Int, $offset: Int) {
-    genes: genes2 {
+    genes {
       hits(filters: $sqon, first: $first, offset: $offset) {
         edges {
           node {

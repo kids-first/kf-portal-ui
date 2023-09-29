@@ -1,3 +1,5 @@
+// variant table
+
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
@@ -16,24 +18,24 @@ import {
   IQueryResults,
   TQueryConfigCb,
 } from '@ferlab/ui/core/graphql/types';
-import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
+import { numberWithCommas, toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
 import { INDEXES } from 'graphql/constants';
+import { hydrateResults } from 'graphql/models';
 import {
   IClinVar,
-  IConsequenceEntity,
   IExternalFrequenciesEntity,
+  IGeneEntity,
   ITableVariantEntity,
   IVariantEntity,
+  IVariantInternalFrequencies,
   IVariantStudyEntity,
 } from 'graphql/variants/models';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
-import ConsequencesCell from 'views/Variants/components/ConsequencesCell';
-import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { SetType } from 'services/api/savedSet/models';
@@ -43,6 +45,9 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
+
+import ConsequencesCell from '../../../components/ConsequencesCell';
+import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from '../../../utils/constants';
 
 import styles from './index.module.scss';
 
@@ -69,7 +74,7 @@ const defaultColumns: ProColumnType[] = [
     render: (hgvsg: string, entity: IVariantEntity) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
-          <Link to={`${STATIC_ROUTES.VARIANTS}/${entity.locus}`}>{hgvsg}</Link>
+          <Link to={`${STATIC_ROUTES.VARIANTS}/${entity?.locus}`}>{hgvsg}</Link>
         </Tooltip>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
@@ -82,6 +87,7 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
+    render: (variant_class: string) => variant_class || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'rsnumber',
@@ -102,12 +108,23 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'consequences',
-    title: intl.get('screen.variants.table.consequences.title'),
-    dataIndex: 'consequences',
-    tooltip: intl.get('screen.variants.table.consequences.tooltip'),
-    render: (consequences: IArrangerResultsTree<IConsequenceEntity>) => (
-      <ConsequencesCell consequences={consequences?.hits?.edges || []} />
-    ),
+    title: intl.get('screen.variants.table.mostDeleteriousConsequence.title'),
+    dataIndex: 'genes',
+    tooltip: intl.get('screen.variants.table.mostDeleteriousConsequence.tooltip'),
+    render: (genes: IArrangerResultsTree<IGeneEntity>) => {
+      const geneWithPickedConsequence = genes?.hits?.edges?.find((e) =>
+        (e.node.consequences || [])?.hits?.edges?.some((e) => e.node?.picked),
+      )?.node;
+      if (!geneWithPickedConsequence) {
+        //must never happen or it is a bug
+        return TABLE_EMPTY_PLACE_HOLDER;
+      }
+
+      const consequences = geneWithPickedConsequence.consequences?.hits?.edges;
+      return (
+        <ConsequencesCell consequences={consequences} symbol={geneWithPickedConsequence.symbol} />
+      );
+    },
   },
   {
     key: 'clinvar',
@@ -131,38 +148,71 @@ const defaultColumns: ProColumnType[] = [
       ),
   },
   {
-    key: 'gnomad_genomes_3_1_1.af',
+    key: 'external_frequencies.gnomad_genomes_3.af',
     title: intl.get('screen.variants.table.gnomAD.title'),
     tooltip: intl.get('screen.variants.table.gnomAD.tooltip'),
-    dataIndex: 'frequencies',
-    render: (gnomad: IExternalFrequenciesEntity) =>
-      gnomad.gnomad_genomes_3_1_1.af
-        ? toExponentialNotation(gnomad.gnomad_genomes_3_1_1.af)
+    dataIndex: 'external_frequencies',
+    sorter: {
+      multiple: 1,
+    },
+    render: (externalFrequencies: IExternalFrequenciesEntity) =>
+      externalFrequencies?.gnomad_genomes_3?.af
+        ? toExponentialNotation(externalFrequencies?.gnomad_genomes_3.af)
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     title: 'Studies',
     dataIndex: 'studies',
     key: 'studies',
-    render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => studies?.hits?.total || 0,
+    render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => {
+      const total = studies?.hits?.total ?? 0;
+      if (total == 0) {
+        return total;
+      }
+
+      const ids = hydrateResults(studies?.hits?.edges || []).map(
+        (node: IVariantStudyEntity) => node.study_code,
+      );
+
+      return (
+        <Link
+          to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+          onClick={() => {
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'study.study_code',
+                    value: ids,
+                    index: INDEXES.PARTICIPANT,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            });
+          }}
+        >
+          {numberWithCommas(total)}
+        </Link>
+      );
+    },
   },
   {
     title: intl.get('screen.variants.table.participant.title'),
     tooltip: intl.get('screen.variants.table.participant.tooltip'),
-    key: 'participant_number',
+    key: 'internal_frequencies.total.pc',
     sorter: {
       multiple: 1,
     },
-    render: (record: IVariantEntity) => {
-      const participantNumber = record.participant_number_visible || 0;
-      if (participantNumber <= 10) {
-        return participantNumber;
+    render: (v: IVariantEntity) => {
+      const totalNbOfParticipants = v.internal_frequencies?.total?.pc || 0;
+      const studies = v.studies;
+      const participantIds =
+        studies?.hits?.edges?.map((study) => study.node.participant_ids || [])?.flat() || [];
+      if (!participantIds.length) {
+        return totalNbOfParticipants;
       }
-
-      const participantIds: string[] = record.studies?.hits?.edges?.flatMap((study) =>
-        study.node.participant_ids !== null ? study.node.participant_ids : [],
-      );
-
       return (
         <Link
           to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
@@ -182,7 +232,7 @@ const defaultColumns: ProColumnType[] = [
             });
           }}
         >
-          {participantNumber}
+          {numberWithCommas(totalNbOfParticipants)}
         </Link>
       );
     },
@@ -190,35 +240,36 @@ const defaultColumns: ProColumnType[] = [
   {
     title: intl.get('screen.variants.table.frequence.title'),
     tooltip: intl.get('screen.variants.table.frequence.tooltip'),
-    dataIndex: 'participant_frequency',
-    key: 'participant_frequency',
+    dataIndex: 'internal_frequencies',
+    key: 'internal_frequencies.total.af',
     sorter: {
       multiple: 1,
     },
-    render: (participantFrequency: number) =>
-      isNumber(participantFrequency)
-        ? toExponentialNotation(participantFrequency)
+    render: (internalFrequencies: IVariantInternalFrequencies) =>
+      internalFrequencies?.total?.af && isNumber(internalFrequencies.total.af)
+        ? toExponentialNotation(internalFrequencies?.total?.af)
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     title: intl.get('screen.variants.table.alt.title'),
     tooltip: intl.get('screen.variants.table.alt.tooltip'),
-    key: 'internal',
-    dataIndex: ['frequencies', 'internal', 'upper_bound_kf', 'ac'],
+    dataIndex: ['internal_frequencies', 'total', 'ac'],
+    key: 'internal_frequencies.total.ac',
     sorter: {
       multiple: 1,
     },
-    render: (ac: string) => ac,
+    render: (ac: string) => ac || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     title: intl.get('screen.variants.table.homozygotes.title'),
     tooltip: intl.get('screen.variants.table.homozygotes.tooltip'),
-    dataIndex: ['frequencies', 'internal', 'upper_bound_kf', 'homozygotes'],
-    key: 'homozygotes',
+    dataIndex: 'internal_frequencies',
+    key: 'internal_frequencies.total.hom',
     sorter: {
       multiple: 1,
     },
-    render: (homozygotes: string) => homozygotes,
+    render: (internalFrequencies: IVariantInternalFrequencies) =>
+      internalFrequencies.total.hom ? numberWithCommas(internalFrequencies.total.hom) : 0,
   },
 ];
 
@@ -234,6 +285,7 @@ const VariantsTable = ({
   const { filters }: { filters: ISyntheticSqon } = useFilters();
   const { userInfo } = useUser();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
   const [selectedRows, setSelectedRows] = useState<IVariantEntity[]>([]);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
 
@@ -253,7 +305,7 @@ const VariantsTable = ({
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
-      setSelectedRows([]);
+      // setSelectedRows([]);
     }
     // eslint-disable-next-line
   }, [JSON.stringify(filters)]);
@@ -270,7 +322,8 @@ const VariantsTable = ({
           loading={results.loading}
           initialSelectedKey={selectedKeys}
           showSorterTooltip={false}
-          onChange={(_pagination, _filter, sorter) => {
+          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+          onChange={({ current }, _, sorter) => {
             setPageIndex(DEFAULT_PAGE_INDEX);
             setQueryConfig({
               pageIndex: DEFAULT_PAGE_INDEX,

@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import { IPublicCohortRow } from '@ferlab/ui/core/pages/EntityPage/type';
 import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
-import { IExternalFrequenciesEntity } from 'graphql/variants2/models';
+import { IExternalFrequenciesEntity } from '../../../graphql/variants/models';
 
 export const makeRowFromFrequencies = (
   frequencies?: IExternalFrequenciesEntity | undefined,

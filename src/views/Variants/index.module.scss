@@ -1,4 +1,3 @@
-@import 'src/style/themes/kids-first/theme.template';
 @import 'src/style/themes/kids-first/layout';
 
 .variantsLayout {
@@ -18,6 +17,12 @@
         margin-left: 0 !important;
       }
     }
+  }
+
+  span[role='img'].sideMenuIcon {
+    font-size: 20px !important;
+    display: flex;
+    justify-content: center;
   }
 
   .scrollContent {

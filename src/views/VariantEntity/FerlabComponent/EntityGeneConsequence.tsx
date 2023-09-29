@@ -3,7 +3,7 @@ import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { EntityExpandableTableMultiple } from '@ferlab/ui/core/pages/EntityPage';
-import { IGeneEntity } from 'graphql/variants2/models';
+import { IGeneEntity } from '../../../graphql/variants/models';
 
 import EntityGeneConsequenceSubtitle from './EntityGeneConsequenceSubtitle';
 

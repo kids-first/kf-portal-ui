@@ -1,30 +1,13 @@
 import intl from 'react-intl-universal';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
-import { IVariantEntity } from '@ferlab/ui/core/pages//EntityPage/type';
 import { IEntitySummaryColumns } from '@ferlab/ui/core/pages/EntityPage/EntitySummary';
 import { numberWithCommas, toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
+import { IVariantEntity } from '../../../graphql/variants/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 import styles from '../index.module.scss';
-
-const omimValue = (variant?: IVariantEntity) => {
-  const genes = variant?.genes?.hits?.edges || [];
-  const genesOmimFiltered = genes.filter((gene) => gene?.node?.omim_gene_id);
-  return genesOmimFiltered.length
-    ? genesOmimFiltered.map((gene) => (
-        <ExternalLink
-          key={gene.node.omim_gene_id}
-          className={styles.geneExternalLink}
-          href={`https://omim.org/entry/${genesOmimFiltered[0].node.omim_gene_id}`}
-          data-cy="Summary_OMIM_ExternalLink"
-        >
-          {gene.node.omim_gene_id}
-        </ExternalLink>
-      ))
-    : TABLE_EMPTY_PLACE_HOLDER;
-};
 
 export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns[] => [
   {
@@ -53,7 +36,7 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
           },
           {
             label: intl.get('screen.variants.summary.referenceGenome'),
-            value: variant?.genome_build || TABLE_EMPTY_PLACE_HOLDER,
+            value: variant?.assembly_version || TABLE_EMPTY_PLACE_HOLDER,
           },
           {
             label: intl.get('screen.variants.summary.genes'),
@@ -76,7 +59,22 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
           },
           {
             label: intl.get('screen.variants.summary.omim'),
-            value: omimValue(variant),
+            value: variant?.genes?.hits?.edges?.length
+              ? variant.genes.hits.edges.map((gene) => {
+                  if (!gene?.node?.omim_gene_id) {
+                    return;
+                  }
+                  return (
+                    <ExternalLink
+                      key={gene.node.omim_gene_id}
+                      className={styles.geneExternalLink}
+                      href={`https://omim.org/entry/${gene.node.omim_gene_id}`}
+                    >
+                      {gene.node.omim_gene_id}
+                    </ExternalLink>
+                  );
+                })
+              : TABLE_EMPTY_PLACE_HOLDER,
           },
           {
             label: intl.get('screen.variants.summary.clinVar'),
@@ -87,8 +85,8 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
           },
           {
             label: intl.get('screen.variants.summary.participants'),
-            value: variant?.participant_number
-              ? numberWithCommas(variant.participant_number)
+            value: variant?.internal_frequencies?.total?.pc
+              ? numberWithCommas(variant.internal_frequencies.total.pc)
               : TABLE_EMPTY_PLACE_HOLDER,
           },
         ],
@@ -106,9 +104,9 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
         title: 'Frequencies',
         data: [
           {
-            label: intl.get('screen.variants.summary.gnomadGenome311'),
+            label: intl.get('screen.variants.summary.gnomadGenome3'),
             value:
-              toExponentialNotation(variant?.frequencies?.gnomad_genomes_3_1_1?.af) ||
+              toExponentialNotation(variant?.external_frequencies?.gnomad_genomes_3?.af) ||
               TABLE_EMPTY_PLACE_HOLDER,
           },
           {

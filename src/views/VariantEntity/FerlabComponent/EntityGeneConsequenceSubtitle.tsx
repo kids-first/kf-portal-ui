@@ -2,7 +2,7 @@ import React from 'react';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
-import { IGeneEntity } from 'graphql/variants2/models';
+import { IGeneEntity } from '../../../graphql/variants/models';
 
 import styles from '@ferlab/ui/core/pages/EntityPage/EntityGeneConsequence/EntityGeneConsequenceSubtitle/index.module.scss';
 

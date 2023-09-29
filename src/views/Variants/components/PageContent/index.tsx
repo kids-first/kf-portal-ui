@@ -11,9 +11,9 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Space, Typography } from 'antd';
 import copy from 'copy-to-clipboard';
-import { useVariant } from 'graphql/variants/actions';
-import { IVariantResultTree } from 'graphql/variants/models';
-import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+import { useVariant } from '../../../../graphql/variants/actions';
+import { IVariantResultTree } from '../../../../graphql/variants/models';
+import { GET_VARIANT_COUNT } from '../../../../graphql/variants/queries';
 import {
   DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
@@ -21,7 +21,7 @@ import {
   DEFAULT_QUERY_CONFIG,
   DEFAULT_SORT_QUERY,
   VARIANT_REPO_QB_ID,
-} from 'views/Variants/utils/constants';
+} from '../../utils/constants';
 
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
@@ -200,7 +200,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
             },
           });
 
-          return data?.data?.variants.hits.total ?? 0;
+          return data?.data?.variants?.hits?.total ?? 0;
         }}
       />
       <VariantsTable

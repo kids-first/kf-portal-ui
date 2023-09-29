@@ -1,12 +1,11 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
-import { IVariantEntity as IVariantEntityFerlab } from '@ferlab/ui/core/pages/EntityPage/type';
 
 export interface IVariantResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
 }
 
 export interface IVariantEntityResultTree {
-  variants: IArrangerResultsTree<IVariantEntityFerlab>;
+  variants: IArrangerResultsTree<IVariantEntity>;
 }
 
 export enum Impact {
@@ -17,70 +16,91 @@ export enum Impact {
 }
 
 export interface IConservationsEntity {
-  phylo_p17way_primate_rankscore: number;
+  phyloP100way_vertebrate: number;
+  phyloP17way_primate: number;
 }
 
 export interface IBoundType {
   ac?: number;
   af?: number;
   an?: number;
-  hom?: number;
   pn?: number;
   pc?: number;
   pf?: number;
-  heterozygotes?: number;
-  homozygotes?: number;
+  het?: number;
+  hom?: number;
 }
 
-interface IVariantFrequenciesInternal {
-  lower_bound_kf: IBoundType;
-  upper_bound_kf: IBoundType;
+export interface IVariantInternalFrequencies {
+  total: IBoundType;
 }
 
 export interface IExternalFrequenciesEntity {
-  gnomad_exomes_2_1: IBoundType;
-  gnomad_genomes_2_1: IBoundType;
-  gnomad_genomes_3_0: IBoundType;
-  gnomad_genomes_3_1_1: IBoundType;
-  one_thousand_genomes: IBoundType;
-  topmed: IBoundType;
-  internal: IVariantFrequenciesInternal;
+  gnomad_exomes_2_1_1: IBoundType;
+  gnomad_genomes_2_1_1: IBoundType;
+  gnomad_genomes_3: IBoundType;
+  thousand_genomes: IBoundType;
+  topmed_bravo: IBoundType;
 }
 
 export interface IConsequenceNode {
   node: IConsequenceEntity;
 }
 export interface IPredictionEntity {
-  fathmm_pred: number;
+  cadd_phred: number;
+  cadd_score: number;
+  dann_score: number;
+  fathmm_pred: string;
+  fathmm_score: number;
   lrt_pred: string;
-  lrt_converted_rankscore: number;
-  revel_rankscore: number;
-  sift_pred: string;
+  lrt_score: number;
   polyphen2_hvar_pred: string;
-  polyphen2_hvar_rankscore: number;
-  sift_converted_rankscore: number;
-  cadd_rankscore: number;
-  dann_rankscore: number;
-  fathmm_converted_rankscore: number;
+  polyphen2_hvar_score: number;
+  revel_score: number;
+  sift_pred: string;
+  sift_score: number;
 }
 
 export interface IConsequenceEntity {
   id: string;
-  hgvsc: string;
-  symbol: string;
-  consequences: string[];
-  vep_impact: Impact;
+  score: number;
   aa_change: string | undefined | null;
-  hgvsp: string | null;
-  impact_score: number | null;
   canonical: boolean;
-  coding_dna_change: string;
-  strand: string;
-  refseq_mrna_id: string;
+  cdna_position: string;
+  cds_position: string;
+  consequence: string[];
+  ensembl_feature_id: string;
   ensembl_transcript_id: string;
-  ensembl_gene_id: string;
-  predictions: IPredictionEntity;
+  feature_type: string;
+  hgvsc: string;
+  hgvsp: string;
+  impact_score: number;
+  mane_plus: boolean;
+  mane_select: boolean;
+  picked: boolean;
+  protein_position: string;
+  refseq_mrna_id: string[];
+  strand: string;
+  uniprot_id: string;
+  vep_impact: Impact;
+  amino_acids: {
+    reference: string;
+    variant: string;
+  };
+  codons: {
+    reference: string;
+    variant: string;
+  };
   conservations: IConservationsEntity;
+  exon: {
+    rank: number;
+    total: number;
+  };
+  intron: {
+    rank: number;
+    total: number;
+  };
+  predictions: IPredictionEntity;
 }
 
 export interface IClinVar {
@@ -91,19 +111,19 @@ export interface IClinVar {
   interpretations: string[];
 }
 
-interface IGeneCosmic {
+export interface IGeneCosmic {
   id: any;
   score: number;
   tumour_types_germline: string[];
 }
 
-interface IGeneDdd {
+export interface IGeneDdd {
   id: any;
   score: number;
   disease_name: string;
 }
 
-interface IGeneHpo {
+export interface IGeneHpo {
   id: any;
   score: number;
   hpo_term_id: string;
@@ -111,16 +131,16 @@ interface IGeneHpo {
   hpo_term_name: string;
 }
 
-interface IGeneOmim {
+export interface IGeneOmim {
   id: any;
   score: number;
   inheritance: string[];
-  inheritance_code: string;
+  inheritance_code: string[];
   name: string;
   omim_id: string;
 }
 
-interface IGeneOrphanet {
+export interface IGeneOrphanet {
   id: any;
   score: number;
   inheritance: string;
@@ -132,65 +152,64 @@ export interface IGeneEntity {
   id: any;
   score: number;
   alias: string[];
+  biotype: string;
   ensembl_gene_id: string;
-  entrez_gene_id: number;
+  entrez_gene_id: string;
   hgnc: string;
   location: string;
   name: string;
   omim_gene_id: string;
   symbol: string;
+  consequences: IArrangerResultsTree<IConsequenceEntity>;
   cosmic: IArrangerResultsTree<IGeneCosmic>;
   ddd: IArrangerResultsTree<IGeneDdd>;
+  gnomad: {
+    loeuf: string;
+    pli: number;
+  };
   hpo: IArrangerResultsTree<IGeneHpo>;
   omim: IArrangerResultsTree<IGeneOmim>;
   orphanet: IArrangerResultsTree<IGeneOrphanet>;
+  spliceai: {
+    ds: number;
+    type: string[];
+  };
 }
 
 export interface IVariantEntity {
   id: string;
-  study_id: string;
   score: number;
-  acls: string;
   alternate: string;
+  assembly_version: string;
   chromosome: string;
-  external_study_ids: string;
-  gene_external_reference: string;
-  genome_build: string;
+  dna_change: string;
+  end: number;
+  gene_external_reference: string[];
   hash: string;
   hgvsg: string;
   locus: string;
   max_impact_score: number;
-  participant_frequency: number;
-  participant_number: number;
-  participant_number_visible: number;
-  participant_total_number: number;
   reference: string;
-  release_id: string;
   rsnumber: string;
   start: number;
-  transmissions: string;
   variant_class: string;
   variant_external_reference: string;
-  vep_impacts: string;
-  zygosity: string;
-  studies: IArrangerResultsTree<IVariantStudyEntity>;
-  consequences: IArrangerResultsTree<IConsequenceEntity>;
   clinvar: IClinVar;
-  frequencies: IExternalFrequenciesEntity;
+  external_frequencies: IExternalFrequenciesEntity;
   genes: IArrangerResultsTree<IGeneEntity>;
+  internal_frequencies: IVariantInternalFrequencies;
+  studies: IArrangerResultsTree<IVariantStudyEntity>;
 }
 
 export interface IVariantStudyEntity {
   id: string;
-  acls: string[];
-  external_study_ids: string[];
-  frequencies: IVariantFrequenciesInternal;
-  participant_ids: string[];
-  participant_number: number;
   score: number | null;
+  participant_ids: string[];
   study_code: string;
   study_id: string;
   transmissions: string[];
+  zygosity: string[];
+  total: IBoundType;
 }
 
 export type ITableVariantEntity = IVariantEntity & {

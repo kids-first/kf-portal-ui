@@ -16,7 +16,7 @@ import {
   DATA_FILES_SAVED_SETS_FIELD,
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
-import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
+import { VARIANT_SAVED_SETS_FIELD } from '../../../../../Variants/utils/constants';
 
 import { IUserSetOutput } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';
