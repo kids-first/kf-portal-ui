@@ -895,7 +895,7 @@ const en = {
       search: 'Search Studies',
     },
     dataExploration: {
-      title: 'Explore Data',
+      title: 'Data Exploration',
       sidemenu: {
         study: 'Study',
         clinical: 'Clinical',
