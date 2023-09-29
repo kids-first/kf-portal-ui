@@ -12,6 +12,7 @@ import { CHECK_FILE_MATCH } from 'graphql/files/queries';
 import { ArrangerApi } from 'services/api/arranger';
 
 import EntityUploadIds from './EntityUploadIds';
+import { extractUploadValues } from './utils';
 
 interface OwnProps {
   queryBuilderId: string;
@@ -62,10 +63,7 @@ const FileUploadIds = ({ queryBuilderId }: OwnProps) => (
       updateActiveQueryField({
         queryBuilderId,
         field: 'file_facet_ids.file_fhir_id_2',
-        value: matches.reduce((filtered: string[], o) => {
-          if (o.value) filtered.push(o.value);
-          return filtered;
-        }, []),
+        value: extractUploadValues(matches, 'value'),
         index: INDEXES.FILE,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
