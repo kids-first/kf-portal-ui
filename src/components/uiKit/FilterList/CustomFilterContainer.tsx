@@ -2,27 +2,29 @@ import { useEffect, useState } from 'react';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter, IFilterGroup, TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
+import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
+import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { IExtendedMappingResults, IGqlResults } from '@ferlab/ui/core/graphql/types';
 import { getFilters } from 'graphql/utils/Filters';
 import { isUndefined } from 'lodash';
-import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
-import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
+
 import { getFacetsDictionary, getFiltersDictionary } from 'utils/translation';
 
-import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import CustomFilterSelector from './CustomFilterSelector';
+import { TCustomFilterMapper } from '.';
 
 type OwnProps = {
   classname: string;
   index: string;
   queryBuilderId: string;
-  filter: string;
+  filterKey: string;
   defaultOpen?: boolean;
   extendedMappingResults: IExtendedMappingResults;
   filtersOpen?: boolean;
+  filterMapper?: TCustomFilterMapper;
   headerTooltip?: boolean;
   noDataInputOption?: boolean;
-  results: IGqlResults<any>;
 };
 
 const CustomFilterContainer = ({
@@ -32,14 +34,18 @@ const CustomFilterContainer = ({
   filtersOpen,
   defaultOpen,
   extendedMappingResults,
-  filter,
+  filterKey,
+  filterMapper,
   headerTooltip,
   noDataInputOption,
-  results,
 }: OwnProps) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  
+  const [results, setResults] = useState<IGqlResults<any>>();
+  const found = (extendedMappingResults?.data || []).find(
+    (f: TExtendedMapping) => f.field === underscoreToDot(filterKey),
+  );
+
   useEffect(() => {
     if (!isUndefined(filtersOpen) && isOpen !== filtersOpen) {
       setIsOpen(filtersOpen);
@@ -47,7 +53,7 @@ const CustomFilterContainer = ({
     // eslint-disable-next-line
   }, [filtersOpen]);
 
-  const onFilterSelectorChange = (fg: IFilterGroup, f: IFilter[]) => {
+  const onChange = (fg: IFilterGroup, f: IFilter[]) => {
     updateActiveQueryFilters({
       queryBuilderId,
       filterGroup: fg,
@@ -56,15 +62,11 @@ const CustomFilterContainer = ({
     });
   };
 
-  const found = (extendedMappingResults?.data || []).find(
-    (f: TExtendedMapping) => f.field === underscoreToDot(filter),
-  );
-
-  const aggregations = results?.aggregations ? results?.aggregations[filter] : null; 
+  const aggregations = results?.aggregations ? results?.aggregations[filterKey] : {};
 
   const filterGroup = getFilterGroup({
     extendedMapping: found,
-    aggregation: aggregations || {},
+    aggregation: aggregations,
     rangeTypes: [],
     filterFooter: true,
     headerTooltip,
@@ -72,7 +74,7 @@ const CustomFilterContainer = ({
     noDataInputOption,
   });
 
-  const filters = results?.aggregations ? getFilters(results?.aggregations, filter) : [];
+  const filters = results?.aggregations ? getFilters(results?.aggregations, filterKey) : [];
   const selectedFilters = results?.data
     ? getSelectedFilters({
         queryBuilderId,
@@ -82,7 +84,7 @@ const CustomFilterContainer = ({
     : [];
 
   return (
-    <div className={classname} key={filter}>
+    <div className={classname} key={filterKey}>
       <FilterContainer
         maxShowing={5}
         isOpen={isOpen}
@@ -96,13 +98,19 @@ const CustomFilterContainer = ({
         }}
         customContent={
           <CustomFilterSelector
+            index={index}
+            queryBuilderId={queryBuilderId}
+            filterKey={filterKey}
             dictionary={getFiltersDictionary()}
             filters={filters}
             filterGroup={filterGroup}
             maxShowing={5}
-            onChange={onFilterSelectorChange}
+            onChange={onChange}
             selectedFilters={selectedFilters}
             searchInputVisible={isSearchVisible}
+            onDataLoaded={setResults}
+            extendedMappingResults={extendedMappingResults}
+            filterMapper={filterMapper}
           />
         }
       />
