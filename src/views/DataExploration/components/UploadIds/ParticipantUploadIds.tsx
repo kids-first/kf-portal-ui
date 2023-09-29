@@ -64,7 +64,10 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
       updateActiveQueryField({
         queryBuilderId,
         field: 'participant_facet_ids.participant_fhir_id_2',
-        value: matches.map((match) => match.value!),
+        value: matches.reduce((filtered: string[], o) => {
+          if (o.value) filtered.push(o.value);
+          return filtered;
+        }, []),
         index: INDEXES.PARTICIPANT,
         overrideValuesName: intl.get('components.uploadIds.modal.pillTitle'),
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
