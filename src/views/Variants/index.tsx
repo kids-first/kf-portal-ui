@@ -3,9 +3,9 @@ import { UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
-import GenesUploadIds from 'views/Variants/components/GeneUploadIds';
-import VariantGeneSearch from 'views/Variants/components/VariantGeneSearch';
-import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
+import GenesUploadIds from './components/GeneUploadIds';
+import VariantGeneSearch from './components/VariantGeneSearch';
+import { VARIANT_REPO_QB_ID } from './utils/constants';
 
 import DiseaseIcon from 'components/Icons/DiseaseIcon';
 import FrequencyIcon from 'components/Icons/FrequencyIcon';
@@ -19,7 +19,7 @@ import { SuggestionType } from 'services/api/arranger/models';
 import PageContent from './components/PageContent';
 import { SCROLL_WRAPPER_ID } from './utils/constants';
 
-import styles from 'views/Variants/index.module.scss';
+import styles from './index.module.scss';
 
 enum FilterTypes {
   Participant,
@@ -43,9 +43,7 @@ const filterGroups: {
   [FilterTypes.Participant]: {
     groups: [
       {
-        facets: [
-          'studies__study_code',
-        ],
+        facets: ['studies__study_code'],
       },
     ],
   },
@@ -56,18 +54,23 @@ const filterGroups: {
         type={SuggestionType.VARIANTS}
         queryBuilderId={VARIANT_REPO_QB_ID}
       />,
+      <GenesUploadIds key="genes_upload_ids" queryBuilderId={VARIANT_REPO_QB_ID} />
     ],
     groups: [
       {
         facets: [
           'variant_class',
-          'consequences__consequences',
+          'genes__consequences__consequence',
           'variant_external_reference',
           'chromosome',
           'start',
-          'zygosity',
-          'transmissions',
+          'studies__zygosity',
+          'studies__transmission',
         ],
+        noDataOption: ['start'],
+        intervalDecimal: {
+          start: 0,
+        },
       },
     ],
   },
@@ -82,7 +85,13 @@ const filterGroups: {
     ],
     groups: [
       {
-        facets: ['consequences__biotype', 'gene_external_reference'],
+        facets: [
+          'genes__biotype',
+          'gene_external_reference',
+          'genes__gnomad__pli',
+          'genes__gnomad__loeuf',
+        ],
+        noDataOption: ['genes__gnomad__pli', 'genes__gnomad__loeuf'],
       },
       {
         title: intl.get('facets.genePanels'),
@@ -105,28 +114,39 @@ const filterGroups: {
   [FilterTypes.Pathogenicity]: {
     groups: [
       {
-        facets: ['clinvar__clin_sig', 'consequences__vep_impact'],
-        tooltips: ['consequences__vep_impact'],
+        facets: ['clinvar__clin_sig', 'genes__consequences__vep_impact'],
+        tooltips: ['genes__consequences__vep_impact'],
       },
       {
         title: 'Predictions',
         facets: [
-          'consequences__predictions__cadd_rankscore',
-          'consequences__predictions__dann_rankscore',
-          'consequences__predictions__fathmm_pred',
-          'consequences__predictions__lrt_pred',
-          'consequences__predictions__polyphen2_hvar_pred',
-          'consequences__predictions__revel_rankscore',
-          'consequences__predictions__sift_pred',
+          'genes__consequences__predictions__cadd_score',
+          'genes__consequences__predictions__cadd_phred',
+          'genes__consequences__predictions__dann_score',
+          'genes__consequences__predictions__fathmm_pred',
+          'genes__consequences__predictions__lrt_pred',
+          'genes__consequences__predictions__polyphen2_hvar_pred',
+          'genes__consequences__predictions__revel_score',
+          'genes__spliceai__ds',
+          'genes__consequences__predictions__sift_pred',
         ],
         tooltips: [
-          'consequences__predictions__cadd_rankscore',
-          'consequences__predictions__dann_rankscore',
-          'consequences__predictions__fathmm_pred',
-          'consequences__predictions__lrt_pred',
-          'consequences__predictions__polyphen2_hvar_pred',
-          'consequences__predictions__revel_rankscore',
-          'consequences__predictions__sift_pred',
+          'genes__consequences__predictions__cadd_score',
+          'genes__consequences__predictions__cadd_phred',
+          'genes__consequences__predictions__dann_score',
+          'genes__consequences__predictions__fathmm_pred',
+          'genes__consequences__predictions__lrt_pred',
+          'genes__consequences__predictions__polyphen2_hvar_pred',
+          'genes__consequences__predictions__revel_score',
+          'genes__consequences__predictions__sift_pred',
+        ],
+        noDataOption: [
+          'genes__consequences__predictions__cadd_score',
+          'genes__consequences__predictions__cadd_phred',
+          'genes__consequences__predictions__dann_score',
+          'genes__consequences__predictions__revel_score',
+          'genes__spliceai__ds',
+          'genes__consequences__predictions__sift_pred',
         ],
       },
     ],
@@ -135,13 +155,20 @@ const filterGroups: {
     groups: [
       {
         facets: [
-          'frequencies__internal__upper_bound_kf__af',
-          'frequencies__gnomad_genomes_2_1__af',
-          'frequencies__gnomad_genomes_3_0__af',
-          'frequencies__gnomad_genomes_3_1_1__af',
-          'frequencies__gnomad_exomes_2_1__af',
-          'frequencies__topmed__af',
-          'frequencies__one_thousand_genomes__af',
+          'internal_frequencies__total__af',
+          'external_frequencies__gnomad_genomes_2_1_1__af',
+          'external_frequencies__gnomad_genomes_3__af',
+          'external_frequencies__gnomad_exomes_2_1_1__af',
+          'external_frequencies__topmed_bravo__af',
+          'external_frequencies__thousand_genomes__af',
+        ],
+        noDataOption: [
+          'internal_frequencies__total__af',
+          'external_frequencies__gnomad_genomes_2_1_1__af',
+          'external_frequencies__gnomad_genomes_3__af',
+          'external_frequencies__gnomad_exomes_2_1_1__af',
+          'external_frequencies__topmed_bravo__af',
+          'external_frequencies__thousand_genomes__af',
         ],
       },
     ],

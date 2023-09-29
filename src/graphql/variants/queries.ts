@@ -8,32 +8,9 @@ export const SEARCH_VARIANT_QUERY = gql`
         edges {
           searchAfter
           node {
-            id
-            variant_id: id
-            score
             alternate
+            assembly_version
             chromosome
-            genome_build
-            hash
-            hgvsg
-            locus
-            max_impact_score
-            participant_frequency
-            participant_number
-            participant_number_visible
-            participant_total_number
-            reference
-            release_id
-            rsnumber
-            start
-            variant_class
-            acls
-            gene_external_reference
-            external_study_ids
-            variant_external_reference
-            vep_impacts
-            zygosity
-            transmissions
             clinvar {
               clin_sig
               clinvar_id
@@ -41,54 +18,111 @@ export const SEARCH_VARIANT_QUERY = gql`
               inheritance
               interpretations
             }
-            studies {
-              hits {
-                total
-                edges {
-                  node {
-                    score
-                    participant_ids
-                    participant_number
-                    study_code
-                    study_id
-                    acls
-                    external_study_ids
-                    transmissions
-                    frequencies {
-                      lower_bound_kf {
-                        ac
-                        af
-                        an
-                        heterozygotes
-                        homozygotes
-                      }
-                      upper_bound_kf {
-                        ac
-                        af
-                        an
-                        heterozygotes
-                        homozygotes
-                      }
-                    }
-                  }
-                }
+            dna_change
+            end
+            external_frequencies {
+              topmed_bravo {
+                ac
+                af
+                an
+                hom
+                het
+              }
+              gnomad_exomes_2_1_1 {
+                ac
+                af
+                an
+                hom
+              }
+              gnomad_genomes_2_1_1 {
+                ac
+                af
+                an
+                hom
+              }
+              gnomad_genomes_3 {
+                ac
+                af
+                an
+                hom
+              }
+              thousand_genomes {
+                ac
+                af
+                an
               }
             }
+            gene_external_reference
             genes {
               hits {
                 total
                 edges {
                   node {
-                    score
-                    ensembl_gene_id
-                    entrez_gene_id
-                    hgnc
-                    location
-                    name
-                    omim_gene_id
-                    symbol
                     alias
-
+                    biotype
+                    consequences {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            aa_change
+                            amino_acids {
+                              reference
+                              variant
+                            }
+                            canonical
+                            cdna_position
+                            cds_position
+                            coding_dna_change
+                            codons {
+                              reference
+                              variant
+                            }
+                            consequence
+                            conservations {
+                              phyloP100way_vertebrate
+                              phyloP17way_primate
+                            }
+                            ensembl_feature_id
+                            ensembl_transcript_id
+                            exon {
+                              rank
+                              total
+                            }
+                            feature_type
+                            hgvsc
+                            hgvsp
+                            impact_score
+                            intron {
+                              rank
+                              total
+                            }
+                            mane_plus
+                            mane_select
+                            picked
+                            predictions {
+                              cadd_phred
+                              cadd_score
+                              dann_score
+                              fathmm_pred
+                              fathmm_score
+                              lrt_pred
+                              lrt_score
+                              polyphen2_hvar_pred
+                              polyphen2_hvar_score
+                              revel_score
+                              sift_pred
+                              sift_score
+                            }
+                            protein_position
+                            refseq_mrna_id
+                            strand
+                            uniprot_id
+                            vep_impact
+                          }
+                        }
+                      }
+                    }
                     cosmic {
                       hits {
                         total
@@ -109,12 +143,18 @@ export const SEARCH_VARIANT_QUERY = gql`
                         }
                       }
                     }
+                    ensembl_gene_id
+                    entrez_gene_id
+                    gnomad {
+                      loeuf
+                      pli
+                    }
+                    hgnc
                     hpo {
                       hits {
                         total
                         edges {
                           node {
-                            score
                             hpo_term_id
                             hpo_term_label
                             hpo_term_name
@@ -122,12 +162,13 @@ export const SEARCH_VARIANT_QUERY = gql`
                         }
                       }
                     }
+                    location
+                    name
                     omim {
                       hits {
                         total
                         edges {
                           node {
-                            score
                             inheritance
                             inheritance_code
                             name
@@ -136,106 +177,69 @@ export const SEARCH_VARIANT_QUERY = gql`
                         }
                       }
                     }
+                    omim_gene_id
                     orphanet {
                       hits {
                         total
                         edges {
                           node {
-                            score
-                            inheritance
                             disorder_id
                             panel
+                            inheritance
                           }
                         }
                       }
                     }
+                    symbol
                   }
                 }
               }
             }
-            frequencies {
-              gnomad_exomes_2_1 {
+            hash
+            hgvsg
+            id
+            internal_frequencies {
+              total {
                 ac
-                af
+                pc
+                hom
+                pn
                 an
-                homozygotes
-              }
-              gnomad_genomes_2_1 {
-                ac
                 af
-                an
-                homozygotes
-              }
-              gnomad_genomes_3_0 {
-                ac
-                af
-                an
-                homozygotes
-              }
-              gnomad_genomes_3_1_1 {
-                ac
-                af
-                an
-              }
-              one_thousand_genomes {
-                ac
-                af
-                an
-              }
-              topmed {
-                ac
-                af
-                an
-                homozygotes
-                heterozygotes
-              }
-              internal {
-                lower_bound_kf {
-                  ac
-                  af
-                  an
-                  heterozygotes
-                  homozygotes
-                }
-                upper_bound_kf {
-                  ac
-                  af
-                  an
-                  heterozygotes
-                  homozygotes
-                }
+                pf
               }
             }
-            consequences {
+            locus
+            max_impact_score
+            reference
+            rsnumber
+            start
+            studies {
               hits {
                 total
                 edges {
                   node {
-                    impact_score
-                    canonical
-                    predictions {
-                      fathmm_pred
-                      lrt_pred
-                      lrt_converted_rankscore
-                      revel_rankscore
-                      sift_pred
-                      polyphen2_hvar_pred
-                      polyphen2_hvar_rankscore
-                      sift_converted_rankscore
-                      cadd_rankscore
-                      dann_rankscore
-                      fathmm_converted_rankscore
+                    score
+                    study_code
+                    study_id
+                    total {
+                      ac
+                      pc
+                      hom
+                      pn
+                      an
+                      af
+                      pf
                     }
-                    hgvsc
-                    hgvsp
-                    consequences
-                    vep_impact
-                    symbol
-                    aa_change
+                    transmission
+                    participant_ids
+                    zygosity
                   }
                 }
               }
             }
+            variant_class
+            variant_id: id
           }
         }
       }
@@ -249,130 +253,121 @@ export const GET_VARIANT_ENTITY = gql`
       hits(filters: $sqon) {
         edges {
           node {
-            id
             alternate
+            assembly_version
             chromosome
-            genome_build
-            hgvsg
-            locus
-            participant_number
-            participant_total_number
-            reference
-            rsnumber
-            start
-            variant_class
-            studies {
-              hits {
-                total
-                edges {
-                  node {
-                    participant_ids
-                    participant_number
-                    study_id
-                    study_code
-                    frequencies {
-                      upper_bound_kf {
-                        ac
-                        homozygotes
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            consequences {
-              hits {
-                total
-                edges {
-                  node {
-                    symbol
-                    biotype
-                    consequences
-                    vep_impact
-                    impact_score
-                    canonical
-                    strand
-                    refseq_mrna_id
-                    ensembl_transcript_id
-                    ensembl_gene_id
-                    hgvsc
-                    hgvsp
-                    predictions {
-                      fathmm_pred
-                      lrt_pred
-                      lrt_converted_rankscore
-                      revel_rankscore
-                      sift_pred
-                      polyphen2_hvar_pred
-                      sift_converted_rankscore
-                      cadd_rankscore
-                      dann_rankscore
-                      fathmm_converted_rankscore
-                    }
-                    conservations {
-                      phylo_p17way_primate_rankscore
-                    }
-                  }
-                }
-              }
-            }
             clinvar {
               clin_sig
               clinvar_id
               conditions
               inheritance
+              interpretations
             }
-            frequencies {
-              internal {
-                upper_bound_kf {
-                  ac
-                  homozygotes
-                }
-              }
-              topmed {
+            dna_change
+            end
+            external_frequencies {
+              topmed_bravo {
                 ac
                 af
                 an
-                homozygotes
+                hom
+                het
               }
-              one_thousand_genomes {
+              gnomad_exomes_2_1_1 {
                 ac
                 af
                 an
+                hom
               }
-              gnomad_exomes_2_1 {
+              gnomad_genomes_2_1_1 {
                 ac
                 af
                 an
-                homozygotes
+                hom
               }
-              gnomad_genomes_2_1 {
+              gnomad_genomes_3 {
                 ac
                 af
                 an
-                homozygotes
+                hom
               }
-              gnomad_genomes_3_0 {
+              thousand_genomes {
                 ac
                 af
                 an
-                homozygotes
-              }
-              gnomad_genomes_3_1_1 {
-                ac
-                af
-                an
-                homozygotes
               }
             }
+            gene_external_reference
             genes {
               hits {
                 total
                 edges {
                   node {
-                    location
-                    omim_gene_id
-                    symbol
+                    alias
+                    biotype
+                    consequences {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            aa_change
+                            amino_acids {
+                              reference
+                              variant
+                            }
+                            canonical
+                            cdna_position
+                            cds_position
+                            coding_dna_change
+                            codons {
+                              reference
+                              variant
+                            }
+                            consequence
+                            conservations {
+                              phyloP100way_vertebrate
+                              phyloP17way_primate
+                            }
+                            ensembl_feature_id
+                            ensembl_transcript_id
+                            exon {
+                              rank
+                              total
+                            }
+                            feature_type
+                            hgvsc
+                            hgvsp
+                            impact_score
+                            intron {
+                              rank
+                              total
+                            }
+                            mane_plus
+                            mane_select
+                            picked
+                            predictions {
+                              cadd_phred
+                              cadd_score
+                              dann_score
+                              fathmm_pred
+                              fathmm_score
+                              lrt_pred
+                              lrt_score
+                              polyphen2_hvar_pred
+                              polyphen2_hvar_score
+                              revel_score
+                              sift_pred
+                              sift_score
+                            }
+                            protein_position
+                            refseq_mrna_id
+                            strand
+                            uniprot_id
+                            vep_impact
+                          }
+                        }
+                      }
+                    }
                     cosmic {
                       hits {
                         total
@@ -393,6 +388,13 @@ export const GET_VARIANT_ENTITY = gql`
                         }
                       }
                     }
+                    ensembl_gene_id
+                    entrez_gene_id
+                    gnomad {
+                      loeuf
+                      pli
+                    }
+                    hgnc
                     hpo {
                       hits {
                         total
@@ -400,38 +402,93 @@ export const GET_VARIANT_ENTITY = gql`
                           node {
                             hpo_term_id
                             hpo_term_label
+                            hpo_term_name
                           }
                         }
                       }
                     }
+                    location
+                    name
                     omim {
                       hits {
                         total
                         edges {
                           node {
-                            omim_id
-                            name
                             inheritance
+                            inheritance_code
+                            name
+                            omim_id
                           }
                         }
                       }
                     }
+                    omim_gene_id
                     orphanet {
                       hits {
                         total
                         edges {
                           node {
+                            disorder_id
                             panel
                             inheritance
-                            disorder_id
                           }
                         }
                       }
                     }
+                    spliceai {
+                      ds
+                      type
+                    }
+                    symbol
                   }
                 }
               }
             }
+            hash
+            hgvsg
+            id
+            internal_frequencies {
+              total {
+                ac
+                pc
+                hom
+                pn
+                an
+                af
+                pf
+              }
+            }
+            locus
+            max_impact_score
+            reference
+            rsnumber
+            start
+            studies {
+              hits {
+                total
+                edges {
+                  node {
+                    score
+                    study_code
+                    study_id
+                    total {
+                      ac
+                      pc
+                      hom
+                      pn
+                      an
+                      af
+                      pf
+                    }
+                    transmission
+                    zygosity
+                    participant_ids
+                  }
+                }
+              }
+            }
+            variant_class
+            variant_id: id
           }
         }
       }

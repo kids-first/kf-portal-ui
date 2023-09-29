@@ -6,7 +6,6 @@ import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import {
   getLongPredictionLabelIfKnown,
-  getPredictionScore,
   getVepImpactTag,
   INDEX_IMPACT_PREDICTION_FIELD,
   INDEX_IMPACT_PREDICTION_SHORT_LABEL,
@@ -14,12 +13,14 @@ import {
 } from '@ferlab/ui/core/pages/EntityPage/utils/consequences';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { Space, Tooltip, Typography } from 'antd';
-import { IConsequenceEntity, Impact } from 'graphql/variants/models';
+import { IConsequenceEntity, Impact } from '../../../graphql/variants/models';
 import { capitalize } from 'lodash';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { getEntityConsequenceDictionary } from 'utils/translation';
 const { Text } = Typography;
+
+import { getPredictionScore } from '../FerlabComponent/Consequences.utils';
 
 import styles from '../index.module.scss';
 
@@ -28,19 +29,19 @@ export const getConsequencesProColumn = (): ProColumnType[] => [
     title: intl.get('screen.variants.consequences.aaColumn'),
     tooltip: intl.get('screen.variants.consequences.aaColumnTooltip'),
     key: 'consequence',
-    render: (consequence: IConsequenceEntity) =>
-      consequence.hgvsp?.split(':')[1] || TABLE_EMPTY_PLACE_HOLDER,
+    dataIndex: 'aa_change',
+    render: (aa_change: string) => aa_change || TABLE_EMPTY_PLACE_HOLDER,
     width: '10%',
   },
   {
     title: intl.get('screen.variants.consequences.consequence'),
-    dataIndex: 'consequences',
-    key: 'consequences',
-    render: (consequences) => {
-      if (!consequences.length) return TABLE_EMPTY_PLACE_HOLDER;
+    dataIndex: 'consequence',
+    key: 'consequence',
+    render: (consequence: string[]) => {
+      if (!consequence?.length) return TABLE_EMPTY_PLACE_HOLDER;
       return (
         <ExpandableCell
-          dataSource={consequences}
+          dataSource={consequence}
           renderItem={(item: any, id) => (
             <StackLayout horizontal key={id}>
               <Text>{removeUnderscoreAndCapitalize(item)}</Text>
@@ -54,8 +55,8 @@ export const getConsequencesProColumn = (): ProColumnType[] => [
   {
     title: intl.get('screen.variants.consequences.cdnaChangeColumn'),
     key: 'consequence',
-    render: (consequence: IConsequenceEntity) =>
-      consequence.hgvsc?.split(':')[1] || TABLE_EMPTY_PLACE_HOLDER,
+    dataIndex: 'hgvsc',
+    render: (hgvsc: string) => hgvsc?.split(':')[1] || TABLE_EMPTY_PLACE_HOLDER,
     width: '15%',
   },
   {
@@ -119,8 +120,7 @@ export const getConsequencesProColumn = (): ProColumnType[] => [
     title: intl.get('screen.variants.consequences.conservationColumn'),
     dataIndex: 'conservations',
     key: 'consequences',
-    render: (conservations) =>
-      conservations?.phylo_p17way_primate_rankscore || TABLE_EMPTY_PLACE_HOLDER,
+    render: (conservations) => conservations?.phyloP17way_primate || TABLE_EMPTY_PLACE_HOLDER,
 
     width: '10%',
   },

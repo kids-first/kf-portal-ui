@@ -10,13 +10,13 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { Col, Modal, Row, Typography } from 'antd';
 import { formatDistance } from 'date-fns';
 import { INDEXES } from 'graphql/constants';
-import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
+import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown2';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
   DATA_FILES_SAVED_SETS_FIELD,
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
-import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
+import { VARIANT_SAVED_SETS_FIELD } from '../../../../../Variants/utils/constants';
 
 import { IUserSetOutput } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';

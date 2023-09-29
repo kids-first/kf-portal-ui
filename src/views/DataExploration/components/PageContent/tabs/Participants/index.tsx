@@ -31,7 +31,7 @@ import {
 } from 'graphql/participants/models';
 import { makeUniqueCleanWords } from 'helpers';
 import { capitalize } from 'lodash';
-import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown2';
 import {
   DATA_EXPLORATION_QB_ID,
   DEFAULT_OFFSET,

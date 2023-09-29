@@ -14,7 +14,7 @@ import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
 import { IQueryResults } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
-import { IVariantEntity } from 'graphql/variants2/models';
+import { IVariantEntity } from '../../../../graphql/variants/models';
 import { MenuClickEventHandler, MenuInfo } from 'rc-menu/lib/interface';
 import CreateEditModal from 'views/Dashboard/components/DashboardCards/SavedSets/CreateEditModal';
 

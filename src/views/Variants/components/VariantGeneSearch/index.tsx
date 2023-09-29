@@ -6,7 +6,7 @@ import useQueryBuilderState, {
 import { ISqonGroupFilter, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { findSqonValueByField } from '@ferlab/ui/core/data/sqon/utils';
 import { INDEXES } from 'graphql/constants';
-import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
+import { VARIANT_REPO_QB_ID } from '../../utils/constants';
 
 import { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
 import SearchAutocomplete, {
@@ -27,7 +27,7 @@ const getValue = (type: SuggestionType, option: Suggestion) =>
 const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
   const { activeQuery } = useQueryBuilderState(VARIANT_REPO_QB_ID);
-  const field = type === SuggestionType.VARIANTS ? 'locus' : 'consequences.symbol';
+  const field = type === SuggestionType.VARIANTS ? 'locus' : 'genes.symbol';
 
   const handleSearch = async (searchText: string) => {
     const { data } = await ArrangerApi.searchSuggestions(type, searchText);

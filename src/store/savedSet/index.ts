@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux';
-import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown';
+import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown2';
 
 import { SetType } from 'services/api/savedSet/models';
 
 import EnvironmentVariables from '../../helpers/EnvVariables';
 
 import { savedSetSelector } from './selector';
-import { VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
+import { VARIANT_SAVED_SETS_FIELD } from '../../views/Variants/utils/constants';
 
 export type { initialState as SavedSetInitialState } from './types';
 export { default, SavedSetState } from './slice';

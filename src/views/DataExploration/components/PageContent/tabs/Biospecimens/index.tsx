@@ -19,7 +19,7 @@ import { useBiospecimen } from 'graphql/biospecimens/actions';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
-import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
+import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown2';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
   DATA_EXPLORATION_QB_ID,

@@ -2,7 +2,7 @@ import {
   DATA_EPLORATION_FILTER_TAG,
   DATA_EXPLORATION_QB_ID,
 } from 'views/DataExploration/utils/constant';
-import { VARIANT_FILTER_TAG, VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
+import { VARIANT_FILTER_TAG, VARIANT_REPO_QB_ID } from '../views/Variants/utils/constants';
 
 import { STATIC_ROUTES } from 'utils/routes';
 

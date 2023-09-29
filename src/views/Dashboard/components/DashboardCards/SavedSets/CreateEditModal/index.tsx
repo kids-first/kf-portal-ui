@@ -10,7 +10,7 @@ import { PROJECT_ID, useSavedSet } from 'store/savedSet';
 import {
   SetActionType,
   singularizeSetTypeIfNeeded,
-} from 'views/DataExploration/components/SetsManagementDropdown';
+} from 'views/DataExploration/components/SetsManagementDropdown2';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 
 import styles from './index.module.scss';
