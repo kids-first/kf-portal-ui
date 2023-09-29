@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { DisconnectOutlined, SafetyOutlined } from '@ant-design/icons';
+import { DisconnectOutlined, SafetyOutlined, ApiOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, List, Space } from 'antd';
@@ -77,7 +77,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                     type="link"
                     size="small"
                     danger
-                    icon={<DisconnectOutlined />}
+                    icon={<ApiOutlined />}
                     onClick={() => dispatch(connectToFence(FENCE_NAMES.gen3))}
                     className={styles.disconnectBtn}
                     loading={connectionLoading}
