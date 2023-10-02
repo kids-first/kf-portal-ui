@@ -45,34 +45,34 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       <AgeCell ageInDays={biospecimen?.age_at_biospecimen_collection} />
     ),
   },
-  {
-    key: 'ncit_anatomy_site_id',
-    title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'anatomy_site',
-    title: intl.get('entities.biospecimen.anatomical_site'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'ncit_id_tissue_type',
-    title: intl.get('entities.biospecimen.tissue_type_NCIT'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'tissue_type_source_text',
-    title: intl.get('entities.biospecimen.tissue_type'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
-  },
+  // {
+  //   key: 'ncit_anatomy_site_id',
+  //   title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
+  //   defaultHidden: true,
+  //   render: (biospecimen: IBiospecimenEntity) =>
+  //     biospecimen?.ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+  // },
+  // {
+  //   key: 'anatomy_site',
+  //   title: intl.get('entities.biospecimen.anatomical_site'),
+  //   defaultHidden: true,
+  //   render: (biospecimen: IBiospecimenEntity) =>
+  //     biospecimen?.anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+  // },
+  // {
+  //   key: 'ncit_id_tissue_type',
+  //   title: intl.get('entities.biospecimen.tissue_type_NCIT'),
+  //   defaultHidden: true,
+  //   render: (biospecimen: IBiospecimenEntity) =>
+  //     biospecimen?.ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  // },
+  // {
+  //   key: 'tissue_type_source_text',
+  //   title: intl.get('entities.biospecimen.tissue_type'),
+  //   defaultHidden: true,
+  //   render: (biospecimen: IBiospecimenEntity) =>
+  //     biospecimen?.tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  // },
   {
     key: 'source_text_tumor_location',
     title: intl.get('entities.biospecimen.source_text_tumor_location'),

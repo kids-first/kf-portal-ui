@@ -82,9 +82,9 @@ const filterGroups: {
     groups: [
       {
         facets: [
-          'diagnosis__age_at_event_days',
-          'outcomes__age_at_event_days__value',
-          'phenotype__age_at_event_days',
+          // 'diagnosis__age_at_event_days',
+          // 'outcomes__age_at_event_days__value',
+          // 'phenotype__age_at_event_days',
           <TreeFacet
             key="mondo-tree"
             type={RemoteComponentList.MondoTree}
@@ -122,17 +122,17 @@ const filterGroups: {
           'collection_sample_type',
           'age_at_biospecimen_collection',
           'status',
-          'ncit_anatomy_site_id',
-          'anatomy_site',
+          // 'ncit_anatomy_site_id',
+          // 'anatomy_site',
           'consent_type',
           'dbgap_consent_code',
-          'diagnosis_mondo',
-          'diagnosis_ncit',
-          'source_text',
+          // 'diagnosis_mondo',
+          // 'diagnosis_ncit',
+          // 'source_text',
           'source_text_tumor_location',
-          'method_of_sample_procurement',
-          'ncit_id_tissue_type',
-          'tissue_type_source_text',
+          // 'method_of_sample_procurement',
+          // 'ncit_id_tissue_type',
+          // 'tissue_type_source_text',
         ],
       },
     ],
