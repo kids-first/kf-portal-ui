@@ -15,9 +15,10 @@ const AgeCell = ({ ageInDays }: OwnProps) => {
   }
 
   const { years, days } = readableDistanceByDays(ageInDays);
+
   return (
     <>
-      {`${years} `}
+      {years === 0 ? '' : `${years} `}
       <span className={styles.timeUnitText}>{intl.get('date.years', { years })}</span>
       {` ${days} `}
       <span className={styles.timeUnitText}>{intl.get('date.days', { days })}</span>{' '}
