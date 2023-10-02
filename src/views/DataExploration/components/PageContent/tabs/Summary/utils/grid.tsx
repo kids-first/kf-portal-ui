@@ -1,7 +1,7 @@
 import intl from 'react-intl-universal';
 import { IResizableGridLayoutConfig } from '@ferlab/ui/core/layout/ResizableGridLayout';
 
-import AgeAtDiagnosisGraphCard from '../AgeAtDiagnosisGraphCard';
+// import AgeAtDiagnosisGraphCard from '../AgeAtDiagnosisGraphCard';
 import DataCategoryGraphCard from '../DataCategoryGraphCard';
 import DataTypeGraphCard from '../DataTypeGraphCard';
 import DemographicsGraphCard from '../DemographicGraphCard';
@@ -106,16 +106,45 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       y: 8,
     },
   },
+  // {
+  //   title: intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle'),
+  //   id: AGE_AT_DIAGNOSIS_GRAPH_CARD_ID,
+  //   component: <AgeAtDiagnosisGraphCard />,
+  //   base: {
+  //     h: 2,
+  //     w: 5,
+  //     x: 6,
+  //     y: 4,
+  //     minW: 3,
+  //     minH: 2,
+  //   },
+  //   md: {
+  //     h: 2,
+  //     w: 4,
+  //     x: 4,
+  //   },
+  //   sm: {
+  //     h: 2,
+  //     w: 5,
+  //     x: 5,
+  //   },
+  //   xs: {
+  //     h: 2,
+  //     w: 6,
+  //     x: 0,
+  //     y: 10,
+  //   },
+  // },
   {
-    title: intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle'),
-    id: AGE_AT_DIAGNOSIS_GRAPH_CARD_ID,
-    component: <AgeAtDiagnosisGraphCard />,
+    title: intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle'),
+    id: DATA_CATEGORY_GRAPH_CARD_ID,
+    component: <DataCategoryGraphCard />,
     base: {
       h: 2,
       w: 5,
       x: 6,
       y: 4,
-      minW: 3,
+      minW: 2,
       minH: 2,
     },
     md: {
@@ -127,42 +156,13 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
       h: 2,
       w: 5,
       x: 5,
-    },
-    xs: {
-      h: 2,
-      w: 6,
-      x: 0,
-      y: 10,
-    },
-  },
-  {
-    title: intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle'),
-    id: DATA_CATEGORY_GRAPH_CARD_ID,
-    component: <DataCategoryGraphCard />,
-    base: {
-      h: 2,
-      w: 5,
-      x: 11,
-      y: 4,
-      minW: 2,
-      minH: 2,
-    },
-    md: {
-      h: 2,
-      w: 4,
-      x: 8,
-    },
-    sm: {
-      h: 2,
-      w: 5,
-      x: 0,
       y: 6,
     },
     xs: {
       h: 2,
       w: 6,
       x: 0,
-      y: 12,
+      y: 10,
     },
   },
   {
