@@ -1,5 +1,3 @@
-import intl from 'react-intl-universal';
-
 // @see https://sciencenotes.org/how-to-convert-days-to-years/
 const LEAP_YEARS = 365.2425;
 
