@@ -91,7 +91,7 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
     },
     md: {
       h: 2,
-      w: 4,
+      w: 6,
       x: 0,
     },
     sm: {
@@ -149,8 +149,8 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
     },
     md: {
       h: 2,
-      w: 4,
-      x: 4,
+      w: 6,
+      x: 6,
     },
     sm: {
       h: 2,

@@ -76,6 +76,10 @@ const DemographicsGraphCard = () => {
     result?.data?.participant?.aggregations?.ethnicity?.buckets,
     result?.data?.participant?.hits?.total,
   );
+  const familyData = aggregationToChartData(
+    result?.data?.participant?.aggregations?.family_type?.buckets,
+    result?.data?.participant?.hits?.total,
+  );
 
   return (
     <ResizableGridCard
@@ -87,11 +91,11 @@ const DemographicsGraphCard = () => {
       loadingType="spinner"
       headerTitle={intl.get('screen.dataExploration.tabs.summary.demographic.cardTitle')}
       tsvSettings={{
-        data: [sexData, raceData, ethnicityData],
+        data: [sexData, raceData, ethnicityData, familyData],
       }}
       modalContent={
         <Row gutter={[12, 24]} className={styles.graphRowWrapper}>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             <PieChart
               data={sexData}
               onClick={(datum) => addToQuery('sex', datum.id as string)}
@@ -109,7 +113,7 @@ const DemographicsGraphCard = () => {
               {...graphModalSettings}
             />
           </Col>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             <PieChart
               data={ethnicityData}
               onClick={(datum) => addToQuery('ethnicity', datum.id as string)}
@@ -127,7 +131,7 @@ const DemographicsGraphCard = () => {
               {...graphModalSettings}
             />
           </Col>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             <PieChart
               data={raceData}
               colors={colors}
@@ -145,6 +149,24 @@ const DemographicsGraphCard = () => {
               {...graphModalSettings}
             />
           </Col>
+          <Col sm={12} md={12} lg={6}>
+            <PieChart
+              data={familyData}
+              colors={colors}
+              onClick={(datum) => addToQuery('family_type', datum.id as string)}
+              legends={[
+                {
+                  anchor: 'bottom',
+                  translateX: 0,
+                  translateY: (LEGEND_ITEM_HEIGHT * familyData.length - 1) / 2,
+                  direction: 'column',
+                  itemWidth: 100,
+                  itemHeight: LEGEND_ITEM_HEIGHT,
+                },
+              ]}
+              {...graphModalSettings}
+            />
+          </Col>
         </Row>
       }
       modalSettings={{
@@ -153,7 +175,7 @@ const DemographicsGraphCard = () => {
       }}
       content={
         <Row gutter={[12, 24]} className={styles.graphRowWrapper}>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             {isEmpty(sexData) ? (
               <Empty imageType="grid" />
             ) : (
@@ -166,7 +188,7 @@ const DemographicsGraphCard = () => {
               />
             )}
           </Col>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             {isEmpty(ethnicityData) ? (
               <Empty imageType="grid" />
             ) : (
@@ -179,7 +201,7 @@ const DemographicsGraphCard = () => {
               />
             )}
           </Col>
-          <Col sm={12} md={12} lg={8}>
+          <Col sm={12} md={12} lg={6}>
             {isEmpty(raceData) ? (
               <Empty imageType="grid" />
             ) : (
@@ -188,6 +210,21 @@ const DemographicsGraphCard = () => {
                 data={raceData}
                 colors={colors}
                 onClick={(datum) => addToQuery('race', datum.id as string)}
+                {...graphSetting}
+              />
+            )}
+          </Col>
+          <Col sm={12} md={12} lg={6}>
+            {isEmpty(familyData) ? (
+              <Empty imageType="grid" />
+            ) : (
+              <PieChart
+                title={intl.get(
+                  'screen.dataExploration.tabs.summary.demographic.familyComposition',
+                )}
+                data={familyData}
+                colors={colors}
+                onClick={(datum) => addToQuery('family_type', datum.id as string)}
                 {...graphSetting}
               />
             )}
