@@ -25,6 +25,7 @@ type OwnProps = {
   filterMapper?: TCustomFilterMapper;
   headerTooltip?: boolean;
   noDataInputOption?: boolean;
+  intervalDecimal?: number;
 };
 
 const CustomFilterContainer = ({
@@ -38,6 +39,7 @@ const CustomFilterContainer = ({
   filterMapper,
   headerTooltip,
   noDataInputOption,
+  intervalDecimal,
 }: OwnProps) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -72,6 +74,7 @@ const CustomFilterContainer = ({
     headerTooltip,
     dictionary: getFacetsDictionary(),
     noDataInputOption,
+    intervalDecimal,
   });
 
   const filters = results?.aggregations ? getFilters(results?.aggregations, filterKey) : [];

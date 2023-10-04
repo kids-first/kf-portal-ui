@@ -87,6 +87,11 @@ const FilterList = ({
                   filterMapper={filterMapper}
                   defaultOpen={filterInfo.defaultOpenFacets?.includes(facet) ? true : undefined}
                   headerTooltip={group.tooltips?.includes(facet)}
+                  intervalDecimal={
+                    group.intervalDecimal?.[facet] || group.intervalDecimal?.[facet] === 0
+                      ? group.intervalDecimal[facet]
+                      : undefined
+                  }
                 />
               ) : (
                 <div key={i + ii} className={cx(styles.customFilterWrapper, styles.filter)}>

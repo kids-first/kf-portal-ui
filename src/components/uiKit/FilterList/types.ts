@@ -1,6 +1,6 @@
+import React from 'react';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { DocumentNode } from 'graphql';
-import React from 'react';
 
 export interface FilterGroup {
   title?: string;
