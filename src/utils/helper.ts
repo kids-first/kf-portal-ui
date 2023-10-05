@@ -35,3 +35,5 @@ export const toKebabCase = (str: string) => {
   const match: string[] = (str && str.match(KEBAB_REGEX)) || [];
   return match.map((x: string) => x.toLowerCase()).join('-');
 };
+
+export const isNumber = (n: unknown): boolean => typeof n === 'number';

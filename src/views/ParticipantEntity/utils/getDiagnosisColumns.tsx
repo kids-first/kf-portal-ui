@@ -7,8 +7,8 @@ import { capitalize } from 'lodash';
 import { extractMondoTitleAndCode } from 'views/DataExploration/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import AgeCell from 'components/AgeCell';
 
-import AgeCell from '../AgeCell';
 import MondoParticipantCount from '../DiagnosisTable/MondoParticipantCount';
 
 const getDiagnosisDefaultColumns = (): ProColumnType[] => [
@@ -76,12 +76,9 @@ const getDiagnosisDefaultColumns = (): ProColumnType[] => [
     key: 'age_at_event_days',
     title: intl.get('entities.participant.age'),
     tooltip: intl.get('entities.participant.age_tooltip_diagnosis'),
-    render: (diagnosis: IParticipantDiagnosis) =>
-      diagnosis?.age_at_event_days ? (
-        <AgeCell ageInDays={diagnosis.age_at_event_days} />
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    render: (diagnosis: IParticipantDiagnosis) => (
+      <AgeCell ageInDays={diagnosis?.age_at_event_days} />
+    ),
   },
   {
     key: 'mondo_term',

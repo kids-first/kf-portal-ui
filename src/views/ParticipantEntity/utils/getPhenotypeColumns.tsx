@@ -8,8 +8,8 @@ import { capitalize } from 'lodash';
 import { extractPhenotypeTitleAndCode } from 'views/DataExploration/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import AgeCell from 'components/AgeCell';
 
-import AgeCell from '../AgeCell';
 import HpoParticipantCount from '../PhenotypeTable/HpoParticipantCount';
 const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   {
@@ -66,12 +66,9 @@ const getPhenotypeDefaultColumns = (): ProColumnType[] => [
     key: 'age_at_event_days',
     title: intl.get('entities.participant.age'),
     tooltip: intl.get('entities.participant.age_tooltip_phenotype'),
-    render: (phenotype: IParticipantPhenotype) =>
-      phenotype.age_at_event_days ? (
-        <AgeCell ageInDays={phenotype.age_at_event_days} />
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    render: (phenotype: IParticipantPhenotype) => (
+      <AgeCell ageInDays={phenotype?.age_at_event_days} />
+    ),
     width: '10%',
   },
   {

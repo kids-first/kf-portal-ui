@@ -82,9 +82,9 @@ const filterGroups: {
     groups: [
       {
         facets: [
-          // 'diagnosis__age_at_event_days',
-          // 'outcomes__age_at_event_days__value',
-          // 'phenotype__age_at_event_days',
+          'diagnosis__age_at_event_days',
+          'outcomes__age_at_event_days__value',
+          'phenotype__age_at_event_days',
           <TreeFacet
             key="mondo-tree"
             type={RemoteComponentList.MondoTree}

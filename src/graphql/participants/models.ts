@@ -54,7 +54,7 @@ export interface IParticipantOutcomes {
   vital_status: string;
   observation_id: string;
   age_at_event_days: {
-    value: string;
+    value: number;
     units: string;
   };
 }

@@ -5,8 +5,8 @@ import { ArrangerEdge } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import AgeCell from 'components/AgeCell';
 
-import AgeCell from '../AgeCell';
 import CollectionIdLink from '../BiospecimenTable/CollectionIdLink';
 
 export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
