@@ -348,11 +348,11 @@ const defaultColumns: ProColumnType[] = [
           idsAlreadyAdded.push(dxId);
           return [
             ...ncitIds,
-            <>
+            <span key={dxId}>
               <ExternalLink href={`http://purl.obolibrary.org/obo/${dxId.replace(':', '_')}`}>
                 {dxId}
               </ExternalLink>{' '}
-            </>,
+            </span>,
           ];
         }
         return ncitIds;
