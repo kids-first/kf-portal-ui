@@ -348,11 +348,11 @@ const defaultColumns: ProColumnType[] = [
           idsAlreadyAdded.push(dxId);
           return [
             ...ncitIds,
-            <>
+            <span key={dxId}>
               <ExternalLink href={`http://purl.obolibrary.org/obo/${dxId.replace(':', '_')}`}>
                 {dxId}
               </ExternalLink>{' '}
-            </>,
+            </span>,
           ];
         }
         return ncitIds;
@@ -628,10 +628,7 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
         },
         defaultViewPerQuery: queryConfig.size,
       }}
-      dataSource={results.data.map((i) => ({
-        ...i,
-        key: `${i.participant_id}${i.study.study_code}`,
-      }))}
+      dataSource={results.data.map((i) => ({ ...i, key: i.participant_id }))}
       dictionary={getProTableDictionary()}
     />
   );
