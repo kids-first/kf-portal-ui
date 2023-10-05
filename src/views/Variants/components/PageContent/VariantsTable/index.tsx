@@ -42,6 +42,7 @@ import { SetType } from 'services/api/savedSet/models';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
+import { isNumber } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { truncateString } from 'utils/string';
 import { getProTableDictionary } from 'utils/translation';
@@ -59,8 +60,6 @@ interface OwnProps {
   setQueryConfig: TQueryConfigCb;
   queryConfig: IQueryConfig;
 }
-
-const isNumber = (n: number) => n && !Number.isNaN(n);
 
 const defaultColumns: ProColumnType[] = [
   {

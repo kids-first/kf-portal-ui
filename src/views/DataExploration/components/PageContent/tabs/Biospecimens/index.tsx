@@ -30,10 +30,10 @@ import {
   DEFAULT_QUERY_CONFIG,
   SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
-import AgeCell from 'views/ParticipantEntity/AgeCell';
 import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import AgeCell from 'components/AgeCell';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
@@ -119,12 +119,9 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     title: 'Age',
     tooltip: 'Age at Biospecimen Collection (days)',
     dataIndex: 'age_at_biospecimen_collection',
-    render: (age_at_biospecimen_collection) =>
-      age_at_biospecimen_collection ? (
-        <AgeCell ageInDays={age_at_biospecimen_collection} />
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    render: (age_at_biospecimen_collection) => (
+      <AgeCell ageInDays={age_at_biospecimen_collection} />
+    ),
   },
   // TODO back implementation needed
   // {
