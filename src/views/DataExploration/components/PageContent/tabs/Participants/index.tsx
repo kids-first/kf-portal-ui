@@ -628,7 +628,10 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
         },
         defaultViewPerQuery: queryConfig.size,
       }}
-      dataSource={results.data.map((i) => ({ ...i, key: i.participant_id }))}
+      dataSource={results.data.map((i) => ({
+        ...i,
+        key: `${i.participant_id}${i.study.study_code}`,
+      }))}
       dictionary={getProTableDictionary()}
     />
   );
