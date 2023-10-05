@@ -9,7 +9,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsItem[] => [
   {
     label: intl.get('entities.participant.race'),
-    value: participant?.race,
+    value: participant?.race || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.participant.ethnicity'),
