@@ -75,11 +75,12 @@ const StudiesGraphCard = () => {
           legends={[
             {
               anchor: 'bottom',
-              translateX: 0,
+              translateX: -310,
               translateY: 92,
               direction: 'column',
               itemWidth: 100,
-              itemHeight: 18,
+              itemHeight: 15,
+              itemsSpacing: 2,
             },
           ]}
         />
