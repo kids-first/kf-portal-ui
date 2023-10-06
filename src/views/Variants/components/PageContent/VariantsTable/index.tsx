@@ -258,9 +258,7 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: (ac: string) =>
-      ac && typeof Number(ac) === 'number'
-        ? numberWithCommas(Number(ac))
-        : TABLE_EMPTY_PLACE_HOLDER,
+      ac && !isNaN(parseInt(ac)) ? numberWithCommas(parseInt(ac)) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     title: intl.get('screen.variants.table.homozygotes.title'),
