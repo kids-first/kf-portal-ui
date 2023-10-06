@@ -89,6 +89,7 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
                   to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
                   title="Data Exploration page"
                 />
+                {'.'}
               </Text>
             ),
           }}

@@ -780,7 +780,7 @@ const en = {
         clinvar: 'ClinVar',
         gnomAD: {
           title: 'gnomAD',
-          tooltip: 'gnomAD 3.1.1 Allele Frequency',
+          tooltip: 'gnomAD v3.1.2 Allele Frequency',
         },
         type: 'Type',
         variant_class: 'Variant class',
@@ -791,11 +791,11 @@ const en = {
         variant: 'Variant',
         homozygotes: {
           title: 'Homo.',
-          tooltip: '# of Homozygotes',
+          tooltip: '# of homozygotes',
         },
         alt: {
           title: 'ALT',
-          tooltip: '# of Alternative alleles',
+          tooltip: '# of alternative alleles',
         },
         frequence: {
           title: 'Freq.',
@@ -1199,6 +1199,7 @@ const en = {
     source_text: 'Histological Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',
     tissue_type_source_text: 'Tissue Type (Source Text)',
+    sample_id: 'Sample ID',
 
     // File
     files: filesFacets,
@@ -1322,6 +1323,7 @@ const en = {
       },
     },
     // Studies
+    search_text: 'Study Code',
     domain: 'Domain',
     population: 'Population',
     donors: {

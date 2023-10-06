@@ -417,18 +417,6 @@ export const getFacetsDictionary = () => ({
     },
   },
   tooltips: {
-    consequences: {
-      vep_impact: 'Ensembl Variant Effect Predictor',
-      predictions: {
-        cadd_rankscore: 'Combined Annotation Dependent Depletion',
-        dann_rankscore: 'Deleterious Annotation of genetic variants using Neural Networks',
-        fathmm_pred: 'Functional Analysis Through Hidden Markov Models',
-        lrt_pred: 'Likelihood Ratio Test',
-        polyphen2_hvar_pred: 'Polymorphism Phenotyping v2 HumVar',
-        revel_rankscore: 'Rare Exome Variant Ensemble Learner',
-        sift_pred: 'Sorting Intolerant From Tolerant',
-      },
-    },
     genes: {
       hpo: {
         hpo_term_label: 'Human Phenotype Ontology',
@@ -444,6 +432,19 @@ export const getFacetsDictionary = () => ({
       },
       cosmic: {
         tumour_types_germline: 'Catalogue Of Somatic Mutations In Cancer',
+      },
+      consequences: {
+        vep_impact: 'Ensembl Variant Effect Predictor',
+        predictions: {
+          cadd_score: 'Combined Annotation Dependent Depletion',
+          cadd_phred: 'Combined Annotation Dependent Depletion PHRED',
+          dann_score: 'Deleterious Annotation of genetic variants using Neural Networks',
+          fathmm_pred: 'Functional Analysis Through Hidden Markov Models',
+          lrt_pred: 'Likelihood Ratio Test',
+          polyphen2_hvar_pred: 'Polymorphism Phenotyping v2 HumVar',
+          revel_score: 'Rare Exome Variant Ensemble Learner',
+          sift_pred: 'Sorting Intolerant From Tolerant',
+        },
       },
     },
   },

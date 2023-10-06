@@ -32,9 +32,8 @@ const enum DataCategory {
   IMMUNE_MAP = 'Immune-Map',
 }
 
-const hasDataCategory = (dataCategory: string[], category: DataCategory) => 
+const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory && dataCategory.includes(`${category}s`) ? <CheckOutlined /> : undefined;
-
 
 const filterInfo: FilterInfo = {
   customSearches: [<StudySearch key={1} queryBuilderId={STUDIES_REPO_QB_ID} />],
@@ -73,7 +72,8 @@ const columns: ProColumnType<any>[] = [
     key: 'domain',
     title: 'Domain',
     dataIndex: 'domain',
-    render: (domain: string) => intl.get(`facets.options.domain.${domain}`, domain)  || domain || TABLE_EMPTY_PLACE_HOLDER,
+    render: (domain: string) =>
+      intl.get(`facets.options.domain.${domain}`, domain) || domain || TABLE_EMPTY_PLACE_HOLDER,
     width: 182,
   },
   {
