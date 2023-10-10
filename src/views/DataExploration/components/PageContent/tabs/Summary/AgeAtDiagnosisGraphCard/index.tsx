@@ -116,6 +116,7 @@ const AgeAtDiagnosisGraphCard = () => {
       loading={loading}
       loadingType="spinner"
       dictionary={getResizableGridDictionary()}
+      downloadSettings={{ png: true, svg: false, tsv: true }}
       headerTitle={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
       tsvSettings={{
         data: [ageAtDiagnosisresults],

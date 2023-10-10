@@ -86,6 +86,7 @@ const DemographicsGraphCard = () => {
       gridUID={UID}
       id={DEMOGRAPHICS_GRAPH_CARD_ID}
       dictionary={getResizableGridDictionary()}
+      downloadSettings={{ png: true, svg: false, tsv: true }}
       theme="shade"
       loading={loading}
       loadingType="spinner"
