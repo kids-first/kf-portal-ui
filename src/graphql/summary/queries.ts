@@ -23,6 +23,12 @@ export const DEMOGRAPHIC_QUERY = `
             doc_count
           }
         }
+        family_type {
+          buckets {
+            key
+            doc_count
+          }
+        }
       }
     }
   }

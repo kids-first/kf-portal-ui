@@ -55,7 +55,7 @@ const SunburstGraphCard = ({ id, field }: OwnProps) => {
       headerTitle={intl.get(`screen.dataExploration.tabs.summary.${field}.cardTitle`)}
       downloadSettings={{
         tsv: false,
-        svg: true,
+        svg: false,
         png: true,
       }}
       tsvSettings={{
