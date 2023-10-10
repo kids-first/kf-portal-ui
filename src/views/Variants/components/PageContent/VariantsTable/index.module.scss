@@ -14,3 +14,9 @@
   overflow-wrap: unset;
   white-space: nowrap;
 }
+
+// prevent safari double tooltip
+.variantTableCellElipsis::after {
+  content: '';
+  display: block;
+}
