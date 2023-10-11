@@ -33,8 +33,16 @@ const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsI
   },
   {
     label: intl.get('entities.participant.vital_status'),
-    value: participant?.outcomes?.hits?.edges?.map((o) => o.node.vital_status).length
-      ? [...new Set(participant?.outcomes?.hits?.edges?.map((o) => o.node.vital_status))]
+    value: participant?.outcomes?.hits?.edges
+      ?.map((o) => o.node.vital_status)
+      .filter((vitalStatus) => vitalStatus).length
+      ? [
+          ...new Set(
+            participant?.outcomes?.hits?.edges
+              ?.map((o) => o.node.vital_status)
+              .filter((vitalStatus) => vitalStatus),
+          ),
+        ]
       : TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
