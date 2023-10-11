@@ -148,7 +148,7 @@
   "global.search.genes.emptyText": "No gene found",
   "global.search.genes.placeholder": "e.g. BRAF, ENSG00000157764",
   "global.search.genes.title": "Search by gene",
-  "global.search.genes.tooltip": "Enter a Gene Symbol, Gene Alias ​​or Ensemble ID",
+  "global.search.genes.tooltip": "Enter a Gene Symbol, Gene Alias ​​or Ensembl ID",
   "global.search.variants.emptyText": "No variant found",
   "global.search.variants.placeholder": "e.g. 10-100063679-C-T, rs341",
   "global.search.variants.title": "Search by variant",
