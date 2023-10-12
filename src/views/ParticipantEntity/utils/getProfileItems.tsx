@@ -7,10 +7,15 @@ import { capitalize } from 'lodash';
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 const getVitalStatus = (participant?: IParticipantEntity) => {
-  const vitalStatus = participant?.outcomes?.hits?.edges
-    ?.map((o) => o.node.vital_status)
-    .filter((vitalStatus) => vitalStatus);
-  return vitalStatus?.length ? [...new Set(vitalStatus)] : TABLE_EMPTY_PLACE_HOLDER;
+  const vitalStatuses = new Set();
+  participant?.outcomes?.hits?.edges?.forEach((o) => {
+    const vitalStatus = o.node.vital_status;
+    if (vitalStatus) {
+      vitalStatuses.add(vitalStatus);
+    }
+  });
+
+  return vitalStatuses.size ? vitalStatuses : TABLE_EMPTY_PLACE_HOLDER;
 };
 
 const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsItem[] => [
