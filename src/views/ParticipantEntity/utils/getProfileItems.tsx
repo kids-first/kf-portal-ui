@@ -6,6 +6,18 @@ import { capitalize } from 'lodash';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
+const getVitalStatus = (participant?: IParticipantEntity) => {
+  const vitalStatuses = new Set();
+  participant?.outcomes?.hits?.edges?.forEach((o) => {
+    const vitalStatus = o.node.vital_status;
+    if (vitalStatus) {
+      vitalStatuses.add(vitalStatus);
+    }
+  });
+
+  return vitalStatuses.size ? vitalStatuses : TABLE_EMPTY_PLACE_HOLDER;
+};
+
 const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsItem[] => [
   {
     label: intl.get('entities.participant.race'),
@@ -33,9 +45,7 @@ const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsI
   },
   {
     label: intl.get('entities.participant.vital_status'),
-    value: participant?.outcomes?.hits?.edges?.map((o) => o.node.vital_status).length
-      ? [...new Set(participant?.outcomes?.hits?.edges?.map((o) => o.node.vital_status))]
-      : TABLE_EMPTY_PLACE_HOLDER,
+    value: getVitalStatus(participant),
   },
 ];
 
