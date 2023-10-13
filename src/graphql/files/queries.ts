@@ -84,6 +84,7 @@ export const GET_FILE_ENTITY = gql`
                             sample_type
                             collection_sample_id
                             collection_sample_type
+                            dbgap_consent_code
                           }
                         }
                       }
