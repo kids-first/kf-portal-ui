@@ -132,6 +132,7 @@ export interface IParticipantBiospecimen {
     biospecimen_fhir_id_2: string;
   };
   status: string;
+  dbgap_consent_code: string;
 }
 
 export interface IParticipantMondo {
