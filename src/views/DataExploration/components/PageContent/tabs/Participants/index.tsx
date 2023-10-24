@@ -49,13 +49,13 @@ import {
 import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import AgeCell from 'components/AgeCell';
+import OutcomesAgeCells from 'components/OutcomesAgeCells';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
-import { formatQuerySortList, isNumber, scrollToTop } from 'utils/helper';
+import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
@@ -423,16 +423,9 @@ const defaultColumns: ProColumnType[] = [
     sorter: {
       multiple: 1,
     },
-    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) => {
-      const outcomeAges = outcomes?.hits?.edges
-        .map((x) => x.node?.age_at_event_days?.value)
-        .filter((x) => isNumber(x));
-      return outcomeAges.length > 0
-        ? outcomeAges.map((age: number, index: number) => (
-            <AgeCell key={`${index}-${age}`} ageInDays={age} />
-          ))
-        : TABLE_EMPTY_PLACE_HOLDER;
-    },
+    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) => (
+      <OutcomesAgeCells outcomes={outcomes} />
+    ),
   },
 ];
 

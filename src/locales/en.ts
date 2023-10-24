@@ -1519,6 +1519,7 @@ const en = {
       trio: 'Trio',
       trio_plus: ' Trio+',
       trisomy: 'T21: "Trisomy 21"',
+      age_at_outcome_tooltip: 'Age at Vital Status',
     },
     study: {
       count: '{count, plural, =0 {Study} =1 {Study} other {Studies}}',

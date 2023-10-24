@@ -196,6 +196,10 @@ export const GET_PARTICIPANT_ENTITY = gql`
                 edges {
                   node {
                     vital_status
+                    age_at_event_days {
+                      value
+                      units
+                    }
                   }
                 }
               }
