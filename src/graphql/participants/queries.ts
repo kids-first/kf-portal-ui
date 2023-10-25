@@ -159,7 +159,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                         edges {
                           node {
                             age_at_biospecimen_collection
-                            anatomy_site
+                            collection_anatomy_site
                             biospecimen_storage
                             collection_sample_id
                             collection_sample_type
@@ -168,8 +168,8 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             dbgap_consent_code
                             fhir_id
                             laboratory_procedure
-                            ncit_anatomy_site_id
-                            ncit_id_tissue_type
+                            collection_ncit_anatomy_site_id
+                            # TODO ncit_id_tissue_type
                             parent_sample_id
                             parent_sample_type
                             sample_id

@@ -20,8 +20,8 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             sample_type
             parent_sample_type
             age_at_biospecimen_collection
-            ncit_anatomy_site_id
-            anatomy_site
+            collection_ncit_anatomy_site_id
+            collection_anatomy_site
             ncit_id_tissue_type
             tissue_type_source_text
             consent_type
@@ -31,7 +31,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             collection_sample_type
             status
             dbgap_consent_code
-            method_of_sample_procurement
+            collection_method_of_sample_procurement
             volume
             volume_unit
             external_sample_id
@@ -79,8 +79,8 @@ export const GET_PARTICIPANT_BIOSPECIMENS = gql`
             sample_type
             parent_sample_type
             age_at_biospecimen_collection
-            ncit_anatomy_site_id
-            anatomy_site
+            collection_ncit_anatomy_site_id
+            collection_anatomy_site
             ncit_id_tissue_type
             tissue_type_source_text
             consent_type

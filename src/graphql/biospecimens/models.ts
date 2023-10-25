@@ -35,13 +35,13 @@ export interface IBiospecimenEntity {
   files: ArrangerResultsTree<IFileEntity>;
   nb_files: number;
   participant: IParticipantEntity;
-  ncit_anatomy_site_id: string;
-  anatomy_site: string;
+  collection_ncit_anatomy_site_id: string;
+  collection_anatomy_site: string;
   ncit_id_tissue_type: string;
   tissue_type_source_text: string;
   source_text_tumor_location: string;
   dbgap_consent_code: string;
   consent_type: string;
-  method_of_sample_procurement: string;
+  collection_method_of_sample_procurement: string;
   external_sample_id: string;
 }
