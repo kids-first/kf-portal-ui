@@ -20,7 +20,7 @@ const OutcomesAgeCells = ({ outcomes }: OwnProps) => {
         ? outcomeAges.map((age: number, index: number) => (
             <AgeCell key={`${index}-${age}`} ageInDays={age} />
           ))
-        : { TABLE_EMPTY_PLACE_HOLDER }}
+        : TABLE_EMPTY_PLACE_HOLDER}
     </>
   );
 };
