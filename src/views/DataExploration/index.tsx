@@ -131,8 +131,6 @@ const filterGroups: {
           'source_text',
           'source_text_tumor_location',
           'collection_method_of_sample_procurement',
-          'ncit_id_tissue_type',
-          'tissue_type_source_text',
         ],
       },
     ],
