@@ -169,6 +169,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             fhir_id
                             laboratory_procedure
                             collection_ncit_anatomy_site_id
+                            collection_method_of_sample_procurement
                             # TODO ncit_id_tissue_type
                             parent_sample_id
                             parent_sample_type

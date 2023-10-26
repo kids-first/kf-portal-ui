@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -186,34 +187,35 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (participant: IParticipantEntity) =>
       participant?.external_id || TABLE_EMPTY_PLACE_HOLDER,
   },
-  // {
-  //   key: 'ncit_anatomy_site_id',
-  //   title: 'Anatomical Site (NCIT)',
-  //   dataIndex: 'ncit_anatomy_site_id',
-  //   defaultHidden: true,
-  //   render: (ncit_anatomy_site_id) => ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
-  // },
-  // {
-  //   key: 'anatomy_site',
-  //   title: 'Anatomical Site (Source Text)',
-  //   dataIndex: 'anatomy_site',
-  //   defaultHidden: true,
-  //   render: (anatomy_site) => anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
-  // },
-  // {
-  //   key: 'ncit_id_tissue_type',
-  //   title: 'Tissue Type (NCIT)',
-  //   dataIndex: 'ncit_id_tissue_type',
-  //   defaultHidden: true,
-  //   render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
-  // },
-  // {
-  //   key: 'tissue_type_source_text',
-  //   title: 'Tissue Type (Source Text)',
-  //   dataIndex: 'tissue_type_source_text',
-  //   defaultHidden: true,
-  //   render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
-  // },
+  {
+    key: 'collection_ncit_anatomy_site_id',
+    title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
+    dataIndex: 'collection_ncit_anatomy_site_id',
+    defaultHidden: true,
+    render: (collection_ncit_anatomy_site_id) =>
+      collection_ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'collection_anatomy_site',
+    title: intl.get('entities.biospecimen.anatomical_site'),
+    dataIndex: 'collection_anatomy_site',
+    defaultHidden: true,
+    render: (anatomy_site) => anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'ncit_id_tissue_type',
+    title: intl.get('entities.biospecimen.tissue_type_NCIT'),
+    dataIndex: 'ncit_id_tissue_type',
+    defaultHidden: true,
+    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'tissue_type_source_text',
+    title: intl.get('entities.biospecimen.tissue_type_source_text'),
+    dataIndex: 'tissue_type_source_text',
+    defaultHidden: true,
+    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
   {
     key: 'dbgap_consent_code',
     title: 'dbGaP Consent Code',
@@ -228,14 +230,14 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     defaultHidden: true,
     render: (consent_type) => consent_type || TABLE_EMPTY_PLACE_HOLDER,
   },
-  // {
-  //   key: 'method_of_sample_procurement',
-  //   title: 'Method of Sample Procurement',
-  //   dataIndex: 'method_of_sample_procurement',
-  //   defaultHidden: true,
-  //   render: (method_of_sample_procurement) =>
-  //     method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
-  // },
+  {
+    key: 'method_of_sample_procurement',
+    title: intl.get('entities.biospecimen.collection_method_of_sample_procurement'),
+    dataIndex: 'collection_method_of_sample_procurement',
+    defaultHidden: true,
+    render: (collection_method_of_sample_procurement) =>
+      collection_method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
+  },
   {
     key: 'volume',
     title: 'Volume',
