@@ -203,20 +203,6 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (anatomy_site) => anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'ncit_id_tissue_type',
-    title: intl.get('entities.biospecimen.tissue_type_NCIT'),
-    dataIndex: 'ncit_id_tissue_type',
-    defaultHidden: true,
-    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'tissue_type_source_text',
-    title: intl.get('entities.biospecimen.tissue_type_source_text'),
-    dataIndex: 'tissue_type_source_text',
-    defaultHidden: true,
-    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'dbgap_consent_code',
     title: 'dbGaP Consent Code',
     dataIndex: 'dbgap_consent_code',
