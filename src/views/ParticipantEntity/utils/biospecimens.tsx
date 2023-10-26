@@ -67,20 +67,6 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       biospecimen?.collection_method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'ncit_id_tissue_type',
-    title: intl.get('entities.biospecimen.tissue_type_NCIT'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'tissue_type_source_text',
-    title: intl.get('entities.biospecimen.tissue_type_source_text'),
-    defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'source_text_tumor_location',
     title: intl.get('entities.biospecimen.source_text_tumor_location'),
     defaultHidden: true,
