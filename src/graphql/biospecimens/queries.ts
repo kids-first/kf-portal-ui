@@ -19,6 +19,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             container_id
             sample_type
             parent_sample_type
+            parent_sample_id
             age_at_biospecimen_collection
             collection_ncit_anatomy_site_id
             collection_anatomy_site
@@ -78,6 +79,7 @@ export const GET_PARTICIPANT_BIOSPECIMENS = gql`
             sample_id
             sample_type
             parent_sample_type
+            parent_sample_id
             age_at_biospecimen_collection
             collection_ncit_anatomy_site_id
             collection_anatomy_site
