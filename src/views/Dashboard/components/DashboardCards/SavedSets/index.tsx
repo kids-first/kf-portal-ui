@@ -10,14 +10,13 @@ import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolde
 import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
+import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { useSavedSet } from 'store/savedSet';
 import { STATIC_ROUTES } from 'utils/routes';
-
-import { VARIANT_REPO_QB_ID } from '../../../../Variants/utils/constants';
 
 import ListItem from './ListItem';
 
