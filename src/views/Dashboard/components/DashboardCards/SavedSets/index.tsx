@@ -10,10 +10,9 @@ import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolde
 import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
-import { VARIANT_REPO_QB_ID } from '../../../../Variants/utils/constants';
+import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { useSavedSet } from 'store/savedSet';
@@ -81,12 +80,10 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             title: intl.get('screen.dashboard.cards.savedSets.infoPopover.title'),
             content: (
               <Text>
-                {intl.get('screen.dashboard.cards.savedSets.infoPopover.content')}{' '}
-                <PopoverContentLink
-                  to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
-                  title="Data Exploration page"
-                />
-                .
+                {intl.getHTML('screen.dashboard.cards.savedSets.infoPopover.content', {
+                  dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
+                  variantsHref: STATIC_ROUTES.VARIANTS,
+                })}
               </Text>
             ),
           }}
