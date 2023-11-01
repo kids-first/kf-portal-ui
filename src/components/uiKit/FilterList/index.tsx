@@ -19,6 +19,7 @@ type OwnProps = {
   queryBuilderId: string;
   extendedMappingResults: IExtendedMappingResults;
   filterInfo: FilterInfo;
+  filterWithFooter?: boolean;
   filterMapper?: TCustomFilterMapper;
 };
 
@@ -42,6 +43,7 @@ const FilterList = ({
   queryBuilderId,
   extendedMappingResults,
   filterInfo,
+  filterWithFooter = true,
   filterMapper,
 }: OwnProps) => {
   const [filtersOpen, setFiltersOpen] = useState<boolean | undefined>(isAllFacetOpen(filterInfo));
@@ -92,6 +94,7 @@ const FilterList = ({
                       ? group.intervalDecimal[facet]
                       : undefined
                   }
+                  filterWithFooter={filterWithFooter}
                 />
               ) : (
                 <div key={i + ii} className={cx(styles.customFilterWrapper, styles.filter)}>
