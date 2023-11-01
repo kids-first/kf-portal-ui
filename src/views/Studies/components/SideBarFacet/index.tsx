@@ -18,9 +18,15 @@ type OwnProps = {
   className?: string;
   extendedMappingResults: IExtendedMappingResults;
   filterInfo: FilterInfo;
+  filterWithFooter?: boolean;
 };
 
-const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProps) => {
+const SideBarFacet = ({
+  className,
+  extendedMappingResults,
+  filterInfo,
+  filterWithFooter,
+}: OwnProps) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { loading } = extendedMappingResults;
 
@@ -48,6 +54,7 @@ const SideBarFacet = ({ className, extendedMappingResults, filterInfo }: OwnProp
               queryBuilderId={STUDIES_REPO_QB_ID}
               extendedMappingResults={extendedMappingResults}
               filterInfo={filterInfo}
+              filterWithFooter={filterWithFooter}
             />
           </div>
         )}
