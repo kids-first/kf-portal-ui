@@ -1202,7 +1202,10 @@ const en = {
     source_text_tumor_location: 'Tumor Location (Source Text)',
     tissue_type_source_text: 'Tissue Type (Source Text)',
     sample_id: 'Sample ID',
-
+    source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
+    age_at_event: {
+      value: 'Age at Histological Diagnosis (days)',
+    },
     // File
     files: filesFacets,
     ...filesFacets,
@@ -1481,6 +1484,13 @@ const en = {
       volume_unit: 'Volume Unit',
       collection_method_of_sample_procurement: 'Method Of Sample Procurement',
       tissue_type_source_text: 'Tissue Type (Source Text)',
+      ncit_id_tissue_type: 'Tissue Type (NCIT)',
+      source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
+      external_sample_id: 'External Sample ID',
+      external_pt_id: 'External Participant ID',
+      source_text: 'Histological Diagnosis (Source Text)',
+      diagnosis_ncit: 'Histological Diagnosis (NCIT)',
+      diagnosis_mondo: 'Histological Diagnosis (MONDO)',
     },
     participant: {
       age: 'Age',

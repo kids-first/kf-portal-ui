@@ -159,8 +159,11 @@ export const GET_PARTICIPANT_ENTITY = gql`
                         edges {
                           node {
                             age_at_biospecimen_collection
-                            collection_anatomy_site
                             biospecimen_storage
+                            collection_anatomy_site
+                            collection_method_of_sample_procurement
+                            collection_ncit_anatomy_site_id
+                            collection_ncit_id_tissue_type
                             collection_sample_id
                             collection_sample_type
                             consent_type
@@ -168,13 +171,11 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             dbgap_consent_code
                             fhir_id
                             laboratory_procedure
-                            collection_ncit_anatomy_site_id
-                            collection_method_of_sample_procurement
-                            # TODO ncit_id_tissue_type
                             parent_sample_id
                             parent_sample_type
                             sample_id
                             sample_type
+                            source_text_tumor_descriptor
                             source_text_tumor_location
                             status
                             tissue_type_source_text

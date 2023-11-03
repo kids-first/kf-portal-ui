@@ -60,11 +60,26 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       biospecimen?.collection_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'collection_method_of_sample_procurement',
-    title: intl.get('entities.biospecimen.collection_method_of_sample_procurement'),
+    key: 'collection_ncit_id_tissue_type',
+    title: intl.get('entities.biospecimen.ncit_id_tissue_type'),
+    dataIndex: 'collection_ncit_id_tissue_type',
     defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.collection_method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
+    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'tissue_type_source_text',
+    title: intl.get('entities.biospecimen.tissue_type_source_text'),
+    dataIndex: 'tissue_type_source_text',
+    defaultHidden: true,
+    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'source_text_tumor_descriptor',
+    title: intl.get('entities.biospecimen.source_text_tumor_descriptor'),
+    dataIndex: 'source_text_tumor_descriptor',
+    defaultHidden: true,
+    render: (source_text_tumor_descriptor) =>
+      source_text_tumor_descriptor || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'source_text_tumor_location',

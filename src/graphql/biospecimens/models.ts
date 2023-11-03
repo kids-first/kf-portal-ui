@@ -44,4 +44,8 @@ export interface IBiospecimenEntity {
   consent_type: string;
   collection_method_of_sample_procurement: string;
   external_sample_id: string;
+  source_text_tumor_descriptor: string;
+  diagnosis_ncit: string;
+  source_text: string;
+  diagnosis_mondo: string;
 }
