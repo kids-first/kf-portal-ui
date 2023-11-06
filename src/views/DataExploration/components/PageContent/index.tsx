@@ -88,7 +88,7 @@ const PageContent = ({
   participantMapping,
   tabId = TAB_IDS.SUMMARY,
 }: OwnProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const history = useHistory();
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
