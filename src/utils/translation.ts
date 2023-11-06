@@ -314,6 +314,9 @@ export const getFacetsDictionary = () => ({
   source_text_tumor_location: 'Tumor Location (Source Text)',
   ncit_id_tissue_type: 'Tissue Type (NCIT)',
   tissue_type_source_text: 'Tissue Type (Source Text)',
+  age_at_event: {
+    value: 'Age at Histological Diagnosis (days)'
+  },
   clinvar: {
     clin_sig: 'ClinVar',
   },

@@ -53,7 +53,7 @@ interface OwnProps {
 const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'sample_id',
-    title: 'Sample ID',
+    title: intl.get('entities.biospecimen.sample_id'),
     sorter: { multiple: 1 },
     render: (record: IBiospecimenEntity) => record?.sample_id || TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -66,21 +66,21 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'sample_type',
-    title: 'Sample Type',
+    title: intl.get('entities.biospecimen.sample_type'),
     dataIndex: 'sample_type',
     sorter: { multiple: 1 },
     render: (sample_type: string) => sample_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'parent_sample_id',
-    title: 'Parent Sample ID',
+    title: intl.get('entities.biospecimen.parent_sample_id'),
     dataIndex: 'parent_sample_id',
     sorter: { multiple: 1 },
     render: (parent_sample_id) => parent_sample_id || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'parent_sample_type',
-    title: 'Parent Sample Type',
+    title: intl.get('entities.biospecimen.parent_sample_type'),
     dataIndex: 'parent_sample_type',
     sorter: { multiple: 1 },
     render: (parent_sample_type) => parent_sample_type || TABLE_EMPTY_PLACE_HOLDER,
@@ -100,7 +100,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'collection_sample_id',
-    title: 'Collection ID',
+    title: intl.get('entities.biospecimen.collection_id'),
     dataIndex: 'collection_sample_id',
     render: (collection_sample_id) =>
       collection_sample_id ? (
@@ -111,18 +111,24 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'collection_sample_type',
-    title: 'Collection Sample Type',
+    title: intl.get('entities.biospecimen.collection_sample_type'),
     dataIndex: 'collection_sample_type',
     render: (collection_sample_type) => collection_sample_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'age_at_biospecimen_collection',
-    title: 'Age',
-    tooltip: 'Age at Biospecimen Collection (days)',
+    title: intl.get('entities.participant.age'),
+    tooltip: intl.get('entities.biospecimen.age_tooltip'),
     dataIndex: 'age_at_biospecimen_collection',
     render: (age_at_biospecimen_collection) => (
       <AgeCell ageInDays={age_at_biospecimen_collection} />
     ),
+  },
+  {
+    key: 'diagnosis_mondo',
+    title: intl.get('entities.biospecimen.diagnosis_mondo'),
+    dataIndex: 'diagnosis_mondo',
+    render: (diagnosis_mondo) => diagnosis_mondo || TABLE_EMPTY_PLACE_HOLDER,
   },
   // TODO back implementation needed
   // {
@@ -142,7 +148,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   // },
   {
     key: 'status',
-    title: 'Sample Availability',
+    title: intl.get('entities.biospecimen.sample_availabilty'),
     dataIndex: 'status',
     render: (status) => status || TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -180,14 +186,6 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     },
   },
   {
-    key: 'participant.external_id',
-    title: 'External Participant ID',
-    dataIndex: 'participant',
-    defaultHidden: true,
-    render: (participant: IParticipantEntity) =>
-      participant?.external_id || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
     key: 'collection_ncit_anatomy_site_id',
     title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
     dataIndex: 'collection_ncit_anatomy_site_id',
@@ -203,15 +201,50 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (anatomy_site) => anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'ncit_id_tissue_type',
+    title: intl.get('entities.biospecimen.ncit_id_tissue_type'),
+    dataIndex: 'ncit_id_tissue_type',
+    defaultHidden: true,
+    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'tissue_type_source_text',
+    title: intl.get('entities.biospecimen.tissue_type_source_text'),
+    dataIndex: 'tissue_type_source_text',
+    defaultHidden: true,
+    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'diagnosis_ncit',
+    title: intl.get('entities.biospecimen.diagnosis_ncit'),
+    dataIndex: 'diagnosis_ncit',
+    defaultHidden: true,
+    render: (diagnosis_ncit) => diagnosis_ncit || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'source_text',
+    title: intl.get('entities.biospecimen.source_text'),
+    dataIndex: 'source_text',
+    defaultHidden: true,
+    render: (source_text) => source_text || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'source_text_tumor_location',
+    title: intl.get('entities.biospecimen.source_text_tumor_location'),
+    dataIndex: 'source_text_tumor_location',
+    defaultHidden: true,
+    render: (source_text_tumor_location) => source_text_tumor_location || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'dbgap_consent_code',
-    title: 'dbGaP Consent Code',
+    title: intl.get('entities.biospecimen.dbgap_consent_code'),
     dataIndex: 'dbgap_consent_code',
     defaultHidden: true,
     render: (dbgap_consent_code) => dbgap_consent_code || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'consent_type',
-    title: 'Consent Type',
+    title: intl.get('entities.biospecimen.consent_type'),
     dataIndex: 'consent_type',
     defaultHidden: true,
     render: (consent_type) => consent_type || TABLE_EMPTY_PLACE_HOLDER,
@@ -225,22 +258,38 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
       collection_method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'source_text_tumor_descriptor',
+    title: intl.get('entities.biospecimen.source_text_tumor_descriptor'),
+    dataIndex: 'source_text_tumor_descriptor',
+    defaultHidden: true,
+    render: (source_text_tumor_descriptor) =>
+      source_text_tumor_descriptor || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'volume',
-    title: 'Volume',
+    title: intl.get('entities.biospecimen.volume'),
     dataIndex: 'volume',
     defaultHidden: true,
     render: (volume) => volume || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'volume_unit',
-    title: 'Volume Unit',
+    title: intl.get('entities.biospecimen.volume_unit'),
     dataIndex: 'volume_unit',
     defaultHidden: true,
     render: (volume_unit) => volume_unit || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'participant.external_id',
+    title: intl.get('entities.biospecimen.external_pt_id'),
+    dataIndex: 'participant',
+    defaultHidden: true,
+    render: (participant: IParticipantEntity) =>
+      participant?.external_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'external_sample_id',
-    title: 'External Sample ID',
+    title: intl.get('entities.biospecimen.external_sample_id'),
     dataIndex: 'external_sample_id',
     defaultHidden: true,
     render: (external_sample_id) => external_sample_id || TABLE_EMPTY_PLACE_HOLDER,
