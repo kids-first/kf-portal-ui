@@ -1,8 +1,10 @@
 import React from 'react';
+import { NO_GENE } from '@ferlab/ui/core/components/Consequences/Cell';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { EntityExpandableTableMultiple } from '@ferlab/ui/core/pages/EntityPage';
+
 import { IGeneEntity } from '../../../graphql/variants/models';
 
 import EntityGeneConsequenceSubtitle from './EntityGeneConsequenceSubtitle';
@@ -38,22 +40,24 @@ export const EntityGeneConsequences = ({
     id={id}
     loading={loading}
     tables={
-      genes?.map((gene) => ({
-        columns,
-        data: hydrateResults(gene?.node?.consequences?.hits?.edges || []),
-        subTitle: (
-          <EntityGeneConsequenceSubtitle
-            gene={gene}
-            dictionary={{
-              gene: 'Gene',
-              omim: 'Omim',
-              spliceai: 'SpliceAI',
-              gnomad_pli: 'gnomAD pLI',
-              gnomad_loeuf: 'gnomAD LOEUF',
-            }}
-          />
-        ),
-      })) || []
+      genes
+        ?.filter((gene) => gene.node.symbol !== NO_GENE)
+        .map((gene) => ({
+          columns,
+          data: hydrateResults(gene?.node?.consequences?.hits?.edges || []),
+          subTitle: (
+            <EntityGeneConsequenceSubtitle
+              gene={gene}
+              dictionary={{
+                gene: 'Gene',
+                omim: 'Omim',
+                spliceai: 'SpliceAI',
+                gnomad_pli: 'gnomAD pLI',
+                gnomad_loeuf: 'gnomAD LOEUF',
+              }}
+            />
+          ),
+        })) || []
     }
     title={title}
   />

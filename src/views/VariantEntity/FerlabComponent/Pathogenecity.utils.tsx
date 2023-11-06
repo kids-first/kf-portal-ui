@@ -6,6 +6,7 @@ import {
 } from '@ferlab/ui/core/pages/EntityPage/type';
 import { groupRowsBySource } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { toKebabCase } from '@ferlab/ui/core/utils/stringUtils';
+
 import {
   IGeneCosmic,
   IGeneDdd,
@@ -92,7 +93,7 @@ export const makeUnGroupedDataRows = (genes: IArrangerEdge<IGeneEntity>[]) => {
   }
 
   return genes.map((gene) => {
-    const rowOrphanet = orphanetFromEdges(gene, gene.node.orphanet.hits.edges || []);
+    const rowOrphanet = orphanetFromEdges(gene, gene.node.orphanet?.hits?.edges || []);
     const rowOmim = omimFromEdges(gene, keepOnlyOmimWithId(gene.node.omim?.hits?.edges || []));
     const rowCosmic = cosmicFromEdges(gene, gene.node.cosmic?.hits?.edges || []);
     const rowHpo = hpoFromEdges(gene, gene.node.hpo?.hits?.edges || []);

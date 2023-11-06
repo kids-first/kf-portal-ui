@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import { NO_GENE } from '@ferlab/ui/core/components/Consequences/Cell';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IEntitySummaryColumns } from '@ferlab/ui/core/pages/EntityPage/EntitySummary';
 import {
@@ -49,22 +50,24 @@ export const getSummaryItems = (variant?: IVariantEntity): IEntitySummaryColumns
             },
             {
               label: intl.get('screen.variants.summary.genes'),
-              value: variant?.genes?.hits?.edges?.length
-                ? variant.genes.hits.edges.map((gene) => {
-                    if (!gene?.node?.symbol) {
-                      return;
-                    }
-                    return (
-                      <ExternalLink
-                        key={gene.node.symbol}
-                        className={styles.geneExternalLink}
-                        href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${gene.node.symbol}`}
-                      >
-                        {gene.node.symbol}
-                      </ExternalLink>
-                    );
-                  })
-                : TABLE_EMPTY_PLACE_HOLDER,
+              value:
+                variant?.genes?.hits?.edges?.length &&
+                variant.genes.hits.edges.filter((gene) => gene?.node?.symbol !== NO_GENE).length
+                  ? variant.genes.hits.edges.map((gene) => {
+                      if (!gene?.node?.symbol) {
+                        return;
+                      }
+                      return (
+                        <ExternalLink
+                          key={gene.node.symbol}
+                          className={styles.geneExternalLink}
+                          href={`https://useast.ensembl.org/Homo_sapiens/Gene/Summary?g=${gene.node.symbol}`}
+                        >
+                          {gene.node.symbol}
+                        </ExternalLink>
+                      );
+                    })
+                  : TABLE_EMPTY_PLACE_HOLDER,
             },
             {
               label: intl.get('screen.variants.summary.omim'),

@@ -56,7 +56,7 @@ const addTagToFilter = (filter: ISavedFilter) => ({
 });
 
 const PageContent = ({ variantMapping }: OwnProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const { userInfo } = useUser();
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
