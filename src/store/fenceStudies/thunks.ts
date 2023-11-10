@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { FileAccessType } from 'graphql/files/models';
 import { isEmpty } from 'lodash';
-import flatMap from 'lodash/flatMap';
 
 import { ALL_STUDIES_FENCE_NAMES, FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
 import { ArrangerApi } from 'services/api/arranger';
