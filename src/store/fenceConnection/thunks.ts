@@ -38,14 +38,7 @@ const checkFenceAuthStatus = createAsyncThunk<
       error,
       data: {
         auth: data!,
-        acls: [
-          'phs001138.c1',
-          'phs001138.c2',
-          'phs001138.c999',
-          'phs002330.c1',
-          'phs002330.c2',
-          'phs002330.c999',
-        ],
+        acls: fenceAcls,
       },
       reject: thunkAPI.rejectWithValue,
     });
@@ -71,50 +64,47 @@ const connectToFence = createAsyncThunk<
   {
     state: RootState;
   }
->(
-  'fence/connection',
-  async (fence, thunkAPI) => {
-    const { fenceConnection } = thunkAPI.getState();
-    let fenceInfo = fenceConnection.fencesInfo[fence];
+>('fence/connection', async (fence, thunkAPI) => {
+  const { fenceConnection } = thunkAPI.getState();
+  let fenceInfo = fenceConnection.fencesInfo[fence];
 
-    if (!fenceInfo) {
-      const { data } = await FenceApi.fetchInfo(fence);
-      fenceInfo = data;
-    }
+  if (!fenceInfo) {
+    const { data } = await FenceApi.fetchInfo(fence);
+    fenceInfo = data;
+  }
 
-    const authWindow = window.open(fenceInfo?.authorize_uri)!;
+  const authWindow = window.open(fenceInfo?.authorize_uri)!;
 
-    return new Promise((resolve, reject) => {
-      const interval = setInterval(async () => {
-        if (authWindow.closed) {
-          let fenceAcls: string[] = [];
-          const { data } = await FenceApi.isAuthenticated(fence);
+  return new Promise((resolve, reject) => {
+    const interval = setInterval(async () => {
+      if (authWindow.closed) {
+        let fenceAcls: string[] = [];
+        const { data } = await FenceApi.isAuthenticated(fence);
+
+        if (data?.authenticated) {
+          clearInterval(interval);
 
           if (data?.authenticated) {
-            clearInterval(interval);
-
-            if (data?.authenticated) {
-              const { data: aclData } = await FenceApi.fetchAcls(fence);
-              fenceAcls = aclData?.acl || [];
-            }
-
-            resolve({
-              info: fenceInfo!,
-              acls: fenceAcls,
-            });
-          } else {
-            clearInterval(interval);
-            reject('failed authenticating');
+            const { data: aclData } = await FenceApi.fetchAcls(fence);
+            fenceAcls = aclData?.acl || [];
           }
+
+          resolve({
+            info: fenceInfo!,
+            acls: fenceAcls,
+          });
+        } else {
+          clearInterval(interval);
+          reject('failed authenticating');
         }
-      }, 1000);
-      setTimeout(() => {
-        clearInterval(interval);
-        reject('nothing');
-      }, TEN_MINUTES_IN_MS);
-    });
-  },
-);
+      }
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(interval);
+      reject('nothing');
+    }, TEN_MINUTES_IN_MS);
+  });
+});
 
 const disconnectFromFence = createAsyncThunk<any, FENCE_NAMES>(
   'fence/disconnection',

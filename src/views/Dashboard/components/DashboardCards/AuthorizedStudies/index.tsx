@@ -11,6 +11,7 @@ import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolde
 import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 
+import { FENCE_NAMES } from 'common/fenceTypes';
 import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 import { fenceConnectionActions } from 'store/fenceConnection/slice';
 import { useFenceStudies } from 'store/fenceStudies';
@@ -23,16 +24,34 @@ import styles from './index.module.scss';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const { loadingStudiesForFences, fenceStudiesAcls, isConnected, hasErrors, connectionLoading } =
-    useFenceStudies();
+  const {
+    loadingStudiesForFences,
+    fenceStudiesAcls,
+    isConnected: isGen3Connected,
+    hasErrors: hasGen3Errors,
+    connectionLoading: connectionGen3Loading,
+  } = useFenceStudies(FENCE_NAMES.gen3);
+
+  const {
+    //Shared: loadingStudiesForFences,
+    //Shared: fenceStudiesAcls,
+    isConnected: isDcfConnected,
+    hasErrors: hasDcfErrors,
+    connectionLoading: connectionDcfLoading,
+  } = useFenceStudies(FENCE_NAMES.dcf);
+
   const fenceStudiesLoading = loadingStudiesForFences.length > 0;
 
+  const isOneFenceAtLeastConnected = isGen3Connected || isDcfConnected;
+  const hasAtLeastOneFenceWithErrors = hasGen3Errors || hasDcfErrors;
+  const connectionLoadingForAtLeastOneFence = connectionGen3Loading || connectionDcfLoading;
+
   useEffect(() => {
-    if (isConnected) {
+    if (isOneFenceAtLeastConnected) {
       dispatch(fetchAllFenceStudies());
     }
     // eslint-disable-next-line
-  }, [isConnected]);
+  }, [isOneFenceAtLeastConnected]);
 
   return (
     <GridCard
@@ -42,7 +61,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
         <CardHeader
           id={id}
           title={intl.get('screen.dashboard.cards.authorizedStudies.title', {
-            count: isConnected ? fenceStudiesAcls.length : 0,
+            count: isOneFenceAtLeastConnected ? fenceStudiesAcls.length : 0,
           })}
           infoPopover={{
             title: intl.get('screen.dashboard.cards.authorizedStudies.infoPopover.title'),
@@ -66,7 +85,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       }
       content={
         <div className={styles.authorizedWrapper}>
-          {isConnected && !hasErrors && !fenceStudiesLoading && (
+          {isOneFenceAtLeastConnected && !hasAtLeastOneFenceWithErrors && !fenceStudiesLoading && (
             <Space className={styles.authenticatedHeader} direction="horizontal">
               <Space align="start">
                 <SafetyOutlined className={styles.safetyIcon} />
@@ -81,7 +100,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                       dispatch(fenceConnectionActions.setConnectionModalParams({ open: true }))
                     }
                     className={styles.disconnectBtn}
-                    loading={connectionLoading}
+                    loading={connectionLoadingForAtLeastOneFence}
                   >
                     {intl.get('screen.dashboard.cards.authorizedStudies.manageConnections')}
                   </Button>
@@ -93,11 +112,11 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
             className={styles.authorizedStudiesList}
             bordered
             itemLayout="vertical"
-            loading={fenceStudiesLoading || connectionLoading}
+            loading={fenceStudiesLoading || connectionLoadingForAtLeastOneFence}
             locale={{
-              emptyText: hasErrors ? (
+              emptyText: hasAtLeastOneFenceWithErrors ? (
                 <CardErrorPlaceholder />
-              ) : isConnected ? (
+              ) : isOneFenceAtLeastConnected ? (
                 <Empty
                   imageType="grid"
                   description={intl.get(
@@ -117,7 +136,9 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
                 />
               ),
             }}
-            dataSource={isConnected && !hasErrors ? fenceStudiesAcls : []}
+            dataSource={
+              isOneFenceAtLeastConnected && !hasAtLeastOneFenceWithErrors ? fenceStudiesAcls : []
+            }
             renderItem={(item) => <AuthorizedStudiesListItem id={item.id} data={item} />}
           ></List>
         </div>
