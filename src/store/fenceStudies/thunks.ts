@@ -205,7 +205,7 @@ const getAuthStudyIdsAndCounts = async (
             content: [
               {
                 op: TermOperators.in,
-                content: { field: 'access_control', value: [FileAccessType.REGISTERED] },
+                content: { field: 'controlled_access', value: [FileAccessType.REGISTERED] },
               },
             ],
           },
@@ -246,7 +246,15 @@ export const computeAllFencesAuthStudies = (fenceStudies: TFenceStudies) => {
   if (isEmpty(fenceStudies)) {
     return [];
   }
-  return flatMap(Object.values(fenceStudies), (studies) => studies.authorizedStudies);
+
+  return Object.values(fenceStudies)
+    .map((x) => x.authorizedStudies)
+    .flat()
+    .reduce((xs: TFenceStudy[], x: TFenceStudy) => {
+      // remove duplicates
+      const sId = x.id;
+      return xs.some((s) => s.id === sId) ? xs : [...xs, { ...x }];
+    }, []);
 };
 
 const replaceDashByUnderscore = (value: string) => value.replaceAll('-', '');

@@ -1,6 +1,8 @@
-import { FENCE_NAMES } from 'common/fenceTypes';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { FENCE_NAMES } from 'common/fenceTypes';
+
 import { fenceConnectionSelector } from './selector';
 import { checkFenceAuthStatus, checkFencesAuthStatus } from './thunks';
 

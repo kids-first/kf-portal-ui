@@ -10,19 +10,18 @@ import { computeAllFencesAuthStudies } from './thunks';
 export type { initialState as fenceStudiesInitialState } from './types';
 export { default, FenceStudiesState } from './slice';
 
-export const useFenceStudies = () => {
+export const useFenceStudies = (fence: FENCE_NAMES) => {
   const state = useSelector(fenceStudiesSelector);
-  const { connectionStatus, fencesConnectError, loadingFences } = useFenceConnection(
-    FENCE_NAMES.gen3,
-  );
+
+  const { connectionStatus, fencesConnectError, loadingFences } = useFenceConnection(fence);
   const isConnected = (status: FENCE_CONNECTION_STATUSES) =>
     status === FENCE_CONNECTION_STATUSES.connected;
 
   return {
     ...state,
     fenceStudiesAcls: computeAllFencesAuthStudies(state.studies),
-    isConnected: isConnected(connectionStatus.gen3),
-    connectionLoading: loadingFences.includes(FENCE_NAMES.gen3),
-    hasErrors: fencesConnectError.includes(FENCE_NAMES.gen3) || !isEmpty(state.fencesError),
+    isConnected: isConnected(connectionStatus[fence]),
+    connectionLoading: loadingFences.includes(fence),
+    hasErrors: fencesConnectError.includes(fence) || !isEmpty(state.fencesError),
   };
 };
