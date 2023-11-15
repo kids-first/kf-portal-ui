@@ -273,6 +273,7 @@ const DataExploration = () => {
           biospecimenMapping={biospecimenMappingResults}
           participantMapping={participantMappingResults}
           tabId={tab}
+          filterGroups={filterGroups}
         />
       </ScrollContent>
     </div>
