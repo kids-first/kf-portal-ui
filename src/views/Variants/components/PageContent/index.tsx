@@ -26,6 +26,8 @@ import {
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
+import { getNoDataOptionValue } from 'components/utils/filterUtils';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
@@ -48,6 +50,9 @@ import styles from './index.module.scss';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;
+  filterGroups: {
+    [type: string]: FilterInfo;
+  };
 };
 
 const addTagToFilter = (filter: ISavedFilter) => ({
@@ -55,7 +60,7 @@ const addTagToFilter = (filter: ISavedFilter) => ({
   tag: SavedFilterTag.VariantsExplorationPage,
 });
 
-const PageContent = ({ variantMapping }: OwnProps) => {
+const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
   const dispatch = useDispatch<any>();
   const { userInfo } = useUser();
   const { savedSets } = useSavedSet();
@@ -172,6 +177,11 @@ const PageContent = ({ variantMapping }: OwnProps) => {
             const index = filter.content.index!;
             const field = filter.content.field;
 
+            const noDataInputOption = getNoDataOptionValue(
+              field.replaceAll('.', '__'),
+              filterGroups,
+            );
+
             setSelectedFilterContent(
               <GenericFilters
                 queryBuilderId={VARIANT_REPO_QB_ID}
@@ -179,6 +189,7 @@ const PageContent = ({ variantMapping }: OwnProps) => {
                 field={dotToUnderscore(field)}
                 sqon={variantResolvedSqon}
                 extendedMappingResults={variantMapping}
+                noDataInputOption={noDataInputOption}
               />,
             );
           },

@@ -41,6 +41,7 @@ export const generateFilters = ({
   showSearchInput = false,
   useFilterSelector = false,
   index,
+  noDataInputOption,
 }: {
   queryBuilderId: string;
   aggregations: TAggregations;
@@ -50,6 +51,7 @@ export const generateFilters = ({
   filterFooter: boolean;
   showSearchInput: boolean;
   useFilterSelector: boolean;
+  noDataInputOption?: boolean;
   index?: string;
 }) =>
   Object.keys(aggregations || []).map((key) => {
@@ -92,12 +94,13 @@ export const generateFilters = ({
           }}
           searchInputVisible={showSearchInput}
           selectedFilters={selectedFilters}
+          noDataInputOption={noDataInputOption}
         />
       </div>
     );
   });
 
-const translateWhenNeeded = (group: string, key: string) => 
+const translateWhenNeeded = (group: string, key: string) =>
   intl.get(`facets.options.${group}.${keyEnhance(key)}`).defaultMessage(keyEnhance(key));
 
 export const getFilters = (aggregations: TAggregations | null, key: string): IFilter[] => {

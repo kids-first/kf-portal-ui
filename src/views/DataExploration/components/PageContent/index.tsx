@@ -31,6 +31,8 @@ import { DATA_EXPLORATION_QB_ID, TAB_IDS } from 'views/DataExploration/utils/con
 
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
+import { FilterInfo } from 'components/uiKit/FilterList/types';
+import { getNoDataOptionValue } from 'components/utils/filterUtils';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
@@ -65,6 +67,9 @@ type OwnProps = {
   fileMapping: IExtendedMappingResults;
   biospecimenMapping: IExtendedMappingResults;
   participantMapping: IExtendedMappingResults;
+  filterGroups: {
+    [type: string]: FilterInfo;
+  };
   tabId?: string;
 };
 
@@ -87,6 +92,7 @@ const PageContent = ({
   biospecimenMapping,
   participantMapping,
   tabId = TAB_IDS.SUMMARY,
+  filterGroups,
 }: OwnProps) => {
   const dispatch = useDispatch<any>();
   const history = useHistory();
@@ -181,6 +187,10 @@ const PageContent = ({
             const index = filter.content.index!;
             const field = filter.content.field;
             const { sqon, mapping } = getSqonAndMappingByIndex(index as INDEXES);
+            const noDataInputOption = getNoDataOptionValue(
+              field.replaceAll('.', '__'),
+              filterGroups,
+            );
             setSelectedFilterContent(
               <GenericFilters
                 queryBuilderId={DATA_EXPLORATION_QB_ID}
@@ -188,6 +198,7 @@ const PageContent = ({
                 field={dotToUnderscore(field)}
                 sqon={sqon}
                 extendedMappingResults={mapping}
+                noDataInputOption={noDataInputOption}
               />,
             );
           },

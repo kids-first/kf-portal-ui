@@ -1,10 +1,11 @@
+import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import { Layout, Spin } from 'antd';
-import { generateFilters } from 'graphql/utils/Filters';
-import useGetAggregations from 'hooks/graphql/useGetAggregations';
 import { AGGREGATION_QUERY } from 'graphql/queries';
+import { generateFilters } from 'graphql/utils/Filters';
+
+import useGetAggregations from 'hooks/graphql/useGetAggregations';
 
 import styles from './Filters.module.scss';
-import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 
 type OwnProps = {
   queryBuilderId: string;
@@ -12,6 +13,7 @@ type OwnProps = {
   field: string;
   sqon: any;
   extendedMappingResults: IExtendedMappingResults;
+  noDataInputOption?: boolean;
 };
 
 const GenericFilters = ({
@@ -20,6 +22,7 @@ const GenericFilters = ({
   field,
   sqon,
   extendedMappingResults,
+  noDataInputOption,
 }: OwnProps) => {
   const results = useGetAggregations(
     {
@@ -28,7 +31,6 @@ const GenericFilters = ({
     AGGREGATION_QUERY(index, [field], extendedMappingResults),
     index,
   );
-
   return (
     <Spin size="large" spinning={results.loading}>
       <Layout className={`${styles.filterWrapper} ${styles.genericFilterWrapper}`}>
@@ -41,6 +43,7 @@ const GenericFilters = ({
           filterFooter: true,
           showSearchInput: true,
           useFilterSelector: true,
+          noDataInputOption,
           index,
         })}
       </Layout>

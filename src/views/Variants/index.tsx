@@ -259,7 +259,7 @@ const Variants = () => {
     <div className={styles.variantsLayout}>
       <SidebarMenu className={styles.sideMenu} menuItems={menuItems} />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
-        <PageContent variantMapping={variantMappingResults} />
+        <PageContent variantMapping={variantMappingResults} filterGroups={filterGroups} />
       </ScrollContent>
     </div>
   );
