@@ -8,8 +8,7 @@ export const getNoDataOptionValue = (
 ): boolean | undefined => {
   let noDataInputOption = undefined;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  for (const [key, value] of Object.entries(filterGroups)) {
+  for (const value of Object.values(filterGroups)) {
     const groupWithField = value.groups.find((group) => group.facets.includes(field));
     if (groupWithField?.noDataOption?.includes(field)) {
       noDataInputOption = false;
