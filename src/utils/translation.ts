@@ -312,6 +312,7 @@ export const getFacetsDictionary = () => ({
   diagnosis_ncit: 'Histological Diagnosis (NCIT)',
   source_text: 'Histological Diagnosis (Source Text)',
   source_text_tumor_location: 'Tumor Location (Source Text)',
+  source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
   ncit_id_tissue_type: 'Tissue Type (NCIT)',
   tissue_type_source_text: 'Tissue Type (Source Text)',
   age_at_event: {
