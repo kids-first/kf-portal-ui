@@ -79,7 +79,10 @@ const updateUserConfig = createAsyncThunk<
 
     const deepCopyUserConfig = JSON.parse(JSON.stringify(user.userInfo?.config));
     const deepCopyNewConfig = JSON.parse(JSON.stringify(config));
-    const mergedConfig = mergeDeep<TUserConfig>(deepCopyUserConfig, deepCopyNewConfig);
+    const mergedConfig =
+      deepCopyUserConfig.length > 0
+        ? mergeDeep<TUserConfig>(deepCopyUserConfig, deepCopyNewConfig)
+        : deepCopyNewConfig;
 
     const { error } = await UserApi.update({
       config: mergedConfig,
