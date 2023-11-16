@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -64,10 +65,10 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-const defaultColumns: ProColumnType[] = [
+const getDefaultColumns = (): ProColumnType[] => [
   {
     key: 'participant_id',
-    title: 'Participant ID',
+    title: intl.get('entities.participant.participant_id'),
     dataIndex: 'participant_id',
     sorter: {
       multiple: 1,
@@ -78,7 +79,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'study.study_code',
-    title: 'Study',
+    title: intl.get('entities.participant.study'),
     sorter: {
       multiple: 1,
     },
@@ -88,7 +89,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'study_external_id',
-    title: 'dbGaP',
+    title: intl.get('entities.participant.dbgap'),
     dataIndex: 'study_external_id',
     render: (study_external_id: string) =>
       study_external_id ? (
@@ -103,7 +104,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'is_proband',
-    title: 'Proband',
+    title: intl.get('entities.participant.proband'),
     dataIndex: 'is_proband',
     sorter: {
       multiple: 1,
@@ -113,7 +114,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'sex',
-    title: 'Sex',
+    title: intl.get('entities.participant.sex'),
     dataIndex: 'sex',
     sorter: {
       multiple: 1,
@@ -127,7 +128,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'diagnosis.mondo_id_diagnosis',
-    title: 'Diagnosis (MONDO)',
+    title: intl.get('entities.participant.mondo_diagnosis'),
     dataIndex: 'diagnosis',
     className: styles.diagnosisCell,
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
@@ -161,7 +162,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'phenotype.hpo_phenotype_observed',
-    title: 'Observed Phenotype (HPO)',
+    title: intl.get('entities.participant.hpo_phenotype_observed'),
     dataIndex: 'phenotype',
     className: styles.phenotypeCell,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
@@ -195,7 +196,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'families_id',
-    title: 'Family ID',
+    title: intl.get('entities.participant.family_id'),
     dataIndex: 'families_id',
     sorter: {
       multiple: 1,
@@ -204,7 +205,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'family_type',
-    title: 'Family Composition',
+    title: intl.get('entities.participant.family_unit'),
     dataIndex: 'family_type',
     sorter: {
       multiple: 1,
@@ -214,7 +215,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'pedcbioportal',
-    title: 'PedcBioPortal',
+    title: intl.get('entities.participant.pedcBioPortal'),
     sorter: {
       multiple: 1,
     },
@@ -236,7 +237,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'nb_biospecimens',
-    title: 'Biospecimens',
+    title: intl.get('entities.participant.nb_biospecimens'),
     sorter: {
       multiple: 1,
     },
@@ -271,7 +272,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'nb_files',
-    title: 'Files',
+    title: intl.get('entities.participant.nb_files'),
     sorter: {
       multiple: 1,
     },
@@ -303,7 +304,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'race',
-    title: 'Race',
+    title: intl.get('entities.participant.race'),
     dataIndex: 'race',
     defaultHidden: true,
     sorter: {
@@ -313,7 +314,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'ethnicity',
-    title: 'Ethnicity',
+    title: intl.get('entities.participant.ethnicity'),
     dataIndex: 'ethnicity',
     defaultHidden: true,
     sorter: {
@@ -323,7 +324,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'external_id',
-    title: 'External Participant ID',
+    title: intl.get('entities.participant.external_id_tooltip'),
     dataIndex: 'external_id',
     defaultHidden: true,
     sorter: {
@@ -333,7 +334,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'diagnosis.ncit_id_diagnosis',
-    title: 'Diagnosis (NCIT)',
+    title: intl.get('entities.participant.diagnosis_NCIT'),
     dataIndex: 'diagnosis',
     defaultHidden: true,
     sorter: {
@@ -362,7 +363,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'diagnosis.source_text',
-    title: 'Diagnosis (Source Text)',
+    title: intl.get('entities.participant.diagnosis_source_text'),
     dataIndex: 'diagnosis',
     defaultHidden: true,
     render: (mondo: IArrangerResultsTree<IParticipantDiagnosis>) => {
@@ -382,7 +383,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'outcomes.vital_status',
-    title: 'Vital Status',
+    title: intl.get('entities.participant.vital_status'),
     dataIndex: 'outcomes',
     defaultHidden: true,
     sorter: {
@@ -396,7 +397,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'phenotypes_hpo_not_observed',
-    title: 'Not Observed Phenotype (HPO)',
+    title: intl.get('entities.participant.phenotypes_hpo_not_observed'),
     dataIndex: 'phenotype',
     defaultHidden: true,
     sorter: {
@@ -406,7 +407,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'source_text_phenotype',
-    title: 'Observed Phenotype (Source Text)',
+    title: intl.get('entities.participant.source_text_phenotype'),
     dataIndex: 'phenotype',
     defaultHidden: true,
     sorter: {
@@ -517,7 +518,7 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
   return (
     <ProTable<ITableParticipantEntity>
       tableId="participants_table"
-      columns={defaultColumns}
+      columns={getDefaultColumns()}
       wrapperClassName={styles.participantTabWrapper}
       loading={results.loading}
       initialColumnState={userInfo?.config.data_exploration?.tables?.participants?.columns}
@@ -556,7 +557,7 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
           dispatch(
             fetchTsvReport({
               columnStates: userInfo?.config.data_exploration?.tables?.participants?.columns,
-              columns: defaultColumns,
+              columns: getDefaultColumns(),
               index: INDEXES.PARTICIPANT,
               sqon: getCurrentSqon(),
             }),
