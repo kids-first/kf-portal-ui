@@ -49,7 +49,6 @@ import {
 import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import OutcomesAgeCells from 'components/OutcomesAgeCells';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
@@ -324,7 +323,7 @@ const defaultColumns: ProColumnType[] = [
   },
   {
     key: 'external_id',
-    title: 'Participant External ID',
+    title: 'External Participant ID',
     dataIndex: 'external_id',
     defaultHidden: true,
     sorter: {
@@ -414,18 +413,6 @@ const defaultColumns: ProColumnType[] = [
       multiple: 1,
     },
     render: () => TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'outcomes.age_at_event_days.value',
-    title: 'Age at Outcome',
-    dataIndex: 'outcomes',
-    defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
-    render: (outcomes: IArrangerResultsTree<IParticipantOutcomes>) => (
-      <OutcomesAgeCells outcomes={outcomes} />
-    ),
   },
 ];
 
