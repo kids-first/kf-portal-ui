@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { WarningFilled } from '@ant-design/icons';
+import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Form, Input, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
-import { createSavedSet, updateSavedSet } from 'store/savedSet/thunks';
-import filtersToName from 'common/sqonToName';
-import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
-import intl from 'react-intl-universal';
-import { PROJECT_ID, useSavedSet } from 'store/savedSet';
+import { MAX_TITLE_LENGTH } from 'views/DataExploration/components/PageContent';
 import {
   SetActionType,
   singularizeSetTypeIfNeeded,
 } from 'views/DataExploration/components/SetsManagementDropdown';
+
+import filtersToName from 'common/sqonToName';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
+import { PROJECT_ID, useSavedSet } from 'store/savedSet';
+import { createSavedSet, updateSavedSet } from 'store/savedSet/thunks';
 
 import styles from './index.module.scss';
-import { WarningFilled } from '@ant-design/icons';
-import { MAX_TITLE_LENGTH } from 'views/DataExploration/components/PageContent';
 
 const FORM_NAME = 'save-set';
 const SET_NAME_KEY = 'nameSet';
@@ -124,7 +125,7 @@ const CreateEditModal = ({
     }
 
     if (hasSelectedKeys) {
-      let newName = `${singularizeSetTypeIfNeeded(setType)} Set`;
+      const newName = `${singularizeSetTypeIfNeeded(setType)} Set`;
       return resolveConflictNames(newName);
     }
 
@@ -140,7 +141,7 @@ const CreateEditModal = ({
   return (
     <Modal
       title={title}
-      visible={isVisible}
+      open={isVisible}
       onCancel={handleCancel}
       onOk={() => form.submit()}
       okButtonProps={{ disabled: isLoading, loading: isLoading || isUpdating }}
