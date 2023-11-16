@@ -27,7 +27,7 @@
     "graphql": "^14.7.0",
     "graphql-tag": "^2.10.3",
     "jwt-decode": "^3.1.2",
-    "keycloak-js": "^15.0.1",
+    "keycloak-js": "^22.0.5",
     "less2sass": "^1.0.3",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
