@@ -250,7 +250,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (consent_type) => consent_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'method_of_sample_procurement',
+    key: 'collection_method_of_sample_procurement',
     title: intl.get('entities.biospecimen.collection_method_of_sample_procurement'),
     dataIndex: 'collection_method_of_sample_procurement',
     defaultHidden: true,

@@ -102,7 +102,6 @@ const filterGroups: {
           />,
           'phenotype__hpo_phenotype_not_observed',
           'phenotype__source_text',
-          'diagnosis__source_text_tumor_location',
           'outcomes__vital_status',
         ],
       },
