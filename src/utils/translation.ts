@@ -306,7 +306,7 @@ export const getFacetsDictionary = () => ({
   status: 'Sample Availability',
   collection_ncit_anatomy_site_id: 'Anatomical Site (NCIT)',
   collection_anatomy_site: 'Anatomical Site (Source Text)',
-  collection_method_of_sample_procurement: 'Method Of Sample Procurement',
+  collection_method_of_sample_procurement: 'Method of Sample Procurement',
   dbgap_consent_code: 'dbGaP Consent Code',
   diagnosis_mondo: 'Histological Diagnosis (MONDO)',
   diagnosis_ncit: 'Histological Diagnosis (NCIT)',
