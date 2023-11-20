@@ -238,7 +238,7 @@ export const getDefaultColumns = (
     sorter: { multiple: 1 },
   },
   {
-    key: 'platform',
+    key: 'sequencing_experiment.platform',
     title: 'Platform',
     defaultHidden: true,
     sorter: { multiple: 1 },
