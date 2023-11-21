@@ -122,7 +122,7 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
   }
 
   return (
-    <Row gutter={[24, 24]} id={`tooltip-wrapper-${field}`} className={styles.sunburstRowWrapper}>
+    <Row gutter={[24, 24]} className={styles.sunburstRowWrapper}>
       <Col lg={12} xl={10}>
         <svg
           className={styles.sunburstChart}
