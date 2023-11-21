@@ -34,13 +34,12 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
     : false;
 
   const generateSqonForFile = (): any =>
-    file &&
     generateQuery({
       newFilters: [
         generateValueFilter({
           field: DATA_FILES_SAVED_SETS_FIELD,
           index: INDEXES.FILE,
-          value: [file?.file_id],
+          value: file ? [file.file_id] : [],
         }),
       ],
     });

@@ -116,8 +116,9 @@ const SunburstD3 = (
   [...document.getElementsByClassName(`tooltipsunburst-${type}`)].map((n) => n && n.remove());
 
   const Tooltip = d3
-    .select(`#tooltip-wrapper-${type}`)
+    .select('body')
     .append('div')
+    .attr('id', `#tooltip-wrapper-${type}`)
     .style('position', 'absolute')
     .style('display', 'none')
     .style('box-shadow', '0.5px 0.5px 2px 0.5px rgba(0,0,0,0.2)')
@@ -136,8 +137,8 @@ const SunburstD3 = (
   const mousemoveTooltip = function (d) {
     if (previewMode) return;
     Tooltip.html(tooltipFormatter(d.data))
-      .style('left', d3.event.offsetX + 25 + 'px')
-      .style('top', d3.event.offsetY + 25 + 'px');
+      .style('left', d3.event.pageX + 25 + 'px')
+      .style('top', d3.event.pageY + 25 + 'px');
   };
   const mouseoutTooltip = function () {
     if (previewMode) return;
