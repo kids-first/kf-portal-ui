@@ -53,7 +53,11 @@ const getItemList = (
       ) : (
         <Empty
           imageType="grid"
-          description={intl.get('screen.dashboard.cards.savedSets.noSavedFilters')}
+          description={intl.getHTML('screen.dashboard.cards.savedSets.noSavedSets', {
+            dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
+            variantsHref: STATIC_ROUTES.VARIANTS,
+          })}
+          noPadding
         />
       ),
     }}

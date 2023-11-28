@@ -10,6 +10,10 @@
   *[class$='-item-meta-description'] {
     font-size: 12px;
   }
+
+  div[class$='-list-empty-text'] {
+    padding: 24px;
+  }
 }
 
 .setTabs {
@@ -18,6 +22,10 @@
   :global(.ant-tabs-content) {
     height: 100%;
     overflow: auto;
+
+    :global(.ant-tabs-tabpane) {
+      height: 100%;
+    }
   }
 
   :global(.ant-tabs-tab) {
