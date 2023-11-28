@@ -56,7 +56,11 @@ const SavedFilterListWrapper = ({
       ) : (
         <Empty
           imageType="grid"
-          description={intl.get('screen.dashboard.cards.savedFilters.noSavedFilters')}
+          description={intl.getHTML('screen.dashboard.cards.savedFilters.noSavedFilters', {
+            dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
+            variantsHref: STATIC_ROUTES.VARIANTS,
+          })}
+          noPadding
         />
       ),
     }}
