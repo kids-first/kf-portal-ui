@@ -163,7 +163,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             collection_anatomy_site
                             collection_method_of_sample_procurement
                             collection_ncit_anatomy_site_id
-                            collection_ncit_id_tissue_type
+                            ncit_id_tissue_type
                             collection_sample_id
                             collection_sample_type
                             consent_type
