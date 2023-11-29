@@ -48,7 +48,7 @@ const SummaryHeader = ({ variant }: OwnProps) => {
                 generateValueFilter({
                   field: 'study.study_code',
                   value: studyCodes,
-                  index: '',
+                  index: INDEXES.PARTICIPANT,
                 }),
               ],
             }),
