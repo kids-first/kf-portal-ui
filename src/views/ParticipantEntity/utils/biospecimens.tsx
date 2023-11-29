@@ -60,9 +60,9 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       biospecimen?.collection_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'collection_ncit_id_tissue_type',
+    key: 'ncit_id_tissue_type',
     title: intl.get('entities.biospecimen.ncit_id_tissue_type'),
-    dataIndex: 'collection_ncit_id_tissue_type',
+    dataIndex: 'ncit_id_tissue_type',
     defaultHidden: true,
     render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
   },
