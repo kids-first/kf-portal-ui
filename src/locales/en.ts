@@ -982,10 +982,10 @@ const en = {
           ageAtDiagnosis: {
             cardTitle: 'Age at Diagnosis',
             _0to1: 'Newborn',
-            _1to5: '[1, 5]',
-            _5to10: '[5, 10]',
-            _10to15: '[10, 15]',
-            _15to18: '[15, 18]',
+            _1to5: '[1-5]',
+            _5to10: '[5-10]',
+            _10to15: '[10-15]',
+            _15to18: '[15-18]',
             _18plus: 'Adult',
           },
           studies: {
