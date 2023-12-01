@@ -23,10 +23,10 @@
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "build:netlify": "npm ci && npm run build",
-    "test": "react-scripts test --coverage --coverageReporters=\"json-summary\"",
-    "test:github": "react-scripts test --coverage --watchAll=false --no-watchman --coverageReporters=\"json-summary\"",
-    "coverage": "npm test -- --watchAll=false --coverage --coverageReporters=\"json-summary\"",
-    "coverage:changed": "npm test -- --coverage --watchAll=false --onlyChanged --coverageReporters=\"json-summary\"",
+    "test": "jest ./src",
+    "test:github": "jest --coverage --watchAll=false --no-watchma  --coverageReporters=\"text-summary\"",
+    "coverage": "jest --watchAll=false --coverage --coverageReporters=\"json-summary\"",
+    "coverage:changed": "jest --coverage --watchAll=false --onlyChanged --coverageReporters=\"json-summary\"",
     "lint": "eslint $(git diff-index --name-only --diff-filter=d HEAD | grep \"[\\.js|\\.jsx|\\.tsx|\\.ts]$\" | xargs)",
     "lint:fix": "eslint --fix --rule 'no-console: 2'",
     "theme": "mkdir -p src/style/themes/kids-first/dist && npm run theme:antd",
@@ -137,6 +137,7 @@
     "prettier-eslint": "^10.1.1",
     "prop-types": "^15.8.1",
     "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
     "webpack": "^5.75.0"
   }
 }
