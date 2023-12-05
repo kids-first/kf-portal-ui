@@ -59,6 +59,8 @@ const DataTypeGraphCard = () => {
       modalContent={
         <BarChart
           data={dataTypeResults}
+          ariaLabel={intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle')}
+          barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
           axisLeft={{
             legend: 'Data Types',
             legendPosition: 'middle',
@@ -92,6 +94,10 @@ const DataTypeGraphCard = () => {
           ) : (
             <BarChart
               data={dataTypeResults}
+              ariaLabel={intl.get(
+                'screen.dataExploration.tabs.summary.availableData.dataTypeTitle',
+              )}
+              barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
               axisLeft={{
                 legend: 'Data Types',
                 legendPosition: 'middle',

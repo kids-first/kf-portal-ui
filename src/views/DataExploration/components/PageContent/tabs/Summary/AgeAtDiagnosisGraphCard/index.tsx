@@ -125,6 +125,8 @@ const AgeAtDiagnosisGraphCard = () => {
         <BarChart
           data={ageAtDiagnosisresults}
           tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
+          ariaLabel={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
+          barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
           axisLeft={{
             legend: '# Participants',
             legendPosition: 'middle',
@@ -158,6 +160,8 @@ const AgeAtDiagnosisGraphCard = () => {
           ) : (
             <BarChart
               data={ageAtDiagnosisresults}
+              ariaLabel={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
+              barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
               tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
               axisLeft={{
                 legend: '# Participants',
