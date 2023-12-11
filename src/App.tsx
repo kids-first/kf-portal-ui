@@ -41,6 +41,7 @@ import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import { useLang } from 'store/global';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
+import { initGa } from 'services/analytics';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -52,6 +53,8 @@ const Variants2 = loadable(() => import('views/Variants'), loadableProps);
 const VariantEntity2 = loadable(() => import('views/VariantEntity'), loadableProps);
 const FileEntity = loadable(() => import('views/FileEntity'), loadableProps);
 const ProfileSettings = loadable(() => import('views/Profile/Settings'), loadableProps);
+
+initGa();
 
 const App = () => {
   const lang = useLang();
