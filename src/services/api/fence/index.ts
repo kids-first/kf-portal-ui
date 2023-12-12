@@ -1,9 +1,26 @@
-import { FENCE_NAMES } from 'common/fenceTypes';
 import EnvironmentVariables from 'helpers/EnvVariables';
+import { ARRANGER_API } from 'provider/ApolloProvider';
+
+import { FENCE_NAMES } from 'common/fenceTypes';
+import { IAuthorizedStudiesFetchParams } from 'store/fences/types';
+
 import { sendRequest } from '..';
-import { IFenceAclsPayload, IFenceAuthPayload, IFenceInfo } from './models';
+
+import {
+  IAuthorizedStudiesPayload,
+  IFenceAclsPayload,
+  IFenceAuthPayload,
+  IFenceInfo,
+} from './models';
 
 export const FENCE_API_URL = EnvironmentVariables.configFor('FENCE_API_URL');
+
+const fetchAuthorizedStudies = (params: IAuthorizedStudiesFetchParams) =>
+  sendRequest<IAuthorizedStudiesPayload>({
+    method: 'POST',
+    url: `${ARRANGER_API}/authorized-studies`,
+    data: params,
+  });
 
 const isAuthenticated = (fence: FENCE_NAMES) =>
   sendRequest<IFenceAuthPayload>({
@@ -39,6 +56,7 @@ const disconnect = (fence: FENCE_NAMES) =>
   });
 
 export const FenceApi = {
+  fetchAuthorizedStudies,
   isAuthenticated,
   fetchInfo,
   exchangeCode,

@@ -12,8 +12,9 @@ import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/lib/locale/en_US';
-import frFR from 'antd/lib/locale/fr_FR';
+import locales from 'locales';
 
+import { LANG } from 'common/constants';
 import { FenceCavaticaState } from 'store/fenceCavatica';
 import { FenceConnectionState } from 'store/fenceConnection';
 import { FenceStudiesState } from 'store/fenceStudies';
@@ -28,11 +29,6 @@ import { SavedFilterState } from 'store/savedFilter';
 import { SavedSetState } from 'store/savedSet';
 import type { RootState } from 'store/types';
 import { UserState } from 'store/user';
-
-const locales = {
-  'en-US': enUS,
-  'fr-FR': frFR,
-};
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
@@ -58,7 +54,7 @@ export function renderWithProviders(
   { store = setupStore, ...renderOptions }: ExtendedRenderOptions = {},
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-    intl.init({ locales, currentLocale: 'en-US' });
+    intl.init({ locales, currentLocale: LANG.EN, warningHandler: () => '' });
 
     return (
       <Provider store={store}>
