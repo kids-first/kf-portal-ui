@@ -1,3 +1,8 @@
+## VERSION 5.0.1 (2023-12-14)
+
+### Features
+[SKFP-889] (https://d3b.atlassian.net/browse/SKFP-889) Feature: (Google Analytics) Connect beta portal prd to Google Analytics 4
+
 ## VERSION 5.0.0 (2023-12-11)
 
 ### Features
