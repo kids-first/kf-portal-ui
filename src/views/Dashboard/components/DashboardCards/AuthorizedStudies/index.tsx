@@ -1,148 +1,118 @@
 import { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { ApiOutlined, SafetyOutlined } from '@ant-design/icons';
-import Empty from '@ferlab/ui/core/components/Empty';
-import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Button, List, Space } from 'antd';
-import Text from 'antd/lib/typography/Text';
-import CardConnectPlaceholder from 'views/Dashboard/components/CardConnectPlaceholder';
-import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
-import CardHeader from 'views/Dashboard/components/CardHeader';
-import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
+import AuthorizedStudiesWidget, {
+  IFenceService,
+} from '@ferlab/ui/core/components/AuthorizedStudies';
+import { FENCE_AUHTENTIFICATION_STATUS } from '@ferlab/ui/core/components/AuthorizedStudies';
+import { INDEXES } from 'graphql/constants';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
-import { fenceConnectionActions } from 'store/fenceConnection/slice';
-import { useFenceStudies } from 'store/fenceStudies';
-import { fetchAllFenceStudies } from 'store/fenceStudies/thunks';
-import { TFenceStudy } from 'store/fenceStudies/types';
+import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
+import NciIcon from 'components/Icons/NciIcon';
+import { useFenceAuthentification, useFencesAuthorizedStudies } from 'store/fences';
+import {
+  fenceDisconnection,
+  fenceOpenAuhentificationTab,
+  fetchAuthorizedStudies,
+} from 'store/fences/thunks';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
+import { STATIC_ROUTES } from 'utils/routes';
 
-import AuthorizedStudiesListItem from './ListItem';
-
-import styles from './index.module.scss';
+import { DashboardCardProps } from '..';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const {
-    loadingStudiesForFences,
-    fenceStudiesAcls,
-    isConnected: isGen3Connected,
-    hasErrors: hasGen3Errors,
-    connectionLoading: connectionGen3Loading,
-  } = useFenceStudies(FENCE_NAMES.gen3);
-
-  const {
-    //Shared: loadingStudiesForFences,
-    //Shared: fenceStudiesAcls,
-    isConnected: isDcfConnected,
-    hasErrors: hasDcfErrors,
-    connectionLoading: connectionDcfLoading,
-  } = useFenceStudies(FENCE_NAMES.dcf);
-
-  const fenceStudiesLoading = loadingStudiesForFences.length > 0;
-
-  const isOneFenceAtLeastConnected = isGen3Connected || isDcfConnected;
-  const hasAtLeastOneFenceWithErrors = hasGen3Errors || hasDcfErrors;
-  const connectionLoadingForAtLeastOneFence = connectionGen3Loading || connectionDcfLoading;
+  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
+  const dcf = useFenceAuthentification(FENCE_NAMES.dcf);
+  const fences = [gen3, dcf];
+  const authorizedStudies = useFencesAuthorizedStudies();
+  const services: IFenceService[] = [
+    {
+      fence: FENCE_NAMES.gen3,
+      name: 'Kids First Framework Services',
+      icon: <KidsFirstLoginIcon width={45} height={45} />,
+      onConnectToFence: () => {
+        dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.gen3));
+      },
+      onDisconnectFromFence: () => {
+        dispatch(fenceDisconnection(FENCE_NAMES.gen3));
+      },
+    },
+    {
+      fence: FENCE_NAMES.dcf,
+      name: 'NCI CRDC Framework Services',
+      icon: <NciIcon width={45} height={45} />,
+      onConnectToFence: () => {
+        dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.dcf));
+      },
+      onDisconnectFromFence: () => {
+        dispatch(fenceDisconnection(FENCE_NAMES.dcf));
+      },
+    },
+  ];
 
   useEffect(() => {
-    if (isOneFenceAtLeastConnected) {
-      dispatch(fetchAllFenceStudies());
+    if (!fences.some(({ status }) => status === FENCE_AUHTENTIFICATION_STATUS.connected)) {
+      return;
     }
-    // eslint-disable-next-line
-  }, [isOneFenceAtLeastConnected]);
+
+    dispatch(fetchAuthorizedStudies(fences));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gen3.status, dcf.status]);
 
   return (
-    <GridCard
-      theme="shade"
-      wrapperClassName={className}
-      title={
-        <CardHeader
-          id={id}
-          title={intl.get('screen.dashboard.cards.authorizedStudies.title', {
-            count: isOneFenceAtLeastConnected ? fenceStudiesAcls.length : 0,
-          })}
-          infoPopover={{
-            title: intl.get('screen.dashboard.cards.authorizedStudies.infoPopover.title'),
-            content: (
-              <Space direction="vertical" className={styles.content} size={0}>
-                <Text>
-                  {intl.getHTML('screen.dashboard.cards.authorizedStudies.infoPopover.content')}{' '}
-                  <PopoverContentLink
-                    externalHref="https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?login=&page=login"
-                    title={intl.get(
-                      'screen.dashboard.cards.authorizedStudies.infoPopover.applyingForDataAccess',
-                    )}
-                  />
-                  .
-                </Text>
-              </Space>
-            ),
-          }}
-          withHandle
-        />
-      }
-      content={
-        <div className={styles.authorizedWrapper}>
-          {isOneFenceAtLeastConnected && !hasAtLeastOneFenceWithErrors && !fenceStudiesLoading && (
-            <Space className={styles.authenticatedHeader} direction="horizontal">
-              <Space align="start">
-                <SafetyOutlined className={styles.safetyIcon} />
-                <Text className={styles.notice}>
-                  {intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice')}{' '}
-                  <Button
-                    type="link"
-                    size="small"
-                    danger
-                    icon={<ApiOutlined />}
-                    onClick={() =>
-                      dispatch(fenceConnectionActions.setConnectionModalParams({ open: true }))
-                    }
-                    className={styles.disconnectBtn}
-                    loading={connectionLoadingForAtLeastOneFence}
-                  >
-                    {intl.get('screen.dashboard.cards.authorizedStudies.manageConnections')}
-                  </Button>
-                </Text>
-              </Space>
-            </Space>
-          )}
-          <List<TFenceStudy>
-            className={styles.authorizedStudiesList}
-            bordered
-            itemLayout="vertical"
-            loading={fenceStudiesLoading || connectionLoadingForAtLeastOneFence}
-            locale={{
-              emptyText: hasAtLeastOneFenceWithErrors ? (
-                <CardErrorPlaceholder />
-              ) : isOneFenceAtLeastConnected ? (
-                <Empty
-                  imageType="grid"
-                  description={intl.get(
-                    'screen.dashboard.cards.authorizedStudies.noAvailableStudies',
-                  )}
-                />
-              ) : (
-                <CardConnectPlaceholder
-                  icon={<SafetyOutlined className={styles.safetyIcon} />}
-                  description={intl.get(
-                    'screen.dashboard.cards.authorizedStudies.disconnectedNotice',
-                  )}
-                  btnProps={{
-                    onClick: () =>
-                      dispatch(fenceConnectionActions.setConnectionModalParams({ open: true })),
-                  }}
-                />
-              ),
-            }}
-            dataSource={
-              isOneFenceAtLeastConnected && !hasAtLeastOneFenceWithErrors ? fenceStudiesAcls : []
-            }
-            renderItem={(item) => <AuthorizedStudiesListItem id={item.id} data={item} />}
-          ></List>
-        </div>
-      }
+    <AuthorizedStudiesWidget
+      id={id}
+      fences={fences}
+      queryProps={{
+        to: STATIC_ROUTES.DATA_EXPLORATION_DATAFILES,
+        queryBuilderId: DATA_EXPLORATION_QB_ID,
+        participantIndex: INDEXES.PARTICIPANT,
+        fileIndex: INDEXES.FILE,
+      }}
+      authorizedStudies={authorizedStudies}
+      className={className}
+      services={services}
+      dictionary={{
+        title: intl.get('screen.dashboard.cards.authorizedStudies.title', {
+          count: authorizedStudies.studies.length,
+        }),
+        connectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice'),
+        disconnectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.disconnectedNotice'),
+        manageConnections: intl.get('screen.dashboard.cards.authorizedStudies.manageConnections'),
+        noAvailableStudies: intl.get('screen.dashboard.cards.authorizedStudies.noAvailableStudies'),
+        authentification: {
+          description: intl.get('screen.dashboard.cards.authorizedStudies.disconnectedNotice'),
+          action: intl.get('global.connect'),
+        },
+        list: {
+          authorization: intl.get('screen.dashboard.cards.authorizedStudies.authorization'),
+          of: intl.get('screen.dashboard.cards.authorizedStudies.of'),
+          dataGroups: intl.get('screen.dashboard.cards.authorizedStudies.dataGroups'),
+          files: intl.get('screen.dashboard.cards.authorizedStudies.files'),
+        },
+        error: {
+          title: intl.get('screen.dashboard.cards.error.title'),
+          subtitle: intl.get('screen.dashboard.cards.error.subtitle'),
+          email: SUPPORT_EMAIL,
+          contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
+        },
+        popover: {
+          title: intl.get('screen.dashboard.cards.authorizedStudies.infoPopover.title'),
+          applyingForDataAccess: intl.get(
+            'screen.dashboard.cards.authorizedStudies.infoPopover.applyingForDataAccess',
+          ),
+          content: intl.get('screen.dashboard.cards.authorizedStudies.infoPopover.content'),
+        },
+        modal: {
+          title: intl.get('screen.dashboard.cards.authorizedStudies.modal.title'),
+          close: intl.get('global.close'),
+          description: intl.get('screen.dashboard.cards.authorizedStudies.modal.description'),
+          error: intl.get('screen.dashboard.cards.authorizedStudies.modal.error'),
+        },
+      }}
     />
   );
 };

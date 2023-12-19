@@ -1,22 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
-import storage from 'redux-persist/lib/storage';
-import logger from 'redux-logger';
-import { persistStore, persistReducer } from 'redux-persist';
 import EnvVariables from 'helpers/EnvVariables';
-import { RootState } from 'store/types';
+import { combineReducers } from 'redux';
+import logger from 'redux-logger';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import createFilter from 'redux-persist-transform-filter';
-import GlobalReducer from 'store/global';
-import UserReducer from 'store/user';
-import PersonaReducer from 'store/persona';
+
+import FenceCavaticaReducer from 'store/fenceCavatica';
 import FenceConnectionReducer from 'store/fenceConnection';
+import FencesReducer from 'store/fences';
+import FenceStudiesReducer from 'store/fenceStudies';
+import GlobalReducer from 'store/global';
+import NotebookReducer from 'store/notebook';
+import PersonaReducer from 'store/persona';
+import RemoteReducer from 'store/remote';
 import ReportReducer from 'store/report';
 import SavedFilterReducer from 'store/savedFilter';
 import SavedSetReducer from 'store/savedSet';
-import FenceCavaticaReducer from 'store/fenceCavatica';
-import FenceStudiesReducer from 'store/fenceStudies';
-import NotebookReducer from 'store/notebook';
-import RemoteReducer from 'store/remote';
+import { RootState } from 'store/types';
+import UserReducer from 'store/user';
 
 const devMode = EnvVariables.configFor('ENV') === 'development';
 
@@ -29,6 +31,7 @@ const persistConfig = {
 
 export const rootReducer = combineReducers<RootState>({
   global: GlobalReducer,
+  fences: FencesReducer,
   persona: PersonaReducer,
   notebook: NotebookReducer,
   user: UserReducer,
@@ -45,7 +48,7 @@ export const store: any = configureStore({
   reducer: persistReducer(persistConfig, rootReducer),
   devTools: devMode,
   middleware: (getDefaultMiddleware) => {
-    let defaultMid = getDefaultMiddleware({
+    const defaultMid = getDefaultMiddleware({
       serializableCheck: false,
     });
     return devMode ? defaultMid.concat(logger) : defaultMid;

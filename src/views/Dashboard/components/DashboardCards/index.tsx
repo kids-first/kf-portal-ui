@@ -20,7 +20,7 @@ export interface DashboardCardProps {
 // Its is used for user config
 export const dashboardCards: TSortableItems[] = [
   {
-    id: '1',
+    id: '7',
     xs: 24,
     md: 12,
     xxl: 8,

@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState, TModalConnectionParams } from 'store/fenceConnection/types';
+
 import { FENCE_CONNECTION_STATUSES, FENCE_NAMES } from 'common/fenceTypes';
+import { initialState, TModalConnectionParams } from 'store/fenceConnection/types';
+
 import { checkFenceAuthStatus, connectToFence, disconnectFromFence } from './thunks';
 
 export const FenceConnectionState: initialState = {
@@ -95,7 +97,7 @@ const fenceConnectionSlice = createSlice({
       state.loadingFences = addLoadingFences(state, action.meta.arg);
     });
     builder.addCase(checkFenceAuthStatus.fulfilled, (state, action) => {
-      const isAuthenticated = action.payload && action.payload.auth.authenticated;
+      const isAuthenticated = action.payload && action.payload.auth?.authenticated;
       state.loadingFences = removeLoadingFences(state, action.meta.arg);
 
       if (isAuthenticated) {
