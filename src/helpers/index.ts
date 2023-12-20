@@ -10,3 +10,6 @@ export const isBoolFalse = (value: number | boolean | string | undefined | null)
 export const makeUniqueWords = (words: string[]) => [...new Set(words)];
 
 export const makeUniqueCleanWords = compose((l: string[]) => l.filter((x) => !!x), makeUniqueWords);
+
+export const joinUniqueCleanWords = (l: string[], del: string = ', '): string =>
+  makeUniqueCleanWords(l ?? []).join(del);

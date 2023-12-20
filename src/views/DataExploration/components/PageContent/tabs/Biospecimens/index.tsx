@@ -42,6 +42,7 @@ import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
+import { mergeBiosDiagnosesSpecificField } from 'utils/tables';
 import { getProTableDictionary } from 'utils/translation';
 
 import styles from './index.module.scss';
@@ -126,9 +127,10 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'diagnosis_mondo',
-    title: intl.get('entities.biospecimen.diagnosis_mondo'),
+    title: intl.get('entities.biospecimen.diagnoses.diagnosis_mondo'),
     dataIndex: 'diagnosis_mondo',
-    render: (diagnosis_mondo) => diagnosis_mondo || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(record, 'diagnosis_mondo'),
   },
   // TODO back implementation needed
   // {
@@ -216,24 +218,23 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'diagnosis_ncit',
-    title: intl.get('entities.biospecimen.diagnosis_ncit'),
-    dataIndex: 'diagnosis_ncit',
+    title: intl.get('entities.biospecimen.diagnoses.diagnosis_ncit'),
     defaultHidden: true,
-    render: (diagnosis_ncit) => diagnosis_ncit || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(record, 'diagnosis_ncit'),
   },
   {
     key: 'source_text',
-    title: intl.get('entities.biospecimen.source_text'),
-    dataIndex: 'source_text',
+    title: intl.get('entities.biospecimen.diagnoses.source_text'),
     defaultHidden: true,
-    render: (source_text) => source_text || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) => mergeBiosDiagnosesSpecificField(record, 'source_text'),
   },
   {
     key: 'source_text_tumor_location',
-    title: intl.get('entities.biospecimen.source_text_tumor_location'),
-    dataIndex: 'source_text_tumor_location',
+    title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_location'),
     defaultHidden: true,
-    render: (source_text_tumor_location) => source_text_tumor_location || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(record, 'source_text_tumor_location'),
   },
   {
     key: 'dbgap_consent_code',
@@ -259,11 +260,10 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'source_text_tumor_descriptor',
-    title: intl.get('entities.biospecimen.source_text_tumor_descriptor'),
-    dataIndex: 'source_text_tumor_descriptor',
+    title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_descriptor'),
     defaultHidden: true,
-    render: (source_text_tumor_descriptor) =>
-      source_text_tumor_descriptor || TABLE_EMPTY_PLACE_HOLDER,
+    render: (record: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(record, 'source_text_tumor_descriptor'),
   },
   {
     key: 'volume',

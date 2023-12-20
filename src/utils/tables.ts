@@ -1,4 +1,8 @@
 import { ProColumnType, TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
+import { IBiospecimenEntity } from 'graphql/biospecimens/models';
+import { joinUniqueCleanWords } from 'helpers';
+
+import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 /*
  * This function purpose is to determine if the columns in the user config
@@ -20,4 +24,16 @@ const userColsHaveSameKeyAsDefaultCols = (
   return userCols.every((c) => defaultColsKeys.includes(c.key));
 };
 
-export { userColsHaveSameKeyAsDefaultCols };
+const mergeBiosDiagnosesSpecificField = (
+  biospecimen: IBiospecimenEntity,
+  key:
+    | 'source_text'
+    | 'source_text_tumor_location'
+    | 'source_text_tumor_descriptor'
+    | 'diagnosis_mondo'
+    | 'diagnosis_ncit',
+) =>
+  joinUniqueCleanWords(biospecimen?.diagnoses?.hits?.edges?.map((e) => e.node[key]).flat()) ||
+  TABLE_EMPTY_PLACE_HOLDER;
+
+export { userColsHaveSameKeyAsDefaultCols, mergeBiosDiagnosesSpecificField };
