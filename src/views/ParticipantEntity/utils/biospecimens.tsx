@@ -6,6 +6,7 @@ import { IParticipantEntity } from 'graphql/participants/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import AgeCell from 'components/AgeCell';
+import { mergeBiosDiagnosesSpecificField } from 'utils/tables';
 
 import CollectionIdLink from '../BiospecimenTable/CollectionIdLink';
 
@@ -75,18 +76,17 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
   },
   {
     key: 'source_text_tumor_descriptor',
-    title: intl.get('entities.biospecimen.source_text_tumor_descriptor'),
-    dataIndex: 'source_text_tumor_descriptor',
+    title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_descriptor'),
     defaultHidden: true,
-    render: (source_text_tumor_descriptor) =>
-      source_text_tumor_descriptor || TABLE_EMPTY_PLACE_HOLDER,
+    render: (biospecimen: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(biospecimen, 'source_text_tumor_descriptor'),
   },
   {
     key: 'source_text_tumor_location',
-    title: intl.get('entities.biospecimen.source_text_tumor_location'),
+    title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_location'),
     defaultHidden: true,
     render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.source_text_tumor_location || TABLE_EMPTY_PLACE_HOLDER,
+      mergeBiosDiagnosesSpecificField(biospecimen, 'source_text_tumor_location'),
   },
   {
     key: 'dbgap_consent_code',

@@ -308,15 +308,17 @@ export const getFacetsDictionary = () => ({
   collection_anatomy_site: 'Anatomical Site (Source Text)',
   collection_method_of_sample_procurement: 'Method of Sample Procurement',
   dbgap_consent_code: 'dbGaP Consent Code',
-  diagnosis_mondo: 'Histological Diagnosis (MONDO)',
-  diagnosis_ncit: 'Histological Diagnosis (NCIT)',
-  source_text: 'Histological Diagnosis (Source Text)',
-  source_text_tumor_location: 'Tumor Location (Source Text)',
-  source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
   ncit_id_tissue_type: 'Tissue Type (NCIT)',
   tissue_type_source_text: 'Tissue Type (Source Text)',
-  age_at_event: {
-    value: 'Age at Histological Diagnosis (days)'
+  diagnoses: {
+    age_at_event: {
+      value: 'Age at Histological Diagnosis (days)',
+    },
+    diagnosis_mondo: 'Histological Diagnosis (MONDO)',
+    diagnosis_ncit: 'Histological Diagnosis (NCIT)',
+    source_text: 'Histological Diagnosis (Source Text)',
+    source_text_tumor_location: 'Tumor Location (Source Text)',
+    source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
   },
   clinvar: {
     clin_sig: 'ClinVar',

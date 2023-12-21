@@ -17,6 +17,20 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             id
             sample_id
             container_id
+            diagnoses {
+              hits {
+                total
+                edges {
+                  node {
+                    diagnosis_mondo
+                    source_text_tumor_descriptor
+                    source_text_tumor_location
+                    source_text
+                    diagnosis_ncit
+                  }
+                }
+              }
+            }
             sample_type
             parent_sample_type
             parent_sample_id
@@ -26,20 +40,16 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             ncit_id_tissue_type
             tissue_type_source_text
             consent_type
-            diagnosis_mondo
             nb_files
             collection_sample_id
             collection_sample_type
-            diagnosis_ncit
             status
             dbgap_consent_code
             collection_method_of_sample_procurement
             volume
             volume_unit
             external_sample_id
-            source_text_tumor_descriptor
-            source_text_tumor_location
-            source_text
+
             study {
               study_code
             }
@@ -96,8 +106,17 @@ export const GET_PARTICIPANT_BIOSPECIMENS = gql`
             participant {
               participant_id
             }
-            source_text_tumor_descriptor
-            source_text_tumor_location
+            diagnoses {
+              hits {
+                total
+                edges {
+                  node {
+                    source_text_tumor_descriptor
+                    source_text_tumor_location
+                  }
+                }
+              }
+            }
             dbgap_consent_code
             volume_unit
             volume

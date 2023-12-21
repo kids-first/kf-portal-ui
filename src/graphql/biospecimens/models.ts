@@ -12,6 +12,19 @@ export enum Status {
   UNAVAILABLE = 'unavailable',
 }
 
+export interface IBiospecimenDiagnoses {
+  key?: string;
+  id: string;
+  source_text_tumor_descriptor: string;
+  diagnosis_ncit: string;
+  source_text: string;
+  diagnosis_mondo: string;
+  source_text_tumor_location: string[];
+  age_at_event: {
+    value: number;
+    units: string;
+  };
+}
 export interface IBiospecimenEntity {
   key?: string;
   id: string;
@@ -39,13 +52,9 @@ export interface IBiospecimenEntity {
   collection_anatomy_site: string;
   ncit_id_tissue_type: string;
   tissue_type_source_text: string;
-  source_text_tumor_location: string;
   dbgap_consent_code: string;
   consent_type: string;
   collection_method_of_sample_procurement: string;
   external_sample_id: string;
-  source_text_tumor_descriptor: string;
-  diagnosis_ncit: string;
-  source_text: string;
-  diagnosis_mondo: string;
+  diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>;
 }

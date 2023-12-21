@@ -163,6 +163,17 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             collection_anatomy_site
                             collection_method_of_sample_procurement
                             collection_ncit_anatomy_site_id
+                            diagnoses {
+                              hits {
+                                total
+                                edges {
+                                  node {
+                                    source_text_tumor_descriptor
+                                    source_text_tumor_location
+                                  }
+                                }
+                              }
+                            }
                             ncit_id_tissue_type
                             collection_sample_id
                             collection_sample_type
@@ -175,8 +186,6 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             parent_sample_type
                             sample_id
                             sample_type
-                            source_text_tumor_descriptor
-                            source_text_tumor_location
                             status
                             tissue_type_source_text
                             volume
