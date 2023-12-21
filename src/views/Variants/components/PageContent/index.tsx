@@ -92,6 +92,7 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
     },
     queryConfig.operations,
   );
+  console.log('results', results);
 
   useEffect(() => {
     if (queryConfig.firstPageFlag !== undefined || queryConfig.searchAfter === undefined) {
@@ -221,6 +222,7 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
         results={results}
         setQueryConfig={setQueryConfig}
         queryConfig={queryConfig}
+        queryBuilderId={VARIANT_REPO_QB_ID}
       />
     </Space>
   );

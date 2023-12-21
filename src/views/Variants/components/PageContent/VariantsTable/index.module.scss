@@ -1,14 +1,21 @@
+@import 'src/style/themes/kids-first/colors';
+
 .variantTabWrapper {
   display: flex;
 
   :global(.ant-pagination) {
     margin-bottom: 0;
   }
+
+  :global(.ant-table-body) {
+    overflow: auto !important;
+  }
 }
 
 .variantTableCellElipsis {
-  max-width: 200px;
-  width: 200px;
+  min-width: 100px;
+  max-width: 100px;
+  width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
   overflow-wrap: unset;
@@ -19,4 +26,67 @@
 .variantTableCellElipsis::after {
   content: '';
   display: block;
+}
+
+.fixedVariantTableCellNoData {
+  left: 0 !important;
+}
+
+.csqCell {
+  min-width: 150px;
+  max-width: 150px;
+  width: 150px;
+}
+
+.userAffectedBtnCell {
+  min-width: 60px;
+  .affectedIcon {
+    display: flex;
+    margin: auto;
+    fill: $blue-8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.dbSnpTableCell {
+  text-align: center;
+}
+
+.addGene {
+  .addGeneButton {
+    padding: 0 4px;
+    border-radius: 2px;
+    color: $blue-8;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $gray-4;
+    }
+  }
+}
+
+.variantSnvOmimCellItem {
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.gnomadIndicator {
+  height: 8px;
+  width: 8px;
+  border-radius: 100%;
+}
+
+.gnomadIndicatorRed {
+  background-color: $red-6;
+}
+
+.gnomadIndicatorDefault {
+  background-color: $gray-1;
+  border: 1px solid $gray-5;
+}
+
+.partCell {
+  padding-left: 4px;
 }
