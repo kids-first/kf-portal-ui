@@ -128,7 +128,6 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'diagnosis_mondo',
     title: intl.get('entities.biospecimen.diagnoses.diagnosis_mondo'),
-    dataIndex: 'diagnosis_mondo',
     render: (record: IBiospecimenEntity) =>
       mergeBiosDiagnosesSpecificField(record, 'diagnosis_mondo'),
   },
