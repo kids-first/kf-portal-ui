@@ -20,7 +20,7 @@ import { getColumnStateQuery } from '../../graphql/reports/queries';
 
 import { TFetchTSVArgs } from './types';
 
-export const SUPPORT_EMAIL = 'support@includedcc.org';
+export const SUPPORT_EMAIL = 'support@kidsfirstdrc.org';
 
 const showErrorReportNotif = (thunkApi: any) =>
   thunkApi.dispatch(

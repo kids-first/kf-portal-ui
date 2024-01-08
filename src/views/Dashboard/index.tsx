@@ -11,7 +11,6 @@ import {
 } from 'common/featureToggle';
 import { AlterTypes } from 'common/types';
 import NotificationBanner from 'components/featureToggle/NotificationBanner';
-import FencesConnectionModal from 'components/uiKit/Fences/Modal';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { orderCardIfNeeded } from 'utils/helper';
@@ -57,8 +56,6 @@ const Dashboard = () => {
         items={orderCardIfNeeded(dashboardCards, userInfo?.config.dashboard?.cards?.order)}
         gutter={[24, 24]}
       />
-
-      <FencesConnectionModal />
     </Space>
   );
 };

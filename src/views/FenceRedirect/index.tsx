@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
+
 import { FENCE_NAMES } from 'common/fenceTypes';
 import { FenceApi } from 'services/api/fence';
 
 type OwnProps = {
-  fence: FENCE_NAMES;
+  fence: FENCE_NAMES | PASSPORT;
 };
 
 /*

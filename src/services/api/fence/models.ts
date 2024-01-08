@@ -1,4 +1,4 @@
-import { IAuthorizedStudy } from '@ferlab/ui/core/components/AuthorizedStudies';
+import { IAuthorizedStudy } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 
 export interface IFenceAuthPayload {
   authenticated: boolean;

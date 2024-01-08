@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import AuthorizedStudiesWidget, {
+  FENCE_AUTHENTIFICATION_STATUS,
   IFenceService,
-} from '@ferlab/ui/core/components/AuthorizedStudies';
-import { FENCE_AUHTENTIFICATION_STATUS } from '@ferlab/ui/core/components/AuthorizedStudies';
+} from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { INDEXES } from 'graphql/constants';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
@@ -54,7 +54,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   ];
 
   useEffect(() => {
-    if (!fences.some(({ status }) => status === FENCE_AUHTENTIFICATION_STATUS.connected)) {
+    if (!fences.some(({ status }) => status === FENCE_AUTHENTIFICATION_STATUS.connected)) {
       return;
     }
 
@@ -80,7 +80,6 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
           count: authorizedStudies.studies.length,
         }),
         connectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice'),
-        disconnectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.disconnectedNotice'),
         manageConnections: intl.get('screen.dashboard.cards.authorizedStudies.manageConnections'),
         noAvailableStudies: intl.get('screen.dashboard.cards.authorizedStudies.noAvailableStudies'),
         authentification: {

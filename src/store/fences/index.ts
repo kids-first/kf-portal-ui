@@ -3,10 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
 
-import { fencesAuthorizedStudiesSelector, fencesSelector } from './selector';
+import {
+  fencesAllAclsSelector,
+  fencesAtLeastOneAuthentificationConnectedSelector,
+  fencesAuthorizedStudiesSelector,
+  fencesSelector,
+} from './selector';
 import { fetchFenceAuthentificationStatus } from './thunks';
 
-export type { initialState as fencesInitialState } from './types';
+export type { InitialState as FencesInitialState } from './types';
 export { default, FencesState } from './slice';
 
 export const useFenceAuthentification = (fence: FENCE_NAMES) => {
@@ -21,6 +26,11 @@ export const useFenceAuthentification = (fence: FENCE_NAMES) => {
     ...state[fence],
   };
 };
+
+export const useAtLeastOneFenceConnected = () =>
+  useSelector(fencesAtLeastOneAuthentificationConnectedSelector);
+
+export const useAllFencesAcl = () => useSelector(fencesAllAclsSelector);
 
 export const useFencesAuthorizedStudies = () => {
   const state = useSelector(fencesAuthorizedStudiesSelector);
