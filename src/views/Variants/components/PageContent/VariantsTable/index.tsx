@@ -70,8 +70,8 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     key: 'hgvsg',
     dataIndex: 'hgvsg',
     className: noData
-      ? `${styles.fixedVariantTableCellNoData} ${styles.variantTableCellElipsis}`
-      : styles.variantTableCellElipsis,
+      ? `${styles.fixedVariantTableCellNoData} ${styles.fixedVariantTableCellElipsis}`
+      : styles.fixedVariantTableCellElipsis,
     sorter: {
       multiple: 1,
     },
@@ -79,7 +79,9 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     render: (hgvsg: string, entity: IVariantEntity) =>
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
-          <Link to={`${STATIC_ROUTES.VARIANTS}/${entity?.locus}`}>{hgvsg}</Link>
+          <div>
+            <Link to={`${STATIC_ROUTES.VARIANTS}/${entity?.locus}`}>{hgvsg}</Link>
+          </div>
         </Tooltip>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
