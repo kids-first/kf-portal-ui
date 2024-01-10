@@ -92,7 +92,6 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
     },
     queryConfig.operations,
   );
-  console.log('results', results);
 
   useEffect(() => {
     if (queryConfig.firstPageFlag !== undefined || queryConfig.searchAfter === undefined) {
