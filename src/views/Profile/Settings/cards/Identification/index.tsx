@@ -1,20 +1,23 @@
+import { useEffect, useRef, useState } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
 import { useKeycloak } from '@react-keycloak/web';
 import { Alert, Col, Form, Input, Row, Space, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
+import { formatProvider } from 'auth/keycloak-api/utils';
+
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import intl from 'react-intl-universal';
+import { usePersona } from 'store/persona';
+import { updatePersonaUser } from 'store/persona/thunks';
+
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
 
-import styles from './index.module.scss';
-import { usePersona } from 'store/persona';
-import { updatePersonaUser } from 'store/persona/thunks';
 import ToggleProfileVisibility from './ToggleProfileVisibility';
-import { formatProvider } from 'auth/keycloak-api/utils';
+
+import styles from './index.module.scss';
 
 enum FORM_FIELDS {
   FIRST_NAME = 'firstName',
