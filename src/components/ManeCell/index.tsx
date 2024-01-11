@@ -15,7 +15,10 @@ interface OwnProps {
 const ManeCell = ({ consequence }: OwnProps) => {
   const { mane_select, canonical, mane_plus } = consequence;
   const haveResult = mane_select || canonical || mane_plus;
-  return haveResult ? (
+
+  if (!haveResult) return <>{TABLE_EMPTY_PLACE_HOLDER}</>;
+
+  return (
     <Space size={4} className={style.maneIcons}>
       {canonical && (
         <Tooltip title={intl.get('screen.variants.table.canonical')}>
@@ -39,8 +42,6 @@ const ManeCell = ({ consequence }: OwnProps) => {
         </Tooltip>
       )}
     </Space>
-  ) : (
-    <>{TABLE_EMPTY_PLACE_HOLDER}</>
   );
 };
 export default ManeCell;
