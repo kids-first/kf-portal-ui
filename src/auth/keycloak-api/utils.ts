@@ -1,7 +1,7 @@
+import { keycloakConfig } from 'auth/keycloak-api/config';
+import keycloak from 'auth/keycloak-api/keycloak';
 import Axios, { AxiosResponse } from 'axios';
 import jwtdecode from 'jwt-decode';
-import keycloak from 'auth/keycloak-api/keycloak';
-import { keycloakConfig } from 'auth/keycloak-api/config';
 
 const client = Axios.create({
   timeout: 15000,
@@ -93,6 +93,8 @@ export enum Provider {
 }
 
 export const formatProvider = (value: string) => {
+  if (!value) return 'email';
+
   if (value === Provider.google) {
     return 'Google';
   }
