@@ -18,7 +18,7 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Dropdown, Menu, Tag } from 'antd';
+import { Button, Dropdown, Menu, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
 import {
@@ -85,7 +85,8 @@ const getDefaultColumns = (): ProColumnType[] => [
     },
     dataIndex: 'study',
     className: styles.studyIdCell,
-    render: (study: IParticipantStudy) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
+    render: (study: IParticipantStudy) =>
+      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'study_external_id',

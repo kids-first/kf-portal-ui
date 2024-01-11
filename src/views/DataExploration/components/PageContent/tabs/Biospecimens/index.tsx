@@ -15,11 +15,12 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
 import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
+import { IStudyEntity } from 'graphql/studies/models';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -60,10 +61,11 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'study.study_code',
-    title: 'Study',
-    dataIndex: ['study', 'study_code'],
+    title: intl.get('entities.participant.study'),
+    dataIndex: 'study',
     sorter: { multiple: 1 },
-    render: (study_code) => study_code || TABLE_EMPTY_PLACE_HOLDER,
+    render: (study: IStudyEntity) =>
+      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'sample_type',
@@ -88,7 +90,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'participant.participant_id',
-    title: 'Participant ID',
+    title: intl.get('entities.participant.participant_id'),
     sorter: { multiple: 1 },
     render: (record: IBiospecimenEntity) =>
       record?.participant?.participant_id ? (
@@ -155,7 +157,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   },
   {
     key: 'nb_files',
-    title: 'Files',
+    title: intl.get('entities.file.files'),
     sorter: { multiple: 1 },
     render: (record: IBiospecimenEntity) => {
       const nbFiles = record?.nb_files || 0;
