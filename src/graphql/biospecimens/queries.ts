@@ -52,6 +52,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
 
             study {
               study_code
+              study_name
             }
             participant {
               participant_id

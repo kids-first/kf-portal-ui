@@ -18,4 +18,3 @@ export interface IStudyEntity {
   data_category: string[];
   website: string;
 }
-

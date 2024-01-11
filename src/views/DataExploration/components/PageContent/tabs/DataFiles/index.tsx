@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
@@ -62,9 +63,9 @@ export const getDefaultColumns = (
 ): ProColumnType[] => [
   {
     key: 'lock',
-    title: 'File Authorization',
+    title: intl.get('entities.file.fileAuthorization'),
     iconTitle: <LockOutlined />,
-    tooltip: 'File Authorization',
+    tooltip: intl.get('entities.file.fileAuthorization'),
     align: 'center',
     render: (record: IFileEntity) => {
       const hasAccess = userHasAccessToFile(
@@ -87,8 +88,8 @@ export const getDefaultColumns = (
   },
   {
     key: 'controlled_access',
-    tooltip: 'Data Access',
-    title: 'Data Access',
+    tooltip: intl.get('entities.file.data_access.title'),
+    title: intl.get('entities.file.data_access.title'),
     iconTitle: <SafetyOutlined />,
     dataIndex: 'controlled_access',
     align: 'center',
@@ -110,7 +111,7 @@ export const getDefaultColumns = (
   },
   {
     key: 'file_id',
-    title: 'File ID',
+    title: intl.get('entities.file.file_id'),
     dataIndex: 'file_id',
     sorter: { multiple: 1 },
     render: (file_id: string) =>
@@ -122,30 +123,31 @@ export const getDefaultColumns = (
   },
   {
     key: 'study.study_code',
-    title: 'Study',
+    title: intl.get('entities.participant.study'),
     sorter: {
       multiple: 1,
     },
     dataIndex: 'study',
-    render: (study: IFileStudyEntity) => study.study_code || TABLE_EMPTY_PLACE_HOLDER,
+    render: (study: IFileStudyEntity) =>
+      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'data_category',
-    title: 'Data Category',
+    title: intl.get('entities.file.data_access.data_category'),
     sorter: { multiple: 1 },
     dataIndex: 'data_category',
     render: (data_category: string) => data_category || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'data_type',
-    title: 'Data Type',
+    title: intl.get('entities.file.data_access.data_type'),
     dataIndex: 'data_type',
     sorter: { multiple: 1 },
     render: (data_type: string) => data_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'sequencing_experiment.experiment_strategy',
-    title: 'Experimental Strategy',
+    title: intl.get('entities.file.data_access.experimental_strategy'),
     sorter: { multiple: 1 },
     render: (record: IFileEntity) =>
       (record.sequencing_experiment &&
@@ -154,21 +156,21 @@ export const getDefaultColumns = (
   },
   {
     key: 'file_format',
-    title: 'Format',
+    title: intl.get('entities.file.data_access.format'),
     dataIndex: 'file_format',
     sorter: { multiple: 1 },
     render: (file_format: string) => (file_format ? file_format : TABLE_EMPTY_PLACE_HOLDER),
   },
   {
     key: 'size',
-    title: 'Size',
+    title: intl.get('entities.file.data_access.size'),
     dataIndex: 'size',
     sorter: { multiple: 1 },
     render: (size: number) => formatFileSize(size, { output: 'string' }),
   },
   {
     key: 'nb_participants',
-    title: 'Participants',
+    title: intl.get('entities.file.data_access.participants'),
     sorter: { multiple: 1 },
     render: (record: IFileEntity) => {
       const nb_participants = record?.nb_participants || 0;
@@ -200,7 +202,7 @@ export const getDefaultColumns = (
   },
   {
     key: 'nb_biospecimens',
-    title: 'Biospecimens',
+    title: intl.get('entities.biospecimen.biospecimens'),
     sorter: { multiple: 1 },
     render: (record: IFileEntity) => {
       const nb_biospecimens = record?.nb_biospecimens || 0;
@@ -232,14 +234,14 @@ export const getDefaultColumns = (
   },
   {
     key: 'file_name',
-    title: 'File Name',
+    title: intl.get('entities.file.data_access.file_name'),
     dataIndex: 'file_name',
     defaultHidden: true,
     sorter: { multiple: 1 },
   },
   {
     key: 'sequencing_experiment.platform',
-    title: 'Platform',
+    title: intl.get('entities.file.experimental_procedure.platform'),
     defaultHidden: true,
     sorter: { multiple: 1 },
     render: (record: IFileEntity) =>
@@ -247,14 +249,14 @@ export const getDefaultColumns = (
   },
   {
     key: 'repository',
-    title: 'Repository',
+    title: intl.get('entities.file.repository'),
     dataIndex: 'repository',
     defaultHidden: true,
     sorter: { multiple: 1 },
   },
   {
     key: 'acl',
-    title: 'ACL',
+    title: intl.get('entities.file.acl'),
     dataIndex: 'acl',
     defaultHidden: true,
     sorter: { multiple: 1 },
@@ -262,7 +264,7 @@ export const getDefaultColumns = (
   },
   {
     key: 'access_urls',
-    title: 'Access URL',
+    title: intl.get('entities.file.access_url'),
     dataIndex: 'access_urls',
     defaultHidden: true,
     sorter: { multiple: 1 },
