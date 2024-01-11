@@ -60,20 +60,20 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (biospecimen: IBiospecimenEntity) =>
       biospecimen?.collection_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
-  {
-    key: 'ncit_id_tissue_type',
-    title: intl.get('entities.biospecimen.ncit_id_tissue_type'),
-    dataIndex: 'ncit_id_tissue_type',
-    defaultHidden: true,
-    render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
-  },
-  {
-    key: 'tissue_type_source_text',
-    title: intl.get('entities.biospecimen.tissue_type_source_text'),
-    dataIndex: 'tissue_type_source_text',
-    defaultHidden: true,
-    render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
-  },
+  // {
+  //   key: 'ncit_id_tissue_type',
+  //   title: intl.get('entities.biospecimen.ncit_id_tissue_type'),
+  //   dataIndex: 'ncit_id_tissue_type',
+  //   defaultHidden: true,
+  //   render: (ncit_id_tissue_type) => ncit_id_tissue_type || TABLE_EMPTY_PLACE_HOLDER,
+  // },
+  // {
+  //   key: 'tissue_type_source_text',
+  //   title: intl.get('entities.biospecimen.tissue_type_source_text'),
+  //   dataIndex: 'tissue_type_source_text',
+  //   defaultHidden: true,
+  //   render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
+  // },
   {
     key: 'source_text_tumor_descriptor',
     title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_descriptor'),
