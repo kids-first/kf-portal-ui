@@ -221,6 +221,7 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
         results={results}
         setQueryConfig={setQueryConfig}
         queryConfig={queryConfig}
+        queryBuilderId={VARIANT_REPO_QB_ID}
       />
     </Space>
   );
