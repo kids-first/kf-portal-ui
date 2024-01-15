@@ -13,9 +13,9 @@
 }
 
 .fixedVariantTableCellElipsis {
-  min-width: 100px;
-  max-width: 100px;
-  width: 100px;
+  min-width: 150px;
+  max-width: 150px;
+  width: 150px;
   div {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -37,6 +37,10 @@
   min-width: 150px;
   max-width: 150px;
   width: 150px;
+}
+
+.csqCellLayout {
+  min-width: 300px;
 }
 
 .userAffectedBtnCell {

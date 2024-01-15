@@ -86,7 +86,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
-    width: 100,
+    width: 150,
   },
   {
     key: 'variant_class',
@@ -174,12 +174,13 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
         <ConsequencesCell
           consequences={consequences}
           emptyText={intl.get('no.data.available')}
+          layoutClassName={styles.csqCellLayout}
           symbol={geneWithPickedConsequence.symbol}
           withoutSymbol
         />
       );
     },
-    width: 225,
+    width: 180,
   },
   {
     key: 'MANE',
