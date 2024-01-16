@@ -98,6 +98,7 @@ const fencesSlice = createSlice({
     builder.addCase(fenceDisconnection.fulfilled, (state, action) => {
       state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.disconnected;
       state[action.meta.arg].loading = false;
+      state.authorizedStudies.studies = [];
     });
     builder.addCase(fenceDisconnection.rejected, (state, action) => {
       state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.disconnected;
