@@ -16,7 +16,7 @@ const ClinvarColorMap: Record<any, string> = {
   association_not_found: 'default',
   benign: 'green',
   confers_sensitivity: 'default',
-  conflicting_interpretations_of_pathogenicity: 'orange',
+  conflicting_interpretations_of_pathogenicity: 'gold',
   drug_response: 'default',
   likely_benign: 'lime',
   likely_pathogenic: 'volcano',
@@ -28,7 +28,7 @@ const ClinvarColorMap: Record<any, string> = {
   protective: 'default',
   risk_factor: 'default',
   uncertain_risk_allele: 'default',
-  uncertain_significance: 'orange',
+  uncertain_significance: 'gold',
 };
 
 export const renderOmim = (
@@ -67,7 +67,7 @@ export const renderOmim = (
         {inheritance.length
           ? inheritance.map((code) => (
               <Tooltip key={code} title={intl.get(`screen.variants.table.inheritant.code.${code}`)}>
-                <Tag color="processing">
+                <Tag color="blue">
                   <ExternalLink href={omimLink}>{code}</ExternalLink>
                 </Tag>
               </Tooltip>
