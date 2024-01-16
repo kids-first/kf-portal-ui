@@ -331,9 +331,6 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     tooltip: intl.get('screen.variants.table.studies.tooltip'),
     dataIndex: 'studies',
     key: 'studies',
-    sorter: {
-      multiple: 1,
-    },
     render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => {
       const total = studies?.hits?.total ?? 0;
       if (total == 0) {
