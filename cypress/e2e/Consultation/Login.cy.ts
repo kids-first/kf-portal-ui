@@ -1,15 +1,9 @@
 /// <reference types="Cypress" />
 import '../../support/commands';
 
-describe('Page Logout', () => {
-
-  beforeEach(() => {
-    cy.login();
-    cy.visit('/');
-  });
-
+describe('Page Login', () => {
   it('Vérifier les informations affichées', () => {
-    cy.logout();
+    cy.visit('/');
 
     cy.contains('Available Data').should('exist');
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(0).contains(/\d{2}/).should('exist'); // data-cy="DataRelease_Study"

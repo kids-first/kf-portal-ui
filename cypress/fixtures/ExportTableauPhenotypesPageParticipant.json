@@ -1,0 +1,10 @@
+{
+  "headers": ["Phenotype (HPO)",
+              "Phenotype (Source Text)",
+              "Interpretation",
+              "Age"],
+  "content": ["Congenital diaphragmatic hernia (HP:0000776)",
+              "congenital diaphragmatic hernia",
+              "true",
+              "--"]
+}

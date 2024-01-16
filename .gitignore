@@ -118,3 +118,6 @@ build/
 /coverage
 /cypress/screenshots
 /cypress/results
+/cypress/downloads
+/cypress/videos
+.testquality

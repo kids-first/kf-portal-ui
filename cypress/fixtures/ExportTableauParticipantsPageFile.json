@@ -1,0 +1,18 @@
+{
+  "headers": ["Participant ID",
+              "Study",
+              "Proband",
+              "Sample ID",
+              "Sample Type",
+              "Collection Sample Type",
+              "Collection ID",
+              "External Participant ID"],
+  "content": ["PT_1DYA8779",
+              "KF-CDH",
+              "false",
+              "BS_VMV9N2KK",
+              "DNA",
+              "--",
+              "BS_VMV9N2KK_Leukocyte",
+              "667"]
+}
