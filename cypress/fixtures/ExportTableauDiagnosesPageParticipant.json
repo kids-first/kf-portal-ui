@@ -1,0 +1,10 @@
+{
+  "headers": ["Diagnosis (MONDO)",
+              "Diagnosis (NCIT)",
+              "Diagnosis (Source Text)",
+              "Age"],
+  "content": ["congenital diaphragmatic hernia (MONDO:0005711)",
+              "NCIT:C98893",
+              "congential diaphragmatic hernia",
+              "--"]
+}
