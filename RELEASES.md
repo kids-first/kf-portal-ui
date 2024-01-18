@@ -1,3 +1,19 @@
+## VERSION 5.0.2 (2024-01-18)
+
+## Technical / Other changes
+[SKFP-880] (https://d3b.atlassian.net/browse/SKFP-880) Update: (Variant Table) Update the UI of the variant table
+[SKFP-875] (https://d3b.atlassian.net/browse/SKFP-875) Feature: (Data Exploration) Add tooltip on hover for study code
+
+[SKFP-898] (https://d3b.atlassian.net/browse/SKFP-898)[Data Exploration & Entity page] Remove Tissue Type (NCIT) and Tissue Type (source text)
+
+[SKFP-663] (https://d3b.atlassian.net/browse/SKFP-663)[UI Theme] Les couleurs de src/style/themes/kids-first/colors.less
+
+[SKFP-910] (https://d3b.atlassian.net/browse/SKFP-910) Login with email/pwd crash application
+
+[SKFP-911] (https://d3b.atlassian.net/browse/SKFP-911)[Theme / Tags] Do not change text color for links within tags
+
+[SKFP-874] (https://d3b.atlassian.net/browse/SKFP-874) [Authorized Studies] Refactor widget
+
 ## VERSION 5.0.1 (2023-12-14)
 
 ### Features
