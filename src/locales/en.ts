@@ -552,7 +552,7 @@ const en = {
         error: {
           title: 'Connection error',
           subtitle:
-            'We are currently unable to connect to this service. Please refresh the page and try again. If the problem persists, please ',
+            'We are currently unable to connect to this service. Please refresh the page and try again. If the problem persists, please',
           contactSupport: 'contact support',
         },
         datarelease: {
@@ -595,7 +595,7 @@ const en = {
           disconnect: 'Disconnect',
           noProjects: 'You do not have any Cavatica projects.',
           createNewProject: 'Create your first project',
-          membersCount: '{count, plural, =0 {member} =1 {# member} other {# members}}',
+          membersCount: '{count, plural, =0 {# member} =1 {# member} other {# members}}',
           infoPopover: {
             title: 'CAVATICA Compute Cloud Platform',
             content:
@@ -603,6 +603,19 @@ const en = {
             readMore: 'Read more',
           },
           newProject: 'New project',
+          billingGroups: {
+            label: 'Project billing group',
+            empty: 'You have no project billing group',
+          },
+          createProject: 'Create project',
+          cancelText: 'Cancel',
+          error: {
+            create: {
+              title: 'Unable to create project',
+              subtitle:
+                'An error has occurred and we were unable to create your project. Please try again or',
+            },
+          },
         },
         savedFilters: {
           title: 'Saved Filters',
@@ -1069,6 +1082,8 @@ const en = {
               connect: 'Connect',
             },
             analyseModal: {
+              files: '{files} files',
+              ofFiles: '(out of {files} selected) to your Cavatica workspace.',
               newProject: 'New project',
               copyFiles: 'Copy files',
               copyFilesTo: 'Copy files to...',
@@ -1413,7 +1428,7 @@ const en = {
       fileAuthorization: 'File Authorization',
       fileReadMore: 'applying for data access.',
       locked:
-        'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on ',
+        'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on',
       unlocked: 'You are authorized to access and copy this file to your Cavatica workspace.',
       data_access: {
         title: 'Data Access',
@@ -1437,7 +1452,7 @@ const en = {
         format: 'Format',
         hash: 'Hash',
         locked:
-          'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on ',
+          'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on',
         manifest: 'Manifest',
         participants: 'Participants',
         participant_sample: 'Participant / Sample',

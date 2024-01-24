@@ -1,5 +1,7 @@
 import intl from 'react-intl-universal';
 import { FileTextOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
+import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
+import { PASSPORT_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/Cavatica/type';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
 import { Popover, Space } from 'antd';
@@ -7,11 +9,12 @@ import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { DATA_FILES_SAVED_SETS_FIELD } from 'views/DataExploration/utils/constant';
 
-import { FENCE_CONNECTION_STATUSES } from 'common/fenceTypes';
+import { FENCE_NAMES } from 'common/fenceTypes';
 import CavaticaAnalyzeButton from 'components/Cavatica/AnalyzeButton';
 import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 import DownloadFileManifestModal from 'components/uiKit/reports/DownloadFileManifestModal';
-import { useFenceConnection } from 'store/fenceConnection';
+import { useAllFencesAcl, useFenceAuthentification } from 'store/fences';
+import { useCavaticaPassport } from 'store/passport';
 import { userHasAccessToFile } from 'utils/dataFiles';
 
 import styles from './index.module.scss';
@@ -22,14 +25,16 @@ interface OwnProps {
 }
 
 const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
-  const { fencesAllAcls, connectionStatus } = useFenceConnection();
+  const fencesAllAcls = useAllFencesAcl();
+  const cavatica = useCavaticaPassport();
+  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
 
   const hasAccess = file
     ? userHasAccessToFile(
         file,
         fencesAllAcls,
-        connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
-        connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
+        cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
+        gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
       )
     : false;
 

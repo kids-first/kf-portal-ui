@@ -1,3 +1,4 @@
+import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { ARRANGER_API } from 'provider/ApolloProvider';
 
@@ -15,6 +16,8 @@ import {
 
 export const FENCE_API_URL = EnvironmentVariables.configFor('FENCE_API_URL');
 
+type TApiFence = FENCE_NAMES | PASSPORT;
+
 const fetchAuthorizedStudies = (params: IAuthorizedStudiesFetchParams) =>
   sendRequest<IAuthorizedStudiesPayload>({
     method: 'POST',
@@ -22,25 +25,25 @@ const fetchAuthorizedStudies = (params: IAuthorizedStudiesFetchParams) =>
     data: params,
   });
 
-const isAuthenticated = (fence: FENCE_NAMES) =>
+const isAuthenticated = (fence: TApiFence) =>
   sendRequest<IFenceAuthPayload>({
     url: `${FENCE_API_URL}/${fence}/authenticated`,
     method: 'GET',
   });
 
-const fetchAcls = (fence: FENCE_NAMES) =>
+const fetchAcls = (fence: TApiFence) =>
   sendRequest<IFenceAclsPayload>({
     url: `${FENCE_API_URL}/${fence}/acl`,
     method: 'GET',
   });
 
-const fetchInfo = (fence: FENCE_NAMES) =>
+const fetchInfo = (fence: TApiFence) =>
   sendRequest<IFenceInfo>({
     url: `${FENCE_API_URL}/${fence}/info`,
     method: 'GET',
   });
 
-const exchangeCode = (fence: FENCE_NAMES, code: string) =>
+const exchangeCode = (fence: TApiFence, code: string) =>
   sendRequest({
     url: `${FENCE_API_URL}/${fence}/exchange`,
     method: 'GET',
@@ -49,7 +52,7 @@ const exchangeCode = (fence: FENCE_NAMES, code: string) =>
     },
   });
 
-const disconnect = (fence: FENCE_NAMES) =>
+const disconnect = (fence: TApiFence) =>
   sendRequest({
     url: `${FENCE_API_URL}/${fence}/token`,
     method: 'DELETE',

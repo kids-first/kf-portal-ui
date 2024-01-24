@@ -1,5 +1,7 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
+
 import { sendRequest } from 'services/api';
+
 import {
   ICavaticaBillingGroup,
   ICavaticaCreateProjectBody,
@@ -7,8 +9,8 @@ import {
   ICavaticaDRSImportJobPayload,
   ICavaticaListPayload,
   ICavaticaProject,
-  ICavaticaProjectNode,
   ICavaticaProjectMember,
+  ICavaticaProjectNode,
 } from './models';
 
 const KEY_MANAGER_API_URL = EnvironmentVariables.configFor('KEY_MANAGER_API_URL');

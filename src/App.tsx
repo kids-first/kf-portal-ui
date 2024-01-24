@@ -7,6 +7,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import Empty from '@ferlab/ui/core/components/Empty';
+import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
 import MaintenancePage from '@ferlab/ui/core/pages/MaintenancePage';
 import { setLocale } from '@ferlab/ui/core/utils/localeUtils';
 import loadable from '@loadable/component';
@@ -39,9 +40,9 @@ import SideImageLayout from 'components/Layout/SideImage';
 import GradientAccent from 'components/uiKit/GradientAccent';
 import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
+import { initGa } from 'services/analytics';
 import { useLang } from 'store/global';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
-import { initGa } from 'services/analytics';
 
 const loadableProps = { fallback: <Spinner size="large" /> };
 const Dashboard = loadable(() => import('views/Dashboard'), loadableProps);
@@ -94,9 +95,9 @@ const App = () => {
                     render={() => <FenceRedirect fence={FENCE_NAMES.gen3} />}
                   />
                   <Route
-                    path={STATIC_ROUTES.CAVATICA_FENCE_REDIRECT}
+                    path={STATIC_ROUTES.CAVATICA_PASSPORT_REDIRECT}
                     exact
-                    render={() => <FenceRedirect fence={FENCE_NAMES.cavatica} />}
+                    render={() => <FenceRedirect fence={PASSPORT.cavatica} />}
                   />
                   <Route exact path={STATIC_ROUTES.LOGIN}>
                     <GradientAccent isFixed />

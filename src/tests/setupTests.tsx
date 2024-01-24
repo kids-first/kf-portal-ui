@@ -15,13 +15,12 @@ import enUS from 'antd/lib/locale/en_US';
 import locales from 'locales';
 
 import { LANG } from 'common/constants';
-import { FenceCavaticaState } from 'store/fenceCavatica';
-import { FenceConnectionState } from 'store/fenceConnection';
-import { FenceStudiesState } from 'store/fenceStudies';
+import { FencesState } from 'store/fences';
 import { GlobalState } from 'store/global/slice';
 import type { AppStore } from 'store/index';
 import { store as setupStore } from 'store/index';
 import { NotebookState } from 'store/notebook/slice';
+import { passportState } from 'store/passport';
 import { PersonaState } from 'store/persona';
 import { RemoteState } from 'store/remote';
 import { ReportState } from 'store/report';
@@ -41,11 +40,10 @@ export const defaultPreloadedState = {
   persona: PersonaState,
   notebook: NotebookState,
   report: ReportState,
-  fenceConnection: FenceConnectionState,
-  fenceStudies: FenceStudiesState,
   savedFilter: SavedFilterState,
   savedSet: SavedSetState,
-  fenceCavatica: FenceCavaticaState,
+  fences: FencesState,
+  passport: passportState,
   remote: RemoteState,
 };
 

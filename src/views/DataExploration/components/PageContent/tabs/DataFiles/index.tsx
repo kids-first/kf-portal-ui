@@ -10,6 +10,8 @@ import { resetSearchAfterQueryConfig, tieBreaker } from '@ferlab/ui/core/compone
 import useQueryBuilderState, {
   addQuery,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
+import { PASSPORT_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/Cavatica/type';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
@@ -36,11 +38,12 @@ import {
 } from 'views/DataExploration/utils/constant';
 
 import { MAX_ITEMS_QUERY, TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-import { FENCE_CONNECTION_STATUSES } from 'common/fenceTypes';
+import { FENCE_NAMES } from 'common/fenceTypes';
 import CavaticaAnalyzeButton from 'components/Cavatica/AnalyzeButton';
 import DownloadFileManifestModal from 'components/uiKit/reports/DownloadFileManifestModal';
 import { SetType } from 'services/api/savedSet/models';
-import { useFenceConnection } from 'store/fenceConnection';
+import { useAllFencesAcl, useFenceAuthentification } from 'store/fences';
+import { useCavaticaPassport } from 'store/passport';
 import { fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
@@ -274,8 +277,10 @@ export const getDefaultColumns = (
 const DataFilesTab = ({ sqon }: OwnProps) => {
   const dispatch = useDispatch();
   const { userInfo } = useUser();
+  const cavatica = useCavaticaPassport();
+  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
+  const fencesAllAcls = useAllFencesAcl();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
-  const { fencesAllAcls, connectionStatus } = useFenceConnection();
   const [selectedAllResults, setSelectedAllResults] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [selectedRows, setSelectedRows] = useState<ITableFileEntity[]>([]);
@@ -355,8 +360,8 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
         tableId="datafiles_table"
         columns={getDefaultColumns(
           fencesAllAcls,
-          connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
-          connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
+          cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
+          gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
         )}
         initialSelectedKey={selectedKeys}
         wrapperClassName={styles.dataFilesTabWrapper}
@@ -391,8 +396,8 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
                 columnStates: userInfo?.config.data_exploration?.tables?.datafiles?.columns,
                 columns: getDefaultColumns(
                   fencesAllAcls,
-                  connectionStatus.cavatica === FENCE_CONNECTION_STATUSES.connected,
-                  connectionStatus.gen3 === FENCE_CONNECTION_STATUSES.connected,
+                  cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
+                  gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
                 ),
                 index: INDEXES.FILE,
                 sqon: getCurrentSqon(),

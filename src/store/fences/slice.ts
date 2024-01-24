@@ -1,4 +1,4 @@
-import { FENCE_AUHTENTIFICATION_STATUS } from '@ferlab/ui/core/components/AuthorizedStudies';
+import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
@@ -9,27 +9,20 @@ import {
   fetchAuthorizedStudies,
   fetchFenceAuthentificationStatus,
 } from './thunks';
-import { initialState } from './types';
+import { InitialState } from './types';
 
-export const FencesState: initialState = {
+export const FencesState: InitialState = {
   [FENCE_NAMES.gen3]: {
     id: FENCE_NAMES.gen3,
     acl: [],
-    status: FENCE_AUHTENTIFICATION_STATUS.unknown,
+    status: FENCE_AUTHENTIFICATION_STATUS.unknown,
     loading: false,
     error: false,
   },
   [FENCE_NAMES.dcf]: {
     id: FENCE_NAMES.dcf,
     acl: [],
-    status: FENCE_AUHTENTIFICATION_STATUS.unknown,
-    loading: false,
-    error: false,
-  },
-  [FENCE_NAMES.cavatica]: {
-    id: FENCE_NAMES.dcf,
-    acl: [],
-    status: FENCE_AUHTENTIFICATION_STATUS.unknown,
+    status: FENCE_AUTHENTIFICATION_STATUS.unknown,
     loading: false,
     error: false,
   },
@@ -47,7 +40,7 @@ const fencesSlice = createSlice({
   extraReducers: (builder) => {
     // Authentification API (open new window)
     builder.addCase(fenceOpenAuhentificationTab.pending, (state, action) => {
-      state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.unknown;
+      state[action.meta.arg].status = FENCE_AUTHENTIFICATION_STATUS.unknown;
       state[action.meta.arg].error = false;
       state[action.meta.arg].loading = true;
     });
@@ -62,7 +55,7 @@ const fencesSlice = createSlice({
     });
     // Authentification status and acl
     builder.addCase(fetchFenceAuthentificationStatus.pending, (state, action) => {
-      state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.unknown;
+      state[action.meta.arg].status = FENCE_AUTHENTIFICATION_STATUS.unknown;
       state[action.meta.arg].error = false;
       state[action.meta.arg].loading = true;
     });
@@ -91,17 +84,17 @@ const fencesSlice = createSlice({
     });
     // disconnection
     builder.addCase(fenceDisconnection.pending, (state, action) => {
-      state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.unknown;
+      state[action.meta.arg].status = FENCE_AUTHENTIFICATION_STATUS.unknown;
       state[action.meta.arg].acl = [];
       state[action.meta.arg].loading = true;
     });
     builder.addCase(fenceDisconnection.fulfilled, (state, action) => {
-      state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.disconnected;
+      state[action.meta.arg].status = FENCE_AUTHENTIFICATION_STATUS.disconnected;
       state[action.meta.arg].loading = false;
       state.authorizedStudies.studies = [];
     });
     builder.addCase(fenceDisconnection.rejected, (state, action) => {
-      state[action.meta.arg].status = FENCE_AUHTENTIFICATION_STATUS.disconnected;
+      state[action.meta.arg].status = FENCE_AUTHENTIFICATION_STATUS.disconnected;
       state[action.meta.arg].acl = [];
       state[action.meta.arg].loading = false;
       state[action.meta.arg].error = true;

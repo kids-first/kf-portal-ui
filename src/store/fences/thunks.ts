@@ -1,11 +1,11 @@
 import {
-  FENCE_AUHTENTIFICATION_STATUS,
+  FENCE_AUTHENTIFICATION_STATUS,
   IAuthorizedStudy,
-} from '@ferlab/ui/core/components/AuthorizedStudies';
-import { IFence } from '@ferlab/ui/core/components/AuthorizedStudies';
+  IFence,
+} from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { FENCE_NAMES } from 'common/fenceTypes';
+import { ALL_FENCE_NAMES, FENCE_NAMES } from 'common/fenceTypes';
 import { FenceApi } from 'services/api/fence';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
@@ -54,9 +54,19 @@ export const fetchAuthorizedStudies = createAsyncThunk<
   });
 });
 
+export const fetchAllFencesAuthentificationStatus = createAsyncThunk<
+  void,
+  void,
+  { state: RootState }
+>('fence/check/all/auth/statue', async (_, thunkAPI) => {
+  ALL_FENCE_NAMES.forEach((fence) => {
+    thunkAPI.dispatch(fetchFenceAuthentificationStatus(fence));
+  });
+});
+
 export const fetchFenceAuthentificationStatus = createAsyncThunk<
   {
-    status: FENCE_AUHTENTIFICATION_STATUS;
+    status: FENCE_AUTHENTIFICATION_STATUS;
     acl: string[];
   },
   FENCE_NAMES,
@@ -74,8 +84,8 @@ export const fetchFenceAuthentificationStatus = createAsyncThunk<
     error,
     data: {
       status: data?.authenticated
-        ? FENCE_AUHTENTIFICATION_STATUS.connected
-        : FENCE_AUHTENTIFICATION_STATUS.disconnected,
+        ? FENCE_AUTHENTIFICATION_STATUS.connected
+        : FENCE_AUTHENTIFICATION_STATUS.disconnected,
       acl,
     },
     reject: thunkAPI.rejectWithValue,
@@ -84,7 +94,7 @@ export const fetchFenceAuthentificationStatus = createAsyncThunk<
 
 export const fenceOpenAuhentificationTab = createAsyncThunk<
   {
-    status: FENCE_AUHTENTIFICATION_STATUS;
+    status: FENCE_AUTHENTIFICATION_STATUS;
     acl: string[];
   },
   FENCE_NAMES,
@@ -92,13 +102,7 @@ export const fenceOpenAuhentificationTab = createAsyncThunk<
     state: RootState;
   }
 >('fence/connection', async (fence, thunkAPI) => {
-  const { fenceConnection } = thunkAPI.getState();
-  let fenceInfo = fenceConnection.fencesInfo[fence];
-
-  if (!fenceInfo) {
-    const { data } = await FenceApi.fetchInfo(fence);
-    fenceInfo = data;
-  }
+  const { data: fenceInfo } = await FenceApi.fetchInfo(fence);
 
   const authWindow = window.open(fenceInfo?.authorize_uri)!;
 
@@ -118,8 +122,8 @@ export const fenceOpenAuhentificationTab = createAsyncThunk<
 
           resolve({
             status: data?.authenticated
-              ? FENCE_AUHTENTIFICATION_STATUS.connected
-              : FENCE_AUHTENTIFICATION_STATUS.disconnected,
+              ? FENCE_AUTHENTIFICATION_STATUS.connected
+              : FENCE_AUTHENTIFICATION_STATUS.disconnected,
             acl,
           });
         } else {
