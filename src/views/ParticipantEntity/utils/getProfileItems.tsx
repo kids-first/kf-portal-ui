@@ -47,7 +47,7 @@ const getProfileItems = (participant?: IParticipantEntity): IEntityDescriptionsI
   },
   {
     label: intl.get('entities.participant.vital_status'),
-    value: getVitalStatus(participant),
+    value: <>{getVitalStatus(participant)}</>,
   },
   {
     label: intl.get('entities.participant.age_at_vital_status'),

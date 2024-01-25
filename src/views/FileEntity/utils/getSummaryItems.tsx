@@ -29,7 +29,7 @@ const getSummaryItems = (file?: IFileEntity): IEntityDescriptionsItem[] => [
   },
   {
     label: intl.get('entities.file.summary.size'),
-    value: formatFileSize(file?.size, { output: 'string' }) || TABLE_EMPTY_PLACE_HOLDER,
+    value: <>{formatFileSize(file?.size, { output: 'string' })}</> || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.summary.url'),
