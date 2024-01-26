@@ -116,6 +116,7 @@ const passportSlice = createSlice({
     });
     builder.addCase(createCavaticaProjet.fulfilled, (state, action) => {
       state.cavatica.projects.loading = false;
+      state.cavatica.projects.data.push(action.payload.newProject);
     });
     builder.addCase(createCavaticaProjet.rejected, (state, action) => {
       state.cavatica.projects.loading = false;
