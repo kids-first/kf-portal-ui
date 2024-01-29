@@ -159,6 +159,9 @@ const en = {
       },
       success: {
         title: 'Success',
+        description: `<div><p>Your files have been copied to: <strong>{destination}</strong</p>
+          <p>If you have uploaded more than 10000 files in the last 5 minutes, the import may take a little longer.</p>
+          <a href="{userBaseUrl}" rel="noreferrer" style="color:unset;textDecoration:underline;" target="_blank">Open project in Cavatica</a><div>`,
         projects: {
           create: 'Project created successfully',
         },
