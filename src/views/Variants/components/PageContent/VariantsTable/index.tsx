@@ -384,8 +384,8 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
       const pickedConsequence = geneWithPickedConsequence.consequences?.hits?.edges?.find(
         (c) => c.node.picked,
       );
-      return pickedConsequence?.node?.predictions?.cadd_score
-        ? pickedConsequence.node.predictions.cadd_score
+      return pickedConsequence?.node?.predictions?.cadd_phred
+        ? pickedConsequence.node.predictions.cadd_phred
         : TABLE_EMPTY_PLACE_HOLDER;
     },
     width: 90,
