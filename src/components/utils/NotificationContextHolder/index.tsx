@@ -1,20 +1,24 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { globalActions, useGlobals } from 'store/global';
-import { notification as antNotification } from 'antd';
-import { message as antMessage } from 'antd';
+import { message as antMessage, notification as antNotification } from 'antd';
 import cx from 'classnames';
+
+import { globalActions, useGlobals } from 'store/global';
 
 import styles from './index.module.scss';
 
 const NotificationContextHolder = () => {
   const dispatch = useDispatch();
+  // notification is local only
   const { notification, message, messagesToDestroy } = useGlobals();
 
   useEffect(() => {
     if (notification) {
       antNotification.open({
         ...notification,
+        description: React.createElement('div', {
+          dangerouslySetInnerHTML: { __html: notification.description },
+        }),
         style: undefined,
         onClose: () => {
           if (notification.onClose) {

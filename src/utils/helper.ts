@@ -30,10 +30,13 @@ export const formatQuerySortList = (sorter: SorterResult<any> | SorterResult<any
 export const getCurrentUrl = () =>
   window.location.protocol + '//' + window.location.host + window.location.pathname;
 
-const KEBAB_REGEX = /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g;
-export const toKebabCase = (str: string) => {
-  const match: string[] = (str && str.match(KEBAB_REGEX)) || [];
-  return match.map((x: string) => x.toLowerCase()).join('-');
-};
-
 export const isNumber = (n: unknown): boolean => typeof n === 'number';
+
+//Source: https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-265.php
+export const chunkIt = (l: any[] = [], size: number = 1) =>
+  Array.from({ length: Math.ceil(l.length / size) }, (_, i) => l.slice(i * size, i * size + size));
+
+export const keepOnly = (
+  o: Object,
+  fn: ([key, value]: [string, any]) => boolean = ([, v]) => !!v,
+) => Object.fromEntries(Object.entries(o).filter(fn));

@@ -1,7 +1,7 @@
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { SorterResult } from 'antd/lib/table/interface';
 
-import { formatQuerySortList, getOrderFromAntdValue } from './helper';
+import { chunkIt, formatQuerySortList, getOrderFromAntdValue, keepOnly } from './helper';
 
 describe(`${getOrderFromAntdValue.name}()`, () => {
   test('should return SortDirection.Asc for "ascend"', () => {
@@ -39,5 +39,21 @@ describe(`${formatQuerySortList.name}()`, () => {
 
   it('should handle an empty sorter', () => {
     expect(formatQuerySortList({})).toEqual([]);
+  });
+});
+
+describe(`${chunkIt.name}()`, () => {
+  it('should chunk and array into chunks', () => {
+    expect(chunkIt(['a', 'b', 'c'], 2)).toEqual([['a', 'b'], ['c']]);
+  });
+});
+
+describe(`${keepOnly.name}()`, () => {
+  it('should handle edge case', () => {
+    expect(keepOnly({ a: null, b: undefined })).toEqual({});
+  });
+
+  it('should keep only wanted entries', () => {
+    expect(keepOnly({ a: 'a', b: 2 }, ([, v]) => typeof v === 'number')).toEqual({ b: 2 });
   });
 });

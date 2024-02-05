@@ -1,6 +1,9 @@
-import intl from 'react-intl-universal';
 import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
+import {
+  CAVATICA_TYPE,
+  ICavaticaTreeNode,
+} from '@ferlab/ui/core/components/Widgets/Cavatica/CavaticaAnalyzeModal';
 import {
   CAVATICA_ANALYSE_STATUS,
   PASSPORT_AUTHENTIFICATION_STATUS,
@@ -12,7 +15,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IFileEntity, IFileResultTree } from 'graphql/files/models';
 import { SEARCH_FILES_QUERY } from 'graphql/files/queries';
 import { hydrateResults } from 'graphql/models';
+import { toNodes } from 'graphql/utils/helpers';
+import EnvironmentVariables from 'helpers/EnvVariables';
 import { isEmpty } from 'lodash';
+import intl from 'react-intl-universal';
 import { CAVATICA_FILE_BATCH_SIZE } from 'views/DataExploration/utils/constant';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
@@ -21,6 +27,7 @@ import { CavaticaApi } from 'services/api/cavatica';
 import {
   ICavaticaBillingGroup,
   ICavaticaCreateProjectBody,
+  ICavaticaDRSImportItem,
   ICavaticaProject,
 } from 'services/api/cavatica/models';
 import { FenceApi } from 'services/api/fence';
@@ -28,7 +35,11 @@ import { globalActions } from 'store/global';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
 import { userHasAccessToFile } from 'utils/dataFiles';
+import { chunkIt, keepOnly } from 'utils/helper';
 
+import { makeUniqueWords as unique } from '../../helpers';
+
+const USER_BASE_URL = EnvironmentVariables.configFor('CAVATICA_USER_BASE_URL');
 const TEN_MINUTES_IN_MS = 1000 * 60 * 10;
 
 // TODO: Still using the legacy fence authentification, will be changed in the futur for a passport
@@ -282,5 +293,89 @@ export const beginCavaticaAnalyse = createAsyncThunk<
       files,
       authorizedFiles,
     },
+  });
+});
+
+export const metadata = (f: IFileEntity) => {
+  if (!f || !Object.keys(f).length) {
+    return {};
+  }
+  const joinUniquely = (l: string[]) => unique(l).join(',');
+  const seqExp = toNodes(f.sequencing_experiment);
+  const ps = toNodes(f.participants);
+  const sps = ps.map((x) => toNodes(x.biospecimens)).flat();
+  return keepOnly({
+    fhir_document_reference: f.fhir_document_reference,
+    participants: joinUniquely(ps.map((x) => x.participant_id)),
+    platform: joinUniquely(seqExp.map((x) => x.platform)),
+    experimental_strategy: joinUniquely(seqExp.map((x) => x.experiment_strategy)),
+    reference_genome: null,
+    investigation: f.study?.study_code,
+    sample_id: joinUniquely(sps.map((x) => x.sample_id)),
+    sample_type: joinUniquely(sps.map((x) => x.sample_type)),
+  });
+};
+
+export const startBulkImportJob = createAsyncThunk<
+  any,
+  ICavaticaTreeNode,
+  { rejectValue: string; state: RootState }
+>('passport/cavatica/bulk/import', async (args, thunkAPI) => {
+  const { passport } = thunkAPI.getState();
+
+  const drsItems: ICavaticaDRSImportItem[] = [];
+  const type = args.type === CAVATICA_TYPE.PROJECT ? 'project' : 'parent';
+  passport.cavatica.bulkImportData.authorizedFiles.forEach((file: IFileEntity) => {
+    if (file.index) {
+      drsItems.push({
+        drs_uri: file.index.urls,
+        name: file.index.file_name,
+        [type]: args.id,
+      });
+    }
+
+    drsItems.push({
+      drs_uri: file.access_urls,
+      name: file.file_name,
+      [type]: args.id,
+      metadata: metadata(file),
+    });
+  });
+
+  //https://docs.cavatica.org/reference/start-a-bulk-drs-import-job
+  const MAX_NUMBER_OF_ITEMS_PER_API_CALL = 100;
+  const chunks: ICavaticaDRSImportItem[][] = chunkIt(drsItems, MAX_NUMBER_OF_ITEMS_PER_API_CALL);
+
+  const responses = await Promise.all(
+    chunks.map((items: ICavaticaDRSImportItem[]) => CavaticaApi.startBulkDrsImportJob({ items })),
+  );
+
+  const error = responses.find((resp) => !!resp.error);
+  return handleThunkApiReponse({
+    error: error?.error,
+    data: true,
+    reject: thunkAPI.rejectWithValue,
+    onError: () =>
+      thunkAPI.dispatch(
+        globalActions.displayNotification({
+          type: 'error',
+          message: intl.get('api.cavatica.error.title'),
+          description: intl.get('api.cavatica.error.bulk.import'),
+        }),
+      ),
+    onSuccess: () =>
+      thunkAPI.dispatch(
+        globalActions.displayNotification({
+          type: 'success',
+          message: intl.get('api.cavatica.success.title'),
+          description: intl.get('api.cavatica.success.description', {
+            destination: args.title,
+            userBaseUrl: `${USER_BASE_URL}${
+              args.type === CAVATICA_TYPE.PROJECT ? args.id : args.project!
+            }`,
+          }),
+          duration: 5,
+        }),
+      ),
   });
 });

@@ -22,6 +22,26 @@ export const SEARCH_FILES_QUERY = gql`
             file_name
             repository
             nb_participants
+            participants {
+              hits {
+                edges {
+                  node {
+                    participant_id
+                    is_proband
+                    biospecimens {
+                      hits {
+                        edges {
+                          node {
+                            sample_type
+                            sample_type
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
             nb_biospecimens
             fhir_document_reference
             index {

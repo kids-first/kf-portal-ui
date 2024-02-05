@@ -19,6 +19,7 @@ import {
   beginCavaticaAnalyse,
   connectCavaticaPassport,
   createCavaticaProjet,
+  startBulkImportJob,
 } from 'store/passport/thunks';
 
 interface OwnProps {
@@ -72,6 +73,7 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
       handleBeginAnalyse={onBeginAnalyse}
       handleFilesAndFolders={CavaticaApi.listFilesAndFolders}
       cavatica={cavatica}
+      loading={cavatica.bulkImportData.loading}
       setCavaticaBulkImportDataStatus={(status: CAVATICA_ANALYSE_STATUS) => {
         dispatch(passportActions.setCavaticaBulkImportDataStatus(status));
       }}
@@ -89,6 +91,9 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
             body: values,
           }),
         );
+      }}
+      handleImportBulkData={(value) => {
+        dispatch(startBulkImportJob(value));
       }}
       dictionary={{
         analyseModal: {
