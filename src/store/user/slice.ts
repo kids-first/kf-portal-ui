@@ -72,9 +72,9 @@ const userSlice = createSlice({
         config: action.payload,
       },
     }));
-    builder.addCase(updateUserConfig.rejected, (state, action) => ({
+    builder.addCase(updateUserConfig.rejected, (state) => ({
       ...state,
-      error: action.payload,
+      isLoading: false,
     }));
 
     // Delete User

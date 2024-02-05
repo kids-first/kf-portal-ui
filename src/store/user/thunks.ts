@@ -8,6 +8,8 @@ import { handleThunkApiReponse } from 'store/utils';
 import { mergeDeep } from 'utils/object';
 
 import { userActions } from './slice';
+import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
+import { cloneDeep, get, keys, merge, set } from 'lodash';
 
 const fetchUser = createAsyncThunk<TUser, void, { rejectValue: string; state: RootState }>(
   'user/fetch',
@@ -68,38 +70,34 @@ const updateUser = createAsyncThunk<
   },
 );
 
-const updateUserConfig = createAsyncThunk<
-  TUserConfig,
-  TUserConfig,
-  { rejectValue: string; state: RootState }
->(
-  'user/update/config',
+const cleanupConfig = (config: TUserConfig): TUserConfig => {
+  // keep last item
+  const removeDuplicates = (cols: TColumnStates) =>
+    cols.filter((c, i) => !cols.some((other, j) => c.key === other.key && j > i));
+
+  // for every tables in config replace columns with no duplicates
+  keys(config.data_exploration?.tables).forEach((key) => {
+    const path = 'data_exploration.tables.' + key + '.columns';
+    const cols = get(config, path, []);
+    set(config, path, removeDuplicates(cols));
+  });
+
+  return config;
+};
+
+const updateUserConfig = createAsyncThunk<TUserConfig, TUserConfig, { state: RootState }>(
+  'user/updateConfig',
   async (config, thunkAPI) => {
-    const { user } = thunkAPI.getState();
+    const state = thunkAPI.getState();
+    const mergedConfig = cleanupConfig(
+      merge(cloneDeep(state?.user?.userInfo?.config), cloneDeep(config)),
+    );
+    await UserApi.update({ config: mergedConfig });
 
-    const deepCopyUserConfig = JSON.parse(JSON.stringify(user.userInfo?.config));
-    const deepCopyNewConfig = JSON.parse(JSON.stringify(config));
-    const mergedConfig =
-      deepCopyUserConfig.length > 0
-        ? mergeDeep<TUserConfig>(deepCopyUserConfig, deepCopyNewConfig)
-        : deepCopyNewConfig;
-
-    const { error } = await UserApi.update({
-      config: mergedConfig,
-    });
-
-    return handleThunkApiReponse({
-      error: error,
-      data: mergedConfig,
-      reject: thunkAPI.rejectWithValue,
-    });
+    return mergedConfig;
   },
   {
-    condition: (config) => {
-      if (Object.keys(config).length < 1) {
-        return false;
-      }
-    },
+    condition: (config) => Object.keys(config).length > 0,
   },
 );
 
