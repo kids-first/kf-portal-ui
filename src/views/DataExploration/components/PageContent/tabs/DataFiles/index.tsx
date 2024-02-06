@@ -25,6 +25,7 @@ import {
   IFileStudyEntity,
   ITableFileEntity,
 } from 'graphql/files/models';
+import { capitalize } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   DATA_EXPLORATION_QB_ID,
@@ -256,6 +257,7 @@ export const getDefaultColumns = (
     dataIndex: 'repository',
     defaultHidden: true,
     sorter: { multiple: 1 },
+    render: (repository: string) => capitalize(repository) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'acl',
