@@ -21,6 +21,7 @@ import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
+import { capitalize } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -153,7 +154,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     key: 'status',
     title: intl.get('entities.biospecimen.sample_availabilty'),
     dataIndex: 'status',
-    render: (status) => status || TABLE_EMPTY_PLACE_HOLDER,
+    render: (status) => capitalize(status) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'nb_files',
