@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { ExperimentOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
@@ -18,9 +19,10 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
       field="sample_id" // @todo: search_text, see when implemented
+      searchFields={['sample_id', 'external_sample_id']}
       index={INDEXES.BIOSPECIMEN}
-      placeholder="e.g. BS_011DYZ2J, HTP0001B2_Plasma"
-      emptyDescription="No samples found"
+      placeholder={intl.get('global.search.biospecimen.placeholder')}
+      emptyDescription={intl.get('global.search.biospecimen.emptyText')}
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}
       optionsFormatter={(options, matchRegex, search) =>
@@ -29,12 +31,14 @@ const BiospecimenSearch = ({ queryBuilderId }: ICustomSearchProps) => {
             <SelectItem
               icon={<ExperimentOutlined />}
               title={highlightSearchMatch(option.sample_id, matchRegex, search)}
+              caption={highlightSearchMatch(option.external_sample_id, matchRegex, search)}
             />
           ),
           value: option.sample_id,
         }))
       }
-      title="Search by sample ID"
+      title={intl.get('global.search.biospecimen.title')}
+      tooltipText={intl.get('global.search.biospecimen.tooltip')}
     />
   );
 };
@@ -47,8 +51,8 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
       queryBuilderId={queryBuilderId}
       field="collection_sample_id" // @todo: search_text, see when implemented
       index={INDEXES.BIOSPECIMEN}
-      placeholder="e.g. HTP0001B2_Whole blood, BS_1YEZ2XR4_Saliva"
-      emptyDescription="No collection ID found"
+      placeholder={intl.get('global.search.biospecimen.collection.placeholder')}
+      emptyDescription={intl.get('global.search.biospecimen.collection.emptyText')}
       query={BIOSPECIMEN_SEARCH_BY_ID_QUERY}
       sqon={sqon}
       optionsFormatter={(options, matchRegex, search) =>
@@ -62,7 +66,7 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
           value: option.collection_sample_id,
         }))
       }
-      title="Search by collection ID"
+      title={intl.get('global.search.biospecimen.collection.title')}
     />
   );
 };

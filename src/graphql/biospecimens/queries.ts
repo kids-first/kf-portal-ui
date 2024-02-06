@@ -149,6 +149,7 @@ export const CHECK_BIOSPECIMEN_MATCH = gql`
         edges {
           node {
             fhir_id
+            external_sample_id
             sample_id
             study {
               study_id
@@ -169,6 +170,7 @@ export const BIOSPECIMEN_SEARCH_BY_ID_QUERY = gql`
         edges {
           node {
             sample_id
+            external_sample_id
             collection_sample_id
           }
         }

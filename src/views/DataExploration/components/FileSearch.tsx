@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { FileTextOutlined } from '@ant-design/icons';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
@@ -17,8 +18,8 @@ const FileSearch = ({ queryBuilderId }: ICustomSearchProps) => {
       queryBuilderId={queryBuilderId}
       field="file_id"
       index={INDEXES.FILE}
-      placeholder="e.g. GF_001CSF26"
-      emptyDescription="No files found"
+      placeholder={intl.get('global.search.file.placeholder')}
+      emptyDescription={intl.get('global.search.file.emptyText')}
       query={FILE_SEARCH_BY_ID_QUERY}
       sqon={activeQuery as ISqonGroupFilter}
       optionsFormatter={(options, matchRegex, search) =>
@@ -32,7 +33,7 @@ const FileSearch = ({ queryBuilderId }: ICustomSearchProps) => {
           value: option.file_id,
         }))
       }
-      title="Search by file ID"
+      title={intl.get('global.search.file.title')}
     />
   );
 };

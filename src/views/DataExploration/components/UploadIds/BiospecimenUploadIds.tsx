@@ -22,8 +22,8 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
   <EntityUploadIds
     entityId="biospecimen"
     entityIdTrans="sample"
-    entityIdentifiers="Sample ID"
-    placeHolder="e.g. HTP0001B2_Whole blood, BS_011DYZ2J_DNA, 238981007"
+    entityIdentifiers={intl.get('components.uploadIds.modal.identifiers.biospecimen')}
+    placeHolder={intl.get('components.uploadIds.modal.placeholders.biospecimen')}
     fetchMatch={async (ids) => {
       const response = await ArrangerApi.graphqlRequest({
         query: CHECK_BIOSPECIMEN_MATCH.loc?.source.body,
@@ -32,7 +32,7 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
           offset: 0,
           sqon: generateQuery({
             operator: BooleanOperators.or,
-            newFilters: ['sample_id'].map((field) =>
+            newFilters: ['sample_id', 'external_sample_id'].map((field) =>
               generateValueFilter({
                 field,
                 value: ids,
@@ -49,7 +49,9 @@ const BiospecimenUploadIds = ({ queryBuilderId }: OwnProps) => (
 
       return biospecimens?.flatMap((biospecimen) => {
         const matchedIds: string[] = ids.filter(
-          (id: string) => biospecimen.sample_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
+          (id: string) =>
+            biospecimen.sample_id.toLocaleLowerCase() === id.toLocaleLowerCase() ||
+            biospecimen.external_sample_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
         );
 
         return matchedIds.map((id, index) => ({
