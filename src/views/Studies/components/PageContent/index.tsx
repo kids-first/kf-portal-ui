@@ -5,9 +5,11 @@ import { ReadOutlined } from '@ant-design/icons';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Space, Typography } from 'antd';
@@ -52,6 +54,12 @@ const PageContent = ({
     first: PAGE_SIZE,
     offset: PAGE_SIZE * (queryConfig.pageIndex - 1),
     sqon: resolvedSqon,
+    sort: tieBreaker({
+      sort: queryConfig.sort,
+      defaultSort: [],
+      field: 'study_id',
+      order: queryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
+    }),
   });
 
   useEffect(() => {
@@ -114,11 +122,12 @@ const PageContent = ({
             initialColumnState={userInfo?.config.study?.tables?.study?.columns}
             wrapperClassName={styles.tableWrapper}
             loading={loading}
+            showSorterTooltip={false}
             bordered
-            onChange={({ current, pageSize }, _, sorter) => {
+            onChange={(_pagination, _filter, sorter) => {
               setQueryConfig({
-                pageIndex: current!,
-                size: pageSize!,
+                pageIndex: DEFAULT_PAGE_INDEX,
+                size: queryConfig.size!,
                 sort: formatQuerySortList(sorter),
               });
             }}
