@@ -111,7 +111,7 @@ const getDefaultColumns = (): ProColumnType[] => [
       multiple: 1,
     },
     className: styles.studyIdCell,
-    render: (isProband: boolean) => (!!isProband).toString(),
+    render: (isProband: boolean) => capitalize((!!isProband).toString()),
   },
   {
     key: 'sex',
