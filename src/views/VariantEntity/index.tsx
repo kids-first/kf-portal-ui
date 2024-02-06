@@ -57,7 +57,7 @@ export default function VariantEntity() {
 
   const { data, loading } = useVariantEntity({
     field: 'locus',
-    values: [locus],
+    values: locus ? [locus] : [],
   });
 
   const variantStudies = (data?.studies.hits.edges || []).map(

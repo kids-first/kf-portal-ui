@@ -2,7 +2,7 @@
 import { ReactElement, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   ExperimentOutlined,
   FileTextOutlined,
@@ -95,7 +95,8 @@ const PageContent = ({
   filterGroups,
 }: OwnProps) => {
   const dispatch = useDispatch<any>();
-  const history = useHistory();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { savedSets } = useSavedSet();
   const { queryList, activeQuery, selectedSavedFilter, savedFilterList } =
     useQBStateWithSavedFilters(DATA_EXPLORATION_QB_ID, SavedFilterTag.ParticipantsExplorationPage);
@@ -240,8 +241,8 @@ const PageContent = ({
         className="navNoMarginBtm"
         activeKey={tabId || TAB_IDS.SUMMARY}
         onChange={(key) => {
-          if (!history.location.pathname.includes(key)) {
-            history.push(`${STATIC_ROUTES.DATA_EXPLORATION}/${key}${window.location.search}`);
+          if (!location.pathname.includes(key)) {
+            navigate(`${STATIC_ROUTES.DATA_EXPLORATION}/${key}${window.location.search}`);
           }
         }}
       >

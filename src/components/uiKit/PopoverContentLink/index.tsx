@@ -1,6 +1,6 @@
+import { Link, LinkProps } from 'react-router-dom';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { Button, ButtonProps } from 'antd';
-import { Link, LinkProps } from 'react-router-dom';
 
 import styles from './index.module.scss';
 

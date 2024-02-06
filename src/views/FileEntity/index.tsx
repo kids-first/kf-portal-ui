@@ -16,7 +16,7 @@ export default function FileEntity() {
 
   const { file, loading } = useFileEntity({
     field: 'file_id',
-    value: file_id,
+    value: file_id ?? '',
   });
 
   return (

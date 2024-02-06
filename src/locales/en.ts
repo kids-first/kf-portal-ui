@@ -176,14 +176,14 @@ const en = {
         fileAuth: {
           title: 'Unauthorized files',
           description:
-            'You are not authorized to analyze the files you have selected. Learn more about data access.',
+            'You are not authorized to analyze the files you have selected. Learn more about <a href="https://d3b.notion.site/Studies-and-Access-a5d2f55a8b40461eac5bf32d9483e90f" rel="noreferrer" style="color:unset;text-decoration:underline;" target="_blank">data access</a>.',
         },
       },
       success: {
         title: 'Success',
-        description: `<div><p>Your files have been copied to: <strong>{destination}</strong</p>
+        description: `<div><p>Your files have been copied to: <strong>{destination}</strong></p>
           <p>If you have uploaded more than 10000 files in the last 5 minutes, the import may take a little longer.</p>
-          <a href="{userBaseUrl}" rel="noreferrer" style="color:unset;textDecoration:underline;" target="_blank">Open project in Cavatica</a><div>`,
+          <a href="{userBaseUrl}" rel="noreferrer" style="color:unset;text-decoration:underline;" target="_blank">Open project in Cavatica</a><div>`,
         projects: {
           create: 'Project created successfully',
         },
@@ -1104,6 +1104,7 @@ const en = {
         datafiles: {
           title: 'Data Files ({count})',
           cavatica: {
+            title: 'Connect to Cavatica',
             analyseInCavatica: 'Analyze in Cavatica',
             bulkImportLimit: {
               title: 'Maximum file count exceeded',

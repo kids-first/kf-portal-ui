@@ -109,7 +109,7 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           newProject: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.analyseModal.newProject',
           ),
-          title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseInCavatica'),
+          title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.title'),
           youAreAuthorizedToCopy: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.analyseModal.youAreAuthorizedToCopy',
           ),
@@ -155,7 +155,7 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           title: intl.get('api.cavatica.error.title'),
         },
         unauthorizedModal: {
-          description: intl.get('api.cavatica.error.fileAuth.description'),
+          description: intl.getHTML('api.cavatica.error.fileAuth.description'),
           title: intl.get('api.cavatica.error.fileAuth.title'),
         },
         uploadLimitReachedModalError: {

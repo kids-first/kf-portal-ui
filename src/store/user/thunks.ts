@@ -1,15 +1,14 @@
+import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { cloneDeep, get, keys, merge, set } from 'lodash';
 
 import { UserApi } from 'services/api/user';
 import { TUser, TUserConfig, TUserUpdate } from 'services/api/user/models';
 import { globalActions } from 'store/global';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
-import { mergeDeep } from 'utils/object';
 
 import { userActions } from './slice';
-import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
-import { cloneDeep, get, keys, merge, set } from 'lodash';
 
 const fetchUser = createAsyncThunk<TUser, void, { rejectValue: string; state: RootState }>(
   'user/fetch',

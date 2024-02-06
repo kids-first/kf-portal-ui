@@ -1,15 +1,15 @@
-import { Button, Checkbox, Form, Input, Row, Space, Typography } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { createPersonaUser } from 'store/persona/thunks';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, Row, Space, Typography } from 'antd';
+import { memberRolesOptions } from 'views/Community/contants';
+
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
+import { createPersonaUser } from 'store/persona/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 
-import intl from 'react-intl-universal';
-
 import styles from './index.module.scss';
-import { memberRolesOptions } from 'views/Community/contants';
 
 const { Title, Text } = Typography;
 
@@ -21,11 +21,11 @@ interface OwnProps {
 }
 
 const Registration = ({ handleBack, hidden = true, kcToken, onFinishCallback }: OwnProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
-  const handleCancel = () => history.push(STATIC_ROUTES.LOGIN);
+  const handleCancel = () => navigate(STATIC_ROUTES.LOGIN);
   const handleSubmit = () => form.submit();
 
   const inlineStyle = hidden ? { display: 'none' } : {};

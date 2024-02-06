@@ -1,7 +1,8 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
+  DownOutlined,
   FileSearchOutlined,
   GlobalOutlined,
   HomeOutlined,
@@ -13,7 +14,6 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { DownOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { useKeycloak } from '@react-keycloak/web';
@@ -49,8 +49,8 @@ const Header = () => {
   };
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
-  const history = useHistory();
-  const currentPathName = history.location.pathname;
+  const location = useLocation();
+  const currentPathName = location.pathname;
   const tokenParsed = keycloak.tokenParsed as KidsFirstKeycloakTokenParsed;
 
   return (

@@ -1,18 +1,19 @@
-import { Modal } from 'antd';
-import { TUserSavedFilter } from 'services/api/savedFilter/models';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { deleteSavedFilter } from 'store/savedFilter/thunks';
-import { formatDistance } from 'date-fns';
-import EditModal from '../EditModal';
+import { useNavigate } from 'react-router-dom';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
 import { setQueryBuilderState } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { Modal } from 'antd';
+import { formatDistance } from 'date-fns';
+
 import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import { FILTER_TAG_PAGE_MAPPING, FILTER_TAG_QB_ID_MAPPING } from 'common/queryBuilder';
+import { TUserSavedFilter } from 'services/api/savedFilter/models';
+import { deleteSavedFilter } from 'store/savedFilter/thunks';
 
-import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
-import { useHistory } from 'react-router-dom';
+import EditModal from '../EditModal';
 
 interface OwnProps {
   id: any;
@@ -22,7 +23,7 @@ interface OwnProps {
 const SavedFiltersListItem = ({ data }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -41,9 +42,7 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
           })
         }
         onClick={() => {
-          history.push(
-            `${FILTER_TAG_PAGE_MAPPING[data.tag]}?${FILTER_ID_QUERY_PARAM_KEY}=${data.id}`,
-          );
+          navigate(`${FILTER_TAG_PAGE_MAPPING[data.tag]}?${FILTER_ID_QUERY_PARAM_KEY}=${data.id}`);
 
           setQueryBuilderState(FILTER_TAG_QB_ID_MAPPING[data.tag], {
             active: data.queries[0].id,

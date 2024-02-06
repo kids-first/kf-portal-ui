@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -16,7 +16,6 @@ import {
   DATA_FILES_SAVED_SETS_FIELD,
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
-import { VARIANT_SAVED_SETS_FIELD } from '../../../../../Variants/utils/constants';
 
 import { IUserSetOutput } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';
@@ -24,6 +23,7 @@ import { deleteSavedSet } from 'store/savedSet/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 import { numberWithCommas } from 'utils/string';
 
+import { VARIANT_SAVED_SETS_FIELD } from '../../../../../Variants/utils/constants';
 import CreateEditModal from '../CreateEditModal';
 
 import styles from './index.module.scss';
@@ -67,8 +67,7 @@ const getIdField = (setType: string) => {
 const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
-
+  const navigate = useNavigate();
   const onCancel = () => {
     setModalVisible(false);
   };
@@ -101,7 +100,7 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
           </Row>
         }
         onClick={() => {
-          history.push(redirectToPage(data.setType));
+          navigate(redirectToPage(data.setType));
 
           const setValue = `${SET_ID_PREFIX}${data.id}`;
           addQuery({

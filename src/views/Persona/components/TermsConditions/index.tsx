@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Button, Checkbox, Form, Row, Space, Typography } from 'antd';
@@ -125,10 +125,10 @@ export const TermsConditionsContent = () => (
 );
 
 const TermsConditions = ({ isMultiStep = false, hidden = false, onFinish }: OwnProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
-  const handleCancel = () => history.push(STATIC_ROUTES.LOGIN);
+  const handleCancel = () => navigate(STATIC_ROUTES.LOGIN);
   const handleSubmit = () => form.submit();
   const inlineStyle = hidden ? { display: 'none' } : {};
 
