@@ -27,7 +27,12 @@ import { formatQuerySortList } from 'utils/helper';
 import { getProTableDictionary } from 'utils/translation';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
-import { DEFAULT_PAGE_INDEX, DEFAULT_QUERY_CONFIG, STUDIES_REPO_QB_ID } from '../../utils/constant';
+import {
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_QUERY_CONFIG,
+  DEFAULT_STUDY_QUERY_SORT,
+  STUDIES_REPO_QB_ID,
+} from '../../utils/constant';
 
 import styles from './index.module.scss';
 
@@ -47,7 +52,10 @@ const PageContent = ({
   const dispatch = useDispatch();
   const { userInfo } = useUser();
   const { queryList, activeQuery } = useQueryBuilderState(STUDIES_REPO_QB_ID);
-  const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
+  const [queryConfig, setQueryConfig] = useState({
+    ...DEFAULT_QUERY_CONFIG,
+    sort: DEFAULT_STUDY_QUERY_SORT,
+  });
   const resolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
   const { loading, total, data } = useStudies({
@@ -56,8 +64,8 @@ const PageContent = ({
     sqon: resolvedSqon,
     sort: tieBreaker({
       sort: queryConfig.sort,
-      defaultSort: [],
-      field: 'study_id',
+      defaultSort: DEFAULT_STUDY_QUERY_SORT,
+      field: 'study_code',
       order: queryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
     }),
   });
