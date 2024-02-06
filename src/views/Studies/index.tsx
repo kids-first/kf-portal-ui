@@ -49,6 +49,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'study_code',
     title: 'Code',
+    sorter: { multiple: 1 },
     render: (record: IStudyEntity) =>
       record?.website ? (
         <ExternalLink href={record.website}>{record.study_code}</ExternalLink>
@@ -58,6 +59,7 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'study_name',
+    sorter: { multiple: 1 },
     title: 'Name',
     dataIndex: 'study_name',
     width: 500,
@@ -80,6 +82,7 @@ const columns: ProColumnType<any>[] = [
     key: 'external_id',
     title: 'dbGaP',
     dataIndex: 'external_id',
+    sorter: { multiple: 1 },
     render: (externalId: string) =>
       externalId ? (
         <ExternalLink
@@ -94,6 +97,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'participant_count',
     title: 'Participants',
+    sorter: { multiple: 1 },
     render: (record: IStudyEntity) => {
       const participantCount = record.participant_count;
 
@@ -126,6 +130,7 @@ const columns: ProColumnType<any>[] = [
   {
     key: 'biospecimen_count',
     title: 'Biospecimens',
+    sorter: { multiple: 1 },
     render: (record: IStudyEntity) => {
       const biospecimenCount = record.biospecimen_count;
 
@@ -159,6 +164,7 @@ const columns: ProColumnType<any>[] = [
     key: 'family_count',
     title: 'Families',
     dataIndex: 'family_count',
+    sorter: { multiple: 1 },
     render: (family_count: number) =>
       family_count ? numberWithCommas(family_count) : TABLE_EMPTY_PLACE_HOLDER,
   },

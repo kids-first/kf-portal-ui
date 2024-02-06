@@ -1,4 +1,5 @@
-import { IQueryConfig } from '@ferlab/ui/core/graphql/types';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
+import { IQueryConfig, ISort } from '@ferlab/ui/core/graphql/types';
 
 export const STUDIES_REPO_QB_ID = 'studies-repo-key';
 
@@ -13,6 +14,10 @@ export const DEFAULT_PAGING_CONFIG = {
   index: DEFAULT_PAGE_INDEX,
   size: DEFAULT_PAGE_SIZE,
 };
+
+export const DEFAULT_STUDY_QUERY_SORT = [
+  { field: 'study_code', order: SortDirection.Asc },
+] as ISort[];
 
 export const DEFAULT_QUERY_CONFIG: IQueryConfig = {
   pageIndex: DEFAULT_PAGE_INDEX,

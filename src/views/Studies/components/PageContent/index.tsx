@@ -5,9 +5,11 @@ import { ReadOutlined } from '@ant-design/icons';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import { tieBreaker } from '@ferlab/ui/core/components/ProTable/utils';
 import QueryBuilder from '@ferlab/ui/core/components/QueryBuilder';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { isEmptySqon, resolveSyntheticSqon } from '@ferlab/ui/core/data/sqon/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Space, Typography } from 'antd';
@@ -25,7 +27,12 @@ import { formatQuerySortList } from 'utils/helper';
 import { getProTableDictionary } from 'utils/translation';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
-import { DEFAULT_PAGE_INDEX, DEFAULT_QUERY_CONFIG, STUDIES_REPO_QB_ID } from '../../utils/constant';
+import {
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_QUERY_CONFIG,
+  DEFAULT_STUDY_QUERY_SORT,
+  STUDIES_REPO_QB_ID,
+} from '../../utils/constant';
 
 import styles from './index.module.scss';
 
@@ -45,13 +52,22 @@ const PageContent = ({
   const dispatch = useDispatch();
   const { userInfo } = useUser();
   const { queryList, activeQuery } = useQueryBuilderState(STUDIES_REPO_QB_ID);
-  const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
+  const [queryConfig, setQueryConfig] = useState({
+    ...DEFAULT_QUERY_CONFIG,
+    sort: DEFAULT_STUDY_QUERY_SORT,
+  });
   const resolvedSqon = resolveSyntheticSqon(queryList, activeQuery);
 
   const { loading, total, data } = useStudies({
     first: PAGE_SIZE,
     offset: PAGE_SIZE * (queryConfig.pageIndex - 1),
     sqon: resolvedSqon,
+    sort: tieBreaker({
+      sort: queryConfig.sort,
+      defaultSort: DEFAULT_STUDY_QUERY_SORT,
+      field: 'study_code',
+      order: queryConfig.operations?.previous ? SortDirection.Desc : SortDirection.Asc,
+    }),
   });
 
   useEffect(() => {
@@ -114,11 +130,12 @@ const PageContent = ({
             initialColumnState={userInfo?.config.study?.tables?.study?.columns}
             wrapperClassName={styles.tableWrapper}
             loading={loading}
+            showSorterTooltip={false}
             bordered
-            onChange={({ current, pageSize }, _, sorter) => {
+            onChange={(_pagination, _filter, sorter) => {
               setQueryConfig({
-                pageIndex: current!,
-                size: pageSize!,
+                pageIndex: DEFAULT_PAGE_INDEX,
+                size: queryConfig.size!,
                 sort: formatQuerySortList(sorter),
               });
             }}
