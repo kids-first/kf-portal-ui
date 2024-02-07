@@ -17,7 +17,7 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Button, Tooltip } from 'antd';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
-import { IBiospecimenEntity } from 'graphql/biospecimens/models';
+import { IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
@@ -153,7 +153,8 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     key: 'status',
     title: intl.get('entities.biospecimen.sample_availabilty'),
     dataIndex: 'status',
-    render: (status: string) => (status?.toLowerCase() === 'available' ? 'Yes' : 'No'),
+    render: (status: string) =>
+      status === Status.AVAILABLE ? intl.get('global.yes') : intl.get('global.no'),
   },
   {
     key: 'nb_files',
