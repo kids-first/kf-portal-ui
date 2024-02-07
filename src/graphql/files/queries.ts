@@ -33,7 +33,7 @@ export const SEARCH_FILES_QUERY = gql`
                         edges {
                           node {
                             sample_type
-                            sample_type
+                            sample_id
                           }
                         }
                       }
