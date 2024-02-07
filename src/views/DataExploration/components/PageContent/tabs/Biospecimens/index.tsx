@@ -154,7 +154,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     key: 'status',
     title: intl.get('entities.biospecimen.sample_availabilty'),
     dataIndex: 'status',
-    render: (status) => capitalize(status) || TABLE_EMPTY_PLACE_HOLDER,
+    render: (status: string) => (status?.toLowerCase() === 'available' ? 'Yes' : 'No'),
   },
   {
     key: 'nb_files',
