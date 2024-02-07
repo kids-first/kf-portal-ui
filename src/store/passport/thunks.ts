@@ -264,6 +264,7 @@ export const beginCavaticaAnalyse = createAsyncThunk<
     variables: {
       sqon,
       first: CAVATICA_FILE_BATCH_SIZE,
+      //FIXME add sorter, same one as in the explore page table
     },
   });
 
