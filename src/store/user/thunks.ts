@@ -70,28 +70,37 @@ const updateUser = createAsyncThunk<
   },
 );
 
-const cleanupConfig = (config: TUserConfig): TUserConfig => {
+export const cleanupConfig = (updateConfig: TUserConfig, config?: TUserConfig): TUserConfig => {
   // keep last item
   const removeDuplicates = (cols: TColumnStates) =>
     cols.filter((c, i) => !cols.some((other, j) => c.key === other.key && j > i));
 
-  // for every tables in config replace columns with no duplicates
-  keys(config.data_exploration?.tables).forEach((key) => {
-    const path = 'data_exploration.tables.' + key + '.columns';
-    const cols = get(config, path, []);
-    set(config, path, removeDuplicates(cols));
-  });
+  const configMerged = merge(cloneDeep(config), cloneDeep(updateConfig));
 
-  return config;
+  if (updateConfig.data_exploration?.tables) {
+    // for every tables in config replace columns with no duplicates
+    keys(configMerged.data_exploration?.tables).forEach((key) => {
+      const path = 'data_exploration.tables.' + key + '.columns';
+      const cols = get(configMerged, path, []);
+      set(configMerged, path, removeDuplicates(cols));
+    });
+
+    return configMerged;
+  } else if (updateConfig.data_exploration?.summary && config?.data_exploration?.summary) {
+    config.data_exploration.summary = updateConfig.data_exploration.summary;
+    return config;
+  }
+
+  return configMerged;
 };
 
 const updateUserConfig = createAsyncThunk<TUserConfig, TUserConfig, { state: RootState }>(
   'user/updateConfig',
   async (config, thunkAPI) => {
     const state = thunkAPI.getState();
-    const mergedConfig = cleanupConfig(
-      merge(cloneDeep(state?.user?.userInfo?.config), cloneDeep(config)),
-    );
+
+    const mergedConfig = cleanupConfig(cloneDeep(config), cloneDeep(state?.user?.userInfo?.config));
+
     await UserApi.update({ config: mergedConfig });
 
     return mergedConfig;
