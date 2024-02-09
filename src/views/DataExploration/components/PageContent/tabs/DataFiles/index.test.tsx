@@ -72,6 +72,7 @@ describe('getDefaultColumns', () => {
                 platform: 'seq test',
                 instrument_model: 'seq test',
                 sequencing_center_id: 'seq test',
+                is_paired_end: false,
               },
             },
             {
@@ -87,6 +88,7 @@ describe('getDefaultColumns', () => {
                 platform: 'seq test 2',
                 instrument_model: 'seq test 2',
                 sequencing_center_id: 'seq test 2',
+                is_paired_end: false,
               },
             },
           ],

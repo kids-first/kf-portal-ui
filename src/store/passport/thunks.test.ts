@@ -8,7 +8,7 @@ describe(`${extractMetadata.name}()`, () => {
     expect(extractMetadata({} as IFileEntity)).toEqual({});
   });
   test('should return well-formed metadata', () => {
-    const file = {
+    const file: IFileEntity = {
       id: 'M8hthI0Bgzv7G1aX1IQR',
       external_id: 'drs://data.kidsfirstdrc.org/acb15d28-e1bc-40c6-9a32-e897e0bbb841',
       fhir_id: '517253',
@@ -38,6 +38,16 @@ describe(`${extractMetadata.name}()`, () => {
                 race: 'White',
                 families_id: 'FM_5ED41H3V',
                 family_type: FamilyType.TRIO,
+                id: 'participant_test_id',
+                score: 0,
+                fhir_id: 'participant_test_fihr_id',
+                age_at_data_collection: 0,
+                down_syndrome_diagnosis: 'down_syndrome_diagnosis',
+                down_syndrome_status: 'down_syndrome_status',
+                study_external_id: 'study_external_id',
+                study_id: 'study_id',
+                nb_files: 0,
+                nb_biospecimens: 0,
                 family: {
                   family_id: 'FM_5ED41H3V',
                   relations_to_proband: {
@@ -97,6 +107,12 @@ describe(`${extractMetadata.name}()`, () => {
                             value: 3137,
                             units: 'day',
                           },
+                          id: 'outcomes_test_id',
+                          fhir_id: 'outcomes_test_fhir_id',
+                          release_id: 'outcomes_test_release_id',
+                          study_id: 'outcomes_test_study_id',
+                          participant_fhir_id: 'outcomes_test_participant_fihr_id',
+                          observation_id: 'outcomes_test_observation_id',
                         },
                       },
                     ],
@@ -149,15 +165,66 @@ describe(`${extractMetadata.name}()`, () => {
                                       value: 174,
                                       units: 'day',
                                     },
+                                    id: 'diagnosis_test_id',
                                   },
                                 },
                               ],
                             },
                           },
+                          id: 'biospecimens_test_id',
+                          age_at_biospecimen_collection_years: 4,
+                          age_at_biospecimen_collection_onset: 'biospecimens_age_onset',
+                          parent_sample_id: 'biospecimens_test_parent_id',
+                          parent_sample_type: 'biospecimens_test_parent_type',
+                          collection_sample_id: 'biospecimens_test_collection_id',
+                          container_id: 'biospecimens_test_container_id',
+                          volume: 20,
+                          volume_unit: 'ml',
+                          laboratory_procedure: 'laboratory_procedure',
+                          biospecimen_storage: 'biospecimen_storage',
+                          fhir_id: 'biospecimens_test_fhir_id',
+                          biospecimen_facet_ids: {
+                            biospecimen_fhir_id_1: 'biospecimen_fhir_id_1',
+                            biospecimen_fhir_id_2: 'biospecimen_fhir_id_2',
+                          },
+                          status: 'valid',
                         },
                       },
                     ],
                   },
+                },
+
+                mondo: {
+                  hits: {
+                    total: 0,
+                    edges: [],
+                  },
+                },
+                observed_phenotype: {
+                  hits: {
+                    total: 0,
+                    edges: [],
+                  },
+                },
+                files: {
+                  hits: {
+                    total: 0,
+                    edges: [],
+                  },
+                },
+                study: {
+                  id: '',
+                  domain: '',
+                  study_id: '',
+                  study_code: '',
+                  study_name: '',
+                  program: '',
+                  external_id: '',
+                  family_count: 0,
+                  participant_count: 0,
+                  biospecimen_count: 0,
+                  data_category: [],
+                  website: '',
                 },
               },
             },
@@ -177,6 +244,9 @@ describe(`${extractMetadata.name}()`, () => {
         data_category: [],
         family_data: false,
         controlled_access: [],
+        id: 'study_test_id',
+        fhir_id: 'study_test_fhir_id',
+        external_id: 'study_test_external_id',
       },
       sequencing_experiment: {
         hits: {
@@ -184,15 +254,34 @@ describe(`${extractMetadata.name}()`, () => {
             {
               node: {
                 experiment_strategy: 'WGS',
+                library_strand: 'Unstranded',
                 platform: 'Illumina',
                 instrument_model: 'HiSeq X',
-                library_strand: 'Unstranded',
+                id: 'seqtest',
+                sequencing_experiment_id: 'seq test',
+                sequencing_center_id: 'seq test',
+                center: 'seq test',
+                library_name: 'seq test',
+                library_prep: 'seq test',
+                library_selection: 'seq test',
                 is_paired_end: true,
               },
             },
           ],
         },
       },
+      biospecimens: {
+        hits: {
+          total: 0,
+          edges: [],
+        },
+      },
+      hashes: {
+        etag: '',
+        md5: '',
+      },
+      is_harmonized: false,
+      score: 0,
     };
 
     const expectedMetaData = {
@@ -249,6 +338,6 @@ describe(`${extractMetadata.name}()`, () => {
       study_domain: 'CANCER',
     };
 
-    expect(extractMetadata(file as unknown as IFileEntity)).toEqual(expectedMetaData);
+    expect(extractMetadata(file)).toEqual(expectedMetaData);
   });
 });
