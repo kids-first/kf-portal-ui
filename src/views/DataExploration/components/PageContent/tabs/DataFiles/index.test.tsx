@@ -44,6 +44,8 @@ describe('getDefaultColumns', () => {
         fhir_id: 'study test',
         study_code: 'study test',
         study_name: 'study test',
+        domain: 'study test',
+        program: 'study_test',
         external_id: 'study test',
         experimental_strategy: [],
         family_count: 4,
