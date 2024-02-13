@@ -2,7 +2,9 @@ import { BooleanOperators, TermOperators } from '@ferlab/ui/core/data/sqon/opera
 import { generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { IQueryResults, IQueryVariable } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
+
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
+
 import { IMemberEntity, IMemberEntityProfile, IMemberResultTree } from './models';
 import { SEARCH_MEMBERS_QUERY } from './queries';
 
@@ -18,7 +20,7 @@ export const useMembers = (variables?: IQueryVariable): IQueryResults<IMemberEnt
   };
 };
 
-export const useMemberProfile = (id: string): IMemberEntityProfile => {
+export const useMemberProfile = (id?: string): IMemberEntityProfile => {
   const { loading, result } = useLazyResultQuery<IMemberResultTree>(SEARCH_MEMBERS_QUERY, {
     variables: {
       first: 1,
@@ -27,7 +29,7 @@ export const useMemberProfile = (id: string): IMemberEntityProfile => {
         content: [
           generateValueFilter({
             field: '_id',
-            value: [id],
+            value: id ? [id] : [],
             operator: TermOperators.in,
           }),
         ],

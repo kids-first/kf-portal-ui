@@ -1,11 +1,5 @@
 import intl from 'react-intl-universal';
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  RouteComponentProps,
-  Switch,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
 import MaintenancePage from '@ferlab/ui/core/pages/MaintenancePage';
@@ -35,7 +29,6 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import MainSideImage from 'components/assets/mainSideImage.jpg';
 import MainSideImageAlt from 'components/assets/mainSideImage-alt.jpg';
 import ErrorBoundary from 'components/ErrorBoundary';
-import PageLayout from 'components/Layout';
 import SideImageLayout from 'components/Layout/SideImage';
 import GradientAccent from 'components/uiKit/GradientAccent';
 import Spinner from 'components/uiKit/Spinner';
@@ -82,91 +75,160 @@ const App = () => {
         <div className="App" id="appContainer">
           {keycloakIsReady ? (
             <AuthMiddleware>
-              <Router>
-                <Switch>
+              <>
+                <Routes>
                   <Route
                     path={STATIC_ROUTES.DCF_FENCE_REDIRECT}
-                    exact
-                    render={() => <FenceRedirect fence={FENCE_NAMES.dcf} />}
+                    element={<FenceRedirect fence={FENCE_NAMES.dcf} />}
                   />
                   <Route
                     path={STATIC_ROUTES.GEN3_FENCE_REDIRECT}
-                    exact
-                    render={() => <FenceRedirect fence={FENCE_NAMES.gen3} />}
+                    element={<FenceRedirect fence={FENCE_NAMES.gen3} />}
                   />
                   <Route
                     path={STATIC_ROUTES.CAVATICA_PASSPORT_REDIRECT}
-                    exact
-                    render={() => <FenceRedirect fence={PASSPORT.cavatica} />}
+                    element={<FenceRedirect fence={PASSPORT.cavatica} />}
                   />
-                  <Route exact path={STATIC_ROUTES.LOGIN}>
-                    <GradientAccent isFixed />
-                    <SideImageLayout sideImgSrc={MainSideImage}>
-                      <Login />
-                    </SideImageLayout>
-                  </Route>
-                  <Route exact path={STATIC_ROUTES.REGISTRATION}>
-                    <GradientAccent isFixed />
-                    <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
-                      <PersonaRegistration />
-                    </SideImageLayout>
-                  </Route>
-                  <Route exact path={STATIC_ROUTES.TERMSCONDITONS}>
-                    <GradientAccent isFixed />
-                    <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
-                      <PersonaUpdateTermsAndConditions />
-                    </SideImageLayout>
-                  </Route>
                   <Route
-                    path={DYNAMIC_ROUTES.ERROR}
-                    render={(props: RouteComponentProps<{ status?: any }>) => (
-                      <ErrorPage status={props.match.params.status} />
-                    )}
+                    path={STATIC_ROUTES.LOGIN}
+                    element={
+                      <>
+                        <GradientAccent isFixed />
+                        <SideImageLayout sideImgSrc={MainSideImage}>
+                          <Login />
+                        </SideImageLayout>
+                      </>
+                    }
                   />
-                  <ProtectedRoute exact path={STATIC_ROUTES.DASHBOARD} layout={PageLayout}>
-                    <Dashboard />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.COMMUNITY} layout={PageLayout}>
-                    <Community />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={DYNAMIC_ROUTES.COMMUNITY_MEMBER} layout={PageLayout}>
-                    <CommunityMember />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.PROFILE_VIEW} layout={PageLayout}>
-                    <ProfileView />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.PROFILE_SETTINGS} layout={PageLayout}>
-                    <ProfileSettings />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.STUDIES} layout={PageLayout}>
-                    <Studies />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={DYNAMIC_ROUTES.DATA_EXPLORATION} layout={PageLayout}>
-                    <DataExploration />
-                  </ProtectedRoute>
-                  <ProtectedRoute
-                    exact
+                  <Route
+                    path={STATIC_ROUTES.REGISTRATION}
+                    element={
+                      <>
+                        <GradientAccent isFixed />
+                        <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
+                          <PersonaRegistration />
+                        </SideImageLayout>
+                      </>
+                    }
+                  ></Route>
+                  <Route
+                    path={STATIC_ROUTES.TERMSCONDITONS}
+                    element={
+                      <>
+                        <GradientAccent isFixed />
+                        <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
+                          <PersonaUpdateTermsAndConditions />
+                        </SideImageLayout>
+                      </>
+                    }
+                  ></Route>
+                  <Route path={DYNAMIC_ROUTES.ERROR} element={<ErrorPage />} />
+                  <Route
+                    path={STATIC_ROUTES.DASHBOARD}
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={STATIC_ROUTES.COMMUNITY}
+                    element={
+                      <ProtectedRoute>
+                        <Community />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={DYNAMIC_ROUTES.COMMUNITY_MEMBER}
+                    element={
+                      <ProtectedRoute>
+                        <CommunityMember />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={STATIC_ROUTES.PROFILE_VIEW}
+                    element={
+                      <ProtectedRoute>
+                        <ProfileView />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={STATIC_ROUTES.PROFILE_SETTINGS}
+                    element={
+                      <ProtectedRoute>
+                        <ProfileSettings />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={STATIC_ROUTES.STUDIES}
+                    element={
+                      <ProtectedRoute>
+                        <Studies />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path={DYNAMIC_ROUTES.DATA_EXPLORATION}
+                    element={
+                      <ProtectedRoute>
+                        <DataExploration />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
                     path={DYNAMIC_ROUTES.PARTICIPANT_ENTITY}
-                    layout={PageLayout}
-                  >
-                    <ParticipantEntity />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.VARIANTS} layout={PageLayout}>
-                    <Variants2 />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={DYNAMIC_ROUTES.VARIANT_ENTITY} layout={PageLayout}>
-                    <VariantEntity2 />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={DYNAMIC_ROUTES.FILE_ENTITY} layout={PageLayout}>
-                    <FileEntity />
-                  </ProtectedRoute>
-                  <ProtectedRoute exact path={STATIC_ROUTES.FAKE_STORYBOOK} layout={PageLayout}>
-                    <FakeStorybook />
-                  </ProtectedRoute>
-                  <Redirect from="*" to={STATIC_ROUTES.DASHBOARD} />
-                </Switch>
+                    element={
+                      <ProtectedRoute>
+                        <ParticipantEntity />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path={STATIC_ROUTES.VARIANTS}
+                    element={
+                      <ProtectedRoute>
+                        <Variants2 />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path={DYNAMIC_ROUTES.VARIANT_ENTITY}
+                    element={
+                      <ProtectedRoute>
+                        <VariantEntity2 />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path={DYNAMIC_ROUTES.FILE_ENTITY}
+                    element={
+                      <ProtectedRoute>
+                        <FileEntity />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path={STATIC_ROUTES.FAKE_STORYBOOK}
+                    element={
+                      <ProtectedRoute>
+                        <FakeStorybook />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="*" element={<Navigate to={STATIC_ROUTES.DASHBOARD} />} />
+                </Routes>
                 <NotificationContextHolder />
-              </Router>
+              </>
             </AuthMiddleware>
           ) : (
             <Spinner size={'large'} />

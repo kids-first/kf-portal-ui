@@ -8,7 +8,12 @@
   justify-content: center;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .spinnerWrapper {
+  position: absolute;
   display: flex;
   height: 100%;
   width: 100%;

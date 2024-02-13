@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import intl from 'react-intl-universal';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { Col, Row, Spin } from 'antd';
+import cx from 'classnames';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import TreePanel from 'views/DataExploration/components/PageContent/tabs/Summary/SunburstGraphCard/TreePanel';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -53,6 +54,7 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
       setTreeData(rootNode ? [lightTreeNodeConstructor(rootNode.key!)] : []);
 
       setIsLoading(false);
+
       updateSunburst.current = SunburstD3(
         sunburstRef,
         targetedRootNode,
@@ -85,7 +87,7 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
       setIsLoading(false);
     };
     // eslint-disable-next-line
-  }, [JSON.stringify(sqon)]);
+  }, [JSON.stringify(sqon)])
 
   const getSelectedPhenotype = (node: TreeNode) => {
     const phenoReversed = (node.key.match(RegexExtractPhenotype) || []).reverse();
@@ -93,17 +95,7 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
     setTreeData(generateNavTreeFormKey(phenoReversed));
   };
 
-  if (isLoading) {
-    return (
-      <div className={styles.spinnerWrapper}>
-        <div className={styles.spinner}>
-          <Spin />
-        </div>
-      </div>
-    );
-  }
-
-  if (!treeData || treeData?.length === 0) {
+  if (!isLoading && (!treeData || treeData?.length === 0)) {
     return (
       <Empty
         imageType="grid"
@@ -123,6 +115,14 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
 
   return (
     <Row gutter={[24, 24]} className={styles.sunburstRowWrapper}>
+      {isLoading && (
+        <div className={styles.spinnerWrapper}>
+          <div className={styles.spinner}>
+            <Spin />
+          </div>
+        </div>
+      )}
+
       <Col lg={12} xl={10}>
         <svg
           className={styles.sunburstChart}
@@ -132,7 +132,7 @@ const SunburstGraph = ({ field, previewMode = false, width = 335, height = 335 }
           ref={sunburstRef}
         />
       </Col>
-      <Col lg={12} xl={14}>
+      <Col className={cx({ [styles.hidden]: isLoading })} lg={12} xl={14}>
         <TreePanel
           currentNode={currentNode!}
           treeData={treeData!}

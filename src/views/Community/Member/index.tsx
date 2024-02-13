@@ -1,11 +1,12 @@
-import { useParams } from 'react-router-dom';
 import intl from 'react-intl-universal';
+import { useParams } from 'react-router-dom';
+import { Result } from 'antd';
+import { useMemberProfile } from 'graphql/members/actions';
+
+import CommunityProfile from 'components/uiKit/ComunityProfile';
+import { usePersona } from 'store/persona';
 
 import styles from './index.module.scss';
-import { usePersona } from 'store/persona';
-import { useMemberProfile } from 'graphql/members/actions';
-import CommunityProfile from 'components/uiKit/ComunityProfile';
-import { Result } from 'antd';
 
 const CommunityMember = () => {
   const { id } = useParams<{ id: string }>();

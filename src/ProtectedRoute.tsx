@@ -1,68 +1,52 @@
-import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
-import ConditionalWrapper from 'components/utils/ConditionalWrapper';
-import { STATIC_ROUTES } from 'utils/routes';
-import { REDIRECT_URI_KEY } from 'common/constants';
-import { usePersona } from 'store/persona';
 
-type OwnProps = Omit<RouteProps, 'component' | 'render' | 'children'> & {
-  layout?: (children: any) => React.ReactElement;
+import { REDIRECT_URI_KEY } from 'common/constants';
+import PageLayout from 'components/Layout';
+import { usePersona } from 'store/persona';
+import { STATIC_ROUTES } from 'utils/routes';
+
+type TProtectedRoute = {
   children: React.ReactNode;
 };
 
-const ProtectedRoute = ({ children, layout, ...routeProps }: OwnProps) => {
+const ProtectedRoute = ({ children }: TProtectedRoute) => {
   const { personaUserInfo, error: personaError } = usePersona();
+  const location = useLocation();
   const { keycloak } = useKeycloak();
-  const RouteLayout = layout!;
-  const currentPath = routeProps.path;
 
   if (personaError) {
-    return <Redirect to={STATIC_ROUTES.ERROR} />;
+    return <Navigate to={STATIC_ROUTES.ERROR} />;
   }
 
   if (!keycloak.authenticated) {
     return (
-      <Redirect
-        to={{
-          pathname: STATIC_ROUTES.LOGIN,
-          search: `${REDIRECT_URI_KEY}=${routeProps.location?.pathname}${routeProps.location?.search}`,
-        }}
+      <Navigate
+        to={`${STATIC_ROUTES.LOGIN}?${REDIRECT_URI_KEY}=${location.pathname}${location.search}`}
       />
     );
   }
 
   if (!personaUserInfo) {
-    return (
-      <Redirect
-        to={{
-          pathname: STATIC_ROUTES.REGISTRATION,
-        }}
-      />
-    );
+    return <Navigate to={STATIC_ROUTES.REGISTRATION} />;
   }
 
   if (!personaUserInfo?.acceptedTerms) {
     return (
-      <Redirect
-        to={{
-          pathname: STATIC_ROUTES.TERMSCONDITONS,
-          search: `${REDIRECT_URI_KEY}=${routeProps.location?.pathname}${routeProps.location?.search}`,
-        }}
+      <Navigate
+        to={`${STATIC_ROUTES.TERMSCONDITONS}?${REDIRECT_URI_KEY}=${location.pathname}${location.search}`}
       />
     );
   }
 
-  if (currentPath === STATIC_ROUTES.LOGIN) {
-    return <Redirect to={STATIC_ROUTES.DASHBOARD} />;
+  if (location.pathname === STATIC_ROUTES.LOGIN) {
+    return <Navigate to={STATIC_ROUTES.DASHBOARD} />;
   }
 
   return (
-    <ConditionalWrapper
-      condition={RouteLayout !== undefined}
-      children={<Route {...routeProps}>{children}</Route>}
-      wrapper={(children) => <RouteLayout>{children}</RouteLayout>}
-    />
+    <PageLayout>
+      <>{children}</>
+    </PageLayout>
   );
 };
 
