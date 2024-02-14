@@ -1,5 +1,10 @@
-import EnvironmentVariables from 'helpers/EnvVariables';
 import ReactGA from 'react-ga4';
+import EnvironmentVariables from 'helpers/EnvVariables';
+import { capitalize } from 'lodash';
+import { FilterActionType } from 'views/DataExploration/components/PageContent';
+import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
+
+import { SetType } from 'services/api/savedSet/models';
 
 const measurementId = EnvironmentVariables.configFor('MEASUREMENT_ID');
 const isDev = EnvironmentVariables.configFor('ENV') === 'development';
@@ -16,6 +21,150 @@ export const trackAuthSuccess = () => {
     ReactGA.event({
       category: 'Authentication',
       action: 'login success',
+    });
+  }
+};
+
+export const trackAuthError = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Authentication',
+      action: 'login failed',
+    });
+  }
+};
+
+export const trackLogout = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Authentication',
+      action: 'logout',
+    });
+  }
+};
+
+export const trackFacetSearch = (page: string, field: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'FacetSearch',
+      action: `${capitalize(page)} -- ${field}`,
+    });
+  }
+};
+
+export const trackReportDownload = (reportCategory: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Reports',
+      action: `report download -- ${reportCategory}`,
+    });
+  }
+};
+
+/**
+ * DONE needs to be tested
+ **/
+export const trackCavaticaAction = (page: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Cavatica',
+      action: `Analyze -- ${capitalize(page)}`,
+    });
+  }
+};
+
+export const trackSetActions = (action: string, setType: SetType) => {
+  let message = '';
+  switch (action) {
+    case SetActionType.CREATE_SET:
+      message = 'Creating new Set';
+      break;
+    case SetActionType.UPDATE_SET:
+      message = 'Updating existing Set';
+      break;
+    case SetActionType.REMOVE_SET:
+      message = 'Removing existing Set';
+      break;
+    case SetActionType.ADD_IDS:
+      message = 'Adding file(s) to existing Set';
+      break;
+    case SetActionType.REMOVE_IDS:
+      message = 'Removing file(s) from existing Set';
+      break;
+    default:
+      message = 'Unknown Action';
+      break;
+  }
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Sets',
+      action: `${setType} - ${message}`,
+    });
+  }
+};
+
+export const trackFilterActions = (action: string, tabId: string) => {
+  let message = '';
+  switch (action) {
+    case FilterActionType.CREATE_FILTER:
+      message = 'Creating new Filter';
+      break;
+    case FilterActionType.UPDATE_FILER:
+      message = 'Updating existing Filter';
+      break;
+    case FilterActionType.REMOVE_FILTER:
+      message = 'Removing existing Filter';
+      break;
+    case FilterActionType.FAVORITE_FILTER:
+      message = 'Adding Filter to favorites';
+      break;
+    case FilterActionType.SHARE_FILTER:
+      message = 'Sharing Filter';
+      break;
+    default:
+      message = 'Unknown Action';
+      break;
+  }
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Filters',
+      action: `${tabId} - ${message}`,
+    });
+  }
+};
+
+export const trackVisitResources = (resource: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Resources',
+      action: `Visit -- ${resource}`,
+    });
+  }
+};
+
+export const trackRegistrationStarted = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Registration',
+      action: 'Registration started',
+    });
+  }
+};
+
+export const trackNCIConnection = (connected: boolean) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'FencesConnections',
+      action: `${connected ? 'Connected to' : 'Disconnected from'} NCI CRDC Framework Services`,
+    });
+  }
+};
+
+export const trackKFConnection = (connected: boolean) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'FencesConnections',
+      action: `${connected ? 'Connected to' : 'Disconnected from'} Kids First Framework Services`,
     });
   }
 };

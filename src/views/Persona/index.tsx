@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
-import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { fetchPersonaUser } from 'store/persona/thunks';
+
 import { REDIRECT_URI_KEY } from 'common/constants';
+import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
+import Spinner from 'components/uiKit/Spinner';
 import useQueryParams from 'hooks/useQueryParams';
+import { trackRegistrationStarted } from 'services/analytics';
+import { usePersona } from 'store/persona';
+import { fetchPersonaUser } from 'store/persona/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import Registration from './components/RegistrationForm';
 import TermsConditions from './components/TermsConditions';
-import { usePersona } from 'store/persona';
-import Spinner from 'components/uiKit/Spinner';
 
 enum Steps {
   LOADING,
@@ -69,6 +71,7 @@ const PersonaRegistration = () => {
         isMultiStep
         hidden={step !== Steps.TERMSANDCONDITIONS}
         onFinish={() => {
+          trackRegistrationStarted();
           setStep(Steps.REGISTRATION);
         }}
       />

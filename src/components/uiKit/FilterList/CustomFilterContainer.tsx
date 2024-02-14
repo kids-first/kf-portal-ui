@@ -9,6 +9,7 @@ import { IExtendedMappingResults, IGqlResults } from '@ferlab/ui/core/graphql/ty
 import { getFilters } from 'graphql/utils/Filters';
 import { isUndefined } from 'lodash';
 
+import { trackFacetSearch } from 'services/analytics';
 import { getFacetsDictionary, getFiltersDictionary } from 'utils/translation';
 
 import CustomFilterSelector from './CustomFilterSelector';
@@ -58,6 +59,8 @@ const CustomFilterContainer = ({
   }, [filtersOpen]);
 
   const onChange = (fg: IFilterGroup, f: IFilter[]) => {
+    trackFacetSearch(index, fg.field);
+
     updateActiveQueryFilters({
       queryBuilderId,
       filterGroup: fg,

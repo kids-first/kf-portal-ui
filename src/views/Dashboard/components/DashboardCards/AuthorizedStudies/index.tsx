@@ -11,6 +11,7 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { FENCE_NAMES } from 'common/fenceTypes';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
+import { trackKFConnection, trackNCIConnection } from 'services/analytics';
 import { useFenceAuthentification, useFencesAuthorizedStudies } from 'store/fences';
 import {
   fenceDisconnection,
@@ -34,9 +35,11 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       name: 'Kids First Framework Services',
       icon: <KidsFirstLoginIcon width={45} height={45} />,
       onConnectToFence: () => {
+        trackKFConnection(true);
         dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.gen3));
       },
       onDisconnectFromFence: () => {
+        trackKFConnection(false);
         dispatch(fenceDisconnection(FENCE_NAMES.gen3));
       },
     },
@@ -45,9 +48,11 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
       name: 'NCI CRDC Framework Services',
       icon: <NciIcon width={45} height={45} />,
       onConnectToFence: () => {
+        trackNCIConnection(true);
         dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.dcf));
       },
       onDisconnectFromFence: () => {
+        trackNCIConnection(false);
         dispatch(fenceDisconnection(FENCE_NAMES.dcf));
       },
     },

@@ -10,6 +10,7 @@ import { startCase } from 'lodash';
 import { v4 } from 'uuid';
 
 import { getDefaultContentType } from 'common/downloader';
+import { trackReportDownload } from 'services/analytics';
 import { ArrangerApi } from 'services/api/arranger';
 import { ArrangerColumnStateResults } from 'services/api/arranger/models';
 import { ReportApi } from 'services/api/reports';
@@ -61,7 +62,7 @@ const fetchReport = createAsyncThunk<
         duration: 0,
       }),
     );
-    await ReportApi.generateReport(args.data).then((_) => {
+    await ReportApi.generateReport(args.data).then(() => {
       thunkAPI.dispatch(globalActions.destroyMessages([messageKey]));
       thunkAPI.dispatch(
         globalActions.displayNotification({
@@ -81,6 +82,8 @@ const fetchTsvReport = createAsyncThunk<void, TFetchTSVArgs, { rejectValue: stri
   'report/generate/tsv',
   async (args, thunkAPI) => {
     const messageKey = 'report_pending';
+
+    trackReportDownload(`${args.index}Tsv`);
 
     thunkAPI.dispatch(
       globalActions.displayMessage({
@@ -149,6 +152,8 @@ const generateLocalTsvReport = createAsyncThunk<
 >('report/generate/tsv', async (args, thunkAPI) => {
   // !! This function assumes that it is called only when the table is not empty. Said otherwise, data is never empty !!
   const messageKey = 'report_pending';
+
+  trackReportDownload(`${args.index}-${args.fileName}-tsv`);
 
   try {
     const formattedDate = format(new Date(), 'yyyy-MM-dd');

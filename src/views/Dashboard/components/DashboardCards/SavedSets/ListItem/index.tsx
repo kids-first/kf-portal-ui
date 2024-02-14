@@ -17,6 +17,7 @@ import {
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
 
+import { trackSetActions } from 'services/analytics';
 import { IUserSetOutput } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';
 import { deleteSavedSet } from 'store/savedSet/thunks';
@@ -86,7 +87,10 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
             content: intl.get('components.savedSets.popupConfirm.delete.content'),
             cancelText: intl.get('components.savedSets.popupConfirm.delete.cancelText'),
             okButtonProps: { danger: true },
-            onOk: () => dispatch(deleteSavedSet(data.id)),
+            onOk: () => {
+              trackSetActions(SetActionType.REMOVE_SET, data.setType);
+              dispatch(deleteSavedSet(data.id));
+            },
           })
         }
         extra={

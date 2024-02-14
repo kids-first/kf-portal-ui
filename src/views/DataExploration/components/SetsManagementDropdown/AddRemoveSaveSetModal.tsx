@@ -5,6 +5,7 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { Form, Modal } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 
+import { trackSetActions } from 'services/analytics';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { PROJECT_ID, useSavedSet } from 'store/savedSet';
 import { updateSavedSet } from 'store/savedSet/thunks';
@@ -77,6 +78,7 @@ const AddRemoveSaveSetModal = ({
     switch (setActionType) {
       case SetActionType.ADD_IDS:
       case SetActionType.REMOVE_IDS:
+        trackSetActions(setActionType, type);
         dispatch(
           updateSavedSet({
             id: setId,

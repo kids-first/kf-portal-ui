@@ -4,6 +4,7 @@ import EnvironmentVariables from 'helpers/EnvVariables';
 import isEmpty from 'lodash/isEmpty';
 
 import downloader from 'common/downloader';
+import { trackReportDownload } from 'services/analytics';
 
 import { ReportConfig, ReportType } from './models';
 
@@ -42,7 +43,8 @@ export const headers = () => ({
 });
 
 const generateReport = (config: ReportConfig) => {
-  //TODO do we need google analytics tracking?
+  trackReportDownload(config.name);
+
   let reportSqon;
 
   if (!config.sqon || isEmpty(config.sqon)) {
