@@ -308,7 +308,7 @@ const extractParticipantMetaData = (participants: any[]) => {
   const outcomes = participants.flatMap((participant) => toNodes(participant.outcomes));
   const phenotype = participants.flatMap((participant) => toNodes(participant.phenotype));
   const relation = participants.flatMap((participant) =>
-    toNodes(participant.family.relations_to_proband),
+    participant.family ? toNodes(participant.family.relations_to_proband) : '',
   );
 
   return {
