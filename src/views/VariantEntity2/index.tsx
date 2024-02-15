@@ -64,7 +64,7 @@ export default function VariantEntity() {
           loading={loading}
           tag={
             <>
-              <Tag>{data?.assembly_version}</Tag>{' '}
+              <Tag>{data?.assembly_version}</Tag>
               <Tag className={styles.variantTag}>
                 {intl.get('screen.variants.summary.germline')}
               </Tag>
