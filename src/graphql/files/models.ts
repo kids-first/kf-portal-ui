@@ -13,6 +13,8 @@ export interface IFileStudyEntity {
   fhir_id: string;
   study_code: string;
   study_name: string;
+  program: string;
+  domain: string;
   external_id: string;
   experimental_strategy: string[];
   family_count: number;
@@ -37,6 +39,7 @@ export interface ISequencingExperiment {
   instrument_model: string;
   external_id?: string;
   sequencing_center_id: string;
+  is_paired_end: boolean;
 }
 
 export interface IFileEntity {

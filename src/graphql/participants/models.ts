@@ -1,5 +1,7 @@
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
+import { IBiospecimenDiagnoses } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
+import { ArrangerResultsTree } from 'graphql/models';
 import { IStudyEntity } from 'graphql/studies/models';
 
 export interface IParticipantResultTree {
@@ -112,6 +114,8 @@ export interface IParticipantPhenotype {
 
 export interface IParticipantBiospecimen {
   id: string;
+  external_sample_id: string;
+  collection_method_of_sample_procurement: string;
   age_at_biospecimen_collection: number;
   age_at_biospecimen_collection_years: number;
   age_at_biospecimen_collection_onset: string;
@@ -131,6 +135,7 @@ export interface IParticipantBiospecimen {
     biospecimen_fhir_id_1: string;
     biospecimen_fhir_id_2: string;
   };
+  diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>;
   status: string;
   dbgap_consent_code: string;
 }
@@ -174,6 +179,7 @@ export enum FamilyType {
 }
 export interface IParticipantEntity {
   id: string;
+  families_id: string;
   score: number;
   fhir_id: string;
   age_at_data_collection: number;

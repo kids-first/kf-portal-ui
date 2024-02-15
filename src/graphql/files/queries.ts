@@ -22,18 +22,107 @@ export const SEARCH_FILES_QUERY = gql`
             file_name
             repository
             nb_participants
+            nb_biospecimens
+            fhir_document_reference
+            index {
+              urls
+              file_name
+            }
             participants {
               hits {
                 edges {
                   node {
                     participant_id
+                    external_id
                     is_proband
+                    ethnicity
+                    sex
+                    race
+                    families_id
+                    family_type
+                    family {
+                      relations_to_proband {
+                        hits {
+                          edges {
+                            node {
+                              role
+                            }
+                          }
+                        }
+                      }
+                    }
+                    diagnosis {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            mondo_id_diagnosis
+                            source_text
+                            ncit_id_diagnosis
+                            age_at_event_days
+                          }
+                        }
+                      }
+                    }
+                    outcomes {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            vital_status
+                            age_at_event_days {
+                              value
+                              units
+                            }
+                          }
+                        }
+                      }
+                    }
+                    phenotype {
+                      hits {
+                        total
+                        edges {
+                          node {
+                            age_at_event_days
+                            fhir_id
+                            hpo_phenotype_observed
+                            hpo_phenotype_observed_text
+                            hpo_phenotype_not_observed
+                            hpo_phenotype_not_observed_text
+                            is_observed
+                            source_text
+                          }
+                        }
+                      }
+                    }
                     biospecimens {
                       hits {
                         edges {
                           node {
                             sample_type
-                            sample_type
+                            external_sample_id
+                            collection_sample_type
+                            age_at_biospecimen_collection
+                            collection_method_of_sample_procurement
+                            dbgap_consent_code
+                            diagnoses {
+                              hits {
+                                total
+                                edges {
+                                  node {
+                                    diagnosis_mondo
+                                    source_text_tumor_descriptor
+                                    source_text_tumor_location
+                                    source_text
+                                    diagnosis_ncit
+                                    age_at_event {
+                                      value
+                                      units
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -42,16 +131,12 @@ export const SEARCH_FILES_QUERY = gql`
                 }
               }
             }
-            nb_biospecimens
-            fhir_document_reference
-            index {
-              urls
-              file_name
-            }
             study {
               study_id
               study_name
               study_code
+              program
+              domain
             }
             sequencing_experiment {
               hits {
@@ -59,6 +144,9 @@ export const SEARCH_FILES_QUERY = gql`
                   node {
                     experiment_strategy
                     platform
+                    instrument_model
+                    library_strand
+                    is_paired_end
                   }
                 }
               }
