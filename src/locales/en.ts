@@ -167,7 +167,9 @@ const en = {
           create: 'Unable to create your cavatica project.',
         },
         billingGroups: {
-          fetch: 'Unable to fetch your cavatica billing groups.',
+          title: 'Unable to fetch your cavatica billing groups',
+          fetch:
+            'We are currently unable to connect to this service. Please refresh the page and try again. If the problem persists, please',
         },
         bulk: {
           import: 'Unable to copy files to your project',

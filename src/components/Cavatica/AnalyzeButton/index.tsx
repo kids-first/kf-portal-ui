@@ -19,8 +19,11 @@ import {
   beginCavaticaAnalyse,
   connectCavaticaPassport,
   createCavaticaProjet,
+  fetchCavaticaBillingGroups,
+  fetchCavaticaProjects,
   startBulkImportJob,
 } from 'store/passport/thunks';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 interface OwnProps {
   fileIds: string[];
@@ -81,19 +84,31 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
         dispatch(connectCavaticaPassport());
       }}
       handleResetErrors={() => {
-        dispatch(passportActions.resetCavaticaBillingsGroupError());
         dispatch(passportActions.resetCavaticaProjectsError());
         dispatch(passportActions.setCavaticaBulkImportDataStatus(CAVATICA_ANALYSE_STATUS.unknow));
       }}
-      handleCreateProject={(values: ICavaticaCreateProjectBody) => {
-        dispatch(
-          createCavaticaProjet({
-            body: values,
-          }),
-        );
-      }}
       handleImportBulkData={(value) => {
         dispatch(startBulkImportJob(value));
+      }}
+      createProjectModalProps={{
+        cavatica,
+        handleErrorModalReset: () => {
+          dispatch(passportActions.resetCavaticaBillingsGroupError());
+          dispatch(passportActions.resetCavaticaProjectsError());
+        },
+        fetchBillingGroups: () => {
+          dispatch(fetchCavaticaBillingGroups());
+        },
+        fetchProjects: () => {
+          dispatch(fetchCavaticaProjects());
+        },
+        handleSubmit: (values: ICavaticaCreateProjectBody) => {
+          dispatch(
+            createCavaticaProjet({
+              body: values,
+            }),
+          );
+        },
       }}
       dictionary={{
         analyseModal: {
@@ -115,10 +130,6 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           ),
           files: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.files'),
           ofFiles: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.ofFiles'),
-        },
-        billingGroupsErrorModal: {
-          description: intl.get('api.cavatica.error.projects.fetch'),
-          title: intl.get('api.cavatica.error.title'),
         },
         buttonText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseInCavatica'),
         connectionRequiredModal: {
@@ -145,10 +156,18 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           },
           okText: intl.get('screen.dashboard.cards.cavatica.createProject'),
           cancelText: intl.get('screen.dashboard.cards.cavatica.cancelText'),
-        },
-        projectCreateErrorModal: {
-          description: intl.get('api.cavatica.error.projects.fetch'),
-          title: intl.get('api.cavatica.error.title'),
+          error: {
+            billingGroups: {
+              title: intl.get('screen.dashboard.cards.error.title'),
+              subtitle: intl.get('api.cavatica.error.billingGroups.fetch'),
+            },
+            create: {
+              title: intl.get('screen.dashboard.cards.cavatica.error.create.title'),
+              subtitle: intl.get('screen.dashboard.cards.cavatica.error.create.subtitle'),
+            },
+            email: SUPPORT_EMAIL,
+            contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
+          },
         },
         projectFetchErrorModal: {
           description: intl.get('api.cavatica.error.projects.fetch'),
