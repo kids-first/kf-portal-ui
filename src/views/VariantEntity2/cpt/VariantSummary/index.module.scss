@@ -11,22 +11,67 @@
 }
 
 .bannerWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, auto));
+  gap: 10px;
   padding: 12px 16px;
   border: 1px solid $gray-4;
   border-radius: 2px;
   background-color: $gray-2;
-}
-
-.spaceAlignContainer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  width: 100%;
   justify-content: space-between;
 }
-.spaceAlignBlock {
-  //   flex: none;
-  margin: 8px 4px;
-  padding: 4px;
-  border: 1px solid #40a9ff;
+
+.bannerWrapper > * {
+  border: 1px solid red;
+}
+
+.infoWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(min-content, max-content));
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid $gray-4;
+  border-radius: 2px;
+}
+
+.infoWrapper > *:not(:last-child) {
+  border-right: 1px solid $gray-5;
+  padding-right: 8px;
+}
+
+.score {
+  grid-area: score;
+  border: 1px solid $gray-4;
+  padding: 12px;
+}
+
+.geneSplice {
+  grid-area: geneSplice;
+  border: 1px solid $gray-4;
+  padding: 12px;
+}
+
+.omim {
+  grid-area: omim;
+  border: 1px solid $gray-4;
+  padding: 12px;
+}
+
+.detailsWrapper {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 2fr 1fr 1fr;
+  // grid-template-rows: auto;
+  grid-template-areas: 'score geneSplice omim';
+}
+
+@media (max-width: 1060px) {
+  .detailsWrapper {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'score score'
+      'geneSplice omim';
+  }
 }
