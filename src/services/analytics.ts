@@ -109,7 +109,7 @@ export const trackFilterActions = (action: string, tabId: string) => {
     case FilterActionType.CREATE_FILTER:
       message = 'Creating new Filter';
       break;
-    case FilterActionType.UPDATE_FILER:
+    case FilterActionType.UPDATE_FILTER:
       message = 'Updating existing Filter';
       break;
     case FilterActionType.REMOVE_FILTER:

@@ -66,7 +66,7 @@ const { Title } = Typography;
 export const MAX_TITLE_LENGTH = 200;
 
 export enum FilterActionType {
-  UPDATE_FILER = 'UPDATE_FILER',
+  UPDATE_FILTER = 'UPDATE_FILTER',
   CREATE_FILTER = 'CREATE_FILTER',
   REMOVE_FILTER = 'REMOVE_FILTER',
   FAVORITE_FILTER = 'CREATE_SET',
@@ -150,7 +150,7 @@ const PageContent = ({
   };
 
   const handleOnUpdateFilter = (filter: ISavedFilter) => {
-    trackFilterActions(FilterActionType.UPDATE_FILER, tabId);
+    trackFilterActions(FilterActionType.UPDATE_FILTER, tabId);
     dispatch(updateSavedFilter(filter));
   };
   const handleOnSaveFilter = (filter: ISavedFilter) => {
