@@ -1,0 +1,32 @@
+@import 'src/style/themes/kids-first/colors';
+
+.card {
+  border: 1px solid;
+  border-radius: 2px;
+  border-color: $gray-4;
+}
+
+.space {
+  width: 100%;
+}
+
+.bannerWrapper {
+  padding: 12px 16px;
+  border: 1px solid $gray-4;
+  border-radius: 2px;
+  background-color: $gray-2;
+}
+
+.spaceAlignContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between;
+}
+.spaceAlignBlock {
+  //   flex: none;
+  margin: 8px 4px;
+  padding: 4px;
+  border: 1px solid #40a9ff;
+}

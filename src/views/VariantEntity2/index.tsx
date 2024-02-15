@@ -1,5 +1,3 @@
-import intl from 'react-intl-universal';
-import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import EntityPageWrapper, {
@@ -13,11 +11,14 @@ import {
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
+import intl from 'react-intl-universal';
+import { useParams } from 'react-router-dom';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
+import VariantSummary from './cpt/VariantSummary';
 
 import {
   getFrequenciesItems,
@@ -87,6 +88,8 @@ export default function VariantEntity() {
             </>
           }
         />
+
+        <VariantSummary />
 
         <EntityTable
           id={SectionId.FREQUENCY}
