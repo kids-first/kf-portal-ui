@@ -14,7 +14,6 @@ import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { IFileEntity } from 'graphql/files/models';
 import { IQueryResults } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
-import { IVariantEntity } from '../../../../graphql/variants/models';
 import { MenuClickEventHandler, MenuInfo } from 'rc-menu/lib/interface';
 import CreateEditModal from 'views/Dashboard/components/DashboardCards/SavedSets/CreateEditModal';
 
@@ -24,6 +23,8 @@ import ListRemoveIcon from 'components/Icons/ListRemoveIcon';
 import { SetType } from 'services/api/savedSet/models';
 import { useSavedSet } from 'store/savedSet';
 import { numberWithCommas } from 'utils/string';
+
+import { IVariantEntity } from '../../../../graphql/variants/models';
 
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 
@@ -47,6 +48,7 @@ export enum SetActionType {
   CREATE_SET = 'CREATE_SET',
   HIDDEN = 'HIDDEN',
   UPDATE_SET = 'UPDATE_SET',
+  REMOVE_SET = 'REMOVE_SET',
 }
 
 type ModalState = {

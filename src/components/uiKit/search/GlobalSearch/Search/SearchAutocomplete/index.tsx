@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import Empty from '@ferlab/ui/core/components/Empty';
 import { Select, Tag } from 'antd';
 import debounce from 'lodash/debounce';
 import take from 'lodash/take';
-import Empty from '@ferlab/ui/core/components/Empty';
+
 import SearchLabel from 'components/uiKit/search/SearchLabel';
 
 export type OptionsType = {

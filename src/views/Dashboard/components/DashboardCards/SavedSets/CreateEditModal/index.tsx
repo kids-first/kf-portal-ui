@@ -12,6 +12,7 @@ import {
 } from 'views/DataExploration/components/SetsManagementDropdown';
 
 import filtersToName from 'common/sqonToName';
+import { trackSetActions } from 'services/analytics';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { PROJECT_ID, useSavedSet } from 'store/savedSet';
 import { createSavedSet, updateSavedSet } from 'store/savedSet/thunks';
@@ -79,6 +80,7 @@ const CreateEditModal = ({
       ]);
     } else {
       if (saveSetActionType === SetActionType.UPDATE_SET && currentSaveSet) {
+        trackSetActions(SetActionType.UPDATE_SET, setType);
         dispatch(
           updateSavedSet({
             onCompleteCb: onSuccessCreateCb,
@@ -88,6 +90,7 @@ const CreateEditModal = ({
           }),
         );
       } else {
+        trackSetActions(SetActionType.CREATE_SET, setType);
         dispatch(
           createSavedSet({
             idField,

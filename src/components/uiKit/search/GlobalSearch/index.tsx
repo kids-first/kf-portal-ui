@@ -7,6 +7,7 @@ import { get } from 'lodash';
 
 import Search, { TCustomHandleSearch } from 'components/uiKit/search/GlobalSearch/Search';
 import { OptionsType } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
+import { trackFacetSearch } from 'services/analytics';
 
 export interface ICustomSearchProps {
   queryBuilderId: string;
@@ -42,15 +43,16 @@ const GlobalSearch = <T,>({
   tooltipText,
 }: OwnProps<T>) => (
   <Search<T>
-    onSelect={(values) =>
+    onSelect={(values) => {
+      trackFacetSearch(index, field);
       updateActiveQueryField({
         queryBuilderId,
         field,
         value: values,
         index,
         merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-      })
-    }
+      });
+    }}
     index={index}
     tooltipText={tooltipText}
     emptyDescription={emptyDescription}

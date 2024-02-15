@@ -34,6 +34,7 @@ import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import { getNoDataOptionValue } from 'components/utils/filterUtils';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
+import { trackFilterActions } from 'services/analytics';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
@@ -63,6 +64,15 @@ import styles from './index.module.scss';
 const { Title } = Typography;
 
 export const MAX_TITLE_LENGTH = 200;
+
+export enum FilterActionType {
+  UPDATE_FILTER = 'UPDATE_FILTER',
+  CREATE_FILTER = 'CREATE_FILTER',
+  REMOVE_FILTER = 'REMOVE_FILTER',
+  FAVORITE_FILTER = 'CREATE_SET',
+  SHARE_FILTER = 'HIDDEN',
+}
+
 type OwnProps = {
   fileMapping: IExtendedMappingResults;
   biospecimenMapping: IExtendedMappingResults;
@@ -139,13 +149,24 @@ const PageContent = ({
     };
   };
 
-  const handleOnUpdateFilter = (filter: ISavedFilter) => dispatch(updateSavedFilter(filter));
-  const handleOnSaveFilter = (filter: ISavedFilter) =>
+  const handleOnUpdateFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.UPDATE_FILTER, tabId);
+    dispatch(updateSavedFilter(filter));
+  };
+  const handleOnSaveFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.CREATE_FILTER, tabId);
     dispatch(createSavedFilter(addTagToFilter(filter)));
-  const handleOnDeleteFilter = (id: string) => dispatch(deleteSavedFilter(id));
-  const handleOnSaveAsFavorite = (filter: ISavedFilter) =>
+  };
+  const handleOnDeleteFilter = (id: string) => {
+    trackFilterActions(FilterActionType.REMOVE_FILTER, tabId);
+    dispatch(deleteSavedFilter(id));
+  };
+  const handleOnSaveAsFavorite = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.FAVORITE_FILTER, tabId);
     dispatch(setSavedFilterAsDefault(addTagToFilter(filter)));
+  };
   const handleOnShareFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.SHARE_FILTER, tabId);
     copy(`${getCurrentUrl()}?${SHARED_FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
     dispatch(
       globalActions.displayMessage({

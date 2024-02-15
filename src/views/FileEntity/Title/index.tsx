@@ -87,7 +87,9 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
           isDisabled={false}
           hasTooManyFiles={false}
         />
-        {file && <CavaticaAnalyzeButton type="primary" fileIds={[file.file_id]} />}
+        {file && (
+          <CavaticaAnalyzeButton type="primary" fileIds={[file.file_id]} index={INDEXES.FILE} />
+        )}
       </Space>
     ),
   };

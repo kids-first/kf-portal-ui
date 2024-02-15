@@ -30,6 +30,7 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import styles from 'components/Layout/Header/index.module.scss';
 import GradientAccent from 'components/uiKit/GradientAccent';
+import { trackLogout, trackVisitResources } from 'services/analytics';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
 import { userActions } from 'store/user/slice';
@@ -117,6 +118,7 @@ const Header = () => {
             trigger={['click']}
             overlay={
               <Menu
+                onClick={({ key }) => trackVisitResources(key)}
                 items={[
                   {
                     key: 'website',
@@ -234,6 +236,7 @@ const Header = () => {
                       </Space>
                     ),
                     onClick: () => {
+                      trackLogout();
                       dispatch(personaActions.cleanLogout());
                       dispatch(userActions.cleanLogout());
                       window.sessionStorage.clear();
