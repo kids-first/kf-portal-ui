@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { PASSPORT } from '@ferlab/ui/core/components/Widgets/Cavatica';
 import {
@@ -18,7 +19,6 @@ import { hydrateResults } from 'graphql/models';
 import { toNodes } from 'graphql/utils/helpers';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { isEmpty } from 'lodash';
-import intl from 'react-intl-universal';
 import { CAVATICA_FILE_BATCH_SIZE } from 'views/DataExploration/utils/constant';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
@@ -171,14 +171,6 @@ export const fetchCavaticaBillingGroups = createAsyncThunk<
       error,
       data: data?.items || [],
       reject: thunkAPI.rejectWithValue,
-      onError: () =>
-        thunkAPI.dispatch(
-          globalActions.displayNotification({
-            type: 'error',
-            message: intl.get('api.cavatica.error.title'),
-            description: intl.get('api.cavatica.error.billingGroups.fetch'),
-          }),
-        ),
     });
   },
   {

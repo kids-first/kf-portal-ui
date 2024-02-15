@@ -10,6 +10,8 @@ import {
   connectCavaticaPassport,
   createCavaticaProjet,
   disconnectCavaticaPassport,
+  fetchCavaticaBillingGroups,
+  fetchCavaticaProjects,
 } from 'store/passport/thunks';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
 
@@ -24,11 +26,18 @@ const Cavatica = ({ id, className = '' }: DashboardCardProps) => {
   return (
     <CavaticaWidget
       cavatica={cavatica}
-      handleErrorModalReset={() => {
-        dispatch(passportActions.resetCavaticaBillingsGroupError());
-        dispatch(passportActions.resetCavaticaProjectsError());
-      }}
       createProjectModalProps={{
+        cavatica,
+        handleErrorModalReset: () => {
+          dispatch(passportActions.resetCavaticaBillingsGroupError());
+          dispatch(passportActions.resetCavaticaProjectsError());
+        },
+        fetchBillingGroups: () => {
+          dispatch(fetchCavaticaBillingGroups());
+        },
+        fetchProjects: () => {
+          dispatch(fetchCavaticaProjects());
+        },
         handleSubmit: (values: ICavaticaCreateProjectBody) => {
           dispatch(
             createCavaticaProjet({
@@ -79,21 +88,25 @@ const Cavatica = ({ id, className = '' }: DashboardCardProps) => {
             label: intl.get('screen.dashboard.cards.cavatica.billingGroups.label'),
             empty: intl.get('screen.dashboard.cards.cavatica.billingGroups.empty'),
           },
+          error: {
+            billingGroups: {
+              title: intl.get('api.cavatica.error.billingGroups.title'),
+              subtitle: intl.get('api.cavatica.error.billingGroups.fetch'),
+            },
+            create: {
+              title: intl.get('screen.dashboard.cards.cavatica.error.create.title'),
+              subtitle: intl.get('screen.dashboard.cards.cavatica.error.create.subtitle'),
+            },
+            email: SUPPORT_EMAIL,
+            contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
+          },
           okText: intl.get('screen.dashboard.cards.cavatica.createProject'),
           cancelText: intl.get('screen.dashboard.cards.cavatica.cancelText'),
         },
         error: {
-          billingGroups: {
-            title: intl.get('screen.dashboard.cards.error.title'),
-            subtitle: intl.get('api.cavatica.error.billingGroups.fetch'),
-          },
           fetch: {
             title: intl.get('screen.dashboard.cards.error.title'),
             subtitle: intl.get('screen.dashboard.cards.error.subtitle'),
-          },
-          create: {
-            title: intl.get('screen.dashboard.cards.cavatica.error.create.title'),
-            subtitle: intl.get('screen.dashboard.cards.cavatica.error.create.subtitle'),
           },
           email: SUPPORT_EMAIL,
           contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
