@@ -288,7 +288,7 @@ export const beginCavaticaAnalyse = createAsyncThunk<
   });
 });
 
-const joinUniquely = (l: string[]) => unique(l).join(',');
+const joinUniquely = (l: string[]) => unique(l).join(';');
 
 const extractFileMetaData = (file: IFileEntity) => ({
   fhir_document_reference: file.fhir_document_reference,
