@@ -20,7 +20,7 @@ export const trackAuthSuccess = () => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Authentication',
-      action: 'login success',
+      action: 'Login Success',
     });
   }
 };
@@ -29,7 +29,7 @@ export const trackAuthError = () => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Authentication',
-      action: 'login failed',
+      action: 'Login Failed',
     });
   }
 };
@@ -38,7 +38,7 @@ export const trackLogout = () => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Authentication',
-      action: 'logout',
+      action: 'Logout',
     });
   }
 };
@@ -47,7 +47,7 @@ export const trackFacetSearch = (page: string, field: string) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'FacetSearch',
-      action: `${capitalize(page)} -- ${field}`,
+      action: `Facet Search - ${capitalize(page)} - ${field}`,
     });
   }
 };
@@ -56,19 +56,16 @@ export const trackReportDownload = (reportCategory: string) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Reports',
-      action: `report download -- ${reportCategory}`,
+      action: `Report Download - ${reportCategory}`,
     });
   }
 };
 
-/**
- * DONE needs to be tested
- **/
 export const trackCavaticaAction = (page: string) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Cavatica',
-      action: `Analyze -- ${capitalize(page)}`,
+      action: `Cavatica Analyze - ${capitalize(page)}`,
     });
   }
 };
@@ -98,7 +95,7 @@ export const trackSetActions = (action: string, setType: SetType) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Sets',
-      action: `${setType} - ${message}`,
+      action: `${message} - ${setType}`,
     });
   }
 };
@@ -128,7 +125,7 @@ export const trackFilterActions = (action: string, tabId: string) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Filters',
-      action: `${tabId} - ${message}`,
+      action: `${message} - ${tabId}`,
     });
   }
 };
@@ -137,7 +134,7 @@ export const trackVisitResources = (resource: string) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Resources',
-      action: `Visit -- ${resource}`,
+      action: `Visit External Resource - ${resource}`,
     });
   }
 };
