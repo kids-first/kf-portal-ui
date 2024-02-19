@@ -1,7 +1,7 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
-import EntityPageWrapper, { EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
+import EntityPageWrapper, { EntityTable, EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
 import { Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 
@@ -9,6 +9,13 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
+
+import EntityPublicCohortTable from './Frequency/EntityPublicCohortTable';
+import {
+  getFrequenciesItems,
+  getFrequenciesTableSummaryColumns,
+  getPublicCohorts,
+} from './Frequency';
 
 import styles from './index.module.scss';
 
@@ -70,6 +77,26 @@ export default function VariantEntity() {
               </Tag>
             </>
           }
+        />
+
+        <EntityTable
+          id={SectionId.FREQUENCY}
+          columns={getFrequenciesItems()}
+          data={variantStudies}
+          title={intl.get('screen.variants.frequencies.frequency')}
+          header={intl.get('screen.variants.frequencies.kfStudies')}
+          loading={loading}
+          summaryColumns={getFrequenciesTableSummaryColumns(data, variantStudies)}
+        />
+
+        <EntityPublicCohortTable
+          columns={getPublicCohorts()}
+          frequencies={data?.external_frequencies}
+          locus={data?.locus}
+          header={intl.get('screen.variants.frequencies.publicCohorts')}
+          id=""
+          loading={loading}
+          emptyMessage={intl.get('screen.variants.frequencies.noDataAvailable')}
         />
       </>
     </EntityPageWrapper>
