@@ -136,6 +136,7 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           ofFiles: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.ofFiles'),
         },
         buttonText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseInCavatica'),
+        disabledButtonTooltip: intl.get('screen.dataExploration.itemSelectionTooltip'),
         connectionRequiredModal: {
           description: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.authWarning.description',

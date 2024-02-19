@@ -578,14 +578,24 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
             type={SetType.PARTICIPANT}
             key="participant-set-management"
           />,
-          <Dropdown
-            disabled={selectedKeys.length === 0}
-            overlay={menu}
-            placement="bottomLeft"
-            key={'download-clinical-data-dropdown'}
+          <Tooltip
+            title={
+              selectedKeys.length === 0
+                ? intl.get('screen.dataExploration.itemSelectionTooltip')
+                : undefined
+            }
           >
-            <Button icon={<DownloadOutlined />}>Download clinical data</Button>
-          </Dropdown>,
+            <div>
+              <Dropdown
+                disabled={selectedKeys.length === 0}
+                overlay={menu}
+                placement="bottomLeft"
+                key={'download-clinical-data-dropdown'}
+              >
+                <Button icon={<DownloadOutlined />}>Download clinical data</Button>
+              </Dropdown>
+            </div>
+          </Tooltip>,
         ],
       }}
       bordered

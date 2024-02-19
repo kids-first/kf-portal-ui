@@ -119,6 +119,8 @@ const SetsManagementDropdown = ({
   const [modal, setModal] = useState<ModalState>(modals.hideAll);
   const { savedSets, isLoading, fetchingError } = useSavedSet();
 
+  const disabledDropdown = selectedKeys.length === 0 && !selectedAllResults;
+
   useEffect(() => {
     if (savedSets && !isLoading && !fetchingError && sqon) {
       setIsEditDisabled(!(savedSets.length > 0 && sqon.content.length > 0));
@@ -160,74 +162,82 @@ const SetsManagementDropdown = ({
           type={type}
         />
       )}
-      <Dropdown
-        menu={{
-          className: styles.saveSetOptionMenu,
-          onClick: (e: MenuInfo) => onClick(e),
-          items: [
-            {
-              key: 'participant-count',
-              className: `${
-                exceedLimit(getSetCount(selectedKeys || [], results.total, selectedAllResults))
-                  ? styles.saveSetOptionMenuInfoOver
-                  : styles.saveSetOptionMenuInfo
-              }`,
-              disabled: true,
-              icon: itemIcon(type),
-              label: (
-                <>
-                  <span>
-                    {intl.get('screen.dataExploration.setsManagementDropdown.selected', {
-                      count: getSetCount(selectedKeys || [], results.total, selectedAllResults),
-                      type: singularizeSetTypeIfNeeded(type),
-                    })}
-                  </span>
-                  <Tooltip
-                    arrowPointAtCenter
-                    placement="topRight"
-                    title={`Max. ${numberWithCommas(
-                      ROW_SELECTION_LIMIT,
-                    )} items at a time. The first 10,000 will be processed.`}
-                  >
-                    <InfoCircleOutlined className={styles.infoCircle} />
-                  </Tooltip>
-                </>
-              ),
-            },
-            {
-              type: 'divider',
-            },
-            {
-              key: 'create',
-              icon: <PlusOutlined />,
-              label: intl.get('screen.dataExploration.setsManagementDropdown.create'),
-            },
-            {
-              key: 'add_ids',
-              icon: <ListAddIcon />,
-              label: intl.get('screen.dataExploration.setsManagementDropdown.add'),
-              disabled: isEditDisabled,
-            },
-            {
-              key: 'remove_ids',
-              icon: <ListRemoveIcon />,
-              label: intl.get('screen.dataExploration.setsManagementDropdown.remove'),
-              disabled: isEditDisabled,
-            },
-          ],
-        }}
-        placement="bottomLeft"
-        trigger={['click']}
-        disabled={selectedKeys.length === 0 && !selectedAllResults}
-        getPopupContainer={() =>
-          document.getElementById(`${type}-set-dropdown-container`) as HTMLElement
+      <Tooltip
+        title={
+          disabledDropdown ? intl.get('screen.dataExploration.itemSelectionTooltip') : undefined
         }
       >
-        <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
-          {`Save ${singularizeSetTypeIfNeeded(type)} set`}
-          <DownOutlined />
-        </Button>
-      </Dropdown>
+        <div>
+          <Dropdown
+            menu={{
+              className: styles.saveSetOptionMenu,
+              onClick: (e: MenuInfo) => onClick(e),
+              items: [
+                {
+                  key: 'participant-count',
+                  className: `${
+                    exceedLimit(getSetCount(selectedKeys || [], results.total, selectedAllResults))
+                      ? styles.saveSetOptionMenuInfoOver
+                      : styles.saveSetOptionMenuInfo
+                  }`,
+                  disabled: true,
+                  icon: itemIcon(type),
+                  label: (
+                    <>
+                      <span>
+                        {intl.get('screen.dataExploration.setsManagementDropdown.selected', {
+                          count: getSetCount(selectedKeys || [], results.total, selectedAllResults),
+                          type: singularizeSetTypeIfNeeded(type),
+                        })}
+                      </span>
+                      <Tooltip
+                        arrowPointAtCenter
+                        placement="topRight"
+                        title={`Max. ${numberWithCommas(
+                          ROW_SELECTION_LIMIT,
+                        )} items at a time. The first 10,000 will be processed.`}
+                      >
+                        <InfoCircleOutlined className={styles.infoCircle} />
+                      </Tooltip>
+                    </>
+                  ),
+                },
+                {
+                  type: 'divider',
+                },
+                {
+                  key: 'create',
+                  icon: <PlusOutlined />,
+                  label: intl.get('screen.dataExploration.setsManagementDropdown.create'),
+                },
+                {
+                  key: 'add_ids',
+                  icon: <ListAddIcon />,
+                  label: intl.get('screen.dataExploration.setsManagementDropdown.add'),
+                  disabled: isEditDisabled,
+                },
+                {
+                  key: 'remove_ids',
+                  icon: <ListRemoveIcon />,
+                  label: intl.get('screen.dataExploration.setsManagementDropdown.remove'),
+                  disabled: isEditDisabled,
+                },
+              ],
+            }}
+            placement="bottomLeft"
+            trigger={['click']}
+            disabled={selectedKeys.length === 0 && !selectedAllResults}
+            getPopupContainer={() =>
+              document.getElementById(`${type}-set-dropdown-container`) as HTMLElement
+            }
+          >
+            <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
+              {`Save ${singularizeSetTypeIfNeeded(type)} set`}
+              <DownOutlined />
+            </Button>
+          </Dropdown>
+        </div>
+      </Tooltip>
     </div>
   );
 };

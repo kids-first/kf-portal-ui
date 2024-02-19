@@ -435,23 +435,31 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             type={SetType.BIOSPECIMEN}
             selectedKeys={selectedKeys}
           />,
-          <Button
-            key="biospecimen-download"
-            icon={<DownloadOutlined />}
-            onClick={() =>
-              dispatch(
-                fetchReport({
-                  data: {
-                    sqon: getCurrentSqon(),
-                    name: ReportType.BIOSEPCIMEN_DATA,
-                  },
-                }),
-              )
+          <Tooltip
+            title={
+              selectedKeys.length === 0
+                ? intl.get('screen.dataExploration.itemSelectionTooltip')
+                : undefined
             }
-            disabled={selectedKeys.length === 0}
           >
-            Download sample data
-          </Button>,
+            <Button
+              key="biospecimen-download"
+              icon={<DownloadOutlined />}
+              onClick={() =>
+                dispatch(
+                  fetchReport({
+                    data: {
+                      sqon: getCurrentSqon(),
+                      name: ReportType.BIOSEPCIMEN_DATA,
+                    },
+                  }),
+                )
+              }
+              disabled={selectedKeys.length === 0}
+            >
+              Download sample data
+            </Button>
+          </Tooltip>,
         ],
       }}
       bordered

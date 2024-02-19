@@ -1015,6 +1015,7 @@ const en = {
         biospecimen: 'Biospecimen',
         datafiles: 'Data File',
       },
+      itemSelectionTooltip: 'You must select at least 1 item',
       setsManagementDropdown: {
         newTitle: 'Save {filter} set',
         editTitle: 'Edit {filter} set',
