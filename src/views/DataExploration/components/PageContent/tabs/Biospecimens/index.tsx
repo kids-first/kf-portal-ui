@@ -457,7 +457,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
               }
               disabled={selectedKeys.length === 0}
             >
-              Download sample data
+              {intl.get('screen.dataExploration.tabs.biospecimens.downloadData')}
             </Button>
           </Tooltip>,
         ],

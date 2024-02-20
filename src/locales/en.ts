@@ -1023,6 +1023,7 @@ const en = {
         add: 'Add to existing set',
         remove: 'Remove from existing set',
         selected: '{count, plural, =0 {# {type}} =1 {# {type}} other {# {type}s}} selected',
+        saveSet: 'Save {type} set',
       },
       hpoTree: {
         modal: {
@@ -1104,9 +1105,11 @@ const en = {
         },
         participants: {
           title: 'Participants ({count})',
+          downloadData: 'Download clinical data',
         },
         biospecimens: {
           title: 'Biospecimens ({count})',
+          downloadData: 'Download sample data',
         },
         datafiles: {
           title: 'Data Files ({count})',

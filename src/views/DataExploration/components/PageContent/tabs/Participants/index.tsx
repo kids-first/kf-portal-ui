@@ -592,7 +592,9 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
                 placement="bottomLeft"
                 key={'download-clinical-data-dropdown'}
               >
-                <Button icon={<DownloadOutlined />}>Download clinical data</Button>
+                <Button icon={<DownloadOutlined />}>
+                  {intl.get('screen.dataExploration.tabs.participants.downloadData')}
+                </Button>
               </Dropdown>
             </div>
           </Tooltip>,

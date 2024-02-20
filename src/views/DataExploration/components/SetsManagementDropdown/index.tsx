@@ -232,7 +232,9 @@ const SetsManagementDropdown = ({
             }
           >
             <Button className={'save-set-btn'} onClick={(e) => e.preventDefault()}>
-              {`Save ${singularizeSetTypeIfNeeded(type)} set`}
+              {intl.get('screen.dataExploration.setsManagementDropdown.saveSet', {
+                type: singularizeSetTypeIfNeeded(type),
+              })}
               <DownOutlined />
             </Button>
           </Dropdown>
