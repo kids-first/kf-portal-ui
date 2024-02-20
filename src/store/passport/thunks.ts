@@ -288,7 +288,7 @@ export const beginCavaticaAnalyse = createAsyncThunk<
   });
 });
 
-const joinUniquely = (l: string[]) => unique(l).join(';');
+const joinUniquely = (l: string[]) => unique(l).join(',');
 
 const extractFileMetaData = (file: IFileEntity) => ({
   fhir_document_reference: file.fhir_document_reference,
@@ -318,7 +318,7 @@ const extractParticipantMetaData = (participants: any[]) => {
     ethnicity: joinUniquely(participants.map((x) => x.ethnicity)),
     sex: joinUniquely(participants.map((x) => x.sex)),
     race: joinUniquely(participants.map((x) => x.race)),
-    age_at_diagnosis: joinUniquely(diagnosis.map((d) => d.age_at_event_days)),
+    age_at_participant_diagnosis: joinUniquely(diagnosis.map((d) => d.age_at_event_days)),
     age_at_vital_status: joinUniquely(outcomes.map((o) => o.age_at_event_days.value)),
     age_at_observed_phenotype: joinUniquely(phenotype.map((p) => p.age_at_event_days)),
     diagnosis_mondo: joinUniquely(diagnosis.map((d) => d.mondo_id_diagnosis)),
