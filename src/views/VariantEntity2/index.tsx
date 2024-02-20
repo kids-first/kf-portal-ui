@@ -59,8 +59,6 @@ export default function VariantEntity() {
     (e: ArrangerEdge<IVariantStudyEntity>) => e.node,
   );
 
-  debugger;
-
   return (
     <EntityPageWrapper
       pageId="variant-entity-page"
