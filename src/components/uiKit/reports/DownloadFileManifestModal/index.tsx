@@ -3,7 +3,7 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { DownloadOutlined } from '@ant-design/icons';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-import { Button, Checkbox, Modal } from 'antd';
+import { Button, Checkbox, Modal, Tooltip } from 'antd';
 
 import { ReportType } from 'services/api/reports/models';
 import { fetchReport } from 'store/report/thunks';
@@ -34,14 +34,18 @@ const DownloadFileManifestModal = ({
 
   return (
     <>
-      <Button
-        icon={<DownloadOutlined />}
-        onClick={() => setIsModalVisible(true)}
-        type={type}
-        disabled={isDisabled}
+      <Tooltip
+        title={isDisabled ? intl.get('screen.dataExploration.itemSelectionTooltip') : undefined}
       >
-        {intl.get('api.report.fileManifest.button')}
-      </Button>
+        <Button
+          icon={<DownloadOutlined />}
+          onClick={() => setIsModalVisible(true)}
+          type={type}
+          disabled={isDisabled}
+        >
+          {intl.get('api.report.fileManifest.button')}
+        </Button>
+      </Tooltip>
       <Modal
         visible={isModalVisible}
         title={intl.get('api.report.fileManifest.title')}
