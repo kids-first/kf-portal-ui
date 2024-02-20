@@ -1,3 +1,5 @@
+import intl from 'react-intl-universal';
+import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import EntityPageWrapper, {
@@ -12,11 +14,9 @@ import {
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
-import intl from 'react-intl-universal';
-import { useParams } from 'react-router-dom';
+import { getSummaryItems } from 'views/VariantEntity2/utils/summary';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
-import { getSummaryItems } from 'views/VariantEntity2/utils/summary';
 
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
@@ -145,6 +145,28 @@ export default function VariantEntity() {
           header={intl.get('screen.variants.pathogenicity.genePhenotype')}
           data={makeGenesOrderedRow(data?.genes)}
           columns={getGenePhenotypeColumns()}
+        />
+
+        <EntityTable
+          id={SectionId.PATHOGENICITY}
+          loading={loading}
+          title={intl.get('screen.variants.pathogenicity.pathogenicity')}
+          header={
+            <Space size={4}>
+              {intl.get('screen.variants.pathogenicity.clinVar')}
+              {data?.clinvar?.clinvar_id && (
+                <ExternalLink
+                  hasIcon
+                  href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${data?.clinvar.clinvar_id}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {data?.clinvar?.clinvar_id}
+                </ExternalLink>
+              )}
+            </Space>
+          }
+          data={makeClinvarRows(data?.clinvar)}
+          columns={getClinvarColumns()}
         />
       </>
     </EntityPageWrapper>
