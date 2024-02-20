@@ -1,7 +1,11 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
-import EntityPageWrapper, { EntityTable, EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
+import EntityPageWrapper, {
+  EntityPublicCohortTable,
+  EntityTable,
+  EntityTitle,
+} from '@ferlab/ui/core/pages/EntityPage';
 import { Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 
@@ -10,7 +14,6 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
 
-import EntityPublicCohortTable from './Frequency/EntityPublicCohortTable';
 import {
   getFrequenciesItems,
   getFrequenciesTableSummaryColumns,
@@ -55,6 +58,8 @@ export default function VariantEntity() {
   const variantStudies = (data?.studies.hits.edges || []).map(
     (e: ArrangerEdge<IVariantStudyEntity>) => e.node,
   );
+
+  debugger;
 
   return (
     <EntityPageWrapper
