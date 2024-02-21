@@ -1122,12 +1122,14 @@ const en = {
                 'You can copy a maximum of <strong>{limit} files</strong> at a time. Please select fewer files and try again.',
             },
             authWarning: {
-              title: 'You are not connected to Cavatica',
+              title: 'Connect to Cavatica',
               description:
                 'In order to analyze your files you must first connect your Cavatica account. Once you are connected, you will be redirected back to this page.',
               connect: 'Connect',
+              cancel: 'Cancel',
             },
             analyseModal: {
+              title: 'Analyze in Cavatica',
               files: '{files} files',
               ofFiles: '(out of {files} selected) to your Cavatica workspace.',
               newProject: 'New project',
@@ -1135,6 +1137,7 @@ const en = {
               copyFilesTo: 'Copy files to...',
               createProjectToPushFileTo: 'Create a project to push your files to.',
               youAreAuthorizedToCopy: 'You are authorized to copy',
+              disabledButtonTooltip: 'You must select at least 1 item',
             },
           },
         },
