@@ -10,7 +10,6 @@ import EntityPageWrapper, {
 import { makeClinvarRows } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
-import { makeGenesOrderedRow } from 'views/VariantEntity/FerlabComponent/Pathogenecity.utils';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
@@ -22,7 +21,7 @@ import {
   getFrequenciesTableSummaryColumns,
   getPublicCohorts,
 } from './Frequency';
-import { getClinvarColumns, getGenePhenotypeColumns } from './Pathogenicity';
+import { getClinvarColumns } from './Pathogenicity';
 
 import styles from './index.module.scss';
 
@@ -126,13 +125,6 @@ export default function VariantEntity() {
           }
           data={makeClinvarRows(data?.clinvar)}
           columns={getClinvarColumns()}
-        />
-        <EntityTable
-          id=""
-          loading={loading}
-          header={intl.get('screen.variants.pathogenicity.genePhenotype')}
-          data={makeGenesOrderedRow(data?.genes)}
-          columns={getGenePhenotypeColumns()}
         />
       </>
     </EntityPageWrapper>
