@@ -128,20 +128,23 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           newProject: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.analyseModal.newProject',
           ),
-          title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.title'),
+          title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.title'),
           youAreAuthorizedToCopy: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.analyseModal.youAreAuthorizedToCopy',
           ),
           files: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.files'),
           ofFiles: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseModal.ofFiles'),
         },
+        disabledButtonTooltip: intl.get(
+          'screen.dataExploration.tabs.datafiles.cavatica.analyseModal.disabledButtonTooltip',
+        ),
         buttonText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.analyseInCavatica'),
-        disabledButtonTooltip: intl.get('screen.dataExploration.itemSelectionTooltip'),
         connectionRequiredModal: {
           description: intl.get(
             'screen.dataExploration.tabs.datafiles.cavatica.authWarning.description',
           ),
           okText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.connect'),
+          cancelText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.cancel'),
           title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.title'),
         },
         fetchErrorModal: {
