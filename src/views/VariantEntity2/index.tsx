@@ -15,10 +15,10 @@ import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import { getSummaryItems } from 'views/VariantEntity2/utils/summary';
 
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
-import VariantSummary from './cpt/VariantSummary';
 
 import {
   getFrequenciesItems,
@@ -89,7 +89,12 @@ export default function VariantEntity() {
           }
         />
 
-        <VariantSummary />
+        <EntityVariantSummary
+          id={SectionId.SUMMARY}
+          loading={loading}
+          data={getSummaryItems(data)}
+          noDataLabel={intl.get('no.data.available')}
+        />
 
         <EntityTable
           id={SectionId.FREQUENCY}
