@@ -20,8 +20,13 @@ import {
   getFrequenciesItems,
   getFrequenciesTableSummaryColumns,
   getPublicCohorts,
+<<<<<<< Updated upstream
 } from './Frequency';
 import { getClinvarColumns } from './Pathogenicity';
+=======
+} from './utils/frequency';
+import { getClinvarColumns, getGenePhenotypeColumns } from './utils/pathogenecity';
+>>>>>>> Stashed changes
 
 import styles from './index.module.scss';
 
