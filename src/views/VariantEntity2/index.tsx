@@ -168,6 +168,13 @@ export default function VariantEntity() {
           data={makeClinvarRows(data?.clinvar)}
           columns={getClinvarColumns()}
         />
+        <EntityTable
+          id=""
+          loading={loading}
+          header={intl.get('screen.variants.pathogenicity.genePhenotype')}
+          data={makeGenesOrderedRow(data?.genes)}
+          columns={getGenePhenotypeColumns()}
+        />
       </>
     </EntityPageWrapper>
   );
