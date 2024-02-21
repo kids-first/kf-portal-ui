@@ -21,7 +21,7 @@ import {
   getFrequenciesTableSummaryColumns,
   getPublicCohorts,
 } from './utils/frequency';
-import { getClinvarColumns } from './utils/pathogenecity';
+import { getClinvarColumns } from './utils/pathogenicity';
 
 import styles from './index.module.scss';
 

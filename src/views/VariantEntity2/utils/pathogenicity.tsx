@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
@@ -25,8 +26,6 @@ import {
   SingleValuedInheritance,
 } from '@ferlab/ui/core/pages/EntityPage/type';
 import { Typography } from 'antd';
-
-import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 export const getClinvarColumns = (): ProColumnType[] => [
   {
