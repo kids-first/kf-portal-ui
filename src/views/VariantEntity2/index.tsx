@@ -128,8 +128,9 @@ export default function VariantEntity() {
           columns={getClinvarColumns()}
         />
         <EntityTable
-          id=""
+          id={SectionId.CONDITIONS}
           loading={loading}
+          title={intl.get('screen.variants.pathogenicity.condition')}
           header={intl.get('screen.variants.pathogenicity.genePhenotype')}
           data={makeGenesOrderedRow(data?.genes)}
           columns={getGenePhenotypeColumns()}
