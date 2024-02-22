@@ -150,7 +150,6 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
           okText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.connect'),
           cancelText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.cancel'),
           title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.title'),
-          cancelText: intl.get('screen.dataExploration.tabs.datafiles.cavatica.authWarning.cancel'),
         },
         fetchErrorModal: {
           description: intl.get('api.cavatica.error.bulk.fetchfiles'),
