@@ -156,7 +156,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
             )
           </>
         ),
-        value: pickedConsequence.node.aa_change,
+        value: pickedConsequence.node.aa_change || TABLE_EMPTY_PLACE_HOLDER,
       },
       {
         label: intl.get('screen.variants.summary.consequence'),
