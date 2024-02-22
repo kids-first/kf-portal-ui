@@ -7,10 +7,12 @@ import EntityPageWrapper, {
   EntityTable,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
-import { makeClinvarRows } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
+import {
+  makeClinvarRows,
+  makeGenesOrderedRow,
+} from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
-import { makeGenesOrderedRow } from 'views/VariantEntity/FerlabComponent/Pathogenecity.utils';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
