@@ -278,7 +278,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
       </>,
     ],
     details: {
-      block1: {
+      leftSection: {
         title: intl.get('screen.variants.summary.details.functionalScores'),
         items: [
           {
@@ -360,7 +360,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           },
         ],
       },
-      block2: [
+      middleSection: [
         {
           title: intl.get('screen.variants.summary.details.geneConstraints'),
           items: [
@@ -399,7 +399,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           ],
         },
       ],
-      block3: {
+      rightSection: {
         title: intl.get('screen.variants.summary.details.associatedConditions'),
         items: renderOmim(pickedOmim),
       },
