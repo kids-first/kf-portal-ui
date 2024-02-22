@@ -58,6 +58,7 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
     value:
       participant?.participant_id &&
       participant.study?.study_code &&
+      participant?.is_proband &&
       mapStudyToPedcBioportal(participant.study.study_code) ? (
         <ExternalLink
           href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=${mapStudyToPedcBioportal(
