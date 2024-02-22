@@ -10,7 +10,7 @@ Checkout dev branch and make sure you are up to date
 
 1. Bump version in package.json and package-lock.json
 
-2. Update RELEASES.md with release note (ask JP)
+2. Update RELEASES.md with release notes (ask the Product Owner)
 
 3. Commit and push directly on dev
 
@@ -40,7 +40,7 @@ Checkout 2.0 branch and make sure you are up to date
 
 1. Bump version in package.json and package-lock.json
 
-2. Update RELEASES.md with release note (ask JP)
+2. Update RELEASES.md with release notes (ask the Product Owner)
 
 3. Commit and push directly on 2.0
 
