@@ -1,48 +1,63 @@
 # Deployment
 
-## Production
+:warning: Communicate on #portal-leads slack channel to make sure there are no blockers to deploy (presentation, demo, etc)
 
-### Create the Release
+## Legacy PRD
 
-- Checkout dev
+Checkout dev branch and make sure you are up to date
 
-  ```sh
-  git fetch --all
-  git checkout dev
-  git reset --hard origin/dev
-  ```
+### Release Note
 
-- Create new release
+1. Bump version in package.json and package-lock.json
 
-  1. Update the NEWS.md file listing the changes from the last release
-  2. Bump the version in package.json [using semantic version](https://semver.org/)
-  3. Create a version commit with the following messages : `Release [VERSION]`
+2. Update RELEASES.md with release note (ask JP)
 
-     e.g.
+3. Commit and push directly on dev
 
-     ```sh
-     git commit -m "Release 3.1.5" --no-verify
-     ```
+### Deploy to Legacy PRD
 
-  4. Push on origin
-     ```sh
-     git push origin/dev
-     ```
+1. Checkout master branch and make sure you are up to date and your dev branch is up to date
 
-- Create PR against `master`
+2. Run `git merge dev --no-commit`
 
-### When the PR Is merged on master
+3. Push directly on master
 
-- Checkout master
+4. Go to [Netlify](https://app.netlify.com/sites/prod-kidsfirst-portal/overview) and make sure the deployment is successful 
 
-  ```sh
-  git fetch --all
-  git checkout master
-  git reset --hard origin/master
-  ```
+5. In [Github Compare](https://github.com/kids-first/kf-portal-ui/compare) make sure dev and master branch are sync (no change between them)
 
-- Create a tag
-  ```sh
-  git tag [VERSION]
-  git push [VERSION]
-  ```
+6. In [Github Releases](https://github.com/kids-first/kf-portal-ui/releases) draft a new release with the version and the content used in RELEASES.md, make sure to target master branch
+
+7. Move JIRA tickets in Ready to Deploy to Done
+
+8. Do a quick check on the [Legacy Portal](https://portal.kidsfirstdrc.org/) to make sure everything works
+
+## Beta PRD
+
+Checkout 2.0 branch and make sure you are up to date
+
+### Release Note
+
+1. Bump version in package.json and package-lock.json
+
+2. Update RELEASES.md with release note (ask JP)
+
+3. Commit and push directly on 2.0
+
+### Deploy to Beta PRD
+
+1. Checkout Beta-Prd branch and make sure you are up to date and your 2.0 branch is up to date
+
+2. Run `git merge 2.0 --no-commit`
+
+3. Push directly on Beta-Prd
+
+4. Go to [Netlify](https://app.netlify.com/sites/portal-pre-prod-kidsfirstdrc/overview) and make sure the deployment is successful 
+
+5. In [Github Compare](https://github.com/kids-first/kf-portal-ui/compare) make sure 2.0 and Beta-Prd branch are sync (no change between them)
+
+6. In [Github Releases](https://github.com/kids-first/kf-portal-ui/releases) draft a new release with the version and the content used in RELEASES.md, make sure to target Beta-Prd branch
+
+7. Move JIRA tickets in Ready to Deploy to Done
+
+8. Do a quick check on the [Beta Portal](https://portal-beta.kidsfirstdrc.org/) to make sure everything works
