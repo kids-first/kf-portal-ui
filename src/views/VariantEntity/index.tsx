@@ -8,7 +8,10 @@ import EntityPageWrapper, {
   EntityTable,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
-import { makeClinvarRows } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
+import {
+  makeClinvarRows,
+  makeGenesOrderedRow,
+} from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 
@@ -19,7 +22,6 @@ import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
 
 import EntityGeneConsequences from './FerlabComponent/EntityGeneConsequence';
-import { makeGenesOrderedRow } from './FerlabComponent/Pathogenecity.utils';
 import { getConsequencesProColumn } from './utils/consequences';
 import {
   getFrequenciesItems,
