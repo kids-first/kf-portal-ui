@@ -5,6 +5,7 @@ import EntityPageWrapper, {
   EntityTable,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
+import EntityVariantSummary from '@ferlab/ui/core/pages/EntityPage/EntityVariantSummary';
 import {
   makeClinvarRows,
   makeGenesOrderedRow,
