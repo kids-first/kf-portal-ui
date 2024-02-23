@@ -3,3 +3,14 @@
     font-weight: 600;
   }
 }
+
+.@{confirm-prefix-cls} {
+  &-warning &-body > .@{iconfont-css-prefix},
+  &-confirm &-body > .@{iconfont-css-prefix} {
+    color: @orange-7;
+  }
+  &-error &-body > .@{iconfont-css-prefix} {
+    color: @red-7;
+  }
+}
+
