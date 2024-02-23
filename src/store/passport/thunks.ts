@@ -312,11 +312,11 @@ const extractParticipantMetaData = (participants: any[]) => {
   );
 
   return {
-    participant_ids: joinUniquely(participants.map((x) => x.participant_id)),
+    case_id: joinUniquely(participants.map((x) => x.participant_id)),
     external_participant_ids: joinUniquely(participants.map((x) => x.external_id)),
     proband: joinUniquely(participants.map((x) => `${x.participant_id}: ${x.is_proband}`)),
     ethnicity: joinUniquely(participants.map((x) => x.ethnicity)),
-    sex: joinUniquely(participants.map((x) => x.sex)),
+    gender: joinUniquely(participants.map((x) => x.sex)),
     race: joinUniquely(participants.map((x) => x.race)),
     age_at_participant_diagnosis: joinUniquely(diagnosis.map((d) => d.age_at_event_days)),
     age_at_vital_status: joinUniquely(outcomes.map((o) => o.age_at_event_days.value)),
@@ -356,6 +356,8 @@ const extractBioSpecimenMetaData = (biospecimens: any[]) => {
     histological_diagnosis_ncit: joinUniquely(diagnoses.map((d) => d.diagnosis_ncit)),
     histological_diagnosis_mondo: joinUniquely(diagnoses.map((d) => d.diagnosis_mondo)),
     dbgap_consent_code: joinUniquely(biospecimens.map((x) => x.dbgap_consent_code)),
+    consent_type: joinUniquely(biospecimens.map((x) => x.consent_type)),
+    anatomical_site_source_text: joinUniquely(biospecimens.map((x) => x.collection_anatomy_site)),
   };
 };
 const extractSequentialExperimentMetaData = (sequentialExperiments: any[]) => ({
