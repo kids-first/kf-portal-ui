@@ -223,7 +223,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     render: (record: ITableParticipantEntity) => {
       const studyId = mapStudyToPedcBioportal(record.study?.study_code);
 
-      if (!studyId) {
+      if (!studyId || !record?.is_proband) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
 
