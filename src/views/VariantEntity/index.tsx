@@ -117,7 +117,7 @@ export default function VariantEntity() {
           header={intl.get('screen.variants.frequencies.publicCohorts')}
           id=""
           loading={loading}
-          emptyMessage={intl.get('screen.variants.frequencies.noDataAvailable')}
+          emptyMessage={intl.get('no.data.available')}
         />
 
         <EntityTable

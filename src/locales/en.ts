@@ -1042,7 +1042,6 @@ const en = {
         cohort: 'Cohort',
         altRef: '# Alleles (ALT + REF)',
         altRefTooltip: 'Number of alternative alleles + Reference alleles',
-        noDataAvailable: 'No data available',
       },
       pathogenicity: {
         pathogenicity: 'Pathogenicity',
