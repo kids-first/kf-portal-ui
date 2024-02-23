@@ -54,6 +54,7 @@ export const getFrequenciesItems = (): ProColumnType[] => [
       <Space>
         <Tooltip
           className={styles.dotted}
+          overlayStyle={{ whiteSpace: 'pre-line' }}
           title={intl.get('screen.variants.frequencies.participantsTooltip')}
         >
           {intl.get('screen.variants.frequencies.participants')}
