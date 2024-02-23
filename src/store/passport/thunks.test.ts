@@ -147,6 +147,7 @@ describe(`${extractMetadata.name}()`, () => {
                           sample_type: 'DNA',
                           external_sample_id: '595495',
                           collection_sample_type: 'Buccal Cells',
+                          collection_anatomy_site: 'Anatomical Site',
                           age_at_biospecimen_collection: 2345,
                           collection_method_of_sample_procurement: 'blood',
                           dbgap_consent_code: 'phs001436.c1',
@@ -188,6 +189,7 @@ describe(`${extractMetadata.name}()`, () => {
                             biospecimen_fhir_id_2: 'biospecimen_fhir_id_2',
                           },
                           status: 'valid',
+                          consent_type: 'consent_type',
                         },
                       },
                     ],
@@ -295,11 +297,11 @@ describe(`${extractMetadata.name}()`, () => {
       repository: 'gen3',
       acl: 'phs001436.c999,SD_DYPMEHHF',
       access_url: 'drs://data.kidsfirstdrc.org/acb15d28-e1bc-40c6-9a32-e897e0bbb841',
-      participant_ids: 'PT_EDKKJV31',
+      case_id: 'PT_EDKKJV31',
       external_participant_ids: 'GMKF-30-PARXDW03',
       proband: 'PT_EDKKJV31: true',
       ethnicity: 'Not Hispanic or Latino',
-      sex: 'female',
+      gender: 'female',
       race: 'White',
       age_at_participant_diagnosis: '174',
       age_at_vital_status: '3137',
@@ -336,6 +338,8 @@ describe(`${extractMetadata.name}()`, () => {
       study_name: 'Discovering the Genetic Basis of Human Neuroblastoma',
       study_program: 'Kids First',
       study_domain: 'CANCER',
+      anatomical_site_source_text: 'Anatomical Site',
+      consent_type: 'consent_type',
     };
 
     expect(extractMetadata(file)).toEqual(expectedMetaData);
