@@ -1028,7 +1028,8 @@ const en = {
         studies: 'Studies',
         domain: 'Domain',
         participants: 'Participants',
-        participantsTooltip: '# of affected participants across Kids First studies',
+        participantsTooltip:
+          '# of affected participants across KF cohorts.\n\n Due to participant confidentiality, redirect to the Data Exploration page is only permitted if the number of affected participants is ≥ 10 for a given cohort',
         participantsInfoIconTooltip:
           'Due to participant confidentiality, links may return a smaller number than displayed',
         frequencyTooltip: 'Frequency of the variant across Kids First studies',
@@ -1040,7 +1041,7 @@ const en = {
         total: 'TOTAL',
         cohort: 'Cohort',
         altRef: '# Alleles (ALT + REF)',
-        altRefTooltip: 'Alternative alleles + Reference alleles',
+        altRefTooltip: 'Number of alternative alleles + Reference alleles',
         noDataAvailable: 'No data available',
       },
       pathogenicity: {

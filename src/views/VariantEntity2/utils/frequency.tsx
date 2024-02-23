@@ -50,7 +50,20 @@ export const getFrequenciesItems = (): ProColumnType[] => [
   },
   {
     title: intl.get('screen.variants.frequencies.participants'),
-    tooltip: intl.get('screen.variants.frequencies.participantsTooltip'),
+    iconTitle: (
+      <Space>
+        <Tooltip
+          className={styles.dotted}
+          overlayStyle={{ whiteSpace: 'pre-line' }}
+          title={intl.get('screen.variants.frequencies.participantsTooltip')}
+        >
+          {intl.get('screen.variants.frequencies.participants')}
+        </Tooltip>
+        <Tooltip title={intl.get('screen.variants.frequencies.participantsInfoIconTooltip')}>
+          <InfoCircleOutlined />
+        </Tooltip>
+      </Space>
+    ),
     key: 'participants',
     render: (row: IVariantStudyEntity) =>
       row?.participant_ids?.length ? (
