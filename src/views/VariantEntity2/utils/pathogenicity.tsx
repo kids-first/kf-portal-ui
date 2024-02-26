@@ -1,5 +1,6 @@
 import intl from 'react-intl-universal';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
+import ColorTag, { ColorTagType } from '@ferlab/ui/core/components/ColorTag';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
@@ -25,25 +26,64 @@ import {
   OrphanetInheritance,
   SingleValuedInheritance,
 } from '@ferlab/ui/core/pages/EntityPage/type';
-import { Typography } from 'antd';
+import { Space, Tag, Tooltip, Typography } from 'antd';
+import { ClinvarColorMap } from 'views/Variants/components/PageContent/VariantsTable/utils';
+
+import style from '../index.module.scss';
+
+const addUnderscoreAndLowercase = (phrase: string): string => {
+  const words = phrase.split(' ');
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i].charAt(0).toLowerCase() + words[i].slice(1);
+  }
+  return words.join('_');
+};
+
+const renderInterpretation = (interpretation: string) => {
+  const clinVarSigKey: string = addUnderscoreAndLowercase(interpretation);
+  return (
+    <Tag color={ClinvarColorMap[clinVarSigKey]}>
+      <Typography.Text className={style.clinVar}>
+        {intl.get(`screen.variants.summary.clinVarLabel.${clinVarSigKey}`)}
+      </Typography.Text>
+    </Tag>
+  );
+};
 
 export const getClinvarColumns = (): ProColumnType[] => [
   {
     key: 'interpretation',
     dataIndex: 'interpretation',
+    width: '50%',
     title: intl.get('screen.variants.pathogenicity.interpretation'),
+    render: (text: string) => renderInterpretation(text),
   },
   {
     key: 'condition',
     dataIndex: 'condition',
     title: intl.get('screen.variants.pathogenicity.condition'),
-    width: '33%',
-  },
-  {
-    key: 'inheritance',
-    dataIndex: 'inheritance',
-    title: intl.get('screen.variants.pathogenicity.inheritance'),
-    width: '33%',
+    width: '50%',
+    render: (text: string, record: any) => {
+      const tagMap: { [key: string]: React.ReactNode } = {
+        germline: (
+          <Tooltip title="Germline">
+            <ColorTag type={ColorTagType.Other}>GER</ColorTag>
+          </Tooltip>
+        ),
+        somatic: (
+          <Tooltip title="Somatic">
+            <ColorTag type={ColorTagType.Other}>SOM</ColorTag>
+          </Tooltip>
+        ),
+      };
+
+      return (
+        <Space direction="horizontal">
+          <Typography.Text>{text}</Typography.Text>
+          {tagMap[record.inheritance] || null}
+        </Space>
+      );
+    },
   },
 ];
 

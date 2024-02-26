@@ -146,28 +146,6 @@ export default function VariantEntity() {
           data={makeGenesOrderedRow(data?.genes)}
           columns={getGenePhenotypeColumns()}
         />
-
-        <EntityTable
-          id={SectionId.PATHOGENICITY}
-          loading={loading}
-          title={intl.get('screen.variants.pathogenicity.pathogenicity')}
-          header={
-            <Space size={4}>
-              {intl.get('screen.variants.pathogenicity.clinVar')}
-              {data?.clinvar?.clinvar_id && (
-                <ExternalLink
-                  hasIcon
-                  href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${data?.clinvar.clinvar_id}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {data?.clinvar?.clinvar_id}
-                </ExternalLink>
-              )}
-            </Space>
-          }
-          data={makeClinvarRows(data?.clinvar)}
-          columns={getClinvarColumns()}
-        />
       </>
     </EntityPageWrapper>
   );

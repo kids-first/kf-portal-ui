@@ -1,10 +1,9 @@
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
-import { IClinVar, IGeneOmim, IVariantEntity } from 'graphql/variants/models';
 import intl from 'react-intl-universal';
-
+import { Link } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import { pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import CanonicalIcon from '@ferlab/ui/core/components/Icons/CanonicalIcon';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -13,12 +12,14 @@ import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { Button, Popover, Space, Tag, Tooltip, Typography } from 'antd';
 import { INDEXES } from 'graphql/constants';
+import { IClinVar, IGeneOmim, IVariantEntity } from 'graphql/variants/models';
 import { isNumber } from 'lodash';
-import { Link } from 'react-router-dom';
-import { STATIC_ROUTES } from 'utils/routes';
-import { numberWithCommas } from 'utils/string';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { ClinvarColorMap } from 'views/Variants/components/PageContent/VariantsTable/utils';
+
+import { STATIC_ROUTES } from 'utils/routes';
+import { numberWithCommas } from 'utils/string';
+
 import style from '../index.module.scss';
 
 const renderClinvar = (clinVar: IClinVar) => {
@@ -40,16 +41,13 @@ const renderClinvar = (clinVar: IClinVar) => {
     : TABLE_EMPTY_PLACE_HOLDER;
 };
 
-const renderParticipantsFrequency = (variant: IVariantEntity) => {
-  return (
-    variant.internal_frequencies?.total?.pf &&
-    isNumber(variant.internal_frequencies.total.pf) && (
-      <span className={style.frequency}>
-        / ({toExponentialNotation(variant.internal_frequencies.total.pf)})
-      </span>
-    )
+const renderParticipantsFrequency = (variant: IVariantEntity) =>
+  variant.internal_frequencies?.total?.pf &&
+  isNumber(variant.internal_frequencies.total.pf) && (
+    <span className={style.frequency}>
+      / ({toExponentialNotation(variant.internal_frequencies.total.pf)})
+    </span>
   );
-};
 
 const renderParticipants = (variant: IVariantEntity) => {
   const totalNbOfParticipants = variant.internal_frequencies?.total?.pc || 0;
@@ -99,24 +97,22 @@ const renderParticipants = (variant: IVariantEntity) => {
 const renderOmim = (pickedOmim: IArrangerEdge<IGeneOmim>[]) => {
   if (!pickedOmim.length) return [{ label: undefined, value: <>{TABLE_EMPTY_PLACE_HOLDER}</> }];
 
-  return pickedOmim.map((omim) => {
-    return {
-      label: undefined,
-      value: (
-        <Space size={4}>
-          <ExternalLink href={`https://www.omim.org/entry/${omim.node.omim_id}`}>
-            {omim.node.name}
-          </ExternalLink>
-          {omim.node.inheritance_code?.length > 0 &&
-            omim.node.inheritance_code.map((code) => (
-              <Tooltip key={code} title={intl.get(`screen.variants.table.inheritant.code.${code}`)}>
-                <Tag color="blue">{code}</Tag>
-              </Tooltip>
-            ))}
-        </Space>
-      ),
-    };
-  });
+  return pickedOmim.map((omim) => ({
+    label: undefined,
+    value: (
+      <Space size={4}>
+        <ExternalLink href={`https://www.omim.org/entry/${omim.node.omim_id}`}>
+          {omim.node.name}
+        </ExternalLink>
+        {omim.node.inheritance_code?.length > 0 &&
+          omim.node.inheritance_code.map((code) => (
+            <Tooltip key={code} title={intl.get(`screen.variants.table.inheritant.code.${code}`)}>
+              <Tag color="blue">{code}</Tag>
+            </Tooltip>
+          ))}
+      </Space>
+    ),
+  }));
 };
 
 export const getSummaryItems = (variant?: IVariantEntity) => {
@@ -287,7 +283,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               <span>
                 {intl.get(
                   `filters.options.consequences.predictions.sift_pred.${pickedConsequence.node.predictions.sift_pred}`,
-                )}{' '}
+                )}
                 ({pickedConsequence.node.predictions.sift_score})
               </span>
             ) : (
@@ -300,7 +296,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               <span>
                 {intl.get(
                   `filters.options.consequences.predictions.fathmm_pred.${pickedConsequence.node.predictions.fathmm_pred}`,
-                )}{' '}
+                )}
                 ({pickedConsequence.node.predictions.fathmm_score})
               </span>
             ) : (
@@ -325,7 +321,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               <span>
                 {intl.get(
                   `filters.options.consequences.predictions.lrt_pred.${pickedConsequence.node.predictions.lrt_pred}`,
-                )}{' '}
+                )}
                 ({pickedConsequence.node.predictions.lrt_score})
               </span>
             ) : (
@@ -342,7 +338,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               <span>
                 {intl.get(
                   `filters.options.consequences.predictions.polyphen2_hvar_pred.${pickedConsequence.node.predictions.polyphen2_hvar_pred}`,
-                )}{' '}
+                )}
                 ({pickedConsequence.node.predictions.polyphen2_hvar_score})
               </span>
             ) : (
@@ -382,15 +378,11 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               value: geneWithPickedConsequence.spliceai?.ds ? (
                 <>
                   <span className={style.spliceAi}>{geneWithPickedConsequence.spliceai.ds}</span>
-                  {geneWithPickedConsequence.spliceai.type.map((t: string, index: number) => {
-                    return (
-                      <Tooltip
-                        title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}
-                      >
-                        <Tag key={index}>{t}</Tag>
-                      </Tooltip>
-                    );
-                  })}
+                  {geneWithPickedConsequence.spliceai.type.map((t: string, index: number) => (
+                    <Tooltip title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}>
+                      <Tag key={index}>{t}</Tag>
+                    </Tooltip>
+                  ))}
                 </>
               ) : (
                 TABLE_EMPTY_PLACE_HOLDER
