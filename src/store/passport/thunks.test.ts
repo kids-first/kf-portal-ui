@@ -1,7 +1,7 @@
 import { IFileEntity } from 'graphql/files/models';
 import { FamilyType, Sex } from 'graphql/participants/models';
 
-import { extractMetadata } from './thunks';
+import { extractMetadata } from './metadata';
 
 describe(`${extractMetadata.name}()`, () => {
   test('should handle edge case', () => {
