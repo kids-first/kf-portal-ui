@@ -138,6 +138,8 @@ export interface IParticipantBiospecimen {
   diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>;
   status: string;
   dbgap_consent_code: string;
+  consent_type: string;
+  collection_anatomy_site: string;
 }
 
 export interface IParticipantMondo {

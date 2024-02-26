@@ -102,6 +102,7 @@ export const SEARCH_FILES_QUERY = gql`
                             sample_type
                             external_sample_id
                             collection_sample_type
+                            collection_anatomy_site
                             age_at_biospecimen_collection
                             collection_method_of_sample_procurement
                             dbgap_consent_code
