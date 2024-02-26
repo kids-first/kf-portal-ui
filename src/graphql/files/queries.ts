@@ -198,6 +198,7 @@ export const GET_FILE_ENTITY = gql`
                         }
                       }
                     }
+                    families_id
                     external_id
                     is_proband
                     participant_id
