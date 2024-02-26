@@ -28,6 +28,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
   const fencesAllAcls = useAllFencesAcl();
   const cavatica = useCavaticaPassport();
   const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
+  const hasFamily = file?.participants?.hits?.edges?.some((e) => e.node.families_id);
 
   const hasAccess = file
     ? userHasAccessToFile(
@@ -86,6 +87,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
           sqon={generateSqonForFile()}
           isDisabled={false}
           hasTooManyFiles={false}
+          hasFamily={hasFamily}
         />
         {file && (
           <CavaticaAnalyzeButton type="primary" fileIds={[file.file_id]} index={INDEXES.FILE} />

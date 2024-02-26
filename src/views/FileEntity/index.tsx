@@ -11,7 +11,7 @@ import getDataAccessItems from 'views/FileEntity/utils/getDataAccessItems';
 import getDataTypeItems from 'views/FileEntity/utils/getDataTypeItems';
 import getSummaryItems from 'views/FileEntity/utils/getSummaryItems';
 
-export default function FileEntity() {
+const FileEntity = () => {
   const { file_id } = useParams<{ file_id: string }>();
 
   const { file, loading } = useFileEntity({
@@ -56,4 +56,6 @@ export default function FileEntity() {
       <ExperimentalProcedure file={file} loading={loading} />
     </EntityPage>
   );
-}
+};
+
+export default FileEntity;
