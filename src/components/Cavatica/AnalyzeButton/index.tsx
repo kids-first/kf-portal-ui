@@ -8,6 +8,7 @@ import {
 } from '@ferlab/ui/core/components/Widgets/Cavatica/type';
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+import { ISort } from '@ferlab/ui/core/graphql/types';
 import { CAVATICA_FILE_BATCH_SIZE } from 'views/DataExploration/utils/constant';
 
 import { trackCavaticaAction } from 'services/analytics';
@@ -29,6 +30,7 @@ import { SUPPORT_EMAIL } from 'store/report/thunks';
 interface OwnProps {
   fileIds: string[];
   sqon?: ISqonGroupFilter;
+  sort?: ISort[];
   type?: 'default' | 'primary';
   disabled?: boolean;
   index: string;
@@ -37,6 +39,7 @@ interface OwnProps {
 const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
   fileIds,
   sqon,
+  sort = [],
   type = 'default',
   disabled = false,
   index,
@@ -52,6 +55,7 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
             op: BooleanOperators.and,
             content: [],
           },
+          sort,
           fileIds,
         }),
       ),
