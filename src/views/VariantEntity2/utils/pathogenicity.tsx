@@ -26,18 +26,11 @@ import {
   OrphanetInheritance,
   SingleValuedInheritance,
 } from '@ferlab/ui/core/pages/EntityPage/type';
+import { addUnderscoreAndLowercase } from '@ferlab/ui/core/utils/stringUtils';
 import { Space, Tag, Tooltip, Typography } from 'antd';
 import { ClinvarColorMap } from 'views/Variants/components/PageContent/VariantsTable/utils';
 
 import style from '../index.module.scss';
-
-const addUnderscoreAndLowercase = (phrase: string): string => {
-  const words = phrase.split(' ');
-  for (let i = 0; i < words.length; i++) {
-    words[i] = words[i].charAt(0).toLowerCase() + words[i].slice(1);
-  }
-  return words.join('_');
-};
 
 const renderInterpretation = (interpretation: string) => {
   const clinVarSigKey: string = addUnderscoreAndLowercase(interpretation);
@@ -66,13 +59,21 @@ export const getClinvarColumns = (): ProColumnType[] => [
     render: (text: string, record: any) => {
       const tagMap: { [key: string]: React.ReactNode } = {
         germline: (
-          <Tooltip title="Germline">
-            <ColorTag type={ColorTagType.Other}>GER</ColorTag>
+          <Tooltip title={intl.get('screen.variants.pathogenicity.germline')}>
+            <div>
+              <ColorTag type={ColorTagType.Other}>
+                {intl.get('screen.variants.pathogenicity.germlineAbvr')}
+              </ColorTag>
+            </div>
           </Tooltip>
         ),
         somatic: (
-          <Tooltip title="Somatic">
-            <ColorTag type={ColorTagType.Other}>SOM</ColorTag>
+          <Tooltip title={intl.get('screen.variants.pathogenicity.somatic')}>
+            <div>
+              <ColorTag type={ColorTagType.Other}>
+                {intl.get('screen.variants.pathogenicity.somaticAbvr')}
+              </ColorTag>
+            </div>
           </Tooltip>
         ),
       };
