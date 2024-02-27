@@ -1,3 +1,4 @@
+import intl from 'react-intl-universal';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
@@ -6,7 +7,6 @@ import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils
 import { Space, Tag, Tooltip } from 'antd';
 import cx from 'classnames';
 import { IClinVar, IGeneEntity } from 'graphql/variants/models';
-import intl from 'react-intl-universal';
 
 import style from './index.module.scss';
 
