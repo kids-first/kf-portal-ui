@@ -8,15 +8,14 @@ import EntityPageWrapper, {
   EntityTable,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
-import EntityVariantSummary from '@ferlab/ui/core/pages/EntityPage/EntityVariantSummary';
 import EntityNestedTable from '@ferlab/ui/core/pages/EntityPage/EntityNestedTable';
+import EntityVariantSummary from '@ferlab/ui/core/pages/EntityPage/EntityVariantSummary';
 import {
   makeClinvarRows,
   makeGenesOrderedRow,
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
-import { getSummaryItems } from 'views/VariantEntity2/utils/summary';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
@@ -30,6 +29,7 @@ import {
   getPublicCohorts,
 } from './utils/frequency';
 import { getClinvarColumns, getGenePhenotypeColumns } from './utils/pathogenicity';
+import { getSummaryItems } from './utils/summary';
 
 import styles from './index.module.scss';
 
