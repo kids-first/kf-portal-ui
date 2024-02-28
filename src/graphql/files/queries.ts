@@ -100,6 +100,7 @@ export const SEARCH_FILES_QUERY = gql`
                         edges {
                           node {
                             sample_type
+                            consent_type
                             external_sample_id
                             collection_sample_type
                             collection_anatomy_site
