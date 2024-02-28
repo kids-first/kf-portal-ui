@@ -46,9 +46,7 @@ const extractParticipantMetaData = (participants: any[]) => {
     family_role: joinUniquely(relation.map((r) => r.role)),
     observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_observed)),
     not_observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_not_observed)),
-    observed_phenotype_source_text: joinUniquely(
-      phenotype.map((p) => p.hpo_phenotype_observed_text),
-    ),
+    observed_phenotype_source_text: joinUniquely(phenotype.map((p) => p.source_text)),
     vital_status: joinUniquely(outcomes.map((o) => o.vital_status)),
   };
 };
