@@ -314,7 +314,7 @@ describe(`${extractMetadata.name}()`, () => {
       family_role: 'mother,father,proband',
       observed_phenotype_hpo: 'hpo_phenotype_observed',
       not_observed_phenotype_hpo: 'hpo_phenotype_not_observed',
-      observed_phenotype_source_text: 'hpo_phenotype_observed_text',
+      observed_phenotype_source_text: 'mySourceText',
       vital_status: 'Alive',
       sample_id: '595495',
       sample_type: 'DNA',
