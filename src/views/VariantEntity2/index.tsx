@@ -2,12 +2,14 @@ import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import EntityPageWrapper, {
   EntityPublicCohortTable,
   EntityTable,
   EntityTitle,
 } from '@ferlab/ui/core/pages/EntityPage';
 import EntityVariantSummary from '@ferlab/ui/core/pages/EntityPage/EntityVariantSummary';
+import EntityNestedTable from '@ferlab/ui/core/pages/EntityPage/EntityNestedTable';
 import {
   makeClinvarRows,
   makeGenesOrderedRow,
@@ -21,6 +23,7 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { useVariantEntity } from '../../graphql/variants/actions';
 import { IVariantStudyEntity } from '../../graphql/variants/models';
 
+import { expandedRowRender, getColumn } from './utils/consequence';
 import {
   getFrequenciesItems,
   getFrequenciesTableSummaryColumns,
@@ -67,6 +70,10 @@ export default function VariantEntity() {
     (e: ArrangerEdge<IVariantStudyEntity>) => e.node,
   );
 
+  const geneSymbolOfPicked = data?.genes?.hits?.edges?.find((e) =>
+    (e.node.consequences || [])?.hits?.edges?.some((e) => e.node?.picked),
+  )?.node?.symbol;
+
   return (
     <EntityPageWrapper
       pageId="variant-entity-page"
@@ -94,6 +101,17 @@ export default function VariantEntity() {
           id={SectionId.SUMMARY}
           loading={loading}
           data={getSummaryItems(data)}
+          noDataLabel={intl.get('no.data.available')}
+        />
+
+        <EntityNestedTable
+          columns={getColumn(geneSymbolOfPicked)}
+          data={hydrateResults(data?.genes?.hits?.edges || [])}
+          expandedRowRender={expandedRowRender}
+          id={SectionId.CONSEQUENCE}
+          loading={loading}
+          title={intl.get('screen.variants.consequences.consequence')}
+          header={intl.get('screen.variants.consequences.transcript')}
           noDataLabel={intl.get('no.data.available')}
         />
 
@@ -138,6 +156,7 @@ export default function VariantEntity() {
           data={makeClinvarRows(data?.clinvar)}
           columns={getClinvarColumns()}
         />
+
         <EntityTable
           id={SectionId.CONDITIONS}
           loading={loading}

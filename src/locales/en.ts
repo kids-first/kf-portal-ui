@@ -1004,6 +1004,7 @@ const en = {
         strand: 'Strand',
         vep: 'VEP',
         predictions: {
+          prediction: 'Prediction',
           predictions: 'Predictions',
           sift: 'Sift',
           polyphen2: 'Polyphen2',
@@ -1017,10 +1018,19 @@ const en = {
         refSeq: 'RefSeq',
         geneConsequence: 'Gene Consequence',
         gene: 'Gene',
+        geneType: 'Gene Type',
         omim: 'OMIM',
         hideTranscript: 'Show less',
         showTranscript: '{count, plural, =1 {# other transcript} other {# other transcripts}}',
         canonical: 'Canonical transcript',
+        gnomad: {
+          pli: 'pLI',
+          loeuf: 'LOEUF',
+        },
+        spliceAi: 'SpliceAI',
+        conservation: 'Conservation',
+        phyloP17Way: 'PhyloP17Way',
+        pickedTooltip: 'Gene with most deleterious consequence',
       },
       frequencies: {
         kfStudies: 'Kids First Studies',
