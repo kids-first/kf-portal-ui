@@ -1,4 +1,4 @@
-// import EnvironmentVariables from 'helpers/EnvVariables';
+import EnvironmentVariables from 'helpers/EnvVariables';
 
 import { sendRequest } from 'services/api';
 
@@ -13,10 +13,9 @@ import {
   ICavaticaProjectNode,
 } from './models';
 
-// const KEY_MANAGER_API_URL = EnvironmentVariables.configFor('KEY_MANAGER_API_URL');
-// const CAVATICA_FENCE_PROXY = EnvironmentVariables.configFor('CAVATICA_FENCE_PROXY');
-// const CAVATICA_PROXY_URL = `${KEY_MANAGER_API_URL}/${CAVATICA_FENCE_PROXY}/v2`;
-const CAVATICA_PROXY_URL = `http://localhost:5000/mock/cavatica2/v2`;
+const KEY_MANAGER_API_URL = EnvironmentVariables.configFor('KEY_MANAGER_API_URL');
+const CAVATICA_FENCE_PROXY = EnvironmentVariables.configFor('CAVATICA_FENCE_PROXY');
+const CAVATICA_PROXY_URL = `${KEY_MANAGER_API_URL}/${CAVATICA_FENCE_PROXY}/v2`;
 
 const headers = () => ({
   'Content-Type': 'application/json',
