@@ -105,7 +105,7 @@ export const getPredictionScore = (
     lrt: string;
     revel: string;
   },
-): any[][] =>
+): (string | number | null)[][] =>
   [
     [dictionary.sift, predictions?.sift_pred, predictions?.sift_score],
     [dictionary.polyphen2, predictions?.polyphen2_hvar_pred, predictions?.sift_score],
