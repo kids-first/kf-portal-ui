@@ -72,10 +72,14 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                 total
                 edges {
                   node {
+                    age_at_event_days
                     fhir_id
                     hpo_phenotype_observed
-                    #                    is_observed
-                    age_at_event_days
+                    hpo_phenotype_observed_text
+                    hpo_phenotype_not_observed
+                    hpo_phenotype_not_observed_text
+                    is_observed
+                    source_text
                   }
                 }
               }

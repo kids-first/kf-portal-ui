@@ -18,15 +18,13 @@ export type TreeNode = {
 
 export type TTitleFormatter = (title: string) => React.ReactElement | string;
 
-export const lightTreeNodeConstructor = (key: string, children: TreeNode[] = []): TreeNode => {
-  return {
-    title: key,
-    key: key,
-    children,
-    valueText: 0,
-    name: key,
-  };
-};
+export const lightTreeNodeConstructor = (key: string, children: TreeNode[] = []): TreeNode => ({
+  title: key,
+  key: key,
+  children,
+  valueText: 0,
+  name: key,
+});
 
 const termRegex = new RegExp('[^-]+$');
 
@@ -59,8 +57,8 @@ export const searchTree = (element: TreeNode, matchingTitle: string): TreeNode |
   if (element.title === matchingTitle) {
     return element;
   } else if (element.children != null) {
-    var i;
-    var result = null;
+    let i;
+    let result = null;
     for (i = 0; result == null && i < element.children.length; i++) {
       result = searchTree(element.children[i], matchingTitle);
     }

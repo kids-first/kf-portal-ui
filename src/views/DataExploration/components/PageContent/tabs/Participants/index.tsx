@@ -65,6 +65,34 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
+const renderPhenotype = (phenotypeNames: string[]) => {
+  const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
+  if (!phenotypeNames || !hasPhenotypeName) {
+    return TABLE_EMPTY_PLACE_HOLDER;
+  }
+  return (
+    <ExpandableCell
+      nOfElementsWhenCollapsed={1}
+      dataSource={makeUniqueCleanWords(phenotypeNames)}
+      renderItem={(hpo_id_phenotype, index): React.ReactNode => {
+        const phenotypeInfo = extractPhenotypeTitleAndCode(hpo_id_phenotype);
+
+        return phenotypeInfo ? (
+          <div key={index}>
+            {capitalize(phenotypeInfo.title)} (HP:{' '}
+            <ExternalLink href={`https://hpo.jax.org/app/browse/term/HP:${phenotypeInfo.code}`}>
+              {phenotypeInfo.code}
+            </ExternalLink>
+            )
+          </div>
+        ) : (
+          TABLE_EMPTY_PLACE_HOLDER
+        );
+      }}
+    />
+  );
+};
+
 const getDefaultColumns = (): ProColumnType[] => [
   {
     key: 'participant_id',
@@ -168,31 +196,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     className: styles.phenotypeCell,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
-      const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
-      if (!phenotypeNames || !hasPhenotypeName) {
-        return TABLE_EMPTY_PLACE_HOLDER;
-      }
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={makeUniqueCleanWords(phenotypeNames)}
-          renderItem={(hpo_id_phenotype, index): React.ReactNode => {
-            const phenotypeInfo = extractPhenotypeTitleAndCode(hpo_id_phenotype);
-
-            return phenotypeInfo ? (
-              <div key={index}>
-                {capitalize(phenotypeInfo.title)} (HP:{' '}
-                <ExternalLink href={`https://hpo.jax.org/app/browse/term/HP:${phenotypeInfo.code}`}>
-                  {phenotypeInfo.code}
-                </ExternalLink>
-                )
-              </div>
-            ) : (
-              TABLE_EMPTY_PLACE_HOLDER
-            );
-          }}
-        />
-      );
+      return renderPhenotype(phenotypeNames);
     },
   },
   {
@@ -352,7 +356,7 @@ const getDefaultColumns = (): ProColumnType[] => [
             <span key={dxId}>
               <ExternalLink href={`http://purl.obolibrary.org/obo/${dxId.replace(':', '_')}`}>
                 {dxId}
-              </ExternalLink>{' '}
+              </ExternalLink>
             </span>,
           ];
         }
@@ -404,7 +408,11 @@ const getDefaultColumns = (): ProColumnType[] => [
     sorter: {
       multiple: 1,
     },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
+      const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_not_observed);
+
+      return renderPhenotype(phenotypeNames);
+    },
   },
   {
     key: 'source_text_phenotype',
@@ -414,7 +422,26 @@ const getDefaultColumns = (): ProColumnType[] => [
     sorter: {
       multiple: 1,
     },
-    render: () => TABLE_EMPTY_PLACE_HOLDER,
+    render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
+      const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.source_text);
+      const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
+      if (!phenotypeNames || !hasPhenotypeName) {
+        return TABLE_EMPTY_PLACE_HOLDER;
+      }
+      return (
+        <ExpandableCell
+          nOfElementsWhenCollapsed={1}
+          dataSource={makeUniqueCleanWords(phenotypeNames)}
+          renderItem={(hpo_id_phenotype, index): React.ReactNode =>
+            hpo_id_phenotype ? (
+              <div key={index}>{capitalize(hpo_id_phenotype)}</div>
+            ) : (
+              TABLE_EMPTY_PLACE_HOLDER
+            )
+          }
+        />
+      );
+    },
   },
 ];
 

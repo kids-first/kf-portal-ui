@@ -1,7 +1,9 @@
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { IPhenotypeSource } from 'graphql/summary/models';
+
 import { ArrangerApi } from 'services/api/arranger';
+
 import OntologyTree, { lightTreeNodeConstructor, TreeNode, TTitleFormatter } from './OntologyTree';
 
 export const RegexExtractPhenotype = new RegExp(/([A-Za-z].*?\((HP|MONDO):[0-9]+\))/, 'g');
