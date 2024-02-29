@@ -80,3 +80,28 @@
 .spliceAi {
   padding-right: 8px;
 }
+
+.pickedIcon {
+  padding-left: 8px;
+}
+
+.predictionLabel,
+.conservationLabel {
+  margin-right: 4px;
+}
+
+.canonicalIcon {
+  color: $canonical-icon-color;
+}
+
+.expandedTable {
+  :global(.ant-spin-nested-loading
+      .ant-spin-container
+      .ant-table
+      .ant-table-container
+      .ant-table-content) {
+    table > tbody > tr > td {
+      background-color: $gray-1;
+    }
+  }
+}
