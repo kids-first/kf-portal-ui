@@ -101,7 +101,7 @@ export const fenceOpenAuhentificationTab = createAsyncThunk<
   {
     state: RootState;
   }
->('fence/connection', async (fence, thunkAPI) => {
+>('fence/connection', async (fence) => {
   const { data: fenceInfo } = await FenceApi.fetchInfo(fence);
 
   const authWindow = window.open(fenceInfo?.authorize_uri)!;
