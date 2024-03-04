@@ -32,7 +32,7 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
           offset: 0,
           sqon: generateQuery({
             operator: BooleanOperators.or,
-            newFilters: ['participant_id', 'external_id'].map((field) =>
+            newFilters: ['participant_id', 'external_id', 'families_id'].map((field) =>
               generateValueFilter({
                 field,
                 value: ids,
@@ -51,7 +51,8 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
         const matchedIds: string[] = ids.filter(
           (id: string) =>
             participant.participant_id.toLocaleLowerCase() === id.toLocaleLowerCase() ||
-            participant.external_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
+            participant.external_id.toLocaleLowerCase() === id.toLocaleLowerCase() ||
+            participant.families_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
         );
 
         return matchedIds.map((id, index) => ({
