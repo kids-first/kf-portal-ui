@@ -23,6 +23,25 @@ Cypress.Commands.add('checkValueFacetAndApply', (facetTitle: string, value: stri
   cy.clickAndIntercept(`[data-cy="Apply_${facetTitle}"]`, 'POST', '**/graphql', 3);
 });
 
+Cypress.Commands.add('checkValueFacet', (facetTitle: string, value: string) => {
+  cy.get(`[aria-expanded="true"] [data-cy="FilterContainer_${facetTitle}"]`).should('exist');
+  cy.waitWhileSpin(1000);
+  cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+    .find('button').then(($button) => {
+    if ($button.hasClass('ant-btn-link')) {
+      cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+        .find('button[class*="CheckboxFilter_filtersTypesFooter"]').click({force: true});
+        cy.waitWhileSpin(1000);
+      };
+  });
+
+  cy.intercept('POST', '**/graphql').as('getPOSTgraphql');
+  cy.get(`[data-cy="Checkbox_${facetTitle}_${value}"]`).check({force: true});
+  for (let i = 0; i < 6; i++) {
+    cy.wait('@getPOSTgraphql', {timeout: 20*1000});
+  };
+});
+
 Cypress.Commands.add('clickAndIntercept', (selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number) => {
   if (!eq) {
     eq = 0;
@@ -104,7 +123,7 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('removeFilesFromFolder', (folder: string) => {
-  cy.exec(`rm ${folder}/*`, {failOnNonZeroExit: false});
+  cy.exec(`/bin/rm ${folder}/*`, {failOnNonZeroExit: false});
 });
 
 Cypress.Commands.add('resetColumns', (table_id?: string) => {
@@ -166,9 +185,15 @@ Cypress.Commands.add('validateClearAllButton', (shouldExist: boolean) => {
   cy.get('[id="query-builder-header-tools"]').contains('Clear all').should(strExist);
 });
 
-Cypress.Commands.add('validateFacetFilter', (facetTitle: string, valueFront: string, valueBack: string, expectedCount: string|RegExp, eq: number = 0) => {
-  cy.checkValueFacetAndApply(facetTitle, valueBack);
-  cy.validatePillSelectedQuery(facetTitle, [valueFront], eq);
+Cypress.Commands.add('validateFacetFilter', (facetTitle: string, valueFront: string, valueBack: string, expectedCount: string|RegExp, eq: number = 0, applyButton: boolean = true) => {
+  if (applyButton) {
+    cy.checkValueFacetAndApply(facetTitle, valueBack);
+    cy.validatePillSelectedQuery(facetTitle, [valueFront], eq);
+  }
+  else {
+    cy.checkValueFacet(facetTitle, valueBack);
+  }
+
   cy.validateTableResultsCount(expectedCount);
 });
 
@@ -196,7 +221,7 @@ Cypress.Commands.add('validateFacetRank', (facetRank: number, facetTitle: string
 Cypress.Commands.add('validateFileContent', (fixture: string, replacements?: Replacement[]) => {
   const arrReplacements = replacements !== undefined ? replacements : [];
   cy.fixture(fixture).then((expectedData) => {
-    cy.exec(`ls ${Cypress.config('downloadsFolder')}/*`).then((result) => {
+    cy.exec(`/bin/ls ${Cypress.config('downloadsFolder')}/*`).then((result) => {
       const filename = result.stdout.trim();
       cy.readFile(`${filename}`).then((file) => {
         let fileWithData = file;
@@ -217,7 +242,7 @@ Cypress.Commands.add('validateFileContent', (fixture: string, replacements?: Rep
 
 Cypress.Commands.add('validateFileHeaders', (fixture: string) => {
   cy.fixture(fixture).then((expectedData) => {
-    cy.exec(`ls ${Cypress.config('downloadsFolder')}/*`).then((result) => {
+    cy.exec(`/bin/ls ${Cypress.config('downloadsFolder')}/*`).then((result) => {
       const filename = result.stdout.trim();
       cy.readFile(`${filename}`).then((file) => {
         expectedData.headers.forEach((header: any) => {
@@ -229,7 +254,7 @@ Cypress.Commands.add('validateFileHeaders', (fixture: string) => {
 });
 
 Cypress.Commands.add('validateFileName', (namePattern: string) => {
-  cy.exec(`ls ${Cypress.config('downloadsFolder')}/`+namePattern).then((result) => {
+  cy.exec(`/bin/ls ${Cypress.config('downloadsFolder')}/`+namePattern).then((result) => {
     const filename = result.stdout.trim();
     cy.readFile(`${filename}`).should('exist');
   });

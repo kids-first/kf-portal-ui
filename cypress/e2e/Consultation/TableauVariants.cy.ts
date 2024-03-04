@@ -33,13 +33,13 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(9).find('[class*="gnomadIndicatorDefault"]').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(9).contains('2.46e-1').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(10).contains('37,345').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains('357').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains('135').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains(/(5.\d{2}e-1)/).should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(12).contains('3').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(12).contains('1').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(13).contains('0.003').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(14).contains('-').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains('433').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('76').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains('163').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('28').should('exist');
   });
  
   it('Valider l\'icône de sauvegarde des requêtes personnalisées', () => {
@@ -91,7 +91,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(12).find('a[href]').click({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-LBD').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-EATF').should('exist');
   });
 });
 
@@ -106,7 +106,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Variant', 1);
     cy.validateTableFirstRow('chr10:g.100000222G>A', 1);
     cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chrY:g.9999874C>T', 1);
+    cy.validateTableFirstRow('chrY:g.9999310C>A', 1);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Type', () => {
@@ -115,7 +115,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Type', 1);
     cy.validateTableFirstRow('SNV', 2);
     cy.sortTableAndIntercept('Type', 1);
-    cy.validateTableFirstRow('SeqAlt', 2);
+    cy.validateTableFirstRow('Ins', 2);
   });
 
   it('Valider les fonctionnalités du tableau - Tri gnomAD', () => {
@@ -142,7 +142,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Part.', 1);
     cy.validateTableFirstRow(/^1/, 11);
     cy.sortTableAndIntercept('Part.', 1);
-    cy.validateTableFirstRow('665', 11);
+    cy.validateTableFirstRow('242', 11);
   });
 
   it('Valider les fonctionnalités du tableau - Tri ALT', () => {
@@ -152,7 +152,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept(/^ALT$/, 1);
     cy.validateTableFirstRow(/^1$/, 13);
     cy.sortTableAndIntercept(/^ALT$/, 1);
-    cy.validateTableFirstRow('1,330', 13);
+    cy.validateTableFirstRow('484', 13);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Homo.', () => {
@@ -162,7 +162,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Homo.', 1);
     cy.validateTableFirstRow(/^0$/, 13);
     cy.sortTableAndIntercept('Homo.', 1);
-    cy.validateTableFirstRow('665', 13);
+    cy.validateTableFirstRow('242', 13);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
@@ -171,8 +171,8 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Type', 1);
     cy.sortTableAndIntercept('Type', 1);
     cy.sortTableAndIntercept('Variant', 1);
-    cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chrY:g.9987408_9987409del', 1);
+    cy.wait(2000);
+    cy.validateTableFirstRow('chr10:g.100000879_100000880insC', 1);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {

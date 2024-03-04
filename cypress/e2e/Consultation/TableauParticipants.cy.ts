@@ -48,7 +48,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(17).contains('congential diaphragmatic hernia').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(18).contains('Deceased').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(19).contains('-').should('exist');
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(20).contains('-').should('exist');
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(20).contains('Congenital diaphragmatic hernia').should('exist');
   });
 });
 
@@ -143,7 +143,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('True', 4);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Sex', () => {
+  it('Valider les fonctionnalités du tableau - Tri Sex [SKFP-773]', () => {
     cy.sortTableAndIntercept('Sex', 1);
     cy.validateTableFirstRow('Female', 5);
     cy.sortTableAndIntercept('Sex', 1);
@@ -220,21 +220,21 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('Reported Unknown', 18);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Not Observed Phenotype (HPO)', () => {
+  it('Valider les fonctionnalités du tableau - Tri Not Observed Phenotype (HPO) [SKFP-942]', () => {
     cy.sortTableAndIntercept('Not Observed Phenotype (HPO)', 1);
     cy.validateTableFirstRow('-', 19);
     cy.sortTableAndIntercept('Not Observed Phenotype (HPO)', 1);
-    cy.validateTableFirstRow('-', 19);
+    cy.validateTableFirstRow('Webbed neck (HP:0000465)', 19);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Observed Phenotype (Source Text)', () => {
+  it('Valider les fonctionnalités du tableau - Tri Observed Phenotype (Source Text) [SKFP-942]', () => {
     cy.sortTableAndIntercept('Observed Phenotype (Source Text)', 1);
     cy.validateTableFirstRow('-', 20);
     cy.sortTableAndIntercept('Observed Phenotype (Source Text)', 1);
-    cy.validateTableFirstRow('-', 20);
+    cy.validateTableFirstRow('Tetralogy of Fallot', 20);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri multiple', () => {
+  it('Valider les fonctionnalités du tableau - Tri multiple [SKFP-773]', () => {
     cy.sortTableAndIntercept('Sex', 1);
     cy.sortTableAndWait('Participant ID');
     cy.sortTableAndIntercept('Participant ID', 1);
