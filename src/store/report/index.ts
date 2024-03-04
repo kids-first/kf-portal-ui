@@ -1,6 +1,7 @@
-import { useSelector } from "react-redux";
-import {reportSelector} from "./selector";
+import { useSelector } from 'react-redux';
 
-export type { initialState as ReportInitialState } from "./types";
-export { default, ReportState } from "./slice";
+import { reportSelector } from './selector';
+
+export type { initialState as ReportInitialState } from './types';
+export { default, ReportState } from './slice';
 export const useReport = () => useSelector(reportSelector);

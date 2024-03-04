@@ -86,8 +86,8 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
         onTableExportClick: () =>
           dispatch(
             generateLocalTsvReport({
-              fileName: 'participantSample',
-              index: INDEXES.BIOSPECIMEN,
+              fileName: 'participants-samples',
+              index: INDEXES.FILE,
               headers: biospecimenDefaultColumns,
               cols: userColumnPreferencesOrDefault.map((x) => ({
                 visible: x.visible,
