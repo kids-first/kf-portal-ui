@@ -135,9 +135,9 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
       return (
         <>
           {pickImpactBadge(consequence.vep_impact)}
-          <span className={style.consequence}>
+          <Text className={style.consequence}>
             {removeUnderscoreAndCapitalize(consequence.consequence[0])}
-          </span>
+          </Text>
         </>
       );
     },

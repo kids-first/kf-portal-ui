@@ -925,7 +925,8 @@ const en = {
         participants: 'Participants',
         participantsTooltip:
           'Due to participant confidentiality, redirect to the Data Exploration page if the number of affected participants across Kids First cohorts ≥ 10',
-        participantTooltip: '# of affected participants and frequency across KF cohorts',
+        participantTooltip:
+          '# of affected participants and frequency across KF cohorts</br></br>Due to participant confidentiality, redirect to the Data Exploration page is only permitted if the number of affected participants is ≥ 10 for a given cohort',
         genes: 'Genes',
         omim: 'OMIM',
         clinVar: 'ClinVar',
