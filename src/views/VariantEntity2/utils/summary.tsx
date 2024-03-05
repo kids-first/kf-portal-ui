@@ -22,6 +22,8 @@ import { numberWithCommas } from 'utils/string';
 
 import style from '../index.module.scss';
 
+const { Text } = Typography;
+
 const renderClinvar = (clinVar: IClinVar) => {
   const clinVarSigKey: string[] = [];
 
@@ -33,9 +35,9 @@ const renderClinvar = (clinVar: IClinVar) => {
   return clinVar?.clin_sig && clinVar.clinvar_id
     ? clinVarSigKey.map((clinvarKey, index) => (
         <Tag color={ClinvarColorMap[clinvarKey]} key={index}>
-          <Typography.Text className={style.clinVar}>
+          <Text className={style.clinVar}>
             {intl.get(`screen.variants.summary.clinVarLabel.${clinvarKey}`)}
-          </Typography.Text>
+          </Text>
         </Tag>
       ))
     : TABLE_EMPTY_PLACE_HOLDER;
@@ -44,13 +46,14 @@ const renderClinvar = (clinVar: IClinVar) => {
 const renderParticipantsFrequency = (variant: IVariantEntity) =>
   variant.internal_frequencies?.total?.pf &&
   isNumber(variant.internal_frequencies.total.pf) && (
-    <span className={style.frequency}>
-      / ({toExponentialNotation(variant.internal_frequencies.total.pf)})
-    </span>
+    <Text className={style.frequency}>
+      ({toExponentialNotation(variant.internal_frequencies.total.pf)})
+    </Text>
   );
 
 const renderParticipants = (variant: IVariantEntity) => {
   const totalNbOfParticipants = variant.internal_frequencies?.total?.pc || 0;
+  const totalParticipants = variant.internal_frequencies?.total?.pn || 0;
   const studies = variant.studies;
   const participantIds =
     studies?.hits?.edges?.map((study) => study.node.participant_ids || [])?.flat() || [];
@@ -58,7 +61,7 @@ const renderParticipants = (variant: IVariantEntity) => {
   if (!participantIds.length) {
     return (
       <div className={style.participants}>
-        {totalNbOfParticipants}
+        {totalNbOfParticipants} / {numberWithCommas(totalParticipants)}
         {renderParticipantsFrequency(variant)}
       </div>
     );
@@ -66,28 +69,33 @@ const renderParticipants = (variant: IVariantEntity) => {
   return (
     <div className={style.participants}>
       {participantIds.length > 10 ? (
-        <Link
-          to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
-          onClick={() => {
-            addQuery({
-              queryBuilderId: DATA_EXPLORATION_QB_ID,
-              query: generateQuery({
-                newFilters: [
-                  generateValueFilter({
-                    field: 'participant_id',
-                    value: participantIds,
-                    index: INDEXES.PARTICIPANT,
-                  }),
-                ],
-              }),
-              setAsActive: true,
-            });
-          }}
-        >
-          {numberWithCommas(totalNbOfParticipants)}
-        </Link>
+        <>
+          <Link
+            to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+            onClick={() => {
+              addQuery({
+                queryBuilderId: DATA_EXPLORATION_QB_ID,
+                query: generateQuery({
+                  newFilters: [
+                    generateValueFilter({
+                      field: 'participant_id',
+                      value: participantIds,
+                      index: INDEXES.PARTICIPANT,
+                    }),
+                  ],
+                }),
+                setAsActive: true,
+              });
+            }}
+          >
+            {numberWithCommas(totalNbOfParticipants)}
+          </Link>
+          <Text> / {numberWithCommas(totalParticipants)}</Text>
+        </>
       ) : (
-        numberWithCommas(totalNbOfParticipants)
+        <Text>
+          {numberWithCommas(totalNbOfParticipants)} / {numberWithCommas(totalParticipants)}
+        </Text>
       )}
       {renderParticipantsFrequency(variant)}
     </div>
@@ -158,10 +166,10 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
         label: intl.get('screen.variants.summary.consequence'),
         value: (
           <>
-            {pickImpactBadge(pickedConsequence.node.vep_impact)}
-            <span className={style.consequence}>
+            {pickImpactBadge(pickedConsequence.node.vep_impact, 14, 14)}
+            <Text className={style.summaryConsequence}>
               {removeUnderscoreAndCapitalize(pickedConsequence.node.consequence[0])}
-            </span>
+            </Text>
           </>
         ),
       },
@@ -176,7 +184,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              title={intl.get('screen.variants.summary.participantTooltip')}
+              title={intl.getHTML('screen.variants.summary.participantTooltip')}
             >
               <InfoCircleOutlined className={style.tooltipIcon} />
             </Tooltip>
@@ -198,9 +206,12 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           </>
         ),
         value: variant.external_frequencies?.gnomad_genomes_3?.af ? (
-          <span className={style.gnomad}>
+          <ExternalLink
+            className={style.gnomad}
+            href={`https://gnomad.broadinstitute.org/region/${variant.locus}?dataset=gnomad_r3`}
+          >
             {toExponentialNotation(variant.external_frequencies.gnomad_genomes_3.af)}
-          </span>
+          </ExternalLink>
         ) : (
           TABLE_EMPTY_PLACE_HOLDER
         ),
@@ -262,7 +273,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
-      <span>{pickedConsequence.node.coding_dna_change || TABLE_EMPTY_PLACE_HOLDER}</span>,
+      <Text>{pickedConsequence.node.coding_dna_change || TABLE_EMPTY_PLACE_HOLDER}</Text>,
       <>
         {variant.rsnumber ? (
           <ExternalLink href={`https://www.ncbi.nlm.nih.gov/snp/${variant.rsnumber}`}>
@@ -275,17 +286,23 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
     ],
     details: {
       leftSection: {
-        title: intl.get('screen.variants.summary.details.functionalScores'),
+        title: (
+          <Text className={style.functionalScores}>
+            {intl.get('screen.variants.summary.details.functionalScores')}
+          </Text>
+        ),
         items: [
           {
             label: intl.get('screen.variants.summary.details.sift'),
             value: pickedConsequence.node.predictions?.sift_pred ? (
-              <span>
-                {intl.get(
-                  `filters.options.consequences.predictions.sift_pred.${pickedConsequence.node.predictions.sift_pred}`,
-                )}
+              <>
+                <Text className={style.predictionLabel}>
+                  {intl.get(
+                    `filters.options.consequences.predictions.sift_pred.${pickedConsequence.node.predictions.sift_pred}`,
+                  )}
+                </Text>
                 ({pickedConsequence.node.predictions.sift_score})
-              </span>
+              </>
             ) : (
               TABLE_EMPTY_PLACE_HOLDER
             ),
@@ -293,12 +310,15 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           {
             label: intl.get('screen.variants.summary.details.fathmm'),
             value: pickedConsequence.node.predictions?.fathmm_pred ? (
-              <span>
-                {intl.get(
-                  `filters.options.consequences.predictions.fathmm_pred.${pickedConsequence.node.predictions.fathmm_pred}`,
-                )}
+              <>
+                <Text className={style.predictionLabel}>
+                  {' '}
+                  {intl.get(
+                    `filters.options.consequences.predictions.fathmm_pred.${pickedConsequence.node.predictions.fathmm_pred}`,
+                  )}
+                </Text>
                 ({pickedConsequence.node.predictions.fathmm_score})
-              </span>
+              </>
             ) : (
               TABLE_EMPTY_PLACE_HOLDER
             ),
@@ -318,12 +338,14 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           {
             label: intl.get('screen.variants.summary.details.lrt'),
             value: pickedConsequence.node.predictions?.lrt_pred ? (
-              <span>
-                {intl.get(
-                  `filters.options.consequences.predictions.lrt_pred.${pickedConsequence.node.predictions.lrt_pred}`,
-                )}
+              <>
+                <Text className={style.predictionLabel}>
+                  {intl.get(
+                    `filters.options.consequences.predictions.lrt_pred.${pickedConsequence.node.predictions.lrt_pred}`,
+                  )}
+                </Text>
                 ({pickedConsequence.node.predictions.lrt_score})
-              </span>
+              </>
             ) : (
               TABLE_EMPTY_PLACE_HOLDER
             ),
@@ -335,12 +357,14 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
           {
             label: intl.get('screen.variants.summary.details.polyphen2hvar'),
             value: pickedConsequence.node.predictions?.polyphen2_hvar_pred ? (
-              <span>
-                {intl.get(
-                  `filters.options.consequences.predictions.polyphen2_hvar_pred.${pickedConsequence.node.predictions.polyphen2_hvar_pred}`,
-                )}
+              <>
+                <Text className={style.predictionLabel}>
+                  {intl.get(
+                    `filters.options.consequences.predictions.polyphen2_hvar_pred.${pickedConsequence.node.predictions.polyphen2_hvar_pred}`,
+                  )}{' '}
+                </Text>
                 ({pickedConsequence.node.predictions.polyphen2_hvar_score})
-              </span>
+              </>
             ) : (
               TABLE_EMPTY_PLACE_HOLDER
             ),
@@ -349,10 +373,6 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
             label: intl.get('screen.variants.summary.details.phyloP17Way'),
             value:
               pickedConsequence.node.conservations?.phyloP17way_primate || TABLE_EMPTY_PLACE_HOLDER,
-          },
-          {
-            label: intl.get('screen.variants.summary.details.spliceAi'),
-            value: geneWithPickedConsequence.spliceai?.ds || TABLE_EMPTY_PLACE_HOLDER,
           },
         ],
       },
@@ -377,7 +397,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               label: intl.get('screen.variants.summary.details.spliceAi'),
               value: geneWithPickedConsequence.spliceai?.ds ? (
                 <>
-                  <span className={style.spliceAi}>{geneWithPickedConsequence.spliceai.ds}</span>
+                  <Text className={style.spliceAi}>{geneWithPickedConsequence.spliceai.ds}</Text>
                   {geneWithPickedConsequence.spliceai.type.map((t: string, index: number) => (
                     <Tooltip title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}>
                       <Tag key={index}>{t}</Tag>
