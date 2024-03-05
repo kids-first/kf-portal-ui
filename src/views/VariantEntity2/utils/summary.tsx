@@ -35,9 +35,13 @@ const renderClinvar = (clinVar: IClinVar) => {
   return clinVar?.clin_sig && clinVar.clinvar_id
     ? clinVarSigKey.map((clinvarKey, index) => (
         <Tag color={ClinvarColorMap[clinvarKey]} key={index}>
-          <Text className={style.clinVar}>
-            {intl.get(`screen.variants.summary.clinVarLabel.${clinvarKey}`)}
-          </Text>
+          <ExternalLink
+            href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinVar.clinvar_id}`}
+          >
+            <Text className={style.clinVar}>
+              {intl.get(`screen.variants.summary.clinVarLabel.${clinvarKey}`)}
+            </Text>
+          </ExternalLink>
         </Tag>
       ))
     : TABLE_EMPTY_PLACE_HOLDER;
