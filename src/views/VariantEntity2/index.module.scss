@@ -46,6 +46,10 @@
 
 .clinVar {
   white-space: wrap;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .participants {
