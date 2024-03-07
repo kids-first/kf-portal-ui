@@ -33,7 +33,7 @@ const renderInterpretation = (interpretation: string) => {
   const clinVarSigKey: string = addUnderscoreAndLowercase(interpretation);
   return (
     <Tag color={ClinvarColorMap[clinVarSigKey]}>
-      <Typography.Text className={style.clinVar}>
+      <Typography.Text className={style.interpretation}>
         {intl.get(`screen.variants.summary.clinVarLabel.${clinVarSigKey}`)}
       </Typography.Text>
     </Tag>

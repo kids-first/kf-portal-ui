@@ -38,7 +38,7 @@ enum SectionId {
   CONSEQUENCE = 'consequence',
   FREQUENCY = 'frequency',
   PATHOGENICITY = 'pathogenicity',
-  CONDITIONS = 'conditions',
+  CONDITION = 'condition',
 }
 
 export default function VariantEntity() {
@@ -56,7 +56,7 @@ export default function VariantEntity() {
       title: intl.get('screen.variants.pathogenicity.pathogenicity'),
     },
     {
-      href: `#${SectionId.CONDITIONS}`,
+      href: `#${SectionId.CONDITION}`,
       title: intl.get('screen.variants.conditions.title'),
     },
   ];
@@ -144,7 +144,6 @@ export default function VariantEntity() {
               {intl.get('screen.variants.pathogenicity.clinVar')}
               {data?.clinvar?.clinvar_id && (
                 <ExternalLink
-                  hasIcon
                   href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${data?.clinvar.clinvar_id}`}
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -158,10 +157,10 @@ export default function VariantEntity() {
         />
 
         <EntityTable
-          id={SectionId.CONDITIONS}
+          id={SectionId.CONDITION}
           loading={loading}
-          title={intl.get('screen.variants.pathogenicity.condition')}
-          header={intl.get('screen.variants.pathogenicity.genePhenotype')}
+          title={intl.get('screen.variants.conditions.title')}
+          header={intl.get('screen.variants.conditions.tableTitle')}
           data={makeGenesOrderedRow(data?.genes)}
           columns={getGenePhenotypeColumns()}
         />

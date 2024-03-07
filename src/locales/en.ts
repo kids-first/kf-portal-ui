@@ -1070,7 +1070,8 @@ const en = {
         somatic: 'Somatic',
       },
       conditions: {
-        title: 'Conditions',
+        title: 'Condition',
+        tableTitle: 'Gene - Phenotype Association',
       },
     },
     studies: {
