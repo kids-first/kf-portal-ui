@@ -36,6 +36,8 @@ export const getEntityConsequenceDictionary = () => ({
     polyphen2: intl.get('screen.variants.consequences.predictions.polyphen2'),
     fathmm: intl.get('screen.variants.consequences.predictions.fathmm'),
     cadd: intl.get('screen.variants.consequences.predictions.cadd'),
+    caddRaw: intl.get('screen.variants.consequences.predictions.caddRaw'),
+    caddPhred: intl.get('screen.variants.consequences.predictions.caddPhred'),
     dann: intl.get('screen.variants.consequences.predictions.dann'),
     lrt: intl.get('screen.variants.consequences.predictions.lrt'),
     revel: intl.get('screen.variants.consequences.predictions.revel'),

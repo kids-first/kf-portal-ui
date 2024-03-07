@@ -15,6 +15,7 @@ import {
   INDEX_IMPACT_SCORE,
   getLongPredictionLabelIfKnown,
 } from '@ferlab/ui/core/pages/EntityPage/utils/consequences';
+import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 
 import { CheckCircleFilled } from '@ant-design/icons';
@@ -64,7 +65,8 @@ export const getColumn = (geneSymbolOfPicked?: string): ProColumnType[] => [
     key: 'pli',
     dataIndex: 'gnomad',
     title: intl.get('screen.variants.consequences.gnomad.pli'),
-    render: (gnomad: { pli: number }) => gnomad?.pli || TABLE_EMPTY_PLACE_HOLDER,
+    render: (gnomad: { pli: number }) =>
+      gnomad?.pli ? toExponentialNotation(gnomad.pli) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'loeuf',
@@ -98,23 +100,25 @@ export const getPredictionScore = (
   predictions: IPredictionEntity,
   dictionary: {
     sift: string;
-    polyphen2: string;
     fathmm: string;
-    cadd: string;
+    caddRaw: string;
+    caddPhred: string;
     dann: string;
     lrt: string;
     revel: string;
+    polyphen2: string;
   },
 ): (string | number | null)[][] =>
   [
     [dictionary.sift, predictions?.sift_pred, predictions?.sift_score],
-    [dictionary.polyphen2, predictions?.polyphen2_hvar_pred, predictions?.sift_score],
-    [dictionary.fathmm, predictions?.fathmm_score],
-    [dictionary.cadd, null, predictions?.cadd_score],
+    [dictionary.fathmm, predictions?.fathmm_pred, predictions?.fathmm_score],
+    [dictionary.caddRaw, null, predictions?.cadd_score],
+    [dictionary.caddPhred, null, predictions?.cadd_phred],
     [dictionary.dann, null, predictions?.dann_score],
     [dictionary.lrt, predictions?.lrt_pred, predictions?.lrt_score],
     [dictionary.revel, null, predictions?.revel_score],
-  ].filter(([, , score]) => score);
+    [dictionary.polyphen2, predictions?.polyphen2_hvar_pred, predictions?.polyphen2_hvar_score],
+  ].filter(([, , score]) => score || score === 0);
 
 export const getExpandedColumns = (): ColumnType<any>[] => [
   {
@@ -122,7 +126,7 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
     dataIndex: 'aa_change',
     title: (
       <Tooltip title={intl.get('screen.variants.consequences.aaColumnTooltip')}>
-        {intl.get('screen.variants.consequences.aaColumn')}
+        <Text className={style.tooltip}>{intl.get('screen.variants.consequences.aaColumn')}</Text>
       </Tooltip>
     ),
     render: (aa_change: string) => aa_change || TABLE_EMPTY_PLACE_HOLDER,
@@ -134,7 +138,11 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
       if (!consequence.consequence?.length) return TABLE_EMPTY_PLACE_HOLDER;
       return (
         <>
-          {pickImpactBadge(consequence.vep_impact)}
+          <Tooltip
+            title={intl.get(`screen.variants.consequences.impactTooltip.${consequence.vep_impact}`)}
+          >
+            <Text>{pickImpactBadge(consequence.vep_impact)}</Text>
+          </Tooltip>
           <Text className={style.consequence}>
             {removeUnderscoreAndCapitalize(consequence.consequence[0])}
           </Text>
@@ -172,10 +180,18 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
               predictionShortLabel,
             );
             const label = predictionLongLabel || predictionShortLabel;
-            const description = label ? `${capitalize(label)} - ${score}` : score;
+            const description = label ? `${capitalize(label)} (${score})` : score;
+
             return (
               <StackLayout horizontal key={id}>
-                <Text className={style.predictionLabel}>{predictionField}:</Text>
+                <Text className={style.predictionLabel}>
+                  {intl.get(
+                    `screen.variants.summary.details.${
+                      predictionField[0].toLowerCase() + predictionField.slice(1)
+                    }`,
+                  )}
+                  :
+                </Text>
                 <Text>{description}</Text>
               </StackLayout>
             );
@@ -202,7 +218,7 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
   },
   {
     key: 'ensembl_transcript_id',
-    title: intl.get('screen.variants.consequences.transcript'),
+    title: intl.get('screen.variants.consequences.transcripts'),
     render: (consequence: IConsequenceEntity) => {
       const { ensembl_transcript_id, canonical } = consequence;
       return (

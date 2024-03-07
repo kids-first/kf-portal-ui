@@ -111,7 +111,7 @@ export default function VariantEntity() {
           id={SectionId.CONSEQUENCE}
           loading={loading}
           title={intl.get('screen.variants.consequences.consequence')}
-          header={intl.get('screen.variants.consequences.transcript')}
+          header={intl.get('screen.variants.consequences.transcripts')}
           noDataLabel={intl.get('no.data.available')}
         />
 
