@@ -51,6 +51,7 @@
 .clinVar {
   white-space: wrap;
   text-decoration: underline;
+  color: inherit;
   &:hover {
     text-decoration: none;
   }
