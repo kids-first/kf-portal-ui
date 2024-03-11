@@ -17,7 +17,7 @@ const ParticipantSearch = ({ queryBuilderId }: ICustomSearchProps) => {
     <GlobalSearch<IParticipantEntity>
       queryBuilderId={queryBuilderId}
       field="participant_id"
-      searchFields={['participant_id', 'external_id']}
+      searchFields={['participant_id', 'external_id', 'families_id']}
       index={INDEXES.PARTICIPANT}
       placeholder={intl.get('global.search.participant.placeholder')}
       emptyDescription={intl.get('global.search.participant.emptyText')}

@@ -295,6 +295,7 @@ export const CHECK_PARTICIPANT_MATCH = gql`
             fhir_id
             participant_id
             external_id
+            families_id
             study {
               study_code
             }
@@ -312,6 +313,7 @@ export const PARTICIPANT_SEARCH_BY_ID_QUERY = gql`
           node {
             participant_id
             external_id
+            families_id
           }
         }
       }
