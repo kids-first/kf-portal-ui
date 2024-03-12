@@ -152,7 +152,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
                   : `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
               }
             >
-              {geneWithPickedConsequence.symbol}
+              <Text>{geneWithPickedConsequence.symbol}</Text>
             </ExternalLink>
             (
             <ExternalLink
@@ -212,7 +212,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
         value: variant.external_frequencies?.gnomad_genomes_3?.af ? (
           <ExternalLink
             className={style.gnomad}
-            href={`https://gnomad.broadinstitute.org/region/${variant.locus}?dataset=gnomad_r3`}
+            href={`https://gnomad.broadinstitute.org/variant/${variant.locus}?dataset=gnomad_r3`}
           >
             {toExponentialNotation(variant.external_frequencies.gnomad_genomes_3.af)}
           </ExternalLink>
