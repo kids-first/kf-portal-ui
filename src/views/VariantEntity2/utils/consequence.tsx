@@ -251,7 +251,7 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
             'see.less': intl.get('see.less'),
             'see.more': intl.get('see.more'),
           }}
-          nOfElementsWhenCollapsed={2}
+          nOfElementsWhenCollapsed={1}
           renderItem={(item: string, id) => (
             <StackLayout horizontal key={id}>
               <ExternalLink href={`https://www.ncbi.nlm.nih.gov/nuccore/${item}?report=graph`}>
