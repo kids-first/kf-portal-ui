@@ -15,7 +15,6 @@ const getName = (url = '', parallel = '') => {
 export default defineConfig({
   chromeWebSecurity: true,
   video: false,
-  videoUploadOnPasses: false,
   screenshotOnRunFailure: true,
   viewportWidth: 1920,
   viewportHeight: 1080,
@@ -26,7 +25,6 @@ export default defineConfig({
     baseUrl: 'https://portal-qa-next.kidsfirstdrc.org',
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     slowTestThreshold: 60000,
-    experimentalSessionAndOrigin: true,
     downloadsFolder: `cypress/downloads/${getName(process.env.CYPRESS_BASE_URL, process.env.CYPRESS_PARALLEL)}`,
     screenshotsFolder: `cypress/screenshots/${getName(process.env.CYPRESS_BASE_URL, process.env.CYPRESS_PARALLEL)}`,
     videosFolder: `cypress/videos/${getName(process.env.CYPRESS_BASE_URL, process.env.CYPRESS_PARALLEL)}`,
