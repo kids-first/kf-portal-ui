@@ -243,7 +243,7 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
     key: 'consequences',
     render: (refseq_mrna_id: string[]) => {
       if (!refseq_mrna_id?.length) return TABLE_EMPTY_PLACE_HOLDER;
-      console.log('refseq_mrna_id', refseq_mrna_id);
+
       return (
         <ExpandableCell
           dataSource={refseq_mrna_id}
