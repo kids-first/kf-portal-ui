@@ -241,14 +241,27 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
     title: intl.get('screen.variants.consequences.refSeq'),
     dataIndex: 'refseq_mrna_id',
     key: 'consequences',
-    render: (refseq_mrna_id: string) =>
-      refseq_mrna_id ? (
-        <ExternalLink href={`https://www.ncbi.nlm.nih.gov/nuccore/${refseq_mrna_id}?report=graph`}>
-          {refseq_mrna_id}
-        </ExternalLink>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    render: (refseq_mrna_id: string[]) => {
+      if (!refseq_mrna_id?.length) return TABLE_EMPTY_PLACE_HOLDER;
+      console.log('refseq_mrna_id', refseq_mrna_id);
+      return (
+        <ExpandableCell
+          dataSource={refseq_mrna_id}
+          dictionnary={{
+            'see.less': intl.get('see.less'),
+            'see.more': intl.get('see.more'),
+          }}
+          nOfElementsWhenCollapsed={2}
+          renderItem={(item: string, id) => (
+            <StackLayout horizontal key={id}>
+              <ExternalLink href={`https://www.ncbi.nlm.nih.gov/nuccore/${item}?report=graph`}>
+                {item}
+              </ExternalLink>
+            </StackLayout>
+          )}
+        />
+      );
+    },
   },
 ];
 
