@@ -189,7 +189,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(15).contains('-').should('exist');
   });
   
-  it('Panneau Files', () => {
+  it('Panneau Files [SKFP-977]', () => {
     cy.get('[id="files"]').find('[class*="EntityTable_title"]').contains('Data File').should('exist');
     cy.get('[id="files"]').find('[class="ant-collapse-header"]').contains('Data File').should('exist');
     cy.get('[id="files"]').find('[class="ant-collapse-header"]').contains('(7)').should('exist');

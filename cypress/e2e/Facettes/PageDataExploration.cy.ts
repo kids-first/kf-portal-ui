@@ -75,7 +75,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('[class*="SearchLabel_title"]').contains('Search by Participant ID').should('exist'); //data-cy="SearchLabel_Title"
 
     cy.get('[class*="SearchLabel_tooltipIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true}); //data-cy="SearchLabel_InfoCircleOutlined"
-    cy.get('div[class="ant-tooltip-inner"]').contains('Search by Participant ID or External Participant ID').should('exist');
+    cy.get('div[class="ant-tooltip-inner"]').contains('Search by Participant ID, External Participant ID or Family ID').should('exist');
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'PT_M8MDJNZB', 'POST', '*/grapgql', 3); //data-cy="SearchAutocomplete_Select"
     cy.wait(1000);
@@ -384,7 +384,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   });
 
   it('Experimental Strategy - Whole Genome Sequencing', () => {
-    cy.validateFacetFilter('Experimental Strategy', 'Whole Genome Sequencing', 'Whole Genome Sequencing', /^3,266$/, 1);
+    cy.validateFacetFilter('Experimental Strategy', 'Whole Genome Sequencing', 'Whole Genome Sequencing', /^2,252$/, 1);
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
 
@@ -394,7 +394,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   });
 
   it('Platform - Illumina', () => {
-    cy.validateFacetFilter('Platform', 'Illumina', 'Illumina', /^71,648$/, 1);
+    cy.validateFacetFilter('Platform', 'Illumina', 'Illumina', /^73,561$/, 1);
     cy.validateFacetRank(5, 'Platform');
   });
 
@@ -404,7 +404,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   });
 
   it('Library Strand - Unstranded', () => {
-    cy.validateFacetFilter('Library Strand', 'Unstranded', 'Unstranded', /^31,803$/, 1);
+    cy.validateFacetFilter('Library Strand', 'Unstranded', 'Unstranded', /^33,423$/, 1);
     cy.validateFacetRank(7, 'Library Strand');
   });
 
@@ -413,7 +413,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.wait(1000);
     cy.clickAndIntercept('input[type="radio"][value="true"]', 'POST', '**/graphql', 12);
     cy.validatePillSelectedQuery('Is Paired End', ['True'], 1);
-    cy.validateTableResultsCount(/^47,511$/);
+    cy.validateTableResultsCount(/^49,743$/);
     cy.validateFacetRank(8, 'Is Paired End');
   });
 

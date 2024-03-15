@@ -11,7 +11,7 @@ describe('Page d\'un variant - Valider les redirections', () => {
     cy.get('a[class*="SummaryHeader_link"]').eq(0).click({force: true}); // data-cy="SummaryHeader_Studies_Button"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-LBD').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-EATF').should('exist');
   });
   
   it('Participants', () => {
@@ -30,9 +30,9 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
   });
   
   it('Panneau Summary', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('3'); // data-cy="SummaryHeader_Studies_Button"
-    cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('Studies'); // data-cy="SummaryHeader_Studies_Button"
-    cy.get('a[class*="SummaryHeader_link"]').eq(1).contains('357'); // data-cy="SummaryHeader_Participants_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('1'); // data-cy="SummaryHeader_Studies_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('Study'); // data-cy="SummaryHeader_Studies_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(1).contains('135'); // data-cy="SummaryHeader_Participants_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(1).contains('Participants'); // data-cy="SummaryHeader_Participants_Button"
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(0).contains('Variant').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(0).contains('chr11:g.119345794C>T').should('exist');
@@ -51,11 +51,11 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(6).contains('ClinVar').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(6).contains('Benign, Likely Benign').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(7).contains('Participants').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(7).contains('357').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(7).contains('135').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(8).contains('gnomAD Genome (v3.1.2)').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(8).contains('2.46e-1').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(9).contains('Studies').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(9).contains('5.37e-1').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(9).contains('5.58e-1').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(10).contains('ClinVar').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(10).contains('167299').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(11).contains('dbSNP').should('exist');
@@ -95,7 +95,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(7).contains('ENST00000619721').should('exist');
     cy.get('[id="consequence"]').find('thead').find('th[class="ant-table-cell"]').eq(8).contains('RefSeq').should('exist');
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(8).contains('NM_031433').should('exist');
-    cy.get('[id="consequence"]').contains('5 other transcripts +').should('exist');
+    cy.get('[id="consequence"]').contains('6 other transcripts +').should('exist');
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).find('tr[class*="ant-table-row"]').eq(1).should('not.exist');
   });
   
@@ -105,11 +105,11 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="frequencies"]').find('thead').find('th[class="ant-table-cell"]').eq(2).contains('Frequency').should('exist');
     cy.get('[id="frequencies"]').find('thead').find('th[class="ant-table-cell"]').eq(3).contains('ALT Alleles').should('exist');
     cy.get('[id="frequencies"]').find('thead').find('th[class="ant-table-cell"]').eq(4).contains('Homozygotes').should('exist');
-    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(0).contains('KF-LBD').should('exist');
-    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).contains('171 / 303').should('exist');
-    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(2).contains('3.50e-1').should('exist');
-    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(3).contains('212').should('exist');
-    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(4).contains('41').should('exist');
+    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).contains('KF-EATF').should('exist');
+    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('135 / 242').should('exist');
+    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(2).contains('3.37e-1').should('exist');
+    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(3).contains('163').should('exist');
+    cy.get('[id="frequencies"]').find('[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(4).contains('28').should('exist');
     cy.get('[id="frequencies"]').find('tfoot[class="ant-table-summary"]').find('td[class*="ant-table-cell"]').eq(1).contains(' / ').should('exist');
     cy.get('[id="frequencies"]').find('tfoot[class="ant-table-summary"]').find('td[class*="ant-table-cell"]').eq(2).contains('e-').should('exist');
     cy.get('[id="frequencies"]').find('tfoot[class="ant-table-summary"]').find('td[class*="ant-table-cell"]').eq(3).contains(/\d{1}/).should('exist');
@@ -236,18 +236,18 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
     .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/nuccore/NM_031433?report=graph');
   });
 
-  it('Lien \'5 other transcripts\' du panneau Gene Consequences', () => {
-    cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).contains('5 other transcripts +').click({force: true});
+  it('Lien \'6 other transcripts\' du panneau Gene Consequences', () => {
+    cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).contains('6 other transcripts +').click({force: true});
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).find('tr[class*="ant-table-row"]').eq(1).should('exist');
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).contains('Show less -').click({force: true});
     cy.get('[id="consequence"]').find('div[class*="EntityTable_contentTable"]').eq(0).find('tr[class*="ant-table-row"]').eq(1).should('not.exist');
   });
 
   it('Lien Studies du panneau Kids First Studies', () => {
-    cy.get('[id="frequencies"]').find('tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(0).find('[href]').click({force: true});
+    cy.get('[id="frequencies"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('[href]').click({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-LBD').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-EATF').should('exist');
   });
 
   it('Lien Participants du panneau Kids First Studies [SKFP-957]', () => {

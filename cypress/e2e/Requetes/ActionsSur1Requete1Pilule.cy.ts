@@ -20,7 +20,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
     cy.validateTotalSelectedQuery('15.8K');
-    cy.validateTableResultsCount('15,799');
+    cy.validateTableResultsCount('15,810');
     cy.validateClearAllButton(false);
   });
 
@@ -31,7 +31,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
     cy.validateTotalSelectedQuery('15.8K');
-    cy.validateTableResultsCount('15,799');
+    cy.validateTableResultsCount('15,810');
     cy.validateClearAllButton(false);
   });
 
@@ -76,7 +76,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validateTotalSelectedQuery('15.7K');
-    cy.validateTableResultsCount('15,707');
+    cy.validateTableResultsCount('15,718');
     cy.validateClearAllButton(true);
   });
 });

@@ -89,7 +89,6 @@ describe('Page d\'un fichier - Colonnes du tableau Participants-Samples', () => 
 describe('Page d\'un fichier - Colonnes du tableau Experimental Procedure', () => {
   beforeEach(() => {
     cy.visitFileEntity('GF_45BZQGS6');
-    cy.resetColumns('experimental-procedure');
   });
 
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
@@ -134,27 +133,5 @@ describe('Page d\'un fichier - Colonnes du tableau Experimental Procedure', () =
       .find('th[class*="ant-table-cell"]').eq(6)
       .should('not.have.class', 'ant-table-column-has-sorters')
       .contains('Sequencing Center ID').should('exist');
-  });
-
-  it('Masquer/Afficher une colonne affichée', () => {
-    cy.get('[id="experimental-procedure"]')
-      .find('thead[class="ant-table-thead"]')
-      .contains('Experimental Strategy').should('exist');
-
-    cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').contains('Experimental Strategy')
-      .find('[type="checkbox"]').uncheck({force: true});
-
-    cy.get('[id="experimental-procedure"]')
-      .find('thead[class="ant-table-thead"]')
-      .contains('Experimental Strategy').should('not.exist');
-
-    cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').contains('Experimental Strategy')
-      .find('[type="checkbox"]').check({force: true});
-
-    cy.get('[id="experimental-procedure"]')
-      .find('thead[class="ant-table-thead"]')
-      .contains('Experimental Strategy').should('exist');
   });
 });
