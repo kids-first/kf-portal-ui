@@ -33,7 +33,6 @@ export enum STATIC_ROUTES {
 export enum DYNAMIC_ROUTES {
   DATA_EXPLORATION = '/data-exploration/:tab?',
   VARIANT_ENTITY = '/variants/:locus?',
-  VARIANT_ENTITY_2 = '/variants2/:locus?',
   FILE_ENTITY = '/files/:file_id?',
   PARTICIPANT_ENTITY = '/participants/:participant_id?',
   STUDY_ENTITY = '/study/:study_id?',
