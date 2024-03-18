@@ -20,11 +20,11 @@ export const fencesAtLeastOneAuthentificationConnectedSelector = (state: RootSta
   });
 
 export const fencesAllAclsSelector = (state: RootState) => {
-  const acls: string[] = [];
+  let acls: string[] = [];
   Object.keys(FENCE_NAMES).forEach((fenceKey) => {
     const key = fenceKey as FENCE_NAMES;
     if (state.fences[key].acl.length > 0) {
-      acls.concat(state.fences[key].acl);
+      acls = [...acls, ...state.fences[key].acl];
     }
   });
 
