@@ -1,17 +1,17 @@
 @import 'src/style/themes/kids-first/colors';
 
 .popOverContent {
-    max-width: 420px;
+  max-width: 420px;
 }
 
 .contentLink {
-    display: inline;
+  display: inline;
 }
 
 .locked {
-    color: $body-3;
+  color: $gray-6;
 }
 
 .unlocked {
-    color: $green-7;
+  color: $green-7;
 }
