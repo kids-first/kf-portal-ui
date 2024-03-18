@@ -2,19 +2,19 @@
 
 .searchLabel {
   &.titleWrapper {
-    color: $body-1;
+    color: $gray-8;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 
     .title {
-      color: $body-1;
+      color: $gray-8;
       font-size: 12px;
     }
 
     .tooltipIcon {
       margin-left: 0.5rem;
-      color: $body-2;
+      color: $gray-7;
     }
   }
 }
