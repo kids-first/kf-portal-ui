@@ -158,13 +158,13 @@ describe('Navigation', () => {
     cy.visitDataExploration();
 
     // Facettes
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
 
     cy.get('button[class*="UploadIdsButton"]').click({force: true});
     cy.get('[class="ant-modal-header"]').contains('participant').should('exist');
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
-    cy.get('[data-cy="SidebarMenuItem_Clinical"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Clinical"]').click({force: true});
 
     cy.get('div[class*="Filters_filter"]').contains('Observed Phenotype (HPO)').click({force: true});
     cy.get('[class*="ant-modal-header"]').contains('Observed Phenotype (HPO) Browser').should('exist'); // data-cy="TreeFacet_Modal_hpoTree"
@@ -174,13 +174,13 @@ describe('Navigation', () => {
     cy.get('[class*="ant-modal-header"]').contains('Diagnosis (MONDO) Browser').should('exist'); // data-cy="TreeFacet_Modal_mondoTree"
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
 
     cy.get('button[class*="UploadIdsButton"]').click({force: true});
     cy.get('[class="ant-modal-header"]').contains('sample').should('exist');
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
-    cy.get('[data-cy="SidebarMenuItem_Data File"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Data File"]').click({force: true});
 
     cy.get('button[class*="UploadIdsButton"]').click({force: true});
     cy.get('[class="ant-modal-header"]').contains('file').should('exist');
@@ -198,7 +198,7 @@ describe('Navigation', () => {
  
   it('Modals de la page des variants', () => {
     cy.visitVariantsPage();
-    cy.get('[data-cy="SidebarMenuItem_Gene"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Gene"]').click({force: true});
 
     cy.get('button[class*="UploadIdsButton"]').click({force: true});
     cy.get('[class="ant-modal-header"]').contains('gene').should('exist');

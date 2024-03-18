@@ -8,7 +8,7 @@ beforeEach(() => {
 describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Study"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Study"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -55,7 +55,7 @@ describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
 describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -119,7 +119,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
 describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Clinical"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Clinical"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -194,7 +194,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
 describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('biospecimens', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -335,7 +335,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
 describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('datafiles', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Data File"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Data File"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });

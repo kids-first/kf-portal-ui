@@ -10,7 +10,7 @@ describe('Page Data Exploration - Requêtes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=245ad812-f2a3-4401-9506-a98c647c3779');
 
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').click({force: true}); // data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
   });
@@ -58,7 +58,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validateTableResultsCount(/\d{2}\,\d{3}/);
     cy.validateClearAllButton(false);
 
-    cy.get('[data-cy="SidebarMenuItem_Study"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Study"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').click({force: true}); // data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
     cy.checkValueFacetAndApply('Study Code', 'KF-CDH');
