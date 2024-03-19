@@ -20,7 +20,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from '../index.module.scss';
 
-export const getFrequenciesItems = (): ProColumnType[] => [
+export const getFrequencyItems = (): ProColumnType[] => [
   {
     dataIndex: 'study_code',
     key: 'study_code',
@@ -118,7 +118,7 @@ export const getFrequenciesItems = (): ProColumnType[] => [
   },
 ];
 
-export const getFrequenciesTableSummaryColumns = (
+export const getFrequencyTableSummaryColumns = (
   v?: IVariantEntity,
   studies?: IVariantStudyEntity[],
 ): TProTableSummary[] => {

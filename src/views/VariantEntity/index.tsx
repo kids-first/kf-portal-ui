@@ -24,8 +24,8 @@ import { IVariantStudyEntity } from '../../graphql/variants/models';
 
 import { expandedRowRender, getColumn } from './utils/consequence';
 import {
-  getFrequenciesItems,
-  getFrequenciesTableSummaryColumns,
+  getFrequencyItems,
+  getFrequencyTableSummaryColumns,
   getPublicCohorts,
 } from './utils/frequency';
 import { getClinvarColumns, getGenePhenotypeColumns } from './utils/pathogenicity';
@@ -117,12 +117,12 @@ export default function VariantEntity() {
 
         <EntityTable
           id={SectionId.FREQUENCY}
-          columns={getFrequenciesItems()}
+          columns={getFrequencyItems()}
           data={variantStudies}
           title={intl.get('screen.variants.frequencies.frequency')}
           header={intl.get('screen.variants.frequencies.kfStudies')}
           loading={loading}
-          summaryColumns={getFrequenciesTableSummaryColumns(data, variantStudies)}
+          summaryColumns={getFrequencyTableSummaryColumns(data, variantStudies)}
         />
 
         <EntityPublicCohortTable
