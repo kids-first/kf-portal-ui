@@ -59,10 +59,6 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   ];
 
   useEffect(() => {
-    if (!fences.some(({ status }) => status === FENCE_AUTHENTIFICATION_STATUS.connected)) {
-      return;
-    }
-
     dispatch(fetchAuthorizedStudies(fences));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gen3.status, dcf.status]);
