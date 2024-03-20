@@ -1,6 +1,7 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import { IAnchorLink } from '@ferlab/ui/core/components/AnchorMenu';
+import { NO_GENE } from '@ferlab/ui/core/components/Consequences/Cell';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import EntityPageWrapper, {
@@ -106,7 +107,9 @@ export default function VariantEntity() {
 
         <EntityNestedTable
           columns={getColumn(geneSymbolOfPicked)}
-          data={hydrateResults(data?.genes?.hits?.edges || [])}
+          data={hydrateResults(data?.genes?.hits?.edges || []).filter(
+            (gene) => gene.symbol !== NO_GENE,
+          )}
           expandedRowRender={expandedRowRender}
           id={SectionId.CONSEQUENCE}
           loading={loading}
