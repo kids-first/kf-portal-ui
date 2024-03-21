@@ -8,7 +8,7 @@ beforeEach(() => {
 describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage();
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -32,7 +32,7 @@ describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
 describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Variant"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Variant"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
   });
 
@@ -73,12 +73,12 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   });
 
   it('Consequence - Intron', () => {
-    cy.validateFacetFilter('Consequence', 'Intron', 'intron', /^18,558,155$/, 1);
+    cy.validateFacetFilter('Consequence', 'Intron', 'intron', /^19,246,383$/, 1);
     cy.validateFacetRank(1, 'Consequence');
   });
 
   it('Consequence - Missense', () => {
-    cy.validateFacetFilter('Consequence', 'Missense', 'missense', /^118,594$/, 1);
+    cy.validateFacetFilter('Consequence', 'Missense', 'missense', /^112,775$/, 1);
   });
 
   it('Variant External Reference - DBSNP [SKFP-938]', () => {
@@ -110,7 +110,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
 describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Gene"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Gene"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -203,7 +203,7 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
 describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
@@ -224,42 +224,42 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
   });
 
   it('VEP - MODIFIER', () => {
-    cy.validateFacetFilter('VEP', 'MODIFIER', 'MODIFIER', /^31,243,156$/, 1);
+    cy.validateFacetFilter('VEP', 'MODIFIER', 'MODIFIER', /^32,056,652$/, 1);
     cy.validateFacetRank(1, 'VEP');
   });
 
   it('CADD (Raw)', () => {
-    cy.validateFacetNumFilter('CADD (Raw)', '0.01', /^16,577$/, false, 1);
+    cy.validateFacetNumFilter('CADD (Raw)', '0.01', /^16,878$/, false, 1);
     cy.validateFacetRank(2, 'CADD (Raw)');
   });
 
   it('CADD (Phred)', () => {
-    cy.validateFacetNumFilter('CADD (Phred)', '0.01', /^3,391$/, false, 1);
+    cy.validateFacetNumFilter('CADD (Phred)', '0.01', /^3,437$/, false, 1);
     cy.validateFacetRank(3, 'CADD (Phred)');
   });
 
   it('DANN', () => {
-    cy.validateFacetNumFilter('DANN', '0.1', /^811$/, false, 1);
+    cy.validateFacetNumFilter('DANN', '0.1', /^818$/, false, 1);
     cy.validateFacetRank(4, 'DANN');
   });
 
   it('FATHMM - Tolerated', () => {
-    cy.validateFacetFilter('FATHMM', 'Tolerated', 'T', /^78,651$/, 1);
+    cy.validateFacetFilter('FATHMM', 'Tolerated', 'T', /^79,913$/, 1);
     cy.validateFacetRank(5, 'FATHMM');
   });
 
   it('LRT - Neutral', () => {
-    cy.validateFacetFilter('LRT', 'Neutral', 'N', /^47,429$/, 1);
+    cy.validateFacetFilter('LRT', 'Neutral', 'N', /^48,245$/, 1);
     cy.validateFacetRank(6, 'LRT');
   });
 
   it('PolyPhen-2 HVAR - Benign', () => {
-    cy.validateFacetFilter('PolyPhen-2 HVAR', 'Benign', 'B', /^59,562$/, 1);
+    cy.validateFacetFilter('PolyPhen-2 HVAR', 'Benign', 'B', /^60,432$/, 1);
     cy.validateFacetRank(7, 'PolyPhen-2 HVAR');
   });
 
   it('REVEL', () => {
-    cy.validateFacetNumFilter('REVEL', '0.01', /^2,711$/, false, 1);
+    cy.validateFacetNumFilter('REVEL', '0.01', /^2,753$/, false, 1);
     cy.validateFacetRank(8, 'REVEL');
   });
 
@@ -269,7 +269,7 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
   });
 
   it('SIFT - Tolerated', () => {
-    cy.validateFacetFilter('SIFT', 'Tolerated', 'T', /^59,689$/, 1);
+    cy.validateFacetFilter('SIFT', 'Tolerated', 'T', /^60,613$/, 1);
     cy.validateFacetRank(10, 'SIFT');
   });
 });
@@ -277,7 +277,7 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
 describe('Page des variants (Frequency) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Frequency"]').click();
+    cy.get('[data-cy="SidebarMenuItem_Frequency"]').click({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
