@@ -3,7 +3,7 @@ export const StudyCodeMap: { [key: string]: string } = {
   'KF-CHDALL': 'aml_sd_z6mwd3h0_2018',
   'KF-MMC': 'aml_sd_pet7q6f2_2018',
   'KF-OS': 'os_sd_zxjffmef_2015',
-  'PBTA-CBTN': 'pbta_all',
+  CBTN: 'pbta_all',
 };
 
 export const mapStudyToPedcBioportal = (studyCode: string) => StudyCodeMap[studyCode] || '';
