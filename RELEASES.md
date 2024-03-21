@@ -1,3 +1,18 @@
+## VERSION 5.1.0 (2024-03-21)
+### Features
+- [SKFP-900](https://d3b.atlassian.net/browse/SKFP-900) Implement Variant Entity V2 
+- [SKFP-965](https://d3b.atlassian.net/browse/SKFP-965) Add a search by Family ID to facets
+## Technical / Other changes
+- [SKFP-924](https://d3b.atlassian.net/browse/SKFP-924) Fix: (Dashboard) Fixed various bugs related to the Authorized Studies widget
+- [SKFP-943](https://d3b.atlassian.net/browse/SKFP-943) Fix: (Data Exploration) Fixed missing values for Not Observed Phenotype and Observed Phenotype (Source text) in table
+- [SKFP-944](https://d3b.atlassian.net/browse/SKFP-944) Fix: (Report) Fixed the missing histological diagnoses values in the download sample data
+- [SKFP-980](https://d3b.atlassian.net/browse/SKFP-980) Fix: (Dashboard) Fixed the requirement to refresh to see authorized studies in widget
+- [SKFP-982](https://d3b.atlassian.net/browse/SKFP-982) Refactor: (UI) Update palette for hex values
+- [SKFP-983](https://d3b.atlassian.net/browse/SKFP-983) Refactor: (UI) Update palette for tag values
+- [SKFP-988](https://d3b.atlassian.net/browse/SKFP-988) Refactor: (UI) Update palette for text values
+- [SKFP-993](https://d3b.atlassian.net/browse/SKFP-993) Fix: (Data Exploration) Fixed the authorization lock in the table allowing users to copy authorized files to Cavatica
+- [SKFP-995](https://d3b.atlassian.net/browse/SKFP-995) Add a see more functionality to RefSeq field
+
 ## VERSION 5.0.3 (2024-02-29)
 
 ### Features
