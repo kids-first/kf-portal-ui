@@ -35,6 +35,7 @@ import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
 import { userActions } from 'store/user/slice';
 import { STATIC_ROUTES } from 'utils/routes';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
@@ -116,62 +117,55 @@ const Header = () => {
           <Dropdown
             key="resources"
             trigger={['click']}
-            overlay={
-              <Menu
-                onClick={({ key }) => trackVisitResources(key)}
-                items={[
-                  {
-                    key: 'website',
-                    disabled: false,
-                    label: (
-                      <Space size={8}>
-                        <GlobalOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="website"
-                          href="https://kidsfirstdrc.org/"
-                        >
-                          {intl.get('layout.main.menu.website')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                  {
-                    key: 'documentation',
-                    label: (
-                      <Space size={8}>
-                        <FileSearchOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="documentation"
-                          href="https://www.notion.so/d3b/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a"
-                        >
-                          {intl.get('layout.main.menu.documentation')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                  {
-                    type: 'divider',
-                  },
-                  {
-                    key: 'contact',
-                    label: (
-                      <Space size={8}>
-                        <MailOutlined />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="contact"
-                          href="https://kidsfirstdrc.org/contact/"
-                        >
-                          {intl.get('layout.main.menu.contact')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                ]}
-              />
-            }
+            menu={{
+              items: [
+                {
+                  key: 'website',
+                  disabled: false,
+                  label: (
+                    <Space size={8}>
+                      <GlobalOutlined className={styles.icon} />
+                      <ExternalLink
+                        className={styles.externalLink}
+                        key="website"
+                        href="https://kidsfirstdrc.org/"
+                      >
+                        {intl.get('layout.main.menu.website')}
+                      </ExternalLink>
+                    </Space>
+                  ),
+                },
+                {
+                  key: 'documentation',
+                  label: (
+                    <Space size={8}>
+                      <FileSearchOutlined className={styles.icon} />
+                      <ExternalLink
+                        className={styles.externalLink}
+                        key="documentation"
+                        href="https://kidsfirstdrc.org/help-center/"
+                      >
+                        {intl.get('layout.main.menu.documentation')}
+                      </ExternalLink>
+                    </Space>
+                  ),
+                },
+                {
+                  type: 'divider',
+                },
+                {
+                  key: 'contact',
+                  label: (
+                    <Space size={8}>
+                      <MailOutlined />
+                      <ExternalLink href={`mailto:${SUPPORT_EMAIL}`} data-cy="HeaderLink_Contact">
+                        {intl.get('layout.main.menu.contact')}
+                      </ExternalLink>
+                    </Space>
+                  ),
+                },
+              ],
+            }}
           >
             <a
               className={cx(styles.resourcesMenuTrigger, styles.menuTrigger)}
