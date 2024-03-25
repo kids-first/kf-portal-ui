@@ -9,7 +9,6 @@ import {
   LaptopOutlined,
   LogoutOutlined,
   MailOutlined,
-  MessageOutlined,
   ReadOutlined,
   TeamOutlined,
   UserOutlined,
@@ -30,12 +29,12 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import styles from 'components/Layout/Header/index.module.scss';
 import GradientAccent from 'components/uiKit/GradientAccent';
-import { trackLogout, trackVisitResources } from 'services/analytics';
+import { trackLogout } from 'services/analytics';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { userActions } from 'store/user/slice';
 import { STATIC_ROUTES } from 'utils/routes';
-import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
