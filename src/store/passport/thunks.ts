@@ -228,12 +228,12 @@ export const beginCavaticaAnalyse = createAsyncThunk<
   }
 
   const { fences, passport } = thunkAPI.getState();
-  const acls: string[] = [];
+  let acls: string[] = [];
 
   for (const fenceKey in fences) {
     const key = fenceKey as FENCE_NAMES;
     if (fences[key].acl !== undefined) {
-      acls.concat(fences[key].acl);
+      acls = [...acls, ...fences[key].acl];
     }
   }
 
