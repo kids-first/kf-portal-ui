@@ -152,19 +152,7 @@ const Header = () => {
                     ),
                   },
                   {
-                    key: 'forum',
-                    label: (
-                      <Space size={8}>
-                        <MessageOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="forum"
-                          href="https://forum.kidsfirstdrc.org/login"
-                        >
-                          {intl.get('layout.main.menu.forum')}
-                        </ExternalLink>
-                      </Space>
-                    ),
+                    type: 'divider',
                   },
                   {
                     key: 'contact',
