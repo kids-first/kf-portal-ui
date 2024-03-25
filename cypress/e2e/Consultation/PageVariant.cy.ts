@@ -6,7 +6,7 @@ beforeEach(() => {
   cy.visitVariantEntityPage('11-119345794-C-T', 1);
 });
 
-describe("Page d'un variant - Vérifier les informations affichées", () => {
+describe('Page d\'un variant - Vérifier les informations affichées', () => {
   it('Titre', () => {
     cy.get('[class*="EntityTitle"]').contains('chr11:g.119345794C>T');
     cy.get('[class*="EntityTitle"]').contains('GRCh38');
