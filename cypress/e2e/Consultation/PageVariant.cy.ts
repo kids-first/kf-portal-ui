@@ -58,7 +58,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-content"]').eq(2).find('[class*="ant-tag"]').contains('AL').should('exist');
     cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="EntityVariantSummary_detailsTitle"]').eq(0).contains('Associated Conditions (OMIM)').should('exist');
     cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).contains('Microphthalmia, isolated 5').should('exist');
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).find('[class*="ant-tag-blue"]').contains('AR').should('exist');
+    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).find('[class*="ant-tag"]').contains('AR').should('exist');
     cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(1).contains('Nanophthalmos 2').should('exist');
   });
 

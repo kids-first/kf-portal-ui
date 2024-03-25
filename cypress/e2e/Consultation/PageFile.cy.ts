@@ -3,7 +3,7 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
-  cy.visitFileEntity('GF_45BZQGS6');
+  cy.visitFileEntity('GF_6DVS70V9');
 });
 
 describe('Page d\'un fichier - Valider les redirections', () => {
@@ -18,20 +18,20 @@ describe('Page d\'un fichier - Valider les redirections', () => {
     cy.get('a[class*="SummaryHeader_link"]').eq(1).click({force: true}); // data-cy="SummaryHeader_Participants_Button"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 45BZQGS6').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
   });
   
   it('Sample', () => {
     cy.get('a[class*="SummaryHeader_link"]').eq(2).click({force: true}); // data-cy="SummaryHeader_Samples_Button"
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 45BZQGS6').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
   });
 });
 
 describe('Page d\'un fichier - Vérifier les informations affichées', () => {
   it('Titre', () => {
-    cy.get('[class*="EntityTitle"]').contains('GF_45BZQGS6');
+    cy.get('[class*="EntityTitle"]').contains('GF_6DVS70V9');
   });
 
   it('Panneau Summary', () => {
@@ -42,20 +42,20 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('a[class*="SummaryHeader_link"]').eq(2).contains(/^3$/); // data-cy="SummaryHeader_Samples_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(2).contains('Biospecimens'); // data-cy="SummaryHeader_Samples_Button"
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(0).contains('ID').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(0).contains('GF_45BZQGS6').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(0).contains('GF_6DVS70V9').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(1).contains('Name').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(1).contains('18fa1c8f-9ac1-4608-ba5e-c79fd2331c1c.CGP.filtered.deNovo.vep.vcf.gz').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(1).contains('2882b453-28b8-4238-bf7a-c4e0ff015a28.multi.vqsr.filtered.denovo.vep_105.vcf.gz').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(2).contains('Study').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(2).contains('Kids First: Genomic Analysis of Congenital Diaphragmatic Hernia (KF-CDH)').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(3).contains('Format').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(3).contains(/^vcf$/).should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(3).find('[class*="ColorTag_default"]').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(4).contains('Size').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(4).contains('1.03 GB').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(4).contains('3.04 GB').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(5).contains('URL').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(5).contains('drs://data.kidsfirstdrc.org/10197804-54a3-441a-9a64-b42e47af17b7').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(5).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
     cy.get('[id="summary"]').find('[class="ant-descriptions-item-label"]').eq(6).contains('Hash').should('exist');
-    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(6).contains('-').should('exist');
+    cy.get('[id="summary"]').find('[class="ant-descriptions-item-content"]').eq(6).contains('03322135eecaa16253565aa8b2bed532-12').should('exist');
   });
 
   it('Panneau Data Access', () => {
@@ -71,7 +71,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[id="data-type"]').find('[class="ant-descriptions-item-label"]').eq(0).contains('Category').should('exist');
     cy.get('[id="data-type"]').find('[class="ant-descriptions-item-content"]').eq(0).contains('Genomics').should('exist');
     cy.get('[id="data-type"]').find('[class="ant-descriptions-item-label"]').eq(1).contains('Type').should('exist');
-    cy.get('[id="data-type"]').find('[class="ant-descriptions-item-content"]').eq(1).contains('Variant Calls').should('exist');
+    cy.get('[id="data-type"]').find('[class="ant-descriptions-item-content"]').eq(1).contains('Simple Nucleotide Variations').should('exist');
     cy.get('[id="data-type"]').find('[class="ant-descriptions-item-label"]').eq(2).contains('Harmonized Data').should('exist');
     cy.get('[id="data-type"]').find('[class="ant-descriptions-item-content"]').eq(2).contains('No').should('exist');
   });
@@ -81,7 +81,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.showColumn('Collection ID');
     cy.showColumn('External Participant ID');
     cy.get('[id="participant-sample"]').find('[class="ant-collapse-header"]').contains('(3)').should('exist');
-    cy.get('[id="participant-sample"]').find('[class="ant-collapse-header"]').contains('View in data exploration').should('exist');
+    cy.get('[id="participant-sample"]').find('[class="ant-collapse-header"]').contains('View in exploration').should('exist');
     cy.get('[id="participant-sample"]').find('[class="ant-collapse-header"]').find('svg[class="anticon"]').should('exist');
     cy.get('[id="participant-sample"]').find('thead').find('th[class="ant-table-cell"]').eq(0).contains('Participant ID').should('exist');
     cy.get('[id="participant-sample"]').find('thead').find('th[class="ant-table-cell"]').eq(1).contains('Study').should('exist');
@@ -97,7 +97,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(3).contains('BS_VMV9N2KK').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(4).contains('DNA').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(5).contains('-').should('exist');
-    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(6).contains('BS_VMV9N2KK_Leukocyte').should('exist');
+    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(6).contains('SA_3RKYWRX4').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(7).contains('667').should('exist');
   });
 
@@ -127,10 +127,10 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
   });
 
   it('Lien DataExploration du panneau Participants-Samples', () => {
-    cy.get('[id="participant-sample"] a[class*="EntityTableRedirectLink"]').click({force: true}); // data-cy="Participants_RedirectLink"
+    cy.get('[id="participant-sample"] [class="ant-collapse-header"] button').click({force: true}); // data-cy="Participants_RedirectLink"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 45BZQGS6').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
   });
 
   it('Lien Participant ID du panneau Participants-Samples', () => {

@@ -13,6 +13,7 @@ const getName = (url = '', parallel = '') => {
 };
 
 export default defineConfig({
+  projectId: '8q77r5',
   chromeWebSecurity: true,
   video: false,
   videoUploadOnPasses: false,

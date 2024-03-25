@@ -7,12 +7,12 @@
               "Participants",
               "Biospecimens",
               "Families"],
-  "content": ["KF-CHD",
-              "National Heart, Lung, and Blood Institute (NHLBI) Bench to Bassinet Program: The Gabriella Miller Kids First Pediatric Research Program of the Pediatric Cardiac Genetics Consortium (PCGC)",
+  "content": ["KF-CDH",
+              "Kids First: Genomic Analysis of Congenital Diaphragmatic Hernia",
               "Kids First",
-              "Birth Defect",
-              "phs001138",
-              "2966",
-              "2987",
-              "914"]
+              "BIRTHDEFECT",
+              "phs001110",
+              "2031",
+              "2121",
+              "678"]
 }

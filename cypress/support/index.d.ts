@@ -6,10 +6,14 @@ declare namespace Cypress {
     checkValueFacet(facetTitle: string, value: string): cy & CyEventEmitter;
     clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number): cy & CyEventEmitter;
     closePopup(): cy & CyEventEmitter;
+    createFilterIfNotExists(filterName: string): cy & CyEventEmitter;
+    deleteFilter(filterName: string): cy & CyEventEmitter;
+    deleteFilterIfExists(filterName: string): cy & CyEventEmitter;
     login(): cy & CyEventEmitter;
     logout(): cy & CyEventEmitter;
     removeFilesFromFolder(folder: string): cy & CyEventEmitter;
     resetColumns(table_id?: string): cy & CyEventEmitter;
+    saveFilterAs(filterName: string): cy & CyEventEmitter;
     showColumn(column: string|RegExp): cy & CyEventEmitter;
     sortTableAndIntercept(column: string|RegExp, nbCalls: number): cy & CyEventEmitter;
     sortTableAndWait(column: string): cy & CyEventEmitter;
@@ -21,8 +25,11 @@ declare namespace Cypress {
     validateFileContent(fixture: string, replacements?: Replacement[]): cy & CyEventEmitter;
     validateFileHeaders(fixture: string): cy & CyEventEmitter;
     validateFileName(namePattern: string): cy & CyEventEmitter;
+    validateFilterInManager(filterName: string, expect: string): cy & CyEventEmitter;
+    validateIconStates(iconName: string, isDisable: boolean, isDirty: boolean): cy & CyEventEmitter;
     validateOperatorSelectedQuery(expectedOperator: string): cy & CyEventEmitter;
     validatePillSelectedQuery(facetTitle: string|RegExp, values: (string|RegExp)[], eq: number = 0): cy & CyEventEmitter;
+    validateSelectedFilterInDropdown(filterName: string): cy & CyEventEmitter;
     validateTableFirstRow(expectedValue: string|RegExp, eq: number): cy & CyEventEmitter;
     validateTableResultsCount(expectedCount: string|RegExp, shouldExist: boolean = true): cy & CyEventEmitter;
     validateTotalSelectedQuery(expectedCount: string|RegExp): cy & CyEventEmitter;

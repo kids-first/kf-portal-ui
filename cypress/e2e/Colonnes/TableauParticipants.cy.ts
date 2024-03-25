@@ -58,7 +58,7 @@ describe('Page Data Exploration (Participants) - Colonnes du tableau', () => {
 
     cy.get('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(10)
-      .should('have.class', 'ant-table-column-has-sorters')
+      .should('not.have.class', 'ant-table-column-has-sorters')
       .contains('PedcBioPortal').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')

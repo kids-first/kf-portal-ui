@@ -16,12 +16,11 @@
               "Parent Sample ID",
               "Parent Sample Type"],
   "content": ["BS_KB0GZCP5",
-              "BS_KB0GZCP5_Leukocyte",
+              "SA_G25NX8A9",
               "DNA",
               "--",
               "Other",
               "phs001110.c1",
               "GRU",
-              "unavailable",
-              "BS_KB0GZCP5_Leukocyte"]
+              "unavailable"]
 }

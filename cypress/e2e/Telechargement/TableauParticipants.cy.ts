@@ -30,7 +30,7 @@ describe('Page Data Exploration (Participants) - Exporter les participants en TS
     cy.validateFileHeaders('ExportTableauParticipants.json');
   });
 
-  it('Valider le contenu du fichier [SKFP-809]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateFileContent('ExportTableauParticipants.json');
   });
 });

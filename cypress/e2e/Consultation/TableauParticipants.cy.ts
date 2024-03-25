@@ -40,7 +40,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(9).find('[class*="ant-tag-cyan"]').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(10).contains('-').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(11).contains(/^1$/).should('exist');
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(12).contains(/^7$/).should('exist');
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(12).contains(/^4$/).should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(13).contains('White').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(14).contains('Not Hispanic or Latino').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(15).contains('01-0665').should('exist');
@@ -100,7 +100,7 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
-    cy.validateTableResultsCount(/^7$/);
+    cy.validateTableResultsCount(/^4$/);
   });
 
   it('Lien Diagnosis (NCIT) du tableau', () => {
@@ -131,9 +131,9 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-CDH', 2);
+    cy.validateTableFirstRow('CBTN', 2);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('PBTA-PNOC', 2);
+    cy.validateTableFirstRow('KF-TALL', 2);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Proband', () => {
@@ -143,7 +143,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('True', 4);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Sex [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Sex', () => {
     cy.sortTableAndIntercept('Sex', 1);
     cy.validateTableFirstRow('Female', 5);
     cy.sortTableAndIntercept('Sex', 1);
@@ -164,25 +164,18 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('Trio+', 9);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri PedcBioPortal [SKFP-942]', () => {
-    cy.sortTableAndIntercept('PedcBioPortal', 1);
-    cy.validateTableFirstRow('-', 10);
-    cy.sortTableAndIntercept('PedcBioPortal', 1);
-    cy.validateTableFirstRow('PT_06Z51EN5', 10);
-  });
-
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/^0$/, 11);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow('17', 11);
+    cy.validateTableFirstRow('12', 11);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Files [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Files', () => {
     cy.sortTableAndIntercept('Files', 1);
     cy.validateTableFirstRow(/^0$/, 12);
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow('39', 12);
+    cy.validateTableFirstRow('214', 12);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Race [SKFP-773]', () => {
@@ -199,11 +192,11 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('Unknown', 14);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri External Participant ID [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri External Participant ID', () => {
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('BASIC3-1012594502', 15);
+    cy.validateTableFirstRow('0010a', 15);
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('PAWGRK_T_Mismatch', 15);
+    cy.validateTableFirstRow('XLMR-5076-3-2', 15);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Diagnosis (NCIT) [SKFP-773]', () => {
@@ -213,32 +206,18 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('NCIT:C9325', 16);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Vital Status [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Vital Status', () => {
     cy.sortTableAndIntercept('Vital Status', 1);
-    cy.validateTableFirstRow('Alive', 18);
+    cy.validateTableFirstRow('-', 18);
     cy.sortTableAndIntercept('Vital Status', 1);
     cy.validateTableFirstRow('Reported Unknown', 18);
-  });
-
-  it('Valider les fonctionnalités du tableau - Tri Not Observed Phenotype (HPO) [SKFP-942]', () => {
-    cy.sortTableAndIntercept('Not Observed Phenotype (HPO)', 1);
-    cy.validateTableFirstRow('-', 19);
-    cy.sortTableAndIntercept('Not Observed Phenotype (HPO)', 1);
-    cy.validateTableFirstRow('Webbed neck (HP:0000465)', 19);
-  });
-
-  it('Valider les fonctionnalités du tableau - Tri Observed Phenotype (Source Text) [SKFP-942]', () => {
-    cy.sortTableAndIntercept('Observed Phenotype (Source Text)', 1);
-    cy.validateTableFirstRow('-', 20);
-    cy.sortTableAndIntercept('Observed Phenotype (Source Text)', 1);
-    cy.validateTableFirstRow('Tetralogy of Fallot', 20);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple [SKFP-773]', () => {
     cy.sortTableAndIntercept('Sex', 1);
     cy.sortTableAndWait('Participant ID');
-    cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_ZZR4MJPH', 1);
+    cy.sortTableAndWait('Participant ID');
+    cy.validateTableFirstRow('PT_1QNE9NQ2', 1);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
