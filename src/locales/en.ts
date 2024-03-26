@@ -439,19 +439,18 @@ const en = {
   layout: {
     main: {
       menu: {
-        dashboard: 'Dashboard',
-        studies: 'Studies',
-        explore: 'Data Exploration',
-        variants: 'Variants',
-        participants: 'Participants',
         biospecimen: 'Biospecimen',
-        datafiles: 'Data Files',
-        website: 'Website',
-        documentation: 'Documentation',
-        forum: 'Forum',
-        help: 'Help',
         community: 'Community',
         contact: 'Contact',
+        dashboard: 'Dashboard',
+        datafiles: 'Data Files',
+        documentation: 'Documentation',
+        explore: 'Data Exploration',
+        help: 'Help',
+        participants: 'Participants',
+        studies: 'Studies',
+        variants: 'Variants',
+        website: 'Website',
       },
     },
     user: {

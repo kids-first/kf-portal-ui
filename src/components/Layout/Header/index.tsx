@@ -4,17 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   DownOutlined,
   FileSearchOutlined,
-  GlobalOutlined,
   HomeOutlined,
   LaptopOutlined,
   LogoutOutlined,
   MailOutlined,
-  MessageOutlined,
   ReadOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { useKeycloak } from '@react-keycloak/web';
 import { Dropdown, Menu, PageHeader, Space, Typography } from 'antd';
@@ -25,20 +22,26 @@ import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { AlterTypes } from 'common/types';
 import NotificationBanner from 'components/featureToggle/NotificationBanner';
+import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
-import styles from 'components/Layout/Header/index.module.scss';
 import GradientAccent from 'components/uiKit/GradientAccent';
 import { trackLogout, trackVisitResources } from 'services/analytics';
 import { usePersona } from 'store/persona';
 import { personaActions } from 'store/persona/slice';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { userActions } from 'store/user/slice';
 import { STATIC_ROUTES } from 'utils/routes';
 
+import styles from 'components/Layout/Header/index.module.scss';
+
+const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
+
+const { Text } = Typography;
 
 const Header = () => {
   const { personaUserInfo } = usePersona();
@@ -116,74 +119,67 @@ const Header = () => {
           <Dropdown
             key="resources"
             trigger={['click']}
-            overlay={
-              <Menu
-                onClick={({ key }) => trackVisitResources(key)}
-                items={[
-                  {
-                    key: 'website',
-                    disabled: false,
-                    label: (
-                      <Space size={8}>
-                        <GlobalOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="website"
-                          href="https://kidsfirstdrc.org/"
-                        >
-                          {intl.get('layout.main.menu.website')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                  {
-                    key: 'documentation',
-                    label: (
-                      <Space size={8}>
-                        <FileSearchOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="documentation"
-                          href="https://www.notion.so/d3b/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a"
-                        >
-                          {intl.get('layout.main.menu.documentation')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                  {
-                    key: 'forum',
-                    label: (
-                      <Space size={8}>
-                        <MessageOutlined className={styles.icon} />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="forum"
-                          href="https://forum.kidsfirstdrc.org/login"
-                        >
-                          {intl.get('layout.main.menu.forum')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                  {
-                    key: 'contact',
-                    label: (
-                      <Space size={8}>
-                        <MailOutlined />
-                        <ExternalLink
-                          className={styles.externalLink}
-                          key="contact"
-                          href="https://kidsfirstdrc.org/contact/"
-                        >
-                          {intl.get('layout.main.menu.contact')}
-                        </ExternalLink>
-                      </Space>
-                    ),
-                  },
-                ]}
-              />
-            }
+            overlayClassName={styles.dropdown}
+            menu={{
+              items: [
+                {
+                  key: 'website',
+                  disabled: false,
+                  label: (
+                    <a
+                      href="#"
+                      onClick={() => {
+                        trackVisitResources('website');
+                        window.open('https://kidsfirstdrc.org/', '_blank');
+                      }}
+                    >
+                      <ExternalLinkIcon {...iconSize} />
+                      <Text className={styles.linkText}>
+                        {intl.get('layout.main.menu.website')}
+                      </Text>
+                    </a>
+                  ),
+                },
+                {
+                  key: 'documentation',
+                  disabled: false,
+                  label: (
+                    <a
+                      href="#"
+                      onClick={() => {
+                        trackVisitResources('documentation');
+                        window.open('https://kidsfirstdrc.org/help-center/', '_blank');
+                      }}
+                    >
+                      <ExternalLinkIcon {...iconSize} />
+                      <Text className={styles.linkText}>
+                        {intl.get('layout.main.menu.documentation')}
+                      </Text>
+                    </a>
+                  ),
+                },
+                {
+                  type: 'divider',
+                },
+                {
+                  key: 'contact',
+                  label: (
+                    <a
+                      href="#"
+                      onClick={() => {
+                        trackVisitResources('contact');
+                        window.open(`mailto:${SUPPORT_EMAIL}`);
+                      }}
+                    >
+                      <MailOutlined />
+                      <Text className={styles.linkText}>
+                        {intl.get('layout.main.menu.contact')}
+                      </Text>
+                    </a>
+                  ),
+                },
+              ],
+            }}
           >
             <a
               className={cx(styles.resourcesMenuTrigger, styles.menuTrigger)}
