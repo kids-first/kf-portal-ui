@@ -58,15 +58,6 @@ export const dashboardCards: TSortableItems[] = [
     md: 12,
     xxl: 8,
     className: cx(styles.cardColxxl6, styles.cardColxxl5),
-    component: <Notebook id="5" className={styles.dashboardCard} />,
-  },
-
-  {
-    id: '6',
-    xs: 24,
-    md: 12,
-    xxl: 8,
-    className: cx(styles.cardColxxl6, styles.cardColxxl5),
     component: <CaringForChildrenWithCovid id="6" className={styles.dashboardCard} />,
   },
 ];
