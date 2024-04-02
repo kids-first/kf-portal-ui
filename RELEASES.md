@@ -1,8 +1,20 @@
+## VERSION 5.1.1 (2024-04-02)
+
+### Technical / Other changes
+- [SKFP-964](https://d3b.atlassian.net/browse/SKFP-964) Fix: (Authorized Studies) Various bugs
+- [SKFP-968](https://d3b.atlassian.net/browse/SKFP-968) Update: (UI) Update resources dropdown design
+- [SKFP-985](https://d3b.atlassian.net/browse/SKFP-985) Fix: (Variant Entity) Do not display NO_GENE
+- [SKFP-998](https://d3b.atlassian.net/browse/SKFP-998) Fix: (Studies) Add CBTN id to pedcbioportal map
+- [SKFP-1001](https://d3b.atlassian.net/browse/SKFP-1001) Fix: (Cavatica) Unauthorized file despite being connected to Fence and Cavatica
+- [SKFP-1002](https://d3b.atlassian.net/browse/SKFP-1002) Fix: (Dashboard) Mask the Variant Workbench widget
+
 ## VERSION 5.1.0 (2024-03-21)
+
 ### Features
 - [SKFP-900](https://d3b.atlassian.net/browse/SKFP-900) Implement Variant Entity V2 
 - [SKFP-965](https://d3b.atlassian.net/browse/SKFP-965) Add a search by Family ID to facets
-## Technical / Other changes
+
+### Technical / Other changes
 - [SKFP-924](https://d3b.atlassian.net/browse/SKFP-924) Fix: (Dashboard) Fixed various bugs related to the Authorized Studies widget
 - [SKFP-943](https://d3b.atlassian.net/browse/SKFP-943) Fix: (Data Exploration) Fixed missing values for Not Observed Phenotype and Observed Phenotype (Source text) in table
 - [SKFP-944](https://d3b.atlassian.net/browse/SKFP-944) Fix: (Report) Fixed the missing histological diagnoses values in the download sample data
