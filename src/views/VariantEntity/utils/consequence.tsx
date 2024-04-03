@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import intl from 'react-intl-universal';
-
+import { CheckCircleFilled } from '@ant-design/icons';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import { pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
@@ -10,15 +10,13 @@ import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import {
+  getLongPredictionLabelIfKnown,
   INDEX_IMPACT_PREDICTION_FIELD,
   INDEX_IMPACT_PREDICTION_SHORT_LABEL,
   INDEX_IMPACT_SCORE,
-  getLongPredictionLabelIfKnown,
 } from '@ferlab/ui/core/pages/EntityPage/utils/consequences';
 import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
-
-import { CheckCircleFilled } from '@ant-design/icons';
 import { Space, Table, Tag, Tooltip, Typography } from 'antd';
 import { ColumnType } from 'antd/lib/table';
 import {
@@ -28,6 +26,7 @@ import {
   IPredictionEntity,
 } from 'graphql/variants/models';
 import { capitalize } from 'lodash';
+
 import { getEntityConsequenceDictionary } from 'utils/translation';
 
 import style from '../index.module.scss';
@@ -82,13 +81,11 @@ export const getColumn = (geneSymbolOfPicked?: string): ProColumnType[] => [
       spliceAi?.ds ? (
         <>
           <span className={style.spliceAi}>{spliceAi.ds}</span>
-          {spliceAi.type.map((t: string, index: number) => {
-            return (
-              <Tooltip title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}>
-                <Tag key={index}>{t}</Tag>
-              </Tooltip>
-            );
-          })}
+          {spliceAi.type.map((t: string, index: number) => (
+            <Tooltip title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}>
+              <Tag key={index}>{t}</Tag>
+            </Tooltip>
+          ))}
         </>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
@@ -159,7 +156,7 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
   {
     key: 'predictions',
     dataIndex: 'predictions',
-    title: intl.get('screen.variants.consequences.predictions.prediction'),
+    title: intl.get('screen.variants.consequences.predictions.predictions'),
     render: (predictions: IPredictionEntity) => {
       const impact = getPredictionScore(predictions, getEntityConsequenceDictionary().predictions);
       if (!impact?.length) return TABLE_EMPTY_PLACE_HOLDER;
@@ -265,14 +262,12 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
   },
 ];
 
-export const expandedRowRender = (row: IGeneEntity): ReactNode => {
-  return (
-    <Table
-      className={style.expandedTable}
-      columns={getExpandedColumns()}
-      dataSource={hydrateResults(row.consequences?.hits?.edges || [])}
-      pagination={false}
-      bordered
-    />
-  );
-};
+export const expandedRowRender = (row: IGeneEntity): ReactNode => (
+  <Table
+    className={style.expandedTable}
+    columns={getExpandedColumns()}
+    dataSource={hydrateResults(row.consequences?.hits?.edges || [])}
+    pagination={false}
+    bordered
+  />
+);
