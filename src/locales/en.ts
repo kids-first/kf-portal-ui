@@ -119,6 +119,7 @@ const en = {
       genericError: 'An error occured',
     },
     proTable: {
+      result: 'Result',
       results: 'Results',
       noResults: 'No Results',
       of: 'of',
@@ -733,6 +734,8 @@ const en = {
     },
     community: {
       title: 'Kids First Community',
+      result: 'Member',
+      results: 'Members',
       resultsMember: 'Members',
       noResults: 'No members',
       search: {
