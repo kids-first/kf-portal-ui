@@ -59,8 +59,9 @@ export const getProTableDictionary = (): IProTableDictionary => ({
     of: intl.get('global.proTable.of'),
     selected: intl.get('global.proTable.selected'),
     selectedPlural: intl.get('global.proTable.selectedPlural'),
-    selectAllResults: 'Select all results',
-    clear: 'Clear',
+    selectAllResults: intl.get('global.proTable.selectAll'),
+    clear: intl.get('global.proTable.clear'),
+    clearFilters: intl.get('global.proTable.clearFilters'),
   },
   pagination: {
     first: intl.get('global.proTable.pagination.first'),

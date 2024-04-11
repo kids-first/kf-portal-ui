@@ -106,7 +106,10 @@ const Cavatica = ({ id, className = '' }: DashboardCardProps) => {
         error: {
           fetch: {
             title: intl.get('screen.dashboard.cards.error.title'),
-            subtitle: intl.get('screen.dashboard.cards.error.subtitle'),
+            disconnect: {
+              start: intl.get('screen.dashboard.cards.error.disconnect.start'),
+              end: intl.get('screen.dashboard.cards.error.disconnect.end'),
+            },
           },
           email: SUPPORT_EMAIL,
           contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
