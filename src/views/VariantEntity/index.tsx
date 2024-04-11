@@ -83,7 +83,7 @@ export default function VariantEntity() {
       loading={loading}
       emptyText={intl.get('no.data.available')}
     >
-      <>
+      <div className={styles.contentWrapper}>
         <EntityTitle
           text={data?.hgvsg}
           icon={<LineStyleIcon className={styles.titleIcon} />}
@@ -167,7 +167,7 @@ export default function VariantEntity() {
           data={makeGenesOrderedRow(data?.genes)}
           columns={getGenePhenotypeColumns()}
         />
-      </>
+      </div>
     </EntityPageWrapper>
   );
 }

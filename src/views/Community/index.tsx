@@ -115,6 +115,7 @@ const CommunityPage = () => {
               selectAllResults: '',
               selected: '',
               selectedPlural: '',
+              clearFilters: '',
             },
             numberFormat: numberWithCommas,
           }}

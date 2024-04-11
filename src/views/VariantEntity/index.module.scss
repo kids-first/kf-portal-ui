@@ -22,7 +22,7 @@
   font-size: 20px;
   line-height: 28px;
   padding-right: 8px;
-  color: $gray-8;
+  color: $gray-8 !important;
 }
 
 .ensemblLink {
@@ -100,6 +100,7 @@
 
 .pickedIcon {
   padding-left: 8px;
+  color: $cyan-7;
 }
 
 .functionalScores {
@@ -124,5 +125,11 @@
     table > tbody > tr > td {
       background-color: $gray-1;
     }
+  }
+}
+
+.contentWrapper {
+  :global(.ant-table-tbody > tr:nth-child(even):not(.ant-table-row-selected) td) {
+    background-color: $gray-1;
   }
 }

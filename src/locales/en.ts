@@ -119,18 +119,21 @@ const en = {
       genericError: 'An error occured',
     },
     proTable: {
-      result: 'Result',
-      results: 'Results',
+      clear: 'Clear',
+      clearFilters: 'Clear filters',
       noResults: 'No Results',
       of: 'of',
-      selected: 'item selected',
-      selectedPlural: 'items selected',
       pagination: {
         first: 'First',
         previous: 'Prev.',
         next: 'Next',
         view: '{value} / view',
       },
+      result: 'Result',
+      results: 'Results',
+      selectAll: 'Select all results',
+      selected: 'item selected',
+      selectedPlural: 'items selected',
     },
   },
   maintenance: {
@@ -588,6 +591,10 @@ const en = {
       cards: {
         error: {
           title: 'Connection error',
+          disconnect: {
+            start: 'We are currently unable to connect to this service. Please refresh the page or',
+            end: 'your account and try again. If the problem persists, please',
+          },
           subtitle:
             'We are currently unable to connect to this service. Please refresh the page and try again. If the problem persists, please',
           contactSupport: 'contact support',

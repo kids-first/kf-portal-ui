@@ -80,6 +80,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
         title: intl.get('screen.dashboard.cards.authorizedStudies.title', {
           count: authorizedStudies.studies.length,
         }),
+        disconnect: intl.get('screen.dashboard.cards.cavatica.disconnect'),
         connectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice'),
         manageConnections: intl.get('screen.dashboard.cards.authorizedStudies.manageConnections'),
         noAvailableStudies: intl.get('screen.dashboard.cards.authorizedStudies.noAvailableStudies'),
@@ -95,7 +96,10 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
         },
         error: {
           title: intl.get('screen.dashboard.cards.error.title'),
-          subtitle: intl.get('screen.dashboard.cards.error.subtitle'),
+          disconnect: {
+            start: intl.get('screen.dashboard.cards.error.disconnect.start'),
+            end: intl.get('screen.dashboard.cards.error.disconnect.end'),
+          },
           email: SUPPORT_EMAIL,
           contactSupport: intl.get('screen.dashboard.cards.error.contactSupport'),
         },
