@@ -2,7 +2,7 @@ import intl from 'react-intl-universal';
 import { Link } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
-import { pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
+import { NO_GENE, pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import CanonicalIcon from '@ferlab/ui/core/components/Icons/CanonicalIcon';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -144,27 +144,38 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
       {
         label: (
           <>
-            <ExternalLink
-              className={style.symbolLink}
-              href={
-                geneWithPickedConsequence.omim_gene_id
-                  ? `https://omim.org/entry/${geneWithPickedConsequence.omim_gene_id}`
-                  : `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
-              }
-            >
-              <Text>{geneWithPickedConsequence.symbol}</Text>
-            </ExternalLink>
-            (
-            <ExternalLink
-              className={style.ensemblLink}
-              href={`https://www.ensembl.org/id/${pickedConsequence.node.ensembl_transcript_id}`}
-            >
-              {intl.get('screen.variants.summary.ensembl')}
-            </ExternalLink>
-            )
+            {geneWithPickedConsequence.symbol === NO_GENE ? (
+              <Text className={style.noGene}>{intl.get('entities.variant.no_gene')}</Text>
+            ) : (
+              <ExternalLink
+                className={style.symbolLink}
+                href={
+                  geneWithPickedConsequence.omim_gene_id
+                    ? `https://omim.org/entry/${geneWithPickedConsequence.omim_gene_id}`
+                    : `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
+                }
+              >
+                <Text>{geneWithPickedConsequence.symbol}</Text>
+              </ExternalLink>
+            )}
+            {pickedConsequence.node.ensembl_transcript_id && (
+              <Text type="secondary">
+                (
+                <ExternalLink
+                  className={style.ensemblLink}
+                  href={`https://www.ensembl.org/id/${pickedConsequence.node.ensembl_transcript_id}`}
+                >
+                  {intl.get('screen.variants.summary.ensembl')}
+                </ExternalLink>
+                )
+              </Text>
+            )}
           </>
         ),
-        value: pickedConsequence.node.aa_change || TABLE_EMPTY_PLACE_HOLDER,
+        value:
+          geneWithPickedConsequence.symbol !== NO_GENE
+            ? pickedConsequence.node.aa_change || TABLE_EMPTY_PLACE_HOLDER
+            : '',
       },
       {
         label: intl.get('screen.variants.summary.consequence'),
