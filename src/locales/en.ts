@@ -1787,6 +1787,7 @@ const en = {
           sequence_alteration: 'Sequence Alteration',
         },
       },
+      no_gene: 'No gene',
     },
   },
 };
