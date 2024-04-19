@@ -90,7 +90,7 @@ const DataTypeGraphCard = () => {
       content={
         <>
           {isEmpty(dataTypeResults) ? (
-            <Empty imageType="grid" size="large" />
+            <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
               data={dataTypeResults}
