@@ -178,7 +178,7 @@ const DemographicsGraphCard = () => {
         <Row gutter={[12, 24]} className={styles.graphRowWrapper}>
           <Col sm={12} md={12} lg={6}>
             {isEmpty(sexData) ? (
-              <Empty imageType="grid" />
+              <Empty imageType="grid" noPadding />
             ) : (
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.sexTitle')}
@@ -191,7 +191,7 @@ const DemographicsGraphCard = () => {
           </Col>
           <Col sm={12} md={12} lg={6}>
             {isEmpty(ethnicityData) ? (
-              <Empty imageType="grid" />
+              <Empty imageType="grid" noPadding />
             ) : (
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
@@ -204,7 +204,7 @@ const DemographicsGraphCard = () => {
           </Col>
           <Col sm={12} md={12} lg={6}>
             {isEmpty(raceData) ? (
-              <Empty imageType="grid" />
+              <Empty imageType="grid" noPadding />
             ) : (
               <PieChart
                 title={intl.get('screen.dataExploration.tabs.summary.demographic.raceTitle')}
@@ -217,7 +217,7 @@ const DemographicsGraphCard = () => {
           </Col>
           <Col sm={12} md={12} lg={6}>
             {isEmpty(familyData) ? (
-              <Empty imageType="grid" />
+              <Empty imageType="grid" noPadding />
             ) : (
               <PieChart
                 title={intl.get(

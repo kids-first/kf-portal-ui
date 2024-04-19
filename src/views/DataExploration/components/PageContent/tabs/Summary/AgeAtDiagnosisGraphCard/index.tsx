@@ -156,7 +156,7 @@ const AgeAtDiagnosisGraphCard = () => {
       content={
         <>
           {isEmpty(ageAtDiagnosisresults) ? (
-            <Empty imageType="grid" size="large" />
+            <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
               data={ageAtDiagnosisresults}

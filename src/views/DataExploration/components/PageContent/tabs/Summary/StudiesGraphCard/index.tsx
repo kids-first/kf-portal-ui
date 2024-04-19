@@ -90,7 +90,7 @@ const StudiesGraphCard = () => {
         <Row className={styles.graphRowWrapper}>
           <Col md={24}>
             {isEmpty(data) ? (
-              <Empty imageType="grid" />
+              <Empty imageType="grid" size="large" noPadding />
             ) : (
               <PieChart
                 data={data}
