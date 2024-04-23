@@ -405,9 +405,6 @@ const getDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.phenotypes_hpo_not_observed'),
     dataIndex: 'phenotype',
     defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_not_observed);
 
@@ -419,9 +416,6 @@ const getDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.source_text_phenotype'),
     dataIndex: 'phenotype',
     defaultHidden: true,
-    sorter: {
-      multiple: 1,
-    },
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.source_text);
       const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
