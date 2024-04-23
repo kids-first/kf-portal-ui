@@ -221,9 +221,6 @@ const getDefaultColumns = (): ProColumnType[] => [
   {
     key: 'pedcbioportal',
     title: intl.get('entities.participant.pedcBioPortal'),
-    sorter: {
-      multiple: 1,
-    },
     render: (record: ITableParticipantEntity) => {
       const studyId = mapStudyToPedcBioportal(record.study?.study_code);
 
