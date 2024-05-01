@@ -12,6 +12,7 @@ import {
   fetchCavaticaAuthentificationStatus,
   fetchCavaticaBillingGroups,
   fetchCavaticaProjects,
+  startBulkImportJob,
 } from './thunks';
 import { InitialState } from './type';
 
@@ -140,6 +141,16 @@ const passportSlice = createSlice({
       } else {
         state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.generic_error;
       }
+    });
+    // Importing to Cavatica
+    builder.addCase(startBulkImportJob.pending, (state) => {
+      state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.pending_copy;
+    });
+    builder.addCase(startBulkImportJob.fulfilled, (state) => {
+      state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.copied;
+    });
+    builder.addCase(startBulkImportJob.rejected, (state) => {
+      state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.generic_error;
     });
   },
 });
