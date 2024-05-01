@@ -93,12 +93,11 @@ const PageContent = ({ defaultColumns = [] }: OwnProps) => {
   });
 
   useEffect(() => {
-    setQueryConfig({
-      ...queryConfig,
+    setQueryConfig((prevQueryConfig) => ({
+      ...prevQueryConfig,
       pageIndex: DEFAULT_PAGE_INDEX,
-    });
-    // eslint-disable-next-line
-  }, [JSON.stringify(activeQuery)]);
+    }));
+  }, [queryConfig.pageIndex]);
 
   const searchPrescription = (value: any) => {
     if (value?.target?.value) {
