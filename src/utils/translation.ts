@@ -462,12 +462,10 @@ export const getFacetsDictionary = () => ({
 });
 
 export const getResizableGridDictionary = () => ({
-  download: {
-    fileNameTemplate: intl.get('screen.dataExploration.tabs.summary.download.fileNameTemplate'),
-    fileNameDateFormat: intl.get('screen.dataExploration.tabs.summary.download.fileNameDateFormat'),
-    download: intl.get('screen.dataExploration.tabs.summary.download.download'),
-    data: intl.get('screen.dataExploration.tabs.summary.download.data'),
-    svg: intl.get('screen.dataExploration.tabs.summary.download.svg'),
-    png: intl.get('screen.dataExploration.tabs.summary.download.png'),
-  },
+  fileNameTemplate: intl.get('screen.dataExploration.tabs.summary.download.fileNameTemplate'),
+  fileNameDateFormat: intl.get('screen.dataExploration.tabs.summary.download.fileNameDateFormat'),
+  download: intl.get('screen.dataExploration.tabs.summary.download.download'),
+  data: intl.get('screen.dataExploration.tabs.summary.download.data'),
+  svg: intl.get('screen.dataExploration.tabs.summary.download.svg'),
+  png: intl.get('screen.dataExploration.tabs.summary.download.png'),
 });
