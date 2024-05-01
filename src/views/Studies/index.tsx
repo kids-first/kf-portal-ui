@@ -18,8 +18,7 @@ import { numberWithCommas } from 'utils/string';
 
 import PageContent from './components/PageContent';
 import SideBarFacet from './components/SideBarFacet';
-import StudySearch from './components/StudySearch';
-import { SCROLL_WRAPPER_ID, STUDIES_REPO_QB_ID } from './utils/constant';
+import { SCROLL_WRAPPER_ID } from './utils/constant';
 
 import styles from './index.module.scss';
 
@@ -36,7 +35,6 @@ const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
   dataCategory && dataCategory.includes(`${category}s`) ? <CheckOutlined /> : undefined;
 
 const filterInfo: FilterInfo = {
-  customSearches: [<StudySearch key={1} queryBuilderId={STUDIES_REPO_QB_ID} />],
   defaultOpenFacets: ['program', 'domain', 'data_category', 'experimental_strategy', 'family_data'],
   groups: [
     {

@@ -1096,6 +1096,10 @@ const en = {
     studies: {
       title: 'Studies',
       search: 'Search Studies',
+      searchLabel: {
+        title: 'Search by study code, study name, dbGaP',
+        placeholder: 'KF-AIS, Kids First: Genomics of Orthopaedic Disease Program, phs001410',
+      },
     },
     dataExploration: {
       title: 'Data Exploration',
