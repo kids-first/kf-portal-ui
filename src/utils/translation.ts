@@ -164,11 +164,13 @@ export const getQueryBuilderDictionary = (
       newQueryBuilder: intl.get('components.querybuilder.header.tooltips.newQueryBuilder'),
       save: intl.get('components.querybuilder.header.tooltips.save'),
       saveChanges: intl.get('components.querybuilder.header.tooltips.saveChanges'),
+      saveDisabled: intl.get('components.querybuilder.header.tooltips.saveDisabled'),
       delete: intl.get('components.querybuilder.header.tooltips.delete'),
       duplicateQueryBuilder: intl.get(
         'components.querybuilder.header.tooltips.duplicateQueryBuilder',
       ),
       share: intl.get('components.querybuilder.header.tooltips.share'),
+      shareDisabled: intl.get('components.querybuilder.header.tooltips.shareDisabled'),
       setAsDefaultFilter: intl.get('components.querybuilder.header.tooltips.setAsDefaultFilter'),
       unsetDefaultFilter: intl.get('components.querybuilder.header.tooltips.unsetDefaultFilter'),
       undoChanges: intl.get('components.querybuilder.header.tooltips.undoChanges'),
