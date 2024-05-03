@@ -2,7 +2,7 @@ import intl from 'react-intl-universal';
 import { useNavigate } from 'react-router';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { EntityTableMultiple, EntityTableRedirectLink } from '@ferlab/ui/core/pages/EntityPage';
+import { EntityTableMultiple } from '@ferlab/ui/core/pages/EntityPage';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { useDataFileAgg } from 'graphql/participants/actions';
