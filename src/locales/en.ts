@@ -27,7 +27,7 @@ const en = {
     days: '{days, plural, =0 {} =1 {day} other {days}}',
   },
   global: {
-    viewInDataExploration: 'View in data exploration',
+    viewInExploration: 'View in exploration',
     yes: 'Yes',
     no: 'No',
     connect: 'Connect',

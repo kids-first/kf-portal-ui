@@ -1,9 +1,11 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import ExternalLinkIcon from '@ferlab/ui/core/components/ExternalLink/ExternalLinkIcon';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { EntityTable, EntityTableRedirectLink } from '@ferlab/ui/core/pages/EntityPage';
+import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
+import { Button } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -19,12 +21,15 @@ import { updateUserConfig } from 'store/user/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
+import styles from './index.module.scss';
+
 interface OwnProps {
   file?: IFileEntity;
   loading: boolean;
 }
 
 const BiospecimenTable = ({ file, loading }: OwnProps) => {
+  const navigate = useNavigate();
   const { userInfo } = useUser();
   const dispatch = useDispatch();
 
@@ -50,10 +55,10 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
       total={biospecimens.length}
       title={intl.get('entities.file.participant_sample.title')}
       titleExtra={[
-        <EntityTableRedirectLink
-          key="1"
-          to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
-          onClick={() =>
+        <Button
+          className={styles.viewInExplo}
+          size="small"
+          onClick={() => {
             addQuery({
               queryBuilderId: DATA_EXPLORATION_QB_ID,
               query: generateQuery({
@@ -66,12 +71,13 @@ const BiospecimenTable = ({ file, loading }: OwnProps) => {
                 ],
               }),
               setAsActive: true,
-            })
-          }
-          icon={<ExternalLinkIcon width="14px" />}
+            });
+            navigate(STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS);
+          }}
         >
-          {intl.get('global.viewInDataExploration')}
-        </EntityTableRedirectLink>,
+          {intl.get('global.viewInExploration')}
+          <ExternalLinkIcon />
+        </Button>,
       ]}
       header={intl.get('entities.file.participant_sample.title')}
       columns={biospecimenDefaultColumns}

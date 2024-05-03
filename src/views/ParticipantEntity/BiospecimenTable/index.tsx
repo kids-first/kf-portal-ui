@@ -1,8 +1,10 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { EntityTable, EntityTableRedirectLink } from '@ferlab/ui/core/pages/EntityPage';
+import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
+import { Button } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -20,12 +22,15 @@ import {
   getBiospecimensFromParticipant,
 } from '../utils/biospecimens';
 
+import styles from '../index.module.scss';
+
 interface OwnProps {
   participant?: IParticipantEntity;
   loading: boolean;
 }
 
 const BiospecimenTable = ({ participant, loading }: OwnProps) => {
+  const navigate = useNavigate();
   const { userInfo } = useUser();
   const dispatch = useDispatch();
 
@@ -52,11 +57,10 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
       data={biospecimens}
       title={intl.get('entities.biospecimen.biospecimen')}
       titleExtra={[
-        <EntityTableRedirectLink
-          key="1"
-          to={STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}
-          icon={<ExternalLinkIcon width={14} />}
-          onClick={() =>
+        <Button
+          className={styles.viewInExplo}
+          size="small"
+          onClick={() => {
             addQuery({
               queryBuilderId: DATA_EXPLORATION_QB_ID,
               query: generateQuery({
@@ -69,11 +73,13 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
                 ],
               }),
               setAsActive: true,
-            })
-          }
+            });
+            navigate(STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS);
+          }}
         >
-          {intl.get('global.viewInDataExploration')}
-        </EntityTableRedirectLink>,
+          {intl.get('global.viewInExploration')}
+          <ExternalLinkIcon />
+        </Button>,
       ]}
       total={total}
       header={intl.get('entities.biospecimen.biospecimen')}
