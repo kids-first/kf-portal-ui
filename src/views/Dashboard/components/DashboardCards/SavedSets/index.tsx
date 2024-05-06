@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import intl from 'react-intl-universal';
+import { Link } from 'react-router-dom';
 import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -20,7 +21,6 @@ import { STATIC_ROUTES } from 'utils/routes';
 import ListItem from './ListItem';
 
 import styles from './index.module.scss';
-import { Link } from 'react-router-dom';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
