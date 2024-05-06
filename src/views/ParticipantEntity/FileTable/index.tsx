@@ -60,9 +60,8 @@ const FileTable = ({ participant, loading: participantLoading }: IFilesTableProp
         title={intl.get('entities.file.file')}
         titleExtra={[
           <Button
-            // className={styles.viewInExplo}
+            className={styles.viewInExplo}
             size="small"
-            ghost
             onClick={() => {
               addQuery({
                 queryBuilderId: DATA_EXPLORATION_QB_ID,
