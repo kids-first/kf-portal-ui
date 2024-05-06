@@ -1,7 +1,6 @@
 import intl from 'react-intl-universal';
 import { FileSearchOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { List, Tabs, Typography } from 'antd';
 import cx from 'classnames';
@@ -42,14 +41,12 @@ const SavedFilterListWrapper = ({
     locale={{
       emptyText: fetchingError ? (
         <CardErrorPlaceholder
-          title="Failed to Fetch Saved Filters"
+          title={intl.get('screen.dashboard.cards.savedFilters.errorCard.failedToFetch')}
           subTitle={
             <Text>
-              Please refresh and try again or
-              <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
-                <Text>contact our support</Text>
-              </ExternalLink>
-              .
+              {intl.getHTML('screen.dashboard.cards.savedFilters.errorCard.message', {
+                href: `mailto:${SUPPORT_EMAIL}`,
+              })}
             </Text>
           }
         />

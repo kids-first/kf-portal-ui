@@ -2,7 +2,6 @@ import { ReactElement } from 'react';
 import intl from 'react-intl-universal';
 import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { List, Tabs, Typography } from 'antd';
 import cx from 'classnames';
@@ -42,11 +41,9 @@ const getItemList = (
           title={intl.get('screen.dashboard.cards.savedSets.errorCard.failedToFetch')}
           subTitle={
             <Text>
-              {intl.get('screen.dashboard.cards.savedSets.errorCard.refresh')}{' '}
-              <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
-                <Text>{intl.get('screen.dashboard.cards.savedSets.errorCard.contactSupport')}</Text>
-              </ExternalLink>
-              .
+              {intl.getHTML('screen.dashboard.cards.savedFilters.errorCard.message', {
+                href: `mailto:${SUPPORT_EMAIL}`,
+              })}
             </Text>
           }
         />
