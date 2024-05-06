@@ -17,6 +17,7 @@ import { STATIC_ROUTES } from 'utils/routes';
 import SavedFiltersListItem from './ListItem';
 
 import styles from './index.module.scss';
+import { Link } from 'react-router-dom';
 
 const { Text } = Typography;
 const { TabPane } = Tabs;
@@ -53,10 +54,20 @@ const SavedFilterListWrapper = ({
       ) : (
         <Empty
           imageType="grid"
-          description={intl.getHTML('screen.dashboard.cards.savedFilters.noSavedFilters', {
-            dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
-            variantsHref: STATIC_ROUTES.VARIANTS,
-          })}
+          // @ts-ignore cuz the type description is a string
+          description={
+            <Text>
+              {intl.get('screen.dashboard.cards.savedFilters.noSavedFilters')}
+              <Link to={`${STATIC_ROUTES.DATA_EXPLORATION}`}>
+                {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
+              </Link>
+              {intl.get('screen.dashboard.cards.infoPopover.and')}
+              <Link to={`${STATIC_ROUTES.VARIANTS}`}>
+                {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
+              </Link>
+              {intl.get('screen.dashboard.cards.infoPopover.pages')}
+            </Text>
+          }
           noPadding
         />
       ),
@@ -84,10 +95,15 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
             title: intl.get('screen.dashboard.cards.savedFilters.infoPopover.title'),
             content: (
               <Text>
-                {intl.getHTML('screen.dashboard.cards.savedFilters.infoPopover.content', {
-                  dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
-                  variantsHref: STATIC_ROUTES.VARIANTS,
-                })}
+                {intl.get('screen.dashboard.cards.savedFilters.infoPopover.content')}
+                <Link to={`${STATIC_ROUTES.DATA_EXPLORATION}`}>
+                  {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
+                </Link>
+                {intl.get('screen.dashboard.cards.infoPopover.and')}
+                <Link to={`${STATIC_ROUTES.VARIANTS}`}>
+                  {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
+                </Link>
+                {intl.get('screen.dashboard.cards.infoPopover.pages')}
               </Text>
             ),
           }}

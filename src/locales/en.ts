@@ -591,6 +591,12 @@ const en = {
         variantSearch: 'Variant Search',
       },
       cards: {
+        infoPopover: {
+          and: ' and ',
+          variantsLink: 'Variants Exploration',
+          dataExploLink: 'Data Exploration',
+          pages: ' pages.',
+        },
         error: {
           title: 'Connection error',
           disconnect: {
@@ -671,12 +677,11 @@ const en = {
           },
           title: 'Saved Filters',
           noSavedFilters:
-            'A saved filter is a virtual query created by applying one or more filters to a data set. Save your first filter from the query builder at the top of the <a href="{dataExploHref}" style="text-decoration: underline;">Data Exploration</a> and <a href="{variantsHref}" style="text-decoration: underline;">Variants Exploration</a> pages.',
+            'A saved filter is a virtual query created by applying one or more filters to a data set. Save your first filter from the query builder at the top of the ',
           lastSaved: 'Last saved: {date} ago',
           infoPopover: {
             content:
-              'A saved filter is a virtual query created by applying one or more filters to a data set. They can be saved and revisited for later use. You can create and manage saved filters from the query builder at the top of the <a href="{dataExploHref}" style="text-decoration: underline;">Data Exploration</a> and <a href="{variantsHref}" style="text-decoration: underline;">Variants Exploration</a> pages.',
-
+              'A saved filter is a virtual query created by applying one or more filters to a data set. They can be saved and revisited for later use. You can create and manage saved filters from the query builder at the top of the ',
             title: 'Managing Saved Filters',
           },
         },
@@ -694,11 +699,11 @@ const en = {
           },
           title: 'Saved Sets',
           noSavedSets:
-            'A saved set is a collection of one or more entity IDs which can be saved and revisited for later use. Save your first set at the top of the table of results in the <a href="{dataExploHref}" style="text-decoration: underline;">Data Exploration</a> and <a href="{variantsHref}" style="text-decoration: underline;">Variants Exploration</a> pages.',
+            'A saved set is a collection of one or more entity IDs which can be saved and revisited for later use. Save your first set at the top of the table of results in the ',
           lastSaved: 'Last saved: {date} ago',
           infoPopover: {
             content:
-              'A saved set is a collection of one or more entity IDs which can be saved and revisited for later use. You can create saved sets at the top of the table of results in the <a href="{dataExploHref}" style="text-decoration: underline;">Data Exploration</a> and <a href="{variantsHref}" style="text-decoration: underline;">Variants Exploration</a> pages.',
+              'A saved set is a collection of one or more entity IDs which can be saved and revisited for later use. You can create saved sets at the top of the table of results in the ',
             title: 'Managing Saved Sets',
           },
         },
