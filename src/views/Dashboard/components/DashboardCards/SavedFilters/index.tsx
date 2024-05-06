@@ -1,7 +1,6 @@
 import intl from 'react-intl-universal';
 import { FileSearchOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { List, Tabs, Typography } from 'antd';
 import cx from 'classnames';
@@ -45,13 +44,9 @@ const SavedFilterListWrapper = ({
           title={intl.get('screen.dashboard.cards.savedFilters.errorCard.failedToFetch')}
           subTitle={
             <Text>
-              {intl.get('screen.dashboard.cards.savedFilters.errorCard.refresh')}{' '}
-              <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
-                <Text>
-                  {intl.get('screen.dashboard.cards.savedFilters.errorCard.contactSupport')}
-                </Text>
-              </ExternalLink>
-              .
+              {intl.getHTML('screen.dashboard.cards.savedFilters.errorCard.message', {
+                href: `mailto:${SUPPORT_EMAIL}`,
+              })}
             </Text>
           }
         />

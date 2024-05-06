@@ -665,9 +665,9 @@ const en = {
         },
         savedFilters: {
           errorCard: {
-            contactSupport: 'contact our support',
-            failedToFetch: 'Failed to fetch Saved Filters',
-            refresh: 'Please refresh and try again or',
+            failedToFetch: 'Failed to Fetch Saved Filters',
+            message:
+              'Please refresh and try again or <a href="{href}" style="color:inherit;text-decoration: underline;">contact our support</a>.',
           },
           title: 'Saved Filters',
           noSavedFilters:
@@ -682,9 +682,9 @@ const en = {
         },
         savedSets: {
           errorCard: {
-            contactSupport: 'contact our support',
             failedToFetch: 'Failed to fetch Saved Sets',
-            refresh: 'Please refresh and try again or',
+            message:
+              'Please refresh and try again or <a href="{href}" style="color:inherit;text-decoration: underline;">contact our support</a>.',
           },
           tabs: {
             biospecimens: 'Biospecimens',
