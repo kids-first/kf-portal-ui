@@ -298,7 +298,7 @@ const en = {
           newQueryBuilder: 'New filter',
           save: 'Save filter',
           saveChanges: 'Save changes',
-          saveDisabled: 'Add new query to save',
+          saveDisabled: 'Add a query to save',
           delete: 'Delete',
           duplicateQueryBuilder: 'Duplicate filter',
           share: 'Share (Copy url)',
@@ -1173,6 +1173,8 @@ const en = {
             dataCategoryTitle: 'Participants by Data Category',
             dataTypeTitle: 'Participants by Data Type',
             studiesTitle: 'Participants by Study',
+            mostFrequentPhenotypes: 'Most Frequent Phenotypes (HPO)',
+            mostFrequentDiagnoses: 'Most Frequent Diagnoses (MONDO)',
           },
           observed_phenotype: {
             cardTitle: 'Observed Phenotypes (HPO)',
@@ -1203,6 +1205,16 @@ const en = {
           },
           studies: {
             cardTitle: 'Studies',
+          },
+          mostFrequentDiagnoses: {
+            cardTitle: 'Most Frequent Diagnoses (MONDO)',
+            legendAxisLeft: 'Diagnoses (MONDO)',
+            legendAxisBottom: '# of participants',
+          },
+          mostFrequentPhenotypes: {
+            cardTitle: 'Most Frequent Phenotypes (HPO)',
+            legendAxisLeft: 'Phenotypes (HPO)',
+            legendAxisBottom: '# of participants',
           },
         },
         participants: {
