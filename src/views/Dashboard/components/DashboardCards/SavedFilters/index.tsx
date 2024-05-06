@@ -54,15 +54,14 @@ const SavedFilterListWrapper = ({
       ) : (
         <Empty
           imageType="grid"
-          // @ts-ignore cuz the type description is a string
           description={
             <Text>
               {intl.get('screen.dashboard.cards.savedFilters.noSavedFilters')}
-              <Link to={`${STATIC_ROUTES.DATA_EXPLORATION}`}>
+              <Link to={STATIC_ROUTES.DATA_EXPLORATION}>
                 {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
               </Link>
               {intl.get('screen.dashboard.cards.infoPopover.and')}
-              <Link to={`${STATIC_ROUTES.VARIANTS}`}>
+              <Link to={STATIC_ROUTES.VARIANTS}>
                 {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
               </Link>
               {intl.get('screen.dashboard.cards.infoPopover.pages')}
@@ -96,11 +95,11 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
             content: (
               <Text>
                 {intl.get('screen.dashboard.cards.savedFilters.infoPopover.content')}
-                <Link to={`${STATIC_ROUTES.DATA_EXPLORATION}`}>
+                <Link to={STATIC_ROUTES.DATA_EXPLORATION}>
                   {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
                 </Link>
                 {intl.get('screen.dashboard.cards.infoPopover.and')}
-                <Link to={`${STATIC_ROUTES.VARIANTS}`}>
+                <Link to={STATIC_ROUTES.VARIANTS}>
                   {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
                 </Link>
                 {intl.get('screen.dashboard.cards.infoPopover.pages')}
