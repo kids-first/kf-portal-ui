@@ -104,10 +104,9 @@ const MostFrequentPhenotypesGraphCard = () => {
           }}
           tooltipLabel={(node: any) => node.data.label}
           axisBottom={{
-            legend: 'coucou',
-            // legend: intl.get(
-            //   'screen.dataExploration.tabs.summary.mostFrequentPhenotypes.legendAxisBottom',
-            // ),
+            legend: intl.get(
+              'screen.dataExploration.tabs.summary.mostFrequentPhenotypes.legendAxisBottom',
+            ),
             legendPosition: 'middle',
             legendOffset: 35,
           }}
