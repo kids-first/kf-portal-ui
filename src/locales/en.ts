@@ -664,6 +664,11 @@ const en = {
           },
         },
         savedFilters: {
+          errorCard: {
+            contactSupport: 'contact our support',
+            failedToFetch: 'Failed to fetch Saved Filters',
+            refresh: 'Please refresh and try again or',
+          },
           title: 'Saved Filters',
           noSavedFilters:
             'A saved filter is a virtual query created by applying one or more filters to a data set. Save your first filter from the query builder at the top of the <a href="{dataExploHref}" style="text-decoration: underline;">Data Exploration</a> and <a href="{variantsHref}" style="text-decoration: underline;">Variants Exploration</a> pages.',

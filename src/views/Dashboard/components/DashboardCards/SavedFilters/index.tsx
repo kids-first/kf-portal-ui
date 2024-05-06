@@ -42,12 +42,12 @@ const SavedFilterListWrapper = ({
     locale={{
       emptyText: fetchingError ? (
         <CardErrorPlaceholder
-          title="Failed to Fetch Saved Filters"
+          title={intl.get('screen.dashboard.cards.savedSets.errorCard.failedToFetch')}
           subTitle={
             <Text>
-              Please refresh and try again or
+              {intl.get('screen.dashboard.cards.savedSets.errorCard.refresh')}{' '}
               <ExternalLink href={`mailto:${SUPPORT_EMAIL}`}>
-                <Text>contact our support</Text>
+                <Text>{intl.get('screen.dashboard.cards.savedSets.errorCard.contactSupport')}</Text>
               </ExternalLink>
               .
             </Text>
