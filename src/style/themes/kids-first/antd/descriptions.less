@@ -1,7 +1,18 @@
 .@{descriptions-prefix-cls} {
-    &-item-label {
-        &::after {
-            margin: 0 4px 0 0;
-        }
+  &-item-label {
+    &::after {
+      margin: 0 4px 0 0;
     }
+  }
+}
+
+// a (antd force text-decoration: none)
+.ant-typography a,
+.@{descriptions-prefix-cls} a {
+  text-decoration: underline;
+}
+
+.ant-typography a:hover,
+.@{descriptions-prefix-cls} a:hover {
+  text-decoration: none;
 }

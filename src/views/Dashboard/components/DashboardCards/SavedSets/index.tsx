@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import intl from 'react-intl-universal';
+import { Link } from 'react-router-dom';
 import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import Empty from '@ferlab/ui/core/components/Empty';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -50,10 +51,19 @@ const getItemList = (
       ) : (
         <Empty
           imageType="grid"
-          description={intl.getHTML('screen.dashboard.cards.savedSets.noSavedSets', {
-            dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
-            variantsHref: STATIC_ROUTES.VARIANTS,
-          })}
+          description={
+            <Text>
+              {intl.get('screen.dashboard.cards.savedSets.noSavedSets')}
+              <Link to={STATIC_ROUTES.DATA_EXPLORATION}>
+                {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
+              </Link>
+              {intl.get('screen.dashboard.cards.infoPopover.and')}
+              <Link to={STATIC_ROUTES.VARIANTS}>
+                {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
+              </Link>
+              {intl.get('screen.dashboard.cards.infoPopover.pages')}
+            </Text>
+          }
           noPadding
         />
       ),
@@ -81,10 +91,15 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
             title: intl.get('screen.dashboard.cards.savedSets.infoPopover.title'),
             content: (
               <Text>
-                {intl.getHTML('screen.dashboard.cards.savedSets.infoPopover.content', {
-                  dataExploHref: STATIC_ROUTES.DATA_EXPLORATION,
-                  variantsHref: STATIC_ROUTES.VARIANTS,
-                })}
+                {intl.get('screen.dashboard.cards.savedSets.infoPopover.content')}
+                <Link to={STATIC_ROUTES.DATA_EXPLORATION}>
+                  {intl.get('screen.dashboard.cards.infoPopover.dataExploLink')}
+                </Link>
+                {intl.get('screen.dashboard.cards.infoPopover.and')}
+                <Link to={STATIC_ROUTES.VARIANTS}>
+                  {intl.get('screen.dashboard.cards.infoPopover.variantsLink')}
+                </Link>
+                {intl.get('screen.dashboard.cards.infoPopover.pages')}
               </Text>
             ),
           }}
