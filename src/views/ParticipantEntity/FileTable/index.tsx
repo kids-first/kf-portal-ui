@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { EntityTableMultiple } from '@ferlab/ui/core/pages/EntityPage';
+import { Button } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { useDataFileAgg } from 'graphql/participants/actions';
@@ -20,7 +21,6 @@ import {
 } from '../utils/files';
 
 import styles from '../index.module.scss';
-import { Button } from 'antd';
 
 interface IFilesTableProps {
   participant?: IParticipantEntity;
@@ -60,8 +60,9 @@ const FileTable = ({ participant, loading: participantLoading }: IFilesTableProp
         title={intl.get('entities.file.file')}
         titleExtra={[
           <Button
-            className={styles.viewInExplo}
+            // className={styles.viewInExplo}
             size="small"
+            ghost
             onClick={() => {
               addQuery({
                 queryBuilderId: DATA_EXPLORATION_QB_ID,
