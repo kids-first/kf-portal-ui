@@ -68,10 +68,11 @@ $sidebar-menu-item-hover-opacity: 0.8;
 $sidebar-menu-item-border-focus: none;
 $sidebar-menu-item-border-focus-color: $gray-1;
 
-$sidebar-quick-filter-input-box-shadow-hover: 0 0 0 2px $blue-8;
-$sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px $gray-8, 0 0 0 3px $gray-1;
+$sidebar-quick-filter-input-box-shadow-hover: 0 0 0 2px $cyan-8;
+$sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px $cyan-7, 0 0 0 3px $gray-1;
 $sidebar-quick-filter-input-placeholder-color: $gray-6;
 $sidebar-quick-filter-input-text-color: $gray-8;
+$sidebar-quick-filter-input-border-color-focus: $blue-8;
 
 $sidebar-content-panel-padding: 16px;
 $sidebar-content-panel-width: 320px;
