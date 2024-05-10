@@ -1449,7 +1449,7 @@ const en = {
       age_at_event: {
         value: 'Age at Histological Diagnosis (days)',
       },
-      mondo_display_term: 'Histological Diagnosis (MONDO) TODODODODO',
+      mondo_display_term: 'Histological Diagnosis (MONDO)',
       diagnosis_ncit: 'Histological Diagnosis (NCIT)',
     },
     // File
