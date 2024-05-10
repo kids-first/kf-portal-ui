@@ -30,30 +30,35 @@ describe('Navigation', () => {
 
   it('Lien externe des resources - Website', () => {
     cy.visitDashboard();
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen');
+    });
+
     cy.get('[class*="Header_resources_"]').click({force: true}); // data-cy="Menu_Website"
-    cy.get('[data-menu-id*="website"]').find('[href]') // data-cy="MenuLink_Website"
-    .should('have.attr', 'href', 'https://kidsfirstdrc.org/');
+    cy.get('[data-menu-id*="website"]').find('[href]').click({force: true}); // data-cy="MenuLink_Website"
+    cy.get("@windowOpen").should('be.calledWith', 'https://kidsfirstdrc.org/');
   });
 
   it('Lien externe des resources - Documentation', () => {
     cy.visitDashboard();
-    cy.get('[class*="Header_resources_"]').click({force: true}); // data-cy="Menu_Documentation"
-    cy.get('[data-menu-id*="documentation"]').find('[href]') // data-cy="MenuLink_Documentation"
-      .should('have.attr', 'href', 'https://www.notion.so/d3b/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a');
-  });
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen');
+    });
 
-  it('Lien externe des resources - Forum', () => {
-    cy.visitDashboard();
-    cy.get('[class*="Header_resources_"]').click({force: true}); // data-cy="Menu_Forum"
-    cy.get('[data-menu-id*="forum"]').find('[href]') // data-cy="MenuLink_Forum"
-      .should('have.attr', 'href', 'https://forum.kidsfirstdrc.org/login');
+    cy.get('[class*="Header_resources_"]').click({force: true}); // data-cy="Menu_Documentation"
+    cy.get('[data-menu-id*="documentation"]').find('[href]').click({force: true}); // data-cy="MenuLink_Documentation"
+    cy.get("@windowOpen").should('be.calledWith', 'https://kidsfirstdrc.org/help-center/');
   });
 
   it('Lien externe des resources - Contact', () => {
     cy.visitDashboard();
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('windowOpen');
+    });
+
     cy.get('[class*="Header_resources_"]').click({force: true}); // data-cy="Menu_Contact"
-    cy.get('[data-menu-id*="contact"]').find('[href]') // data-cy="MenuLink_Contact"
-      .should('have.attr', 'href', 'https://kidsfirstdrc.org/contact/');
+    cy.get('[data-menu-id*="contact"]').find('[href]').click({force: true}); // data-cy="MenuLink_Contact"
+    cy.get("@windowOpen").should("be.calledWith", "mailto:support@kidsfirstdrc.org");
   });
 
   it('Redirections de la page Dashboard', () => {
@@ -130,12 +135,12 @@ describe('Navigation', () => {
     cy.get('button[type="button"]').contains('Cancel').click({force: true});
 
     cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"]')/*.find('[class*="ListItem_savedSetListItem"]')*/.find('svg[data-icon="edit"]').eq(0).click({force: true}); // data-cy="SavedFilters"
+    cy.get('[class*="SavedFilters_setTabs"]').find('svg[data-icon="edit"]').eq(0).click({force: true}); // data-cy="SavedFilters"
     cy.contains('Edit filter').should('exist');
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"]')/*.find('[class*="ListItem_savedSetListItem"]')*/.find('svg[data-icon="delete"]').eq(0).click({force: true}); // data-cy="SavedFilters"
+    cy.get('[class*="SavedFilters_setTabs"]').find('svg[data-icon="delete"]').eq(0).click({force: true}); // data-cy="SavedFilters"
     cy.contains('Permanently delete this filter?').should('exist');
     cy.get('button[type="button"]').contains('Cancel').click({force: true});
   });
@@ -189,6 +194,13 @@ describe('Navigation', () => {
     // Query Builder
     cy.get('button[class*="Header_iconBtnAction"]').click({force: true});
     cy.contains('Save this filter').should('exist');
+    cy.get('button[class="ant-modal-close"]').invoke('click');
+
+    // Manage my filters
+    cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').click({force: true});
+    cy.get('[data-menu-id*="manage-my-filters"]').click({force: true});
+    cy.contains('Manage filters').should('exist', {timeout: 20*1000});
+    cy.contains('Close').should('exist', {timeout: 20*1000});
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     // Onglet Data Files

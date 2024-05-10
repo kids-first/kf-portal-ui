@@ -16,11 +16,11 @@ describe('Page Logout', () => {
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(0).contains('Studies').should('exist'); // data-cy="DataRelease_Study"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(1).contains(/\d{2}\.\d{1}K/).should('exist'); // data-cy="DataRelease_Participant"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(1).contains('Participants').should('exist'); // data-cy="DataRelease_Participant"
-    cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(2).contains(/\d{2}(\.\d{1}|)K/).should('exist'); // data-cy="DataRelease_Family"
+    cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(2).contains(/\d{2}\.\d{1}K/).should('exist'); // data-cy="DataRelease_Family"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(2).contains('Families').should('exist'); // data-cy="DataRelease_Family"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(3).contains(/\d{2}\.\d{1}K/).should('exist'); // data-cy="DataRelease_Biospecimen"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(3).contains('Biospecimens').should('exist'); // data-cy="DataRelease_Biospecimen"
-    cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(4).contains(/\d{2}\.\d{1}K/).should('exist'); // data-cy="DataRelease_File"
+    cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(4).contains(/(\d{2}\.\d{1}|\d{3})K/).should('exist'); // data-cy="DataRelease_File"
     cy.get('[class*="DataRelease_dataReleaseStatsLabel"]').eq(4).contains('Data Files').should('exist'); // data-cy="DataRelease_File"
     cy.contains('Kids First Data Resource Portal').should('exist');
 

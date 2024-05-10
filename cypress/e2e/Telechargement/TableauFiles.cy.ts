@@ -7,7 +7,7 @@ beforeEach(() => {
   cy.removeFilesFromFolder(Cypress.config('downloadsFolder'));
 
   cy.login();
-  cy.visitDataExploration('datafiles', '?sharedFilterId=f7b259db-bc0c-477c-b9ce-3d13e10078a1');
+  cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
   cy.showColumn('File Name');
   cy.showColumn('Platform');
   cy.showColumn('Repository');

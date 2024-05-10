@@ -19,8 +19,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.checkValueFacetAndApply('Sample Type', 'RNA');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery('15.8K');
-    cy.validateTableResultsCount('15,810');
+    cy.validateTotalSelectedQuery('27.1K');
+    cy.validateTableResultsCount('27,106');
     cy.validateClearAllButton(false);
   });
 
@@ -30,8 +30,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 15);
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery('15.8K');
-    cy.validateTableResultsCount('15,810');
+    cy.validateTotalSelectedQuery('27.1K');
+    cy.validateTableResultsCount('27,106');
     cy.validateClearAllButton(false);
   });
 
@@ -41,8 +41,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Collection Sample Type', ['Saliva'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery('926');
-    cy.validateTableResultsCount('926');
+    cy.validateTotalSelectedQuery('3,200');
+    cy.validateTableResultsCount('3,200');
     cy.validateClearAllButton(false);
   });
 
@@ -75,8 +75,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql', {timeout: 20*1000});
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
-    cy.validateTotalSelectedQuery('15.7K');
-    cy.validateTableResultsCount('15,718');
+    cy.validateTotalSelectedQuery('26.9K');
+    cy.validateTableResultsCount('26,912');
     cy.validateClearAllButton(true);
   });
 });

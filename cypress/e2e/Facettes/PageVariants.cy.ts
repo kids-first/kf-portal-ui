@@ -61,7 +61,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
-    cy.validateTableResultsCount(/^1 Results$/);
+    cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').click({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"

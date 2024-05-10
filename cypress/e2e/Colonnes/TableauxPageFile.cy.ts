@@ -7,7 +7,7 @@ beforeEach(() => {
 
 describe('Page d\'un fichier - Colonnes du tableau Participants-Samples', () => {
   beforeEach(() => {
-    cy.visitFileEntity('GF_45BZQGS6');
+    cy.visitFileEntity('GF_6DVS70V9');
     cy.resetColumns('participant-sample');
   });
 
@@ -88,7 +88,7 @@ describe('Page d\'un fichier - Colonnes du tableau Participants-Samples', () => 
 
 describe('Page d\'un fichier - Colonnes du tableau Experimental Procedure', () => {
   beforeEach(() => {
-    cy.visitFileEntity('GF_45BZQGS6');
+    cy.visitFileEntity('GF_6DVS70V9');
   });
 
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {

@@ -11,6 +11,7 @@ beforeEach(() => {
   cy.wait(1000);
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1);
+  cy.wait(10 * 1000);
 });
 
 describe('Page Studies - Exporter les participants en TSV', () => {

@@ -10,7 +10,7 @@ beforeEach(() => {
 
 describe('Page d\'un fichier - Exporter le tableau Participants-Samples en TSV', () => {
   beforeEach(() => {
-    cy.visitFileEntity('GF_45BZQGS6');
+    cy.visitFileEntity('GF_6DVS70V9');
     cy.resetColumns('participant-sample');
     cy.showColumn('Collection ID');
     cy.showColumn('External Participant ID');
