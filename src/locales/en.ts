@@ -135,6 +135,10 @@ const en = {
       selected: 'item selected',
       selectedPlural: 'items selected',
     },
+    quickFilter: {
+      menuTitle: 'Quick filter',
+      placeholder: 'Search...',
+    },
   },
   maintenance: {
     title: 'We are currently down for maintenance',

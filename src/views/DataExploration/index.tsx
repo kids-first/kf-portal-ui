@@ -5,6 +5,7 @@ import {
   FileSearchOutlined,
   MedicineBoxOutlined,
   ReadOutlined,
+  SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
@@ -20,6 +21,7 @@ import {
 
 import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { RemoteComponentList } from 'store/remote/types';
 import {
@@ -41,6 +43,8 @@ import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 import styles from './index.module.scss';
+
+const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
 enum FilterTypes {
   Study,
@@ -167,6 +171,7 @@ const DataExploration = () => {
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
   const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
+  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -263,6 +268,13 @@ const DataExploration = () => {
       <SidebarMenu
         className={styles.sideMenu}
         menuItems={menuItems} /* defaultSelectedKey={tab} */
+        quickFilter={{
+          enableQuickFilter: enableQuickFilter === 'true',
+          inputSuffixIcon: <SearchOutlined />,
+          menuTitle: intl.get('global.quickFilter.menuTitle'),
+          placeholder: intl.get('global.quickFilter.placeholder'),
+          quickFilterOptions: [],
+        }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
         <PageContent
