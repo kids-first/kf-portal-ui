@@ -98,8 +98,6 @@ const fetchTsvReport = createAsyncThunk<void, TFetchTSVArgs, { rejectValue: stri
       const formattedDate = format(new Date(), 'yyyy-MM-dd');
       const formattedFileName = `kidsfirst-${args.index}-table-${formattedDate}.tsv`;
 
-      debugger;
-
       const { data, error } = await ArrangerApi.columnStates({
         query: getColumnStateQuery(args.index),
         variables: {},
@@ -216,8 +214,6 @@ const fetchTsxReport = async (
         visible: col.defaultHidden || true,
       }));
   colStates = colStates.filter(({ visible }) => !!visible);
-
-  debugger;
 
   const columnKeyOrdered = [...colStates].sort((a, b) => a.index - b.index).map(({ key }) => key);
   const tsvColumnsConfig = data!.data[args.index].columnsState.state.columns.filter(({ field }) =>

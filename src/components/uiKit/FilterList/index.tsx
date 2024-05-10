@@ -51,7 +51,6 @@ const FilterList = ({
   if (extendedMappingResults.loading) {
     return <Spin className={styles.filterLoader} spinning />;
   }
-  debugger;
 
   return (
     <>
