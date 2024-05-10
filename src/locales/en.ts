@@ -1397,7 +1397,7 @@ const en = {
     },
     diagnosis: {
       affected_status: 'Clinical Status',
-      mondo_id_diagnosis: 'Diagnosis (MONDO)',
+      mondo_display_term: 'Diagnosis (MONDO)',
       ncit_id_diagnosis: 'Diagnosis (NCIT)',
       age_at_event_days: 'Age at Diagnosis (days)',
       source_text: 'Diagnosis (Source Text)',
@@ -1449,7 +1449,7 @@ const en = {
       age_at_event: {
         value: 'Age at Histological Diagnosis (days)',
       },
-      diagnosis_mondo: 'Histological Diagnosis (MONDO)',
+      mondo_display_term: 'Histological Diagnosis (MONDO) TODODODODO',
       diagnosis_ncit: 'Histological Diagnosis (NCIT)',
     },
     // File
@@ -1689,10 +1689,8 @@ const en = {
       apply_data_access: 'applying for data access',
       category: 'Category',
       count: '{count, plural, =0 {File} =1 {File} other {Files}}',
-
       data_category: 'Data Category',
       data_category_count: 'File counts by Data Category',
-
       dbgap_accession_number: 'dbGaP Accession Number',
       experimental_strategy: 'Experimental Strategy',
       experimental_strategy_count: 'File counts by Experimental Strategy',
@@ -1740,7 +1738,7 @@ const en = {
         source_text: 'Histological Diagnosis (Source Text)',
         source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
         diagnosis_ncit: 'Histological Diagnosis (NCIT)',
-        diagnosis_mondo: 'Histological Diagnosis (MONDO)',
+        mondo_display_term: 'Histological Diagnosis (MONDO)',
         source_text_tumor_location: 'Tumor Location (Source Text)',
       },
     },

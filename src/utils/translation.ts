@@ -290,7 +290,7 @@ export const getFacetsDictionary = () => ({
   diagnosis: {
     affected_status: 'Clinical Status',
     age_at_event_days: 'Age at Diagnosis (days)',
-    mondo_id_diagnosis: 'Diagnosis (MONDO)',
+    mondo_display_term: 'Diagnosis (MONDO)',
     ncit_id_diagnosis: 'Diagnosis (NCIT)',
     source_text: 'Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',
@@ -320,7 +320,7 @@ export const getFacetsDictionary = () => ({
     age_at_event: {
       value: 'Age at Histological Diagnosis (days)',
     },
-    diagnosis_mondo: 'Histological Diagnosis (MONDO)',
+    mondo_display_term: 'Histological Diagnosis (MONDO)',
     diagnosis_ncit: 'Histological Diagnosis (NCIT)',
     source_text: 'Histological Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',

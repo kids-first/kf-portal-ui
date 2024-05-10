@@ -56,7 +56,7 @@ export const SEARCH_FILES_QUERY = gql`
                         total
                         edges {
                           node {
-                            mondo_id_diagnosis
+                            mondo_display_term
                             source_text
                             ncit_id_diagnosis
                             age_at_event_days
@@ -112,7 +112,7 @@ export const SEARCH_FILES_QUERY = gql`
                                 total
                                 edges {
                                   node {
-                                    diagnosis_mondo
+                                    mondo_display_term
                                     source_text_tumor_descriptor
                                     source_text_tumor_location
                                     source_text

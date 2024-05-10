@@ -18,13 +18,14 @@ export interface IBiospecimenDiagnoses {
   source_text_tumor_descriptor: string;
   diagnosis_ncit: string;
   source_text: string;
-  diagnosis_mondo: string;
+  mondo_display_term: string;
   source_text_tumor_location: string[];
   age_at_event: {
     value: number;
     units: string;
   };
 }
+
 export interface IBiospecimenEntity {
   key?: string;
   id: string;

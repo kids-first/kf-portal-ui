@@ -10,7 +10,7 @@ export interface IParticipantResultTree {
 
 export interface IParticipantDiagnosis {
   id: string;
-  mondo_id_diagnosis: string;
+  mondo_display_term: string;
   source_text: string;
   ncit_id_diagnosis: string;
   diagnosis_category?: string;
@@ -85,6 +85,7 @@ export interface IUseParticipantEntityResults {
   loading: boolean;
   data?: IParticipantEntity;
 }
+
 //=========
 
 export interface IParticipantResultTree {
@@ -94,7 +95,7 @@ export interface IParticipantResultTree {
 export interface IParticipantDiagnosis {
   id: string;
   diagnosis_id: string;
-  mondo_id_diagnosis: string;
+  mondo_display_term: string;
   source_text: string;
   age_at_event_days: number;
 }
@@ -179,6 +180,7 @@ export enum FamilyType {
   TRIO_PLUS = 'trio+',
   OTHER = 'other',
 }
+
 export interface IParticipantEntity {
   id: string;
   families_id: string;

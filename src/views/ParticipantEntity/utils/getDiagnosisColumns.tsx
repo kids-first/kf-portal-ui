@@ -13,10 +13,10 @@ import MondoParticipantCount from '../DiagnosisTable/MondoParticipantCount';
 
 const getDiagnosisDefaultColumns = (): ProColumnType[] => [
   {
-    key: 'mondo_id_diagnosis',
+    key: 'mondo_display_term',
     title: intl.get('entities.participant.mondo_diagnosis'),
     render: (diagnosis: IParticipantDiagnosis) => {
-      const mondoNames = diagnosis?.mondo_id_diagnosis;
+      const mondoNames = diagnosis?.mondo_display_term;
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}
@@ -85,8 +85,8 @@ const getDiagnosisDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.mondo_term'),
     tooltip: intl.get('entities.participant.mondo_term_tooltip'),
     render: (diagnosis: IParticipantDiagnosis) =>
-      diagnosis?.mondo_id_diagnosis ? (
-        <MondoParticipantCount diagnosis={diagnosis.mondo_id_diagnosis} />
+      diagnosis?.mondo_display_term ? (
+        <MondoParticipantCount diagnosis={diagnosis.mondo_display_term} />
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
