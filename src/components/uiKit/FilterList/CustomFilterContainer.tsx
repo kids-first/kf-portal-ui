@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import intl from 'react-intl-universal';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import { IFilter, IFilterGroup, TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -10,7 +11,13 @@ import { getFilters } from 'graphql/utils/Filters';
 import { isUndefined } from 'lodash';
 
 import { trackFacetSearch } from 'services/analytics';
-import { getFacetsDictionary, getFiltersDictionary } from 'utils/translation';
+import {
+  getFacetsDictionary,
+  getFiltersDictionary,
+  getQueryBuilderDictionary,
+} from 'utils/translation';
+
+import { combineExtendedMappings } from '../../../utils/fieldMapper';
 
 import CustomFilterSelector from './CustomFilterSelector';
 import { TCustomFilterMapper } from '.';
@@ -81,8 +88,26 @@ const CustomFilterContainer = ({
     noDataInputOption,
     intervalDecimal,
   });
+  const resolveFacetTitle = (key: string) => {
+    const title = intl.get(`facets.${key}`);
+    return (
+      title ||
+      combineExtendedMappings([extendedMappingResults])?.data?.find(
+        (mapping: TExtendedMapping) => key === mapping.field,
+      )?.displayName ||
+      key
+    );
+  };
 
-  const filters = results?.aggregations ? getFilters(results?.aggregations, filterKey) : [];
+  const facetValueMapping =
+    getQueryBuilderDictionary(resolveFacetTitle).query?.facetValueMapping?.[filterKey];
+
+  const filters = results?.aggregations ? getFilters(results.aggregations, filterKey) : [];
+
+  filters.forEach((filter) => {
+    filter.name = facetValueMapping?.[filter.id] ?? filter.name;
+  });
+
   const selectedFilters = results?.data
     ? getSelectedFilters({
         queryBuilderId,
