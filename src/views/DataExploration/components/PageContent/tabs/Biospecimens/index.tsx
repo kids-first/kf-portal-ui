@@ -128,27 +128,11 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     ),
   },
   {
-    key: 'diagnosis_mondo',
-    title: intl.get('entities.biospecimen.diagnoses.diagnosis_mondo'),
+    key: 'diagnoses.mondo_display_term',
+    title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
     render: (record: IBiospecimenEntity) =>
-      mergeBiosDiagnosesSpecificField(record, 'diagnosis_mondo'),
+      mergeBiosDiagnosesSpecificField(record, 'mondo_display_term'),
   },
-  // TODO back implementation needed
-  // {
-  //   key: 'diagnosis.mondo_id_diagnosis',
-  //   title: 'Histological Diagnosis (MONDO)',
-  //   dataIndex: ['diagnosis', 'mondo_id_diagnosis'],
-  //   render: (mondo_id_diagnosis: string) =>
-  //     mondo_id_diagnosis ? (
-  //       <ExternalLink
-  //         href={`http://purl.obolibrary.org/obo/MONDO_${mondo_id_diagnosis.split(':')[1]}`}
-  //       >
-  //         {mondo_id_diagnosis}
-  //       </ExternalLink>
-  //     ) : (
-  //       TABLE_EMPTY_PLACE_HOLDER
-  //     ),
-  // },
   {
     key: 'status',
     title: intl.get('entities.biospecimen.sample_availabilty'),
@@ -219,20 +203,20 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   //   render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
   // },
   {
-    key: 'diagnosis_ncit',
+    key: 'diagnoses.diagnosis_ncit',
     title: intl.get('entities.biospecimen.diagnoses.diagnosis_ncit'),
     defaultHidden: true,
     render: (record: IBiospecimenEntity) =>
       mergeBiosDiagnosesSpecificField(record, 'diagnosis_ncit'),
   },
   {
-    key: 'source_text',
+    key: 'diagnoses.source_text',
     title: intl.get('entities.biospecimen.diagnoses.source_text'),
     defaultHidden: true,
     render: (record: IBiospecimenEntity) => mergeBiosDiagnosesSpecificField(record, 'source_text'),
   },
   {
-    key: 'source_text_tumor_location',
+    key: 'diagnoses.source_text_tumor_location',
     title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_location'),
     defaultHidden: true,
     render: (record: IBiospecimenEntity) =>
@@ -261,7 +245,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
       collection_method_of_sample_procurement || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'source_text_tumor_descriptor',
+    key: 'diagnoses.source_text_tumor_descriptor',
     title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_descriptor'),
     defaultHidden: true,
     render: (record: IBiospecimenEntity) =>

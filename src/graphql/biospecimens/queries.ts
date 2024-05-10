@@ -22,7 +22,7 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
                 total
                 edges {
                   node {
-                    diagnosis_mondo
+                    mondo_display_term
                     source_text_tumor_descriptor
                     source_text_tumor_location
                     source_text

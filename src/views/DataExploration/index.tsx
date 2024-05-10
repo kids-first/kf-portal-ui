@@ -11,6 +11,7 @@ import {
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -21,7 +22,6 @@ import {
 
 import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { RemoteComponentList } from 'store/remote/types';
 import {
@@ -130,7 +130,7 @@ const filterGroups: {
           'collection_anatomy_site',
           'consent_type',
           'dbgap_consent_code',
-          'diagnoses__diagnosis_mondo',
+          'diagnoses__mondo_display_term',
           'diagnoses__diagnosis_ncit',
           'diagnoses__source_text',
           'diagnoses__source_text_tumor_location',

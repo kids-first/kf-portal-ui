@@ -84,7 +84,7 @@ describe(`${extractMetadata.name}()`, () => {
                     edges: [
                       {
                         node: {
-                          mondo_id_diagnosis: 'neuroblastoma (MONDO:0005072)',
+                          mondo_display_term: 'neuroblastoma (MONDO:0005072)',
                           source_text: 'Neuroblastoma',
                           ncit_id_diagnosis: 'NCIT:C3270',
                           age_at_event_days: 174,
@@ -157,7 +157,7 @@ describe(`${extractMetadata.name}()`, () => {
                               edges: [
                                 {
                                   node: {
-                                    diagnosis_mondo: 'MONDO:0005072',
+                                    mondo_display_term: 'Neuroblastoma (MONDO:0005072)',
                                     source_text_tumor_descriptor: 'tumor',
                                     source_text_tumor_location: ['Reported Unknown'],
                                     source_text: 'Neuroblastoma',
@@ -327,7 +327,7 @@ describe(`${extractMetadata.name}()`, () => {
       tumor_location: 'Reported Unknown',
       histological_diagnosis_source_text: 'Neuroblastoma',
       histological_diagnosis_ncit: 'NCIT:C3270',
-      histological_diagnosis_mondo: 'MONDO:0005072',
+      histological_diagnosis_mondo: 'Neuroblastoma (MONDO:0005072)',
       dbgap_consent_code: 'phs001436.c1',
       experimental_strategy: 'WGS',
       platform: 'Illumina',
