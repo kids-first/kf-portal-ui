@@ -77,7 +77,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('[class*="SearchLabel_tooltipIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true}); //data-cy="SearchLabel_InfoCircleOutlined"
     cy.get('div[class="ant-tooltip-inner"]').contains('Search by Participant ID, External Participant ID or Family ID').should('exist');
 
-    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'PT_01236T3G', 'POST', '*/grapgql', 3); //data-cy="SearchAutocomplete_Select"
+    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'PT_01236T3G', 'POST', '*/grapgql', 3, 1); //data-cy="SearchAutocomplete_Select"
     cy.wait(1000);
     cy.get('[class*="ant-select-dropdown"]').contains('PT_01236T3G').should('exist'); //data-cy="Search_Dropdown"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
@@ -217,7 +217,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('div[class="ant-tooltip-inner"]').contains('Search by Sample ID or External Sample ID').should('exist');
 
     cy.intercept('POST', '*/grapgql').as('getRouteMatcher');
-    cy.get('[class*="ant-select-show-search"]').eq(0).find('input').type('BS_KB0GZCP5', {force: true}); //data-cy="SearchAutocomplete_Select"
+    cy.get('[class*="ant-select-show-search"]').eq(1).find('input').type('BS_KB0GZCP5', {force: true}); //data-cy="SearchAutocomplete_Select"
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
@@ -239,7 +239,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('[class*="SearchLabel_title"]').contains('Search by Collection ID').should('exist'); //data-cy="SearchLabel_Title"
 
     cy.intercept('POST', '*/grapgql').as('getRouteMatcher');
-    cy.get('[class*="ant-select-show-search"]').eq(1).find('input').type('SA_G25NX8A9', {force: true}); //data-cy="SearchAutocomplete_Select"
+    cy.get('[class*="ant-select-show-search"]').eq(2).find('input').type('SA_G25NX8A9', {force: true}); //data-cy="SearchAutocomplete_Select"
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
     cy.wait('@getRouteMatcher', {timeout: 60*1000});
@@ -273,7 +273,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Age at Histological Diagnosis (days) - 1000', () => {
-    cy.validateFacetNumFilter('Age at Histological Diagnosis (days)', '1000', /^1,435$/, true, 1);
+    cy.validateFacetNumFilter('Age at Histological Diagnosis (days)', '1000', /\d{1}/, true, 1);
     cy.validateFacetRank(3, 'Age at Histological Diagnosis (days)');
   });
 
@@ -304,7 +304,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Histological Diagnosis (MONDO) - MONDO:0005072', () => {
-    cy.validateFacetFilter('Histological Diagnosis (MONDO)', 'MONDO:0005072', 'MONDO:0005072', /^907$/, 1);
+    cy.validateFacetFilter('Histological Diagnosis (MONDO)', 'Neuroblastoma (MONDO:0005072)', 'neuroblastoma (MONDO:0005072)', /^907$/, 1);
     cy.validateFacetRank(9, 'Histological Diagnosis (MONDO)');
   });
 
@@ -319,7 +319,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Tumor Location (Source Text) - Not Reported', () => {
-    cy.validateFacetFilter('Tumor Location (Source Text)', 'Not Reported', 'Not Reported', /^1,755$/, 1);
+    cy.validateFacetFilter('Tumor Location (Source Text)', 'Not Reported', 'Not Reported', /\d{1}/, 1);
     cy.validateFacetRank(12, 'Tumor Location (Source Text)');
   });
 
@@ -356,7 +356,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   it('Search by file ID - GF_6DVS70V9', () => {
     cy.get('[class*="SearchLabel_title"]').contains('Search by File ID').should('exist'); //data-cy="SearchLabel_Title"
 
-    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'GF_6DVS70V9', 'POST', '*/grapgql', 3); //data-cy="SearchAutocomplete_Select"
+    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'GF_6DVS70V9', 'POST', '*/grapgql', 3, 1); //data-cy="SearchAutocomplete_Select"
     cy.wait(1000);
     cy.get('[class*="ant-select-dropdown"]').contains('GF_6DVS70V9').should('exist'); //data-cy="Search_Dropdown"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"

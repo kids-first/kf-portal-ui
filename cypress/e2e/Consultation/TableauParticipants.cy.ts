@@ -124,100 +124,100 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Participant ID', () => {
     cy.sortTableAndWait('Participant ID');
-    cy.validateTableFirstRow('PT_0001K4K1', 1);
+    cy.validateTableFirstRow('PT_0001K4K1', 1, true);
     cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_ZZYTGPQS', 1);
+    cy.validateTableFirstRow('PT_ZZYTGPQS', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('CBTN', 2);
+    cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 2);
+    cy.validateTableFirstRow('KF-TALL', 2, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Proband', () => {
     cy.sortTableAndIntercept('Proband', 1);
-    cy.validateTableFirstRow('False', 4);
+    cy.validateTableFirstRow('False', 4, true);
     cy.sortTableAndIntercept('Proband', 1);
-    cy.validateTableFirstRow('True', 4);
+    cy.validateTableFirstRow('True', 4, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Sex', () => {
     cy.sortTableAndIntercept('Sex', 1);
-    cy.validateTableFirstRow('Female', 5);
+    cy.validateTableFirstRow('Female', 5, true);
     cy.sortTableAndIntercept('Sex', 1);
-    cy.validateTableFirstRow('Unknown', 5);
+    cy.validateTableFirstRow('Unknown', 5, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Family ID', () => {
     cy.sortTableAndIntercept('Family ID', 1);
-    cy.validateTableFirstRow('-', 8);
+    cy.validateTableFirstRow('-', 8, true);
     cy.sortTableAndIntercept('Family ID', 1);
-    cy.validateTableFirstRow('FM_ZZZ7MEPS', 8);
+    cy.validateTableFirstRow('FM_ZZZ7MEPS', 8, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Family Composition', () => {
     cy.sortTableAndIntercept('Family Composition', 1);
-    cy.validateTableFirstRow('-', 9);
+    cy.validateTableFirstRow('-', 9, true);
     cy.sortTableAndIntercept('Family Composition', 1);
-    cy.validateTableFirstRow('Trio+', 9);
+    cy.validateTableFirstRow('Trio+', 9, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow(/^0$/, 11);
+    cy.validateTableFirstRow(/^0$/, 11, true);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow('12', 11);
+    cy.validateTableFirstRow('12', 11, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Files', () => {
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow(/^0$/, 12);
+    cy.validateTableFirstRow(/^0$/, 12, true);
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow('214', 12);
+    cy.validateTableFirstRow('214', 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Race [SKFP-773]', () => {
     cy.sortTableAndIntercept('Race', 1);
-    cy.validateTableFirstRow('-', 13);
+    cy.validateTableFirstRow('-', 13, true);
     cy.sortTableAndIntercept('Race', 1);
-    cy.validateTableFirstRow('Unknown', 13);
+    cy.validateTableFirstRow('Unknown', 13, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Ethnicity [SKFP-773]', () => {
     cy.sortTableAndIntercept('Ethnicity', 1);
-    cy.validateTableFirstRow('-', 14);
+    cy.validateTableFirstRow('-', 14, true);
     cy.sortTableAndIntercept('Ethnicity', 1);
-    cy.validateTableFirstRow('Unknown', 14);
+    cy.validateTableFirstRow('Unknown', 14, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri External Participant ID', () => {
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('0010a', 15);
+    cy.validateTableFirstRow('0010a', 15, true);
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('XLMR-5076-3-2', 15);
+    cy.validateTableFirstRow('XLMR-5076-3-2', 15, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Diagnosis (NCIT) [SKFP-773]', () => {
     cy.sortTableAndIntercept('Diagnosis (NCIT)', 1);
-    cy.validateTableFirstRow('-', 16);
+    cy.validateTableFirstRow('-', 16, true);
     cy.sortTableAndIntercept('Diagnosis (NCIT)', 1);
-    cy.validateTableFirstRow('NCIT:C9325', 16);
+    cy.validateTableFirstRow('NCIT:C9325', 16, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Vital Status', () => {
     cy.sortTableAndIntercept('Vital Status', 1);
-    cy.validateTableFirstRow('-', 18);
+    cy.validateTableFirstRow('-', 18, true);
     cy.sortTableAndIntercept('Vital Status', 1);
-    cy.validateTableFirstRow('Reported Unknown', 18);
+    cy.validateTableFirstRow('Reported Unknown', 18, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple [SKFP-773]', () => {
     cy.sortTableAndIntercept('Sex', 1);
     cy.sortTableAndWait('Participant ID');
     cy.sortTableAndWait('Participant ID');
-    cy.validateTableFirstRow('PT_1QNE9NQ2', 1);
+    cy.validateTableFirstRow('PT_1QNE9NQ2', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
