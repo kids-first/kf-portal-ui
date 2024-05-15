@@ -1,25 +1,25 @@
 ## VERSION 5.2.0 (2024-05-15)
 
 ### Features
-[SKFP-1019](https://d3b.atlassian.net/browse/SKFP-1019) Feature: [Study page] Implemented new search by bar above the table of results
-[SKFP-1026](https://d3b.atlassian.net/browse/SKFP-1026) Feature: [Summary View] Added Most Frequent Diagnoses/Phenotype graphs
+- [SKFP-1019](https://d3b.atlassian.net/browse/SKFP-1019) Feature: [Study page] Implemented new search by bar above the table of results
+- [SKFP-1026](https://d3b.atlassian.net/browse/SKFP-1026) Feature: [Summary View] Added Most Frequent Diagnoses/Phenotype graphs
 
-## Technical / Other changes
-[SKFP-665](https://d3b.atlassian.net/browse/SKFP-665) Fix: [UI] Updated query bar background color
-[SKFP-843](https://d3b.atlassian.net/browse/SKFP-843) Refactor: [ETL] Adjusted the format of the Histological Diagnosis (MONDO) field
-[SKFP-938](https://d3b.atlassian.net/browse/SKFP-938) Fix:[Facet] Harmonized display of the facet values to the query pills
-[SKFP-942](https://d3b.atlassian.net/browse/SKFP-942) Fix:[Data Exploration] Fixed the sort on select table columns
-[SKFP-971](https://d3b.atlassian.net/browse/SKFP-971) Fix: [Saved Filters/Sets] Fixed the redirect from the browser's back button after using the widget's links
-[SKFP-1004](https://d3b.atlassian.net/browse/SKFP-1004) Fix: [Variant] Fixed color adjustments
-[SKFP-1009](https://d3b.atlassian.net/browse/SKFP-1009) Fix:[Variant] Aligned functional scores
-[SKFP-1011](https://d3b.atlassian.net/browse/SKFP-1011) Refactor: [Participant & File Entity] Updated design of View in exploration button
-[SKFP-1013](https://d3b.atlassian.net/browse/SKFP-1013) Refactor: [Variant] Updated the display for variants with no gene consequence
-[SKFP-1015](https://d3b.atlassian.net/browse/SKFP-1015) Fix:[Variant] Adjusted the mouse over tooltips in the table
-[SKFP-1016](https://d3b.atlassian.net/browse/SKFP-1016) Fix: [Data Exploration] Fixed No data message when the charts is increased in size
-[SKFP-1018](https://d3b.atlassian.net/browse/SKFP-1018) Refactor: [Cavatica] Added a loader when copying files to Cavatica
-[SKFP-1020](https://d3b.atlassian.net/browse/SKFP-1020) Fix:[QB] Updated the state of the save button of a filter
-[SKFP-1021](https://d3b.atlassian.net/browse/SKFP-1021) Fix:[Dashboard] Fixed error on widgets following specific manipulations
-[SKFP-1047](https://d3b.atlassian.net/browse/SKFP-1047) Refactor: [Data Exploration & Entity] Updated pedcbioportal studyID link
+### Technical / Other changes
+- [SKFP-665](https://d3b.atlassian.net/browse/SKFP-665) Fix: [UI] Updated query bar background color
+- [SKFP-843](https://d3b.atlassian.net/browse/SKFP-843) Refactor: [ETL] Adjusted the format of the Histological Diagnosis (MONDO) field
+- [SKFP-938](https://d3b.atlassian.net/browse/SKFP-938) Fix:[Facet] Harmonized display of the facet values to the query pills
+- [SKFP-942](https://d3b.atlassian.net/browse/SKFP-942) Fix:[Data Exploration] Fixed the sort on select table columns
+- [SKFP-971](https://d3b.atlassian.net/browse/SKFP-971) Fix: [Saved Filters/Sets] Fixed the redirect from the browser's back button after using the widget's links
+- [SKFP-1004](https://d3b.atlassian.net/browse/SKFP-1004) Fix: [Variant] Fixed color adjustments
+- [SKFP-1009](https://d3b.atlassian.net/browse/SKFP-1009) Fix:[Variant] Aligned functional scores
+- [SKFP-1011](https://d3b.atlassian.net/browse/SKFP-1011) Refactor: [Participant & File Entity] Updated design of View in exploration button
+- [SKFP-1013](https://d3b.atlassian.net/browse/SKFP-1013) Refactor: [Variant] Updated the display for variants with no gene consequence
+- [SKFP-1015](https://d3b.atlassian.net/browse/SKFP-1015) Fix:[Variant] Adjusted the mouse over tooltips in the table
+- [SKFP-1016](https://d3b.atlassian.net/browse/SKFP-1016) Fix: [Data Exploration] Fixed No data message when the charts is increased in size
+- [SKFP-1018](https://d3b.atlassian.net/browse/SKFP-1018) Refactor: [Cavatica] Added a loader when copying files to Cavatica
+- [SKFP-1020](https://d3b.atlassian.net/browse/SKFP-1020) Fix:[QB] Updated the state of the save button of a filter
+- [SKFP-1021](https://d3b.atlassian.net/browse/SKFP-1021) Fix:[Dashboard] Fixed error on widgets following specific manipulations
+- [SKFP-1047](https://d3b.atlassian.net/browse/SKFP-1047) Refactor: [Data Exploration & Entity] Updated pedcbioportal studyID link
 
 ## VERSION 5.1.1 (2024-04-02)
 
