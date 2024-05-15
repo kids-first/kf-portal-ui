@@ -132,11 +132,9 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     key: 'diagnoses.mondo_display_term',
     title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
     render: (record: IBiospecimenEntity) => {
-      const diagnosesString = mergeBiosDiagnosesSpecificField(record, 'mondo_display_term');
-
-      if (!diagnosesString) return TABLE_EMPTY_PLACE_HOLDER;
-
-      const diagnoses = diagnosesString.split(',').map((str) => str.trim());
+      const diagnoses = mergeBiosDiagnosesSpecificField(record, 'mondo_display_term')
+        .split(',')
+        .map((str) => str.trim());
 
       const nodesWithLinks = diagnoses
         .map((diagnosis, index) => {
