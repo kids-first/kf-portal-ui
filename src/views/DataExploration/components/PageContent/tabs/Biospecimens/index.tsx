@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
@@ -130,8 +131,39 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'diagnoses.mondo_display_term',
     title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
-    render: (record: IBiospecimenEntity) =>
-      mergeBiosDiagnosesSpecificField(record, 'mondo_display_term'),
+    render: (record: IBiospecimenEntity) => {
+      const diagnosesString = mergeBiosDiagnosesSpecificField(record, 'mondo_display_term');
+
+      if (!diagnosesString) return TABLE_EMPTY_PLACE_HOLDER;
+
+      const diagnoses = diagnosesString.split(',').map((str) => str.trim());
+
+      const nodesWithLinks = diagnoses
+        .map((diagnosis, index) => {
+          const regex = /\((MONDO:[^)]+)\)/;
+          const match = diagnosis.match(regex);
+
+          if (match) {
+            const [beforeMatch, afterMatch] = diagnosis.split(`(${match[1]})`);
+            const link = (
+              <ExternalLink href={`http://purl.obolibrary.org/obo/${match[1].replace(':', '_')}`}>
+                {match[1]}
+              </ExternalLink>
+            );
+
+            return (
+              <span key={match[1]}>
+                {index > 0 && ', '}
+                {beforeMatch}({link}){afterMatch}
+              </span>
+            );
+          }
+          return diagnosis;
+        })
+        .filter((node) => node !== null);
+
+      return nodesWithLinks.length > 0 ? nodesWithLinks : TABLE_EMPTY_PLACE_HOLDER;
+    },
   },
   {
     key: 'status',
