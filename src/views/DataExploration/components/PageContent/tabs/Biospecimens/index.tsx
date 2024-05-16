@@ -134,33 +134,31 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (record: IBiospecimenEntity) => {
       const diagnoses = mergeBiosDiagnosesSpecificField(record, 'mondo_display_term')
         .split(',')
-        .map((str) => str.trim());
+        .map((str) => str.trim())
+        .filter((diagnosis) => diagnosis.includes('(MONDO:'));
 
-      const nodesWithLinks = diagnoses
-        .map((diagnosis, index) => {
-          const regex = /\((MONDO:[^)]+)\)/;
-          const match = diagnosis.match(regex);
+      const nodesWithLinks = diagnoses.map((diagnosis, index) => {
+        const [beforeMatch, mondoCode, afterMatch = ''] = diagnosis.split(/(MONDO:[^)]+)/);
+        const link = (
+          <ExternalLink href={`http://purl.obolibrary.org/obo/${mondoCode.replace(':', '_')}`}>
+            {mondoCode.replace('MONDO:', 'MONDO: ')}
+          </ExternalLink>
+        );
+        return (
+          <li key={mondoCode}>
+            {beforeMatch}
+            {link}
+            {afterMatch.trim()}
+            {index !== diagnoses.length - 1 && ','}
+          </li>
+        );
+      });
 
-          if (match) {
-            const [beforeMatch, afterMatch] = diagnosis.split(`(${match[1]})`);
-            const link = (
-              <ExternalLink href={`http://purl.obolibrary.org/obo/${match[1].replace(':', '_')}`}>
-                {match[1]}
-              </ExternalLink>
-            );
-
-            return (
-              <span key={match[1]}>
-                {index > 0 && ', '}
-                {beforeMatch}({link}){afterMatch}
-              </span>
-            );
-          }
-          return diagnosis;
-        })
-        .filter((node) => node !== null);
-
-      return nodesWithLinks.length > 0 ? nodesWithLinks : TABLE_EMPTY_PLACE_HOLDER;
+      return nodesWithLinks.length > 0 ? (
+        <ul className={styles.mondoList}>{nodesWithLinks}</ul>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      );
     },
   },
   {
