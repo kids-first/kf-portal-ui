@@ -25,6 +25,7 @@ import {
 
 const SHOW_AUTHORIZED_STUDIES = false;
 const SHOW_CAVATICA = false;
+const SHOW_VWB = false;
 
 export default compose(withApi)(({ api }) => {
   const { user, groups } = useUser();
@@ -46,17 +47,18 @@ export default compose(withApi)(({ api }) => {
               <CavaticaProjects />
             </Col>
           )}
-
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
             <Card title={<span className={'title-dashboard-card'}>My Participant Sets</span>}>
               <ParticipantSets user={user} />
             </Card>
           </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
-            <Card title={<span className={'title-dashboard-card'}>Apache Zeppelin</span>}>
-              <WorkBench isAllowed={isKfInvestigator(groups)} />
-            </Card>
-          </Col>
+          {SHOW_VWB && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+              <Card title={<span className={'title-dashboard-card'}>Apache Zeppelin</span>}>
+                <WorkBench isAllowed={isKfInvestigator(groups)} />
+              </Card>
+            </Col>
+          )}
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
             <CaringForChildren />
           </Col>
