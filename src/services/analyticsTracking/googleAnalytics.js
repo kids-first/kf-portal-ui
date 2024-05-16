@@ -1,4 +1,4 @@
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 
@@ -199,7 +199,7 @@ export const trackPageView = (page, options = {}) => {
     page,
     ...options,
   });
-  ReactGA.pageview(page);
+  // ReactGA.pageview(page);
   if (page.includes('sqon')) {
     let urlParams = new URLSearchParams(window.location.search);
 
