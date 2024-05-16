@@ -11,6 +11,8 @@ import './style.css';
 
 const { Header, Content, Sider } = Layout;
 
+const SHOW_SETTINGS = false;
+
 function UserProfilePage(props) {
   const {
     profile,
@@ -85,28 +87,30 @@ function UserProfilePage(props) {
                 </a>
               </div>
             </Menu.Item>
-            <Menu.Item
-              className={'menu-border-right-override'}
-              key={KEY_SETTINGS}
-              style={{ backgroundColor: 'inherit', marginBottom: '32px' }}
-            >
-              <div className={'up-anchor-wrapper'}>
-                <a
-                  href={KEY_SETTINGS}
-                  className={`${
-                    isSettingsSelected
-                      ? 'up-menu-item-when-selected'
-                      : `up-menu-item-when-not-selected`
-                  } up-menu-item-text`}
-                >
-                  {'Settings'}
-                </a>
-              </div>
-            </Menu.Item>
+            {SHOW_SETTINGS && (
+              <Menu.Item
+                className={'menu-border-right-override'}
+                key={KEY_SETTINGS}
+                style={{ backgroundColor: 'inherit', marginBottom: '32px' }}
+              >
+                <div className={'up-anchor-wrapper'}>
+                  <a
+                    href={KEY_SETTINGS}
+                    className={`${
+                      isSettingsSelected
+                        ? 'up-menu-item-when-selected'
+                        : `up-menu-item-when-not-selected`
+                    } up-menu-item-text`}
+                  >
+                    {'Settings'}
+                  </a>
+                </div>
+              </Menu.Item>
+            )}
           </Menu>
         </Sider>
         <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
-          {isSettingsSelected ? (
+          {isSettingsSelected && SHOW_SETTINGS ? (
             <Settings />
           ) : (
             <AboutMe
