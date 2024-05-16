@@ -199,7 +199,6 @@ export const trackPageView = (page, options = {}) => {
     page,
     ...options,
   });
-  // ReactGA.pageview(page);
   if (page.includes('sqon')) {
     let urlParams = new URLSearchParams(window.location.search);
 
