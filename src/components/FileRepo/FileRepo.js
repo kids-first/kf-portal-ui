@@ -54,6 +54,8 @@ const trackFileRepoInteraction = ({ label, ...eventData }) =>
 const CAVATICA_CONNECT_FILE_REPO_MODAL_ID = 'CAVATICA_CONNECT_FILE_REPO_MODAL_ID';
 const CAVATICA_COPY_FILE_REPO_MODAL_ID = 'CAVATICA_COPY_FILE_REPO_MODAL_ID';
 
+const SHOW_CAVATICA = false;
+
 const mapStateToProps = (state) => ({
   user: selectUser(state),
   openModalId: selectModalId(state),
@@ -142,7 +144,7 @@ const FileRepo = ({
 
                   return (
                     <>
-                      {showConnectModal && (
+                      {showConnectModal && SHOW_CAVATICA && (
                         <CavaticaConnectModal
                           isVisible={showConnectModal}
                           onComplete={() => {
@@ -152,7 +154,7 @@ const FileRepo = ({
                           onCancelCB={() => closeModal(CAVATICA_CONNECT_FILE_REPO_MODAL_ID)}
                         />
                       )}
-                      {showCavaticaCopyModal && (
+                      {showCavaticaCopyModal && SHOW_CAVATICA && (
                         <CavaticaCopyMultipleFilesModal
                           fileIds={props.selectedTableRows}
                           onComplete={closeCopyCavaticaModal}
@@ -232,30 +234,32 @@ const FileRepo = ({
                               keepSelectedOnPageChange
                               customHeaderContent={
                                 <Row className={'relative'} right>
-                                  <Tooltip
-                                    position="top"
-                                    hideTitle
-                                    html={
-                                      <Row className={'relative'} p={'10px'}>
-                                        {'Cavatica is a cloud processing platform where files can be ' +
-                                          'linked (not duplicated) and used immediately.'}
-                                      </Row>
-                                    }
-                                  >
-                                    <Button
-                                      type={'primary'}
-                                      icon={<BarChartOutlined />}
-                                      onClick={() => {
-                                        openModal(
-                                          isConnectedToCavatica
-                                            ? CAVATICA_COPY_FILE_REPO_MODAL_ID
-                                            : CAVATICA_CONNECT_FILE_REPO_MODAL_ID,
-                                        );
-                                      }}
+                                  {SHOW_CAVATICA && (
+                                    <Tooltip
+                                      position="top"
+                                      hideTitle
+                                      html={
+                                        <Row className={'relative'} p={'10px'}>
+                                          {'Cavatica is a cloud processing platform where files can be ' +
+                                            'linked (not duplicated) and used immediately.'}
+                                        </Row>
+                                      }
                                     >
-                                      {'Analyze in Cavatica'}
-                                    </Button>
-                                  </Tooltip>
+                                      <Button
+                                        type={'primary'}
+                                        icon={<BarChartOutlined />}
+                                        onClick={() => {
+                                          openModal(
+                                            isConnectedToCavatica
+                                              ? CAVATICA_COPY_FILE_REPO_MODAL_ID
+                                              : CAVATICA_CONNECT_FILE_REPO_MODAL_ID,
+                                          );
+                                        }}
+                                      >
+                                        {'Analyze in Cavatica'}
+                                      </Button>
+                                    </Tooltip>
+                                  )}
                                   <>
                                     <DownloadButton sqon={selectionSQON} />
                                     <FileManifestButton

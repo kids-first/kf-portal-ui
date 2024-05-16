@@ -73,6 +73,8 @@ const FILE_TYPE_CRAM = 'cram';
 const CAVATICA_CONNECT_FILE_MODAL_ID = 'CAVATICA_CONNECT_FILE_MODAL_ID';
 const CAVATICA_COPY_FILE_MODAL_ID = 'CAVATICA_COPY_FILE_MODAL_ID';
 
+const SHOW_CAVATICA = false;
+
 const getTags = (data) => {
   const dataType = data.data_type;
   const experimentalStrategies = Array.from(new Set(get(data, 'experiment_strategies', [])));
@@ -145,7 +147,7 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
                   marginRight: '10px',
                 }}
               >
-                {showConnectModal && (
+                {showConnectModal && SHOW_CAVATICA && (
                   <CavaticaConnectModal
                     isVisible={showConnectModal}
                     onComplete={() => {
@@ -155,7 +157,7 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
                     onCancelCB={() => closeModal(CAVATICA_CONNECT_FILE_MODAL_ID)}
                   />
                 )}
-                {showCavaticaCopyModal && (
+                {showCavaticaCopyModal && SHOW_CAVATICA && (
                   <CavaticaCopyOpenAccessFileModal
                     fileId={fileId}
                     onCancel={onCloseCavaticaCopyModal}
@@ -167,20 +169,22 @@ const FileEntity = ({ api, fileId, openModalId, closeModal, openModal, isConnect
                     }}
                   />
                 )}
-                <Button
-                  type={'primary'}
-                  icon={<BarChartOutlined />}
-                  disabled={!hasFilePermission}
-                  onClick={() =>
-                    openModal(
-                      isConnectedToCavatica
-                        ? CAVATICA_COPY_FILE_MODAL_ID
-                        : CAVATICA_CONNECT_FILE_MODAL_ID,
-                    )
-                  }
-                >
-                  Analyse in Cavatica
-                </Button>
+                {SHOW_CAVATICA && (
+                  <Button
+                    type={'primary'}
+                    icon={<BarChartOutlined />}
+                    disabled={!hasFilePermission}
+                    onClick={() =>
+                      openModal(
+                        isConnectedToCavatica
+                          ? CAVATICA_COPY_FILE_MODAL_ID
+                          : CAVATICA_CONNECT_FILE_MODAL_ID,
+                      )
+                    }
+                  >
+                    Analyse in Cavatica
+                  </Button>
+                )}
               </div>
               <Download
                 onSuccess={async (url) => {
