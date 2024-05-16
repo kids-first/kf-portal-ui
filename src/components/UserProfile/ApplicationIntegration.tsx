@@ -21,6 +21,8 @@ const { Paragraph } = Typography;
 
 const NOTIFICATION_DURATION_IN_SEC = 10;
 
+const SHOW_CAVATICA = false;
+
 const ApplicationIntegration = () => {
   const dispatch = useDispatch();
 
@@ -42,7 +44,7 @@ const ApplicationIntegration = () => {
 
   return (
     <>
-      {currentModalIsCavaticaConnect && (
+      {currentModalIsCavaticaConnect && SHOW_CAVATICA && (
         <CavaticaConnectModal
           isVisible
           onComplete={onCompleteCavaticaConnect}

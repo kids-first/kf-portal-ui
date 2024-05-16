@@ -23,6 +23,9 @@ import {
   userDashboardContent,
 } from './UserDashboard.module.css';
 
+const SHOW_AUTHORIZED_STUDIES = false;
+const SHOW_CAVATICA = false;
+
 export default compose(withApi)(({ api }) => {
   const { user, groups } = useUser();
   return user ? (
@@ -33,12 +36,17 @@ export default compose(withApi)(({ api }) => {
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
             <SavedQueries api={api} />
           </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
-            <AuthorizedStudies api={api} />
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
-            <CavaticaProjects />
-          </Col>
+          {SHOW_AUTHORIZED_STUDIES && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+              <AuthorizedStudies api={api} />
+            </Col>
+          )}
+          {SHOW_CAVATICA && (
+            <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
+              <CavaticaProjects />
+            </Col>
+          )}
+
           <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={6}>
             <Card title={<span className={'title-dashboard-card'}>My Participant Sets</span>}>
               <ParticipantSets user={user} />
