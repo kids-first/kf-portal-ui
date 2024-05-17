@@ -27,13 +27,13 @@ const FHIR: TFHIR[] = [
     id: 'kfApi',
     title: intl.get('screen.dashboard.cards.fhirDataResource.kfApi.title'),
     text: intl.get('screen.dashboard.cards.fhirDataResource.kfApi.description'),
-    url: 'https://kf-api-fhir-service.kidsfirstdrc.org/metadata',
+    url: 'https://fhir.kidsfirstdrc.org/metadata',
   },
   {
     id: 'caringApi',
     title: intl.getHTML('screen.dashboard.cards.fhirDataResource.caringApi.title'),
     text: intl.get('screen.dashboard.cards.fhirDataResource.caringApi.description'),
-    url: 'https://kf-api-fhir-service.kidsfirstdrc.org/Patient?_total=accurate&_has:ResearchSubject:individual:study=ResearchStudy/4873',
+    url: 'https://fhir.kidsfirstdrc.org/Patient?_total=accurate&_has:ResearchSubject:individual:study=ResearchStudy/4873',
     popoverText: intl.get('screen.dashboard.cards.fhirDataResource.caringApi.popoverText'),
   },
 ];
