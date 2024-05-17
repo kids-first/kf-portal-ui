@@ -26,24 +26,11 @@ const addToQuery = (field: string, key: string) =>
     index: INDEXES.PARTICIPANT,
   });
 
-const excludes = [
-  'complete trisomy 21 (MONDO:0700030)',
-  'Down syndrome (MONDO:0008608)',
-  'mosaic translocation Down syndrome (MONDO:0700129)',
-  'mosaic trisomy 21 (MONDO:0700127)',
-  'partial segmental duplication (MONDO:0700130)',
-  'translocation Down syndrome (MONDO:0700128)',
-  'trisomy 21 (MONDO:0700126)',
-];
-
 const filterMondoData = (data: any[], key = 'label') => {
   let result = data as any[];
 
   // Exclude zero value
   result = result.filter((item) => item.value > 0);
-
-  // Excludes some values
-  result = result.filter((item) => !excludes.includes((item as any)[key]));
 
   // Unique
   result = uniqBy(result, key);
