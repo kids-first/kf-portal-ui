@@ -104,45 +104,45 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chr10:g.100000222G>A', 1);
+    cy.validateTableFirstRow('chr10:g.100000222G>A', 1, true);
     cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chrY:g.9999310C>A', 1);
+    cy.validateTableFirstRow('chrY:g.9999310C>A', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Type', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept('Type', 1);
-    cy.validateTableFirstRow('SNV', 2);
+    cy.validateTableFirstRow('SNV', 2, true);
     cy.sortTableAndIntercept('Type', 1);
-    cy.validateTableFirstRow('Ins', 2);
+    cy.validateTableFirstRow('Ins', 2, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri gnomAD', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept(/^gnomAD$/, 1);
-    cy.validateTableFirstRow('-', 9);
+    cy.validateTableFirstRow('-', 9, true);
     cy.sortTableAndIntercept(/^gnomAD$/, 1);
-    cy.validateTableFirstRow('1.00e+0', 9);
+    cy.validateTableFirstRow('1.00e+0', 9, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri gnomAD ALT', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept('gnomAD ALT', 1);
-    cy.validateTableFirstRow('-', 10);
+    cy.validateTableFirstRow('-', 10, true);
     cy.sortTableAndIntercept('gnomAD ALT', 1);
-    cy.validateTableFirstRow('152,312', 10);
+    cy.validateTableFirstRow('152,312', 10, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Part.', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept('Part.', 1);
-    cy.validateTableFirstRow(/^1/, 11);
+    cy.validateTableFirstRow(/^1/, 11, true);
     cy.sortTableAndIntercept('Part.', 1);
-    cy.validateTableFirstRow('242', 11);
+    cy.validateTableFirstRow('242', 11, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri ALT', () => {
@@ -150,9 +150,9 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept(/^ALT$/, 1);
-    cy.validateTableFirstRow(/^1$/, 13);
+    cy.validateTableFirstRow(/^1$/, 13, true);
     cy.sortTableAndIntercept(/^ALT$/, 1);
-    cy.validateTableFirstRow('484', 13);
+    cy.validateTableFirstRow('484', 13, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Homo.', () => {
@@ -160,9 +160,9 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.waitWhileSpin(2000);
 
     cy.sortTableAndIntercept('Homo.', 1);
-    cy.validateTableFirstRow(/^0$/, 13);
+    cy.validateTableFirstRow(/^0$/, 13, true);
     cy.sortTableAndIntercept('Homo.', 1);
-    cy.validateTableFirstRow('242', 13);
+    cy.validateTableFirstRow('242', 13, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
@@ -172,7 +172,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Type', 1);
     cy.sortTableAndIntercept('Variant', 1);
     cy.wait(2000);
-    cy.validateTableFirstRow('chr10:g.100000879_100000880insC', 1);
+    cy.validateTableFirstRow('chr10:g.100000879_100000880insC', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {

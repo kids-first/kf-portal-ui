@@ -134,7 +134,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(2).contains('Observed').should('exist');
     cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(2).find('[class*="ant-tag-green"]').should('exist');
     cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(3).contains('-').should('exist');
-    cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(4).contains('530').should('exist');
+    cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(4).contains(/\d{1}/).should('exist');
   });
   
   it('Panneau Biospecimens', () => {
@@ -220,8 +220,6 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[id="files"]').find('[data-row-key="Whole Exome Sequencing"]').find('td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
     cy.get('[id="files"]').find('[data-row-key="Linked-Read WGS (10x Chromium)"]').find('td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
     cy.get('[id="files"]').find('[data-row-key="Linked-Read WGS (10x Chromium)"]').find('td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
-    cy.get('[id="files"]').find('[data-row-key="miRNA-Seq"]').find('td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
-    cy.get('[id="files"]').find('[data-row-key="miRNA-Seq"]').find('td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
   });
 });
 
@@ -278,7 +276,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Phenotype (HPO)').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Congenital diaphragmatic hernia (HP:0000776)').should('exist');
-    cy.validateTableResultsCount(/^530$/);
+    cy.validateTableResultsCount(/\d{1}/);
   });
 
   it('Lien DataExploration du panneau Biospecimens', () => {

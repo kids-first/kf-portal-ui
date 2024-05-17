@@ -24,7 +24,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.ts')(on, config);
     },
-    baseUrl: 'https://portal-qa-next.kidsfirstdrc.org',
+    baseUrl: 'https://portal-qa.kidsfirstdrc.org',
     specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     slowTestThreshold: 60000,
     experimentalSessionAndOrigin: true,

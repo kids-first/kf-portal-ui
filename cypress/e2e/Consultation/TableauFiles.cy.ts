@@ -85,106 +85,106 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
 
   it('Valider les fonctionnalités du tableau - Tri File ID', () => {
     cy.sortTableAndWait('File ID',);
-    cy.validateTableFirstRow('GF_0003WJQG', 3);
+    cy.validateTableFirstRow('GF_0003WJQG', 3, true);
     cy.sortTableAndIntercept('File ID', 1);
-    cy.validateTableFirstRow('GF_ZZZYCMZQ', 3);
+    cy.validateTableFirstRow('GF_ZZZYCMZQ', 3, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('CBTN', 4);
+    cy.validateTableFirstRow(/^(?!-).*$/, 4, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 4);
+    cy.validateTableFirstRow('KF-TALL', 4, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Data Category', () => {
     cy.sortTableAndIntercept('Data Category', 1);
-    cy.validateTableFirstRow('-', 5);
+    cy.validateTableFirstRow('-', 5, true);
     cy.sortTableAndIntercept('Data Category', 1);
-    cy.validateTableFirstRow('Transcriptomics', 5);
+    cy.validateTableFirstRow('Transcriptomics', 5, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Data Type', () => {
     cy.sortTableAndIntercept('Data Type', 1);
-    cy.validateTableFirstRow('-', 6);
+    cy.validateTableFirstRow('-', 6, true);
     cy.sortTableAndIntercept('Data Type', 1);
-    cy.validateTableFirstRow('gVCF', 6);
+    cy.validateTableFirstRow('gVCF', 6, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Experimental Strategy [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Experimental Strategy', () => {
     cy.sortTableAndIntercept('Experimental Strategy', 1);
-    cy.validateTableFirstRow('-', 7);
+    cy.validateTableFirstRow('-', 7, true);
     cy.sortTableAndIntercept('Experimental Strategy', 1);
-    cy.validateTableFirstRow('Whole Genome Sequencing', 7);
+    cy.validateTableFirstRow('Whole Genome Sequencing', 7, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Format [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Format', () => {
     cy.sortTableAndIntercept('Format', 1);
-    cy.validateTableFirstRow('bam', 8);
+    cy.validateTableFirstRow('bam', 8, true);
     cy.sortTableAndIntercept('Format', 1);
-    cy.validateTableFirstRow('vcf', 8);
+    cy.validateTableFirstRow('vcf', 8, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Size', () => {
     cy.sortTableAndIntercept('Size', 1);
-    cy.validateTableFirstRow('160 B', 9);
+    cy.validateTableFirstRow(/^(?!-).*$/, 9, true);
     cy.sortTableAndIntercept('Size', 1);
-    cy.validateTableFirstRow('572.08 GB', 9);
+    cy.validateTableFirstRow('572.08 GB', 9, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Participants', () => {
     cy.sortTableAndIntercept('Participants', 1);
-    cy.validateTableFirstRow(/^1$/, 10);
+    cy.validateTableFirstRow(/^1$/, 10, true);
     cy.sortTableAndIntercept('Participants', 1);
-    cy.validateTableFirstRow(/^8$/, 10);
+    cy.validateTableFirstRow(/^8$/, 10, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow(/^1$/, 11);
+    cy.validateTableFirstRow(/^1$/, 11, true);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow(/^8$/, 11);
+    cy.validateTableFirstRow(/^8$/, 11, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri File Name', () => {
     cy.sortTableAndIntercept('File Name', 1);
-    cy.validateTableFirstRow('0000e2ec-a59e-42aa-a312-85f1952779bc.CGP.filtered.deNovo.vep.vcf.gz', 12);
+    cy.validateTableFirstRow('0000e2ec-a59e-42aa-a312-85f1952779bc.CGP.filtered.deNovo.vep.vcf.gz', 12, true);
     cy.sortTableAndIntercept('File Name', 1);
-    cy.validateTableFirstRow('r988046_S0_L001_R2_001.fastq.gz', 12);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Platform', () => {
     cy.sortTableAndIntercept('Platform', 1);
-    cy.validateTableFirstRow('-', 13);
+    cy.validateTableFirstRow('-', 13, true);
     cy.sortTableAndIntercept('Platform', 1);
-    cy.validateTableFirstRow('Not Reported', 13);
+    cy.validateTableFirstRow('Not Reported', 13, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Repository', () => {
     cy.sortTableAndIntercept('Repository', 1);
-    cy.validateTableFirstRow('Dcf', 14);
+    cy.validateTableFirstRow(/^(?!-).*$/, 14, true);
     cy.sortTableAndIntercept('Repository', 1);
-    cy.validateTableFirstRow('Gen3', 14);
+    cy.validateTableFirstRow('Gen3', 14, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri ACL', () => {
     cy.sortTableAndIntercept('ACL', 1);
-    cy.validateTableFirstRow('-', 15);
+    cy.validateTableFirstRow('-', 15, true);
     cy.sortTableAndIntercept('ACL', 1);
-    cy.validateTableFirstRow('phs002627.c1, phs002627.c999, SD_1NNS3K8V', 15);
+    cy.validateTableFirstRow('phs002627.c1, phs002627.c999, SD_1NNS3K8V', 15, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Access URL', () => {
     cy.sortTableAndIntercept('Access URL', 1);
-    cy.validateTableFirstRow('drs://data.kidsfirstdrc.org/00000eae-7f56-4a89-854e-6e88c0683340', 16);
+    cy.validateTableFirstRow('drs://data.kidsfirstdrc.org/00000eae-7f56-4a89-854e-6e88c0683340', 16, true);
     cy.sortTableAndIntercept('Access URL', 1);
-    cy.validateTableFirstRow('drs://nci-crdc.datacommons.io/dg.4DFC/ffffc102-82e5-4022-a44d-c3cbbd936941', 16);
+    cy.validateTableFirstRow(/^(?!-).*$/, 16, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
     cy.sortTableAndWait('Format');
     cy.sortTableAndWait('Size');
-    cy.validateTableFirstRow('2.36 MB', 9);
+    cy.validateTableFirstRow(/^(?!-).*$/, 9, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {

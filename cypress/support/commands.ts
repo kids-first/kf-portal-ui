@@ -341,11 +341,16 @@ Cypress.Commands.add('validateSelectedFilterInDropdown', (filterName: string) =>
   cy.get('[class*="ant-dropdown-menu-item-selected"]').contains(filterName).should('exist');
 });
 
-Cypress.Commands.add('validateTableFirstRow', (expectedValue: string|RegExp, eq: number) => {
+Cypress.Commands.add('validateTableFirstRow', (expectedValue: string|RegExp, eq: number, hasCheckbox: boolean = false) => {
   cy.get('.ant-spin-container').should('not.have.class', 'ant-spin-blur', {timeout: 5*1000});
   cy.get('tr[class*="ant-table-row"]').eq(0)
   .then(($firstRow) => {
     cy.wrap($firstRow).find('td').eq(eq).contains(expectedValue).should('exist');
+    if (hasCheckbox) {
+      cy.wrap($firstRow).find('[type="checkbox"]').check({force: true});
+      cy.wrap($firstRow).find('[type="checkbox"]').should('be.checked');
+      cy.wrap($firstRow).find('[type="checkbox"]').uncheck({force: true});
+    };
   });
 });
 

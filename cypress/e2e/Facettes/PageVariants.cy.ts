@@ -81,8 +81,8 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.validateFacetFilter('Consequence', 'Missense', 'missense', /^112,775$/, 1);
   });
 
-  it('Variant External Reference - DBSNP [SKFP-938]', () => {
-    cy.validateFacetFilter('Variant External Reference', 'DBSNP', 'DBSNP', /^27,054,485$/, 1);
+  it('Variant External Reference - DbSNP', () => {
+    cy.validateFacetFilter('Variant External Reference', 'DbSNP', 'DBSNP', /^27,054,485$/, 1);
     cy.validateFacetRank(2, 'Variant External Reference');
   });
 

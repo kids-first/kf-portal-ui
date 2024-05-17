@@ -30,7 +30,7 @@ declare namespace Cypress {
     validateOperatorSelectedQuery(expectedOperator: string): cy & CyEventEmitter;
     validatePillSelectedQuery(facetTitle: string|RegExp, values: (string|RegExp)[], eq: number = 0): cy & CyEventEmitter;
     validateSelectedFilterInDropdown(filterName: string): cy & CyEventEmitter;
-    validateTableFirstRow(expectedValue: string|RegExp, eq: number): cy & CyEventEmitter;
+    validateTableFirstRow(expectedValue: string|RegExp, eq: number, hasCheckbox: boolean = false): cy & CyEventEmitter;
     validateTableResultsCount(expectedCount: string|RegExp, shouldExist: boolean = true): cy & CyEventEmitter;
     validateTotalSelectedQuery(expectedCount: string|RegExp): cy & CyEventEmitter;
     visitAndIntercept(url: string, methodHTTP: string, routeMatcher: string, nbCalls: number): cy & CyEventEmitter;

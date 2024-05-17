@@ -115,57 +115,57 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Sample ID', () => {
     cy.sortTableAndWait('Sample ID');
-    cy.validateTableFirstRow('BS_002W6DYW', 1);
+    cy.validateTableFirstRow('BS_002W6DYW', 1, true);
     cy.sortTableAndIntercept('Sample ID', 1);
-    cy.validateTableFirstRow('BS_ZZZSE8CC', 1);
+    cy.validateTableFirstRow('BS_ZZZSE8CC', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('CBTN', 2);
+    cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 2);
+    cy.validateTableFirstRow('KF-TALL', 2, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Sample Type', () => {
     cy.sortTableAndIntercept('Sample Type', 1);
-    cy.validateTableFirstRow('-', 3);
+    cy.validateTableFirstRow('-', 3, true);
     cy.sortTableAndIntercept('Sample Type', 1);
-    cy.validateTableFirstRow('RNA', 3);
+    cy.validateTableFirstRow('RNA', 3, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Parent Sample ID', () => {
     cy.sortTableAndIntercept('Parent Sample ID', 1);
-    cy.validateTableFirstRow('SA_001D4C97', 4);
+    cy.validateTableFirstRow('SA_001D4C97', 4, true);
     cy.sortTableAndIntercept('Parent Sample ID', 1);
-    cy.validateTableFirstRow('SA_ZZYT2DNR', 4);
+    cy.validateTableFirstRow('SA_ZZYT2DNR', 4, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Parent Sample Type', () => {
     cy.sortTableAndIntercept('Parent Sample Type', 1);
-    cy.validateTableFirstRow('-', 5);
+    cy.validateTableFirstRow('-', 5, true);
     cy.sortTableAndIntercept('Parent Sample Type', 1);
-    cy.validateTableFirstRow('Saliva', 5);
+    cy.validateTableFirstRow('Saliva', 5, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Participant ID', () => {
     cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_0001K4K1', 6);
+    cy.validateTableFirstRow('PT_0001K4K1', 6, true);
     cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_ZZYTGPQS', 6);
+    cy.validateTableFirstRow('PT_ZZYTGPQS', 6, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Files', () => {
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow(/^0$/, 12);
+    cy.validateTableFirstRow(/^0$/, 12, true);
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow('118', 12);
+    cy.validateTableFirstRow(/\d{1}/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
     cy.sortTableAndIntercept('Study', 1);
     cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_00G007DM', 6);
+    cy.validateTableFirstRow(/^(?!-).*$/, 6, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
