@@ -167,6 +167,7 @@ export const GET_FILE_ENTITY = gql`
         edges {
           node {
             id
+            acl
             access_urls
             controlled_access
             data_category
