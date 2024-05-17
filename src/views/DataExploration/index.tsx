@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import {
@@ -9,9 +10,18 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
+import {
+  TitleQFOption,
+  CheckboxQFOption,
+  QuickFilterType,
+} from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
+import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
+import { ArrangerApi } from 'services/api/arranger';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -43,6 +53,10 @@ import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 import styles from './index.module.scss';
+import { capitalize, get } from 'lodash';
+import { getFacetsDictionary, getQueryBuilderDictionary } from 'utils/translation';
+import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
+import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 
 const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
@@ -166,11 +180,67 @@ const filterGroups: {
   },
 };
 
+const getQFSuggestions = async (
+  setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
+  sqon: ISyntheticSqon,
+  searchText: string,
+) => {
+  // console.log('search text', searchText);
+  const { data } = await ArrangerApi.graphqlRequest<{
+    data: { participant: { aggregations: any } };
+  }>({
+    query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
+    variables: {
+      sqon: sqon,
+    },
+  });
+
+  const facetDictionary = getFacetsDictionary();
+  const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
+  Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
+    const facetName = get(
+      facetDictionary,
+      underscoreToDot(getFieldWithoutPrefix(key)),
+      removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
+    );
+
+    const facetValueMapping = getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[key];
+    console.log('facetValueMapping', facetValueMapping);
+
+    // si buckets length ou si match avec value
+    suggestions.push({ key: key, title: facetName, type: QuickFilterType.TITLE });
+    (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) =>
+      suggestions.push({
+        key: bucket.key,
+        docCount: bucket.doc_count,
+        type: QuickFilterType.CHECKBOX,
+        facetKey: key,
+        index: getIndexFromQFValueFacet(key),
+      }),
+    );
+  });
+  // console.log('suggestions', suggestions);
+  setOptions(suggestions);
+};
+
+const getIndexFromQFValueFacet = (facetKey: string): INDEXES => {
+  if (facetKey.startsWith('files__biospecimens__')) return INDEXES.BIOSPECIMEN;
+  else if (facetKey.startsWith('files__')) return INDEXES.FILE;
+  else return INDEXES.PARTICIPANT;
+};
+
+const getFieldWithoutPrefix = (facetKey: string): string => {
+  if (facetKey.startsWith('files__biospecimens__')) return facetKey.slice(21);
+  else if (facetKey.startsWith('files__')) return facetKey.slice(7);
+  else return facetKey;
+};
+
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
   const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
+
   const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
   const menuItems: ISidebarMenuItem[] = [
@@ -270,10 +340,11 @@ const DataExploration = () => {
         menuItems={menuItems} /* defaultSelectedKey={tab} */
         quickFilter={{
           enableQuickFilter: enableQuickFilter === 'true',
+          getSuggestionsList: getQFSuggestions,
           inputSuffixIcon: <SearchOutlined />,
           menuTitle: intl.get('global.quickFilter.menuTitle'),
           placeholder: intl.get('global.quickFilter.placeholder'),
-          quickFilterOptions: [],
+          queryBuilderId: DATA_EXPLORATION_QB_ID,
         }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>

@@ -206,6 +206,7 @@ const PageContent = ({
         facetFilterConfig={{
           enable: true,
           onFacetClick: (filter) => {
+            // Ce que l'on veut pour ouvrir la facette par le nom dans le dropdown
             const index = filter.content.index!;
             const field = filter.content.field;
             const { sqon, mapping } = getSqonAndMappingByIndex(index as INDEXES);
