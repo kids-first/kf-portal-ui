@@ -136,8 +136,12 @@ const en = {
       selectedPlural: 'items selected',
     },
     quickFilter: {
+      apply: 'Apply',
+      cancel: 'Cancel',
+      emptyMessage: 'Min. 3 characters',
       menuTitle: 'Quick filter',
       placeholder: 'Search...',
+      results: 'Results',
     },
   },
   maintenance: {

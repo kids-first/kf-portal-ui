@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import {
@@ -15,12 +14,15 @@ import {
   CheckboxQFOption,
   QuickFilterType,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
+import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
+import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
+import { capitalize, get } from 'lodash';
 import { ArrangerApi } from 'services/api/arranger';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
@@ -39,6 +41,7 @@ import {
   mapFilterForFiles,
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
+import { getFacetsDictionary, getQueryBuilderDictionary } from 'utils/translation';
 
 import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
@@ -53,10 +56,6 @@ import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 import styles from './index.module.scss';
-import { capitalize, get } from 'lodash';
-import { getFacetsDictionary, getQueryBuilderDictionary } from 'utils/translation';
-import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
-import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 
 const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
@@ -185,7 +184,6 @@ const getQFSuggestions = async (
   sqon: ISyntheticSqon,
   searchText: string,
 ) => {
-  // console.log('search text', searchText);
   const { data } = await ArrangerApi.graphqlRequest<{
     data: { participant: { aggregations: any } };
   }>({
@@ -195,8 +193,10 @@ const getQFSuggestions = async (
     },
   });
 
+  const regexp = new RegExp('(?:^|\\W)' + searchText, 'gi');
   const facetDictionary = getFacetsDictionary();
   const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
+
   Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
     const facetName = get(
       facetDictionary,
@@ -204,22 +204,31 @@ const getQFSuggestions = async (
       removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
     );
 
-    const facetValueMapping = getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[key];
-    console.log('facetValueMapping', facetValueMapping);
+    const facetValueMapping =
+      getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
 
-    // si buckets length ou si match avec value
-    suggestions.push({ key: key, title: facetName, type: QuickFilterType.TITLE });
-    (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) =>
-      suggestions.push({
-        key: bucket.key,
-        docCount: bucket.doc_count,
-        type: QuickFilterType.CHECKBOX,
-        facetKey: key,
-        index: getIndexFromQFValueFacet(key),
-      }),
-    );
+    const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
+
+    (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
+      const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
+      if (regexp.exec(title)) {
+        bucketFiltered.push({
+          key: bucket.key,
+          title,
+          docCount: bucket.doc_count,
+          type: QuickFilterType.CHECKBOX,
+          facetKey: key,
+          index: getIndexFromQFValueFacet(key),
+        });
+      }
+    });
+
+    if (regexp.exec(facetName) || bucketFiltered.length > 0) {
+      suggestions.push({ key: key, title: facetName, type: QuickFilterType.TITLE });
+      suggestions.push(...bucketFiltered);
+    }
   });
-  // console.log('suggestions', suggestions);
+
   setOptions(suggestions);
 };
 
@@ -339,12 +348,16 @@ const DataExploration = () => {
         className={styles.sideMenu}
         menuItems={menuItems} /* defaultSelectedKey={tab} */
         quickFilter={{
+          applyLabel: intl.get('global.quickFilter.apply'),
+          cancelLabel: intl.get('global.quickFilter.cancel'),
+          emptyMessage: intl.get('global.quickFilter.emptyMessage'),
           enableQuickFilter: enableQuickFilter === 'true',
           getSuggestionsList: getQFSuggestions,
           inputSuffixIcon: <SearchOutlined />,
           menuTitle: intl.get('global.quickFilter.menuTitle'),
           placeholder: intl.get('global.quickFilter.placeholder'),
           queryBuilderId: DATA_EXPLORATION_QB_ID,
+          resultsLabel: intl.get('global.quickFilter.results'),
         }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>

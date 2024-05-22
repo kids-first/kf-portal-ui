@@ -16,6 +16,7 @@ export const dataExploQFFacets = [
   'diagnosis__ncit_id_diagnosis',
   'diagnosis__source_text',
   'family_type',
+  'observed_phenotype__name',
   'phenotype__hpo_phenotype_not_observed',
   'phenotype__source_text',
   'outcomes__vital_status',
@@ -134,6 +135,12 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         family_type {
+          buckets {
+            key
+            doc_count
+          }
+        }
+        observed_phenotype__name {
           buckets {
             key
             doc_count
