@@ -777,7 +777,6 @@ const en = {
       title: 'Kids First Community',
       result: 'Public Member',
       results: 'Public Members',
-      resultsMember: 'Public Members',
       noResults: 'No Public members',
       totalMembers: 'Total Members',
       search: {
