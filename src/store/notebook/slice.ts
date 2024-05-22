@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from './types';
-import { getNotebookClusterStatus, startNotebookCluster, stopNotebookCluster } from './thunks';
+
 import { NotebookApiStatus } from 'services/api/notebook/model';
+
+import {
+  getNotebookClusterManifest,
+  getNotebookClusterStatus,
+  stopNotebookCluster,
+} from './thunks';
+import { initialState } from './types';
 
 export const NotebookState: initialState = {
   isLoading: false,
@@ -27,17 +33,17 @@ const notebookSlice = createSlice({
   },
   extraReducers: (builder) => {
     // START cluster
-    builder.addCase(startNotebookCluster.pending, (state) => ({
+    builder.addCase(getNotebookClusterManifest.pending, (state) => ({
       ...state,
       isLoading: true,
       status: NotebookApiStatus.createInProgress,
       error: null,
     }));
-    builder.addCase(startNotebookCluster.fulfilled, (state) => ({
+    builder.addCase(getNotebookClusterManifest.fulfilled, (state) => ({
       ...state,
       isLoading: false,
     }));
-    builder.addCase(startNotebookCluster.rejected, (state, action) => ({
+    builder.addCase(getNotebookClusterManifest.rejected, (state, action) => ({
       ...state,
       error: action.payload,
       status: NotebookApiStatus.unverified,

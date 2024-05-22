@@ -1,17 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { NotebookApi } from 'services/api/notebook';
 import { TNotebookApiResponse } from 'services/api/notebook/model';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
 
-const startNotebookCluster = createAsyncThunk<
+const getNotebookClusterManifest = createAsyncThunk<
   TNotebookApiResponse,
   {
     onSuccess: () => void;
   },
   { rejectValue: string; state: RootState }
->('notebook/start', async (args, thunkAPI) => {
-  const { data, error } = await NotebookApi.start();
+>('notebook/manifest', async (args, thunkAPI) => {
+  const { data, error } = await NotebookApi.getManifest();
 
   if (error) {
     return thunkAPI.rejectWithValue(error?.message);
@@ -31,7 +32,7 @@ const getNotebookClusterStatus = createAsyncThunk<
   void,
   { rejectValue: string; state: RootState }
 >('notebook/get', async (_, thunkAPI) => {
-  const { data, error } = await NotebookApi.get();
+  const { data, error } = await NotebookApi.getStatus();
 
   if (error) {
     return thunkAPI.rejectWithValue(error?.message);
@@ -66,4 +67,4 @@ const stopNotebookCluster = createAsyncThunk<
   });
 });
 
-export { startNotebookCluster, getNotebookClusterStatus, stopNotebookCluster };
+export { getNotebookClusterManifest, getNotebookClusterStatus, stopNotebookCluster };

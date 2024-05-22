@@ -15,7 +15,7 @@ import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
 import { orderCardIfNeeded } from 'utils/helper';
 
-import { dashboardCards } from './components/DashboardCards';
+import { getDashboardCards } from './components/DashboardCards';
 import DataExplorationLinks from './components/DashboardCards/DataExplorationLinks';
 
 import styles from './index.module.scss';
@@ -53,7 +53,7 @@ const Dashboard = () => {
             }),
           )
         }
-        items={orderCardIfNeeded(dashboardCards, userInfo?.config.dashboard?.cards?.order)}
+        items={orderCardIfNeeded(getDashboardCards(), userInfo?.config.dashboard?.cards?.order)}
         gutter={[24, 24]}
       />
     </Space>
