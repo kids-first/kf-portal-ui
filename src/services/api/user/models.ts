@@ -78,7 +78,7 @@ export type TUserConfig = {
 };
 
 export enum TUserGroups {
-  INVESTIGATOR = 'kf-investigator',
+  BETA = 'kf-beta',
 }
 
 export type TUserInsert = Omit<TUser, 'id' | 'keycloak_id' | 'creation_date' | 'update_date'>;

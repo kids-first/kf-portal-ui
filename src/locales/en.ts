@@ -717,18 +717,32 @@ const en = {
         },
         notebook: {
           title: 'Variant Workbench',
+          dataStudio: 'Data Studio',
+          tooltip: {
+            title: 'CAVATICA VWB — Data Studio',
+            part1: 'Analyze Kids First’s variant data in Cavatica’s',
+            part2:
+              'for enhanced data manipulation. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbSNFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
+            part3:
+              'In order to access and copy variant data in a Cavatica project, you must have authorizations to access select NCI and Kids First controlled data. Connect to our data repository partners using your eRA Commons account to obtain controlled access to variant data.',
+            readMore: 'Read more on',
+            applyingForDataAccess: 'applying for data access',
+          },
           account: 'Account Settings',
           firstConnectError:
             'In order to lauch your notebook, you must first connect to your data repositories in your',
-          description:
-            'Connect to our data respository partners in order to access the Kids First variant database in your own <b>high performance compute environment</b>.',
+          description: {
+            part1:
+              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s',
+            part2: 'and combine participant clinical data with variant annotations.',
+          },
           contactSupport:
             'We were unable to complete this operation. <a href="mailto:support@kidsfirstdrc.org">Contact support</a> if the issue persists',
           tryAgain: 'Try Again',
           notAllowed: 'Currently available for Kids First investigators only.',
-          wait: 'This process may take up to 10 minutes. You can safely navigate away from this page.',
+          wait: 'This process may take a few moments.',
           open: 'Open notebooks',
-          launch: 'Launch environment',
+          launch: 'Launch in Cavatica',
         },
         fhirDataResource: {
           title: 'Kids First FHIR API',

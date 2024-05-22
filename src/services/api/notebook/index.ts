@@ -1,22 +1,22 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
+
 import { sendRequest } from 'services/api';
+
 import { TNotebookApiResponse } from './model';
 
-export const NOTEBOOK_API_URL = `${EnvironmentVariables.configFor('VARIANT_CLUSTER_API')}`;
+export const NOTEBOOK_API_URL = `${EnvironmentVariables.configFor('VWB_CAVATICA_API')}`;
 
-const start = () => {
-  return sendRequest<TNotebookApiResponse>({
-    method: 'POST',
-    url: NOTEBOOK_API_URL,
-  });
-};
-
-const get = () => {
-  return sendRequest<TNotebookApiResponse>({
+const getManifest = () =>
+  sendRequest<TNotebookApiResponse>({
     method: 'GET',
-    url: NOTEBOOK_API_URL,
+    url: `${NOTEBOOK_API_URL}/vwb/manifest`,
   });
-};
+
+const getStatus = () =>
+  sendRequest<TNotebookApiResponse>({
+    method: 'GET',
+    url: `${NOTEBOOK_API_URL}/status`,
+  });
 
 const stop = () =>
   sendRequest<void>({
@@ -25,7 +25,7 @@ const stop = () =>
   });
 
 export const NotebookApi = {
-  start,
-  get,
+  getManifest,
+  getStatus,
   stop,
 };

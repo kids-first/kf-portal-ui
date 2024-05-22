@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { ApiOutlined, RocketOutlined } from '@ant-design/icons';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import PopoverContentLink from '@ferlab/ui/core/components/PopoverContentLink';
 import { IFenceService } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import FencesAuthentificationModal from '@ferlab/ui/core/components/Widgets/AuthorizedStudies/FencesAuthentificationModal';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -11,7 +13,7 @@ import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
-import ZeppelinImg from 'components/assets/appache-zeppelin.png';
+import logo from 'components/assets/jupyterLab.png';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
 import OpenInNewIcon from 'components/Icons/OpenInIcon';
@@ -20,7 +22,7 @@ import { TUserGroups } from 'services/api/user/models';
 import { useAtLeastOneFenceConnected, useFenceAuthentification } from 'store/fences';
 import { fenceDisconnection, fenceOpenAuhentificationTab } from 'store/fences/thunks';
 import { useNotebook } from 'store/notebook';
-import { getNotebookClusterStatus, startNotebookCluster } from 'store/notebook/thunks';
+import { getNotebookClusterManifest, getNotebookClusterStatus } from 'store/notebook/thunks';
 import { useUser } from 'store/user';
 
 import styles from './index.module.scss';
@@ -63,21 +65,22 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const onCloseFenceAuthentificationModal = () => {
     setIsFenceModalAuthentificationOpen(false);
     if (hasAtLeastOneAuthentificatedFence) {
-      handleStartNotebookCluster();
+      handleGetManifest();
     }
   };
 
   const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
 
-  const isAllowed = groups.includes(TUserGroups.INVESTIGATOR);
+  const isAllowed = groups.includes(TUserGroups.BETA);
   const isProcessing = (isLoading || isNotebookStatusInProgress(status)) && !error;
 
-  const handleStartNotebookCluster = () =>
+  const handleGetManifest = () => {
     dispatch(
-      startNotebookCluster({
+      getNotebookClusterManifest({
         onSuccess: () => dispatch(getNotebookClusterStatus()),
       }),
     );
+  };
 
   useInterval(
     () => {
@@ -112,6 +115,33 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
             id={id}
             key={key}
             title={intl.get('screen.dashboard.cards.notebook.title')}
+            infoPopover={{
+              title: intl.get('screen.dashboard.cards.notebook.tooltip.title'),
+              content: (
+                <Space direction="vertical" className={styles.content}>
+                  <Text>
+                    {intl.get('screen.dashboard.cards.notebook.tooltip.part1')}
+                    <PopoverContentLink
+                      className={styles.tooltipLinkRight}
+                      externalHref="https://docs.cavatica.org/docs/about-data-cruncher"
+                      title={intl.get('screen.dashboard.cards.notebook.dataStudio')}
+                    />
+                    {intl.get('screen.dashboard.cards.notebook.tooltip.part2')}
+                  </Text>
+                  <Text>{intl.get('screen.dashboard.cards.notebook.tooltip.part3')}</Text>
+                  <Text>
+                    {intl.get('screen.dashboard.cards.notebook.tooltip.readMore')}
+                    <PopoverContentLink
+                      className={styles.tooltipLinkLeft}
+                      externalHref="https://kidsfirstdrc.org/help-center/accessing-controlled-data-via-dbgap/"
+                      title={intl.get(
+                        'screen.dashboard.cards.notebook.tooltip.applyingForDataAccess',
+                      )}
+                    />
+                  </Text>
+                </Space>
+              ),
+            }}
             withHandle
           />
         }
@@ -119,9 +149,18 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
           <div className={styles.wrapper}>
             <Space className={styles.textCentered} align="center" direction="vertical" size={16}>
               <div>
-                <img src={ZeppelinImg} alt="Appache-Zeppelin-Logo" width={105} />
+                <img src={logo} alt="Appache-Zeppelin-Logo" width={125} />
               </div>
-              <Text>{intl.getHTML('screen.dashboard.cards.notebook.description')}</Text>
+              <Text>
+                {intl.get('screen.dashboard.cards.notebook.description.part1')}
+                <ExternalLink
+                  href="https://docs.cavatica.org/docs/about-data-cruncher"
+                  className={styles.link}
+                >
+                  {intl.get('screen.dashboard.cards.notebook.dataStudio')}
+                </ExternalLink>
+                {intl.get('screen.dashboard.cards.notebook.description.part2')}
+              </Text>
               {!hasAtLeastOneAuthentificatedFence && (
                 <Button
                   type="primary"
@@ -143,7 +182,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                   type="primary"
                   size="small"
                   icon={<RocketOutlined width={11} height={14} />}
-                  onClick={() => handleStartNotebookCluster()}
+                  onClick={() => handleGetManifest()}
                 >
                   {intl.get('screen.dashboard.cards.notebook.launch')}
                 </Button>
