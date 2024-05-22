@@ -775,10 +775,10 @@ const en = {
     },
     community: {
       title: 'Kids First Community',
-      result: 'Member',
-      results: 'Members',
-      resultsMember: 'Members',
-      noResults: 'No members',
+      result: 'Public Member',
+      results: 'Public Members',
+      noResults: 'No Public members',
+      totalMembers: 'Total Members',
       search: {
         filters: 'Filters',
         selectPlaceholder: 'Select',
