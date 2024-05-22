@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 import TableHeader from '@ferlab/ui/core/components/ProTable/Header';
 import { BooleanOperators, TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -9,6 +10,9 @@ import { useMembers } from 'graphql/members/actions';
 import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
 import { scrollToTop } from 'utils/helper';
 import { numberWithCommas } from 'utils/string';
+
+import { useGlobals } from '../../store/global';
+import { fetchStats } from '../../store/global/thunks';
 
 import FiltersBox from './components/Filters/Box';
 import MemberCard from './components/MemberCard';
@@ -59,14 +63,23 @@ const resolveSqon = (search: string, roles: string[], interests: string[]) => {
 
 const CommunityPage = () => {
   const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
   const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
   const [roleFilter, setRoleFilter] = useState<string[]>([]);
   const [interestsFilter, setInterestsFilter] = useState<string[]>([]);
+  const { stats } = useGlobals();
+
   const { loading, data, total } = useMembers({
     first: queryConfig.size,
     offset: queryConfig.size * (queryConfig.pageIndex - 1),
     sqon: resolveSqon(search, roleFilter, interestsFilter),
   });
+
+  useEffect(() => {
+    if (!stats) {
+      dispatch(fetchStats());
+    }
+  }, [dispatch, stats]);
 
   const onSearchFilterChange = (search: string) => {
     if (search.length > 0) {
@@ -105,6 +118,11 @@ const CommunityPage = () => {
           pageIndex={queryConfig.pageIndex}
           pageSize={queryConfig.size}
           total={total}
+          extraCountInfo={[
+            <span>
+              {stats?.members.totalCount} {intl.get('screen.community.totalMembers')}
+            </span>,
+          ]}
           dictionary={{
             itemCount: {
               result: intl.get('screen.community.result'),
