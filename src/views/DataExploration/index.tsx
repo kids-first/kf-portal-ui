@@ -9,23 +9,16 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-// @ts-ignore
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
-// @ts-ignore
 import {
   CheckboxQFOption,
   QuickFilterType,
   TitleQFOption,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
-// @ts-ignore
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
-// @ts-ignore
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-// @ts-ignore
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
-// @ts-ignore
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
-// @ts-ignore
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
