@@ -17,18 +17,15 @@ import logo from 'components/assets/jupyterLab.png';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
 import OpenInNewIcon from 'components/Icons/OpenInIcon';
-import useInterval from 'hooks/useInterval';
 import { TUserGroups } from 'services/api/user/models';
 import { useAtLeastOneFenceConnected, useFenceAuthentification } from 'store/fences';
 import { fenceDisconnection, fenceOpenAuhentificationTab } from 'store/fences/thunks';
 import { useNotebook } from 'store/notebook';
-import { getNotebookClusterManifest, getNotebookClusterStatus } from 'store/notebook/thunks';
+import { getNotebookClusterManifest } from 'store/notebook/thunks';
 import { useUser } from 'store/user';
 
 import styles from './index.module.scss';
 const { Text } = Typography;
-
-const REFRESH_INTERVAL = 30000;
 
 const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
@@ -69,34 +66,15 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
     }
   };
 
-  const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
+  // const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
+  const hasAtLeastOneAuthentificatedFence = true;
 
   const isAllowed = groups.includes(TUserGroups.BETA);
   const isProcessing = (isLoading || isNotebookStatusInProgress(status)) && !error;
 
   const handleGetManifest = () => {
-    dispatch(
-      getNotebookClusterManifest({
-        onSuccess: () => dispatch(getNotebookClusterStatus()),
-      }),
-    );
+    dispatch(getNotebookClusterManifest());
   };
-
-  useInterval(
-    () => {
-      dispatch(getNotebookClusterStatus());
-    },
-    // Delay in milliseconds or null to stop it
-    isProcessing ? REFRESH_INTERVAL : null,
-  );
-
-  useEffect(() => {
-    // can check status
-    if (isAllowed && !error) {
-      dispatch(getNotebookClusterStatus());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
@@ -138,6 +116,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                         'screen.dashboard.cards.notebook.tooltip.applyingForDataAccess',
                       )}
                     />
+                    .
                   </Text>
                 </Space>
               ),
