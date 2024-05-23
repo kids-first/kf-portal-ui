@@ -722,7 +722,7 @@ const en = {
             title: 'CAVATICA VWB — Data Studio',
             part1: 'Analyze Kids First’s variant data in Cavatica’s',
             part2:
-              'for enhanced data manipulation. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbSNFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
+              'for enhanced data manipulation. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbNSFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
             part3:
               'In order to access and copy variant data in a Cavatica project, you must have authorizations to access select NCI and Kids First controlled data. Connect to our data repository partners using your eRA Commons account to obtain controlled access to variant data.',
             readMore: 'Read more on',
@@ -743,6 +743,22 @@ const en = {
           wait: 'This process may take a few moments.',
           open: 'Open notebooks',
           launch: 'Launch in Cavatica',
+          error: {
+            title: 'Error',
+            no_fence_connection: {
+              title: 'Connection Error',
+              description: `We couldn't establish a connection to the data repository partners. Please use your eRA Commons account to connect through the Authorized Studies widget.`,
+            },
+            no_acl: {
+              title: 'Access denied: insufficient permissions',
+              description:
+                'You do not have the necessary permissions to access this controlled data. Please try again or <a href="mailto:support@kidsfirstdrc.org">Contact support</a>.',
+            },
+            no_file_for_acls: {
+              title: 'No variant data available',
+              description: 'No variant data was found for your permitted controlled access list.',
+            },
+          },
         },
         fhirDataResource: {
           title: 'Kids First FHIR API',
