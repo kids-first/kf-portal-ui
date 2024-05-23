@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import {
@@ -8,22 +9,28 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+// @ts-ignore
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
+// @ts-ignore
 import {
-  TitleQFOption,
   CheckboxQFOption,
   QuickFilterType,
+  TitleQFOption,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
+// @ts-ignore
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
+// @ts-ignore
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+// @ts-ignore
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
+// @ts-ignore
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
+// @ts-ignore
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { capitalize, get } from 'lodash';
-import { ArrangerApi } from 'services/api/arranger';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -35,6 +42,7 @@ import {
 import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
+import { ArrangerApi } from 'services/api/arranger';
 import { RemoteComponentList } from 'store/remote/types';
 import {
   mapFilterForBiospecimen,
@@ -42,6 +50,8 @@ import {
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
 import { getFacetsDictionary, getQueryBuilderDictionary } from 'utils/translation';
+
+import { AGGREGATION_QUERY } from '../../graphql/queries';
 
 import { BiospecimenCollectionSearch, BiospecimenSearch } from './components/BiospecimenSearch';
 import BiospecimenSetSearch from './components/BiospecimenSetSearch';
@@ -179,59 +189,6 @@ const filterGroups: {
   },
 };
 
-const getQFSuggestions = async (
-  setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
-  sqon: ISyntheticSqon,
-  searchText: string,
-) => {
-  const { data } = await ArrangerApi.graphqlRequest<{
-    data: { participant: { aggregations: any } };
-  }>({
-    query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
-    variables: {
-      sqon: sqon,
-    },
-  });
-
-  const regexp = new RegExp('(?:^|\\W)' + searchText, 'gi');
-  const facetDictionary = getFacetsDictionary();
-  const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
-
-  Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
-    const facetName = get(
-      facetDictionary,
-      underscoreToDot(getFieldWithoutPrefix(key)),
-      removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
-    );
-
-    const facetValueMapping =
-      getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
-
-    const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
-
-    (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
-      const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
-      if (regexp.exec(title)) {
-        bucketFiltered.push({
-          key: bucket.key,
-          title,
-          docCount: bucket.doc_count,
-          type: QuickFilterType.CHECKBOX,
-          facetKey: key,
-          index: getIndexFromQFValueFacet(key),
-        });
-      }
-    });
-
-    if (regexp.exec(facetName) || bucketFiltered.length > 0) {
-      suggestions.push({ key: key, title: facetName, type: QuickFilterType.TITLE });
-      suggestions.push(...bucketFiltered);
-    }
-  });
-
-  setOptions(suggestions);
-};
-
 const getIndexFromQFValueFacet = (facetKey: string): INDEXES => {
   if (facetKey.startsWith('files__biospecimens__')) return INDEXES.BIOSPECIMEN;
   else if (facetKey.startsWith('files__')) return INDEXES.FILE;
@@ -249,6 +206,132 @@ const DataExploration = () => {
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
   const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const getMappings = (index: INDEXES) => {
+    if (index === INDEXES.PARTICIPANT) {
+      return participantMappingResults;
+    } else if (index === INDEXES.FILE) {
+      return fileMappingResults;
+    } else if (index === INDEXES.BIOSPECIMEN) {
+      return biospecimenMappingResults;
+    }
+    return { loading: false, data: [] };
+  };
+
+  const getQFSuggestions = async (
+    setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
+    sqon: ISyntheticSqon,
+    searchText: string,
+  ) => {
+    setIsLoading(true);
+    const { data } = await ArrangerApi.graphqlRequest<{
+      data: { participant: { aggregations: any } };
+    }>({
+      query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
+      variables: {
+        sqon: sqon,
+      },
+    });
+
+    const regexp = new RegExp('(?:^|\\W)' + searchText, 'gi');
+    const facetDictionary = getFacetsDictionary();
+    const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
+
+    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
+      const facetName = get(
+        facetDictionary,
+        underscoreToDot(getFieldWithoutPrefix(key)),
+        removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
+      );
+
+      const facetValueMapping =
+        getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
+
+      const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
+
+      (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
+        const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
+        if (regexp.exec(title)) {
+          bucketFiltered.push({
+            key: bucket.key,
+            title,
+            docCount: bucket.doc_count,
+            type: QuickFilterType.CHECKBOX,
+            facetKey: key,
+            index: getIndexFromQFValueFacet(key),
+          });
+        }
+      });
+
+      if (regexp.exec(facetName) || bucketFiltered.length > 0) {
+        suggestions.push({
+          key: key,
+          title: facetName,
+          type: QuickFilterType.TITLE,
+          index: getIndexFromQFValueFacet(key),
+        });
+        suggestions.push(...bucketFiltered);
+      }
+    });
+    setOptions(suggestions);
+    setIsLoading(false);
+  };
+
+  const handleFacetClick = async (
+    setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
+    sqon: ISyntheticSqon,
+    option: TitleQFOption,
+  ) => {
+    setIsLoading(true);
+
+    const mappings = getMappings(option.index! as INDEXES);
+    const { data } = await ArrangerApi.graphqlRequest<{
+      data: { participant: { aggregations: any } };
+    }>({
+      query: AGGREGATION_QUERY(option.index!, [option.key], mappings).loc?.source.body,
+
+      variables: {
+        sqon: sqon,
+      },
+    });
+
+    const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
+
+    const facetDictionary = getFacetsDictionary();
+
+    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
+      const facetName = get(
+        facetDictionary,
+        underscoreToDot(getFieldWithoutPrefix(key)),
+        removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
+      );
+
+      const facetValueMapping =
+        getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
+
+      const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
+
+      (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
+        const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
+        bucketFiltered.push({
+          key: bucket.key,
+          title,
+          docCount: bucket.doc_count,
+          type: QuickFilterType.CHECKBOX,
+          facetKey: key,
+          index: getIndexFromQFValueFacet(key),
+        });
+      });
+
+      if (bucketFiltered.length > 0) {
+        suggestions.push(...bucketFiltered);
+      }
+    });
+
+    setOptions(suggestions);
+    setIsLoading(false);
+  };
 
   const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
@@ -351,13 +434,15 @@ const DataExploration = () => {
           applyLabel: intl.get('global.quickFilter.apply'),
           cancelLabel: intl.get('global.quickFilter.cancel'),
           emptyMessage: intl.get('global.quickFilter.emptyMessage'),
+          menuTitle: intl.get('global.quickFilter.menuTitle'),
+          placeholder: intl.get('global.quickFilter.placeholder'),
+          resultsLabel: intl.get('global.quickFilter.results'),
+          handleFacetClick,
           enableQuickFilter: enableQuickFilter === 'true',
           getSuggestionsList: getQFSuggestions,
           inputSuffixIcon: <SearchOutlined />,
-          menuTitle: intl.get('global.quickFilter.menuTitle'),
-          placeholder: intl.get('global.quickFilter.placeholder'),
           queryBuilderId: DATA_EXPLORATION_QB_ID,
-          resultsLabel: intl.get('global.quickFilter.results'),
+          isLoading,
         }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
