@@ -424,10 +424,15 @@ const DataExploration = () => {
         className={styles.sideMenu}
         menuItems={menuItems} /* defaultSelectedKey={tab} */
         quickFilter={{
+          allLabel: intl.get('global.quickFilter.all'),
+          allOfLabel: intl.get('global.quickFilter.allOf'),
+          anyOfLabel: intl.get('global.quickFilter.anyOf'),
           applyLabel: intl.get('global.quickFilter.apply'),
           cancelLabel: intl.get('global.quickFilter.cancel'),
           emptyMessage: intl.get('global.quickFilter.emptyMessage'),
           menuTitle: intl.get('global.quickFilter.menuTitle'),
+          noneLabel: intl.get('global.quickFilter.none'),
+          noneOfLabel: intl.get('global.quickFilter.noneOf'),
           placeholder: intl.get('global.quickFilter.placeholder'),
           resultsLabel: intl.get('global.quickFilter.results'),
           handleFacetClick,
