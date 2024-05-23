@@ -1,3 +1,14 @@
+## VERSION 5.3.0 (2024-05-23)
+### Features
+- [SKFP-928](https://d3b.atlassian.net/browse/SKFP-928) Feature: [Variant Workbench] Implemented Variant Workbench widget to copy variant data into a Cavatica project
+
+## Technical / Other changes
+- [SKFP-1059](https://d3b.atlassian.net/browse/SKFP-1059) Fix: [Entity] Fixed the display of the authorization lock files in the file entity page authorized in the Data Exploration page  
+- [SKFP-1065](https://d3b.atlassian.net/browse/SKFP-1065) Refactor: [Data Exploration] Added ontology term, hyperlink and space on the Histological Diagnosis field formatting
+- [SKFP-1070](https://d3b.atlassian.net/browse/SKFP-1070) Refactor: [Dashboard] Updated the FHIR URL in the widget to use the new FHIR servers as redirects
+- [SKFP-1072](https://d3b.atlassian.net/browse/SKFP-1072) Refactor: [Data Exploration] Added the Down syndrome related MONDO diagnoses to the Most Frequent Diagnoses chart
+- [SKFP-1077](https://d3b.atlassian.net/browse/SKFP-1077) Refactor: [Community] Added the total number of private and public members
+
 ## VERSION 5.2.0 (2024-05-15)
 
 ### Features
