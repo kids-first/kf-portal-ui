@@ -98,7 +98,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="PT_RZVC67GC"]').find('td[class="ant-table-cell"]').eq(1).contains('Father').should('exist');
   });
   
-  it('Panneau Diagnoses', () => {
+  it('Panneau Diagnoses [SKFP-1080]', () => {
     cy.resetColumns('diagnosis');
     cy.get('[id="diagnosis"]').find('[class*="EntityTable_title"]').contains('Diagnosis').should('exist');
     cy.get('[id="diagnosis"]').find('[class="ant-collapse-header"]').contains('Diagnosis').should('exist');
@@ -112,12 +112,12 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(0).contains('MONDO:').should('exist');
     cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(0).contains('0005711').should('exist');
     cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(1).contains('NCIT:C98893').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(2).contains('congential diaphragmatic hernia').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(2).contains('congenital diaphragmatic hernia').should('exist');
     cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(3).contains('-').should('exist');
     cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(4).contains('302').should('exist');
   });
   
-  it('Panneau Phenotypes', () => {
+  it('Panneau Phenotypes [SKFP-1080]', () => {
     cy.resetColumns('phenotype');
     cy.get('[id="phenotype"]').find('[class*="EntityTable_title"]').contains('Phenotype').should('exist');
     cy.get('[id="phenotype"]').find('[class="ant-collapse-header"]').contains('Phenotype').should('exist');
