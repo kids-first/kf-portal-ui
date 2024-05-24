@@ -66,8 +66,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
     }
   };
 
-  // const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
-  const hasAtLeastOneAuthentificatedFence = true;
+  const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
 
   const isAllowed = groups.includes(TUserGroups.BETA);
   const isProcessing = (isLoading || isNotebookStatusInProgress(status)) && !error;
