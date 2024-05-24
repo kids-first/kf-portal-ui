@@ -29,6 +29,8 @@ const getNotebookClusterManifest = createAsyncThunk<
       errorMessage = 'screen.dashboard.cards.notebook.error.no_file_for_acls.message';
       errorDescription = 'screen.dashboard.cards.notebook.error.no_file_for_acls.description';
     }
+  } else if (data?.importUrl) {
+    window.open(data?.importUrl);
   }
 
   return handleThunkApiReponse({
