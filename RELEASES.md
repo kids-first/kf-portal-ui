@@ -1,3 +1,7 @@
+## VERSION 5.3.2 (2024-05-24)
+### Features
+- [SKFP-1084](https://d3b.atlassian.net/browse/SKFP-1084) Feature: [Variant Workbench] New redirection system
+
 ## VERSION 5.3.1 (2024-05-24)
 ### Features
 - [SKFP-1078](https://d3b.atlassian.net/browse/SKFP-1078) Feature: [Data Exploration] Click on facet name should display the face
