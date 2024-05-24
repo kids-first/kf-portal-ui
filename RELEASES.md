@@ -1,3 +1,10 @@
+## VERSION 5.3.1 (2024-05-24)
+### Features
+- [SKFP-1078](https://d3b.atlassian.net/browse/SKFP-1078) Feature: [Data Exploration] Click on facet name should display the face
+
+## Technical / Other changes
+- [SKFP-1083](https://d3b.atlassian.net/browse/SKFP-1083) Fix: [Variant Workbench] Fixed fences connections status  
+
 ## VERSION 5.3.0 (2024-05-23)
 ### Features
 - [SKFP-928](https://d3b.atlassian.net/browse/SKFP-928) Feature: [Variant Workbench] Implemented Variant Workbench widget to copy variant data into a Cavatica project
