@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { ApiOutlined, RocketOutlined } from '@ant-design/icons';
@@ -8,7 +8,6 @@ import { IFenceService } from '@ferlab/ui/core/components/Widgets/AuthorizedStud
 import FencesAuthentificationModal from '@ferlab/ui/core/components/Widgets/AuthorizedStudies/FencesAuthentificationModal';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Alert, Button, Space, Typography } from 'antd';
-import { isNotebookStatusInProgress, isNotebookStatusLaunched } from 'helpers/notebook';
 import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 
@@ -16,7 +15,6 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import logo from 'components/assets/jupyterLab.png';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
-import OpenInNewIcon from 'components/Icons/OpenInIcon';
 import { TUserGroups } from 'services/api/user/models';
 import { useAtLeastOneFenceConnected, useFenceAuthentification } from 'store/fences';
 import { fenceDisconnection, fenceOpenAuhentificationTab } from 'store/fences/thunks';
@@ -57,7 +55,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   ];
   const [isFenceModalAuthentificationOpen, setIsFenceModalAuthentificationOpen] =
     useState<boolean>(false);
-  const { url, isLoading, error, status } = useNotebook();
+  const { isLoading, error } = useNotebook();
   const { groups } = useUser();
   const onCloseFenceAuthentificationModal = () => {
     setIsFenceModalAuthentificationOpen(false);
@@ -69,7 +67,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
 
   const isAllowed = groups.includes(TUserGroups.BETA);
-  const isProcessing = (isLoading || isNotebookStatusInProgress(status)) && !error;
+  const isProcessing = isLoading && !error;
 
   const handleGetManifest = () => {
     dispatch(getNotebookClusterManifest());
@@ -153,7 +151,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                 </Button>
               )}
 
-              {hasAtLeastOneAuthentificatedFence && !url && (
+              {hasAtLeastOneAuthentificatedFence && (
                 <Button
                   loading={isProcessing}
                   disabled={!isAllowed}
@@ -163,13 +161,6 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                   onClick={() => handleGetManifest()}
                 >
                   {intl.get('screen.dashboard.cards.notebook.launch')}
-                </Button>
-              )}
-
-              {hasAtLeastOneAuthentificatedFence && url && isNotebookStatusLaunched(status) && (
-                <Button type="primary" size="small" href={url} target="_blank">
-                  <span>{intl.get('screen.dashboard.cards.notebook.open')}</span>
-                  <OpenInNewIcon width={12.5} height={12.5} />
                 </Button>
               )}
             </Space>
