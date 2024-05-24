@@ -10,5 +10,5 @@ export enum NotebookApiStatus {
 
 export type TNotebookApiResponse = {
   status: NotebookApiStatus;
-  url?: string;
+  importUrl?: string;
 };
