@@ -16,7 +16,7 @@ export const dataExploQFFacets = [
   'diagnosis__ncit_id_diagnosis',
   'diagnosis__source_text',
   'family_type',
-  'observed_phenotype__name',
+  // 'observed_phenotype__name',
   'phenotype__hpo_phenotype_not_observed',
   'phenotype__source_text',
   'outcomes__vital_status',
@@ -29,7 +29,8 @@ export const dataExploQFFacets = [
   'files__biospecimens__collection_anatomy_site',
   'files__biospecimens__consent_type',
   'files__biospecimens__dbgap_consent_code',
-  'files__biospecimens__diagnoses__diagnosis_mondo',
+  'files__biospecimens__diagnoses__mondo_display_term',
+  // 'files__biospecimens__diagnoses__diagnosis_mondo',
   'files__biospecimens__diagnoses__diagnosis_ncit',
   'files__biospecimens__diagnoses__source_text',
   'files__biospecimens__diagnoses__source_text_tumor_location',
@@ -86,6 +87,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
         is_proband {
           buckets {
             key
+            key_as_string
             doc_count
           }
         }
@@ -140,12 +142,12 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        observed_phenotype__name {
-          buckets {
-            key
-            doc_count
-          }
-        }
+        # observed_phenotype__name {
+        #   buckets {
+        #     key
+        #     doc_count
+        #   }
+        # }
         phenotype__hpo_phenotype_not_observed {
           buckets {
             key
@@ -217,12 +219,18 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        files__biospecimens__diagnoses__diagnosis_mondo {
+        files__biospecimens__diagnoses__mondo_display_term {
           buckets {
             key
             doc_count
           }
         }
+        # files__biospecimens__diagnoses__diagnosis_mondo {
+        #   buckets {
+        #     key
+        #     doc_count
+        #   }
+        # }
         files__biospecimens__diagnoses__diagnosis_ncit {
           buckets {
             key

@@ -9,6 +9,8 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { VisualType } from '@ferlab/ui/core/components/filters/types';
+import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import {
   CheckboxQFOption,
@@ -16,6 +18,7 @@ import {
   TitleQFOption,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
+import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
@@ -252,6 +255,7 @@ const DataExploration = () => {
             docCount: bucket.doc_count,
             type: QuickFilterType.CHECKBOX,
             facetKey: key,
+            facetTitle: facetName,
             index: getIndexFromQFValueFacet(key),
           });
         }
@@ -267,6 +271,7 @@ const DataExploration = () => {
         suggestions.push(...bucketFiltered);
       }
     });
+
     setOptions(suggestions);
     setIsLoading(false);
   };
@@ -406,6 +411,27 @@ const DataExploration = () => {
     },
   ];
 
+  const addQFOptionsToQB = (options: CheckboxQFOption[], operator: TermOperators) => {
+    options.forEach((option: CheckboxQFOption) => {
+      updateActiveQueryFilters({
+        queryBuilderId: DATA_EXPLORATION_QB_ID,
+        filterGroup: {
+          field: underscoreToDot(getFieldWithoutPrefix(option.facetKey)),
+          title: option.facetTitle,
+          type: VisualType.Checkbox,
+        },
+        selectedFilters: [
+          {
+            data: { count: option.docCount, key: option.key, operator },
+            id: option.title,
+            name: option.title,
+          },
+        ],
+        index: option.index,
+      });
+    });
+  };
+
   return (
     <div className={styles.dataExplorationLayout}>
       <TreeFacetModal
@@ -438,6 +464,7 @@ const DataExploration = () => {
           handleFacetClick,
           enableQuickFilter: enableQuickFilter === 'true',
           getSuggestionsList: getQFSuggestions,
+          handleOnApply: addQFOptionsToQB,
           inputSuffixIcon: <SearchOutlined />,
           queryBuilderId: DATA_EXPLORATION_QB_ID,
           isLoading,
