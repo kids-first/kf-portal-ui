@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import {
@@ -9,7 +9,9 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import useQueryBuilderState, {
+  updateActiveQueryField,
+} from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import {
   CheckboxQFOption,
@@ -198,10 +200,28 @@ const getFieldWithoutPrefix = (facetKey: string): string => {
 
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
+  const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
   const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [quickFilterData, setQuickFilterData] = useState<{ participant: { aggregations: any } }>();
+
+  const fetchFacets = useCallback(async () => {
+    const { data } = await ArrangerApi.graphqlRequest<{
+      data: { participant: { aggregations: any } };
+    }>({
+      query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
+      variables: {
+        sqon: activeQuery,
+      },
+    });
+    if (data) setQuickFilterData(data?.data);
+  }, [JSON.stringify(activeQuery)]);
+
+  useEffect(() => {
+    fetchFacets();
+  }, [fetchFacets]);
 
   const getMappings = (index: INDEXES) => {
     if (index === INDEXES.PARTICIPANT) {
@@ -216,24 +236,15 @@ const DataExploration = () => {
 
   const getQFSuggestions = async (
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
-    sqon: ISyntheticSqon,
     searchText: string,
   ) => {
     setIsLoading(true);
-    const { data } = await ArrangerApi.graphqlRequest<{
-      data: { participant: { aggregations: any } };
-    }>({
-      query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
-      variables: {
-        sqon: sqon,
-      },
-    });
 
     const regexp = new RegExp('(?:^|\\W)' + searchText, 'gi');
     const facetDictionary = getFacetsDictionary();
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
 
-    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
+    Object.entries(quickFilterData?.participant.aggregations).forEach(([key, value]) => {
       const facetName = get(
         facetDictionary,
         underscoreToDot(getFieldWithoutPrefix(key)),
