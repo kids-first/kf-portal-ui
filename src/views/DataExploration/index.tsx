@@ -9,8 +9,7 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { VisualType } from '@ferlab/ui/core/components/filters/types';
-import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import {
   CheckboxQFOption,
@@ -19,7 +18,7 @@ import {
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
-import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+import { ISyntheticSqon, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
@@ -255,7 +254,6 @@ const DataExploration = () => {
             docCount: bucket.doc_count,
             type: QuickFilterType.CHECKBOX,
             facetKey: key,
-            facetTitle: facetName,
             index: getIndexFromQFValueFacet(key),
           });
         }
@@ -285,9 +283,10 @@ const DataExploration = () => {
 
     const mappings = getMappings(option.index! as INDEXES);
     const { data } = await ArrangerApi.graphqlRequest<{
-      data: { participant: { aggregations: any } };
+      data: any;
     }>({
-      query: AGGREGATION_QUERY(option.index!, [option.key], mappings).loc?.source.body,
+      query: AGGREGATION_QUERY(option.index!, [getFieldWithoutPrefix(option.key)], mappings).loc
+        ?.source.body,
 
       variables: {
         sqon: sqon,
@@ -297,8 +296,12 @@ const DataExploration = () => {
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
 
     const facetDictionary = getFacetsDictionary();
+    let agg = {};
+    if (option.index === INDEXES.PARTICIPANT) agg = data?.data.participant.aggregations;
+    else if (option.index === INDEXES.BIOSPECIMEN) agg = data?.data.biospecimen.aggregations;
+    else if (option.index === INDEXES.FILE) agg = data?.data.file.aggregations;
 
-    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
+    Object.entries(agg).forEach(([key, value]) => {
       const facetName = get(
         facetDictionary,
         underscoreToDot(getFieldWithoutPrefix(key)),
@@ -318,7 +321,7 @@ const DataExploration = () => {
           docCount: bucket.doc_count,
           type: QuickFilterType.CHECKBOX,
           facetKey: key,
-          index: getIndexFromQFValueFacet(key),
+          index: option.index,
         });
       });
 
@@ -411,26 +414,17 @@ const DataExploration = () => {
     },
   ];
 
-  const addQFOptionsToQB = (options: CheckboxQFOption[], operator: TermOperators) => {
-    options.forEach((option: CheckboxQFOption) => {
-      updateActiveQueryFilters({
+  const addQFOptionsToQB = (options: CheckboxQFOption[], operator: TermOperators) =>
+    options.forEach((option: CheckboxQFOption) =>
+      updateActiveQueryField({
         queryBuilderId: DATA_EXPLORATION_QB_ID,
-        filterGroup: {
-          field: underscoreToDot(getFieldWithoutPrefix(option.facetKey)),
-          title: option.facetTitle,
-          type: VisualType.Checkbox,
-        },
-        selectedFilters: [
-          {
-            data: { count: option.docCount, key: option.key, operator },
-            id: option.title,
-            name: option.title,
-          },
-        ],
+        field: underscoreToDot(getFieldWithoutPrefix(option.facetKey)),
+        value: [option.key],
         index: option.index,
-      });
-    });
-  };
+        merge_strategy: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator,
+      }),
+    );
 
   return (
     <div className={styles.dataExplorationLayout}>

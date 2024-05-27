@@ -84,13 +84,14 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        is_proband {
-          buckets {
-            key
-            key_as_string
-            doc_count
-          }
-        }
+        # Toggle
+        # is_proband {
+        #   buckets {
+        #     key
+        #     key_as_string
+        #     doc_count
+        #   }
+        # }
         ethnicity {
           buckets {
             key
@@ -109,21 +110,24 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        diagnosis__age_at_event_days {
-          stats {
-            count
-          }
-        }
-        outcomes__age_at_event_days__value {
-          stats {
-            count
-          }
-        }
-        phenotype__age_at_event_days {
-          stats {
-            count
-          }
-        }
+        # Range
+        # diagnosis__age_at_event_days {
+        #   stats {
+        #     count
+        #   }
+        # }
+        # Range
+        # outcomes__age_at_event_days__value {
+        #   stats {
+        #     count
+        #   }
+        # }
+        # Range
+        # phenotype__age_at_event_days {
+        #   stats {
+        #     count
+        #   }
+        # }
         diagnosis__ncit_id_diagnosis {
           buckets {
             key
@@ -142,6 +146,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
+        # Browser
         # observed_phenotype__name {
         #   buckets {
         #     key
@@ -179,16 +184,18 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        files__biospecimens__age_at_biospecimen_collection {
-          stats {
-            count
-          }
-        }
-        files__biospecimens__diagnoses__age_at_event__value {
-          stats {
-            count
-          }
-        }
+        # Range
+        # files__biospecimens__age_at_biospecimen_collection {
+        #   stats {
+        #     count
+        #   }
+        # }
+        # Range
+        # files__biospecimens__diagnoses__age_at_event__value {
+        #   stats {
+        #     count
+        #   }
+        # }
         files__biospecimens__status {
           buckets {
             key
@@ -225,6 +232,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
+        # Browser
         # files__biospecimens__diagnoses__diagnosis_mondo {
         #   buckets {
         #     key
@@ -310,12 +318,13 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        files__sequencing_experiment__is_paired_end {
-          buckets {
-            key
-            doc_count
-          }
-        }
+        # Toggle
+        # files__sequencing_experiment__is_paired_end {
+        #   buckets {
+        #     key
+        #     doc_count
+        #   }
+        # }
         files__repository {
           buckets {
             key
