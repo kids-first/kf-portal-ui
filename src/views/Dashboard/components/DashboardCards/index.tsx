@@ -45,7 +45,7 @@ export const getDashboardCards = (): TSortableItems[] => {
       md: 12,
       xxl: 8,
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <SavedFilters id="3" className={styles.dashboardCard} />,
+      component: <Notebook id="3" className={styles.dashboardCard} />,
     },
     {
       id: '4',
@@ -53,7 +53,7 @@ export const getDashboardCards = (): TSortableItems[] => {
       md: 12,
       xxl: 8,
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <SavedSets id="4" className={styles.dashboardCard} />,
+      component: <SavedFilters id="4" className={styles.dashboardCard} />,
     },
     {
       id: '5',
@@ -61,21 +61,17 @@ export const getDashboardCards = (): TSortableItems[] => {
       md: 12,
       xxl: 8,
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <CaringForChildrenWithCovid id="5" className={styles.dashboardCard} />,
+      component: <SavedSets id="5" className={styles.dashboardCard} />,
     },
-  ];
-
-  const notebookFlag = getFTEnvVarByKey(FT_DASHBOARD_NOTEBOOK);
-  if (notebookFlag && notebookFlag === 'true') {
-    cards.push({
+    {
       id: '6',
       xs: 24,
       md: 12,
       xxl: 8,
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <Notebook id="6" className={styles.dashboardCard} />,
-    });
-  }
+      component: <CaringForChildrenWithCovid id="6" className={styles.dashboardCard} />,
+    },
+  ];
 
   return cards;
 };

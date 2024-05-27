@@ -40,7 +40,7 @@ const getNotebookClusterManifest = createAsyncThunk<
         thunkAPI.dispatch(
           globalActions.displayNotification({
             type: 'error',
-            message: intl.get('screen.dashboard.cards.notebook.error.title'),
+            message: intl.get(errorMessage),
             description: intl.get(errorDescription),
           }),
         );

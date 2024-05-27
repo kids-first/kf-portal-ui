@@ -15,12 +15,12 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import logo from 'components/assets/jupyterLab.png';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
-import { TUserGroups } from 'services/api/user/models';
 import { useAtLeastOneFenceConnected, useFenceAuthentification } from 'store/fences';
 import { fenceDisconnection, fenceOpenAuhentificationTab } from 'store/fences/thunks';
 import { useNotebook } from 'store/notebook';
 import { getNotebookClusterManifest } from 'store/notebook/thunks';
-import { useUser } from 'store/user';
+
+import { trackVariantWorkbench } from '../../../../../services/analytics';
 
 import styles from './index.module.scss';
 const { Text } = Typography;
@@ -56,7 +56,6 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const [isFenceModalAuthentificationOpen, setIsFenceModalAuthentificationOpen] =
     useState<boolean>(false);
   const { isLoading, error } = useNotebook();
-  const { groups } = useUser();
   const onCloseFenceAuthentificationModal = () => {
     setIsFenceModalAuthentificationOpen(false);
     if (hasAtLeastOneAuthentificatedFence) {
@@ -66,7 +65,6 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
 
   const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
 
-  const isAllowed = groups.includes(TUserGroups.BETA);
   const isProcessing = isLoading && !error;
 
   const handleGetManifest = () => {
@@ -81,6 +79,12 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
         onOk={onCloseFenceAuthentificationModal}
         fences={[gen3, dcf]}
         services={services}
+        dictionary={{
+          title: intl.get('screen.dashboard.cards.authorizedStudies.modal.title'),
+          close: intl.get('global.close'),
+          description: intl.get('screen.dashboard.cards.authorizedStudies.modal.description'),
+          error: intl.get('screen.dashboard.cards.authorizedStudies.modal.error'),
+        }}
       />
       <GridCard
         theme="shade"
@@ -142,8 +146,8 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                   type="primary"
                   size="small"
                   icon={<ApiOutlined />}
-                  disabled={!isAllowed}
                   onClick={() => {
+                    trackVariantWorkbench('Connect');
                     setIsFenceModalAuthentificationOpen(true);
                   }}
                 >
@@ -154,11 +158,13 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
               {hasAtLeastOneAuthentificatedFence && (
                 <Button
                   loading={isProcessing}
-                  disabled={!isAllowed}
                   type="primary"
                   size="small"
                   icon={<RocketOutlined width={11} height={14} />}
-                  onClick={() => handleGetManifest()}
+                  onClick={() => {
+                    trackVariantWorkbench('Launch');
+                    handleGetManifest();
+                  }}
                 >
                   {intl.get('screen.dashboard.cards.notebook.launch')}
                 </Button>
@@ -172,11 +178,6 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                 </Text>
               )}
 
-              {!isAllowed && (
-                <Text className={styles.message} disabled>
-                  {intl.get('screen.dashboard.cards.notebook.notAllowed')}
-                </Text>
-              )}
               {error && (
                 <Alert
                   type="error"
