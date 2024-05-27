@@ -9,9 +9,9 @@ import useQueryBuilderState, {
   defaultQueryBuilderState,
   setQueryBuilderState,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
+import { FilterOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-import { generateQuery, generateValueFilter, isEmptySqon } from '@ferlab/ui/core/data/sqon/utils';
+import { generateQuery, isEmptySqon } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
@@ -45,16 +45,20 @@ type OwnProps = {
 
 const PAGE_SIZE = 50;
 
-const generateSearchFilter = (search: string) =>
-  generateQuery({
-    operator: BooleanOperators.or,
-    newFilters: [
-      generateValueFilter({
-        field: 'search_text',
-        value: [`${search}*`],
-      }),
-    ],
+const generateSearchFilter = (search: string) => {
+  const query = generateQuery({
+    operator: FilterOperators.filter,
+    newFilters: [],
   });
+
+  return {
+    ...query,
+    content: {
+      fields: ['search_text'],
+      value: `*${search}*`,
+    },
+  };
+};
 
 const generateMultipleQuery = (searchValue: string, activeQuery: ISyntheticSqon) => {
   const searchQuery = generateSearchFilter(searchValue);
