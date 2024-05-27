@@ -742,7 +742,7 @@ const en = {
             part2: 'and combine participant clinical data with variant annotations.',
           },
           contactSupport:
-            'We were unable to complete this operation. <a href="mailto:support@kidsfirstdrc.org">Contact support</a> if the issue persists',
+            'We were unable to establish a connection. Please try again or <a href="mailto:support@kidsfirstdrc.org">contact support</a> if the issue persists.',
           tryAgain: 'Try Again',
           notAllowed: 'Currently available for Kids First investigators only.',
           wait: 'This process may take a few moments.',
@@ -751,17 +751,18 @@ const en = {
           error: {
             title: 'Error',
             no_fence_connection: {
-              title: 'Connection Error',
+              message: 'Connection error',
               description: `We couldn't establish a connection to the data repository partners. Please use your eRA Commons account to connect through the Authorized Studies widget.`,
             },
             no_acl: {
-              title: 'Access denied: insufficient permissions',
+              message: 'Access denied: insufficient permissions',
               description:
-                'You do not have the necessary permissions to access this controlled data. Please try again or <a href="mailto:support@kidsfirstdrc.org">Contact support</a>.',
+                'You do not have the necessary permissions to access this controlled data. Please try again or <a href="mailto:support@kidsfirstdrc.org">contact support</a>.',
             },
             no_file_for_acls: {
-              title: 'No variant data available',
-              description: 'No variant data was found for your permitted controlled access list.',
+              message: 'No variant data available',
+              description:
+                'No variant data was found for the controlled access list you are permitted to view.',
             },
           },
         },

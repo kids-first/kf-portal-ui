@@ -70,6 +70,15 @@ export const trackCavaticaAction = (page: string) => {
   }
 };
 
+export const trackVariantWorkbench = (action: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'VariantWorkbench',
+      action: `Variant Workbench - ${action}`,
+    });
+  }
+};
+
 export const trackSetActions = (action: string, setType: SetType) => {
   let message = '';
   switch (action) {
