@@ -29,12 +29,14 @@ const extractParticipantMetaData = (participants: any[]) => {
   );
 
   return {
-    case_id: joinUniquely(participants.map((x) => x.participant_id)),
+    // Removed temporarily due to bug
+    // case_id: joinUniquely(participants.map((x) => x.participant_id)),
     external_participant_ids: joinUniquely(participants.map((x) => x.external_id)),
     proband: joinUniquely(participants.map((x) => `${x.participant_id}: ${x.is_proband}`)),
-    ethnicity: joinUniquely(participants.map((x) => x.ethnicity)),
-    gender: joinUniquely(participants.map((x) => x.sex)),
-    race: joinUniquely(participants.map((x) => x.race)),
+    // Removed temporarily due to bug
+    // ethnicity: joinUniquely(participants.map((x) => x.ethnicity)),
+    // gender: joinUniquely(participants.map((x) => x.sex)),
+    // race: joinUniquely(participants.map((x) => x.race)),
     age_at_participant_diagnosis: joinUniquely(diagnosis.map((d) => d.age_at_event_days)),
     age_at_vital_status: joinUniquely(outcomes.map((o) => o.age_at_event_days.value)),
     age_at_observed_phenotype: joinUniquely(phenotype.map((p) => p.age_at_event_days)),
