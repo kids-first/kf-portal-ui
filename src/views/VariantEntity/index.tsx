@@ -110,7 +110,7 @@ export default function VariantEntity() {
           data={hydrateResults(data?.genes?.hits?.edges || []).filter(
             (gene) => gene.symbol !== NO_GENE,
           )}
-          expandedRowRender={expandedRowRender}
+          expandedRowRender={(row) => expandedRowRender(row, data)}
           id={SectionId.CONSEQUENCE}
           loading={loading}
           title={intl.get('screen.variants.consequences.consequence')}

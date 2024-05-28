@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import { NO_GENE, pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
+import {
+  renderTemporaryAAChange,
+  renderTemporaryCodingDnaChange,
+} from '@ferlab/ui/core/components/Consequences/utils';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import CanonicalIcon from '@ferlab/ui/core/components/Icons/CanonicalIcon';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { IArrangerEdge } from '@ferlab/ui/core/graphql/types';
+import { IVariantEntity as FerlabIVariantEntity } from '@ferlab/ui/core/pages/EntityPage/type';
 import { toExponentialNotation } from '@ferlab/ui/core/utils/numberUtils';
 import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { Button, Popover, Space, Tag, Tooltip, Typography } from 'antd';
@@ -174,8 +179,12 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
         ),
         value:
           geneWithPickedConsequence.symbol !== NO_GENE
-            ? pickedConsequence.node.aa_change || TABLE_EMPTY_PLACE_HOLDER
+            ? renderTemporaryAAChange(pickedConsequence.node.hgvsp)
             : '',
+        // FIXME: SKFP-1104 Temporary disabled, restore when aa_change is stable
+        // geneWithPickedConsequence.symbol !== NO_GENE
+        //   ? pickedConsequence.node.aa_change || TABLE_EMPTY_PLACE_HOLDER
+        //   : '',
       },
       {
         label: intl.get('screen.variants.summary.consequence'),
@@ -288,7 +297,14 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
       ),
-      <Text>{pickedConsequence.node.coding_dna_change || TABLE_EMPTY_PLACE_HOLDER}</Text>,
+      // FIXME: SKFP-1104 Temporary disabled, restore when coding_dna_change is stabl
+      // <Text>{pickedConsequence.node.coding_dna_change || TABLE_EMPTY_PLACE_HOLDER}</Text>,
+      <Text>
+        {renderTemporaryCodingDnaChange(
+          pickedConsequence.node,
+          variant as unknown as FerlabIVariantEntity,
+        )}
+      </Text>,
       <>
         {variant.rsnumber ? (
           <ExternalLink href={`https://www.ncbi.nlm.nih.gov/snp/${variant.rsnumber}`}>
