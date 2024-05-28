@@ -3,12 +3,17 @@ import intl from 'react-intl-universal';
 import { CheckCircleFilled } from '@ant-design/icons';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import { pickImpactBadge } from '@ferlab/ui/core/components/Consequences/Cell';
+import {
+  renderTemporaryAAChange,
+  renderTemporaryCodingDnaChange,
+} from '@ferlab/ui/core/components/Consequences/utils';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import CanonicalIcon from '@ferlab/ui/core/components/Icons/CanonicalIcon';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
+import { IVariantEntity as FerlabIVariantEntity } from '@ferlab/ui/core/pages/EntityPage/type';
 import {
   getLongPredictionLabelIfKnown,
   INDEX_IMPACT_PREDICTION_FIELD,
@@ -24,6 +29,7 @@ import {
   IConservationsEntity,
   IGeneEntity,
   IPredictionEntity,
+  IVariantEntity,
 } from 'graphql/variants/models';
 import { capitalize } from 'lodash';
 
@@ -117,17 +123,28 @@ export const getPredictionScore = (
     [dictionary.polyphen2, predictions?.polyphen2_hvar_pred, predictions?.polyphen2_hvar_score],
   ].filter(([, , score]) => score || score === 0);
 
-export const getExpandedColumns = (): ColumnType<any>[] => [
+export const getExpandedColumns = (variant: IVariantEntity): ColumnType<any>[] => [
   {
     key: 'aa_change',
-    dataIndex: 'aa_change',
+    dataIndex: 'hgvsp',
     title: (
       <Tooltip title={intl.get('screen.variants.consequences.aaColumnTooltip')}>
         <Text className={style.tooltip}>{intl.get('screen.variants.consequences.aaColumn')}</Text>
       </Tooltip>
     ),
-    render: (aa_change: string) => aa_change || TABLE_EMPTY_PLACE_HOLDER,
+    render: (hgvsp: string) => renderTemporaryAAChange(hgvsp),
   },
+  // FIXME: SKFP-1104 Temporary disabled, restore when aa_change is stable
+  // {
+  //   key: 'aa_change',
+  //   dataIndex: 'aa_change',
+  //   title: (
+  //     <Tooltip title={intl.get('screen.variants.consequences.aaColumnTooltip')}>
+  //       <Text className={style.tooltip}>{intl.get('screen.variants.consequences.aaColumn')}</Text>
+  //     </Tooltip>
+  //   ),
+  //   render: (aa_change: string) => aa_change || TABLE_EMPTY_PLACE_HOLDER,
+  // },
   {
     key: 'consequence',
     title: intl.get('screen.variants.consequences.consequence'),
@@ -147,11 +164,18 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
       );
     },
   },
+  // FIXME: SKFP-1104 Temporary disabled, restore when coding_dna_change is stable
+  // {
+  //   key: 'coding_dna_change',
+  //   dataIndex: 'coding_dna_change',
+  //   title: intl.get('screen.variants.consequences.cdnaChangeColumn'),
+  //   render: (coding_dna_change: string) => coding_dna_change || TABLE_EMPTY_PLACE_HOLDER,
+  // },
   {
     key: 'coding_dna_change',
-    dataIndex: 'coding_dna_change',
     title: intl.get('screen.variants.consequences.cdnaChangeColumn'),
-    render: (coding_dna_change: string) => coding_dna_change || TABLE_EMPTY_PLACE_HOLDER,
+    render: (consequence: IConsequenceEntity) =>
+      renderTemporaryCodingDnaChange(consequence, variant as unknown as FerlabIVariantEntity),
   },
   {
     key: 'predictions',
@@ -262,10 +286,13 @@ export const getExpandedColumns = (): ColumnType<any>[] => [
   },
 ];
 
-export const expandedRowRender = (row: IGeneEntity): ReactNode => (
+export const expandedRowRender = (
+  row: IGeneEntity,
+  variant: IVariantEntity | undefined,
+): ReactNode => (
   <Table
     className={style.expandedTable}
-    columns={getExpandedColumns()}
+    columns={getExpandedColumns(variant!)}
     dataSource={hydrateResults(row.consequences?.hits?.edges || [])}
     pagination={false}
     bordered
