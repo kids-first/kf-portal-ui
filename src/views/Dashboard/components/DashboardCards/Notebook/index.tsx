@@ -101,9 +101,9 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                   <Text>
                     {intl.get('screen.dashboard.cards.notebook.tooltip.part1')}
                     <PopoverContentLink
-                      className={styles.tooltipLinkRight}
-                      externalHref="https://docs.cavatica.org/docs/about-data-cruncher"
-                      title={intl.get('screen.dashboard.cards.notebook.dataStudio')}
+                      className={styles.link}
+                      externalHref="https://cavatica.sbgenomics.com/u/sevenbridges/kids-first-variant-workbench"
+                      title={intl.get('screen.dashboard.cards.notebook.publicProject')}
                     />
                     {intl.get('screen.dashboard.cards.notebook.tooltip.part2')}
                   </Text>
@@ -134,10 +134,10 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
               <Text>
                 {intl.get('screen.dashboard.cards.notebook.description.part1')}
                 <ExternalLink
-                  href="https://docs.cavatica.org/docs/about-data-cruncher"
+                  href="https://cavatica.sbgenomics.com/u/sevenbridges/kids-first-variant-workbench"
                   className={styles.link}
                 >
-                  {intl.get('screen.dashboard.cards.notebook.dataStudio')}
+                  {intl.get('screen.dashboard.cards.notebook.publicProject')}
                 </ExternalLink>
                 {intl.get('screen.dashboard.cards.notebook.description.part2')}
               </Text>

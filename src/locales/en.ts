@@ -725,9 +725,10 @@ const en = {
           dataStudio: 'Data Studio',
           tooltip: {
             title: 'CAVATICA VWB — Data Studio',
-            part1: 'Analyze Kids First’s variant data in Cavatica’s',
+            part1:
+              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s Data Studio and combine participant clinical data with variant annotations. Copy a preloaded',
             part2:
-              'for enhanced data manipulation. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbNSFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
+              'in Cavatica before launching. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbNSFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
             part3:
               'In order to access and copy variant data in a Cavatica project, you must have authorizations to access select NCI and Kids First controlled data. Connect to our data repository partners using your eRA Commons account to obtain controlled access to variant data.',
             readMore: 'Read more on',
@@ -738,9 +739,10 @@ const en = {
             'In order to lauch your notebook, you must first connect to your data repositories in your',
           description: {
             part1:
-              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s',
-            part2: 'and combine participant clinical data with variant annotations.',
+              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s Data Studio and combine participant clinical data with variant annotations. Copy a preloaded',
+            part2: 'in Cavatica before launching.',
           },
+          publicProject: 'public project',
           contactSupport:
             'We were unable to establish a connection. Please try again or <a href="mailto:support@kidsfirstdrc.org">contact support</a> if the issue persists.',
           tryAgain: 'Try Again',
