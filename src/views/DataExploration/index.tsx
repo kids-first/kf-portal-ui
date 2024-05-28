@@ -20,14 +20,19 @@ import {
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
-import { ISyntheticSqon, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import {
+  ISyntheticSqon,
+  IValueFilter,
+  MERGE_VALUES_STRATEGIES,
+  TSyntheticSqonContentValue,
+} from '@ferlab/ui/core/data/sqon/types';
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import { capitalize, get } from 'lodash';
+import { capitalize, cloneDeep, get } from 'lodash';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -198,6 +203,31 @@ const getFieldWithoutPrefix = (facetKey: string): string => {
   else return facetKey;
 };
 
+const getFieldWithPrefix = (index: string, field: string): string => {
+  switch (index) {
+    case INDEXES.BIOSPECIMEN:
+      return `files.biospecimens.${field}`;
+    case INDEXES.FILE:
+      return `files.${field}`;
+    default:
+      return field;
+  }
+};
+
+const getSqonForQuickFilter = (activeQuery: ISyntheticSqon): ISyntheticSqon => {
+  const activeQueryUpdated = cloneDeep(activeQuery);
+  activeQueryUpdated.content.forEach((sqonContent: TSyntheticSqonContentValue) => {
+    const originalIndex = (sqonContent as IValueFilter).content.index;
+    const originalField = (sqonContent as IValueFilter).content.field;
+    const fieldPrefixed = originalIndex
+      ? getFieldWithPrefix(originalIndex, originalField)
+      : originalField;
+    (sqonContent as IValueFilter).content.index = INDEXES.PARTICIPANT;
+    (sqonContent as IValueFilter).content.field = fieldPrefixed;
+  });
+  return activeQueryUpdated;
+};
+
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
@@ -207,13 +237,15 @@ const DataExploration = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [quickFilterData, setQuickFilterData] = useState<{ participant: { aggregations: any } }>();
 
+  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
+
   const fetchFacets = useCallback(async () => {
     const { data } = await ArrangerApi.graphqlRequest<{
       data: { participant: { aggregations: any } };
     }>({
       query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
       variables: {
-        sqon: activeQuery,
+        sqon: getSqonForQuickFilter(activeQuery),
       },
     });
     if (data) setQuickFilterData(data?.data);
@@ -222,17 +254,6 @@ const DataExploration = () => {
   useEffect(() => {
     fetchFacets();
   }, [fetchFacets]);
-
-  const getMappings = (index: INDEXES) => {
-    if (index === INDEXES.PARTICIPANT) {
-      return participantMappingResults;
-    } else if (index === INDEXES.FILE) {
-      return fileMappingResults;
-    } else if (index === INDEXES.BIOSPECIMEN) {
-      return biospecimenMappingResults;
-    }
-    return { loading: false, data: [] };
-  };
 
   const getQFSuggestions = async (
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
@@ -287,32 +308,26 @@ const DataExploration = () => {
 
   const handleFacetClick = async (
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
-    sqon: ISyntheticSqon,
     option: TitleQFOption,
   ) => {
     setIsLoading(true);
 
-    const mappings = getMappings(option.index! as INDEXES);
     const { data } = await ArrangerApi.graphqlRequest<{
-      data: any;
+      data: { participant: { aggregations: any } };
     }>({
-      query: AGGREGATION_QUERY(option.index!, [getFieldWithoutPrefix(option.key)], mappings).loc
+      query: AGGREGATION_QUERY(INDEXES.PARTICIPANT, [option.key], participantMappingResults).loc
         ?.source.body,
 
       variables: {
-        sqon: sqon,
+        sqon: getSqonForQuickFilter(activeQuery),
       },
     });
 
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
 
     const facetDictionary = getFacetsDictionary();
-    let agg = {};
-    if (option.index === INDEXES.PARTICIPANT) agg = data?.data.participant.aggregations;
-    else if (option.index === INDEXES.BIOSPECIMEN) agg = data?.data.biospecimen.aggregations;
-    else if (option.index === INDEXES.FILE) agg = data?.data.file.aggregations;
 
-    Object.entries(agg).forEach(([key, value]) => {
+    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
       const facetName = get(
         facetDictionary,
         underscoreToDot(getFieldWithoutPrefix(key)),
@@ -344,8 +359,6 @@ const DataExploration = () => {
     setOptions(suggestions);
     setIsLoading(false);
   };
-
-  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -471,7 +484,6 @@ const DataExploration = () => {
           getSuggestionsList: getQFSuggestions,
           handleOnApply: addQFOptionsToQB,
           inputSuffixIcon: <SearchOutlined />,
-          queryBuilderId: DATA_EXPLORATION_QB_ID,
           isLoading,
         }}
       />
