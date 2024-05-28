@@ -1,6 +1,6 @@
 {
   "name": "kids-first-portal-ui",
-  "version": "5.3.3",
+  "version": "5.4.0",
   "private": true,
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
