@@ -256,11 +256,12 @@ const DataExploration = () => {
   }, [fetchFacets]);
 
   const getQFSuggestions = async (
-    setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
     searchText: string,
+    setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
+    setTotal: React.Dispatch<React.SetStateAction<number>>,
   ) => {
     setIsLoading(true);
-
+    let totalResult = 0;
     const regexp = new RegExp('(?:^|\\W)' + searchText, 'gi');
     const facetDictionary = getFacetsDictionary();
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
@@ -280,6 +281,7 @@ const DataExploration = () => {
       (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
         const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
         if (regexp.exec(title)) {
+          ++totalResult;
           bucketFiltered.push({
             key: bucket.key,
             title,
@@ -291,7 +293,10 @@ const DataExploration = () => {
         }
       });
 
-      if (regexp.exec(facetName) || bucketFiltered.length > 0) {
+      const isFacetNameMatch = regexp.exec(facetName);
+      if (isFacetNameMatch || bucketFiltered.length > 0) {
+        if (isFacetNameMatch) ++totalResult;
+
         suggestions.push({
           key: key,
           title: facetName,
@@ -302,6 +307,7 @@ const DataExploration = () => {
       }
     });
 
+    setTotal(totalResult);
     setOptions(suggestions);
     setIsLoading(false);
   };
@@ -472,7 +478,7 @@ const DataExploration = () => {
           allOfLabel: intl.get('global.quickFilter.allOf'),
           anyOfLabel: intl.get('global.quickFilter.anyOf'),
           applyLabel: intl.get('global.quickFilter.apply'),
-          cancelLabel: intl.get('global.quickFilter.cancel'),
+          clearLabel: intl.get('global.quickFilter.clear'),
           emptyMessage: intl.get('global.quickFilter.emptyMessage'),
           menuTitle: intl.get('global.quickFilter.menuTitle'),
           noneLabel: intl.get('global.quickFilter.none'),

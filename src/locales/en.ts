@@ -140,7 +140,7 @@ const en = {
       allOf: 'All of',
       anyOf: 'Any of',
       apply: 'Apply',
-      cancel: 'Cancel',
+      clear: 'Clear',
       emptyMessage: 'Min. 3 characters',
       menuTitle: 'Quick filter',
       none: 'None',
