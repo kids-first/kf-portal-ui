@@ -215,6 +215,20 @@ const getFieldWithPrefix = (index: string, field: string): string => {
   }
 };
 
+const getSqonForQuickFilter = (activeQuery: ISyntheticSqon): ISyntheticSqon => {
+  const activeQueryUpdated = cloneDeep(activeQuery);
+  activeQueryUpdated.content.forEach((sqonContent: TSyntheticSqonContentValue) => {
+    const originalIndex = (sqonContent as IValueFilter).content.index;
+    const originalField = (sqonContent as IValueFilter).content.field;
+    const fieldPrefixed = originalIndex
+      ? getFieldWithPrefix(originalIndex, originalField)
+      : originalField;
+    (sqonContent as IValueFilter).content.index = INDEXES.PARTICIPANT;
+    (sqonContent as IValueFilter).content.field = fieldPrefixed;
+  });
+  return activeQueryUpdated;
+};
+
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
@@ -224,25 +238,15 @@ const DataExploration = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [quickFilterData, setQuickFilterData] = useState<{ participant: { aggregations: any } }>();
 
-  const fetchFacets = useCallback(async () => {
-    // rework sqon on one index
-    const activeQueryUpdated = cloneDeep(activeQuery);
-    activeQueryUpdated.content.forEach((sqonContent: TSyntheticSqonContentValue) => {
-      const originalIndex = (sqonContent as IValueFilter).content.index;
-      const originalField = (sqonContent as IValueFilter).content.field;
-      const fieldPrefixed = originalIndex
-        ? getFieldWithPrefix(originalIndex, originalField)
-        : originalField;
-      (sqonContent as IValueFilter).content.index = INDEXES.PARTICIPANT;
-      (sqonContent as IValueFilter).content.field = fieldPrefixed;
-    });
+  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
+  const fetchFacets = useCallback(async () => {
     const { data } = await ArrangerApi.graphqlRequest<{
       data: { participant: { aggregations: any } };
     }>({
       query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
       variables: {
-        sqon: activeQueryUpdated,
+        sqon: getSqonForQuickFilter(activeQuery),
       },
     });
     if (data) setQuickFilterData(data?.data);
@@ -251,17 +255,6 @@ const DataExploration = () => {
   useEffect(() => {
     fetchFacets();
   }, [fetchFacets]);
-
-  const getMappings = (index: INDEXES) => {
-    if (index === INDEXES.PARTICIPANT) {
-      return participantMappingResults;
-    } else if (index === INDEXES.FILE) {
-      return fileMappingResults;
-    } else if (index === INDEXES.BIOSPECIMEN) {
-      return biospecimenMappingResults;
-    }
-    return { loading: false, data: [] };
-  };
 
   const getQFSuggestions = async (
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
@@ -316,32 +309,26 @@ const DataExploration = () => {
 
   const handleFacetClick = async (
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
-    sqon: ISyntheticSqon,
     option: TitleQFOption,
   ) => {
     setIsLoading(true);
 
-    const mappings = getMappings(option.index! as INDEXES);
     const { data } = await ArrangerApi.graphqlRequest<{
-      data: any;
+      data: { participant: { aggregations: any } };
     }>({
-      query: AGGREGATION_QUERY(option.index!, [getFieldWithoutPrefix(option.key)], mappings).loc
+      query: AGGREGATION_QUERY(INDEXES.PARTICIPANT, [option.key], participantMappingResults).loc
         ?.source.body,
 
       variables: {
-        sqon: sqon,
+        sqon: getSqonForQuickFilter(activeQuery),
       },
     });
 
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
 
     const facetDictionary = getFacetsDictionary();
-    let agg = {};
-    if (option.index === INDEXES.PARTICIPANT) agg = data?.data.participant.aggregations;
-    else if (option.index === INDEXES.BIOSPECIMEN) agg = data?.data.biospecimen.aggregations;
-    else if (option.index === INDEXES.FILE) agg = data?.data.file.aggregations;
 
-    Object.entries(agg).forEach(([key, value]) => {
+    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
       const facetName = get(
         facetDictionary,
         underscoreToDot(getFieldWithoutPrefix(key)),
@@ -373,8 +360,6 @@ const DataExploration = () => {
     setOptions(suggestions);
     setIsLoading(false);
   };
-
-  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
 
   const menuItems: ISidebarMenuItem[] = [
     {
@@ -500,7 +485,6 @@ const DataExploration = () => {
           getSuggestionsList: getQFSuggestions,
           handleOnApply: addQFOptionsToQB,
           inputSuffixIcon: <SearchOutlined />,
-          queryBuilderId: DATA_EXPLORATION_QB_ID,
           isLoading,
         }}
       />
