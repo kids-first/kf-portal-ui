@@ -23,7 +23,6 @@ import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import {
   ISyntheticSqon,
   IValueFilter,
-  IValueQuery,
   MERGE_VALUES_STRATEGIES,
   TSyntheticSqonContentValue,
 } from '@ferlab/ui/core/data/sqon/types';
