@@ -20,14 +20,20 @@ import {
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
-import { ISyntheticSqon, MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import {
+  ISyntheticSqon,
+  IValueFilter,
+  IValueQuery,
+  MERGE_VALUES_STRATEGIES,
+  TSyntheticSqonContentValue,
+} from '@ferlab/ui/core/data/sqon/types';
 import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import { capitalize, get } from 'lodash';
+import { capitalize, cloneDeep, get } from 'lodash';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -198,6 +204,17 @@ const getFieldWithoutPrefix = (facetKey: string): string => {
   else return facetKey;
 };
 
+const getFieldWithPrefix = (index: string, field: string): string => {
+  switch (index) {
+    case INDEXES.BIOSPECIMEN:
+      return `files.biospecimens.${field}`;
+    case INDEXES.FILE:
+      return `files.${field}`;
+    default:
+      return field;
+  }
+};
+
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
@@ -208,12 +225,24 @@ const DataExploration = () => {
   const [quickFilterData, setQuickFilterData] = useState<{ participant: { aggregations: any } }>();
 
   const fetchFacets = useCallback(async () => {
+    // rework sqon on one index
+    const activeQueryUpdated = cloneDeep(activeQuery);
+    activeQueryUpdated.content.forEach((sqonContent: TSyntheticSqonContentValue) => {
+      const originalIndex = (sqonContent as IValueFilter).content.index;
+      const originalField = (sqonContent as IValueFilter).content.field;
+      const fieldPrefixed = originalIndex
+        ? getFieldWithPrefix(originalIndex, originalField)
+        : originalField;
+      (sqonContent as IValueFilter).content.index = INDEXES.PARTICIPANT;
+      (sqonContent as IValueFilter).content.field = fieldPrefixed;
+    });
+
     const { data } = await ArrangerApi.graphqlRequest<{
       data: { participant: { aggregations: any } };
     }>({
       query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
       variables: {
-        sqon: activeQuery,
+        sqon: activeQueryUpdated,
       },
     });
     if (data) setQuickFilterData(data?.data);
