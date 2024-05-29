@@ -31,24 +31,23 @@ const extractParticipantMetaData = (participants: any[]) => {
   return {
     // Removed temporarily due to bug
     // case_id: joinUniquely(participants.map((x) => x.participant_id)),
-    external_participant_ids: joinUniquely(participants.map((x) => x.external_id)),
-    proband: joinUniquely(participants.map((x) => `${x.participant_id}: ${x.is_proband}`)),
-    // Removed temporarily due to bug
     // ethnicity: joinUniquely(participants.map((x) => x.ethnicity)),
     // gender: joinUniquely(participants.map((x) => x.sex)),
     // race: joinUniquely(participants.map((x) => x.race)),
+    // diagnosis_source_text: joinUniquely(diagnosis.map((d) => d.source_text)),
+    // diagnosis_mondo: joinUniquely(diagnosis.map((d) => d.mondo_display_term)),
+    // diagnosis_ncit: joinUniquely(diagnosis.map((d) => d.ncit_id_diagnosis)),
+    // observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_observed)),
+    // not_observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_not_observed)),
+    // observed_phenotype_source_text: joinUniquely(phenotype.map((p) => p.source_text)),
+    external_participant_ids: joinUniquely(participants.map((x) => x.external_id)),
+    proband: joinUniquely(participants.map((x) => `${x.participant_id}: ${x.is_proband}`)),
     age_at_participant_diagnosis: joinUniquely(diagnosis.map((d) => d.age_at_event_days)),
     age_at_vital_status: joinUniquely(outcomes.map((o) => o.age_at_event_days.value)),
     age_at_observed_phenotype: joinUniquely(phenotype.map((p) => p.age_at_event_days)),
-    diagnosis_mondo: joinUniquely(diagnosis.map((d) => d.mondo_display_term)),
-    diagnosis_ncit: joinUniquely(diagnosis.map((d) => d.ncit_id_diagnosis)),
-    diagnosis_source_text: joinUniquely(diagnosis.map((d) => d.source_text)),
     family_id: joinUniquely(participants.map((x) => x.families_id)),
     family_composition: joinUniquely(participants.map((x) => x.family_type)),
     family_role: joinUniquely(relation.map((r) => r.role)),
-    observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_observed)),
-    not_observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_not_observed)),
-    observed_phenotype_source_text: joinUniquely(phenotype.map((p) => p.source_text)),
     vital_status: joinUniquely(outcomes.map((o) => o.vital_status)),
   };
 };
