@@ -1,3 +1,14 @@
+## VERSION 5.4.1 (2024-05-29)
+
+### Technical / Other changes
+
+- [SKFP-1111](https://d3b.atlassian.net/browse/SKFP-1111) Issue: [Data Exploration] Fix issue when checking a value that
+  exists in multiple facets
+- [SKFP-1114](https://d3b.atlassian.net/browse/SKFP-1114) Refactor: [Data Exploration] Set both Sunburst MONDO & HPO as
+  non-default charts
+- [SKFP-1115](https://d3b.atlassian.net/browse/SKFP-1115) Issue: [Cavatica] Removed other metadata fields sent to
+  Cavatica
+
 ## VERSION 5.4.0 (2024-05-28)
 
 ### Features
