@@ -35,12 +35,14 @@ export const getDefaultLayouts = (): IResizableGridLayoutConfig[] => [
     title: intl.get('screen.dataExploration.tabs.summary.observed_phenotype.cardTitle'),
     id: OBSERVED_PHENOTYPE_ID,
     component: <SunburstGraphCard id={OBSERVED_PHENOTYPE_ID} field="observed_phenotype" />,
+    hidden: true,
     ...observedPhenotypeDefaultGridConfig,
   },
   {
     title: intl.get('screen.dataExploration.tabs.summary.mondo.cardTitle'),
     id: MONDO_ID,
     component: <SunburstGraphCard id={MONDO_ID} field="mondo" />,
+    hidden: true,
     ...mondoDefaultGridConfig,
   },
   {
