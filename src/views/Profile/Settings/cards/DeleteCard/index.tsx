@@ -36,7 +36,7 @@ const DeleteCard = () => {
       }
       content={
         <Text>
-          You will no longer be able to sign into the KIDS FIRST data portal. All of your saved sets
+          You will no longer be able to sign into the Kids First data portal. All of your saved sets
           and queries will be lost. You can create a new account at any time.
         </Text>
       }
