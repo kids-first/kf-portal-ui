@@ -1,4 +1,4 @@
-# Styling Kids first Portal
+# Styling Kids First Portal
 
 ## Strategy
 
