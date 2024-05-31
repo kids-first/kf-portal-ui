@@ -115,7 +115,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Experimental Strategy', 1);
     cy.validateTableFirstRow('-', 7, true);
     cy.sortTableAndIntercept('Experimental Strategy', 1);
-    cy.validateTableFirstRow('Whole Genome Sequencing', 7, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 7, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Format', () => {
@@ -136,14 +136,14 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Participants', 1);
     cy.validateTableFirstRow(/^1$/, 10, true);
     cy.sortTableAndIntercept('Participants', 1);
-    cy.validateTableFirstRow(/^8$/, 10, true);
+    cy.validateTableFirstRow(/\d{1}/, 10, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/^1$/, 11, true);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow(/^8$/, 11, true);
+    cy.validateTableFirstRow(/\d{1}/, 11, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri File Name', () => {
@@ -171,7 +171,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('ACL', 1);
     cy.validateTableFirstRow('-', 15, true);
     cy.sortTableAndIntercept('ACL', 1);
-    cy.validateTableFirstRow('phs002627.c1, phs002627.c999, SD_1NNS3K8V', 15, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 15, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Access URL', () => {

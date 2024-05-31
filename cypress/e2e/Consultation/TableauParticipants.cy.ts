@@ -22,7 +22,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
     cy.get('[class*="PageContent_title"]').contains('Data Exploration'); // data-cy="Title_DataExploration"
   });
 
-  it('Tableau', () => {
+  it('Tableau [SKFP-1080]', () => {
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(1).contains('PT_01236T3G').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(2).contains('KF-CDH').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(3).contains('phs001110').should('exist');
@@ -45,7 +45,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(14).contains('Not Hispanic or Latino').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(15).contains('01-0665').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(16).contains('NCIT:C98893').should('exist');
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(17).contains('congential diaphragmatic hernia').should('exist');
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(17).contains('congenital diaphragmatic hernia').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(18).contains('Deceased').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(19).contains('-').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(20).contains('Congenital diaphragmatic hernia').should('exist');

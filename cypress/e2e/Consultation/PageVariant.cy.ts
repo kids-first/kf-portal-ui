@@ -17,7 +17,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     // Banner
     cy.get('a[class*="VariantEntity_symbolLink"]').eq(0).contains('MFRP').should('exist');
     cy.get('a[class*="VariantEntity_ensemblLink"]').eq(0).contains('Ensembl').should('exist');
-    cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(3).contains('p.Val136/579Met').should('exist');
+    cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(3).contains('p.Val136Met').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(4).contains('Consequence').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').find('svg[class*="Cell_moderateImpact"]').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(5).contains('Missense').should('exist');
@@ -33,7 +33,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('div[class*="ant-space-item"]').eq(1).contains('ENST00000619721').should('exist');
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('div[class*="ant-space-item"]').eq(2).find('svg[class*="VariantEntity_canonicalIcon"]').should('exist');
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('div[class*="ant-space-item"]').eq(3).contains('NM_031433.4').should('exist');
-    cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('[class*="ant-typography"]').eq(0).contains('c.406/1740C>T').should('exist');
+    cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('[class*="ant-typography"]').eq(0).contains('c.406C>T').should('exist');
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('div[class*="ant-space-item"]').eq(4).contains('rs3814762').should('exist');
     // Details
     cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="VariantEntity_functionalScores"]').eq(0).contains('Functional Scores').should('exist');
@@ -87,10 +87,10 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(4).contains('Conservation').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(5).contains('Transcripts').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(6).contains('RefSeq').should('exist');
-    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(0).contains('p.Val136/579Met').should('exist');
+    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(0).contains('p.Val136Met').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(1).find('svg[class*="Cell_moderateImpact"]').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(1).contains('Missense').should('exist');
-    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(2).contains('c.406/1740C>T').should('exist');
+    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(2).contains('c.406C>T').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(0).contains('CADD (Raw)').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(1).contains('-1.152731').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(2).contains('CADD (Phred)').should('exist');
