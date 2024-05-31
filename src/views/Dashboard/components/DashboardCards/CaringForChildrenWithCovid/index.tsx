@@ -1,11 +1,11 @@
 import intl from 'react-intl-universal';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import PopoverContentLink from '@ferlab/ui/core/components/PopoverContentLink';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Space, Tooltip, Typography } from 'antd';
 
 import FHIR_ICON from 'components/assets/FHIR.png';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 
 import CardHeader from '../../CardHeader';
 import { DashboardCardProps } from '..';
