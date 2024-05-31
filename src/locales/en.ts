@@ -828,15 +828,6 @@ const en = {
           'When your profile is public, other members can see information about you that includes your name, role, affiliation, and research interest.',
       },
       cards: {
-        deleteAccount: {
-          title: 'Delete Account',
-          button: 'Delete my account',
-          notice:
-            'You will no longer be able to sign into the Kids First data portal. All of your saved sets and queries will be lost. You can create a new account at any time.',
-          confirm: {
-            content: 'Are you sure you want to permanently delete this account?',
-          },
-        },
         identification: {
           title: 'Identification',
           alert:
