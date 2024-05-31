@@ -1,5 +1,6 @@
 import intl from 'react-intl-universal';
 import { FileTextOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
+import PopoverContentLink from '@ferlab/ui/core/components/PopoverContentLink';
 import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { PASSPORT_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/Cavatica/type';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
@@ -11,7 +12,6 @@ import { DATA_FILES_SAVED_SETS_FIELD } from 'views/DataExploration/utils/constan
 
 import { FENCE_NAMES } from 'common/fenceTypes';
 import CavaticaAnalyzeButton from 'components/Cavatica/AnalyzeButton';
-import PopoverContentLink from 'components/uiKit/PopoverContentLink';
 import DownloadFileManifestModal from 'components/uiKit/reports/DownloadFileManifestModal';
 import { useAllFencesAcl, useFenceAuthentification } from 'store/fences';
 import { useCavaticaPassport } from 'store/passport';
