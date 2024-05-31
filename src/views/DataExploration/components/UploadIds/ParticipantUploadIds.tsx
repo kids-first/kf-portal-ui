@@ -50,9 +50,9 @@ const ParticipantUploadIds = ({ queryBuilderId }: OwnProps) => (
       return participants?.flatMap((participant) => {
         const matchedIds: string[] = ids.filter(
           (id: string) =>
-            participant.participant_id.toLocaleLowerCase() === id.toLocaleLowerCase() ||
-            participant.external_id.toLocaleLowerCase() === id.toLocaleLowerCase() ||
-            participant.families_id.toLocaleLowerCase() === id.toLocaleLowerCase(),
+            participant.participant_id?.toLocaleLowerCase() === id.toLocaleLowerCase() ||
+            participant.external_id?.toLocaleLowerCase() === id.toLocaleLowerCase() ||
+            participant.families_id?.toLocaleLowerCase() === id.toLocaleLowerCase(),
         );
 
         return matchedIds.map((id, index) => ({
