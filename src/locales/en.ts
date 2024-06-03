@@ -171,7 +171,8 @@ const en = {
       },
       success: {
         titleCreate: 'Your set has been saved.',
-        messageCreate: 'You can add your sets to a query from the dashboard.',
+        messageCreate: 'You can add your sets to a query from the sidebar or the dashboard.',
+        messageCreateVariant: 'You can add your sets to a query from the dashboard.',
         titleUpdate: 'Success',
         messageUpdate: 'Your set has been updated.',
       },

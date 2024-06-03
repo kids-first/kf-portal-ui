@@ -1,13 +1,15 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { SavedSetApi } from 'services/api/savedSet';
-import { handleThunkApiReponse } from 'store/utils';
 import intl from 'react-intl-universal';
-import { globalActions } from 'store/global';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+import { SavedSetApi } from 'services/api/savedSet';
 import {
   IUserSetOutput,
+  SetType,
   TUserSavedSetInsert,
   TUserSavedSetUpdate,
 } from 'services/api/savedSet/models';
+import { globalActions } from 'store/global';
+import { handleThunkApiReponse } from 'store/utils';
 
 const fetchSavedSet = createAsyncThunk<IUserSetOutput[], void | string, { rejectValue: string }>(
   'savedsets/fetch',
@@ -39,7 +41,10 @@ const createSavedSet = createAsyncThunk<
         globalActions.displayNotification({
           type: 'success',
           message: intl.get('api.savedSet.success.titleCreate'),
-          description: intl.get('api.savedSet.success.messageCreate'),
+          description:
+            set.type === SetType.VARIANT
+              ? intl.get('api.savedSet.success.messageCreateVariant')
+              : intl.get('api.savedSet.success.messageCreate'),
         }),
       ),
     onError: (_) =>

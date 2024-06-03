@@ -1,12 +1,13 @@
-import {IUserSetOutput} from 'services/api/savedSet/models';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
+
+import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 
 export interface ISavedSet {
   idField: string;
   projectId: string;
   sqon: ISqonGroupFilter;
   tag: string;
-  type: string;
+  type: SetType;
   sort: Sort[];
 }
 
