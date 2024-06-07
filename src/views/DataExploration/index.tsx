@@ -11,11 +11,12 @@ import {
 } from '@ant-design/icons';
 import useQueryBuilderState, {
   updateActiveQueryField,
+  updateActiveQueryFilters,
 } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
 import {
   CheckboxQFOption,
-  QuickFilterType,
+  FacetOption,
   TitleQFOption,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
@@ -26,7 +27,7 @@ import {
   MERGE_VALUES_STRATEGIES,
   TSyntheticSqonContentValue,
 } from '@ferlab/ui/core/data/sqon/types';
-import { TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
+import { TAggregationBuckets, TAggregations } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
@@ -51,7 +52,11 @@ import {
   mapFilterForFiles,
   mapFilterForParticipant,
 } from 'utils/fieldMapper';
-import { getFacetsDictionary, getQueryBuilderDictionary } from 'utils/translation';
+import {
+  getFacetsDictionary,
+  getFiltersDictionary,
+  getQueryBuilderDictionary,
+} from 'utils/translation';
 
 import { AGGREGATION_QUERY } from '../../graphql/queries';
 
@@ -68,6 +73,14 @@ import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 import styles from './index.module.scss';
+import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
+import {
+  IFilter,
+  IFilterGroup,
+  TExtendedMapping,
+  VisualType,
+} from '@ferlab/ui/core/components/filters/types';
+import { getFilters } from 'graphql/utils/Filters';
 
 const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
@@ -272,6 +285,9 @@ const DataExploration = () => {
         underscoreToDot(getFieldWithoutPrefix(key)),
         removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
       );
+      const facetType = participantMappingResults.data.find(
+        (mapping) => mapping.field === underscoreToDot(key),
+      )?.type;
 
       const facetValueMapping =
         getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
@@ -279,16 +295,18 @@ const DataExploration = () => {
       const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
 
       (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
-        const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
-        if (regexp.exec(title)) {
+        const label = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
+        const index = getIndexFromQFValueFacet(key);
+
+        if (regexp.exec(label)) {
           ++totalResult;
           bucketFiltered.push({
             key: bucket.key,
-            title,
+            label,
             docCount: bucket.doc_count,
-            type: QuickFilterType.CHECKBOX,
+            type: facetType ? getFilterType(facetType) : VisualType.Checkbox,
             facetKey: key,
-            index: getIndexFromQFValueFacet(key),
+            index: index,
           });
         }
       });
@@ -299,8 +317,8 @@ const DataExploration = () => {
 
         suggestions.push({
           key: key,
-          title: facetName,
-          type: QuickFilterType.TITLE,
+          label: facetName,
+          type: 'title',
           index: getIndexFromQFValueFacet(key),
         });
         suggestions.push(...bucketFiltered);
@@ -313,7 +331,7 @@ const DataExploration = () => {
   };
 
   const handleFacetClick = async (
-    setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
+    setFacetOptions: React.Dispatch<React.SetStateAction<FacetOption | undefined>>,
     option: TitleQFOption,
   ) => {
     setIsLoading(true);
@@ -329,40 +347,65 @@ const DataExploration = () => {
       },
     });
 
-    const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
+    // console.log('data?.data.participant.aggregations', data?.data.participant.aggregations);
 
-    const facetDictionary = getFacetsDictionary();
+    const found = (participantMappingResults?.data || []).find(
+      (f: TExtendedMapping) => f.field === underscoreToDot(option.key),
+    );
+    console.log('found', found);
 
-    Object.entries(data?.data.participant.aggregations).forEach(([key, value]) => {
-      const facetName = get(
-        facetDictionary,
-        underscoreToDot(getFieldWithoutPrefix(key)),
-        removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
-      );
+    // console.log('found', found);
 
-      const facetValueMapping =
-        getQueryBuilderDictionary(facetName).query?.facetValueMapping?.[underscoreToDot(key)];
+    const aggregations = data?.data.participant.aggregations[option.key];
 
-      const bucketFiltered: (TitleQFOption | CheckboxQFOption)[] = [];
+    // console.log('aggregations', aggregations);
 
-      (value as TAggregationBuckets)?.buckets?.map((bucket: { key: string; doc_count: number }) => {
-        const title = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
-        bucketFiltered.push({
-          key: bucket.key,
-          title,
-          docCount: bucket.doc_count,
-          type: QuickFilterType.CHECKBOX,
-          facetKey: key,
-          index: option.index,
-        });
-      });
-
-      if (bucketFiltered.length > 0) {
-        suggestions.push(...bucketFiltered);
-      }
+    const filterGroup = getFilterGroup({
+      extendedMapping: found,
+      aggregation: aggregations,
+      rangeTypes: [],
+      filterFooter: false,
+      headerTooltip: false,
+      dictionary: getFacetsDictionary(),
+      noDataInputOption: false,
     });
 
-    setOptions(suggestions);
+    // console.log('filterGroup', filterGroup);
+
+    const filters =
+      getFilters({ [`${option.key}`]: aggregations as TAggregationBuckets }, option.key) || [];
+
+    // console.log('filters', filters);
+
+    const onChange = (fg: IFilterGroup, f: IFilter[]) => {
+      console.log('on change filter fg', fg);
+      console.log('on change filter f', f);
+
+      updateActiveQueryFilters({
+        queryBuilderId: DATA_EXPLORATION_QB_ID,
+        filterGroup: fg,
+        selectedFilters: f,
+        index: INDEXES.PARTICIPANT,
+        // index: getIndexFromQFValueFacet(option.key),
+      });
+      // f.forEach((filter: IFilter) => {
+      //   updateActiveQueryField({
+      //     queryBuilderId: DATA_EXPLORATION_QB_ID,
+      //     field: (getFieldWithoutPrefix(fg.field)),
+      //     value: [option.key],
+      //     index: ,
+      //     merge_strategy: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+      //     operator,
+      //   }),
+      // });
+    };
+
+    setFacetOptions({
+      filterGroup,
+      filters,
+      onChange,
+      selectedFilters: [],
+    });
     setIsLoading(false);
   };
 
@@ -474,17 +517,7 @@ const DataExploration = () => {
         className={styles.sideMenu}
         menuItems={menuItems} /* defaultSelectedKey={tab} */
         quickFilter={{
-          allLabel: intl.get('global.quickFilter.all'),
-          allOfLabel: intl.get('global.quickFilter.allOf'),
-          anyOfLabel: intl.get('global.quickFilter.anyOf'),
-          applyLabel: intl.get('global.quickFilter.apply'),
-          clearLabel: intl.get('global.quickFilter.clear'),
-          emptyMessage: intl.get('global.quickFilter.emptyMessage'),
-          menuTitle: intl.get('global.quickFilter.menuTitle'),
-          noneLabel: intl.get('global.quickFilter.none'),
-          noneOfLabel: intl.get('global.quickFilter.noneOf'),
-          placeholder: intl.get('global.quickFilter.placeholder'),
-          resultsLabel: intl.get('global.quickFilter.results'),
+          dictionary: getFiltersDictionary(),
           handleFacetClick,
           enableQuickFilter: enableQuickFilter === 'true',
           getSuggestionsList: getQFSuggestions,

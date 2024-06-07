@@ -57,6 +57,7 @@ const CustomFilterContainer = ({
   const found = (extendedMappingResults?.data || []).find(
     (f: TExtendedMapping) => f.field === underscoreToDot(filterKey),
   );
+  console.log('found sidebar', found);
 
   useEffect(() => {
     if (!isUndefined(filtersOpen) && isOpen !== filtersOpen) {
@@ -67,6 +68,8 @@ const CustomFilterContainer = ({
 
   const onChange = (fg: IFilterGroup, f: IFilter[]) => {
     trackFacetSearch(index, fg.field);
+    console.log('filter group range sidebar', fg);
+    console.log('filter range sidebar', f);
 
     updateActiveQueryFilters({
       queryBuilderId,
