@@ -78,6 +78,15 @@ Cypress.Commands.add('createFilterIfNotExists', (filterName: string) => {
   });
 });
 
+Cypress.Commands.add('createSetIfNotExists', (setName: string, itemPosition: number) => {
+  cy.get('[class*="SetSearch_search"] input').type(setName, {force: true});
+  cy.get('[class*="SetSearch_search"] [class*="ant-select-dropdown"]').invoke('text').then((invokeText) => {
+    if (!invokeText.includes(setName)) {
+      cy.saveSetAs(setName, itemPosition);
+    };
+  });
+});
+
 Cypress.Commands.add('deleteFilter', (filterName: string) => {
   cy.get('[class*="ant-dropdown-menu-title-content"]').contains(filterName).click({force: true});
   cy.get('[id="query-builder-header-tools"] [class*="Header_togglerTitle"]').contains(filterName).should('exist');
@@ -93,6 +102,25 @@ Cypress.Commands.add('deleteFilterIfExists', (filterName: string) => {
   cy.get('[class*="ant-dropdown-menu-root"]').invoke('text').then((invokeText) => {
     if (invokeText.includes(filterName)) {
       cy.deleteFilter(filterName);
+    };
+  });
+});
+
+Cypress.Commands.add('deleteSet', (dataNodeKey: string, setName: string) => {
+  cy.visitDashboard();
+  cy.get(`[class*="SavedSets_setTabs"] [data-node-key="${dataNodeKey}"]`).click({force: true});
+  cy.get('[class*="SavedSets_setTabs"] [class*="ant-tabs-tabpane-active"]').contains(setName).parentsUntil('[class*="ListItem_savedSetListItem"]').parent().find('[class*="anticon-delete"]').click({force: true});
+  cy.clickAndIntercept('[class="ant-modal-confirm-body-wrapper"] button[class*="ant-btn-dangerous"]', 'DELETE', '**/sets/**', 1);
+
+  cy.get('[class*="SavedSets_setTabs"] [class*="ant-tabs-tabpane-active"]').contains(setName).should('not.exist');
+});
+
+Cypress.Commands.add('deleteSetIfExists', (dataNodeKey: string, setName: string) => {
+  cy.visitDashboard();
+  cy.get(`[class*="SavedSets_setTabs"] [data-node-key="${dataNodeKey}"]`).click({force: true}); // data-cy="Tab_Biospecimens"
+  cy.get('[class*="SavedSets_setTabs"] [class*="ant-tabs-tabpane-active"]').invoke('text').then((invokeText) => {
+    if (invokeText.includes(setName)) {
+      cy.deleteSet(dataNodeKey, setName);
     };
   });
 });
@@ -182,6 +210,17 @@ Cypress.Commands.add('saveFilterAs', (filterName: string) => {
   cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'POST', '**/saved-filters', 1);
 
   cy.get('[id="query-builder-header-tools"] [class*="Header_togglerTitle"]').contains(filterName).should('exist');
+});
+
+Cypress.Commands.add('saveSetAs', (setName: string, itemPosition: number) => {
+  cy.get('div[role="tabpanel"] [class*="ant-table-row"], [class="ant-table-body"] [class*="ant-table-row"]').eq(itemPosition).find('[type="checkbox"]').check({force: true});
+  cy.get('[id*="-set-dropdown-container"] button').click({force: true});
+  cy.get('[data-menu-id*="-create"]').click({force: true});
+  cy.get('form[id="save-set"] input').clear();
+  cy.get('form[id="save-set"] input').type(setName);
+  cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'POST', '**/sets', 1);
+
+  cy.get('form[id="save-set"]').should('not.exist');
 });
 
 Cypress.Commands.add('showColumn', (column: string|RegExp) => {

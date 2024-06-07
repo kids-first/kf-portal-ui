@@ -7,13 +7,17 @@ declare namespace Cypress {
     clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number): cy & CyEventEmitter;
     closePopup(): cy & CyEventEmitter;
     createFilterIfNotExists(filterName: string): cy & CyEventEmitter;
+    createSetIfNotExists(etName: string, itemPosition: number): cy & CyEventEmitter;
     deleteFilter(filterName: string): cy & CyEventEmitter;
     deleteFilterIfExists(filterName: string): cy & CyEventEmitter;
+    deleteSet(dataNodeKey: string, setName: string): cy & CyEventEmitter;
+    deleteSetIfExists(dataNodeKey: string, setName: string): cy & CyEventEmitter;
     login(): cy & CyEventEmitter;
     logout(): cy & CyEventEmitter;
     removeFilesFromFolder(folder: string): cy & CyEventEmitter;
     resetColumns(table_id?: string): cy & CyEventEmitter;
     saveFilterAs(filterName: string): cy & CyEventEmitter;
+    saveSetAs(setName: string, itemPosition: number): cy & CyEventEmitter;
     showColumn(column: string|RegExp): cy & CyEventEmitter;
     sortTableAndIntercept(column: string|RegExp, nbCalls: number): cy & CyEventEmitter;
     sortTableAndWait(column: string): cy & CyEventEmitter;
