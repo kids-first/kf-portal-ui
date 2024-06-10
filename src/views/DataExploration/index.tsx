@@ -9,6 +9,13 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import {
+  IFilter,
+  IFilterGroup,
+  TExtendedMapping,
+  VisualType,
+} from '@ferlab/ui/core/components/filters/types';
+import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
 import useQueryBuilderState, {
   updateActiveQueryField,
   updateActiveQueryFilters,
@@ -27,11 +34,12 @@ import {
   MERGE_VALUES_STRATEGIES,
   TSyntheticSqonContentValue,
 } from '@ferlab/ui/core/data/sqon/types';
-import { TAggregationBuckets, TAggregations } from '@ferlab/ui/core/graphql/types';
+import { IExtendedMappingResults, TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
+import { getFilters } from 'graphql/utils/Filters';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { capitalize, cloneDeep, get } from 'lodash';
 import PageContent from 'views/DataExploration/components/PageContent';
@@ -73,14 +81,6 @@ import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 
 import styles from './index.module.scss';
-import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
-import {
-  IFilter,
-  IFilterGroup,
-  TExtendedMapping,
-  VisualType,
-} from '@ferlab/ui/core/components/filters/types';
-import { getFilters } from 'graphql/utils/Filters';
 
 const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
@@ -268,6 +268,18 @@ const DataExploration = () => {
     fetchFacets();
   }, [fetchFacets]);
 
+  const getMappingByIndex = (index: string): IExtendedMappingResults => {
+    switch (index) {
+      case INDEXES.BIOSPECIMEN:
+        return biospecimenMappingResults;
+      case INDEXES.FILE:
+        return fileMappingResults;
+      case INDEXES.PARTICIPANT:
+      default:
+        return participantMappingResults;
+    }
+  };
+
   const getQFSuggestions = async (
     searchText: string,
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
@@ -337,28 +349,36 @@ const DataExploration = () => {
     setIsLoading(true);
 
     const { data } = await ArrangerApi.graphqlRequest<{
-      data: { participant: { aggregations: any } };
+      data: any;
     }>({
-      query: AGGREGATION_QUERY(INDEXES.PARTICIPANT, [option.key], participantMappingResults).loc
-        ?.source.body,
+      query: AGGREGATION_QUERY(
+        option.index,
+        [getFieldWithoutPrefix(option.key)],
+        getMappingByIndex(option.index),
+      ).loc?.source.body,
 
       variables: {
         sqon: getSqonForQuickFilter(activeQuery),
       },
     });
 
-    // console.log('data?.data.participant.aggregations', data?.data.participant.aggregations);
-
-    const found = (participantMappingResults?.data || []).find(
-      (f: TExtendedMapping) => f.field === underscoreToDot(option.key),
+    const found = (getMappingByIndex(option.index)?.data || []).find(
+      (f: TExtendedMapping) => f.field === underscoreToDot(getFieldWithoutPrefix(option.key)),
     );
-    console.log('found', found);
 
-    // console.log('found', found);
+    const getAgg = () => {
+      switch (option.index) {
+        case INDEXES.BIOSPECIMEN:
+          return data?.data.biospecimen.aggregations[getFieldWithoutPrefix(option.key)];
+        case INDEXES.FILE:
+          return data?.data.file.aggregations[getFieldWithoutPrefix(option.key)];
+        case INDEXES.PARTICIPANT:
+        default:
+          return data?.data.participant.aggregations[getFieldWithoutPrefix(option.key)];
+      }
+    };
 
-    const aggregations = data?.data.participant.aggregations[option.key];
-
-    // console.log('aggregations', aggregations);
+    const aggregations = getAgg();
 
     const filterGroup = getFilterGroup({
       extendedMapping: found,
@@ -370,34 +390,16 @@ const DataExploration = () => {
       noDataInputOption: false,
     });
 
-    // console.log('filterGroup', filterGroup);
-
     const filters =
       getFilters({ [`${option.key}`]: aggregations as TAggregationBuckets }, option.key) || [];
 
-    // console.log('filters', filters);
-
     const onChange = (fg: IFilterGroup, f: IFilter[]) => {
-      console.log('on change filter fg', fg);
-      console.log('on change filter f', f);
-
       updateActiveQueryFilters({
         queryBuilderId: DATA_EXPLORATION_QB_ID,
         filterGroup: fg,
         selectedFilters: f,
-        index: INDEXES.PARTICIPANT,
-        // index: getIndexFromQFValueFacet(option.key),
+        index: getIndexFromQFValueFacet(option.key),
       });
-      // f.forEach((filter: IFilter) => {
-      //   updateActiveQueryField({
-      //     queryBuilderId: DATA_EXPLORATION_QB_ID,
-      //     field: (getFieldWithoutPrefix(fg.field)),
-      //     value: [option.key],
-      //     index: ,
-      //     merge_strategy: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
-      //     operator,
-      //   }),
-      // });
     };
 
     setFacetOptions({
