@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+.container .title {
+  margin: 0;
+  font-size: 14px;
+}
+.container .icon {
+  margin: 0 12px 0 4px;
+  color: var(--gray-7);
+  font-size: 12px;
+}

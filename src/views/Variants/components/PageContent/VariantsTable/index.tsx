@@ -52,7 +52,7 @@ import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from '../../../utils/cons
 
 import { GnomadCircle, renderClinvar, renderOmim } from './utils';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   pageIndex: number;

@@ -12,7 +12,7 @@ import { IPersonaUser } from 'services/api/persona/models';
 import AvatarHeader from './components/AvatarHeader';
 import Banner from './components/Banner';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 type ownProps = {
   profile?: IMemberEntity | IPersonaUser;

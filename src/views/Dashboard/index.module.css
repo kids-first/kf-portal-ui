@@ -1,0 +1,10 @@
+.dashboardWrapper {
+  width: 100%;
+  padding: var(--default-page-content-padding);
+}
+.dashboardWrapper .dataIntroWrapper {
+  width: 100%;
+}
+.dashboardWrapper .greeting {
+  margin: 0;
+}

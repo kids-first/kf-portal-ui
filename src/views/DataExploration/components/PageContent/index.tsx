@@ -59,7 +59,7 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 
 import BioSpecimenTab from './tabs/Biospecimens';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title } = Typography;
 

@@ -60,7 +60,7 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   sqon?: ISqonGroupFilter;

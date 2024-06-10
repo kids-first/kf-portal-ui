@@ -27,7 +27,7 @@ import { numberWithCommas } from 'utils/string';
 
 import AddRemoveSaveSetModal from './AddRemoveSaveSetModal';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 type Props = {
   idField: string;

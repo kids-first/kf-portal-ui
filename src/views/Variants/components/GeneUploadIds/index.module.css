@@ -1,0 +1,9 @@
+.geneUploadIdsPopover {
+  max-width: 400px;
+}
+.geneUploadIdsPopover :global(.ant-descriptions-item) {
+  padding-bottom: 0;
+}
+.geneUploadIdsPopover :global(.ant-descriptions-item-label) {
+  font-weight: 500;
+}

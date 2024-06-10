@@ -7,7 +7,7 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
 import { RegexExtractPhenotype } from 'views/DataExploration/utils/PhenotypeStore';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   currentNode: TreeNode;

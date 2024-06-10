@@ -25,7 +25,7 @@ import { ClinvarColorMap } from 'views/Variants/components/PageContent/VariantsT
 import { STATIC_ROUTES } from 'utils/routes';
 import { numberWithCommas } from 'utils/string';
 
-import style from '../index.module.scss';
+import style from '../index.module.css';
 
 const { Text } = Typography;
 

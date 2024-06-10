@@ -34,7 +34,7 @@ import {
   STUDIES_REPO_QB_ID,
 } from '../../utils/constant';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title } = Typography;
 

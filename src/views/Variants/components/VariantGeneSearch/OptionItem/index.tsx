@@ -4,7 +4,7 @@ import cx from 'classnames';
 import SquareLabel from 'components/uiKit/search/GlobalSearch/SquareLabel';
 import { Suggestion, SuggestionType } from 'services/api/arranger/models';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   type: SuggestionType;

@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import { globalActions, useGlobals } from 'store/global';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const NotificationContextHolder = () => {
   const dispatch = useDispatch();

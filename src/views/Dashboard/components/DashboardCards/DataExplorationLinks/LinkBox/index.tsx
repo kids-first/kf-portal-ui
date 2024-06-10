@@ -6,7 +6,7 @@ import MultiLabel, {
 import { Space } from 'antd';
 import cx from 'classnames';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   multiLabelClassName?: string;

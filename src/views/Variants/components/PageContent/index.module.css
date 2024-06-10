@@ -1,0 +1,30 @@
+.pageHeader {
+  display: flex;
+  align-items: center;
+}
+.pageHeader .pageHeaderTitle {
+  display: flex;
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  margin-right: 1.2rem;
+}
+.pageHeader .dataReleaseTag {
+  color: var(--cyan-7);
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  height: 20px;
+}
+.pageHeader .dataReleaseTag:hover {
+  cursor: pointer;
+}
+.pageHeader .dataReleaseTag span {
+  margin-right: 0.5rem;
+}
+
+.variantsPageContent {
+  width: 100%;
+  display: flex;
+  position: relative;
+}

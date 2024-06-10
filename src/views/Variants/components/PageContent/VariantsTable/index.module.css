@@ -1,0 +1,89 @@
+.variantTabWrapper {
+  display: flex;
+}
+.variantTabWrapper :global(.ant-pagination) {
+  margin-bottom: 0;
+}
+.variantTabWrapper :global(.ant-table-body) {
+  overflow: auto !important;
+}
+
+.fixedVariantTableCellElipsis {
+  min-width: 150px;
+  max-width: 150px;
+  width: 150px;
+}
+.fixedVariantTableCellElipsis div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: unset;
+  white-space: nowrap;
+}
+.fixedVariantTableCellElipsis div::after {
+  content: "";
+  display: block;
+}
+
+.fixedVariantTableCellNoData {
+  left: 0 !important;
+}
+
+.csqCell {
+  min-width: 150px;
+  max-width: 150px;
+  width: 150px;
+}
+
+.csqCellLayout {
+  min-width: 300px;
+}
+
+.userAffectedBtnCell {
+  min-width: 60px;
+}
+.userAffectedBtnCell .affectedIcon {
+  display: flex;
+  margin: auto;
+  fill: var(--blue-8);
+}
+.userAffectedBtnCell .affectedIcon:hover {
+  cursor: pointer;
+}
+
+.dbSnpTableCell {
+  text-align: center;
+}
+
+.addGene .addGeneButton {
+  padding: 0 4px;
+  border-radius: 2px;
+  color: var(--blue-8);
+}
+.addGene .addGeneButton:hover {
+  cursor: pointer;
+  background-color: var(--gray-4);
+}
+
+.variantSnvOmimCellItem {
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.gnomadIndicator {
+  height: 8px;
+  width: 8px;
+  border-radius: 100%;
+}
+
+.gnomadIndicatorRed {
+  background-color: var(--red-6);
+}
+
+.gnomadIndicatorDefault {
+  background-color: var(--gray-1);
+  border: 1px solid var(--gray-5);
+}
+
+.partCell {
+  padding-left: 4px;
+}

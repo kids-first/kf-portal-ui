@@ -19,7 +19,7 @@ import VariantGeneSearch from './components/VariantGeneSearch';
 import { VARIANT_REPO_QB_ID } from './utils/constants';
 import { SCROLL_WRAPPER_ID } from './utils/constants';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 enum FilterTypes {
   Participant,

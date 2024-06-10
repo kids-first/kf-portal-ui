@@ -5,7 +5,7 @@ import { ExceptionStatusType } from 'antd/lib/result';
 
 import { STATIC_ROUTES } from 'utils/routes';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const getResultProps = (
   status: ExceptionStatusType,

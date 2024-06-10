@@ -1,0 +1,31 @@
+.savedSetsList {
+  height: 100%;
+  overflow: auto;
+  min-height: 200px;
+}
+.savedSetsList div[class$=-item-meta] {
+  margin-bottom: 0;
+}
+.savedSetsList *[class$=-item-meta-description] {
+  font-size: 12px;
+}
+.savedSetsList div[class$=-list-empty-text] {
+  padding: 24px;
+}
+
+.setTabs {
+  height: 100%;
+}
+.setTabs :global(.ant-tabs-content) {
+  height: 100%;
+  overflow: auto;
+}
+.setTabs :global(.ant-tabs-content) :global(.ant-tabs-tabpane) {
+  height: 100%;
+}
+.setTabs :global(.ant-tabs-tab) {
+  padding-top: 0 !important;
+}
+.setTabs:global(.ant-tabs-top) :global(.ant-tabs-nav)::before {
+  border: none;
+}

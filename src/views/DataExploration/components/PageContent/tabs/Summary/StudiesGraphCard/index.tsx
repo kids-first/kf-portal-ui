@@ -19,7 +19,7 @@ import { getResizableGridDictionary } from 'utils/translation';
 
 import { STUDIES_GRAPH_CARD_ID, UID } from '../utils/grid';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const colors = getCommonColors();
 

@@ -27,7 +27,7 @@ import { RemoteComponentList } from 'store/remote/types';
 
 import { findChildrenKey, generateTree, getExpandedKeys, isChecked, searchInTree } from './helpers';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const AUTO_EXPAND_TREE = 1;
 const MIN_SEARCH_TEXT_LENGTH = 3;

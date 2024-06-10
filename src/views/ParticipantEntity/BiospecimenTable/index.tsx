@@ -22,7 +22,7 @@ import {
   getBiospecimensFromParticipant,
 } from '../utils/biospecimens';
 
-import styles from '../index.module.scss';
+import styles from '../index.module.css';
 
 interface OwnProps {
   participant?: IParticipantEntity;

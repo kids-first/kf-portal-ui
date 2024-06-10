@@ -1,0 +1,7 @@
+.maneIcons :global(.ant-space-item) div {
+  line-height: 16px;
+}
+
+.canonicalIcon {
+  fill: var(--blue-8);
+}

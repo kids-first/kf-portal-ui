@@ -1,0 +1,70 @@
+.sideImagePageContainer {
+  position: relative;
+  height: 100vh;
+  background-color: var(--cyan-7);
+}
+.sideImagePageContainer.sideImagePageContainerAlt {
+  background-color: var(--gray-2);
+}
+.sideImagePageContainer .contentWrapper {
+  height: 100%;
+  width: 100%;
+}
+.sideImagePageContainer .sideImageContainer {
+  background: #ffffff;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+.sideImagePageContainer .pageContent {
+  flex: 1;
+}
+.sideImagePageContainer .pageContent.alignCenter {
+  justify-content: center;
+  align-items: center;
+}
+.sideImagePageContainer .pageContent.light {
+  background-color: var(--gray-2);
+}
+.sideImagePageContainer .logoImage {
+  width: 275px;
+  position: absolute;
+  margin: 20px;
+}
+
+@media (min-width: 1351px) {
+  .sideImageContainer {
+    width: 575px;
+  }
+}
+@media (max-width: 1350px) {
+  .sideImageContainer {
+    width: 435px;
+  }
+}
+@media (max-width: 1180px) {
+  .sideImageContainer {
+    flex: 0;
+  }
+  .pageContent {
+    display: flex;
+  }
+  .pageContent.sideImagePageContainerAlt {
+    background-color: var(--gray-2);
+  }
+  .pageContent.sideImagePageContainerAlt.dark {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background: linear-gradient(0deg, rgba(var(--gray-2), 0.9), rgba(var(--gray-2), 0.9)), url(../../assets/mainSideImage-alt.jpg) bottom;
+    background-size: cover;
+  }
+  .pageContent.dark {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background: linear-gradient(0deg, rgba(var(--cyan-7), 0.9), rgba(var(--cyan-7), 0.9)), url(../../assets/mainSideImage.jpg) bottom;
+    background-size: cover;
+  }
+}

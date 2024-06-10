@@ -1,0 +1,12 @@
+.pageContent {
+  width: 100%;
+}
+.pageContent .tableWrapper {
+  width: 100%;
+}
+.pageContent .title {
+  margin: 0;
+}
+.pageContent .search {
+  margin-bottom: 8px;
+}

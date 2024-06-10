@@ -14,7 +14,7 @@ import TooMuchFilesAlert from '../TooMuchFilesAlert';
 
 import FilesTable from './FilesTable';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface IDownloadFileManifestProps {
   sqon: ISyntheticSqon;

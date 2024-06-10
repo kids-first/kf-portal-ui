@@ -1,0 +1,8 @@
+.dataExplorePageContent {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.dataExplorePageContent .title {
+  margin: 0;
+}

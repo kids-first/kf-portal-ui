@@ -7,7 +7,7 @@ import { MAX_TITLE_LENGTH } from 'views/DataExploration/components/PageContent';
 import { TUserSavedFilter } from 'services/api/savedFilter/models';
 import { updateSavedFilter } from 'store/savedFilter/thunks';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   visible?: boolean;
