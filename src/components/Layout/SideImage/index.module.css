@@ -61,10 +61,10 @@
     background-size: cover;
   }
   .pageContent.dark {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background: linear-gradient(0deg, rgba(var(--cyan-7), 0.9), rgba(var(--cyan-7), 0.9)), url(../../assets/mainSideImage.jpg) bottom;
-    background-size: cover;
+   background: linear-gradient(
+      0deg,
+      rgba(var(--cyan-7-r), var(--cyan-7-g), var(--cyan-7-b), 0.9), 
+      rgba(var(--cyan-9-r), var(--cyan-9-g), var(--cyan-9-b), 0.9)),
+      url(../../assets/mainSideImage.jpg) bottom center / cover no-repeat;
   }
 }
