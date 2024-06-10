@@ -1,12 +1,12 @@
 import intl from 'react-intl-universal';
-import { Tooltip } from 'antd';
-import { ColumnType } from 'antd/lib/table';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import { IRequestBiospecimenDictionary } from '@ferlab/ui/core/components/BiospecimenRequest/requestBiospecimen.utils';
-import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-
-import styles from './index.module.scss';
 import { IRequestBioDataRow } from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenTable';
+import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
+import { Tooltip } from 'antd';
+import { ColumnType } from 'antd/lib/table';
+
+import styles from './index.module.css';
 
 export const getRequestBiospecimenDictionary = (): IRequestBiospecimenDictionary => ({
   buttonLabel: intl.get('screen.dataExploration.tabs.biospecimens.request.buttonLabel'),

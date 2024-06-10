@@ -1,0 +1,12 @@
+.participantTabWrapper {
+  display: flex;
+}
+.participantTabWrapper :global(.ant-pagination) {
+  margin-bottom: 0;
+}
+.participantTabWrapper .diagnosisCell, .participantTabWrapper .phenotypeCell {
+  min-width: 300px;
+}
+.participantTabWrapper .studyIdCell {
+  min-width: 85px;
+}

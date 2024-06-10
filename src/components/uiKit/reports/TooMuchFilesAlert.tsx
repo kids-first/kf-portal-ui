@@ -2,7 +2,7 @@ import intl from 'react-intl-universal';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Alert } from 'antd';
 
-import styles from './DownloadRequestAccessModal/index.module.scss';
+import styles from './DownloadRequestAccessModal/index.module.css';
 
 const TooMuchFilesAlert = () => (
   <Alert

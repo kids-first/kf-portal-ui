@@ -27,7 +27,7 @@ import { numberWithCommas } from 'utils/string';
 import { VARIANT_SAVED_SETS_FIELD } from '../../../../../Variants/utils/constants';
 import CreateEditModal from '../CreateEditModal';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   data: IUserSetOutput;

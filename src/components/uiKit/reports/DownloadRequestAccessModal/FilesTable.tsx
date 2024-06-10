@@ -10,7 +10,7 @@ import useApi from 'hooks/useApi';
 import { headers, REPORTS_ROUTES } from 'services/api/reports';
 import { ReportType } from 'services/api/reports/models';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const ARRANGER_PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
 

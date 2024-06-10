@@ -9,7 +9,7 @@ import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { createPersonaUser } from 'store/persona/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title, Text } = Typography;
 

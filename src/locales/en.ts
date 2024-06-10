@@ -1244,6 +1244,8 @@ const en = {
         },
         selectedCount:
           '{count, plural, =0 {# unique phenotype} =1 {# unique phenotype} other {# unique phenotypes}}',
+        matchingCount:
+          '{count, plural, =0 {# matching phenotype} =1 {# matching phenotype} other {# matching phenotypes}}',
       },
       mondoTree: {
         modal: {
@@ -1258,6 +1260,8 @@ const en = {
         },
         selectedCount:
           '{count, plural, =0 {# unique diagnosis} =1 {# unique diagnosis} other {# unique diagnoses}}',
+        matchingCount:
+          '{count, plural, =0 {# matching diagnosis} =1 {# matching diagnosis} other {# matching diagnoses}}',
       },
       tabs: {
         summary: {

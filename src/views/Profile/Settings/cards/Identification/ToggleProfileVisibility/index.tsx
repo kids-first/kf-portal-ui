@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { usePersona } from 'store/persona';
 import { updatePersonaUser } from 'store/persona/thunks';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const ToggleProfileVisibility = () => {
   const dispatch = useDispatch();

@@ -1,0 +1,25 @@
+.notStriped {
+  background-color: inherit !important;
+}
+
+.modal {
+  max-height: 600px;
+  width: 740px !important;
+}
+
+.table {
+  margin-top: 30px;
+}
+
+.tooMuchFilesIcon {
+  font-size: 21px !important;
+  margin-top: 2px;
+}
+
+.tooMuchFiles {
+  margin-top: 30px;
+  color: var(--red-8);
+}
+.tooMuchFiles *[class$=-alert-message] {
+  font-weight: 600;
+}

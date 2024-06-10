@@ -10,7 +10,7 @@ import FHIR_ICON from 'components/assets/FHIR.png';
 import CardHeader from '../../CardHeader';
 import { DashboardCardProps } from '..';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Text } = Typography;
 

@@ -4,7 +4,7 @@ import DragHandle from '@ferlab/ui/core/layout/SortableGrid/DragHandle';
 import { HolderOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import cx from 'classnames';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   id: string;

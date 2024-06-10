@@ -5,7 +5,7 @@ import { generateFilters } from 'graphql/utils/Filters';
 
 import useGetAggregations from 'hooks/graphql/useGetAggregations';
 
-import styles from './Filters.module.scss';
+import styles from './Filters.module.css';
 
 type OwnProps = {
   queryBuilderId: string;

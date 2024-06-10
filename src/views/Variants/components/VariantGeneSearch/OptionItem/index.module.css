@@ -1,0 +1,10 @@
+.searchLabel.variants {
+  background-color: var(--purple-2);
+}
+.searchLabel.genes {
+  background-color: var(--geekblue-2);
+}
+
+.variantSearchLocus {
+  font-weight: 500;
+}

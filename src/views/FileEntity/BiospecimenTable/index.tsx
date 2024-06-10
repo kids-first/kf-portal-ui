@@ -21,7 +21,7 @@ import { updateUserConfig } from 'store/user/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   file?: IFileEntity;

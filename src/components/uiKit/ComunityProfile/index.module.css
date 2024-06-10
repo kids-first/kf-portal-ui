@@ -1,0 +1,106 @@
+.communityMemberWrapper {
+  padding: 24px;
+}
+
+.privateAlert {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+.communityMember {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+  border-radius: 4px;
+  background-color: white;
+}
+.communityMember .contentWrapper {
+  width: 100%;
+  padding: 40px;
+  margin-top: -110px;
+  border: 1px solid var(--gray-4);
+  border-top: none;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.communityMember .banner {
+  height: 200px;
+  width: 100%;
+  background: url("../../../components/assets/memberHeader.png");
+  padding: 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid var(--gray-4);
+  border-bottom: none;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+.communityMember .bannerActions {
+  display: flex;
+  justify-content: space-between;
+}
+.communityMember .bannerActions .communityBtn {
+  padding: 0;
+  color: var(--cyan-4);
+}
+.communityMember .bannerActions .communityBtn:hover {
+  color: var(--cyan-5);
+}
+.communityMember .memberName {
+  margin-bottom: 0;
+}
+.communityMember .avatarContainer {
+  width: 100%;
+}
+.communityMember .gravatarWrapper,
+.communityMember .gravatar {
+  height: 140px;
+}
+.communityMember .divider {
+  border-width: 1.5px;
+  margin: 35px 0;
+}
+.communityMember .infoList {
+  background-color: transparent;
+  margin-left: 14px;
+}
+.communityMember .infoList.empty {
+  margin-left: 0;
+}
+.communityMember .infoList :global(.ant-list-empty-text) {
+  padding: 0;
+}
+.communityMember .infoList ul {
+  list-style: disc;
+}
+.communityMember .memberNameSkeleton {
+  width: 200px;
+}
+.communityMember .memberAssoSkeleton {
+  width: 100px;
+}
+
+.notFoundMember {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.linksContainer {
+  width: 100%;
+}
+.linksContainer .link {
+  width: 100%;
+  text-align: left;
+}
+.linksContainer .link > span {
+  text-decoration: none !important;
+}
+.linksContainer .link:hover {
+  background-color: var(--gray-2);
+  text-decoration: none;
+}

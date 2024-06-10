@@ -1,0 +1,18 @@
+.dataExplorationLayout {
+  display: flex;
+  height: calc(100vh - var(--main-header-height));
+}
+.dataExplorationLayout .filterLoader {
+  padding: 24px;
+  width: 100%;
+}
+.dataExplorationLayout .sideMenu li[role=menuitem] {
+  color: white;
+}
+.dataExplorationLayout .sideMenu li[role=menuitem] span[class$=-title-content] {
+  margin-left: 0 !important;
+}
+.dataExplorationLayout .scrollContent {
+  width: 100%;
+  padding: var(--default-page-content-padding);
+}

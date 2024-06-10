@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import intl from 'react-intl-universal';
 import IdentificationCard from './cards/Identification';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 import RoleAndAffiliationCard from './cards/RoleAndAffiliation';
 import ResearchInterestsCard from './cards/ResearchInterests';
 import LocationCard from './cards/Location';

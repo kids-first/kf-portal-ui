@@ -6,7 +6,7 @@ import ManeSelectIcon from '@ferlab/ui/core/components/Icons/ManeSelectIcon';
 import { Space, Tooltip } from 'antd';
 import { IConsequenceEntity } from 'graphql/variants/models';
 
-import style from './index.module.scss';
+import style from './index.module.css';
 
 interface OwnProps {
   consequence: IConsequenceEntity;

@@ -6,7 +6,7 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { STATIC_ROUTES } from 'utils/routes';
 
-import styles from '../styles/styles.module.scss';
+import styles from '../styles/styles.module.css';
 
 interface OwnProps {
   familyId: string;
