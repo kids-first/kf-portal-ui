@@ -53,7 +53,7 @@ export const dataExploQFFacets = [
 export const GET_QUICK_FILTER_EXPLO = gql`
   query getQuickFilterExploFacets($sqon: JSON) {
     participant {
-      aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
+      aggregations(filters: $sqon, include_missing: false) {
         study__study_name {
           buckets {
             key
@@ -85,13 +85,13 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         # Toggle
-        # is_proband {
-        #   buckets {
-        #     key
-        #     key_as_string
-        #     doc_count
-        #   }
-        # }
+        is_proband {
+          buckets {
+            key
+            key_as_string
+            doc_count
+          }
+        }
         ethnicity {
           buckets {
             key
@@ -111,23 +111,23 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         # Range
-        # diagnosis__age_at_event_days {
-        #   stats {
-        #     count
-        #   }
-        # }
+        diagnosis__age_at_event_days {
+          stats {
+            count
+          }
+        }
         # Range
-        # outcomes__age_at_event_days__value {
-        #   stats {
-        #     count
-        #   }
-        # }
+        outcomes__age_at_event_days__value {
+          stats {
+            count
+          }
+        }
         # Range
-        # phenotype__age_at_event_days {
-        #   stats {
-        #     count
-        #   }
-        # }
+        phenotype__age_at_event_days {
+          stats {
+            count
+          }
+        }
         diagnosis__ncit_id_diagnosis {
           buckets {
             key
@@ -185,17 +185,17 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         # Range
-        # files__biospecimens__age_at_biospecimen_collection {
-        #   stats {
-        #     count
-        #   }
-        # }
+        files__biospecimens__age_at_biospecimen_collection {
+          stats {
+            count
+          }
+        }
         # Range
-        # files__biospecimens__diagnoses__age_at_event__value {
-        #   stats {
-        #     count
-        #   }
-        # }
+        files__biospecimens__diagnoses__age_at_event__value {
+          stats {
+            count
+          }
+        }
         files__biospecimens__status {
           buckets {
             key
@@ -319,12 +319,13 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         # Toggle
-        # files__sequencing_experiment__is_paired_end {
-        #   buckets {
-        #     key
-        #     doc_count
-        #   }
-        # }
+        files__sequencing_experiment__is_paired_end {
+          buckets {
+            key
+            key_as_string
+            doc_count
+          }
+        }
         files__repository {
           buckets {
             key
