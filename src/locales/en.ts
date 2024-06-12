@@ -617,6 +617,51 @@ const en = {
         datarelease: {
           title: 'Data release {version}',
         },
+        biospecimenRequest: {
+          title: 'Biospecimen Requests',
+          titleInfo: {
+            title: 'Your Request History',
+            text: 'This card holds the history of your biospecimen requests. You can reload them in the <a href="{href}" style="text-decoration: underline;">Data Exploration</a> or share the link.',
+          },
+          noBiospecimenRequests:
+            '<p style="margin-bottom: 0;">A history of your biospecimen requests will be listed here.</p><p style="margin-bottom: 0;">You can make your first request from <a href="{href}" style="text-decoration: underline;">Data Exploration</a>.</p>',
+          error: {
+            title: 'Error',
+            text: 'We are currently unable to load this content. Please refresh the page and try again. If the problem persists, please <a href="{href}" style="text-decoration: underline;" target="_blank">contact support</a>.',
+          },
+          lastSaved: 'Last saved: {date} ago',
+          popupConfirm: {
+            delete: {
+              title: 'Permanently delete this biospecimen request?',
+              content: 'You are about to delete this request from your history.',
+              okText: 'Delete',
+              cancelText: 'Cancel',
+            },
+          },
+          editModal: {
+            title: 'Save this bisopecimen request',
+            cancelText: 'Cancel',
+            okText: 'Save',
+            inputLabel: 'Name',
+            placeholder: 'Biospecimen request name',
+            requiredError: 'You must provide a name for this request.',
+            existingNameError: 'A biospecimen request with this name already exists.',
+            maximumLength: 'characters maximum',
+          },
+          shareModal: {
+            title: 'Share link to biospecimen request?',
+            cancelText: 'Cancel',
+            okText: 'Copy link',
+            content:
+              'Note that anyone with this link will have access to:<ul><li>The biospecimen request title</li><li>The list of biospecimens in the request</li></ul>',
+            firstPoint: 'The biospecimen request title',
+            secondPoint: 'The list of biospecimens in the request',
+          },
+          shareLink: {
+            success: { title: 'Success', description: 'Link copied to clipboard' },
+            error: { title: 'Error', description: 'Unable to copy link to clipboard' },
+          },
+        },
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
           connectedNotice: 'You have access to the following Kids First controlled data. ',
