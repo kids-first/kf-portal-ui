@@ -28,12 +28,8 @@ import {
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
-import {
-  ISyntheticSqon,
-  IValueFilter,
-  MERGE_VALUES_STRATEGIES,
-  TSyntheticSqonContentValue,
-} from '@ferlab/ui/core/data/sqon/types';
+import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
+import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { IExtendedMappingResults, TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/stringUtils';
@@ -41,7 +37,7 @@ import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFilters } from 'graphql/utils/Filters';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
-import { capitalize, cloneDeep, get } from 'lodash';
+import { capitalize, get } from 'lodash';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
@@ -79,6 +75,13 @@ import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileUploadIds from './components/UploadIds/FileUploadIds';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
+import {
+  getFieldWithoutPrefix,
+  getIndexFromQFValueFacet,
+  getSelectedOptionsByQuery,
+  getSqonForQuickFilterFacetValue,
+  getSqonForQuickFilterFacetView,
+} from './utils/quickFilter';
 
 import styles from './index.module.scss';
 
@@ -204,43 +207,6 @@ const filterGroups: {
   },
 };
 
-const getIndexFromQFValueFacet = (facetKey: string): INDEXES => {
-  if (facetKey.startsWith('files__biospecimens__')) return INDEXES.BIOSPECIMEN;
-  else if (facetKey.startsWith('files__')) return INDEXES.FILE;
-  else return INDEXES.PARTICIPANT;
-};
-
-const getFieldWithoutPrefix = (facetKey: string): string => {
-  if (facetKey.startsWith('files__biospecimens__')) return facetKey.slice(21);
-  else if (facetKey.startsWith('files__')) return facetKey.slice(7);
-  else return facetKey;
-};
-
-const getFieldWithPrefix = (index: string, field: string): string => {
-  switch (index) {
-    case INDEXES.BIOSPECIMEN:
-      return `files.biospecimens.${field}`;
-    case INDEXES.FILE:
-      return `files.${field}`;
-    default:
-      return field;
-  }
-};
-
-const getSqonForQuickFilter = (activeQuery: ISyntheticSqon): ISyntheticSqon => {
-  const activeQueryUpdated = cloneDeep(activeQuery);
-  activeQueryUpdated.content.forEach((sqonContent: TSyntheticSqonContentValue) => {
-    const originalIndex = (sqonContent as IValueFilter).content.index;
-    const originalField = (sqonContent as IValueFilter).content.field;
-    const fieldPrefixed = originalIndex
-      ? getFieldWithPrefix(originalIndex, originalField)
-      : originalField;
-    (sqonContent as IValueFilter).content.index = INDEXES.PARTICIPANT;
-    (sqonContent as IValueFilter).content.field = fieldPrefixed;
-  });
-  return activeQueryUpdated;
-};
-
 const DataExploration = () => {
   const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
@@ -258,7 +224,7 @@ const DataExploration = () => {
     }>({
       query: GET_QUICK_FILTER_EXPLO.loc?.source.body,
       variables: {
-        sqon: getSqonForQuickFilter(activeQuery),
+        sqon: getSqonForQuickFilterFacetValue(activeQuery),
       },
     });
     if (data) setQuickFilterData(data?.data);
@@ -284,6 +250,7 @@ const DataExploration = () => {
     searchText: string,
     setOptions: React.Dispatch<React.SetStateAction<(TitleQFOption | CheckboxQFOption)[]>>,
     setTotal: React.Dispatch<React.SetStateAction<number>>,
+    setSelectedOptions: React.Dispatch<React.SetStateAction<CheckboxQFOption[]>>,
   ) => {
     setIsLoading(true);
     let totalResult = 0;
@@ -337,6 +304,7 @@ const DataExploration = () => {
       }
     });
 
+    setSelectedOptions(getSelectedOptionsByQuery(activeQuery));
     setTotal(totalResult);
     setOptions(suggestions);
     setIsLoading(false);
@@ -358,7 +326,7 @@ const DataExploration = () => {
       ).loc?.source.body,
 
       variables: {
-        sqon: getSqonForQuickFilter(activeQuery),
+        sqon: getSqonForQuickFilterFacetView(activeQuery, option.index),
       },
     });
 
@@ -402,11 +370,17 @@ const DataExploration = () => {
       });
     };
 
+    const selectedFilters = getSelectedFilters({
+      queryBuilderId: DATA_EXPLORATION_QB_ID,
+      filters,
+      filterGroup,
+    });
+
     setFacetOptions({
       filterGroup,
       filters,
       onChange,
-      selectedFilters: [],
+      selectedFilters,
     });
     setIsLoading(false);
   };

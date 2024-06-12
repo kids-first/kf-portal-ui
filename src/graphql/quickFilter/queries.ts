@@ -53,7 +53,7 @@ export const dataExploQFFacets = [
 export const GET_QUICK_FILTER_EXPLO = gql`
   query getQuickFilterExploFacets($sqon: JSON) {
     participant {
-      aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
+      aggregations(filters: $sqon, include_missing: false) {
         study__study_name {
           buckets {
             key

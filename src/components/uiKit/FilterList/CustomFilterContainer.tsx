@@ -57,7 +57,6 @@ const CustomFilterContainer = ({
   const found = (extendedMappingResults?.data || []).find(
     (f: TExtendedMapping) => f.field === underscoreToDot(filterKey),
   );
-  console.log('found sidebar', found);
 
   useEffect(() => {
     if (!isUndefined(filtersOpen) && isOpen !== filtersOpen) {
