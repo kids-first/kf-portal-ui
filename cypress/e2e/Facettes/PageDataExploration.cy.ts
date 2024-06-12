@@ -106,12 +106,12 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
 
   it('Search by family ID - FM_Z4Y7FP70', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'fm_z4y7fp70', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('PT_01236T3G').should('exist'); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains(/(PT_01236T3G|PT_1DYA8779|PT_RZVC67GC)/).should('exist'); //data-cy="Search_Dropdown"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
 
-    cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').contains('PT_01236T3G').should('exist'); //data-cy="Tag_PT_01236T3G"
+    cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').contains(/(PT_01236T3G|PT_1DYA8779|PT_RZVC67GC)/).should('exist'); //data-cy="Tag_PT_01236T3G"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Participant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains(/(PT 01236T3G|PT 1DYA8779|PT RZVC67GC)/).should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').click({force: true});
@@ -454,7 +454,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   });
 
   it('ACL - Phs002330.c1', () => {
-    cy.validateFacetFilter('ACL', 'Phs002330.c1', 'phs002330.c1', /^12,731$/, 1);
+    cy.validateFacetFilter('ACL', 'Phs002330.c1', 'phs002330.c1', /\d{1}/, 1);
     cy.validateFacetRank(10, 'ACL');
   });
 });

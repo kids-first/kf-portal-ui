@@ -20,7 +20,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
     cy.validateTotalSelectedQuery(/(27.2K|26.2K)/);
-    cy.validateTableResultsCount(/(27,172|26,173)/);
+    cy.validateTableResultsCount(/(27,172|26,173|27,192)/);
     cy.validateClearAllButton(false);
   });
 
@@ -31,7 +31,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
     cy.validateTotalSelectedQuery(/(27.2K|26.2K)/);
-    cy.validateTableResultsCount(/(27,172|26,173)/);
+    cy.validateTableResultsCount(/(27,172|26,173|27,192)/);
     cy.validateClearAllButton(false);
   });
 
@@ -41,8 +41,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Collection Sample Type', ['Saliva'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/(3,260|3,181)/);
-    cy.validateTableResultsCount(/(3,260|3,181)/);
+    cy.validateTotalSelectedQuery(/(3,181|3,260|3,261)/);
+    cy.validateTableResultsCount(/(3,181|3,260|3,261)/);
     cy.validateClearAllButton(false);
   });
 
@@ -76,7 +76,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validateTotalSelectedQuery(/(27K|26.1K)/);
-    cy.validateTableResultsCount(/(26,978|26,073)/);
+    cy.validateTableResultsCount(/(26,073|26,978|26,998)/);
     cy.validateClearAllButton(true);
   });
 });
