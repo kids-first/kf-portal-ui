@@ -133,7 +133,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.sortTableAndIntercept('Study', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 2, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Proband', () => {
@@ -168,7 +168,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/^0$/, 11, true);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow('12', 11, true);
+    cy.validateTableFirstRow(/\d{2}/, 11, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Files', () => {

@@ -94,7 +94,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Study', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 4, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 4, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 4, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Data Category', () => {

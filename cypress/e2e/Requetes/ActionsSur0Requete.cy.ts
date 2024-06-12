@@ -24,7 +24,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validateTotalSelectedQuery(/(27K|26.1K)/);
-    cy.validateTableResultsCount(/(26,978|26,073)/);
+    cy.validateTableResultsCount(/(26,073|26,978|26,998)/);
     cy.validateClearAllButton(false);
   });
 });

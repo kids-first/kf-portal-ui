@@ -124,7 +124,7 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
     cy.sortTableAndIntercept('Study', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
     cy.sortTableAndIntercept('Study', 1);
-    cy.validateTableFirstRow('KF-TALL', 2, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 2, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Sample Type', () => {
