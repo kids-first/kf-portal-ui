@@ -67,8 +67,6 @@ const CustomFilterContainer = ({
 
   const onChange = (fg: IFilterGroup, f: IFilter[]) => {
     trackFacetSearch(index, fg.field);
-    console.log('filter group range sidebar', fg);
-    console.log('filter range sidebar', f);
 
     updateActiveQueryFilters({
       queryBuilderId,
