@@ -171,7 +171,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow(/\d{2}/, 11, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Files', () => {
+  it('Valider les fonctionnalités du tableau - Tri Files [SKFP-1148]', () => {
     cy.sortTableAndIntercept('Files', 1);
     cy.validateTableFirstRow(/^0$/, 12, true);
     cy.sortTableAndIntercept('Files', 1);
