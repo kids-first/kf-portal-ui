@@ -457,6 +457,12 @@ Cypress.Commands.add('visitProfileSettingsPage', () => {
   cy.get('[class*="Settings_profileSettingsHeader"]', {timeout: 60 * 1000}); //data-cy="Title_ProfileSettings"
 });
 
+Cypress.Commands.add('visitProfileViewPage', () => {
+  cy.visit('/profile/view');
+  cy.get('[class*="ComunityProfile_avatarContainer"]').should('exist'); // data-cy="AvatarHeader"
+  cy.wait(1000);
+});
+
 Cypress.Commands.add('visitStudyEntity', (studyId: string, nbCalls: number) => {
   cy.visitAndIntercept(`/studies/${studyId}`,
                        'POST',

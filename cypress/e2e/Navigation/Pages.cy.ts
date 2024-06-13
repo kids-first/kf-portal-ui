@@ -230,11 +230,7 @@ describe('Navigation', () => {
   });
  
   it('Liens de la page Profile', () => {
-    cy.visitProfileSettingsPage();
-    cy.get('[class*="Settings_profileSettingsHeader"] button').click({force: true}); // data-cy="ViewProfileButton"
-    cy.get('[class*="ComunityProfile_avatarContainer"]').should('exist'); // data-cy="AvatarHeader"
-    cy.wait(1000);
-
+    cy.visitProfileViewPage();
     cy.get('[class*="ComunityProfile_bannerActions"]').find('[href]').eq(1).click({force: true}); // data-cy="EditProfileButton"
     cy.get('[class*="Settings_profileSettingsHeader"]').should('exist'); // data-cy="Title_ProfileSettings"
 
