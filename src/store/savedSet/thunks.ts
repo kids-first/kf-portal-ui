@@ -14,7 +14,7 @@ import { handleThunkApiReponse } from 'store/utils';
 const fetchSavedSet = createAsyncThunk<IUserSetOutput[], void | string, { rejectValue: string }>(
   'savedsets/fetch',
   async (tag, thunkAPI) => {
-    const { data, error } = await SavedSetApi.fetchAll(tag as string);
+    const { data, error } = await SavedSetApi.fetchAll();
 
     return handleThunkApiReponse({
       error,
@@ -60,11 +60,12 @@ const createSavedSet = createAsyncThunk<
 
 const updateSavedSet = createAsyncThunk<
   IUserSetOutput,
-  TUserSavedSetUpdate & { id: string; onCompleteCb: () => void },
+  TUserSavedSetUpdate & { id: string; onCompleteCb: () => void; isBiospecimenRequest?: boolean },
   { rejectValue: string }
 >('savedsets/update', async (set, thunkAPI) => {
-  const { id, ...setInfo } = set;
+  const { id, isBiospecimenRequest, ...setInfo } = set;
   const { data, error } = await SavedSetApi.update(id, setInfo);
+
   set.onCompleteCb();
 
   return handleThunkApiReponse({
@@ -84,7 +85,9 @@ const updateSavedSet = createAsyncThunk<
         globalActions.displayNotification({
           type: 'success',
           message: intl.get('api.savedSet.success.titleUpdate'),
-          description: intl.get('api.savedSet.success.messageUpdate'),
+          description: isBiospecimenRequest
+            ? intl.get('api.biospecimenRequest.success.messageUpdate')
+            : intl.get('api.savedSet.success.messageUpdate'),
         }),
       ),
   });
