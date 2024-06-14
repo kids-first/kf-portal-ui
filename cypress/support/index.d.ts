@@ -44,6 +44,7 @@ declare namespace Cypress {
     visitFileEntity(fileId: string): cy & CyEventEmitter;
     visitParticipantEntity(participantId: string): cy & CyEventEmitter;
     visitProfileSettingsPage(): cy & CyEventEmitter;
+    visitProfileViewPage(): cy & CyEventEmitter;
     visitStudyEntity(studyId: string, nbCalls: number): cy & CyEventEmitter;
     visitStudiesPage(): cy & CyEventEmitter;
     visitVariantEntityPage(locusId: string, nbGraphqlCalls: number): cy & CyEventEmitter;
