@@ -27,6 +27,7 @@ export type TUserSavedSetInsert = Omit<
 export type TUserSavedSetUpdate = Partial<ISavedSet> & { subAction: string; newTag?: string };
 
 export enum SetType {
+  BIOSPECIMEN_REQUEST = 'biospecimen-request',
   PARTICIPANT = 'participant',
   FILE = 'file',
   BIOSPECIMEN = 'biospecimen',

@@ -1,17 +1,27 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import { TUserSavedSetInsert, TUserSavedSetUpdate, TUserSavedSet, IUserSetOutput } from './models';
+
 import { sendRequest } from 'services/api';
 
+import { IUserSetOutput, TUserSavedSet, TUserSavedSetInsert, TUserSavedSetUpdate } from './models';
+
 export const SETS_API_URL = `${EnvironmentVariables.configFor('ARRANGER_API')}/sets`;
+const USERS_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/user-sets`;
 
 const headers = () => ({
   'Content-Type': 'application/json',
 });
 
-const fetchAll = (tag?: string) =>
+const fetchAll = () =>
   sendRequest<IUserSetOutput[]>({
     method: 'GET',
     url: SETS_API_URL,
+    headers: headers(),
+  });
+
+const shareById = (id: string) =>
+  sendRequest<IUserSetOutput>({
+    method: 'PUT',
+    url: `${USERS_API_URL}/shared/${id}`,
     headers: headers(),
   });
 
@@ -59,5 +69,6 @@ export const SavedSetApi = {
   create,
   update,
   destroy,
+  shareById,
   setAsDefault,
 };
