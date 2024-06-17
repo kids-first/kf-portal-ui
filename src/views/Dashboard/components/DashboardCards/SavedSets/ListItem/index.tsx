@@ -104,8 +104,6 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
           </Row>
         }
         onClick={() => {
-          navigate(redirectToPage(data.setType));
-
           const setValue = `${SET_ID_PREFIX}${data.id}`;
           addQuery({
             queryBuilderId: queryBuilderId,
@@ -120,6 +118,8 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
             }),
             setAsActive: true,
           });
+
+          navigate(redirectToPage(data.setType));
         }}
         title={data.tag}
         description={

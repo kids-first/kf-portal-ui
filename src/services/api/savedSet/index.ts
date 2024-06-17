@@ -2,7 +2,13 @@ import EnvironmentVariables from 'helpers/EnvVariables';
 
 import { sendRequest } from 'services/api';
 
-import { IUserSetOutput, TUserSavedSet, TUserSavedSetInsert, TUserSavedSetUpdate } from './models';
+import {
+  IUserSetOutput,
+  TBiospecimenRequest,
+  TUserSavedSet,
+  TUserSavedSetInsert,
+  TUserSavedSetUpdate,
+} from './models';
 
 export const SETS_API_URL = `${EnvironmentVariables.configFor('ARRANGER_API')}/sets`;
 const USERS_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/user-sets`;
@@ -21,6 +27,13 @@ const fetchAll = () =>
 const shareById = (id: string) =>
   sendRequest<IUserSetOutput>({
     method: 'PUT',
+    url: `${USERS_API_URL}/shared/${id}`,
+    headers: headers(),
+  });
+
+const getSharedById = (id: string) =>
+  sendRequest<TBiospecimenRequest>({
+    method: 'GET',
     url: `${USERS_API_URL}/shared/${id}`,
     headers: headers(),
   });
@@ -71,4 +84,5 @@ export const SavedSetApi = {
   destroy,
   shareById,
   setAsDefault,
+  getSharedById,
 };

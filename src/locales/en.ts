@@ -170,6 +170,17 @@ const en = {
         messageUpdate: 'Your set has been updated.',
       },
     },
+    biospecimenRequest: {
+      error: {
+        manifestReport:
+          'An error occurred and we were unable to download your file. Please try again.',
+        messageUpdate: 'Unable to update biospecimen request',
+      },
+      success: {
+        manifestReport: 'Manifest downloaded successfully.',
+        messageUpdate: 'Your biospecimen request has been updated.',
+      },
+    },
     cavatica: {
       error: {
         title: 'Error',
@@ -1307,6 +1318,43 @@ const en = {
         biospecimens: {
           title: 'Biospecimens ({count})',
           downloadData: 'Download sample data',
+          request: {
+            buttonLabel: 'Request biospecimen',
+            modal: {
+              title: 'Request biospecimen',
+              okText: 'Download manifest',
+              cancelText: 'Cancel',
+              closeText: 'Close',
+              description:
+                'You are about to download the manifest and supporting documents needed to request the selected biospecimen. The report will include information on available samples from your selection.',
+              nameForm: {
+                title: 'Provide a name for your request',
+                note: 'This request will be saved to your dashboard for future reference.',
+                placeholder: 'Biospecimen request name',
+                requiredError: 'You must provide a name for this request.',
+                existingNameError: 'A biospecimen request with this name already exists',
+                maximumLength: 'characters maximum',
+              },
+              table: {
+                studyCode: 'Study Code',
+                nbParticipants: 'Participants',
+                nbAvailableSamples: 'Available Samples',
+                nbAvailableSamplesTooltip:
+                  'Biobank samples available for sharing through the Virtual Biorepository based on your biospecimen selection.',
+              },
+              alert: {
+                errorMessage: 'Unable to process your request',
+                errorDescription:
+                  'An error had occurred and we were unable to retrieve the data for your request. Please cancel and try again.',
+                infoMessage: 'No available samples',
+                infoDescription:
+                  'There are no biospecimen samples available for your selection. Please make different selection and try again.',
+                limitMessage: 'Maximum number exceeded',
+                limitDescription:
+                  'A maximum of 10,000 biospecimens can be included at once. Please narrow down your selection and try again.',
+              },
+            },
+          },
         },
         datafiles: {
           title: 'Data Files ({count})',
@@ -1449,6 +1497,7 @@ const en = {
       biospecimen_fhir_id_1: 'Sample ID',
       biospecimen_fhir_id_2: 'Sample ID',
     },
+    biospecimen_id: 'Biospecimen',
     study: {
       study_code: 'Study Code',
       study_name: 'Study Name',
