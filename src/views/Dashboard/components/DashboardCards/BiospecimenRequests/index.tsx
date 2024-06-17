@@ -1,10 +1,12 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import {
+  IUserSetOutput,
+  SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY,
+} from '@ferlab/ui/core/components/BiospecimenRequest/requestBiospecimen.utils';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import BiospecimenRequestsWidget from '@ferlab/ui/core/components/Widgets/BiospecimenRequests';
-import { TBiospecimenRequests } from '@ferlab/ui/core/components/Widgets/BiospecimenRequests';
-import { SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY } from '@ferlab/ui/core/components/Widgets/BiospecimenRequests/utils';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import copy from 'copy-to-clipboard';
@@ -26,7 +28,7 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
   const { savedSets, isLoading, fetchingError } = useSavedSet();
   const requests = savedSets.filter(
     (s) => s.setType === SetType.BIOSPECIMEN_REQUEST,
-  ) as TBiospecimenRequests[];
+  ) as IUserSetOutput[];
 
   return (
     <BiospecimenRequestsWidget

@@ -61,6 +61,15 @@ export const trackReportDownload = (reportCategory: string) => {
   }
 };
 
+export const trackRequestBiospecimen = (action: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Reports',
+      action: `request biospecimen -- ${action}`,
+    });
+  }
+};
+
 export const trackCavaticaAction = (page: string) => {
   if (isGaActive) {
     ReactGA.event({
