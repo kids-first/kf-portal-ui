@@ -137,17 +137,18 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
               ),
             }),
           );
-        } else {
-          dispatch(
-            globalActions.displayNotification({
-              type: 'error',
-              message: intl.get('screen.dashboard.cards.biospecimenRequest.shareLink.error.title'),
-              description: intl.get(
-                'screen.dashboard.cards.biospecimenRequest.shareLink.error.description',
-              ),
-            }),
-          );
+          return;
         }
+
+        dispatch(
+          globalActions.displayNotification({
+            type: 'error',
+            message: intl.get('screen.dashboard.cards.biospecimenRequest.shareLink.error.title'),
+            description: intl.get(
+              'screen.dashboard.cards.biospecimenRequest.shareLink.error.description',
+            ),
+          }),
+        );
       }}
       handleListItemClick={(id: string) => {
         const setValue = `${SET_ID_PREFIX}${id}`;

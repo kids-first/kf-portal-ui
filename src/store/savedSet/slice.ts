@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { initialState } from 'store/savedSet/types';
 import { sortByUpdateDate } from 'utils/dates';
+
 import {
   createSavedSet,
   deleteSavedSet,

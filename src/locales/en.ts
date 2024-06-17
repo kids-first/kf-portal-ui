@@ -1497,6 +1497,7 @@ const en = {
       biospecimen_fhir_id_1: 'Sample ID',
       biospecimen_fhir_id_2: 'Sample ID',
     },
+    biospecimen_id: 'Biospecimen',
     study: {
       study_code: 'Study Code',
       study_name: 'Study Name',
