@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import intl from 'react-intl-universal';
+import intl, { load } from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
+import RequestBiospecimenButton from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenButton';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
@@ -17,11 +18,16 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Button, Tooltip } from 'antd';
+import keycloak from 'auth/keycloak-api/keycloak';
+import { AxiosRequestConfig } from 'axios';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
 import { IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
+import EnvironmentVariables from 'helpers/EnvVariables';
+import { trackRequestBiospecimen } from 'services/analytics';
+import { PROJECT_ID, useSavedSet } from 'store/savedSet';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -32,6 +38,7 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_CONFIG,
   SCROLL_WRAPPER_ID,
+  TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
@@ -47,7 +54,22 @@ import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { mergeBiosDiagnosesSpecificField } from 'utils/tables';
 import { getProTableDictionary } from 'utils/translation';
 
+import { getDataTypeColumns, getRequestBiospecimenDictionary } from './utils';
+
 import styles from './index.module.scss';
+import useApi from 'hooks/useApi';
+import { IRequestBioDataRow } from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenTable';
+import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
+import { fetchSavedSet } from 'store/savedSet/thunks';
+
+const ARRANGER_PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
+const REPORTS_API_URL = EnvironmentVariables.configFor('REPORTS_API_URL');
+
+export const headers = () => ({
+  'Content-Type': 'application/json',
+  Accept: '*/*',
+  Authorization: `Bearer ${keycloak.token}`,
+});
 
 interface OwnProps {
   sqon?: ISqonGroupFilter;
@@ -353,6 +375,17 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
           ],
         });
 
+  const config: AxiosRequestConfig = {
+    url: `${REPORTS_API_URL}/reports/biospecimen-request/stats`,
+    method: 'POST',
+    responseType: 'json',
+    data: {
+      sqon: getCurrentSqon(),
+      projectId: ARRANGER_PROJECT_ID,
+    },
+    headers: headers(),
+  };
+
   useEffect(() => {
     if (selectedKeys.length) {
       setSelectedKeys([]);
@@ -384,6 +417,26 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
       firstPageFlag: queryConfig.searchAfter,
     });
   }, [queryConfig]);
+
+  const fetchRequestBioReport = (name: string) => {
+    dispatch(
+      fetchReport({
+        data: {
+          sqon: getCurrentSqon(),
+          name: ReportType.BIOSEPCIMEN_REQUEST,
+          projectId: PROJECT_ID,
+          biospecimenRequestName: name,
+        },
+        translation: {
+          errorMessage: intl.get('api.biospecimenRequest.error.manifestReport'),
+          successMessage: intl.get('api.biospecimenRequest.success.manifestReport'),
+        },
+        callback: () => {
+          dispatch(fetchSavedSet());
+        },
+      }),
+    );
+  };
 
   return (
     <ProTable
@@ -438,6 +491,21 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             }),
           ),
         extra: [
+          <RequestBiospecimenButton
+            additionalHandleClick={() => trackRequestBiospecimen('open modal')}
+            additionalHandleFinish={() => trackRequestBiospecimen('download manifest')}
+            createAndFetchReport={(name) => fetchRequestBioReport(name)}
+            dictionary={getRequestBiospecimenDictionary()}
+            disabled={selectedKeys.length === 0 && !selectedAllResults}
+            columns={getDataTypeColumns()}
+            getSamples={() => useApi({ config })}
+            getSavedSets={useSavedSet}
+            key="requestBiospecimen"
+            maxTitleLength={200}
+            nbBiospecimenSelected={selectedAllResults ? results.total : selectedKeys.length}
+            sqon={getCurrentSqon()}
+            type="primary"
+          />,
           <SetsManagementDropdown
             key={INDEXES.BIOSPECIMEN}
             idField="fhir_id"
