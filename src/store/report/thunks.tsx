@@ -56,7 +56,6 @@ const fetchReport = createAsyncThunk<
   { rejectValue: string }
 >('report/generateReport', async (args, thunkAPI) => {
   const messageKey = 'report_pending';
-  console.log('args', args);
 
   try {
     thunkAPI.dispatch(
