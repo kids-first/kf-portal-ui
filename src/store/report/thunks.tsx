@@ -81,7 +81,6 @@ const fetchReport = createAsyncThunk<
 
     if (args.callback) await args.callback();
   } catch (e) {
-    console.log('error', e);
     thunkAPI.dispatch(globalActions.destroyMessages([messageKey]));
     showErrorReportNotif(thunkAPI, args.translation?.errorMessage);
     if (args.errorCallback) args.errorCallback();
