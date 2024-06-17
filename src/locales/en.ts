@@ -174,9 +174,11 @@ const en = {
       error: {
         manifestReport:
           'An error occurred and we were unable to download your file. Please try again.',
+        messageUpdate: 'Unable to update biospecimen request',
       },
       success: {
         manifestReport: 'Manifest downloaded successfully.',
+        messageUpdate: 'Your biospecimen request has been updated.',
       },
     },
     cavatica: {

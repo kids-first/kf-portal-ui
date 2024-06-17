@@ -26,8 +26,10 @@ import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
 import EnvironmentVariables from 'helpers/EnvVariables';
+import useApi from 'hooks/useApi';
 import { trackRequestBiospecimen } from 'services/analytics';
 import { PROJECT_ID, useSavedSet } from 'store/savedSet';
+import { fetchSavedSet } from 'store/savedSet/thunks';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -38,7 +40,6 @@ import {
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_CONFIG,
   SCROLL_WRAPPER_ID,
-  TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
@@ -57,10 +58,6 @@ import { getProTableDictionary } from 'utils/translation';
 import { getDataTypeColumns, getRequestBiospecimenDictionary } from './utils';
 
 import styles from './index.module.scss';
-import useApi from 'hooks/useApi';
-import { IRequestBioDataRow } from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenTable';
-import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
-import { fetchSavedSet } from 'store/savedSet/thunks';
 
 const ARRANGER_PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
 const REPORTS_API_URL = EnvironmentVariables.configFor('REPORTS_API_URL');

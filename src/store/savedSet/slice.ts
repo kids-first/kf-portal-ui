@@ -1,10 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialState } from 'store/savedSet/types';
 import { sortByUpdateDate } from 'utils/dates';
-import { createSavedSet, deleteSavedSet, fetchSavedSet, updateSavedSet } from './thunks';
+import {
+  createSavedSet,
+  deleteSavedSet,
+  fetchSavedSet,
+  fetchSharedBiospecimenRequest,
+  updateSavedSet,
+} from './thunks';
 
 export const SavedSetState: initialState = {
   savedSets: [],
+  sharedBiospecimenRequest: undefined,
   isLoading: true,
   isUpdating: false,
   selectedId: undefined,
@@ -31,6 +38,21 @@ const savedSetSlice = createSlice({
       isLoading: false,
     }));
     builder.addCase(fetchSavedSet.rejected, (state, action) => ({
+      ...state,
+      fetchingError: action.payload,
+      isLoading: false,
+    }));
+    // Fetch Shared
+    builder.addCase(fetchSharedBiospecimenRequest.pending, (state) => {
+      state.isLoading = true;
+      state.fetchingError = undefined;
+    });
+    builder.addCase(fetchSharedBiospecimenRequest.fulfilled, (state, action) => ({
+      ...state,
+      sharedBiospecimenRequest: action.payload,
+      isLoading: false,
+    }));
+    builder.addCase(fetchSharedBiospecimenRequest.rejected, (state, action) => ({
       ...state,
       fetchingError: action.payload,
       isLoading: false,
