@@ -1,10 +1,8 @@
 import { TSortableItems } from '@ferlab/ui/core/layout/SortableGrid/SortableItem';
 import cx from 'classnames';
 
-import { FT_DASHBOARD_NOTEBOOK } from '../../../../common/featureToggle';
-import { getFTEnvVarByKey } from '../../../../helpers/EnvVariables';
-
 import AuthorizedStudies from './AuthorizedStudies';
+import BiospecimenRequests from './BiospecimenRequests';
 import CaringForChildrenWithCovid from './CaringForChildrenWithCovid';
 import Cavatica from './Cavatica';
 import Notebook from './Notebook';
@@ -70,6 +68,14 @@ export const getDashboardCards = (): TSortableItems[] => {
       xxl: 8,
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
       component: <CaringForChildrenWithCovid id="6" className={styles.dashboardCard} />,
+    },
+    {
+      id: '7',
+      xs: 24,
+      md: 12,
+      xxl: 8,
+      className: cx(styles.cardColxxl6, styles.cardColxxl5),
+      component: <BiospecimenRequests id="7" className={styles.dashboardCard} />,
     },
   ];
 

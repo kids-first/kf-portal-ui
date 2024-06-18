@@ -170,6 +170,17 @@ const en = {
         messageUpdate: 'Your set has been updated.',
       },
     },
+    biospecimenRequest: {
+      error: {
+        manifestReport:
+          'An error occurred and we were unable to download your file. Please try again.',
+        messageUpdate: 'Unable to update biospecimen request',
+      },
+      success: {
+        manifestReport: 'Manifest downloaded successfully.',
+        messageUpdate: 'Your biospecimen request has been updated.',
+      },
+    },
     cavatica: {
       error: {
         title: 'Error',
@@ -616,6 +627,51 @@ const en = {
         },
         datarelease: {
           title: 'Data release {version}',
+        },
+        biospecimenRequest: {
+          title: 'Biospecimen Requests',
+          titleInfo: {
+            title: 'Your Request History',
+            text: 'This card holds the history of your biospecimen requests. You can reload them in the <a href="{href}" style="text-decoration: underline;">Data Exploration</a> or share the link.',
+          },
+          noBiospecimenRequests:
+            '<p style="margin-bottom: 0;">A history of your biospecimen requests will be listed here.</p><p style="margin-bottom: 0;">You can make your first request from <a href="{href}" style="text-decoration: underline;">Data Exploration</a>.</p>',
+          error: {
+            title: 'Error',
+            text: 'We are currently unable to load this content. Please refresh the page and try again. If the problem persists, please <a href="{href}" style="text-decoration: underline;" target="_blank">contact support</a>.',
+          },
+          lastSaved: 'Last saved: {date} ago',
+          popupConfirm: {
+            delete: {
+              title: 'Permanently delete this biospecimen request?',
+              content: 'You are about to delete this request from your history.',
+              okText: 'Delete',
+              cancelText: 'Cancel',
+            },
+          },
+          editModal: {
+            title: 'Save this bisopecimen request',
+            cancelText: 'Cancel',
+            okText: 'Save',
+            inputLabel: 'Name',
+            placeholder: 'Biospecimen request name',
+            requiredError: 'You must provide a name for this request.',
+            existingNameError: 'A biospecimen request with this name already exists.',
+            maximumLength: 'characters maximum',
+          },
+          shareModal: {
+            title: 'Share link to biospecimen request?',
+            cancelText: 'Cancel',
+            okText: 'Copy link',
+            content:
+              'Note that anyone with this link will have access to:<ul><li>The biospecimen request title</li><li>The list of biospecimens in the request</li></ul>',
+            firstPoint: 'The biospecimen request title',
+            secondPoint: 'The list of biospecimens in the request',
+          },
+          shareLink: {
+            success: { title: 'Success', description: 'Link copied to clipboard' },
+            error: { title: 'Error', description: 'Unable to copy link to clipboard' },
+          },
         },
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
@@ -1262,6 +1318,43 @@ const en = {
         biospecimens: {
           title: 'Biospecimens ({count})',
           downloadData: 'Download sample data',
+          request: {
+            buttonLabel: 'Request biospecimen',
+            modal: {
+              title: 'Request biospecimen',
+              okText: 'Download manifest',
+              cancelText: 'Cancel',
+              closeText: 'Close',
+              description:
+                'You are about to download the manifest and supporting documents needed to request the selected biospecimen. The report will include information on available samples from your selection.',
+              nameForm: {
+                title: 'Provide a name for your request',
+                note: 'This request will be saved to your dashboard for future reference.',
+                placeholder: 'Biospecimen request name',
+                requiredError: 'You must provide a name for this request.',
+                existingNameError: 'A biospecimen request with this name already exists',
+                maximumLength: 'characters maximum',
+              },
+              table: {
+                studyCode: 'Study Code',
+                nbParticipants: 'Participants',
+                nbAvailableSamples: 'Available Samples',
+                nbAvailableSamplesTooltip:
+                  'Biobank samples available for sharing through the Virtual Biorepository based on your biospecimen selection.',
+              },
+              alert: {
+                errorMessage: 'Unable to process your request',
+                errorDescription:
+                  'An error had occurred and we were unable to retrieve the data for your request. Please cancel and try again.',
+                infoMessage: 'No available samples',
+                infoDescription:
+                  'There are no biospecimen samples available for your selection. Please make different selection and try again.',
+                limitMessage: 'Maximum number exceeded',
+                limitDescription:
+                  'A maximum of 10,000 biospecimens can be included at once. Please narrow down your selection and try again.',
+              },
+            },
+          },
         },
         datafiles: {
           title: 'Data Files ({count})',
@@ -1404,6 +1497,7 @@ const en = {
       biospecimen_fhir_id_1: 'Sample ID',
       biospecimen_fhir_id_2: 'Sample ID',
     },
+    biospecimen_id: 'Biospecimen',
     study: {
       study_code: 'Study Code',
       study_name: 'Study Name',
