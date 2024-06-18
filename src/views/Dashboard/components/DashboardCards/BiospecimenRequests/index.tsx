@@ -10,6 +10,7 @@ import BiospecimenRequestsWidget from '@ferlab/ui/core/components/Widgets/Biospe
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import copy from 'copy-to-clipboard';
+import { formatDistance } from 'date-fns';
 
 import { SavedSetApi } from '../../../../../services/api/savedSet';
 import { SetType } from '../../../../../services/api/savedSet/models';
@@ -46,7 +47,7 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
         },
         lastSaved: (date: string) =>
           intl.get('screen.dashboard.cards.biospecimenRequest.lastSaved', {
-            date,
+            date: formatDistance(new Date(), new Date(date)),
           }),
 
         title: intl.get('screen.dashboard.cards.biospecimenRequest.title'),
