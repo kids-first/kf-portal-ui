@@ -12,6 +12,8 @@ import { setQueryBuilderState } from '@ferlab/ui/core/components/QueryBuilder/ut
 import { FILTER_TAG_QB_ID_MAPPING } from 'common/queryBuilder';
 import { isEmpty } from 'lodash';
 import { v4 } from 'uuid';
+import { Modal } from 'antd';
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 const fetchSavedFilters = createAsyncThunk<
   TUserSavedFilter[],
@@ -43,6 +45,14 @@ const fetchSharedSavedFilter = createAsyncThunk<
 
   return handleThunkApiReponse({
     error,
+    onError: () =>
+      Modal.error({
+        content: intl.getHTML('global.errors.query.notFound.content', {
+          href: `mailto:${SUPPORT_EMAIL}`,
+        }),
+        okText: intl.get('global.errors.query.notFound.okText'),
+        title: intl.get('global.errors.query.notFound.title'),
+      }),
     data: data,
     reject: thunkAPI.rejectWithValue,
   });

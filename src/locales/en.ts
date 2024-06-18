@@ -114,6 +114,14 @@ const en = {
       404: 'Sorry, the page you visited does not exist.',
       500: 'Sorry, something went wrong.',
       backHome: 'Back home',
+      query: {
+        notFound: {
+          title: 'Query not found',
+          content:
+            'We were unable to load your query. Please try again or <a href="{href}" style="text-decoration: underline;" target="_blank">contact support</a>.',
+          okText: 'Close',
+        },
+      },
     },
     notification: {
       genericError: 'An error occured',
