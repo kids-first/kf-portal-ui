@@ -90,7 +90,7 @@ describe('Navigation', () => {
     cy.get('[class*="SavedSets_setTabs"] [data-node-key="biospecimen"]').click({force: true}); // data-cy="Tab_Biospecimens"
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Biospecimens').click({force: true}); // data-cy="SavedSets"
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Sample ID').should('exist');
+    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Biospecimens').should('exist');
 
     cy.visitDashboard();
