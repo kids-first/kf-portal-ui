@@ -4,9 +4,11 @@ import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
 import { Tag, Tooltip } from 'antd';
 import { FamilyType, IParticipantEntity } from 'graphql/participants/models';
 import { capitalize } from 'lodash';
-import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
+import { areFilesDataTypeValid, mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+
+import { hydrateResults } from '../../../graphql/models';
 
 import styles from '../styles/styles.module.scss';
 
@@ -59,6 +61,7 @@ export const getSummaryItems = (participant?: IParticipantEntity): IEntityDescri
       participant?.participant_id &&
       participant.study?.study_code &&
       participant?.is_proband &&
+      areFilesDataTypeValid(hydrateResults(participant?.files.hits.edges ?? [])) &&
       mapStudyToPedcBioportal(participant.study.study_code) ? (
         <ExternalLink
           href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=${mapStudyToPedcBioportal(

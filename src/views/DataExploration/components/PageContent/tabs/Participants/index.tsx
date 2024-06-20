@@ -17,6 +17,7 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
+import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Button, Dropdown, Menu, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
@@ -47,7 +48,7 @@ import {
   extractMondoTitleAndCode,
   extractPhenotypeTitleAndCode,
 } from 'views/DataExploration/utils/helper';
-import { mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
+import { areFilesDataTypeValid, mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { ReportType } from 'services/api/reports/models';
@@ -223,8 +224,9 @@ const getDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.pedcBioPortal'),
     render: (record: ITableParticipantEntity) => {
       const studyId = mapStudyToPedcBioportal(record.study?.study_code);
+      const files = hydrateResults(record?.files?.hits?.edges ?? []);
 
-      if (!studyId || !record?.is_proband) {
+      if (!studyId || !record?.is_proband || !areFilesDataTypeValid(files)) {
         return TABLE_EMPTY_PLACE_HOLDER;
       }
 

@@ -28,6 +28,11 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
             files {
               hits {
                 total
+                edges {
+                  node {
+                    data_type
+                  }
+                }
               }
             }
             study {
@@ -147,6 +152,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                 total
                 edges {
                   node {
+                    data_type
                     data_category
                     sequencing_experiment {
                       hits {
