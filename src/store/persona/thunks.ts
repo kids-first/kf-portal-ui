@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { PersonaApi, TPersonaUserRequestPayload } from 'services/api/persona';
+import { IPersonaUser, TPersonaUserUpdate } from 'services/api/persona/models';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
-import { IPersonaUser, TPersonaUserUpdate } from 'services/api/persona/models';
 
 const createPersonaUser = createAsyncThunk<
   IPersonaUser,
@@ -15,6 +16,10 @@ const createPersonaUser = createAsyncThunk<
 
     if (error) {
       return thunkAPI.rejectWithValue(error?.message);
+    }
+
+    if (newPersonaUser) {
+      await PersonaApi.subscribe(newPersonaUser.data.userCreate?.record);
     }
 
     return handleThunkApiReponse({

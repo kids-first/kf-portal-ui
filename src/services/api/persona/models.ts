@@ -37,6 +37,11 @@ export interface IPersonaUser {
   hashedEmail?: boolean;
 }
 
+export type TUserPersonaSubscribe = Pick<
+  IPersonaUser,
+  'firstName' | 'lastName' | 'email' | 'acceptedKfOptIn' | 'acceptedDatasetSubscriptionKfOptIn'
+>;
+
 export type TUserPersonaInsert = Omit<
   IPersonaUser,
   'id' | 'keycloak_id' | 'creation_date' | 'update_date'
