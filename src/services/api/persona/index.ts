@@ -1,7 +1,9 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import { IPersonaUser, TPersonaUserUpdate } from './models';
-import { sendRequest } from 'services/api';
 import { omit } from 'lodash';
+
+import { sendRequest } from 'services/api';
+
+import { IPersonaUser, TPersonaUserUpdate, TUserPersonaSubscribe } from './models';
 
 export const PERSONA_API_URL = `${EnvironmentVariables.configFor('PERSONA_API')}`;
 export const MEMBER_API_URL = `${EnvironmentVariables.configFor('LEGACY_MEMBERS_API')}`;
@@ -97,6 +99,16 @@ export type TPersonaUserRequestPayload = {
 export const headers = {
   'Content-Type': 'application/json',
 };
+
+const subscribe = (user: TUserPersonaSubscribe) =>
+  sendRequest<void>({
+    method: 'POST',
+    url: `${PERSONA_API_URL}/subscribe`,
+    headers,
+    data: {
+      user,
+    },
+  });
 
 const fetch = () =>
   sendRequest<{
@@ -222,6 +234,7 @@ const search = ({
   });
 
 export const PersonaApi = {
+  subscribe,
   fetch,
   fetchProfile,
   create,
