@@ -415,7 +415,7 @@ const en = {
         title: 'Upload a {entity} list',
         submittedColTitle: 'Submitted {entity} identifiers',
         uploadBtnText: 'Upload a {entity} list',
-        mappedTo: 'Mapped To',
+        mappedTo: 'Mapped to',
         collapseTitle: 'Summary Table  ({matchCount} matched, {unMatchCount} unmatched)',
         inputLabel: 'Copy-paste a list of identifiers or upload a file',
         match: 'Matched ({count})',
@@ -784,11 +784,13 @@ const en = {
           tooltip: {
             title: 'CAVATICA VWB — Data Studio',
             part1:
-              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s Data Studio and combine participant clinical data with variant annotations. Copy a preloaded',
+              'Access the Kids First variant database within your own high-performance compute environment using Cavatica’s',
             part2:
               'and combine participant clinical data with variant annotations. Copy a preloaded',
             part3:
-              'in Cavatica before launching. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbNSFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations. In order to access and copy variant data in a Cavatica project, you must have authorizations to access select NCI and Kids First controlled data. Connect to our data repository partners using your eRA Commons account to obtain controlled access to variant data.',
+              'in Cavatica before launching. Once your files are copied into a Cavatica project, you can explore and combine Kids First participant clinical data, variant annotations, and public external variant databases (such as Ensembl, gnomAD, dbNSFP, OMIM) in JupyterLab with PySpark to conduct statistical analyses, integrate multi-omics data, generate predictive models, and create compelling visualizations.',
+            part4:
+              'In order to access and copy variant data in a Cavatica project, you must have authorizations to access select NCI and Kids First controlled data. Connect to our data repository partners using your eRA Commons account to obtain controlled access to variant data.',
             readMore: 'Read more on',
             applyingForDataAccess: 'applying for data access',
           },
@@ -878,7 +880,7 @@ const en = {
       },
     },
     profileSettings: {
-      title: 'Profile settings',
+      title: 'Profile Settings',
       viewProfile: 'View profile',
       toggleProfileVisibility: {
         title: 'Public Profile',
