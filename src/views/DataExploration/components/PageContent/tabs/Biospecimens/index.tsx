@@ -35,6 +35,7 @@ import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_CONFIG,
+  FT_REQUEST_BIOSPECIMEN_KEY,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
@@ -331,8 +332,6 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (external_sample_id) => external_sample_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
-
-const FT_REQUEST_BIOSPECIMEN_KEY = 'REQUEST_BIOSPECIMEN';
 
 const BioSpecimenTab = ({ sqon }: OwnProps) => {
   const dispatch = useDispatch();
