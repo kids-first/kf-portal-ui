@@ -23,6 +23,7 @@ import { getNotebookClusterManifest } from 'store/notebook/thunks';
 import { trackVariantWorkbench } from '../../../../../services/analytics';
 
 import styles from './index.module.scss';
+
 const { Text } = Typography;
 
 const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
@@ -111,8 +112,9 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                       externalHref="https://cavatica.sbgenomics.com/u/sevenbridges/kids-first-variant-workbench"
                       title={intl.get('screen.dashboard.cards.notebook.publicProject')}
                     />
+                    {intl.get('screen.dashboard.cards.notebook.tooltip.part3')}
                   </Text>
-                  <Text>{intl.get('screen.dashboard.cards.notebook.tooltip.part3')}</Text>
+                  <Text>{intl.get('screen.dashboard.cards.notebook.tooltip.part4')}</Text>
                   <Text>
                     {intl.get('screen.dashboard.cards.notebook.tooltip.readMore')}
                     <PopoverContentLink
@@ -151,7 +153,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                 >
                   {intl.get('screen.dashboard.cards.notebook.publicProject')}
                 </ExternalLink>
-                {intl.get('screen.dashboard.cards.notebook.description.part2')}
+                {intl.get('screen.dashboard.cards.notebook.description.part3')}
               </Text>
               {!hasAtLeastOneAuthentificatedFence && (
                 <Button
