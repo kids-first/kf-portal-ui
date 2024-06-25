@@ -15,7 +15,6 @@ import {
   TExtendedMapping,
   VisualType,
 } from '@ferlab/ui/core/components/filters/types';
-import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
 import useQueryBuilderState, {
   updateActiveQueryField,
   updateActiveQueryFilters,
@@ -27,6 +26,7 @@ import {
   TitleQFOption,
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
+import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
 import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
@@ -42,6 +42,7 @@ import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
   DATA_EXPLORATION_QB_ID,
+  FT_QUICK_FILTER_KEY,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
@@ -84,8 +85,6 @@ import {
 } from './utils/quickFilter';
 
 import styles from './index.module.scss';
-
-const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 
 enum FilterTypes {
   Study,

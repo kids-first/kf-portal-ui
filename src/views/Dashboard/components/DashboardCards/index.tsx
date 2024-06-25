@@ -1,6 +1,9 @@
 import { TSortableItems } from '@ferlab/ui/core/layout/SortableGrid/SortableItem';
 import cx from 'classnames';
 
+import { getFTEnvVarByKey } from '../../../../helpers/EnvVariables';
+import { FT_REQUEST_BIOSPECIMEN_KEY } from '../../../DataExploration/utils/constant';
+
 import AuthorizedStudies from './AuthorizedStudies';
 import BiospecimenRequests from './BiospecimenRequests';
 import CaringForChildrenWithCovid from './CaringForChildrenWithCovid';
@@ -20,6 +23,8 @@ export interface DashboardCardProps {
 // Important do not change the ID
 // Its is used for user config
 export const getDashboardCards = (): TSortableItems[] => {
+  const enableRequestBiospecimen = getFTEnvVarByKey(FT_REQUEST_BIOSPECIMEN_KEY);
+
   const cards = [
     {
       id: '1',
@@ -69,15 +74,16 @@ export const getDashboardCards = (): TSortableItems[] => {
       className: cx(styles.cardColxxl6, styles.cardColxxl5),
       component: <CaringForChildrenWithCovid id="6" className={styles.dashboardCard} />,
     },
-    {
-      id: '7',
-      xs: 24,
-      md: 12,
-      xxl: 8,
-      className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <BiospecimenRequests id="7" className={styles.dashboardCard} />,
-    },
   ];
 
-  return cards;
+  const requestBiospecimenCard = {
+    id: '7',
+    xs: 24,
+    md: 12,
+    xxl: 8,
+    className: cx(styles.cardColxxl6, styles.cardColxxl5),
+    component: <BiospecimenRequests id="7" className={styles.dashboardCard} />,
+  };
+
+  return enableRequestBiospecimen === 'true' ? [...cards, requestBiospecimenCard] : cards;
 };

@@ -50,3 +50,6 @@ export enum TAB_IDS {
   BIOSPECIMENS = 'biospecimens',
   DATA_FILES = 'datafiles',
 }
+
+export const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
+export const FT_REQUEST_BIOSPECIMEN_KEY = 'REQUEST_BIOSPECIMEN';
