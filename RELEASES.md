@@ -1,3 +1,23 @@
+## VERSION 5.5.0 (2024-25-06)
+
+### Features
+
+- [SKFP-1101](https://d3b.atlassian.net/browse/SKFP-1101) Feature: [Data Exploration] Addition of boolean and range facets to the Quick Filter search
+
+### Technical / Other changes
+
+- [SKFP-1096](https://d3b.atlassian.net/browse/SKFP-1096) Refactor:[Dashboard] Adjusted color for redirect links
+- [SKFP-1099](https://d3b.atlassian.net/browse/SKFP-1099) Issue:[Data Exploration] Fixed upload list matched/unmatched entries causing a continuous loading state
+- [SKFP-1100](https://d3b.atlassian.net/browse/SKFP-1100) Refactor:[Saved Set] Modified notification message for saving a saved set in Variant Exploration
+- [SKFP-1102](https://d3b.atlassian.net/browse/SKFP-1102) Refactor:[Dashboard] Modify the description of the Variant Workbench widget
+- [SKFP-1108](https://d3b.atlassian.net/browse/SKFP-1108) Refactor: [UI] Adjusted the style on the default and hover state of the Cancel button in the Quick Filter Search
+- [SKFP-1109](https://d3b.atlassian.net/browse/SKFP-1109) Refactor: [UI] Adjusted the height of the Quick Filter search box
+- [SKFP-1112](https://d3b.atlassian.net/browse/SKFP-1112) Refactor: [UI] Adjusted the style on the default and hover state of the Cancel button in the Quick Filter Search
+- [SKFP-1149](https://d3b.atlassian.net/browse/SKFP-1149) Refactor:[UI] Adjusted the style apply button on the Quick Filter search
+- [SKFP-1154](https://d3b.atlassian.net/browse/SKFP-1154) Refactor:[Data Exploration] Updated the rules set to display the PedcBioPortal link in the table of results
+- [SKFP-1155](https://d3b.atlassian.net/browse/SKFP-1155) Issue:[Newsletter] Fixed call to Mailchimp used to opt in users to the KFDRC newsletter
+
+
 ## VERSION 5.4.1 (2024-05-29)
 
 ### Technical / Other changes
