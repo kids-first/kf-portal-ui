@@ -10,7 +10,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
 import { hydrateResults } from '../../../graphql/models';
 
-import styles from '../styles/styles.module.scss';
+import styles from '../styles/styles.module.css';
 
 export const familyTypeText = {
   [FamilyType.PROBAND]: intl.get('entities.participant.proband_only'),

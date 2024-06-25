@@ -46,7 +46,7 @@ import { getQueryBuilderDictionary } from 'utils/translation';
 
 import VariantsTable from './VariantsTable';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 type OwnProps = {
   variantMapping: IExtendedMappingResults;

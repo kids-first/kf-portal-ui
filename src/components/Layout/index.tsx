@@ -6,7 +6,7 @@ import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
 import Footer from 'components/Layout/Footer';
 import Header from 'components/Layout/Header';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   children: React.ReactElement;

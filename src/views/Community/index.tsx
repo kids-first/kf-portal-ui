@@ -18,7 +18,7 @@ import FiltersBox from './components/Filters/Box';
 import MemberCard from './components/MemberCard';
 import { DEFAULT_QUERY_CONFIG } from './contants';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title } = Typography;
 

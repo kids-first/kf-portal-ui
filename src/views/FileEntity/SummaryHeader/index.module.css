@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 24px;
+}
+
+.link {
+  display: flex;
+  padding: 8px 16px;
+  border: 1px solid var(--gray-5);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.link:hover {
+  background: var(--gray-2);
+}
+
+.icon,
+.entityCount {
+  color: var(--geekblue-7);
+}
+
+.icon {
+  font-size: var(--data-release-icon-font-size);
+}
+
+.entityCount {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  margin: 0 4px 0 8px;
+}
+
+.text {
+  color: var(--gray-7);
+  line-height: 22px;
+  align-self: end;
+}

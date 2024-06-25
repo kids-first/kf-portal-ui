@@ -1,0 +1,53 @@
+.dataExplorationLinksWrapper .dataExplorationLinksCard {
+  background-color: var(--cyan-8) !important;
+  border: none;
+  padding-bottom: 16px !important;
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard .releaseNoteBtn {
+  height: unset;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: var(--cyan-4);
+  display: none;
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard .customCol {
+  display: flex;
+  min-width: 150px;
+}
+@media screen and (max-width: 1150px) {
+  .dataExplorationLinksWrapper .dataExplorationLinksCard .customCol {
+    flex: unset !important;
+    width: 50%;
+  }
+}
+@media screen and (max-width: 478px) {
+  .dataExplorationLinksWrapper .dataExplorationLinksCard .customCol {
+    flex: unset !important;
+    width: 100%;
+  }
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard div[class$=-card-body] {
+  padding-top: 16px;
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard div[class$=-card-head] {
+  border-bottom: none;
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard div[class$=-head-title] {
+  padding-bottom: 0 !important;
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard div[class$=-head-title] :global(.ant-typography) {
+  color: var(--gray-1);
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard .dataReleaseIcon {
+  margin-top: -1px;
+  color: var(--cyan-4);
+  font-size: var(--data-release-icon-font-size);
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard .dataReleaseStatsLabel {
+  color: var(--gray-1);
+}
+.dataExplorationLinksWrapper .dataExplorationLinksCard .dataReleaseStatsLabel :global(.wrapper__label) {
+  font-size: 24px;
+  line-height: 32px;
+}

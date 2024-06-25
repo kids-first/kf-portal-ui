@@ -17,7 +17,7 @@ import BaseForm from '../BaseForm';
 
 import ToggleProfileVisibility from './ToggleProfileVisibility';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 enum FORM_FIELDS {
   FIRST_NAME = 'firstName',

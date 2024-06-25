@@ -1,0 +1,45 @@
+.filterWrapper {
+  min-height: 100px;
+}
+.filterWrapper .filterGroupTitle {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding-left: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.filterWrapper .filterGroupTitle:first-child {
+  margin-top: 0;
+}
+.filterWrapper .filtersGroup .filter {
+  margin-top: 8px;
+}
+.filterWrapper .filtersGroup .filter:last-child {
+  padding-bottom: 16px;
+}
+.filterWrapper.genericFilterWrapper .customFilterContainer:last-child {
+  padding-bottom: 8px;
+}
+.filterWrapper .customFilterContainer {
+  margin-top: 8px;
+}
+.filterWrapper .customFilterContainer :global(.ant-collapse),
+.filterWrapper .customFilterContainer :global(.ant-collapse-item) {
+  border: none;
+}
+
+.filterExpandBtnWrapper {
+  display: grid;
+  justify-content: end;
+}
+.filterExpandBtnWrapper button {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.customSearchesWrapper {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+

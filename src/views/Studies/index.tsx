@@ -20,7 +20,7 @@ import PageContent from './components/PageContent';
 import SideBarFacet from './components/SideBarFacet';
 import { SCROLL_WRAPPER_ID } from './utils/constant';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const enum DataCategory {
   METABOLOMIC = 'Metabolomic',

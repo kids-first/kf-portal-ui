@@ -27,7 +27,7 @@ import { addUnderscoreAndLowercase } from '@ferlab/ui/core/utils/stringUtils';
 import { Space, Tag, Tooltip, Typography } from 'antd';
 import { ClinvarColorMap } from 'views/Variants/components/PageContent/VariantsTable/utils';
 
-import style from '../index.module.scss';
+import style from '../index.module.css';
 
 const renderInterpretation = (interpretation: string) => {
   const clinVarSigKey: string = addUnderscoreAndLowercase(interpretation);

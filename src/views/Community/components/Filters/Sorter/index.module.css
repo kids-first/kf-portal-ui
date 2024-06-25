@@ -1,0 +1,3 @@
+.sortTrigger :global(.ant-space-item):first-child {
+  white-space: nowrap;
+}

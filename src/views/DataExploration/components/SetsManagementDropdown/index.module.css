@@ -1,0 +1,15 @@
+.saveSetOptionMenu .saveSetOptionMenuInfo:hover {
+  cursor: default;
+}
+.saveSetOptionMenu .saveSetOptionMenuInfoOver {
+  color: var(--red-6);
+}
+.saveSetOptionMenu .saveSetOptionMenuInfoOver:hover {
+  cursor: default;
+}
+.saveSetOptionMenu .saveSetOptionMenuInfoOver .infoCircle {
+  margin-left: 1rem;
+}
+.saveSetOptionMenu .saveSetOptionMenuInfo .infoCircle {
+  margin-left: 1rem;
+}

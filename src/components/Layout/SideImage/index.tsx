@@ -3,7 +3,7 @@ import EnvVariables from 'helpers/EnvVariables';
 import cx from 'classnames';
 import { Row } from 'antd';
 
-import style from 'components/Layout/SideImage/index.module.scss';
+import style from 'components/Layout/SideImage/index.module.css';
 import { Theme } from 'common/theme';
 
 interface OwnProps {

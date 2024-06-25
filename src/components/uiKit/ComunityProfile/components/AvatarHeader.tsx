@@ -4,7 +4,7 @@ import { IMemberEntity } from 'graphql/members/models';
 import { IPersonaUser } from 'services/api/persona/models';
 import { formatCountryAndState, formatName } from 'views/Community/utils';
 
-import styles from '../index.module.scss';
+import styles from '../index.module.css';
 
 const { Title, Text } = Typography;
 

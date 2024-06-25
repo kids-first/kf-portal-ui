@@ -1,0 +1,32 @@
+.wrapper {
+  padding: var(--default-padding);
+  background-color: var(--gray-1);
+  border: 1px solid var(--gray-4);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+}
+.wrapper .icon {
+  margin-bottom: var(--default-padding);
+}
+.wrapper .listItem {
+  text-align: center;
+}
+.wrapper .listItem .text {
+  font-size: 12px;
+  color: var(--gray-8);
+}
+.wrapper .listItem .tooltipsText {
+  margin-left: 8px;
+}
+
+.externalLink {
+  text-decoration: underline;
+}
+.externalLink:hover {
+  text-decoration: none;
+}

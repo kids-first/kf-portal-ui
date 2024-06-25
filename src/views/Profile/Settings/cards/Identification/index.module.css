@@ -1,0 +1,22 @@
+.identificationCardContent {
+  width: 100%;
+}
+
+.gravatarCol {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+.gravatarCol .userGravatar {
+  height: 120px;
+  width: 120px;
+}
+
+.customHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  margin-bottom: 0 !important;
+}

@@ -1,0 +1,23 @@
+.variantsLayout {
+  display: flex;
+  height: calc(100vh - var(--main-header-height));
+}
+.variantsLayout .filterLoader {
+  padding: 24px;
+  width: 100%;
+}
+.variantsLayout .sideMenu li[role=menuitem] {
+  color: white;
+}
+.variantsLayout .sideMenu li[role=menuitem] span[class$=-title-content] {
+  margin-left: 0 !important;
+}
+.variantsLayout span[role=img].sideMenuIcon {
+  font-size: 20px !important;
+  display: flex;
+  justify-content: center;
+}
+.variantsLayout .scrollContent {
+  width: 100%;
+  padding: var(--default-page-content-padding);
+}

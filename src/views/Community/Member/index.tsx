@@ -6,7 +6,7 @@ import { useMemberProfile } from 'graphql/members/actions';
 import CommunityProfile from 'components/uiKit/ComunityProfile';
 import { usePersona } from 'store/persona';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const CommunityMember = () => {
   const { id } = useParams<{ id: string }>();

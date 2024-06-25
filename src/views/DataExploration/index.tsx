@@ -83,7 +83,7 @@ import {
   getSqonForQuickFilterFacetView,
 } from './utils/quickFilter';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
 

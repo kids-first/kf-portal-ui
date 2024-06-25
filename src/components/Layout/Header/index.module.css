@@ -1,0 +1,103 @@
+.mainHeader {
+  height: var(--main-header-height);
+  background-color: var(--gray-1);
+  padding: 16px 32px;
+  box-shadow: 0 0 8px 0 rgba(38, 67, 111, 0.25);
+  z-index: 1000;
+}
+.mainHeader * {
+  overflow: unset;
+}
+.mainHeader div[class$=-header-heading],
+.mainHeader span[class$=-header-heading-title],
+.mainHeader div[class$=-header-heading-left] {
+  height: 100%;
+}
+.mainHeader span[class$=-header-heading-title] {
+  margin-right: 28px;
+  width: 94px;
+}
+.mainHeader span[class$=-header-heading-title] .logo {
+  position: absolute;
+  top: 10px;
+  height: 40px;
+  width: auto;
+}
+.mainHeader div[class$=-header-heading-left] {
+  margin: 0;
+}
+.mainHeader span[class$=-header-heading-extra] {
+  display: flex;
+  align-items: center;
+}
+.mainHeader .headerMenu {
+  margin-left: 24px;
+}
+.mainHeader .headerBtn {
+  border: none;
+  color: var(--purple-6);
+  padding: 4px 8px;
+  margin: 0 5px;
+}
+.mainHeader .headerBtn:hover, .mainHeader .headerBtn:focus {
+  background-color: var(--gray-4);
+  border: none;
+  color: var(--gray-8);
+}
+.mainHeader .resourcesMenuTrigger {
+  color: var(--purple-6);
+  margin: 0 10px;
+}
+.mainHeader .resourcesMenuTrigger .resources {
+  margin: 0 8px;
+}
+.mainHeader .icon {
+  color: var(--gray-8);
+  font-size: 14px;
+}
+.mainHeader .userMenuTrigger {
+  display: flex;
+  align-items: center;
+}
+.mainHeader .userMenuTrigger .userGravatar {
+  height: 24px;
+  width: 24px;
+  background-color: #ffffff;
+  margin: 5px 8px;
+}
+.mainHeader .userMenuTrigger .userName {
+  margin-right: 5px;
+}
+.mainHeader .menuTrigger {
+  color: var(--purple-6);
+}
+.mainHeader .menuTrigger:global(.ant-dropdown-open) {
+  color: var(--purple-8);
+}
+.mainHeader .menuTrigger:hover, .mainHeader .menuTrigger:focus, .mainHeader .menuTrigger:active, .mainHeader .menuTrigger.active {
+  color: var(--purple-7);
+}
+.mainHeader .menuTrigger:focus-visible {
+  color: var(--purple-7);
+  box-shadow: 0 0 0 2px var(--gray-1), 0 0 0 4px var(--purple-7);
+}
+
+.siteWideBanner {
+  z-index: 1001;
+}
+
+.userMenuEmail {
+  cursor: default;
+}
+
+.externalLink {
+  color: var(--gray-8);
+}
+
+.linkText {
+  padding-left: 8px;
+}
+
+.dropdown {
+  min-width: 120px !important;
+}

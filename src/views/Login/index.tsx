@@ -11,7 +11,7 @@ import DataRelease from 'components/uiKit/DataRelease';
 import useQueryParams from 'hooks/useQueryParams';
 import { REDIRECT_URI_KEY } from 'common/constants';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title } = Typography;
 const formatNumberToLocaleString = (num: number) => (num || 0).toLocaleString('en-US');

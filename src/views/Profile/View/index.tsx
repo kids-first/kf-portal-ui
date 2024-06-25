@@ -1,6 +1,6 @@
 import intl from 'react-intl-universal';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 import { usePersona } from 'store/persona';
 import CommunityProfile from 'components/uiKit/ComunityProfile';
 import { Result } from 'antd';

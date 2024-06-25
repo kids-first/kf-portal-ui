@@ -6,7 +6,7 @@ import { Button, Layout, Space, Spin, Typography } from 'antd';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
 
-import styles from 'components/uiKit/FilterList/Filters.module.scss';
+import styles from 'components/uiKit/FilterList/Filters.module.css';
 
 import CustomFilterContainer from './CustomFilterContainer';
 import { FilterGroup, FilterInfo } from './types';

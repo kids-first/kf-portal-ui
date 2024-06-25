@@ -1,0 +1,10 @@
+.graphContentWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.graphContentWrapper .graphRowWrapper {
+  height: 100%;
+  width: 100%;
+}

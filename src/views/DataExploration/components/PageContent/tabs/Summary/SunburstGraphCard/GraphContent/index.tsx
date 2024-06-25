@@ -22,7 +22,7 @@ import { getCommonColors } from 'common/charts';
 
 import SunburstD3 from '../utils/sunburst-d3';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   field: string;

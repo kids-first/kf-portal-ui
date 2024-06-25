@@ -1,6 +1,6 @@
 import { Col, Row, Tag } from 'antd';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   title: string | React.ReactNode;

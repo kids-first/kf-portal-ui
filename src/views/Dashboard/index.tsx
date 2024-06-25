@@ -18,7 +18,7 @@ import { orderCardIfNeeded } from 'utils/helper';
 import { getDashboardCards } from './components/DashboardCards';
 import DataExplorationLinks from './components/DashboardCards/DataExplorationLinks';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const { Title } = Typography;
 
