@@ -52,7 +52,7 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
-  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus) [SKFP-1122]', () => {
+  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
     cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('4 submitted identifiers mapped to 3 unique system identifiers').should('exist');
@@ -152,7 +152,7 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
-  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus) [SKFP-1122]', () => {
+  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
     cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('3 submitted identifiers mapped to 1 unique system identifiers').should('exist');
@@ -243,7 +243,7 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
-  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus) [SKFP-1122]', () => {
+  it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
     cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('2 submitted identifiers mapped to 1 unique system identifiers').should('exist');
