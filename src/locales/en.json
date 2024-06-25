@@ -604,7 +604,7 @@
   "upload.gene.ids.modal.title": "Upload a gene list",
   "upload.gene.ids.modal.submittedColTitle": "Submitted gene identifiers",
   "upload.gene.ids.modal.uploadBtnText": "Upload a gene list",
-  "upload.gene.ids.modal.mappedTo": "Mapped To",
+  "upload.gene.ids.modal.mappedTo": "Mapped to",
   "upload.gene.ids.modal.collapseTitle": "Summary Table  ({matchCount} matched, {unMatchCount} unmatched)",
   "upload.gene.ids.modal.identifiers": "Gene Symbol, Gene Alias, Ensembl ID",
   "upload.gene.ids.modal.input.label": "Copy-paste a list of identifiers or upload a file",
