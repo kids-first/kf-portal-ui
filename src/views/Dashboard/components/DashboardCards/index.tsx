@@ -76,18 +76,14 @@ export const getDashboardCards = (): TSortableItems[] => {
     },
   ];
 
-  if (enableRequestBiospecimen === 'true') {
-    const requestBiospecimenCard = {
-      id: '7',
-      xs: 24,
-      md: 12,
-      xxl: 8,
-      className: cx(styles.cardColxxl6, styles.cardColxxl5),
-      component: <BiospecimenRequests id="7" className={styles.dashboardCard} />,
-    };
+  const requestBiospecimenCard = {
+    id: '7',
+    xs: 24,
+    md: 12,
+    xxl: 8,
+    className: cx(styles.cardColxxl6, styles.cardColxxl5),
+    component: <BiospecimenRequests id="7" className={styles.dashboardCard} />,
+  };
 
-    return [...cards, requestBiospecimenCard];
-  }
-
-  return cards;
+  return enableRequestBiospecimen === 'true' ? [...cards, requestBiospecimenCard] : cards;
 };
