@@ -13,7 +13,7 @@ export const StudyCodeMap: { [key: string]: string } = {
   'KF-OS': 'os_sd_zxjffmef_2015',
   'KF-TALL': 'tll_sd_aq9kvn5p_2019',
   CBTN: 'openpedcan_v15',
-  'KF-NBL': 'openpedcan_v15',
+  'KF-NBL': 'x01_fy16_nbl_maris',
 };
 
 export const mapStudyToPedcBioportal = (studyCode: string) => StudyCodeMap[studyCode] || '';
