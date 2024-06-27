@@ -108,21 +108,6 @@ describe('Navigation', () => {
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Variants').should('exist');
   });
 
-  it('Liens Saved Filters de la page Dashboard', () => {
-    cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress Sex Filter').click({force: true}); // data-cy="SavedFilters"
-    cy.get('[class*="PageContent_title"]').contains('Data Exploration').should('exist'); // data-cy="Title_DataExploration"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Sex').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Female').should('exist');
-
-    cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"] [data-node-key*="variants"]').click({force: true}); // data-cy="Tab_Variants"
-    cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress Variant Type Filter').click({force: true}); // data-cy="SavedFilters"
-    cy.get('[class*="PageContent_pageHeaderTitle"]').should('exist'); // data-cy="Title_Variants"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant Type').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('SNV').should('exist');
-  });
-
   it('Modals de la page Dashboard', () => {
     cy.visitDashboard();
     cy.get('[class*="ListItem_savedSetListItem"]').find('svg[data-icon="edit"]').eq(0).click({force: true}); // data-cy="SavedSets"

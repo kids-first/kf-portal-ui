@@ -29,7 +29,7 @@ describe('Page Data Exploration - Filtres', () => {
 
 describe('Page Data Exploration - Filtres', () => {
   beforeEach(() => {
-    cy.deleteFilterIfExists('Cypress_FA');
+    cy.deleteFilterIfExists('Cypress_Fedit1');
     cy.deleteFilterIfExists('Cypress_F1 COPY');
     cy.createFilterIfNotExists('Cypress_F1');
   });
@@ -50,13 +50,13 @@ describe('Page Data Exploration - Filtres', () => {
   it('Renommer un filtre par la querybar', () => {
     cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').click({force: true});
     cy.get('[class*="ant-dropdown-menu-item"]').contains(/^Cypress_F1$/).click({force: true});
-    cy.saveFilterAs('Cypress_FA');
+    cy.saveFilterAs('Cypress_Fedit1');
 
-    cy.get('[id="query-builder-header-tools"] [class*="Header_togglerTitle"]').contains(/^Cypress_FA$/).should('exist');
+    cy.get('[id="query-builder-header-tools"] [class*="Header_togglerTitle"]').contains(/^Cypress_Fedit1$/).should('exist');
     cy.get('[class*="ant-dropdown-menu-item"]').contains(/^Cypress_F1$/).should('not.exist');
-    cy.validateSelectedFilterInDropdown('Cypress_FA');
+    cy.validateSelectedFilterInDropdown('Cypress_Fedit1');
     cy.validateFilterInManager('Cypress_F1', 'not.exist');
-    cy.validateFilterInManager('Cypress_FA', 'exist');
+    cy.validateFilterInManager('Cypress_Fedit1', 'exist');
     cy.validateIconStates('plus', false/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('save', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('copy', false/*isDisable*/, false/*isDirty*/);
@@ -68,15 +68,15 @@ describe('Page Data Exploration - Filtres', () => {
     cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').click({force: true});
     cy.get('[data-menu-id*="manage-my-filters"]').click({force: true});
     cy.get('[class="ant-modal-content"]').contains(/^Cypress_F1$/).parentsUntil('li[class*="ListItemWithActions"]').parent().find('[data-icon="edit"]').click({force: true});
-    cy.get('[class="ant-modal-content"] input').clear().type('Cypress_FA');
-    cy.get(`[class="ant-modal-content"] input[value="Cypress_FA"]`).should('exist');
+    cy.get('[class="ant-modal-content"] input').clear().type('Cypress_Fedit1');
+    cy.get(`[class="ant-modal-content"] input[value="Cypress_Fedit1"]`).should('exist');
     cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/saved-filters/**', 1, 1);
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     cy.get('[class*="ant-dropdown-menu-item"]').contains(/^Cypress_F1$/).should('not.exist');
-    cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_FA').should('exist');
+    cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_Fedit1').should('exist');
     cy.validateFilterInManager('Cypress_F1', 'not.exist');
-    cy.validateFilterInManager('Cypress_FA', 'exist');
+    cy.validateFilterInManager('Cypress_Fedit1', 'exist');
   });
 
   it('Dupliquer un filtre sans sauvegarder [SKFP-1020]', () => {
