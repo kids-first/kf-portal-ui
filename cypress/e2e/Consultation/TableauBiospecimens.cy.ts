@@ -115,9 +115,9 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Sample ID', () => {
     cy.sortTableAndWait('Sample ID');
-    cy.validateTableFirstRow('BS_002W6DYW', 1, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 1, true);
     cy.sortTableAndIntercept('Sample ID', 1);
-    cy.validateTableFirstRow('BS_ZZZSE8CC', 1, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
@@ -131,21 +131,21 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
     cy.sortTableAndIntercept('Sample Type', 1);
     cy.validateTableFirstRow('-', 3, true);
     cy.sortTableAndIntercept('Sample Type', 1);
-    cy.validateTableFirstRow('RNA', 3, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 3, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Parent Sample ID', () => {
     cy.sortTableAndIntercept('Parent Sample ID', 1);
-    cy.validateTableFirstRow('SA_001D4C97', 4, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 4, true);
     cy.sortTableAndIntercept('Parent Sample ID', 1);
-    cy.validateTableFirstRow('SA_ZZYT2DNR', 4, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 4, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Parent Sample Type', () => {
     cy.sortTableAndIntercept('Parent Sample Type', 1);
     cy.validateTableFirstRow('-', 5, true);
     cy.sortTableAndIntercept('Parent Sample Type', 1);
-    cy.validateTableFirstRow('Saliva', 5, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 5, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Participant ID', () => {

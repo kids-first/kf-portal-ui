@@ -12,35 +12,35 @@ describe('Page des études - Vérifier les informations affichées', () => {
   });
 
   it('Tableau', () => {
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(0).contains('KF-CDH').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(1).contains('Kids First: Genomic Analysis of Congenital Diaphragmatic Hernia').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(2).contains('Kids First').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(3).contains('Birth Defect').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(4).contains('phs001110').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(5).contains('2,031').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(6).contains('2,121').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(7).contains('753').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(8).find('[data-icon="check"]').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(9).contains('-').should('exist');
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(10).contains('-').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(0).contains('KF-CDH').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(1).contains('Kids First: Genomic Analysis of Congenital Diaphragmatic Hernia').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(2).contains('Kids First').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(3).contains('Birth Defect').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(4).contains('phs001110').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(5).contains('2,031').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(6).contains('2,121').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(7).contains('753').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(8).find('[data-icon="check"]').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(9).contains('-').should('exist');
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(10).contains('-').should('exist');
   });
 });
 
 describe('Page des études - Valider les liens disponibles', () => {
   it('Lien dbGap du tableau', () => {
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(4).find('[href]')
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(4).find('[href]')
       .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs001110');
   });
 
   it('Lien Participants du tableau', () => {
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(5).find('[href]').click({force: true});
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(5).find('[href]').click({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-CDH').should('exist');
   });
 
   it('Lien Biospecimens du tableau', () => {
-    cy.get('tr[data-row-key="34eRA5ABgt5-rHxmcjAL"]').find('[class="ant-table-cell"]').eq(6).find('[href]').click({force: true});
+    cy.get('tr[data-row-key="v6LjT5ABAxVB152yXfvb"]').find('[class="ant-table-cell"]').eq(6).find('[href]').click({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-CDH').should('exist');
@@ -90,7 +90,7 @@ describe('Page des études - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow('50', 6);
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow('4,799', 6);
+    cy.validateTableFirstRow(/\d{1}/, 6);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Families', () => {

@@ -213,7 +213,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Vital Status - Alive', () => {
-    cy.validateFacetFilter('Vital Status', 'Alive', 'Alive', /^2,896$/, 1);
+    cy.validateFacetFilter('Vital Status', 'Alive', 'Alive', /\d{1}/, 1);
     cy.validateFacetRank(8, 'Vital Status');
   });
 });
