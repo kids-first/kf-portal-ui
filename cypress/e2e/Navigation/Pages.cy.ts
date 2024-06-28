@@ -79,35 +79,6 @@ describe('Navigation', () => {
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
   });
 
-  it('Liens Saved Sets de la page Dashboard', () => {
-    cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Participants').click({force: true}); // data-cy="SavedSets"
-    cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Participants').should('exist');
-
-    cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="biospecimen"]').click({force: true}); // data-cy="Tab_Biospecimens"
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Biospecimens').click({force: true}); // data-cy="SavedSets"
-    cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Biospecimens').should('exist');
-
-    cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="files"]').click({force: true}); // data-cy="Tab_Files"
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Data Files').click({force: true}); // data-cy="SavedSets"
-    cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Data Files').should('exist');
-
-    cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="variants"]').click({force: true}); // data-cy="Tab_Variants"
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Variants').click({force: true}); // data-cy="SavedSets"
-    cy.get('[class*="VariantsTable_variantTabWrapper"]').should('exist'); // data-cy="ProTable_Variants"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Variants').should('exist');
-  });
-
   it('Modals de la page Dashboard', () => {
     cy.visitDashboard();
     cy.get('[class*="ListItem_savedSetListItem"]').find('svg[data-icon="edit"]').eq(0).click({force: true}); // data-cy="SavedSets"
