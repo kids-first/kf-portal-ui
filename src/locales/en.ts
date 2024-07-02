@@ -1242,6 +1242,8 @@ const en = {
           exact: 'Participants with this exact term',
           all: 'Participants including descendant terms',
         },
+        selectedCount:
+          '{count, plural, =0 {# unique phenotype} =1 {# unique phenotype} other {# unique phenotypes}}',
       },
       mondoTree: {
         modal: {
@@ -1251,8 +1253,11 @@ const en = {
         searchPlaceholder: 'Search for ontology term - min 3 characters',
         emptySelection: 'Select items from the left-hand pane in order to add to your query.',
         tags: {
+          exact: 'Participants with this exact term',
           all: 'Participants including descendant terms',
         },
+        selectedCount:
+          '{count, plural, =0 {# unique diagnosis} =1 {# unique diagnosis} other {# unique diagnoses}}',
       },
       tabs: {
         summary: {
