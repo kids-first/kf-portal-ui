@@ -58,7 +58,7 @@ export const SEARCH_FILES_QUERY = gql`
                           node {
                             mondo_display_term
                             source_text
-                            ncit_id_diagnosis
+                            diagnosis_ncit
                             age_at_event_days
                           }
                         }

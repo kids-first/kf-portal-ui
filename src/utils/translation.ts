@@ -297,7 +297,7 @@ export const getFacetsDictionary = () => ({
     affected_status: 'Clinical Status',
     age_at_event_days: 'Age at Diagnosis (days)',
     mondo_display_term: 'Diagnosis (MONDO)',
-    ncit_id_diagnosis: 'Diagnosis (NCIT)',
+    diagnosis_ncit: 'Diagnosis (NCIT)',
     source_text: 'Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',
   },

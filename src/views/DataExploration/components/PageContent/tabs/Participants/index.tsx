@@ -337,7 +337,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'diagnosis.ncit_id_diagnosis',
+    key: 'diagnosis.diagnosis_ncit',
     title: intl.get('entities.participant.diagnosis_NCIT'),
     dataIndex: 'diagnosis',
     defaultHidden: true,
@@ -347,7 +347,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
       const idsAlreadyAdded: string[] = [];
       const ncitLinks = diagnosis?.hits?.edges?.reduce<React.ReactNode[]>((ncitIds, diagnosis) => {
-        const dxId = diagnosis.node.ncit_id_diagnosis;
+        const dxId = diagnosis.node.diagnosis_ncit;
         if (dxId && dxId.startsWith('NCIT:') && !idsAlreadyAdded.includes(dxId)) {
           idsAlreadyAdded.push(dxId);
           return [

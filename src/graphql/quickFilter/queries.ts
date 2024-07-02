@@ -78,7 +78,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             count
           }
         }
-        diagnosis__ncit_id_diagnosis {
+        diagnosis__diagnosis_ncit {
           buckets {
             key
             doc_count

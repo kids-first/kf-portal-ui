@@ -135,7 +135,7 @@ const filterGroups: {
             field={'mondo'}
             titleFormatter={formatMondoTitleAndCode}
           />,
-          'diagnosis__ncit_id_diagnosis',
+          'diagnosis__diagnosis_ncit',
           'diagnosis__source_text',
           'family_type',
           <TreeFacet

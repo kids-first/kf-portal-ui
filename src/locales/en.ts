@@ -1531,7 +1531,7 @@ const en = {
     diagnosis: {
       affected_status: 'Clinical Status',
       mondo_display_term: 'Diagnosis (MONDO)',
-      ncit_id_diagnosis: 'Diagnosis (NCIT)',
+      diagnosis_ncit: 'Diagnosis (NCIT)',
       age_at_event_days: 'Age at Diagnosis (days)',
       source_text: 'Diagnosis (Source Text)',
       source_text_tumor_location: 'Tumor Location (Source Text)',

@@ -36,7 +36,7 @@ const extractParticipantMetaData = (participants: any[]) => {
     // race: joinUniquely(participants.map((x) => x.race)),
     // diagnosis_source_text: joinUniquely(diagnosis.map((d) => d.source_text)),
     // diagnosis_mondo: joinUniquely(diagnosis.map((d) => d.mondo_display_term)),
-    // diagnosis_ncit: joinUniquely(diagnosis.map((d) => d.ncit_id_diagnosis)),
+    // diagnosis_ncit: joinUniquely(diagnosis.map((d) => d.diagnosis_ncit)),
     // observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_observed)),
     // not_observed_phenotype_hpo: joinUniquely(phenotype.map((p) => p.hpo_phenotype_not_observed)),
     // observed_phenotype_source_text: joinUniquely(phenotype.map((p) => p.source_text)),

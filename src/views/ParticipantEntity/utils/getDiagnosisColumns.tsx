@@ -40,14 +40,14 @@ const getDiagnosisDefaultColumns = (): ProColumnType[] => [
     },
   },
   {
-    key: 'ncit_id_diagnosis',
+    key: 'diagnosis_ncit',
     title: intl.get('entities.participant.diagnosis_NCIT'),
     render: (diagnosis: IParticipantDiagnosis) =>
-      diagnosis?.ncit_id_diagnosis ? (
+      diagnosis?.diagnosis_ncit ? (
         <ExternalLink
-          href={`http://purl.obolibrary.org/obo/${diagnosis.ncit_id_diagnosis.replace(':', '_')}`}
+          href={`http://purl.obolibrary.org/obo/${diagnosis.diagnosis_ncit.replace(':', '_')}`}
         >
-          {diagnosis.ncit_id_diagnosis}
+          {diagnosis.diagnosis_ncit}
         </ExternalLink>
       ) : (
         TABLE_EMPTY_PLACE_HOLDER
