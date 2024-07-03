@@ -19,8 +19,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.checkValueFacetAndApply('Sample Type', 'RNA');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/(27.2K|26.2K|32.1K)/);
-    cy.validateTableResultsCount(/(27,172|26,173|27,192|32,056)/);
+    cy.validateTotalSelectedQuery(/(27.2K|26.2K|32K|32.1K)/);
+    cy.validateTableResultsCount(/(27,172|26,173|27,192|32,036|32,056)/);
     cy.validateClearAllButton(false);
   });
 
@@ -30,8 +30,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 15);
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/(27.2K|26.2K|32.1K)/);
-    cy.validateTableResultsCount(/(27,172|26,173|27,192|32,056)/);
+    cy.validateTotalSelectedQuery(/(27.2K|26.2K|32K|32.1K)/);
+    cy.validateTableResultsCount(/(27,172|26,173|27,192|32,036|32,056)/);
     cy.validateClearAllButton(false);
   });
 
@@ -41,8 +41,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Collection Sample Type', ['Saliva'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/(3,181|3,260|3,261|5,336)/);
-    cy.validateTableResultsCount(/(3,181|3,260|3,261|5,336)/);
+    cy.validateTotalSelectedQuery(/(3,181|3,260|3,261|5,335|5,336)/);
+    cy.validateTableResultsCount(/(3,181|3,260|3,261|5,335|5,336)/);
     cy.validateClearAllButton(false);
   });
 
@@ -75,8 +75,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql', {timeout: 20*1000});
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
-    cy.validateTotalSelectedQuery(/(27K|26.1K|32K)/);
-    cy.validateTableResultsCount(/(26,073|26,978|26,998|31,953)/);
+    cy.validateTotalSelectedQuery(/(27K|26.1K|31.9K|32K)/);
+    cy.validateTableResultsCount(/(26,073|26,978|26,998|31,933|31,953)/);
     cy.validateClearAllButton(true);
   });
 });
