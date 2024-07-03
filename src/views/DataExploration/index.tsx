@@ -128,8 +128,18 @@ const filterGroups: {
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
+<<<<<<< use-other-ncit-field
+          <TreeFacet
+            key="mondo-tree"
+            type={RemoteComponentList.MondoTree}
+            field={'mondo'}
+            titleFormatter={formatMondoTitleAndCode}
+          />,
+          'diagnosis__diagnosis_ncit',
+=======
           <TreeFacet key="mondo" type={RemoteComponentList.MondoTree} field={'mondo'} />,
           'diagnosis__ncit_id_diagnosis',
+>>>>>>> dev
           'diagnosis__source_text',
           'family_type',
           <TreeFacet

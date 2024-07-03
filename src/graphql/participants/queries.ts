@@ -47,7 +47,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                   node {
                     mondo_display_term
                     source_text
-                    ncit_id_diagnosis
+                    diagnosis_ncit
                     age_at_event_days
                   }
                 }
@@ -125,7 +125,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                     source_text
                     age_at_event_days
                     diagnosis_id
-                    ncit_id_diagnosis
+                    diagnosis_ncit
                   }
                 }
               }
