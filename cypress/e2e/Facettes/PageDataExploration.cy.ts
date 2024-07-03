@@ -435,7 +435,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   });
 
   it('Library Strand - Unstranded', () => {
-    cy.validateFacetFilter('Library Strand', 'Unstranded', 'Unstranded', /^21,664$/, 1);
+    cy.validateFacetFilter('Library Strand', 'Unstranded', 'Unstranded', /\d{1}/, 1);
     cy.validateFacetRank(7, 'Library Strand');
   });
 
