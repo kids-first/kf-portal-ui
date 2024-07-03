@@ -75,7 +75,6 @@ import TreeFacetModal from './components/TreeFacet/TreeFacetModal';
 import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileUploadIds from './components/UploadIds/FileUploadIds';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
-import { formatHpoTitleAndCode, formatMondoTitleAndCode } from './utils/helper';
 import {
   getFieldWithoutPrefix,
   getIndexFromQFValueFacet,
@@ -129,20 +128,14 @@ const filterGroups: {
           'diagnosis__age_at_event_days',
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
-          <TreeFacet
-            key="mondo-tree"
-            type={RemoteComponentList.MondoTree}
-            field={'mondo'}
-            titleFormatter={formatMondoTitleAndCode}
-          />,
+          <TreeFacet key="mondo" type={RemoteComponentList.MondoTree} field={'mondo'} />,
           'diagnosis__ncit_id_diagnosis',
           'diagnosis__source_text',
           'family_type',
           <TreeFacet
-            key="observed-phoenotype-tree"
+            key="observed_phenotype"
             type={RemoteComponentList.HPOTree}
             field={'observed_phenotype'}
-            titleFormatter={formatHpoTitleAndCode}
           />,
           'phenotype__hpo_phenotype_not_observed',
           'phenotype__source_text',
@@ -477,16 +470,15 @@ const DataExploration = () => {
   return (
     <div className={styles.dataExplorationLayout}>
       <TreeFacetModal
-        type={RemoteComponentList.MondoTree}
-        modalField={'mondo'}
-        queryBuilderField={'mondo.name'}
-        titleFormatter={formatMondoTitleAndCode}
-      />
-      <TreeFacetModal
+        key="observed_phenotype"
         type={RemoteComponentList.HPOTree}
-        modalField={'observed_phenotype'}
-        queryBuilderField={'observed_phenotype.name'}
-        titleFormatter={formatHpoTitleAndCode}
+        field={'observed_phenotype'}
+      />
+
+      <TreeFacetModal
+        key="observed_phenotype"
+        type={RemoteComponentList.MondoTree}
+        field={'mondo'}
       />
       <SidebarMenu
         className={styles.sideMenu}
