@@ -1,33 +1,33 @@
 import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 
 import CollapseLikeFacet from 'components/uiKit/FilterList/CollapsePlaceHolderFacet';
-
-import { useDispatch } from 'react-redux';
-import { TTitleFormatter } from 'views/DataExploration/utils/OntologyTree';
-import { remoteSliceActions } from 'store/remote/slice';
 import { RemoteComponentList } from 'store/remote/types';
+
+import { remoteSliceActions } from '../../../../store/remote/slice';
 
 type Props = {
   type: RemoteComponentList;
   field: string;
-  titleFormatter?: TTitleFormatter;
 };
 
-const TreeFacet = ({ type, field, titleFormatter }: Props) => {
+const TreeFacet = ({ type, field }: Props) => {
   const dispatch = useDispatch();
 
   return (
     <CollapseLikeFacet
       key={field}
       title={intl.get(`facets.${field}.name`)}
-      onClick={() =>
+      onClick={() => {
         dispatch(
           remoteSliceActions.openRemoteComponent({
             id: type,
-            props: { visible: true },
+            props: {
+              visible: true,
+            },
           }),
-        )
-      }
+        );
+      }}
     />
   );
 };
