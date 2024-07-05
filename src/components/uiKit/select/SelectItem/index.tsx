@@ -1,7 +1,7 @@
 import { Space, Typography } from 'antd';
 import { ReactNode } from 'react';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   icon?: ReactNode;

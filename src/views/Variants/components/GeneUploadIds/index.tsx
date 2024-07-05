@@ -14,7 +14,7 @@ import { IGeneEntity } from '../../../../graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   queryBuilderId: string;

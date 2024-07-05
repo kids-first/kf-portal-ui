@@ -32,7 +32,7 @@ import {
 import { getClinvarColumns, getGenePhenotypeColumns } from './utils/pathogenicity';
 import { getSummaryItems } from './utils/summary';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 enum SectionId {
   SUMMARY = 'summary',

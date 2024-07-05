@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchStats } from 'store/global/thunks';
 
-import styles from 'components/uiKit/DataRelease/index.module.scss';
+import styles from 'components/uiKit/DataRelease/index.module.css';
 import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 
 interface OwnProps {

@@ -6,7 +6,7 @@ import { Button, Input, Select, Space, Tag, Typography } from 'antd';
 import { debounce } from 'lodash';
 import { areaOfInterestOptions, memberRolesOptions } from 'views/Community/contants';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   onSearchFilterChange: (value: string) => void;

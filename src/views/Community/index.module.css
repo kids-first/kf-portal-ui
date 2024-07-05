@@ -1,0 +1,52 @@
+.communityWrapper {
+  width: 100%;
+  padding: var(--default-page-content-padding);
+  margin: auto;
+  display: flex;
+}
+.communityWrapper .tableWrapper {
+  width: 100%;
+}
+.communityWrapper .title {
+  margin: 0;
+}
+.communityWrapper .usagesWrapper {
+  padding-left: 56px;
+}
+.communityWrapper .usagesWrapper,
+.communityWrapper .commercialUseWrapper {
+  margin-top: 12px;
+}
+.communityWrapper .usagesWrapper .usagesListTitle,
+.communityWrapper .commercialUseWrapper .usagesListTitle {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.communityWrapper .usagesWrapper .usagesList,
+.communityWrapper .commercialUseWrapper .usagesList {
+  padding-left: 14px;
+  font-size: 12px;
+}
+.communityWrapper .usagesWrapper .commercialUseReason,
+.communityWrapper .commercialUseWrapper .commercialUseReason {
+  font-size: 12px;
+}
+.communityWrapper .usersListWrapper {
+  width: 100%;
+}
+.communityWrapper .usersListWrapper :global(.ant-list-pagination) {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.communityWrapper .usersListWrapper .membersList {
+  background-color: unset;
+}
+.communityWrapper .usersListWrapper .membersList :global(.ant-col) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.communityWrapper .usersListWrapper .membersList .memberListItem {
+  height: 100%;
+  margin-bottom: 24px;
+}

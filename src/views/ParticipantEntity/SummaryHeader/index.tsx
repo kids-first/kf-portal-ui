@@ -10,7 +10,7 @@ import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
 import { STATIC_ROUTES } from 'utils/routes';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   participant?: IParticipantEntity;

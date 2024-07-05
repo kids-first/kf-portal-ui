@@ -34,7 +34,7 @@ import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { userActions } from 'store/user/slice';
 import { STATIC_ROUTES } from 'utils/routes';
 
-import styles from 'components/Layout/Header/index.module.scss';
+import styles from 'components/Layout/Header/index.module.css';
 
 const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';

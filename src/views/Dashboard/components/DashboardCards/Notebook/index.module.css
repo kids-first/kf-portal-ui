@@ -1,0 +1,40 @@
+.wrapper {
+  padding: var(--default-padding);
+  background-color: var(--gray-1);
+  border: 1px solid var(--gray-4);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  flex-direction: column;
+}
+
+.progressBar {
+  margin: var(--default-padding) auto;
+  width: 80%;
+}
+
+.textCentered {
+  text-align: center;
+}
+
+.message {
+  color: var(--gray-7) !important;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.link {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.tooltipLinkRight {
+  margin-right: 4px;
+}
+
+.tooltipLinkLeft {
+  margin-left: 4px;
+}

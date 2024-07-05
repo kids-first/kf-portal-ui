@@ -3,7 +3,7 @@ import { TreeNode } from 'views/DataExploration/utils/OntologyTree';
 
 import TreeNodeTitle from './TreeNodeTitle';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 export const isChecked = (selectedKeys: string[], eventKey: string) =>
   selectedKeys.indexOf(eventKey) !== -1;

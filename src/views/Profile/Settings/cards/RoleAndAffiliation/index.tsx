@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { memberRolesOptions } from 'views/Community/contants';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import formStyles from '../form.module.scss';
+import formStyles from '../form.module.css';
 import BaseCard from '../BaseCard';
 import BaseForm from '../BaseForm';
 import { usePersona } from 'store/persona';
