@@ -8,7 +8,7 @@ import { Space, Tag, Tooltip } from 'antd';
 import cx from 'classnames';
 import { IClinVar, IGeneEntity } from 'graphql/variants/models';
 
-import style from './index.module.scss';
+import style from './index.module.css';
 
 export const ClinvarColorMap: Record<any, string> = {
   affects: 'default',

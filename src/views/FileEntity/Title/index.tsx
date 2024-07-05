@@ -17,7 +17,7 @@ import { useAllFencesAcl, useFenceAuthentification } from 'store/fences';
 import { useCavaticaPassport } from 'store/passport';
 import { userHasAccessToFile } from 'utils/dataFiles';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   file?: IFileEntity;

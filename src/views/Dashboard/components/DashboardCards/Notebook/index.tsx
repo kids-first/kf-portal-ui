@@ -22,8 +22,7 @@ import { getNotebookClusterManifest } from 'store/notebook/thunks';
 
 import { trackVariantWorkbench } from '../../../../../services/analytics';
 
-import styles from './index.module.scss';
-
+import styles from './index.module.css';
 const { Text } = Typography;
 
 const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {

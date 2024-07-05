@@ -1,0 +1,12 @@
+.dataFilesTabWrapper {
+  display: flex;
+}
+.dataFilesTabWrapper :global(.ant-pagination) {
+  margin-bottom: 0;
+}
+.dataFilesTabWrapper .unauthorizedLock {
+  color: var(--gray-6);
+}
+.dataFilesTabWrapper .authorizedLock {
+  color: var(--green-7);
+}

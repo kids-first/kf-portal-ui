@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import style from './index.module.scss';
+import style from './index.module.css';
 
 type OwnProps = {
   isFixed?: boolean;

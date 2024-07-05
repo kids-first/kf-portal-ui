@@ -3,7 +3,7 @@ import { Dropdown, Menu, Space } from 'antd';
 import { useState } from 'react';
 import intl from 'react-intl-universal';
 
-import styles from "./index.module.scss";
+import styles from './index.module.css';
 
 export const SortItems = [
   {

@@ -1,0 +1,16 @@
+.antMessage.success div[class$=-notice-content] {
+  background-color: var(--green-1);
+  color: var(--green-9);
+}
+.antMessage.info div[class$=-notice-content] {
+  background-color: var(--blue-1);
+  color: var(--blue-9);
+}
+.antMessage.error div[class$=-notice-content] {
+  background-color: var(--red-1);
+  color: var(--red-9);
+}
+.antMessage.warning div[class$=-notice-content] {
+  background-color: var(--orange-1);
+  color: var(--orange-9);
+}

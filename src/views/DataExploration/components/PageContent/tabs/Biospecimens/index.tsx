@@ -61,7 +61,7 @@ import { generateSelectionSqon } from '../../../../utils/selectionSqon';
 
 import { getDataTypeColumns, getRequestBiospecimenDictionary } from './utils';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const ARRANGER_PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');
 const REPORTS_API_URL = EnvironmentVariables.configFor('REPORTS_API_URL');

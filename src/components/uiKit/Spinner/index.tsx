@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { Spin } from "antd";
 import { SpinProps } from "antd/lib/spin";
 
-import style from "./index.module.scss";
+import style from "./index.module.css";
 
 type SpinnerProps = SpinProps & {
   className?: string;

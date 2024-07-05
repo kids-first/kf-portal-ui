@@ -1,7 +1,7 @@
 import { ApiOutlined } from "@ant-design/icons";
 import { Button, ButtonProps, Space, Typography } from "antd";
 
-import styles from "./index.module.scss";
+import styles from './index.module.css';
 
 interface OwnProps {
   icon: React.ReactElement;

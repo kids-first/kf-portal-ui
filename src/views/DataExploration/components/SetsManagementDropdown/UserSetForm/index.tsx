@@ -6,7 +6,7 @@ import { Store } from 'antd/lib/form/interface';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 type OwnProps = {
   formName: string;

@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import { formatName } from 'views/Community/utils';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   user: IMemberEntity;

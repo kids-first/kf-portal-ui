@@ -14,7 +14,7 @@ import { SetType } from 'services/api/savedSet/models';
 import { getSetFieldId, useSavedSet } from 'store/savedSet';
 import SearchLabel from '../SearchLabel';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   title: string;

@@ -12,7 +12,7 @@ import { FilterInfo } from 'components/uiKit/FilterList/types';
 
 import { STUDIES_REPO_QB_ID } from '../../utils/constant';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 type OwnProps = {
   className?: string;

@@ -1,0 +1,14 @@
+.searchLabel.titleWrapper {
+  color: var(--gray-8);
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.searchLabel.titleWrapper .title {
+  color: var(--gray-8);
+  font-size: 12px;
+}
+.searchLabel.titleWrapper .tooltipIcon {
+  margin-left: 0.5rem;
+  color: var(--gray-7);
+}

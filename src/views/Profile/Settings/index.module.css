@@ -1,0 +1,24 @@
+.profileSettingsWrapper {
+  width: 100%;
+  padding: 16px 24px;
+}
+
+.cardsWrapper {
+  width: 100%;
+}
+
+.profileSettings {
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  width: 100%;
+}
+.profileSettings :global(.ant-space-item) {
+  width: 100%;
+}
+.profileSettings .profileSettingsHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

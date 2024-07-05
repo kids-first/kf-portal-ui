@@ -83,7 +83,7 @@ import {
   getSqonForQuickFilterFacetView,
 } from './utils/quickFilter';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 enum FilterTypes {
   Study,

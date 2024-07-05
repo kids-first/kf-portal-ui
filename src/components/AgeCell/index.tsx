@@ -4,7 +4,7 @@ import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { readableDistanceByDays } from 'utils/dates';
 import { isNumber } from 'utils/helper';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 interface OwnProps {
   ageInDays?: number;

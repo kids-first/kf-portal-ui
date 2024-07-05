@@ -1,8 +1,11 @@
 /* eslint-disable simple-import-sort/imports */
 // Import css before everything to make sure it is applied correctly
 
+
+import '@ferlab/ui/themes/default/theme.template.css';
+
 import 'style/themes/kids-first/dist/antd.css';
-import 'style/themes/kids-first/main.scss';
+import 'style/themes/kids-first/main.css';
 import './index.css';
 
 import { initUserSnap } from 'services/initUsersnap';

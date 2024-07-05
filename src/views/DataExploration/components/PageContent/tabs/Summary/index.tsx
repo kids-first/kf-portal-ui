@@ -9,7 +9,7 @@ import { updateUserConfig } from 'store/user/thunks';
 
 import { getDefaultLayouts, UID } from './utils/grid';
 
-import styles from './index.module.scss';
+import styles from './index.module.css';
 
 const SummaryTab = () => {
   const dispatch = useDispatch();

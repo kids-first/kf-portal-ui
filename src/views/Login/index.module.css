@@ -1,0 +1,165 @@
+.loginPageContent {
+  padding: 40px;
+}
+.loginPageContent .loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 800px;
+  margin: auto;
+}
+.loginPageContent .loginContainer .logoTitleContainer {
+  text-align: center;
+}
+.loginPageContent .loginContainer .logoTitleContainer .logotTitle {
+  color: var(--gray-1);
+  margin-bottom: 0;
+  margin-top: 16px;
+  font-size: 20px;
+}
+.loginPageContent .loginContainer .loginStats {
+  background-color: var(--cyan-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px 24px 24px 24px;
+}
+.loginPageContent .loginContainer .loginStats .statsDivider {
+  border-top: 1px solid var(--cyan-7);
+  margin: 12px 0;
+}
+.loginPageContent .loginContainer .loginStats .statsTitle {
+  color: var(--cyan-4);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  margin-bottom: 0;
+}
+.loginPageContent .loginContainer .loginStats > div {
+  width: 100%;
+}
+.loginPageContent .loginContainer .loginHeader {
+  display: flex;
+  align-items: center;
+}
+.loginPageContent .loginContainer .loginButtons {
+  order: 4;
+  display: flex;
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-primary) {
+  background-color: var(--gray-1);
+  border: 1px solid var(--gray-1);
+  border-radius: 2px;
+  color: var(--cyan-7);
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-primary):hover {
+  background-color: var(--gray-2);
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-primary):active {
+  background-color: var(--gray-3);
+  border: 1px solid var(--gray-3);
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-default) {
+  background-color: var(--cyan-7);
+  border: 1px solid var(--cyan-1);
+  box-sizing: border-box;
+  border-radius: 2px;
+  color: var(--cyan-1);
+  margin-left: 16px;
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-default):hover {
+  background-color: var(--cyan-6);
+}
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-primary):focus,
+.loginPageContent .loginContainer .loginButtons :global(.ant-btn-default):focus {
+  background-color: var(--cyan-8);
+  border: 1px solid var(--cyan-1);
+  color: var(--gray-1);
+}
+.loginPageContent .loginContainer .loginDescription .loginDescTitle,
+.loginPageContent .loginContainer .loginDescription .loginDescText {
+  color: var(--gray-1);
+}
+.loginPageContent .loginContainer .loginDescription .loginDescTitle {
+  font-style: normal;
+  font-weight: 600;
+}
+.loginPageContent .loginContainer .loginDescription .loginDescTitle .titleEmphase {
+  color: var(--blue-4);
+}
+.loginPageContent .loginContainer .loginDescription .loginDescText {
+  font-size: 16px;
+  line-height: 24px;
+}
+.loginPageContent .loginContainer h1 {
+  margin-left: 16px;
+  line-height: 38px;
+}
+
+@media (min-width: 1181px) {
+  .loginContainer .logoTitleContainer {
+    order: 2;
+    align-items: center;
+    display: flex;
+  }
+  .loginContainer .loginDescription .loginDescTitle {
+    font-size: 24px;
+    line-height: 38px;
+  }
+  .loginContainer .loginDescription .loginDescText {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+@media (max-width: 1180px) {
+  .loginContainer .loginDescription {
+    text-align: center;
+  }
+  .loginContainer .loginDescription .loginDescTitle {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .loginContainer .loginButtons {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 800px) {
+  .loginPageContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 40px 16px;
+  }
+  .loginPageContent .loginContainer {
+    margin: unset;
+  }
+  .loginPageContent .loginContainer .loginDescription .loginDescTitle,
+  .loginPageContent .loginContainer .loginDescription .loginDescText {
+    color: var(--gray-1);
+  }
+  .loginPageContent .loginContainer .loginDescription .loginDescTitle {
+    text-align: center;
+  }
+  .loginPageContent .loginContainer .loginDescription .loginDescTitle .titleEmphase {
+    color: var(--blue-4);
+  }
+  .loginPageContent .loginContainer .loginDescription .loginDescText {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .loginStatsLabel {
+    width: 50%;
+    margin-bottom: 16px;
+  }
+  .loginButtons > div {
+    width: 100%;
+  }
+  .loginButtons > div [type=button] {
+    width: 100%;
+  }
+}
