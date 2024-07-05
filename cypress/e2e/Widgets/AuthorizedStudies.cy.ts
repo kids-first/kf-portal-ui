@@ -124,10 +124,6 @@ describe('Page Dashboard - Widget Authorized Studies (connecté)', () => {
     cy.get('[class="ant-modal-body"]').contains('Kids First Framework Services').should('exist');
     cy.get('[class="ant-modal-body"]').contains('NCI CRDC Framework Services').should('exist');
     cy.get('button[class*="ant-btn-primary"]').contains('Close').should('exist');
-/*
-    cy.get('button[class="ant-modal-close"]').invoke('click');
-    cy.wait(2000);
-    cy.get('body]').contains('Manage Connections').should('not.exist');*/
   });
 
   it('Valider les liens disponibles - Fichiers autorisés', () => {
