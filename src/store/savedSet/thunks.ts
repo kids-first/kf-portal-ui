@@ -1,5 +1,15 @@
 import intl from 'react-intl-universal';
+import {
+  addQuery,
+  getQueryBuilderState,
+  setQueryBuilderState,
+  updateActiveQueryField,
+} from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { IValueFilter, SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Modal } from 'antd';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { SavedSetApi } from 'services/api/savedSet';
 import {
@@ -10,14 +20,10 @@ import {
   TUserSavedSetUpdate,
 } from 'services/api/savedSet/models';
 import { globalActions } from 'store/global';
-import { handleThunkApiReponse } from 'store/utils';
-import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
-import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
-import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { getSetFieldId } from '.';
-import { Modal } from 'antd';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
+import { handleThunkApiReponse } from 'store/utils';
+
+import { getSetFieldId } from '.';
 
 const fetchSavedSet = createAsyncThunk<IUserSetOutput[], void | string, { rejectValue: string }>(
   'savedsets/fetch',
@@ -133,20 +139,42 @@ const fetchSharedBiospecimenRequest = createAsyncThunk<
 
   if (data) {
     const setValue = `${SET_ID_PREFIX}${data.id}`;
-    addQuery({
-      queryBuilderId: DATA_EXPLORATION_QB_ID,
-      query: generateQuery({
-        newFilters: [
-          generateValueFilter({
-            field: getSetFieldId(SetType.BIOSPECIMEN_REQUEST),
-            value: [setValue],
-            index: SetType.BIOSPECIMEN,
-            overrideValuesName: data.alias,
-          }),
-        ],
-      }),
-      setAsActive: true,
+    const queryState = getQueryBuilderState(DATA_EXPLORATION_QB_ID);
+
+    const result = queryState?.state?.find((query) => {
+      if (query.content.length === 0) return false;
+      const sqon = query.content[0] as IValueFilter;
+      return sqon.content.value[0] === setValue;
     });
+
+    if (result) {
+      setQueryBuilderState(DATA_EXPLORATION_QB_ID, {
+        active: result.id,
+        state: queryState?.state,
+      });
+
+      updateActiveQueryField({
+        queryBuilderId: DATA_EXPLORATION_QB_ID,
+        field: getSetFieldId(SetType.BIOSPECIMEN_REQUEST),
+        overrideValuesName: data.alias,
+        value: [setValue],
+      });
+    } else {
+      addQuery({
+        queryBuilderId: DATA_EXPLORATION_QB_ID,
+        query: generateQuery({
+          newFilters: [
+            generateValueFilter({
+              field: getSetFieldId(SetType.BIOSPECIMEN_REQUEST),
+              value: [setValue],
+              index: SetType.BIOSPECIMEN,
+              overrideValuesName: data.alias,
+            }),
+          ],
+        }),
+        setAsActive: true,
+      });
+    }
   }
 
   return handleThunkApiReponse({
