@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress"/>
 import '@testing-library/cypress/add-commands';
 import createUUID from './createUUID';
 
@@ -10,10 +10,10 @@ export interface Replacement {
 Cypress.Commands.add('checkValueFacetAndApply', (facetTitle: string, value: string) => {
   cy.get(`[aria-expanded="true"] [data-cy="FilterContainer_${facetTitle}"]`).should('exist');
   cy.wait(1000);
-  cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+  cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__8Dsbs')
     .find('button').then(($button) => {
     if ($button.hasClass('ant-btn-link')) {
-      cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+      cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__8Dsbs')
         .find('button[class*="CheckboxFilter_filtersTypesFooter"]').click({force: true});
       cy.wait(1000);
     };
@@ -26,10 +26,10 @@ Cypress.Commands.add('checkValueFacetAndApply', (facetTitle: string, value: stri
 Cypress.Commands.add('checkValueFacet', (facetTitle: string, value: string) => {
   cy.get(`[aria-expanded="true"] [data-cy="FilterContainer_${facetTitle}"]`).should('exist');
   cy.waitWhileSpin(1000);
-  cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+  cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__8Dsbs')
     .find('button').then(($button) => {
     if ($button.hasClass('ant-btn-link')) {
-      cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__O6v-O')
+      cy.get(`[data-cy="FilterContainer_${facetTitle}"]`).parentsUntil('.FilterContainer_filterContainer__8Dsbs')
         .find('button[class*="CheckboxFilter_filtersTypesFooter"]').click({force: true});
         cy.waitWhileSpin(1000);
       };

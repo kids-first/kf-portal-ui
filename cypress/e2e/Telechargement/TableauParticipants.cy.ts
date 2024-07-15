@@ -1,4 +1,4 @@
-/// <reference types="Cypress" />
+/// <reference types="cypress"/>
 import { getDateTime } from '../../support/utils';
 
 const { strDate } = getDateTime();
