@@ -1231,6 +1231,9 @@ const en = {
         selected: '{count, plural, =0 {# {type}} =1 {# {type}} other {# {type}s}} selected',
         saveSet: 'Save {type} set',
       },
+      allOf: 'All of',
+      anyOf: 'Any of',
+      noneOf: 'None of',
       hpoTree: {
         modal: {
           title: 'Observed Phenotype (HPO) Browser',

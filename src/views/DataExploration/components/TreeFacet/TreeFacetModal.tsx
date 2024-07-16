@@ -117,7 +117,7 @@ const TreeFacetModal = ({ type, field }: Props) => {
           selectedCount: (count: number) =>
             intl.get(`screen.dataExploration.${type}.selectedCount`, { count }),
           matchingCount: (count: number) =>
-            intl.get(`screen.dataExploration.${type}.selectedCount`, { count }),
+            intl.get(`screen.dataExploration.${type}.matchingCount`, { count }),
         },
       }}
     />
