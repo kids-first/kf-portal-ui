@@ -20,14 +20,11 @@ import FakeStorybook from 'views/FakeStorybook';
 import FenceRedirect from 'views/FenceRedirect';
 import Login from 'views/Login';
 import ParticipantEntity from 'views/ParticipantEntity';
-import PersonaRegistration from 'views/Persona';
-import PersonaUpdateTermsAndConditions from 'views/Persona/updateTermsAndConditions';
 import ProfileView from 'views/Profile/View';
 
 import { LANG } from 'common/constants';
 import { FENCE_NAMES } from 'common/fenceTypes';
 import MainSideImage from 'components/assets/mainSideImage.jpg';
-import MainSideImageAlt from 'components/assets/mainSideImage-alt.jpg';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SideImageLayout from 'components/Layout/SideImage';
 import GradientAccent from 'components/uiKit/GradientAccent';
@@ -100,28 +97,6 @@ const App = () => {
                       </>
                     }
                   />
-                  <Route
-                    path={STATIC_ROUTES.REGISTRATION}
-                    element={
-                      <>
-                        <GradientAccent isFixed />
-                        <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
-                          <PersonaRegistration />
-                        </SideImageLayout>
-                      </>
-                    }
-                  ></Route>
-                  <Route
-                    path={STATIC_ROUTES.TERMSCONDITONS}
-                    element={
-                      <>
-                        <GradientAccent isFixed />
-                        <SideImageLayout alt sideImgSrc={MainSideImageAlt}>
-                          <PersonaUpdateTermsAndConditions />
-                        </SideImageLayout>
-                      </>
-                    }
-                  ></Route>
                   <Route path={DYNAMIC_ROUTES.ERROR} element={<ErrorPage />} />
                   <Route
                     path={STATIC_ROUTES.DASHBOARD}
