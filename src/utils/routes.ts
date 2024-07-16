@@ -1,8 +1,6 @@
 export enum STATIC_ROUTES {
   HOME = '/',
   LOGIN = '/login',
-  REGISTRATION = '/registration',
-  TERMSCONDITONS = '/terms-and-conditions',
   AUTH_REDIRECT = '/auth-redirect',
   DASHBOARD = '/dashboard',
   STUDIES = '/studies',
