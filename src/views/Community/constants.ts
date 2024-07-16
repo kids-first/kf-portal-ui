@@ -1,25 +1,25 @@
 import { IQueryConfig } from '@ferlab/ui/core/graphql/types';
 
-export const memberRolesOptions = [
+export const ROLE_OPTIONS = [
   {
-    key: 'research',
-    value: 'Researcher',
+    value: 'research',
+    label: 'Researcher',
   },
   {
-    key: 'health',
-    value: 'Healthcare Professional',
+    value: 'health',
+    label: 'Healthcare Professional',
   },
   {
-    key: 'patient',
-    value: 'Patient/Family Member',
+    value: 'patient',
+    label: 'Patient/Family Member',
   },
   {
-    key: 'community',
-    value: 'Community Member',
+    value: 'community',
+    label: 'Community Member',
   },
 ];
 
-export const areaOfInterestOptions = [
+export const AREA_OF_INTEREST = [
   'Adolescent Idiopathic Scoliosis',
   'Bladder Exstrophy-Epispadias Complex',
   'Congenital Diaphragmatic Hernia',
@@ -49,6 +49,11 @@ export const areaOfInterestOptions = [
   'Syndromic Cranial Dysinnervation',
   'T-cell Acute Lymphoblastic Leukemia (ALL)',
 ];
+
+export const AREA_OF_INTEREST_OPTIONS = AREA_OF_INTEREST.map((option) => ({
+  label: option,
+  value: option.toLowerCase(),
+}));
 
 export const DEFAULT_PAGE_INDEX = 1;
 export const DEFAULT_PAGE_SIZE = 20;

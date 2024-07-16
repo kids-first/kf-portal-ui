@@ -6,11 +6,11 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createFilter from 'redux-persist-transform-filter';
 
+import CommunityReducer from 'store/community';
 import FencesReducer from 'store/fences';
 import GlobalReducer from 'store/global';
 import NotebookReducer from 'store/notebook';
 import PassportReducer from 'store/passport';
-import PersonaReducer from 'store/persona';
 import RemoteReducer from 'store/remote';
 import ReportReducer from 'store/report';
 import SavedFilterReducer from 'store/savedFilter';
@@ -30,7 +30,6 @@ const persistConfig = {
 export const rootReducer = combineReducers<RootState>({
   global: GlobalReducer,
   fences: FencesReducer,
-  persona: PersonaReducer,
   notebook: NotebookReducer,
   passport: PassportReducer,
   user: UserReducer,
@@ -38,6 +37,7 @@ export const rootReducer = combineReducers<RootState>({
   savedFilter: SavedFilterReducer,
   savedSet: SavedSetReducer,
   remote: RemoteReducer,
+  community: CommunityReducer,
 });
 
 export const store: any = configureStore({

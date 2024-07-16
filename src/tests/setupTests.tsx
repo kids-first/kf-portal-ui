@@ -21,7 +21,6 @@ import type { AppStore } from 'store/index';
 import { store as setupStore } from 'store/index';
 import { NotebookState } from 'store/notebook/slice';
 import { passportState } from 'store/passport';
-import { PersonaState } from 'store/persona';
 import { RemoteState } from 'store/remote';
 import { ReportState } from 'store/report';
 import { SavedFilterState } from 'store/savedFilter';
@@ -37,7 +36,6 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 export const defaultPreloadedState = {
   global: GlobalState,
   user: UserState,
-  persona: PersonaState,
   notebook: NotebookState,
   report: ReportState,
   savedFilter: SavedFilterState,

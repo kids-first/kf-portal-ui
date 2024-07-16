@@ -1,14 +1,25 @@
-import EnvironmentVariables from 'helpers/EnvVariables';
 import keycloak from 'auth/keycloak-api/keycloak';
+import EnvironmentVariables from 'helpers/EnvVariables';
+
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { TUser, TUserInsert, TUserUpdate } from './models';
 import { sendRequest } from 'services/api';
+
+import { TUser, TUserInsert, TUserUpdate } from './models';
 
 export const USER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/user`;
 
 export const headers = () => ({
   'Content-Type': 'application/json',
 });
+
+export interface ISearchParams {
+  pageIndex?: number;
+  pageSize?: number;
+  match?: string;
+  sort?: string;
+  roles?: string;
+  interests?: string;
+}
 
 const fetch = () =>
   sendRequest<TUser>({
@@ -32,21 +43,7 @@ const create = (body?: Omit<TUserInsert, 'keycloak_id'>) => {
   });
 };
 
-const search = ({
-  pageIndex = 0,
-  pageSize = 15,
-  match,
-  sort,
-  roles,
-  dataUses,
-}: {
-  pageIndex?: number;
-  pageSize?: number;
-  match?: string;
-  sort?: string;
-  roles?: string;
-  dataUses?: string;
-}) =>
+const search = ({ pageIndex = 0, pageSize = 15, match, sort, roles, interests }: ISearchParams) =>
   sendRequest<{
     users: TUser[];
     total: number;
@@ -60,7 +57,7 @@ const search = ({
       match,
       sort,
       roles,
-      dataUses,
+      areasOfInterest: interests,
     },
   });
 

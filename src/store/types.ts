@@ -1,7 +1,7 @@
 import { GlobalInitialState } from 'store/global';
-import { PersonaInitialState } from 'store/persona';
 import { UserInitialState } from 'store/user';
 
+import { CommunityInitialState } from './community';
 import { FencesInitialState } from './fences';
 import { NotebookInitialState } from './notebook';
 import { PassportInitialState } from './passport';
@@ -13,7 +13,6 @@ import { SavedSetInitialState } from './savedSet';
 export type RootState = {
   global: GlobalInitialState;
   user: UserInitialState;
-  persona: PersonaInitialState;
   notebook: NotebookInitialState;
   report: ReportInitialState;
   fences: FencesInitialState;
@@ -21,4 +20,5 @@ export type RootState = {
   savedSet: SavedSetInitialState;
   remote: RemoteInitialState;
   passport: PassportInitialState;
+  community: CommunityInitialState;
 };

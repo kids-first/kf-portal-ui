@@ -864,7 +864,7 @@ const en = {
       result: 'Public Member',
       results: 'Public Members',
       noResults: 'No Public members',
-      totalMembers: 'Total Members',
+      totalMembers: '{members} Total Members',
       search: {
         filters: 'Filters',
         selectPlaceholder: 'Select',

@@ -1,7 +1,7 @@
 import { TUser } from 'services/api/user/models';
 
 export type initialState = {
-  userInfo: TUser | null;
+  userInfo?: TUser;
   groups: string[];
   isLoading: boolean;
   isUpdating: boolean;

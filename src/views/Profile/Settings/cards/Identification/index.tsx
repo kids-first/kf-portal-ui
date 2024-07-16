@@ -3,25 +3,24 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
+import CommunityProfileGridCard from '@ferlab/ui/core/pages/CommunityPage/CommunityProfileGridCard';
 import { useKeycloak } from '@react-keycloak/web';
-import { Alert, Col, Form, Input, Row, Space, Typography } from 'antd';
+import { Alert, Col, Form, Input, Row, Skeleton, Space, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import { formatProvider } from 'auth/keycloak-api/utils';
+import BaseForm from 'views/Profile/Settings/cards/BaseForm';
 
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
-import { usePersona } from 'store/persona';
-import { updatePersonaUser } from 'store/persona/thunks';
-
-import BaseCard from '../BaseCard';
-import BaseForm from '../BaseForm';
+import { useUser } from 'store/user';
+import { updateUser } from 'store/user/thunks';
 
 import ToggleProfileVisibility from './ToggleProfileVisibility';
 
 import styles from './index.module.css';
 
 enum FORM_FIELDS {
-  FIRST_NAME = 'firstName',
-  LAST_NAME = 'lastName',
+  FIRST_NAME = 'first_name',
+  LAST_NAME = 'last_name',
   LINKEDIN = 'linkedin',
   WEBSITE = 'website',
 }
@@ -36,7 +35,7 @@ const initialChangedValues = {
 const IdentificationCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const { personaUserInfo } = usePersona();
+  const { userInfo, isLoading } = useUser();
   const { keycloak } = useKeycloak();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
@@ -51,18 +50,36 @@ const IdentificationCard = () => {
 
   useEffect(() => {
     initialValues.current = {
-      [FORM_FIELDS.FIRST_NAME]: personaUserInfo?.firstName,
-      [FORM_FIELDS.LAST_NAME]: personaUserInfo?.lastName,
-      [FORM_FIELDS.LINKEDIN]: personaUserInfo?.linkedin,
-      [FORM_FIELDS.WEBSITE]: personaUserInfo?.website,
+      [FORM_FIELDS.FIRST_NAME]: userInfo?.first_name,
+      [FORM_FIELDS.LINKEDIN]: userInfo?.linkedin,
+      [FORM_FIELDS.LAST_NAME]: userInfo?.last_name,
+      [FORM_FIELDS.WEBSITE]: userInfo?.website,
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personaUserInfo]);
+  }, [form, userInfo]);
 
   return (
-    <BaseCard
+    <CommunityProfileGridCard
+      loading={isLoading}
+      customSkeleton={
+        <Space align="center" className={styles.skeletonWrapper}>
+          <Space direction="vertical" className={styles.skeleton}>
+            <Skeleton paragraph={{ rows: 1 }} title={false} active />
+            <Skeleton paragraph={{ rows: 1 }} title={false} active />
+            <Skeleton.Input block active />
+            <Skeleton paragraph={{ rows: 1 }} title={false} active />
+            <Skeleton.Input block active />
+            <Skeleton paragraph={{ rows: 1 }} title={false} active />
+            <Skeleton.Input block active />
+            <Skeleton paragraph={{ rows: 1 }} title={false} active />
+            <Skeleton.Input block active />
+          </Space>
+          <Space align="center" className={styles.skeleton}>
+            <Skeleton.Avatar className={styles.avatar} size={140} />
+          </Space>
+        </Space>
+      }
       form={form}
       customHeader={
         <div className={styles.customHeader}>
@@ -81,9 +98,8 @@ const IdentificationCard = () => {
           type="info"
           message={intl.getHTML('screen.profileSettings.cards.identification.alert', {
             provider: formatProvider(tokenParsed.identity_provider),
-            email:
-              personaUserInfo?.email || tokenParsed.email || tokenParsed.identity_provider_identity,
-            id: personaUserInfo?.email ? 'email' : 'ID',
+            email: userInfo?.email || tokenParsed.email || tokenParsed.identity_provider_identity,
+            id: userInfo?.email ? 'email' : 'ID',
           })}
         />
         <Row gutter={24}>
@@ -95,11 +111,11 @@ const IdentificationCard = () => {
               onHasChanged={setHasChanged}
               onFinish={(values: any) =>
                 dispatch(
-                  updatePersonaUser({
+                  updateUser({
                     data: {
-                      ...personaUserInfo,
-                      firstName: values[FORM_FIELDS.FIRST_NAME],
-                      lastName: values[FORM_FIELDS.LAST_NAME],
+                      ...userInfo,
+                      first_name: values[FORM_FIELDS.FIRST_NAME],
+                      last_name: values[FORM_FIELDS.LAST_NAME],
                       linkedin: values[FORM_FIELDS.LINKEDIN],
                       website: values[FORM_FIELDS.WEBSITE],
                     },
@@ -173,7 +189,7 @@ const IdentificationCard = () => {
           </Col>
         </Row>
       </Space>
-    </BaseCard>
+    </CommunityProfileGridCard>
   );
 };
 

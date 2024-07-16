@@ -1,3 +1,16 @@
+.skeletonWrapper {
+  width: 100%;
+}
+
+.skeletonWrapper .skeleton {
+  display: flex;
+}
+
+.skeletonWrapper .skeleton .avatar {
+  display: flex;
+  justify-content: center;
+}
+
 .identificationCardContent {
   width: 100%;
 }
