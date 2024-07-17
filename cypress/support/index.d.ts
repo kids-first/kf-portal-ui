@@ -6,8 +6,10 @@ declare namespace Cypress {
     checkValueFacet(facetTitle: string, value: string): cy & CyEventEmitter;
     clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number): cy & CyEventEmitter;
     closePopup(): cy & CyEventEmitter;
+    createBioReqIfNotExists(bioreqName: string, itemPosition: number): cy & CyEventEmitter;
     createFilterIfNotExists(filterName: string): cy & CyEventEmitter;
-    createSetIfNotExists(etName: string, itemPosition: number): cy & CyEventEmitter;
+    createSetIfNotExists(setName: string, itemPosition: number): cy & CyEventEmitter;
+    deleteBioReqIfExists(bioreqName: string): cy & CyEventEmitter;
     deleteFilter(filterName: string): cy & CyEventEmitter;
     deleteFilterIfExists(filterName: string): cy & CyEventEmitter;
     deleteSet(dataNodeKey: string, setName: string): cy & CyEventEmitter;
@@ -16,6 +18,7 @@ declare namespace Cypress {
     logout(): cy & CyEventEmitter;
     removeFilesFromFolder(folder: string): cy & CyEventEmitter;
     resetColumns(table_id?: string): cy & CyEventEmitter;
+    saveBioReqAs(bioreqName: string, itemPosition: number): cy & CyEventEmitter;
     saveFilterAs(filterName: string): cy & CyEventEmitter;
     saveSetAs(setName: string, itemPosition: number): cy & CyEventEmitter;
     showColumn(column: string|RegExp): cy & CyEventEmitter;

@@ -69,6 +69,20 @@ Cypress.Commands.add('closePopup', () => {
   });
 });
 
+Cypress.Commands.add('createBioReqIfNotExists', (bioreqName: string, itemPosition: number) => {
+  cy.visitDashboard();
+  cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
+    if ($el.text().includes('Biospecimen Requests')) {
+      cy.wrap($el).as('dashboardCard');
+    };
+  });
+  cy.get('@dashboardCard').invoke('text').then((invokeText) => {
+    if (!invokeText.includes(bioreqName)) {
+      cy.saveBioReqAs(bioreqName, itemPosition);
+    };
+  });
+});
+
 Cypress.Commands.add('createFilterIfNotExists', (filterName: string) => {
   cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').click({force: true});
   cy.get('[class*="ant-dropdown-menu-root"]').invoke('text').then((invokeText) => {
@@ -85,6 +99,32 @@ Cypress.Commands.add('createSetIfNotExists', (setName: string, itemPosition: num
       cy.saveSetAs(setName, itemPosition);
     };
   });
+});
+
+Cypress.Commands.add('deleteBioReqIfExists', (bioreqName: string) => {
+  cy.visitDashboard();
+  cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
+    if ($el.text().includes('Biospecimen Requests')) {
+      cy.wrap($el).as('dashboardCard');
+    };
+  });
+  cy.get('@dashboardCard').invoke('text').then((invokeText) => {
+    if (invokeText.includes(bioreqName)) {
+      cy.get('[class*="ListItemWithActions_fuiListItemWithActions"]').each(($el: JQuery<HTMLElement>) => {
+        if ($el.text().includes(bioreqName)) {
+          cy.wrap($el).find('svg[data-icon="delete"]').click({force:true});
+          cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-dangerous"]', 'DELETE', '**/sets/**', 1);
+        };
+      });
+    };
+  });
+
+  cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
+    if ($el.text().includes('Biospecimen Requests')) {
+      cy.wrap($el).as('dashboardCard');
+    };
+  });
+  cy.get('@dashboardCard').contains(bioreqName).should('not.exist');
 });
 
 Cypress.Commands.add('deleteFilter', (filterName: string) => {
@@ -201,6 +241,23 @@ Cypress.Commands.add('resetColumns', (table_id?: string) => {
   cy.get('button[class*="ProTablePopoverColumnResetBtn"]').should('be.disabled', {timeout: 20*1000});
   cySettings.click({force: true});
   cy.get('[class*="Header_logo"]').click({force: true});
+});
+
+Cypress.Commands.add('saveBioReqAs', (bioreqName: string, itemPosition: number) => {
+  cy.visitDataExploration('biospecimens');
+  cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
+  cy.get('div[role="tabpanel"] [class*="ant-table-row"], [class="ant-table-body"] [class*="ant-table-row"]').eq(itemPosition).find('[type="checkbox"]').check({force: true});
+  cy.get('button').each(($el: JQuery<HTMLElement>) => {
+    if ($el.text().includes('Request biospecimen')) {
+      cy.wrap($el).as('button');
+    };
+  });
+  cy.get('@button').click({force: true});
+  cy.get('[class*="requestBiospecimen_modalWrapper"] input').clear();
+  cy.get('[class*="requestBiospecimen_modalWrapper"] input').type(bioreqName);
+  cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'POST', '** /biospecimen-request', 1);
+
+  cy.get('[class*="requestBiospecimen_modalWrapper"]').should('not.exist');
 });
 
 Cypress.Commands.add('saveFilterAs', (filterName: string) => {
