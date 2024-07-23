@@ -26,15 +26,13 @@ import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import KidsFirstIcon from 'components/Icons/KidsFirstIcon';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
+import styles from 'components/Layout/Header/index.module.css';
 import GradientAccent from 'components/uiKit/GradientAccent';
 import { trackLogout, trackVisitResources } from 'services/analytics';
-import { usePersona } from 'store/persona';
-import { personaActions } from 'store/persona/slice';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
+import { useUser } from 'store/user';
 import { userActions } from 'store/user/slice';
 import { STATIC_ROUTES } from 'utils/routes';
-
-import styles from 'components/Layout/Header/index.module.css';
 
 const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
@@ -44,13 +42,7 @@ const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
 const { Text } = Typography;
 
 const Header = () => {
-  const { personaUserInfo } = usePersona();
-  const userInfo = {
-    first_name: personaUserInfo?.firstName,
-    last_name: personaUserInfo?.lastName,
-    email: personaUserInfo?.email,
-    keycloak_id: personaUserInfo?.egoId,
-  };
+  const { userInfo } = useUser();
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const location = useLocation();
@@ -233,7 +225,6 @@ const Header = () => {
                     ),
                     onClick: () => {
                       trackLogout();
-                      dispatch(personaActions.cleanLogout());
                       dispatch(userActions.cleanLogout());
                       window.sessionStorage.clear();
                     },

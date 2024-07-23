@@ -1,14 +1,19 @@
 import intl from 'react-intl-universal';
-
-import styles from './index.module.css';
-import { usePersona } from 'store/persona';
-import CommunityProfile from 'components/uiKit/ComunityProfile';
+import { useNavigate } from 'react-router';
+import CommunityMemberProfilePage from '@ferlab/ui/core/pages/CommunityPage/CommunityMemberProfilePage';
 import { Result } from 'antd';
 
-const ProfileView = () => {
-  const { personaUserInfo, isLoading } = usePersona();
+import banner from 'components/assets/memberHeader.png';
+import { useUser } from 'store/user';
+import { STATIC_ROUTES } from 'utils/routes';
 
-  if (!isLoading && !personaUserInfo) {
+import styles from './index.module.css';
+
+const ProfileView = () => {
+  const navigate = useNavigate();
+  const { userInfo, isLoading } = useUser();
+
+  if (!isLoading && !userInfo) {
     return (
       <Result
         className={styles.notFoundMember}
@@ -19,7 +24,20 @@ const ProfileView = () => {
     );
   }
 
-  return <CommunityProfile profile={personaUserInfo} isOwner={true} loading={isLoading} />;
+  return (
+    <CommunityMemberProfilePage
+      user={userInfo}
+      loading={isLoading}
+      banner={{
+        background: banner,
+        canEditProfile: true,
+        navigate: {
+          profile: () => navigate(STATIC_ROUTES.PROFILE_SETTINGS),
+          community: () => navigate(STATIC_ROUTES.COMMUNITY),
+        },
+      }}
+    />
+  );
 };
 
 export default ProfileView;

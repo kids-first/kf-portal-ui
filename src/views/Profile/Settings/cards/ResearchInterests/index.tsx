@@ -1,17 +1,18 @@
+import { useEffect, useRef, useState } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import ProLabel from '@ferlab/ui/core/components/ProLabel';
+import CommunityProfileGridCard from '@ferlab/ui/core/pages/CommunityPage/CommunityProfileGridCard';
 import { Form, Select, Tag, Typography } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import { useEffect, useRef, useState } from 'react';
-import { areaOfInterestOptions } from 'views/Community/contants';
-import { useDispatch } from 'react-redux';
-import BaseCard from '../BaseCard';
-import BaseForm from '../BaseForm';
-import { usePersona } from 'store/persona';
-import ProLabel from '@ferlab/ui/core/components/ProLabel';
-import intl from 'react-intl-universal';
-import { updatePersonaUser } from 'store/persona/thunks';
+import { AREA_OF_INTEREST } from 'views/Community/constants';
+import BaseForm from 'views/Profile/Settings/cards/BaseForm';
+
+import { useUser } from 'store/user';
+import { updateUser } from 'store/user/thunks';
 
 enum FORM_FIELDS {
-  INTERESTS = 'interests',
+  INTERESTS = 'areas_of_interest',
 }
 
 const initialChangedValues = {
@@ -21,7 +22,7 @@ const initialChangedValues = {
 const ResearchInterestsCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const { personaUserInfo } = usePersona();
+  const { userInfo, isLoading } = useUser();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
   const [interestsFilter, setInterestsFilter] = useState<string[]>([]);
@@ -35,9 +36,8 @@ const ResearchInterestsCard = () => {
   };
 
   useEffect(() => {
-    const mappedInterests = (personaUserInfo?.interests || []).map(
-      (interest) =>
-        areaOfInterestOptions.find((e) => e.toLocaleLowerCase() === interest) || interest,
+    const mappedInterests = (userInfo?.areas_of_interest || []).map(
+      (interest) => AREA_OF_INTEREST.find((e) => e.toLocaleLowerCase() === interest) || interest,
     );
 
     initialValues.current = {
@@ -46,15 +46,15 @@ const ResearchInterestsCard = () => {
     setInterestsFilter(mappedInterests || []);
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personaUserInfo]);
+  }, [form, userInfo]);
 
   return (
-    <BaseCard
+    <CommunityProfileGridCard
       form={form}
       title={intl.get('screen.profileSettings.cards.researchInterests.title')}
       isValueChanged={isValueChanged()}
       onDiscardChanges={onDiscardChanges}
+      loading={isLoading}
     >
       <BaseForm
         form={form}
@@ -63,10 +63,10 @@ const ResearchInterestsCard = () => {
         hasChangedInitialValue={hasChanged}
         onFinish={(values: any) => {
           dispatch(
-            updatePersonaUser({
+            updateUser({
               data: {
-                ...personaUserInfo,
-                interests: values[FORM_FIELDS.INTERESTS],
+                ...userInfo,
+                areas_of_interest: values[FORM_FIELDS.INTERESTS],
               },
               callback: () => {
                 initialValues.current = values;
@@ -94,7 +94,7 @@ const ResearchInterestsCard = () => {
             onDeselect={(value: string) =>
               setInterestsFilter(interestsFilter.filter((val) => val !== value))
             }
-            options={areaOfInterestOptions.map((option) => ({
+            options={AREA_OF_INTEREST.map((option) => ({
               label: option,
               value: option,
             }))}
@@ -106,7 +106,7 @@ const ResearchInterestsCard = () => {
           />
         </Form.Item>
       </BaseForm>
-    </BaseCard>
+    </CommunityProfileGridCard>
   );
 };
 

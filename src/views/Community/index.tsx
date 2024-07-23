@@ -1,179 +1,85 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import intl from 'react-intl-universal';
-import { useDispatch } from 'react-redux';
-import TableHeader from '@ferlab/ui/core/components/ProTable/Header';
-import { BooleanOperators, TermOperators } from '@ferlab/ui/core/data/sqon/operators';
-import { generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { List, Space, Typography } from 'antd';
-import { useMembers } from 'graphql/members/actions';
+import { SortItems } from '@ferlab/ui/core/components/FilterBox/Sorter';
+import CommunityMembersPage from '@ferlab/ui/core/pages/CommunityPage';
+import MemberCard from 'views/Community/components/MemberCard';
+import { AREA_OF_INTEREST_OPTIONS, ROLE_OPTIONS } from 'views/Community/constants';
 
 import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
+import { ISearchParams } from 'services/api/user';
+import { useCommunityUsers } from 'store/community';
+import { useStats } from 'store/global';
 import { scrollToTop } from 'utils/helper';
-import { numberWithCommas } from 'utils/string';
 
-import { useGlobals } from '../../store/global';
-import { fetchStats } from '../../store/global/thunks';
-
-import FiltersBox from './components/Filters/Box';
-import MemberCard from './components/MemberCard';
-import { DEFAULT_QUERY_CONFIG } from './contants';
-
-import styles from './index.module.css';
-
-const { Title } = Typography;
-
-const resolveSqon = (search: string, roles: string[], interests: string[]) => {
-  const content = [];
-
-  if (search.length > 0) {
-    content.push(
-      generateValueFilter({
-        field: 'searchText',
-        value: [`${search}*`],
-        operator: TermOperators.in,
-      }),
-    );
-  }
-
-  if (roles.length > 0) {
-    content.push(
-      generateValueFilter({
-        field: 'roles',
-        value: roles,
-        operator: TermOperators.in,
-      }),
-    );
-  }
-
-  if (interests.length) {
-    content.push(
-      generateValueFilter({
-        field: 'searchableInterests.name.raw',
-        value: interests,
-        operator: TermOperators.in,
-      }),
-    );
-  }
-
-  return {
-    content,
-    op: BooleanOperators.and,
-  };
+const DEFAULT_PAGE_SIZE = 25;
+const DEFAULT_SEARCH_PARAMS = {
+  pageIndex: 0,
+  pageSize: DEFAULT_PAGE_SIZE,
+  sort: SortItems[0].sort,
+  match: '',
 };
 
 const CommunityPage = () => {
-  const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
-  const [queryConfig, setQueryConfig] = useState(DEFAULT_QUERY_CONFIG);
-  const [roleFilter, setRoleFilter] = useState<string[]>([]);
-  const [interestsFilter, setInterestsFilter] = useState<string[]>([]);
-  const { stats } = useGlobals();
-
-  const { loading, data, total } = useMembers({
-    first: queryConfig.size,
-    offset: queryConfig.size * (queryConfig.pageIndex - 1),
-    sqon: resolveSqon(search, roleFilter, interestsFilter),
-  });
-
-  useEffect(() => {
-    if (!stats) {
-      dispatch(fetchStats());
-    }
-  }, [dispatch, stats]);
-
-  const onSearchFilterChange = (search: string) => {
-    if (search.length > 0) {
-      setQueryConfig(DEFAULT_QUERY_CONFIG);
-    }
-    setSearch(search);
-  };
-
-  const onRoleFilterChange = (roles: string[]) => {
-    if (roles.length > 0) {
-      setQueryConfig(DEFAULT_QUERY_CONFIG);
-    }
-    setRoleFilter(roles);
-  };
-
-  const onInterestsFilterChange = (interests: string[]) => {
-    if (interests.length > 0) {
-      setQueryConfig(DEFAULT_QUERY_CONFIG);
-    }
-    setInterestsFilter(interests);
-  };
+  const [activeFilter, setActiveFilter] = useState<ISearchParams>(DEFAULT_SEARCH_PARAMS);
+  const { users, loading, total } = useCommunityUsers(activeFilter);
+  const stats = useStats();
 
   return (
-    <Space direction="vertical" size={24} className={styles.communityWrapper}>
-      <Title className={styles.title} level={4}>
-        {intl.get('screen.community.title')}
-      </Title>
-      <FiltersBox
-        onSearchFilterChange={onSearchFilterChange}
-        onRoleFilterChange={onRoleFilterChange}
-        onInterestsFilterChange={onInterestsFilterChange}
-        hasFilters={roleFilter.length > 0 || interestsFilter.length > 0}
-      />
-      <Space className={styles.usersListWrapper} size={24} direction="vertical">
-        <TableHeader
-          pageIndex={queryConfig.pageIndex}
-          pageSize={queryConfig.size}
-          total={total}
-          extraCountInfo={[
-            <span>
-              {stats?.members.totalCount} {intl.get('screen.community.totalMembers')}
-            </span>,
-          ]}
-          dictionary={{
-            itemCount: {
-              result: intl.get('screen.community.result'),
-              results: intl.get('screen.community.results'),
-              noResults: intl.get('screen.community.noResults'),
-              clear: '',
-              of: '',
-              selectAllResults: '',
-              selected: '',
-              selectedPlural: '',
-              clearFilters: '',
-            },
-            numberFormat: numberWithCommas,
-          }}
-        ></TableHeader>
-        <List
-          grid={{
-            gutter: 24,
-            xs: 1,
-            sm: 2,
-            md: 2,
-            lg: 3,
-            xl: 4,
-            xxl: 5,
-          }}
-          dataSource={data}
-          className={styles.membersList}
-          pagination={{
-            total: total,
-            current: queryConfig.pageIndex,
-            pageSize: queryConfig.size,
-            onChange: (page) => {
-              setQueryConfig({
-                ...queryConfig,
-                pageIndex: page,
-              });
-              scrollToTop(MAIN_SCROLL_WRAPPER_ID);
-            },
-            size: 'small',
-            hideOnSinglePage: true,
-            showSizeChanger: false,
-          }}
-          loading={loading}
-          renderItem={(item) => (
-            <List.Item className={styles.memberListItem}>
-              <MemberCard user={item} match={search} />
-            </List.Item>
-          )}
-        />
-      </Space>
-    </Space>
+    <CommunityMembersPage
+      options={{
+        roles: ROLE_OPTIONS,
+        interests: AREA_OF_INTEREST_OPTIONS,
+      }}
+      handleActiveFilter={(searchParams: ISearchParams) => {
+        setActiveFilter({
+          pageIndex: searchParams.pageIndex,
+          pageSize: DEFAULT_PAGE_SIZE,
+          sort: searchParams.sort ?? DEFAULT_SEARCH_PARAMS.sort,
+          roles: searchParams.roles ?? undefined,
+          interests: searchParams.interests ?? undefined,
+          match: searchParams.match,
+        });
+      }}
+      dictionary={{
+        title: intl.get('screen.community.search.barPlaceholder'),
+        result: intl.get('screen.community.resultMember'),
+        results: intl.get('screen.community.resultsMember'),
+        noResults: intl.get('screen.community.noResults'),
+        totalMembers: (members: number) => intl.get('screen.community.totalMembers', { members }),
+        filterBox: {
+          barPlaceholder: intl.get('screen.community.search.barPlaceholder'),
+          filter: intl.get('screen.community.search.filters'),
+          role: intl.get('screen.community.search.role'),
+          select: {
+            placeholder: intl.get('screen.community.search.selectPlaceholder'),
+            other: intl.get('global.other'),
+          },
+          interest: intl.get('screen.community.search.interests'),
+          clearFilters: intl.get('screen.community.search.clearFilters'),
+          sorter: {
+            newest: intl.get('screen.community.search.sorter.newest'),
+            oldest: intl.get('screen.community.search.sorter.oldest'),
+            lastnameAlpha: intl.get('screen.community.search.sorter.lastnameAlpha'),
+          },
+        },
+      }}
+      activeFilter={activeFilter}
+      pageSize={DEFAULT_PAGE_SIZE}
+      users={users}
+      totalPage={total}
+      loading={loading}
+      totalMembers={stats?.members.totalCount}
+      handlePageChange={(page) => {
+        setActiveFilter({
+          ...activeFilter,
+          pageIndex: page - 1,
+        });
+        scrollToTop(MAIN_SCROLL_WRAPPER_ID);
+      }}
+      renderMember={(activeFilter, item) => (
+        <MemberCard match={activeFilter.match || ''} user={item} />
+      )}
+    />
   );
 };
 

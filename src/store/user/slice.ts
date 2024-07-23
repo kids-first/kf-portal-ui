@@ -6,7 +6,7 @@ import { initialState } from 'store/user/types';
 import { STATIC_ROUTES } from 'utils/routes';
 
 export const UserState: initialState = {
-  userInfo: null,
+  userInfo: undefined,
   groups: [],
   isLoading: true,
   isUpdating: false,
@@ -17,7 +17,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: UserState,
   reducers: {
-    cleanLogout: (state) => {
+    cleanLogout: () => {
       keycloak.logout({
         redirectUri: `${window.location.origin}/${STATIC_ROUTES.LOGIN}`,
       });

@@ -1,16 +1,17 @@
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Switch, Tooltip, Typography } from 'antd';
 import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { usePersona } from 'store/persona';
-import { updatePersonaUser } from 'store/persona/thunks';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Switch, Tooltip, Typography } from 'antd';
+
+import { useUser } from 'store/user';
+import { updateUser } from 'store/user/thunks';
 
 import styles from './index.module.css';
 
 const ToggleProfileVisibility = () => {
   const dispatch = useDispatch();
-  const { personaUserInfo } = usePersona();
+  const { userInfo } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -23,14 +24,14 @@ const ToggleProfileVisibility = () => {
       </Tooltip>
       <Switch
         loading={isLoading}
-        defaultChecked={personaUserInfo?.isPublic}
+        defaultChecked={userInfo?.is_public}
         onChange={(checked) => {
           setIsLoading(true);
           dispatch(
-            updatePersonaUser({
+            updateUser({
               data: {
-                ...personaUserInfo,
-                isPublic: checked,
+                ...userInfo,
+                is_public: checked,
               },
               callback: () => {
                 setIsLoading(false);

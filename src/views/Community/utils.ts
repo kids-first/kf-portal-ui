@@ -1,17 +1,16 @@
-import { IMemberEntity } from 'graphql/members/models';
-import { IPersonaUser } from 'services/api/persona/models';
+import { TUser } from 'services/api/user/models';
 
-export const formatName = (user: IPersonaUser | IMemberEntity) =>
-  user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email;
+export const formatName = (user: TUser) =>
+  user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email;
 
-export const formatCountryAndState = (user: IPersonaUser | IMemberEntity) => {
-  if (user.state && user.country) {
-    return `${user.state}, ${user.country}`;
+export const formatCountryAndState = (user: TUser) => {
+  if (user.location_state && user.location_country) {
+    return `${user.location_state}, ${user.location_country}`;
   }
 
-  if (user.state) {
-    return `${user.state}`;
+  if (user.location_state) {
+    return `${user.location_state}`;
   }
 
-  return `${user.country}`;
+  return `${user.location_country}`;
 };

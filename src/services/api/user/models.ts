@@ -1,33 +1,13 @@
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
 import { TSerializedResizableGridLayoutConfig } from '@ferlab/ui/core/layout/ResizableGridLayout';
+import { IUser } from '@ferlab/ui/core/pages/CommunityPage/type';
 
-export type TUser = {
-  id: string;
-  keycloak_id: string;
-  first_name: string;
-  last_name: string;
-  era_commons_id?: string;
-  nih_ned_id?: string;
-  email?: string;
-  public_email?: string;
-  external_individual_fullname?: string;
-  external_individual_email?: string;
-  roles?: string[];
-  affiliation?: string;
-  research_area?: string;
-  portal_usages?: string[];
-  creation_date: Date;
-  updated_date: Date;
-  consent_date?: Date;
-  accepted_terms: boolean;
-  understand_disclaimer: boolean;
-  completed_registration: boolean;
-  commercial_use_reason: string;
-  config: TUserConfig;
-  linkedin?: string;
-  research_area_description?: string;
-  profile_image_key?: string | null;
+export type TUser = IUser & {
+  is_public: boolean;
+  organization?: string;
+  location_state?: string;
+  location_country?: string;
 };
 
 export type TUserTableConfig = {

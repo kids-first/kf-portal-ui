@@ -1,17 +1,18 @@
-import { Form, Input } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import BaseCard from '../BaseCard';
-import BaseForm from '../BaseForm';
-import { usePersona } from 'store/persona';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
-import { updatePersonaUser } from 'store/persona/thunks';
+import CommunityProfileGridCard from '@ferlab/ui/core/pages/CommunityPage/CommunityProfileGridCard';
+import { Form, Input } from 'antd';
+import { useForm } from 'antd/lib/form/Form';
+import BaseForm from 'views/Profile/Settings/cards/BaseForm';
+
+import { useUser } from 'store/user';
+import { updateUser } from 'store/user/thunks';
 
 enum FORM_FIELDS {
-  STATE = 'state',
-  COUNTRY = 'country',
+  STATE = 'location_state',
+  COUNTRY = 'location_country',
 }
 
 const initialChangedValues = {
@@ -22,7 +23,7 @@ const initialChangedValues = {
 const LocationCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const { personaUserInfo } = usePersona();
+  const { userInfo, isLoading } = useUser();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
 
@@ -35,20 +36,20 @@ const LocationCard = () => {
 
   useEffect(() => {
     initialValues.current = {
-      [FORM_FIELDS.STATE]: personaUserInfo?.state || '',
-      [FORM_FIELDS.COUNTRY]: personaUserInfo?.country || '',
+      [FORM_FIELDS.STATE]: userInfo?.location_state || '',
+      [FORM_FIELDS.COUNTRY]: userInfo?.location_country || '',
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personaUserInfo]);
+  }, [form, userInfo]);
 
   return (
-    <BaseCard
+    <CommunityProfileGridCard
       form={form}
       title={intl.get('screen.profileSettings.cards.location.title')}
       isValueChanged={isValueChanged()}
       onDiscardChanges={onDiscardChanges}
+      loading={isLoading}
     >
       <BaseForm
         form={form}
@@ -57,11 +58,11 @@ const LocationCard = () => {
         hasChangedInitialValue={hasChanged}
         onFinish={(values: any) =>
           dispatch(
-            updatePersonaUser({
+            updateUser({
               data: {
-                ...personaUserInfo,
-                state: values[FORM_FIELDS.STATE],
-                country: values[FORM_FIELDS.COUNTRY],
+                ...userInfo,
+                location_state: values[FORM_FIELDS.STATE],
+                location_country: values[FORM_FIELDS.COUNTRY],
               },
               callback: () => {
                 initialValues.current = values;
@@ -85,7 +86,7 @@ const LocationCard = () => {
           <Input />
         </Form.Item>
       </BaseForm>
-    </BaseCard>
+    </CommunityProfileGridCard>
   );
 };
 

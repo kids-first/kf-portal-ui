@@ -1,30 +1,32 @@
-import { Checkbox, Form, Input, Space } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { memberRolesOptions } from 'views/Community/contants';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import formStyles from '../form.module.css';
-import BaseCard from '../BaseCard';
-import BaseForm from '../BaseForm';
-import { usePersona } from 'store/persona';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
-import { updatePersonaUser } from 'store/persona/thunks';
+import CommunityProfileGridCard from '@ferlab/ui/core/pages/CommunityPage/CommunityProfileGridCard';
+import { Checkbox, Form, Input, Space } from 'antd';
+import { useForm } from 'antd/lib/form/Form';
+import { ROLE_OPTIONS } from 'views/Community/constants';
+import BaseForm from 'views/Profile/Settings/cards/BaseForm';
+
+import { useUser } from 'store/user';
+import { updateUser } from 'store/user/thunks';
+
+import formStyles from '../form.module.css';
 
 enum FORM_FIELDS {
   ROLES = 'roles',
-  INSTITUTION = 'organization',
+  AFFILIATION = 'affiliation',
 }
 
 const initialChangedValues = {
   [FORM_FIELDS.ROLES]: false,
-  [FORM_FIELDS.INSTITUTION]: false,
+  [FORM_FIELDS.AFFILIATION]: false,
 };
 
 const RoleAndAffiliationCard = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
-  const { personaUserInfo } = usePersona();
+  const { userInfo, isLoading } = useUser();
   const [hasChanged, setHasChanged] = useState<Record<FORM_FIELDS, boolean>>(initialChangedValues);
   const initialValues = useRef<Record<FORM_FIELDS, any>>();
 
@@ -37,17 +39,17 @@ const RoleAndAffiliationCard = () => {
 
   useEffect(() => {
     initialValues.current = {
-      [FORM_FIELDS.ROLES]: personaUserInfo?.roles,
-      [FORM_FIELDS.INSTITUTION]: personaUserInfo?.institution || '',
+      [FORM_FIELDS.ROLES]: userInfo?.roles,
+      [FORM_FIELDS.AFFILIATION]: userInfo?.affiliation || '',
     };
     form.setFieldsValue(initialValues.current);
     setHasChanged(initialChangedValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personaUserInfo]);
+  }, [form, userInfo]);
 
   return (
-    <BaseCard
+    <CommunityProfileGridCard
       form={form}
+      loading={isLoading}
       title={intl.get('screen.profileSettings.cards.roleAffiliation.title')}
       isValueChanged={isValueChanged()}
       onDiscardChanges={onDiscardChanges}
@@ -59,11 +61,11 @@ const RoleAndAffiliationCard = () => {
         hasChangedInitialValue={hasChanged}
         onFinish={(values: any) =>
           dispatch(
-            updatePersonaUser({
+            updateUser({
               data: {
-                ...personaUserInfo,
+                ...userInfo,
                 roles: values[FORM_FIELDS.ROLES],
-                institution: values[FORM_FIELDS.INSTITUTION],
+                affiliation: values[FORM_FIELDS.AFFILIATION],
               },
               callback: () => {
                 initialValues.current = values;
@@ -74,7 +76,7 @@ const RoleAndAffiliationCard = () => {
         }
       >
         <Form.Item
-          name={FORM_FIELDS.INSTITUTION}
+          name={FORM_FIELDS.AFFILIATION}
           label={
             <ProLabel
               title={intl.get('screen.profileSettings.cards.roleAffiliation.institution')}
@@ -94,16 +96,16 @@ const RoleAndAffiliationCard = () => {
               {intl.get('screen.profileSettings.cards.roleAffiliation.checkAllThatApply')}
             </span>
             <Space direction="vertical">
-              {memberRolesOptions.map(({ key, value }) => (
-                <Checkbox key={key} value={key}>
-                  {value}
+              {ROLE_OPTIONS.map(({ label, value }) => (
+                <Checkbox key={value} value={value}>
+                  {label}
                 </Checkbox>
               ))}
             </Space>
           </Checkbox.Group>
         </Form.Item>
       </BaseForm>
-    </BaseCard>
+    </CommunityProfileGridCard>
   );
 };
 

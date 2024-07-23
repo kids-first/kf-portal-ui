@@ -7,9 +7,6 @@ import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import Spinner from 'components/uiKit/Spinner';
 import useQueryParams from 'hooks/useQueryParams';
-import { usePersona } from 'store/persona';
-import { personaActions } from 'store/persona/slice';
-import { fetchPersonaUser } from 'store/persona/thunks';
 import { useSavedFilter } from 'store/savedFilter';
 import { fetchSavedFilters, fetchSharedSavedFilter } from 'store/savedFilter/thunks';
 import { fetchSavedSet, fetchSharedBiospecimenRequest } from 'store/savedSet/thunks';
@@ -23,7 +20,6 @@ type Props = {
 
 const AuthMiddleware = ({ children }: Props) => {
   const { isLoading } = useUser();
-  const { isLoading: personaIsLoading } = usePersona();
   const { isLoading: isSavedFilterLoading } = useSavedFilter();
   const { keycloak } = useKeycloak();
   const tokenParsed = keycloak?.tokenParsed as KidsFirstKeycloakTokenParsed;
@@ -32,16 +28,8 @@ const AuthMiddleware = ({ children }: Props) => {
 
   useEffect(() => {
     if (keycloak.authenticated) {
-      dispatch(
-        fetchPersonaUser({
-          egoId: tokenParsed.sub,
-          lastName: tokenParsed.family_name,
-          firstName: tokenParsed.given_name,
-          email: tokenParsed.email,
-        }),
-      );
-      dispatch(userActions.setUserGroups(tokenParsed?.groups));
       dispatch(fetchUser());
+      dispatch(userActions.setUserGroups(tokenParsed?.groups));
       dispatch(fetchSavedFilters());
       dispatch(fetchSavedSet());
       const sharedFilterId = params.get(SHARED_FILTER_ID_QUERY_PARAM_KEY);
@@ -53,17 +41,12 @@ const AuthMiddleware = ({ children }: Props) => {
         dispatch(fetchSharedBiospecimenRequest(biospecimenRequestId));
       }
     } else {
-      dispatch(personaActions.setIsPersonaLoading(false));
       dispatch(userActions.setIsUserLoading(false));
     }
     // eslint-disable-next-line
   }, [keycloak]);
 
-  return isLoading || personaIsLoading || isSavedFilterLoading ? (
-    <Spinner size={'large'} />
-  ) : (
-    children
-  );
+  return isLoading || isSavedFilterLoading ? <Spinner size={'large'} /> : children;
 };
 
 export default AuthMiddleware;

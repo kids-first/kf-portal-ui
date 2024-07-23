@@ -4,7 +4,6 @@ export default class EnvironmentVariables {
     ENV: process.env.NODE_ENV,
     WEB_ROOT: process.env.REACT_APP_WEB_ROOT,
     // APIS
-    PERSONA_API: process.env.REACT_APP_PERSONA_API,
     LEGACY_MEMBERS_API: process.env.REACT_APP_LEGACY_MEMBERS_API,
     ARRANGER_API: process.env.REACT_APP_ARRANGER_API_URL,
     VWB_CAVATICA_API: process.env.REACT_APP_VWB_CAVATICA,
