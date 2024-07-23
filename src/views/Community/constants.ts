@@ -52,7 +52,7 @@ export const AREA_OF_INTEREST = [
 
 export const AREA_OF_INTEREST_OPTIONS = AREA_OF_INTEREST.map((option) => ({
   label: option,
-  value: option.toLowerCase(),
+  value: option,
 }));
 
 export const DEFAULT_PAGE_INDEX = 1;
