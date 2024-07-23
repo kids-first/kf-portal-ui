@@ -69,7 +69,7 @@ const extractBioSpecimenMetaData = (biospecimens: any[]) => {
     ),
     tumor_location: joinUniquely(diagnoses.map((d) => d.source_text_tumor_location)),
     histological_diagnosis_source_text: joinUniquely(diagnoses.map((d) => d.source_text)),
-    histological_diagnosis_ncit: joinUniquely(diagnoses.map((d) => d.diagnosis_ncit)),
+    histological_diagnosis_ncit: joinUniquely(diagnoses.map((d) => d.ncit_display_term)),
     histological_diagnosis_mondo: joinUniquely(diagnoses.map((d) => d.mondo_display_term)),
     dbgap_consent_code: joinUniquely(biospecimens.map((x) => x.dbgap_consent_code)),
     consent_type: joinUniquely(biospecimens.map((x) => x.consent_type)),

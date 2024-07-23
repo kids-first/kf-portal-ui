@@ -161,7 +161,6 @@ describe(`${extractMetadata.name}()`, () => {
                                     source_text_tumor_descriptor: 'tumor',
                                     source_text_tumor_location: ['Reported Unknown'],
                                     source_text: 'Neuroblastoma',
-                                    diagnosis_ncit: 'NCIT:C3270',
                                     ncit_display_term: 'skull (NCIT:C3270)',
                                     age_at_event: {
                                       value: 174,
@@ -329,7 +328,7 @@ describe(`${extractMetadata.name}()`, () => {
       method_of_sample_procurement: 'blood',
       tumor_location: 'Reported Unknown',
       histological_diagnosis_source_text: 'Neuroblastoma',
-      histological_diagnosis_ncit: 'NCIT:C3270',
+      histological_diagnosis_ncit: 'skull (NCIT:C3270)',
       histological_diagnosis_mondo: 'Neuroblastoma (MONDO:0005072)',
       dbgap_consent_code: 'phs001436.c1',
       experimental_strategy: 'WGS',

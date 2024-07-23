@@ -35,7 +35,6 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             parent_sample_type
             parent_sample_id
             age_at_biospecimen_collection
-            collection_ncit_anatomy_site_id
             collection_ncit_anatomy_site
             collection_anatomy_site
             ncit_id_tissue_type
@@ -97,7 +96,6 @@ export const GET_PARTICIPANT_BIOSPECIMENS = gql`
             parent_sample_type
             parent_sample_id
             age_at_biospecimen_collection
-            collection_ncit_anatomy_site_id
             collection_ncit_anatomy_site
             tissue_type_source_text
             collection_anatomy_site

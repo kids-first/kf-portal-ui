@@ -31,8 +31,7 @@ const mergeBiosDiagnosesSpecificField = (
     | 'source_text_tumor_location'
     | 'source_text_tumor_descriptor'
     | 'mondo_display_term'
-    | 'ncit_display_term'
-    | 'diagnosis_ncit',
+    | 'ncit_display_term',
 ) =>
   joinUniqueCleanWords(biospecimen?.diagnoses?.hits?.edges?.map((e) => e.node[key]).flat()) ||
   TABLE_EMPTY_PLACE_HOLDER;

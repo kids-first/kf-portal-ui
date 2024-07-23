@@ -345,13 +345,7 @@ const getDefaultColumns = (): ProColumnType[] => [
       multiple: 1,
     },
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
-      const terms = [
-        ...new Set(
-          diagnosis?.hits?.edges
-            ?.filter((e) => e.node.ncit_display_term)
-            ?.map((e) => e.node.ncit_display_term),
-        ),
-      ];
+      const terms = [...new Set(diagnosis?.hits?.edges?.map((e) => e.node.ncit_display_term))];
       return (
         <ExpandableCell
           nOfElementsWhenCollapsed={1}

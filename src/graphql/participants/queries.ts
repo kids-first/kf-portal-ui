@@ -172,7 +172,6 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             biospecimen_storage
                             collection_anatomy_site
                             collection_method_of_sample_procurement
-                            collection_ncit_anatomy_site_id
                             collection_ncit_anatomy_site
                             diagnoses {
                               hits {
