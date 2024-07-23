@@ -78,7 +78,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             count
           }
         }
-        diagnosis__diagnosis_ncit {
+        diagnosis__ncit_display_term {
           buckets {
             key
             doc_count
@@ -144,7 +144,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        files__biospecimens__collection_ncit_anatomy_site_id {
+        files__biospecimens__collection_ncit_anatomy_site {
           buckets {
             key
             doc_count
@@ -174,7 +174,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        files__biospecimens__diagnoses__diagnosis_ncit {
+        files__biospecimens__diagnoses__ncit_display_term {
           buckets {
             key
             doc_count

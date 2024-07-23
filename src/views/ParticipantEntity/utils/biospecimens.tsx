@@ -47,11 +47,18 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     ),
   },
   {
-    key: 'collection_ncit_anatomy_site_id',
+    key: 'collection_ncit_anatomy_site',
     title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
     defaultHidden: true,
     render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.collection_ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+      biospecimen?.collection_ncit_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'diagnoses.ncit_display_term',
+    title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      mergeBiosDiagnosesSpecificField(biospecimen, 'ncit_display_term'),
   },
   {
     key: 'collection_anatomy_site',

@@ -337,7 +337,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     render: (externalId: string) => externalId || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'diagnosis.diagnosis_ncit',
+    key: 'diagnosis.ncit_display_term',
     title: intl.get('entities.participant.diagnosis_NCIT'),
     dataIndex: 'diagnosis',
     defaultHidden: true,
@@ -345,24 +345,30 @@ const getDefaultColumns = (): ProColumnType[] => [
       multiple: 1,
     },
     render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
-      const idsAlreadyAdded: string[] = [];
-      const ncitLinks = diagnosis?.hits?.edges?.reduce<React.ReactNode[]>((ncitIds, diagnosis) => {
-        const dxId = diagnosis.node.diagnosis_ncit;
-        if (dxId && dxId.startsWith('NCIT:') && !idsAlreadyAdded.includes(dxId)) {
-          idsAlreadyAdded.push(dxId);
-          return [
-            ...ncitIds,
-            <span key={dxId}>
-              <ExternalLink href={`http://purl.obolibrary.org/obo/${dxId.replace(':', '_')}`}>
-                {dxId}
-              </ExternalLink>
-            </span>,
-          ];
-        }
-        return ncitIds;
-      }, []);
-
-      return ncitLinks?.length ? ncitLinks : TABLE_EMPTY_PLACE_HOLDER;
+      const terms = [
+        ...new Set(
+          diagnosis?.hits?.edges
+            ?.filter((e) => e.node.ncit_display_term)
+            ?.map((e) => e.node.ncit_display_term),
+        ),
+      ];
+      return (
+        <ExpandableCell
+          nOfElementsWhenCollapsed={1}
+          dataSource={terms}
+          renderItem={(term): React.ReactNode => {
+            if (!term) {
+              return TABLE_EMPTY_PLACE_HOLDER;
+            }
+            const code = `NCIT_${term.replace(')', '').split('(NCIT:')[1]}`;
+            return (
+              <div key={code}>
+                <ExternalLink href={`http://purl.obolibrary.org/obo/${code}`}>{term}</ExternalLink>
+              </div>
+            );
+          }}
+        />
+      );
     },
   },
   {

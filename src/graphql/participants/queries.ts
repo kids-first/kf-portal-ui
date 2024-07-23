@@ -47,7 +47,7 @@ export const SEARCH_PARTICIPANT_QUERY = gql`
                   node {
                     mondo_display_term
                     source_text
-                    diagnosis_ncit
+                    ncit_display_term
                     age_at_event_days
                   }
                 }
@@ -125,7 +125,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                     source_text
                     age_at_event_days
                     diagnosis_id
-                    diagnosis_ncit
+                    ncit_display_term
                   }
                 }
               }
@@ -173,6 +173,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             collection_anatomy_site
                             collection_method_of_sample_procurement
                             collection_ncit_anatomy_site_id
+                            collection_ncit_anatomy_site
                             diagnoses {
                               hits {
                                 total
@@ -180,6 +181,7 @@ export const GET_PARTICIPANT_ENTITY = gql`
                                   node {
                                     source_text_tumor_descriptor
                                     source_text_tumor_location
+                                    ncit_display_term
                                   }
                                 }
                               }

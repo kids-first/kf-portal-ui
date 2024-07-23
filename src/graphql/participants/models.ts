@@ -12,7 +12,7 @@ export interface IParticipantDiagnosis {
   id: string;
   mondo_display_term: string;
   source_text: string;
-  diagnosis_ncit: string;
+  ncit_display_term: string;
   diagnosis_category?: string;
   affected_status: boolean;
   diagnosis_id: string;
