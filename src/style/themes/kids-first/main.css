@@ -100,6 +100,7 @@
   --default-padding: 24px;
   --default-page-content-padding: 16px 24px;
   --main-header-height: 64px;
+  --community-profile-banner-btn: var(--cyan-4);
 }
 
 html {

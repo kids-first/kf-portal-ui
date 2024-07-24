@@ -1,11 +1,7 @@
 import intl from 'react-intl-universal';
 import { useNavigate, useParams } from 'react-router-dom';
 import CommunityMemberProfilePage from '@ferlab/ui/core/pages/CommunityPage/CommunityMemberProfilePage';
-import {
-  AREA_OF_INTEREST,
-  AREA_OF_INTEREST_OPTIONS,
-  ROLE_OPTIONS,
-} from 'views/Community/constants';
+import { AREA_OF_INTEREST_OPTIONS, ROLE_OPTIONS } from 'views/Community/constants';
 
 import banner from 'components/assets/memberHeader.png';
 import useApi from 'hooks/useApi';
