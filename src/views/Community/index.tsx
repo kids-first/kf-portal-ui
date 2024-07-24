@@ -76,9 +76,10 @@ const CommunityPage = () => {
         });
         scrollToTop(MAIN_SCROLL_WRAPPER_ID);
       }}
-      renderMember={(activeFilter, item) => (
-        <MemberCard match={activeFilter.match || ''} user={item} />
-      )}
+      renderMember={(activeFilter, item) => {
+        console.log('item', item); //TODO: to remove
+        return <MemberCard match={activeFilter.match || ''} user={item} />;
+      }}
     />
   );
 };

@@ -5,9 +5,6 @@ import { IUser } from '@ferlab/ui/core/pages/CommunityPage/type';
 
 export type TUser = IUser & {
   is_public: boolean;
-  organization?: string;
-  location_state?: string;
-  location_country?: string;
 };
 
 export type TUserTableConfig = {

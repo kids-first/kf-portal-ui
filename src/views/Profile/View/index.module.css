@@ -1,3 +1,8 @@
+.privateAlert {
+  max-width: 1000px;
+  margin: 24px auto 16px
+}
+
 .notFoundMember {
   position: absolute;
   top: 50%;

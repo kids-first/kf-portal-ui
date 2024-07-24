@@ -17,7 +17,11 @@ const MemberCard = ({ user, match }: OwnProps) => (
   <Link key={user.id} className={styles.memberLink} to={`/member/${user.keycloak_id}`}>
     <Card className={styles.memberCard}>
       <Space direction="vertical" align="center">
-        <Gravatar className={styles.userGravatar} circle email={user.email || ''} />
+        <Gravatar
+          className={styles.userGravatar}
+          circle
+          id={`${user?.first_name}${user?.last_name}`}
+        />
         <Typography.Title className={styles.memberCardName} level={5}>
           <Highlighter textToHighlight={formatName(user) ?? ''} searchWords={[match]} />
         </Typography.Title>
