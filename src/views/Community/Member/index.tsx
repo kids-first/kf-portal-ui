@@ -1,5 +1,11 @@
+import intl from 'react-intl-universal';
 import { useNavigate, useParams } from 'react-router-dom';
 import CommunityMemberProfilePage from '@ferlab/ui/core/pages/CommunityPage/CommunityMemberProfilePage';
+import {
+  AREA_OF_INTEREST,
+  AREA_OF_INTEREST_OPTIONS,
+  ROLE_OPTIONS,
+} from 'views/Community/constants';
 
 import banner from 'components/assets/memberHeader.png';
 import useApi from 'hooks/useApi';
@@ -24,6 +30,28 @@ const CommunityMember = () => {
     <CommunityMemberProfilePage
       user={profile}
       loading={loading}
+      options={{
+        roles: ROLE_OPTIONS,
+        interests: AREA_OF_INTEREST_OPTIONS,
+      }}
+      dictionary={{
+        banner: {
+          communityButton: intl.get('screen.memberProfile.communityBtn'),
+          editProfile: intl.get('screen.memberProfile.editProfileBtn'),
+        },
+        profile: {
+          interests: {
+            noInterest: intl.get('screen.memberProfile.noInterests'),
+            title: intl.get('screen.memberProfile.interests'),
+          },
+          linkedin: intl.get('screen.memberProfile.linkedin'),
+          roles: {
+            noRole: intl.get('screen.memberProfile.noRoles'),
+            title: intl.get('screen.memberProfile.rolesTitle'),
+          },
+          website: intl.get('screen.memberProfile.website'),
+        },
+      }}
       banner={{
         background: banner,
         canEditProfile: profile?.id === userInfo?.id,

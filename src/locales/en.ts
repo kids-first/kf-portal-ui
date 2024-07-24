@@ -586,10 +586,13 @@ const en = {
     memberProfile: {
       notFound: 'User not found',
       rolesTitle: 'Role',
-      noRoles: 'No roles',
+      noRoles: 'No role',
       interests: 'Area of interest',
+      noInterests: 'No interest',
       noUsage: 'No intended usages',
       editProfileBtn: 'Edit Profile',
+      linkedin: 'Linkedin',
+      website: 'Website',
       communityBtn: 'Community',
       privateAlert:
         'Your profile is currently hidden from community members. You can make it public in the ',

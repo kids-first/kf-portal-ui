@@ -2,6 +2,7 @@ import intl from 'react-intl-universal';
 import { useNavigate } from 'react-router';
 import CommunityMemberProfilePage from '@ferlab/ui/core/pages/CommunityPage/CommunityMemberProfilePage';
 import { Result } from 'antd';
+import { AREA_OF_INTEREST_OPTIONS, ROLE_OPTIONS } from 'views/Community/constants';
 
 import banner from 'components/assets/memberHeader.png';
 import { useUser } from 'store/user';
@@ -26,6 +27,10 @@ const ProfileView = () => {
 
   return (
     <CommunityMemberProfilePage
+      options={{
+        roles: ROLE_OPTIONS,
+        interests: AREA_OF_INTEREST_OPTIONS,
+      }}
       user={userInfo}
       loading={isLoading}
       banner={{
