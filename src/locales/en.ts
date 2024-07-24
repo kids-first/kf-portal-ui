@@ -1546,7 +1546,7 @@ const en = {
     diagnosis: {
       affected_status: 'Clinical Status',
       mondo_display_term: 'Diagnosis (MONDO)',
-      diagnosis_ncit: 'Diagnosis (NCIT)',
+      ncit_display_term: 'Diagnosis (NCIT)',
       age_at_event_days: 'Age at Diagnosis (days)',
       source_text: 'Diagnosis (Source Text)',
       source_text_tumor_location: 'Tumor Location (Source Text)',
@@ -1584,7 +1584,7 @@ const en = {
     status: 'Sample Availability',
     age_at_biospecimen_collection: 'Age at Biospec. Collection (days)',
     bio_repository: 'Biorepository',
-    collection_ncit_anatomy_site_id: 'Anatomical Site (NCIT)',
+    collection_ncit_anatomy_site: 'Anatomical Site (NCIT)',
     collection_anatomy_site: 'Anatomical Site (Source Text)',
     collection_method_of_sample_procurement: 'Method of Sample Procurement',
     dbgap_consent_code: 'dbGaP Consent Code',
@@ -1598,7 +1598,7 @@ const en = {
         value: 'Age at Histological Diagnosis (days)',
       },
       mondo_display_term: 'Histological Diagnosis (MONDO)',
-      diagnosis_ncit: 'Histological Diagnosis (NCIT)',
+      ncit_display_term: 'Histological Diagnosis (NCIT)',
     },
     // File
     files: filesFacets,
@@ -1885,7 +1885,7 @@ const en = {
       diagnoses: {
         source_text: 'Histological Diagnosis (Source Text)',
         source_text_tumor_descriptor: 'Tumor Descriptor (Source Text)',
-        diagnosis_ncit: 'Histological Diagnosis (NCIT)',
+        ncit_display_term: 'Histological Diagnosis (NCIT)',
         mondo_display_term: 'Histological Diagnosis (MONDO)',
         source_text_tumor_location: 'Tumor Location (Source Text)',
       },

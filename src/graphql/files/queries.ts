@@ -58,7 +58,7 @@ export const SEARCH_FILES_QUERY = gql`
                           node {
                             mondo_display_term
                             source_text
-                            diagnosis_ncit
+                            ncit_display_term
                             age_at_event_days
                           }
                         }
@@ -116,7 +116,7 @@ export const SEARCH_FILES_QUERY = gql`
                                     source_text_tumor_descriptor
                                     source_text_tumor_location
                                     source_text
-                                    diagnosis_ncit
+                                    ncit_display_term
                                     age_at_event {
                                       value
                                       units

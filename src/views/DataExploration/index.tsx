@@ -129,7 +129,7 @@ const filterGroups: {
           'outcomes__age_at_event_days__value',
           'phenotype__age_at_event_days',
           <TreeFacet key="mondo" type={RemoteComponentList.MondoTree} field={'mondo'} />,
-          'diagnosis__diagnosis_ncit',
+          'diagnosis__ncit_display_term',
           'diagnosis__source_text',
           'family_type',
           <TreeFacet
@@ -159,12 +159,12 @@ const filterGroups: {
           'age_at_biospecimen_collection',
           'diagnoses__age_at_event__value',
           'status',
-          'collection_ncit_anatomy_site_id',
+          'collection_ncit_anatomy_site',
           'collection_anatomy_site',
           'consent_type',
           'dbgap_consent_code',
           'diagnoses__mondo_display_term',
-          'diagnoses__diagnosis_ncit',
+          'diagnoses__ncit_display_term',
           'diagnoses__source_text',
           'diagnoses__source_text_tumor_location',
           'collection_method_of_sample_procurement',
@@ -470,13 +470,13 @@ const DataExploration = () => {
   return (
     <div className={styles.dataExplorationLayout}>
       <TreeFacetModal
-        key="observed_phenotype"
+        key="observed_phenotype_hpo"
         type={RemoteComponentList.HPOTree}
         field={'observed_phenotype'}
       />
 
       <TreeFacetModal
-        key="observed_phenotype"
+        key="observed_phenotype_mondo"
         type={RemoteComponentList.MondoTree}
         field={'mondo'}
       />

@@ -225,12 +225,12 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     },
   },
   {
-    key: 'collection_ncit_anatomy_site_id',
+    key: 'collection_ncit_anatomy_site',
     title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
-    dataIndex: 'collection_ncit_anatomy_site_id',
+    dataIndex: 'collection_ncit_anatomy_site',
     defaultHidden: true,
-    render: (collection_ncit_anatomy_site_id) =>
-      collection_ncit_anatomy_site_id || TABLE_EMPTY_PLACE_HOLDER,
+    render: (collection_ncit_anatomy_site) =>
+      collection_ncit_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'collection_anatomy_site',
@@ -254,11 +254,11 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   //   render: (tissue_type_source_text) => tissue_type_source_text || TABLE_EMPTY_PLACE_HOLDER,
   // },
   {
-    key: 'diagnoses.diagnosis_ncit',
-    title: intl.get('entities.biospecimen.diagnoses.diagnosis_ncit'),
+    key: 'diagnoses.ncit_display_term',
+    title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
     defaultHidden: true,
     render: (record: IBiospecimenEntity) =>
-      mergeBiosDiagnosesSpecificField(record, 'diagnosis_ncit'),
+      mergeBiosDiagnosesSpecificField(record, 'ncit_display_term'),
   },
   {
     key: 'diagnoses.source_text',

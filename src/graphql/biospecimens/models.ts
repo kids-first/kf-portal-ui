@@ -16,7 +16,7 @@ export interface IBiospecimenDiagnoses {
   key?: string;
   id: string;
   source_text_tumor_descriptor: string;
-  diagnosis_ncit: string;
+  ncit_display_term: string;
   source_text: string;
   mondo_display_term: string;
   source_text_tumor_location: string[];
@@ -49,7 +49,7 @@ export interface IBiospecimenEntity {
   files: ArrangerResultsTree<IFileEntity>;
   nb_files: number;
   participant: IParticipantEntity;
-  collection_ncit_anatomy_site_id: string;
+  collection_ncit_anatomy_site: string;
   collection_anatomy_site: string;
   ncit_id_tissue_type: string;
   tissue_type_source_text: string;
