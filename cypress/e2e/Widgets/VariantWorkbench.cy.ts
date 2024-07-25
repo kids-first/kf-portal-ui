@@ -141,8 +141,7 @@ describe('Page Dashboard - Widget Variant Workbench (connecté)', () => {
     });
 
     cy.intercept('GET', 'https://kf-cavatica-vwb-api-qa.kf-strides.org/vwb/manifest').as('cavaticaVwbManifest');
-    cy.get('@gridCard').find('button').click({force: true});
-    cy.get('button[class*="ant-btn-primary"]').contains('Close').click({force: true});
+    cy.get('@gridCard').find('button').clickAndWait({force: true});
     cy.wait('@cavaticaVwbManifest');
   });
 });

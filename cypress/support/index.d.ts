@@ -5,6 +5,7 @@ declare namespace Cypress {
     checkValueFacetAndApply(facetTitle: string, value: string): cy & CyEventEmitter;
     checkValueFacet(facetTitle: string, value: string): cy & CyEventEmitter;
     clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number): cy & CyEventEmitter;
+    clickAndWait(options?: Partial<ClickOptions>): Chainable<Element>;
     closePopup(): cy & CyEventEmitter;
     createBioReqIfNotExists(bioreqName: string, itemPosition: number): cy & CyEventEmitter;
     createFilterIfNotExists(filterName: string): cy & CyEventEmitter;
@@ -52,6 +53,7 @@ declare namespace Cypress {
     visitStudiesPage(): cy & CyEventEmitter;
     visitVariantEntityPage(locusId: string, nbGraphqlCalls: number): cy & CyEventEmitter;
     visitVariantsPage(sharedFilterOption?: string): cy & CyEventEmitter;
+    waitUntilFile(ms: number): cy & CyEventEmitter;
     waitWhileSpin(ms: number): cy & CyEventEmitter;
   }
 }

@@ -8,21 +8,21 @@ beforeEach(() => {
 
 describe('Page d\'un fichier - Valider les redirections', () => {
   it('Studies', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(0).click({force: true}); // data-cy="SummaryHeader_Studies_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(0).clickAndWait({force: true}); // data-cy="SummaryHeader_Studies_Button"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-CDH').should('exist');
   });
   
   it('Participant', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(1).click({force: true}); // data-cy="SummaryHeader_Participants_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(1).clickAndWait({force: true}); // data-cy="SummaryHeader_Participants_Button"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
   });
   
   it('Sample', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(2).click({force: true}); // data-cy="SummaryHeader_Samples_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(2).clickAndWait({force: true}); // data-cy="SummaryHeader_Samples_Button"
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
@@ -96,7 +96,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(2).contains('No').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(3).contains('BS_VMV9N2KK').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(4).contains('DNA').should('exist');
-    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(5).contains('-').should('exist');
+    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(5).contains('Leukocyte').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(6).contains('SA_3RKYWRX4').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(7).contains('667').should('exist');
   });
@@ -127,7 +127,7 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
   });
 
   it('Lien DataExploration du panneau Participants-Samples', () => {
-    cy.get('[id="participant-sample"] [class="ant-collapse-header"] button').click({force: true}); // data-cy="Participants_RedirectLink"
+    cy.get('[id="participant-sample"] [class="ant-collapse-header"] button').clickAndWait({force: true}); // data-cy="Participants_RedirectLink"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
@@ -135,7 +135,7 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
 
   it('Lien Participant ID du panneau Participants-Samples', () => {
     cy.resetColumns('participant-sample');
-    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(0).find('[href]').click({force: true});
+    cy.get('[data-row-key="BS_VMV9N2KK"]').find('td[class="ant-table-cell"]').eq(0).find('[href]').clickAndWait({force: true});
     cy.get('[id="participant-entity-page"]').should('exist');
     cy.get('[class*="EntityTitle"]').contains('PT_1DYA8779');
   });
@@ -144,41 +144,41 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
 describe('Page d\'un fichier - Valider les panneaux masquables', () => {
   it('Panneau Summary', () => {
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Data Access', () => {
     cy.get('[id="data-access"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="data-access"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="data-access"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="data-access"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="data-access"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="data-access"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="data-access"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Data Type', () => {
     cy.get('[id="data-type"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="data-type"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="data-type"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="data-type"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="data-type"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="data-type"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="data-type"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Participants-Samples', () => {
     cy.get('[id="participant-sample"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="participant-sample"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="participant-sample"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="participant-sample"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="participant-sample"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="participant-sample"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="participant-sample"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Experimental Procedure', () => {
     cy.get('[id="experimental-procedure"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="experimental-procedure"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="experimental-procedure"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="experimental-procedure"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="experimental-procedure"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="experimental-procedure"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="experimental-procedure"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 });

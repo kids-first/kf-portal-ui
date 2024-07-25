@@ -118,7 +118,7 @@ describe('Page Dashboard - Widget Authorized Studies (connecté)', () => {
       }
     });
 
-    cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"] button').click({force: true});
+    cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"] button').clickAndWait({force: true});
     cy.get('[class="ant-modal-title"]').contains('Manage Connections').should('exist');
     cy.get('[class="ant-modal-body"]').contains('Access select NCI and Kids First controlled access data by connecting your account using your NIH login credentials. Please remember that it is your responsibility to follow any data use limitations with controlled access data.').should('exist');
     cy.get('[class="ant-modal-body"]').contains('Kids First Framework Services').should('exist');
@@ -133,7 +133,7 @@ describe('Page Dashboard - Widget Authorized Studies (connecté)', () => {
       }
     });
 
-    cy.get('@authStudiesCard').find('[href="/data-exploration/datafiles"]').eq(0).click({force: true});
+    cy.get('@authStudiesCard').find('[href="/data-exploration/datafiles"]').eq(0).clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
     cy.validatePillSelectedQuery('Study Code', ['Study Cypress']);
     cy.validatePillSelectedQuery('ACL', ['Phs012345.cy','Open Access'], 1);

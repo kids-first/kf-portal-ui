@@ -1,5 +1,5 @@
 /// <reference types="cypress"/>
-import { getDateTime } from '../../support/utils';
+import { getDateTime, oneMinute } from '../../support/utils';
 
 const { strDate } = getDateTime();
 
@@ -12,7 +12,7 @@ describe('Page d\'un participant - Exporter le tableau Family en TSV', () => {
   beforeEach(() => {
     cy.visitParticipantEntity('PT_01236T3G');
     cy.resetColumns('family');
-    cy.get('div[id="content"] svg[data-icon="download"]').eq(1).click({force:true});
+    cy.get('div[id="content"] svg[data-icon="download"]').eq(1).clickAndWait({force:true});
     cy.wait(1000);
   });
   
@@ -33,8 +33,8 @@ describe('Page d\'un participant - Exporter le tableau Diagnoses en TSV', () => 
   beforeEach(() => {
     cy.visitParticipantEntity('PT_01236T3G');
     cy.resetColumns('diagnosis');
-    cy.get('div[id="content"] svg[data-icon="download"]').eq(2).click({force:true});
-    cy.wait(1000);
+    cy.get('div[id="content"] svg[data-icon="download"]').eq(2).clickAndWait({force:true});
+    cy.waitUntilFile(oneMinute);
   });
   
   it('Valider le nom du fichier', () => {
@@ -54,8 +54,8 @@ describe('Page d\'un participant - Exporter le tableau Phenotypes en TSV', () =>
   beforeEach(() => {
     cy.visitParticipantEntity('PT_01236T3G');
     cy.resetColumns('phenotype');
-    cy.get('div[id="content"] svg[data-icon="download"]').eq(3).click({force:true});
-    cy.wait(1000);
+    cy.get('div[id="content"] svg[data-icon="download"]').eq(3).clickAndWait({force:true});
+    cy.waitUntilFile(oneMinute);
   });
   
   it('Valider le nom du fichier', () => {
@@ -75,6 +75,9 @@ describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () 
   beforeEach(() => {
     cy.visitParticipantEntity('PT_01236T3G');
     cy.resetColumns('biospecimen');
+    cy.showColumn('Histological Diagnosis (MONDO)');
+    cy.showColumn('Histological Diagnosis (NCIT)');
+    cy.showColumn('Histological Diagnosis (Source Text)');
     cy.showColumn('Anatomical Site (NCIT)');
     cy.showColumn('Anatomical Site (Source Text)');
     cy.showColumn('Tumor Descriptor (Source Text)');
@@ -86,8 +89,8 @@ describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () 
     cy.showColumn('Sample Availability');
     cy.showColumn('Parent Sample ID');
     cy.showColumn('Parent Sample Type');
-    cy.get('div[id="content"] svg[data-icon="download"]').eq(4).click({force:true});
-    cy.wait(1000);
+    cy.get('div[id="content"] svg[data-icon="download"]').eq(4).clickAndWait({force:true});
+    cy.waitUntilFile(oneMinute);
   });
   
   it('Valider le nom du fichier', () => {
