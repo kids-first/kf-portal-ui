@@ -66,7 +66,7 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
   });
 
   it('Lien Participant du tableau', () => {
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(1).find('[href]').click({force: true});
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(1).find('[href]').clickAndWait({force: true});
     cy.get('[id="participant-entity-page"]').should('exist');
     cy.get('[class*="EntityTitle"]').contains('PT_01236T3G');
   });
@@ -79,16 +79,16 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
 
   it('Lien Mondo de Diagnosis (MONDO) du tableau', () => {
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(6).find('[href]')
-      .should('have.attr', 'href', 'https://monarchinitiative.org/disease/MONDO:0005711');
+      .should('have.attr', 'href', 'http://purl.obolibrary.org/obo/MONDO_0005711');
   });
 
   it('Lien HP de Phenotype (HPO) du tableau', () => {
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(7).find('[href]')
-    .should('have.attr', 'href', 'https://hpo.jax.org/app/browse/term/HP:0000776');
+    .should('have.attr', 'href', 'http://purl.obolibrary.org/obo/HP_0000776');
   });
 
   it('Lien Biospecimens du tableau', () => {
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(11).find('[href]').click({force: true});
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(11).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
@@ -96,7 +96,7 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
   });
 
   it('Lien Files du tableau', () => {
-    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(12).find('[href]').click({force: true});
+    cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(12).find('[href]').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
@@ -105,7 +105,7 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
 
   it('Lien Diagnosis (NCIT) du tableau', () => {
     cy.get('tr[data-row-key="PT_01236T3G"]').find('[class*="ant-table-cell"]').eq(16).find('[href]')
-      .should('have.attr', 'href', 'http://purl.obolibrary.org/obo/NCIT_C98893');
+      .should('have.attr', 'href', 'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code=C98893');
   });
 });
 
@@ -221,32 +221,32 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
-    cy.get('body').find('span[class*="ant-select-selection-item"]').click({force: true});
-    cy.get('body').find('div[class*="ant-select-item-option-content"]').contains('20').click({force: true});
+    cy.get('body').find('span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+    cy.get('body').find('div[class*="ant-select-item-option-content"]').contains('20').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^1$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^20$/).should('exist');
     cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');
     cy.get('body').find('button[type="button"]').contains('First').parent('button').should('be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Next').click({force: true});
+    cy.get('body').find('button[type="button"]').contains('Next').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^21$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^40$/).should('exist');
     cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
     cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Next').click({force: true});
+    cy.get('body').find('button[type="button"]').contains('Next').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^41$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^60$/).should('exist');
     cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
     cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Prev.').click({force: true});
+    cy.get('body').find('button[type="button"]').contains('Prev.').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^21$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^40$/).should('exist');
     cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
     cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('First').click({force: true});
+    cy.get('body').find('button[type="button"]').contains('First').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^1$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^20$/).should('exist');
     cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');

@@ -10,8 +10,8 @@ describe('Page Data Exploration - Requêtes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=245ad812-f2a3-4401-9506-a98c647c3779');
 
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').click({force: true}); // data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').clickAndWait({force: true}); // data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
   });
 
@@ -25,9 +25,9 @@ describe('Page Data Exploration - Requêtes', () => {
   });
 
   it('Éditer une pilule via son popup', () => {
-    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('DNA').click({force:true});
+    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('DNA').clickAndWait({force:true});
     cy.get('[class*="filtersDropdown"] input[id="input-RNA"]').check({force: true});
-    cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 15);
+    cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 27);
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
     cy.validateTotalSelectedQuery(/(27.2K|26.2K|32K|32.1K)/);
@@ -48,9 +48,9 @@ describe('Page Data Exploration - Requêtes', () => {
 
   it('Construire une deuxième requête', () => {
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql');
-    cy.get('button[class*="QueryTools_button"]').contains('New query').click({force:true});
+    cy.get('button[class*="QueryTools_button"]').contains('New query').clickAndWait({force:true});
     for (let i = 0; i < 16; i++) {
-      cy.wait('@getPOSTgraphql', {timeout: 20*1000});
+      cy.wait('@getPOSTgraphql');
     };
 
     cy.get('body').contains('Use the search tools & facets on the left to build a query').should('exist');
@@ -58,8 +58,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validateTableResultsCount(/\d{2}\,\d{3}/);
     cy.validateClearAllButton(false);
 
-    cy.get('[data-cy="SidebarMenuItem_Study"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').click({force: true}); // data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Study"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').clickAndWait({force: true}); // data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
     cy.checkValueFacetAndApply('Study Code', 'KF-CDH');
 
@@ -71,8 +71,8 @@ describe('Page Data Exploration - Requêtes', () => {
 
   it('Dupliquer une requête', () => {
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql');
-    cy.get('[class*="QueryBar_selected"]').find('[data-icon="copy"]').click({force: true});
-    cy.wait('@getPOSTgraphql', {timeout: 20*1000});
+    cy.get('[class*="QueryBar_selected"]').find('[data-icon="copy"]').clickAndWait({force: true});
+    cy.wait('@getPOSTgraphql');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validateTotalSelectedQuery(/(27K|26.1K|31.9K|32K)/);

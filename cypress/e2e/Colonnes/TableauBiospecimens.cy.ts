@@ -10,7 +10,7 @@ describe('Page Data Exploration (Biospecimens) - Colonnes du tableau', () => {
     cy.visitDataExploration('biospecimens');
   });
 
-  it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
+  it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes [SKFP-1212]', () => {
     cy.get('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(1)
       .should('have.class', 'ant-table-column-has-sorters')

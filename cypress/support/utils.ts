@@ -10,3 +10,5 @@ export const getDateTime = () => {
     // Retourner les variables de date et d'heure
     return { strDate, strTime };
 };
+
+export const oneMinute = 60*1000;

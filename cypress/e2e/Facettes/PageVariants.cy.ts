@@ -8,8 +8,8 @@ beforeEach(() => {
 describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage();
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -17,7 +17,7 @@ describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -32,8 +32,8 @@ describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
 describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Variant"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Variant"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
   });
 
   it('Expand all/Collapse all', () => {
@@ -41,7 +41,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -55,102 +55,107 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', '11-119345794-c-t', 'POST', '*/grapgql', 3); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('11-119345794-C-T').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by gene symbol - PRDX1', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'prdx1', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('1-').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by gene alias - NKEFA [SKFP-622]', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'nkefa', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('1-').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by gene AA change - p.Val136Met', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'p.val136met', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('2-').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by dbSNB ID - rs3814762', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'RS3814762', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('11-119345794-C-T').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by ClinVar ID - 167299', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', '167299', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('11-119345794-C-T').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by Ensembl ID - ENST00000619721', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'enst00000619721', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('11-').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
   it('Search by refseq ID - NM_031433.4', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'nm_031433.4', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('11-').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_11-119345794-C-T"
   });
 
@@ -197,8 +202,8 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
 describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Gene"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Gene"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -206,7 +211,7 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -220,42 +225,42 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'prdx1', 'POST', '*/grapgql', 2); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('PRDX1').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PRDX1"
   });
 
   it('Search by gene alias - NKEFA', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'nkefa', 'POST', '* /grapgql', 2); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('PRDX1').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PRDX1"
   });
 
   it('Search by Ensembl ID - ENSG00000117450', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'ensg00000117450', 'POST', '* /grapgql', 2); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('PRDX1').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PRDX1"
   });
 
@@ -317,8 +322,8 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
 describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -326,7 +331,7 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -391,8 +396,8 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
 describe('Page des variants (Frequency) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
-    cy.get('[data-cy="SidebarMenuItem_Frequency"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Frequency"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -400,7 +405,7 @@ describe('Page des variants (Frequency) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');

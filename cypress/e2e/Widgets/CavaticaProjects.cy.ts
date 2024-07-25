@@ -128,7 +128,7 @@ describe('Page Dashboard - Widget Cavatica Projects (connecté)', () => {
       }
     });
 
-    cy.get('@cavaticaFooter').find('button').click({force: true});
+    cy.get('@cavaticaFooter').find('button').clickAndWait({force: true});
     cy.get('[class="ant-modal-title"]').contains('New project').should('exist');
     cy.get('label[for="project_name"]').contains('Project name').should('exist');
     cy.get('input').should('have.attr', 'placeholder', 'e.g. KF-NBL Neuroblastoma Aligned Reads');

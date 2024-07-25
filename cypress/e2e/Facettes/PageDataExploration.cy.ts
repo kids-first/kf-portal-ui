@@ -8,8 +8,8 @@ beforeEach(() => {
 describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Study"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Study"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -18,7 +18,7 @@ describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -30,8 +30,7 @@ describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
   });
 
   it('Study Code - KF-CDH', () => {
-    cy.get('[id="query-builder-header-tools"] [data-icon="plus"]').click({force: true});
-    cy.waitWhileSpin(2000);
+    cy.get('[id="query-builder-header-tools"] [data-icon="plus"]').clickAndWait({force: true});
     cy.validateFacetFilter('Study Code', 'KF-CDH', 'KF-CDH', /^2,031$/, 0);
     cy.validateFacetRank(1, 'Study Code');
   });
@@ -55,8 +54,8 @@ describe('Page Data Exploration (Study) - Filtrer avec les facettes', () => {
 describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -65,7 +64,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -86,7 +85,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PT_01236T3G"
   });
 
@@ -100,7 +99,7 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PT_01236T3G"
   });
 
@@ -114,13 +113,13 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains(/(PT 01236T3G|PT 1DYA8779|PT RZVC67GC)/).should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_PT_01236T3G"
   });
 
   it('Proband - True', () => {
     cy.get('[aria-expanded="true"] [data-cy="FilterContainer_Proband"]').should('exist');
-    cy.wait(5000);
+    cy.wait(1000);
     cy.clickAndIntercept('input[type="radio"][value="true"]', 'POST', '**/graphql', 12);
     cy.validatePillSelectedQuery('Proband', ['True'], 1);
     cy.validateTableResultsCount(/\d{1}/);
@@ -146,8 +145,8 @@ describe('Page Data Exploration (Participants) - Filtrer avec les facettes', () 
 describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Clinical"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Clinical"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -156,7 +155,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').its('length').should('eq', 2);
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -183,7 +182,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Diagnosis (NCIT) - NCIT:C3270', () => {
-    cy.validateFacetFilter('Diagnosis (NCIT)', 'NCIT:C3270', 'NCIT:C3270', /^492$/, 1);
+    cy.validateFacetFilter('Diagnosis (NCIT)', 'Neuroblastoma (NCIT:C3270)', 'Neuroblastoma (NCIT:C3270)', /^492$/, 1);
     cy.validateFacetRank(3, 'Diagnosis (NCIT)');
   });
 
@@ -221,8 +220,8 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
 describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('biospecimens', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -231,7 +230,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -252,7 +251,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('BS KB0GZCP5').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').should('not.exist'); //data-cy="Tag_BS_KB0GZCP5"
   });
 
@@ -266,7 +265,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('BS KB0GZCP5').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').should('not.exist'); //data-cy="Tag_BS_KB0GZCP5"
   });
 
@@ -276,14 +275,14 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'SA_G25NX8A9', 'POST', '* /grapgql', 3, 1); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_G25NX8A9').should('exist'); //data-cy="Search_Dropdown"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_G25NX8A9').click({force: true}); //data-cy="Search_Dropdown"
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_G25NX8A9').clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').contains('SA_G25NX8A9').should('exist'); //data-cy="Tag_BS_KB0GZCP5"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Collection ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SA G25NX8A9').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').contains('SA_G25NX8A9').should('not.exist'); //data-cy="Tag_BS_KB0GZCP5"
   });
 
@@ -339,7 +338,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Histological Diagnosis (NCIT) - NCIT:C3270', () => {
-    cy.validateFacetFilter('Histological Diagnosis (NCIT)', 'NCIT:C3270', 'NCIT:C3270', /^907$/, 1);
+    cy.validateFacetFilter('Histological Diagnosis (NCIT)', 'Neuroblastoma (NCIT:C3270)', 'Neuroblastoma (NCIT:C3270)', /^907$/, 1);
     cy.validateFacetRank(10, 'Histological Diagnosis (NCIT)');
   });
 
@@ -367,8 +366,8 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
 describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () => {
   beforeEach(() => {
     cy.visitDataExploration('datafiles', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-    cy.get('[data-cy="SidebarMenuItem_Data File"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Data File"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
   });
 
@@ -377,7 +376,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
 
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').click({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Expand all').should('exist'); //data-cy="ExpandAll"
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
@@ -395,7 +394,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
-    cy.get('[data-icon="close-circle"]').click({force: true});
+    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_GF_6DVS70V9"
   });
 

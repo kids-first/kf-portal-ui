@@ -214,63 +214,69 @@ describe('Page d\'un participant - Colonnes du tableau Biospecimens', () => {
       .contains('Anatomical Site (NCIT)').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
-      .contains('Anatomical Site (Source Text)').should('not.exist');
+      .contains('Histological Diagnosis (NCIT)').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
       .find('div[class="ant-space-item"]').eq(7)
+      .contains('Histological Diagnosis (NCIT)').should('exist');
+
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Anatomical Site (Source Text)').should('not.exist');
+    cy.get('div[class="ant-popover-inner"]')
+      .find('div[class="ant-space-item"]').eq(8)
       .contains('Anatomical Site (Source Text)').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Tumor Descriptor (Source Text)').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(8)
+      .find('div[class="ant-space-item"]').eq(9)
       .contains('Tumor Descriptor (Source Text)').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Tumor Location (Source Text)').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(9)
+      .find('div[class="ant-space-item"]').eq(10)
       .contains('Tumor Location (Source Text)').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Consent Code (dbGaP)').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(10)
+      .find('div[class="ant-space-item"]').eq(11)
       .contains('Consent Code (dbGaP)').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Consent Type').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(11)
+      .find('div[class="ant-space-item"]').eq(12)
       .contains('Consent Type').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Volume').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(12)
+      .find('div[class="ant-space-item"]').eq(13)
       .contains('Volume').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Volume Unit').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(13)
+      .find('div[class="ant-space-item"]').eq(14)
       .contains('Volume Unit').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Sample Availability').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(14)
+      .find('div[class="ant-space-item"]').eq(15)
       .contains('Sample Availability').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Parent Sample ID').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(15)
+      .find('div[class="ant-space-item"]').eq(16)
       .contains('Parent Sample ID').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Parent Sample Type').should('not.exist');
     cy.get('div[class="ant-popover-inner"]')
-      .find('div[class="ant-space-item"]').eq(16)
+      .find('div[class="ant-space-item"]').eq(17)
       .contains('Parent Sample Type').should('exist');
   });
 

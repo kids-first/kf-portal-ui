@@ -27,7 +27,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
         cy.wrap($el).find('[class*="CardHeader_infoIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true});
       }
     });
-    cy.get('a[href]').contains('Data Exploration').click({force: true});
+    cy.get('a[href]').contains('Data Exploration').clickAndWait({force: true});
     cy.get('[class*="PageContent_title"]').contains('Data Exploration').should('exist');
   });
 });
@@ -63,7 +63,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
         cy.wrap($el).as('dashboardCard');
       };
     });
-    cy.get('@dashboardCard').contains('Cypress_BrB').click({force: true});
+    cy.get('@dashboardCard').contains('Cypress_BrB').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress_BrB').should('exist');
@@ -78,7 +78,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
     });
     cy.get('@dashboardCard').find('[class*="ListItemWithActions_fuiListItemWithActions"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Cypress_BrA')) {
-        cy.wrap($el).find('svg[data-icon="share-alt"]').click({force:true});
+        cy.wrap($el).find('svg[data-icon="share-alt"]').clickAndWait({force:true});
       };
     });
     // TODO: Récupérer l'rul copié et la valider
@@ -110,7 +110,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
     });
     cy.get('@dashboardCard').find('[class*="ListItemWithActions_fuiListItemWithActions"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Cypress_BrA')) {
-        cy.wrap($el).find('svg[data-icon="edit"]').click({force:true});
+        cy.wrap($el).find('svg[data-icon="edit"]').clickAndWait({force:true});
       };
     });
     cy.get('[class="ant-modal-content"] input').clear().type('Cypress_BrB');

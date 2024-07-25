@@ -10,8 +10,8 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
   beforeEach(() => {
     cy.login();
     cy.visitDataExploration('participants');
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
-    cy.get('button[class*="UploadIdsButton"]').click({force: true});
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').clickAndWait({force: true});
+    cy.get('button[class*="UploadIdsButton"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] textarea').type('pt_01236t3g,01-0665 fm_z4y7fp70\nunknown');
   });
 
@@ -30,14 +30,14 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
 
   it('Valider les fonctionnalités de la modal - Bouton Supprimer', () => {
     cy.get('[class*="UploadModal"] textarea').contains('pt_01236t3g').should('exist');
-    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').click({force: true});
+    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal"] textarea').contains('pt_01236t3g').should('not.exist');
     cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').should('not.exist');
   });
   
   it('Valider les fonctionnalités de la modal - Bouton Annuler', () => {
-    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').click({force: true});
+    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').clickAndWait({force: true});
 
     cy.get('body').contains('Use the search tools & facets on the left to build a query').should('exist');
   });
@@ -45,15 +45,15 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
   it('Valider les fonctionnalités de la modal - Section Résumé masquable', () => {
     cy.get('[class*="UploadModal"] [class="ant-collapse-header-text"]').contains('Summary Table (5 matched, 1 unmatched)').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-active"]').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('4 submitted identifiers mapped to 3 unique system identifiers').should('exist');
     cy.get('[data-node-key="matched"]').contains('Matched (5)').should('exist');
@@ -79,8 +79,8 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Inconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
-    cy.get('[data-node-key="unmatched"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
+    cy.get('[data-node-key="unmatched"]').clickAndWait({force: true});
 
     cy.get('[data-node-key="unmatched"]').contains('Unmatched (1)').should('exist');
     cy.get('[id*="panel-unmatched"] thead').contains('Submitted participant identifiers').should('exist');
@@ -100,7 +100,7 @@ describe('Page Data Exploration (Participants) - Téléverser une liste d\'ident
     cy.validateTableResultsCount('3');
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist');
 
-    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').click({force:true});
+    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').clickAndWait({force:true});
     cy.get('[class*="filtersDropdown"]').should('not.exist');
   });
 });
@@ -110,8 +110,8 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
   beforeEach(() => {
     cy.login();
     cy.visitDataExploration('biospecimens');
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
-    cy.get('button[class*="UploadIdsButton"]').click({force: true});
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+    cy.get('button[class*="UploadIdsButton"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] textarea').type('bs_kb0gzcp5,01-0665 unknown');
   });
 
@@ -130,14 +130,14 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
 
   it('Valider les fonctionnalités de la modal - Bouton Supprimer', () => {
     cy.get('[class*="UploadModal"] textarea').contains('bs_kb0gzcp5').should('exist');
-    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').click({force: true});
+    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal"] textarea').contains('bs_kb0gzcp5').should('not.exist');
     cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').should('not.exist');
   });
   
   it('Valider les fonctionnalités de la modal - Bouton Annuler', () => {
-    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').click({force: true});
+    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').clickAndWait({force: true});
 
     cy.get('body').contains('Use the search tools & facets on the left to build a query').should('exist');
   });
@@ -145,15 +145,15 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
   it('Valider les fonctionnalités de la modal - Section Résumé masquable', () => {
     cy.get('[class*="UploadModal"] [class="ant-collapse-header-text"]').contains('Summary Table (2 matched, 1 unmatched)').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-active"]').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('3 submitted identifiers mapped to 1 unique system identifiers').should('exist');
     cy.get('[data-node-key="matched"]').contains('Matched (2)').should('exist');
@@ -170,8 +170,8 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Inconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
-    cy.get('[data-node-key="unmatched"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
+    cy.get('[data-node-key="unmatched"]').clickAndWait({force: true});
 
     cy.get('[data-node-key="unmatched"]').contains('Unmatched (1)').should('exist');
     cy.get('[id*="panel-unmatched"] thead').contains('Submitted sample identifiers').should('exist');
@@ -191,7 +191,7 @@ describe('Page Data Exploration (Biospecimens) - Téléverser une liste d\'ident
     cy.validateTableResultsCount('1');
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist');
 
-    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').click({force:true});
+    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').clickAndWait({force:true});
     cy.get('[class*="filtersDropdown"]').should('not.exist');
   });
 });
@@ -201,8 +201,8 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
   beforeEach(() => {
     cy.login();
     cy.visitDataExploration('datafiles');
-    cy.get('[data-cy="SidebarMenuItem_Data File"]').click({force: true});
-    cy.get('button[class*="UploadIdsButton"]').click({force: true});
+    cy.get('[data-cy="SidebarMenuItem_Data File"]').clickAndWait({force: true});
+    cy.get('button[class*="UploadIdsButton"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] textarea').type('gf_6dvs70v9,unknown');
   });
 
@@ -221,14 +221,14 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
 
   it('Valider les fonctionnalités de la modal - Bouton Supprimer', () => {
     cy.get('[class*="UploadModal"] textarea').contains('gf_6dvs70v9').should('exist');
-    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').click({force: true});
+    cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal"] textarea').contains('gf_6dvs70v9').should('not.exist');
     cy.get('[class*="UploadModal"] button[class*="ant-btn-text"]').should('not.exist');
   });
   
   it('Valider les fonctionnalités de la modal - Bouton Annuler', () => {
-    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').click({force: true});
+    cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').clickAndWait({force: true});
 
     cy.get('body').contains('Use the search tools & facets on the left to build a query').should('exist');
   });
@@ -236,15 +236,15 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
   it('Valider les fonctionnalités de la modal - Section Résumé masquable', () => {
     cy.get('[class*="UploadModal"] [class="ant-collapse-header-text"]').contains('Summary Table (1 matched, 1 unmatched)').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-active"]').should('exist');
 
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="UploadModal"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Reconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
 
     cy.get('[class*="UploadModal_tablesMessages"]').contains('2 submitted identifiers mapped to 1 unique system identifiers').should('exist');
     cy.get('[data-node-key="matched"]').contains('Matched (1)').should('exist');
@@ -258,8 +258,8 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
   });
 
   it('Vérifier les informations affichées - Section Résumé (onglet Inconnus)', () => {
-    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').click({force: true});
-    cy.get('[data-node-key="unmatched"]').click({force: true});
+    cy.get('[class*="UploadModal"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
+    cy.get('[data-node-key="unmatched"]').clickAndWait({force: true});
 
     cy.get('[data-node-key="unmatched"]').contains('Unmatched (1)').should('exist');
     cy.get('[id*="panel-unmatched"] thead').contains('Submitted file identifiers').should('exist');
@@ -279,7 +279,7 @@ describe('Page Data Exploration (Data Files) - Téléverser une liste d\'identif
     cy.validateTableResultsCount('1');
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist');
 
-    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').click({force:true});
+    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').clickAndWait({force:true});
     cy.get('[class*="filtersDropdown"]').should('not.exist');
   });
 });
