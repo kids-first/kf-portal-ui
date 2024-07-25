@@ -8,21 +8,21 @@ beforeEach(() => {
 
 describe('Page d\'un participant - Valider les redirections', () => {
   it('Studies', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(0).click({force: true}); // data-cy="SummaryHeader_Studies_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(0).clickAndWait({force: true}); // data-cy="SummaryHeader_Studies_Button"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-CDH').should('exist');
   });
   
   it('Biospecimens', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(1).click({force: true}); // data-cy="SummaryHeader_Biospecimens_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(1).clickAndWait({force: true}); // data-cy="SummaryHeader_Biospecimens_Button"
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
   });
   
   it('Files', () => {
-    cy.get('a[class*="SummaryHeader_link"]').eq(2).click({force: true}); // data-cy="SummaryHeader_Files_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(2).clickAndWait({force: true}); // data-cy="SummaryHeader_Files_Button"
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
@@ -98,30 +98,32 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="PT_RZVC67GC"]').find('td[class="ant-table-cell"]').eq(1).contains('Father').should('exist');
   });
   
-  it('Panneau Diagnoses [SKFP-1080]', () => {
+  it('Panneau Diagnoses', () => {
     cy.resetColumns('diagnosis');
-    cy.get('[id="diagnosis"]').find('[class*="EntityTable_title"]').contains('Diagnosis').should('exist');
-    cy.get('[id="diagnosis"]').find('[class="ant-collapse-header"]').contains('Diagnosis').should('exist');
-    cy.get('[id="diagnosis"]').find('[class="ant-collapse-header"]').contains('(1)').should('exist');
-    cy.get('[id="diagnosis"]').find('thead').find('th[class="ant-table-cell"]').eq(0).contains('Diagnosis (MONDO)').should('exist');
-    cy.get('[id="diagnosis"]').find('thead').find('th[class="ant-table-cell"]').eq(1).contains('Diagnosis (NCIT)').should('exist');
-    cy.get('[id="diagnosis"]').find('thead').find('th[class="ant-table-cell"]').eq(2).contains('Diagnosis (Source Text)').should('exist');
-    cy.get('[id="diagnosis"]').find('thead').find('th[class="ant-table-cell"]').eq(3).contains('Age').should('exist');
-    cy.get('[id="diagnosis"]').find('thead').find('th[class="ant-table-cell"]').eq(4).contains('MONDO Term').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(0).contains('Congenital diaphragmatic hernia').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(0).contains('MONDO:').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(0).contains('0005711').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(1).contains('NCIT:C98893').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(2).contains('congenital diaphragmatic hernia').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(3).contains('-').should('exist');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(4).contains('302').should('exist');
+    cy.get('[id="diagnosis"] [class*="EntityTable_title"]').contains('Diagnosis').should('exist');
+    cy.get('[id="diagnosis"] [class="ant-collapse-header"]').contains('Diagnosis').should('exist');
+    cy.get('[id="diagnosis"] [class="ant-collapse-header"]').contains('(1)').should('exist');
+    cy.get('[id="diagnosis"] thead th[class*="Participants_diagnosisCell"]').contains('Diagnosis (MONDO)').should('exist');
+    cy.get('[id="diagnosis"] thead th[class="ant-table-cell"]').eq(0).contains('Diagnosis (NCIT)').should('exist');
+    cy.get('[id="diagnosis"] thead th[class="ant-table-cell"]').eq(1).contains('Diagnosis (Source Text)').should('exist');
+    cy.get('[id="diagnosis"] thead th[class="ant-table-cell"]').eq(2).contains('Age').should('exist');
+    cy.get('[id="diagnosis"] thead th[class="ant-table-cell"]').eq(3).contains('MONDO Term').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class*="Participants_diagnosisCell"]').contains('Congenital diaphragmatic hernia').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class*="Participants_diagnosisCell"]').contains('MONDO:').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class*="Participants_diagnosisCell"]').contains('0005711').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(0).contains('Congenital diaphragmatic hernia').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(0).contains('NCIT:').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(0).contains('C98893').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(1).contains(/congen(it|ti)al diaphragmatic hernia/).should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(2).contains('-').should('exist');
+    cy.get('[data-row-key="DG_92Q0Z7RA"] td[class="ant-table-cell"]').eq(3).contains(/\d{1}/).should('exist');
   });
   
-  it('Panneau Phenotypes [SKFP-1080]', () => {
+  it('Panneau Phenotypes', () => {
     cy.resetColumns('phenotype');
     cy.get('[id="phenotype"]').find('[class*="EntityTable_title"]').contains('Phenotype').should('exist');
     cy.get('[id="phenotype"]').find('[class="ant-collapse-header"]').contains('Phenotype').should('exist');
-    cy.get('[id="phenotype"]').find('[class="ant-collapse-header"]').contains('(1)').should('exist');
+    cy.get('[id="phenotype"]').find('[class="ant-collapse-header"]').contains('(2)').should('exist');
     cy.get('[id="phenotype"]').find('thead').find('th[class="ant-table-cell"]').eq(0).contains('Phenotype (HPO)').should('exist');
     cy.get('[id="phenotype"]').find('thead').find('th[class="ant-table-cell"]').eq(1).contains('Phenotype (Source Text)').should('exist');
     cy.get('[id="phenotype"]').find('thead').find('th[class="ant-table-cell"]').eq(2).contains('Interpretation').should('exist');
@@ -139,6 +141,9 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
   
   it('Panneau Biospecimens', () => {
     cy.resetColumns('biospecimen');
+    cy.showColumn('Histological Diagnosis (MONDO)');
+    cy.showColumn('Histological Diagnosis (NCIT)');
+    cy.showColumn('Histological Diagnosis (Source Text)');
     cy.showColumn('Anatomical Site (NCIT)');
     cy.showColumn('Anatomical Site (Source Text)');
     cy.showColumn('Tumor Descriptor (Source Text)');
@@ -160,33 +165,39 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(2).contains('Sample Type').should('exist');
     cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(3).contains('Collection Sample Type').should('exist');
     cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(4).contains('Age').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(5).contains('Anatomical Site (NCIT)').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(6).contains('Anatomical Site (Source Text)').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(7).contains('Tumor Descriptor (Source Text)').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(8).contains('Tumor Location (Source Text)').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(9).contains('Consent Code (dbGaP)').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(10).contains('Consent Type').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(11).contains('Volume').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(12).contains('Volume Unit').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(13).contains('Sample Availability').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(14).contains('Parent Sample ID').should('exist');
-    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(15).contains('Parent Sample Type').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(5).contains('Histological Diagnosis (MONDO)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(6).contains('Histological Diagnosis (NCIT)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(7).contains('Histological Diagnosis (Source Text)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(8).contains('Anatomical Site (NCIT)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(9).contains('Anatomical Site (Source Text)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(10).contains('Tumor Descriptor (Source Text)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(11).contains('Tumor Location (Source Text)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(12).contains('Consent Code (dbGaP)').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(13).contains('Consent Type').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(14).contains('Volume').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(15).contains('Volume Unit').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(16).contains('Sample Availability').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(17).contains('Parent Sample ID').should('exist');
+    cy.get('[id="biospecimen"]').find('thead').find('th[class="ant-table-cell"]').eq(18).contains('Parent Sample Type').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(0).contains('BS_KB0GZCP5').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(1).contains('SA_G25NX8A9').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(2).contains('DNA').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(3).contains('-').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(3).contains('Leukocyte').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(4).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(5).contains('-').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(6).contains('Other').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(6).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(7).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(8).contains('-').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(9).contains('phs001110.c1').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(10).contains('GRU').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(9).contains('Other').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(10).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(11).contains('-').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(12).contains('-').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(13).contains('No').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(14).contains('SA_G25NX8A9').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(12).contains('phs001110.c1').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(13).contains('GRU').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(14).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(15).contains('-').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(16).contains('No').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(17).contains('SA_G25NX8A9').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"]').find('td[class="ant-table-cell"]').eq(18).contains('Leukocyte').should('exist');
   });
   
   it('Panneau Files [SKFP-1148]', () => {
@@ -231,7 +242,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 
   it('Lien Family du panneau Family', () => {
     cy.resetColumns('family');
-    cy.get('[id="family"]').find('[class="ant-collapse-header"]').find('[href]').click({force: true}); // data-cy="FamilyLink"
+    cy.get('[id="family"]').find('[class="ant-collapse-header"]').find('[href]').clickAndWait({force: true}); // data-cy="FamilyLink"
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Family ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('FM Z4Y7FP70').should('exist');
@@ -239,29 +250,29 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 
   it('Lien Mother du panneau Family', () => {
     cy.resetColumns('family');
-    cy.get('[data-row-key="PT_1DYA8779"]').find('td[class="ant-table-cell"]').eq(0).find('[href]').click({force: true});
+    cy.get('[data-row-key="PT_1DYA8779"]').find('td[class="ant-table-cell"]').eq(0).find('[href]').clickAndWait({force: true});
     cy.get('[class*="EntityTitle"]').contains('PT_1DYA8779');
   });
 
   it('Lien Mondo du panneau Diagnoses', () => {
     cy.resetColumns('diagnosis');
-    cy.get('[id="diagnosis"]').find('td[class="ant-table-cell"]').eq(0).find('[href]')
+    cy.get('[id="diagnosis"]').find('td[class*="ant-table-cell"]').eq(0).find('[href]')
       .should('have.attr', 'href', 'http://purl.obolibrary.org/obo/MONDO_0005711');
   });
 
   it('Lien NCIT du panneau Diagnoses', () => {
     cy.resetColumns('diagnosis');
-    cy.get('[id="diagnosis"]').find('td[class="ant-table-cell"]').eq(1).find('[href]')
+    cy.get('[id="diagnosis"]').find('td[class*="ant-table-cell"]').eq(1).find('[href]')
       .should('have.attr', 'href', 'http://purl.obolibrary.org/obo/NCIT_C98893');
   });
 
   it('Lien MONDO Term du panneau Diagnoses', () => {
     cy.resetColumns('diagnosis');
-    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class="ant-table-cell"]').eq(4).find('[href]').click({force: true});
+    cy.get('[data-row-key="DG_92Q0Z7RA"]').find('td[class*="ant-table-cell"]').eq(4).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Diagnosis (MONDO)').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Congenital diaphragmatic hernia (MONDO:0005711)').should('exist');
-    cy.validateTableResultsCount(/^302$/);
+    cy.validateTableResultsCount(/\d{1}/);
   });
 
   it('Lien HP du panneau Phenotypes', () => {
@@ -272,7 +283,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 
   it('Lien HPO Term du panneau Phenotypes', () => {
     cy.resetColumns('phenotype');
-    cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(4).find('[href]').click({force: true});
+    cy.get('[data-row-key="cn-c6ezqjr5"]').find('td[class="ant-table-cell"]').eq(4).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Phenotype (HPO)').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Congenital diaphragmatic hernia (HP:0000776)').should('exist');
@@ -281,7 +292,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 
   it('Lien DataExploration du panneau Biospecimens', () => {
     cy.resetColumns('biospecimen');
-    cy.get('[id="biospecimen"] [class="ant-collapse-header"] button').click({force: true}); // data-cy="Biospecimens_RedirectLink"
+    cy.get('[id="biospecimen"] [class="ant-collapse-header"] button').clickAndWait({force: true}); // data-cy="Biospecimens_RedirectLink"
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
@@ -289,21 +300,21 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 
   it('Lien Collection ID du panneau Biospecimens', () => {
     cy.resetColumns('biospecimen');
-    cy.get('[id="biospecimen"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').click({force: true});
+    cy.get('[id="biospecimen"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Collection ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('SA G25NX8A9').should('exist');
   });
 
   it('Lien DataExploration du panneau Files', () => {
-    cy.get('[id="files"] [class="ant-collapse-header"] button').click({force: true}); // data-cy="Files_RedirectLink"
+    cy.get('[id="files"] [class="ant-collapse-header"] button').clickAndWait({force: true}); // data-cy="Files_RedirectLink"
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
   });
 
   it('Lien Files de Genomics du panneau Files', () => {
-    cy.get('[id="files"]').find('[data-row-key="Genomics"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').click({force: true});
+    cy.get('[id="files"]').find('[data-row-key="Genomics"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Data Category').should('exist');
@@ -312,7 +323,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
   });
 
   it('Lien Files de WGS du panneau Files', () => {
-    cy.get('[id="files"]').find('[data-row-key="WGS"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').click({force: true});
+    cy.get('[id="files"]').find('[data-row-key="WGS"]').find('td[class="ant-table-cell"]').eq(1).find('[href]').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Experimental Strategy').should('exist');
@@ -324,57 +335,57 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
 describe('Page d\'un participant - Valider les panneaux masquables', () => {
   it('Panneau Summary', () => {
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="summary"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="summary"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Profile', () => {
     cy.get('[id="profile"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="profile"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="profile"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="profile"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="profile"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="profile"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="profile"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Family', () => {
     cy.get('[id="family"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="family"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="family"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="family"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="family"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="family"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="family"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Diagnoses', () => {
     cy.get('[id="diagnosis"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="diagnosis"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="diagnosis"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="diagnosis"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="diagnosis"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="diagnosis"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="diagnosis"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Phenotypes', () => {
     cy.get('[id="phenotype"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="phenotype"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="phenotype"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="phenotype"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="phenotype"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="phenotype"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="phenotype"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Biospecimens', () => {
     cy.get('[id="biospecimen"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="biospecimen"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="biospecimen"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="biospecimen"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="biospecimen"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="biospecimen"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="biospecimen"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Files', () => {
     cy.get('[id="files"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="files"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="files"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="files"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="files"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="files"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="files"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 });

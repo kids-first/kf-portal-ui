@@ -26,7 +26,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
         cy.wrap($el).find('[class*="CardHeader_infoIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true});
       }
     });
-    cy.get('a[href]').contains('Data Exploration').click({force: true});
+    cy.get('a[href]').contains('Data Exploration').clickAndWait({force: true});
     cy.get('[class*="PageContent_title"]').contains('Data Exploration').should('exist');
   });
 
@@ -36,7 +36,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
         cy.wrap($el).find('[class*="CardHeader_infoIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true});
       }
     });
-    cy.get('a[href]').contains('Variants Exploration').click({force: true});
+    cy.get('a[href]').contains('Variants Exploration').clickAndWait({force: true});
     cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variants Exploration').should('exist');
   });
 });
@@ -44,7 +44,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
 describe('Page Dashboard - Widget Saved Sets', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants');
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').clickAndWait({force: true});
     cy.createSetIfNotExists('Cypress_SB', 0);
     cy.visitDashboard();
   });
@@ -59,22 +59,22 @@ describe('Page Dashboard - Widget Saved Sets', () => {
   });
 
   it('Valider les liens disponibles - Nom', () => {
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="biospecimen"]').click({force: true});
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Biospecimens').click({force: true});
+    cy.get('[class*="SavedSets_setTabs"] [data-node-key="biospecimen"]').clickAndWait({force: true});
+    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Biospecimens').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Biospecimens').should('exist');
 
     cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="files"]').click({force: true});
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Data Files').click({force: true});
+    cy.get('[class*="SavedSets_setTabs"] [data-node-key="files"]').clickAndWait({force: true});
+    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Data Files').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Data Files').should('exist');
 
     cy.visitDashboard();
-    cy.get('[class*="SavedSets_setTabs"] [data-node-key="variants"]').click({force: true});
-    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Variants').click({force: true});
+    cy.get('[class*="SavedSets_setTabs"] [data-node-key="variants"]').clickAndWait({force: true});
+    cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Variants').clickAndWait({force: true});
     cy.get('[class*="VariantsTable_variantTabWrapper"]').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Variants').should('exist');
@@ -83,7 +83,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
   it('Valider les liens disponibles - Bouton Delete', () => {
     cy.get('[class*="ListItemWithActions_fuiListItemWithActions"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Cypress_SB')) {
-        cy.wrap($el).find('svg[data-icon="delete"]').click({force:true});
+        cy.wrap($el).find('svg[data-icon="delete"]').clickAndWait({force:true});
       }
     });
     cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-dangerous"]', 'DELETE', '**/sets/**', 1);
@@ -94,7 +94,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
 describe('Page Dashboard - Widget Saved Sets', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants');
-    cy.get('[data-cy="SidebarMenuItem_Participant"]').click({force: true});
+    cy.get('[data-cy="SidebarMenuItem_Participant"]').clickAndWait({force: true});
     cy.createSetIfNotExists('Cypress_SA', 0);
     cy.deleteSetIfExists('participants', 'Cypress_SB');
     cy.visitDashboard();
@@ -103,7 +103,7 @@ describe('Page Dashboard - Widget Saved Sets', () => {
   it('Valider les liens disponibles - Bouton Edit', () => {
     cy.get('[class*="ListItemWithActions_fuiListItemWithActions"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Cypress_SA')) {
-        cy.wrap($el).find('svg[data-icon="edit"]').click({force:true});
+        cy.wrap($el).find('svg[data-icon="edit"]').clickAndWait({force:true});
       }
     });
     cy.get('[class="ant-modal-content"] input').clear().type('Cypress_SB');

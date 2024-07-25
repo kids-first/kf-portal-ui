@@ -10,8 +10,8 @@ describe('Page Data Exploration - Requêtes', () => {
   beforeEach(() => {
     cy.visitDataExploration('participants');
 
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').click({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').click({force: true}); // data-cy="ExpandAll"
+    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').clickAndWait({force: true}); // data-cy="ExpandAll"
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
   });
 
@@ -24,7 +24,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validateTotalSelectedQuery(/(27K|26.1K|31.9K|32K)/);
-    cy.validateTableResultsCount(/(26,073|26,978|26,998|31,933|31,953)/);
+    cy.validateTableResultsCount(/(26,073|26,978|26,998|31,933|31,953|32,018)/);
     cy.validateClearAllButton(false);
   });
 });

@@ -1,5 +1,5 @@
 /// <reference types="cypress"/>
-import { getDateTime } from '../../support/utils';
+import { getDateTime, oneMinute } from '../../support/utils';
 
 const { strDate } = getDateTime();
 
@@ -19,6 +19,7 @@ beforeEach(() => {
   cy.wait(1000);
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, 1);
+  cy.waitUntilFile(oneMinute);
 });
 
 describe('Page Data Exploration (Participants) - Exporter les participants en TSV', () => {

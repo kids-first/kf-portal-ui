@@ -36,30 +36,40 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('[class*="ant-typography"]').eq(0).contains('c.406C>T').should('exist');
     cy.get('div[class*="EntityVariantSummary_infoWrapper"]').find('div[class*="ant-space-item"]').eq(4).contains('rs3814762').should('exist');
     // Details
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="VariantEntity_functionalScores"]').eq(0).contains('Functional Scores').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-label"]').eq(0).contains('SIFT').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-content"]').eq(0).contains('-').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-label"]').eq(1).contains('FATHMM').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-content"]').eq(1).contains('-').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-label"]').eq(2).contains('CADD (Raw)').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-content"]').eq(2).contains('-1.152731').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-label"]').eq(3).contains('CADD (Phred)').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-content"]').eq(3).contains('0.003').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-label"]').eq(4).contains('DANN').should('exist');
-    cy.get('div[class*="EntityVariantSummary_score"]').find('[class*="ant-descriptions-item-content"]').eq(4).contains('0.8564649342891089').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="EntityVariantSummary_detailsTitle"]').eq(0).contains('Gene Constraints').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-label"]').eq(0).contains('pLI').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-content"]').eq(0).contains('1.3093e-15').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-label"]').eq(1).contains('LOEUF').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-content"]').eq(1).contains('1.223').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="EntityVariantSummary_detailsTitle"]').eq(1).contains('Splice Altering').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-label"]').eq(2).contains('SpliceAI').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-content"]').eq(2).contains('0.01').should('exist');
-    cy.get('div[class*="EntityVariantSummary_geneSplice"]').find('[class*="ant-descriptions-item-content"]').eq(2).find('[class*="ant-tag"]').contains('AL').should('exist');
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="EntityVariantSummary_detailsTitle"]').eq(0).contains('Associated Conditions (OMIM)').should('exist');
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).contains('Microphthalmia, isolated 5').should('exist');
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).find('[class*="ant-tag"]').contains('AR').should('exist');
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(1).contains('Nanophthalmos 2').should('exist');
+    cy.get('[class*="VariantEntity_functionalScores"]').contains('Functional Scores').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(0).contains('SIFT').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(0).contains('-').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(1).contains('FATHMM').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(1).contains('-').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(2).contains('CADD (Raw)').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(2).contains('-1.152731').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(3).contains('CADD (Phred)').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(3).contains('0.003').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(4).contains('DANN').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(4).contains('0.8564649342891089').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(5).contains('LRT').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(5).contains('Neutral').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(5).contains('0.13162').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(6).contains('REVEL').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(6).contains('-').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(7).contains('PolyPhen-2 HVAR').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(7).contains('Benign').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(7).contains('0.001').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-label"]').eq(8).contains('PhyloP17Way').should('exist');
+    cy.get('[class*="EntityVariantSummary_score"] [class="ant-descriptions-item-content"]').eq(8).contains('-1.031').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class*="EntityVariantSummary_detailsTitle"]').eq(0).contains('Gene Constraints').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-label"]').eq(0).contains('pLI').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-content"]').eq(0).contains('1.3093e-15').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-label"]').eq(1).contains('LOEUF').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-content"]').eq(1).contains('1.223').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class*="EntityVariantSummary_detailsTitle"]').eq(1).contains('Splice Altering').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-label"]').eq(2).contains('SpliceAI').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-content"]').eq(2).contains('0.01').should('exist');
+    cy.get('div[class*="EntityVariantSummary_geneSplice"] [class="ant-descriptions-item-content"]').eq(2).find('[class*="ant-tag"]').contains('AL').should('exist');
+    cy.get('div[class*="EntityVariantSummary_omim"] [class*="EntityVariantSummary_detailsTitle"]').eq(0).contains('Associated Conditions (OMIM)').should('exist');
+    cy.get('div[class*="EntityVariantSummary_omim"] [class="ant-descriptions-item-label"]').eq(0).contains('Microphthalmia, isolated 5').should('exist');
+    cy.get('div[class*="EntityVariantSummary_omim"] [class="ant-descriptions-item-content"]').eq(0).find('[class*="ant-tag"]').contains('AR').should('exist');
+    cy.get('div[class*="EntityVariantSummary_omim"] [class="ant-descriptions-item-label"]').eq(1).contains('Nanophthalmos 2').should('exist');
   });
 
   it('Panneau Transcripts', () => {
@@ -79,7 +89,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="consequence"]').find('tbody').find('td[class="ant-table-cell"]').eq(4).contains('0.01').should('exist');
     cy.get('[id="consequence"]').find('tbody').find('td[class="ant-table-cell"]').eq(4).find('[class*="ant-tag"]').contains('AL').should('exist');
     // Nested table
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(0).contains('AA').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(1).contains('Consequence').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('thead').find('th[class="ant-table-cell"]').eq(2).contains('Coding DNA').should('exist');
@@ -212,7 +222,7 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
   });
 
   it('Lien Participants du panneau Summary', () => {
-    cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(11).find('a').click({force: true});
+    cy.get('div[class*="EntityVariantSummary_bannerWrapper"]').find('[class="ant-space-item"]').eq(11).find('a').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT').should('exist');
@@ -240,14 +250,14 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
   });
 
   it('Lien OMIM du panneau Summary', () => {
-    cy.get('div[class*="EntityVariantSummary_omim"]').find('[class*="ant-descriptions-item-content"]').eq(0).find('a') // data-cy="Summary_Omim_ExternalLink"
+    cy.get('div[class*="EntityVariantSummary_omim"] [class="ant-descriptions-item-label"] a') // data-cy="Summary_Omim_ExternalLink"
     .should('have.attr', 'href', 'https://www.omim.org/entry/611040');
   });
 
   it('Ouvrir et refermer la nested table du panneau Transcripts', () => {
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('tr[class*="ant-table-expanded-row"]').eq(0).should('have.css', 'display', 'table-row');
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('tr[class*="ant-table-expanded-row"]').eq(0).should('have.css', 'display', 'none');
   });
 
@@ -256,37 +266,37 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
   });
 
   it('Lien \'See more\' de Prediction du panneau Transcripts', () => {
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
-    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('[class*="ExpandableCell_fuiExpandableCellBtn"]').contains('See more').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
+    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('[class*="ExpandableCell_fuiExpandableCellBtn"]').contains('See more').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(0).contains('CADD (Raw)').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(1).contains('-1.152731').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(2).contains('CADD (Phred)').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(3).contains('0.003').should('exist');
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(4).contains('DANN').should('exist');
-    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('[class*="ExpandableCell_fuiExpandableCellBtn"]').contains('See less').click({force: true});
+    cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('[class*="ExpandableCell_fuiExpandableCellBtn"]').contains('See less').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(3).find('span[class*="ant-typography"]').eq(4).should('not.exist');
   });
   
   it('Lien du transcript du panneau Transcripts', () => {
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(5).find('a').should('have.attr', 'href', 'https://www.ensembl.org/id/ENST00000619721');
   });
 
   it('Lien du RefSeq du panneau Transcripts', () => {
-    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').click({force: true});
+    cy.get('[id="consequence"]').find('tbody').find('td[class*="ant-table-row-expand-icon-cell"]').eq(0).find('button').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="VariantEntity_expandedTable"]').find('tbody').find('td[class*="ant-table-cell"]').eq(6).find('a').should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/nuccore/NM_031433.4?report=graph');
     
   });
 
   it('Lien Studies du panneau Kids First Studies', () => {
-    cy.get('[id="frequency"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('a').click({force: true});
+    cy.get('[id="frequency"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('a').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('KF-EATF').should('exist');
   });
 
   it('Lien Participants du panneau Kids First Studies', () => {
-    cy.get('[id="frequency"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).find('a').click({force: true});
+    cy.get('[id="frequency"]').find('tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).find('a').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PT').should('exist');
@@ -329,9 +339,9 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
   });
 
   it('Lien \'See more\' de la condition du panneau Gene - Phenotype Association', () => {
-    cy.get('[data-row-key="4-mfrp"]').contains('See more').click({force: true});
+    cy.get('[data-row-key="4-mfrp"]').contains('See more').clickAndWait({force: true});
     cy.get('[data-row-key="4-mfrp"]').contains('Foveoschisis').should('exist');
-    cy.get('[data-row-key="4-mfrp"]').contains('See less').click({force: true});
+    cy.get('[data-row-key="4-mfrp"]').contains('See less').clickAndWait({force: true});
     cy.get('[data-row-key="4-mfrp"]').contains('Foveoschisis').should('not.exist');
   });
 });
@@ -339,41 +349,41 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
 describe('Page d\'un variant - Valider les panneaux masquables', () => {
   it('Panneau Transcripts', () => {
     cy.get('[id="consequence"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="consequence"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="consequence"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="consequence"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="consequence"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="consequence"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Kids First Studies', () => {
     cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="frequency"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Public Cohorts', () => {
     cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[class*="EntityTable_container"]').eq(2).find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau ClinVar', () => {
     cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="pathogenicity"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 
   it('Panneau Gene - Phenotype Association', () => {
     cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
-    cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
-    cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').click({force: true});
+    cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="condition"]').find('[class*="Collapse_fuiCollapse"]').find('div[class*="ant-collapse-content-active"]').should('exist');
   });
 });

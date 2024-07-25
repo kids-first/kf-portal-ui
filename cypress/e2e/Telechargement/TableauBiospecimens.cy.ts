@@ -1,5 +1,5 @@
 /// <reference types="cypress"/>
-import { getDateTime } from '../../support/utils';
+import { getDateTime, oneMinute } from '../../support/utils';
 
 const { strDate } = getDateTime();
 
@@ -23,6 +23,7 @@ beforeEach(() => {
   cy.showColumn('External Sample ID');
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, 1);
+  cy.waitUntilFile(oneMinute);
 });
 
 describe('Page Data Exploration (Biospecimens) - Exporter les biospecimens en TSV', () => {
