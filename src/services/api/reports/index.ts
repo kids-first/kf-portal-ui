@@ -63,7 +63,6 @@ const generateReport = (config: ReportConfig) => {
     method: 'POST',
     responseType: 'blob',
     data: {
-      isKfNext: true,
       sqon: reportSqon,
       projectId: arrangerProjectId,
       filename: `kf_${config.fileName || config.name}_${makeFilenameDatePart(new Date())}`,

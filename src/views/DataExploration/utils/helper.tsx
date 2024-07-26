@@ -17,6 +17,8 @@ const titleAndCodeExtractor = (value: string, codeSubstring: string) => {
 // Format is like: Sleep apnea (MONDO:0010535)
 export const extractMondoTitleAndCode = (mondo: string) => titleAndCodeExtractor(mondo, '(MONDO:');
 
+export const extractNcitTitleAndCode = (term: string) => titleAndCodeExtractor(term, '(NCIT:');
+
 export const formatMondoTitleAndCode = (mondo: string) => {
   const mondoInfo = extractMondoTitleAndCode(mondo);
   return (

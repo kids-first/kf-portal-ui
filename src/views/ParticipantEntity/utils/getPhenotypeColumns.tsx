@@ -1,47 +1,27 @@
+import React from 'react';
 import intl from 'react-intl-universal';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import { Tag } from 'antd';
 import { IParticipantPhenotype } from 'graphql/participants/models';
-import { capitalize } from 'lodash';
-import { extractPhenotypeTitleAndCode } from 'views/DataExploration/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import AgeCell from 'components/AgeCell';
+import { OntologyTermWithLink } from 'components/Cells';
 
 import HpoParticipantCount from '../PhenotypeTable/HpoParticipantCount';
+
 const getPhenotypeDefaultColumns = (): ProColumnType[] => [
   {
     key: 'hpo_phenotype',
     title: intl.get('entities.participant.phenotype_hpo'),
-    render: (phenotype: IParticipantPhenotype) => {
-      const phenotypeNames = phenotype?.hpo_phenotype;
-      if (!phenotypeNames) {
-        return TABLE_EMPTY_PLACE_HOLDER;
-      }
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={[phenotypeNames]}
-          renderItem={(hpo_id_phenotype, index): React.ReactNode => {
-            const phenotypeInfo = extractPhenotypeTitleAndCode(hpo_id_phenotype);
-
-            return phenotypeInfo ? (
-              <div key={index}>
-                {capitalize(phenotypeInfo.title)} (HP:
-                <ExternalLink href={`http://purl.obolibrary.org/obo/HP_${phenotypeInfo.code}`}>
-                  {phenotypeInfo.code}
-                </ExternalLink>
-                )
-              </div>
-            ) : (
-              TABLE_EMPTY_PLACE_HOLDER
-            );
-          }}
-        />
-      );
-    },
+    dataIndex: 'hpo_phenotype',
+    render: (hpo_phenotype: string) => (
+      <OntologyTermWithLink
+        term={hpo_phenotype}
+        type={'hpo'}
+        hrefWithoutCode={'http://purl.obolibrary.org/obo/HP_'}
+      />
+    ),
   },
   {
     key: 'source_text',

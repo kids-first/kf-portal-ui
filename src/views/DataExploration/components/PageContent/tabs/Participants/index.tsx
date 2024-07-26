@@ -44,13 +44,10 @@ import {
   PARTICIPANTS_SAVED_SETS_FIELD,
   SCROLL_WRAPPER_ID,
 } from 'views/DataExploration/utils/constant';
-import {
-  extractMondoTitleAndCode,
-  extractPhenotypeTitleAndCode,
-} from 'views/DataExploration/utils/helper';
 import { areFilesDataTypeValid, mapStudyToPedcBioportal } from 'views/Studies/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { OntologyTermsWithLinks, OntologyTermsWithLinksFromDiagnoses } from 'components/Cells';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
@@ -65,34 +62,6 @@ import styles from './index.module.css';
 interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
-
-const renderPhenotype = (phenotypeNames: string[]) => {
-  const hasPhenotypeName = !!phenotypeNames?.filter((name) => name).length;
-  if (!phenotypeNames || !hasPhenotypeName) {
-    return TABLE_EMPTY_PLACE_HOLDER;
-  }
-  return (
-    <ExpandableCell
-      nOfElementsWhenCollapsed={1}
-      dataSource={makeUniqueCleanWords(phenotypeNames)}
-      renderItem={(hpo_id_phenotype, index): React.ReactNode => {
-        const phenotypeInfo = extractPhenotypeTitleAndCode(hpo_id_phenotype);
-
-        return phenotypeInfo ? (
-          <div key={index}>
-            {capitalize(phenotypeInfo.title)} (HP:{' '}
-            <ExternalLink href={`https://hpo.jax.org/app/browse/term/HP:${phenotypeInfo.code}`}>
-              {phenotypeInfo.code}
-            </ExternalLink>
-            )
-          </div>
-        ) : (
-          TABLE_EMPTY_PLACE_HOLDER
-        );
-      }}
-    />
-  );
-};
 
 const getDefaultColumns = (): ProColumnType[] => [
   {
@@ -161,34 +130,13 @@ const getDefaultColumns = (): ProColumnType[] => [
     title: intl.get('entities.participant.mondo_diagnosis'),
     dataIndex: 'diagnosis',
     className: styles.diagnosisCell,
-    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
-      const mondoNames = diagnosis?.hits?.edges.map((m) => m.node.mondo_display_term);
-      if (!mondoNames || mondoNames.length === 0) {
-        return TABLE_EMPTY_PLACE_HOLDER;
-      }
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={makeUniqueCleanWords(mondoNames)}
-          renderItem={(mondo_id, index): React.ReactNode => {
-            const mondoInfo = extractMondoTitleAndCode(mondo_id);
-            return mondoInfo ? (
-              <div key={index}>
-                {capitalize(mondoInfo.title)} (MONDO:{' '}
-                <ExternalLink
-                  href={`https://monarchinitiative.org/disease/MONDO:${mondoInfo.code}`}
-                >
-                  {mondoInfo.code}
-                </ExternalLink>
-                )
-              </div>
-            ) : (
-              TABLE_EMPTY_PLACE_HOLDER
-            );
-          }}
-        />
-      );
-    },
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => (
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnosis}
+        type={'mondo'}
+        hrefWithoutCode={'http://purl.obolibrary.org/obo/MONDO_'}
+      />
+    ),
   },
   {
     key: 'phenotype.hpo_phenotype_observed',
@@ -197,7 +145,13 @@ const getDefaultColumns = (): ProColumnType[] => [
     className: styles.phenotypeCell,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_observed);
-      return renderPhenotype(phenotypeNames);
+      return (
+        <OntologyTermsWithLinks
+          terms={phenotypeNames}
+          type={'hpo'}
+          hrefWithoutCode={'http://purl.obolibrary.org/obo/HP_'}
+        />
+      );
     },
   },
   {
@@ -344,26 +298,15 @@ const getDefaultColumns = (): ProColumnType[] => [
     sorter: {
       multiple: 1,
     },
-    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => {
-      const terms = [...new Set(diagnosis?.hits?.edges?.map((e) => e.node.ncit_display_term))];
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={terms}
-          renderItem={(term): React.ReactNode => {
-            if (!term) {
-              return TABLE_EMPTY_PLACE_HOLDER;
-            }
-            const code = `NCIT_${term.replace(')', '').split('(NCIT:')[1]}`;
-            return (
-              <div key={code}>
-                <ExternalLink href={`http://purl.obolibrary.org/obo/${code}`}>{term}</ExternalLink>
-              </div>
-            );
-          }}
-        />
-      );
-    },
+    render: (diagnosis: IArrangerResultsTree<IParticipantDiagnosis>) => (
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnosis}
+        type={'ncit'}
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
+    ),
   },
   {
     key: 'diagnosis.source_text',
@@ -407,7 +350,13 @@ const getDefaultColumns = (): ProColumnType[] => [
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_not_observed);
 
-      return renderPhenotype(phenotypeNames);
+      return (
+        <OntologyTermsWithLinks
+          terms={phenotypeNames}
+          type={'hpo'}
+          hrefWithoutCode={'https://hpo.jax.org/app/browse/term/HP:'}
+        />
+      );
     },
   },
   {

@@ -1,14 +1,15 @@
+import React from 'react';
 import intl from 'react-intl-universal';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
-import { IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
-import { ArrangerEdge } from 'graphql/models';
+import { IBiospecimenDiagnoses, IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
+import { ArrangerEdge, ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
+import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import AgeCell from 'components/AgeCell';
+import { OntologyTermsWithLinksFromDiagnoses, OntologyTermWithLink } from 'components/Cells';
 import { mergeBiosDiagnosesSpecificField } from 'utils/tables';
-
-import CollectionIdLink from '../BiospecimenTable/CollectionIdLink';
 
 export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
   {
@@ -50,15 +51,25 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     key: 'collection_ncit_anatomy_site',
     title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
     defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      biospecimen?.collection_ncit_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+    dataIndex: 'collection_ncit_anatomy_site',
+    render: (collection_ncit_anatomy_site: string) => (
+      <OntologyTermWithLink
+        term={collection_ncit_anatomy_site}
+        type={'ncit'}
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
+    ),
   },
   {
     key: 'diagnoses.ncit_display_term',
     title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
     defaultHidden: true,
-    render: (biospecimen: IBiospecimenEntity) =>
-      mergeBiosDiagnosesSpecificField(biospecimen, 'ncit_display_term'),
+    dataIndex: 'diagnoses',
+    render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
+      <OntologyTermsWithLinksFromDiagnoses dxs={diagnoses} type={'ncit'} />
+    ),
   },
   {
     key: 'collection_anatomy_site',
