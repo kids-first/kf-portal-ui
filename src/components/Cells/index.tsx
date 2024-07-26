@@ -50,7 +50,7 @@ const TermWithLink = ({
 }) => {
   const tc = getTitleCode(type, term);
   if (!tc) {
-    return <span key={term}>{TABLE_EMPTY_PLACE_HOLDER}</span>;
+    return null;
   }
 
   const { title, code } = tc;
@@ -89,7 +89,7 @@ export const OntologyTermsWithLinksFromDiagnoses = ({
     ),
   ];
 
-  return terms.length === 0 ? (
+  return terms.filter((t) => !!t).length === 0 ? (
     <>{TABLE_EMPTY_PLACE_HOLDER}</>
   ) : (
     <ExpandableCell
@@ -113,24 +113,37 @@ interface IPropsOntologyTerm {
   hrefWithoutCode?: string;
 }
 export const OntologyTermWithLink = ({ term, type, hrefWithoutCode }: IPropsOntologyTerm) =>
-  TermWithLink({ type, termReactKey: `${kebabCase(term)}`, term, hrefWithoutCode });
+  term ? (
+    TermWithLink({ type, termReactKey: `${kebabCase(term)}`, term, hrefWithoutCode })
+  ) : (
+    <>{TABLE_EMPTY_PLACE_HOLDER}</>
+  );
 
 interface IPropsOntologyTerms {
   terms: string[];
   type: TOntologyType;
   hrefWithoutCode?: string;
 }
-export const OntologyTermsWithLinks = ({ terms, type, hrefWithoutCode }: IPropsOntologyTerms) => (
-  <>
-    {terms && terms.length > 0
-      ? terms.map((t, index: number) => (
-          <OntologyTermWithLink
-            key={`${index}${kebabCase(t)}`}
-            term={t}
-            type={type}
-            hrefWithoutCode={hrefWithoutCode}
-          />
-        ))
-      : TABLE_EMPTY_PLACE_HOLDER}
-  </>
-);
+export const OntologyTermsWithLinks = ({ terms, type, hrefWithoutCode }: IPropsOntologyTerms) => {
+  const filteredTerms = terms ? terms.filter((t) => !!t) : [];
+  return (
+    <>
+      {filteredTerms.length > 0 ? (
+        <ExpandableCell
+          nOfElementsWhenCollapsed={3}
+          dataSource={filteredTerms}
+          renderItem={(t: string, index: string): React.ReactNode => (
+            <OntologyTermWithLink
+              key={`${index}${kebabCase(t)}`}
+              term={t}
+              type={type}
+              hrefWithoutCode={hrefWithoutCode}
+            />
+          )}
+        />
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      )}
+    </>
+  );
+};
