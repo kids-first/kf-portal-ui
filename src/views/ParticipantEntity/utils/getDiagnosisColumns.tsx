@@ -1,57 +1,42 @@
+import React from 'react';
 import intl from 'react-intl-universal';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import ExpandableCell from '@ferlab/ui/core/components/tables/ExpandableCell';
 import { IParticipantDiagnosis } from 'graphql/participants/models';
-import { capitalize } from 'lodash';
-import { extractMondoTitleAndCode } from 'views/DataExploration/utils/helper';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import AgeCell from 'components/AgeCell';
+import { OntologyTermWithLink } from 'components/Cells';
 
 import MondoParticipantCount from '../DiagnosisTable/MondoParticipantCount';
+
+import styles from 'views/DataExploration/components/PageContent/tabs/Participants/index.module.css';
 
 const getDiagnosisDefaultColumns = (): ProColumnType[] => [
   {
     key: 'mondo_display_term',
     title: intl.get('entities.participant.mondo_diagnosis'),
-    render: (diagnosis: IParticipantDiagnosis) => {
-      const mondoNames = diagnosis?.mondo_display_term;
-      return (
-        <ExpandableCell
-          nOfElementsWhenCollapsed={1}
-          dataSource={[mondoNames]}
-          renderItem={(mondo_id, index): React.ReactNode => {
-            const mondoInfo = extractMondoTitleAndCode(mondo_id);
-            return mondoInfo ? (
-              <div key={index}>
-                {capitalize(mondoInfo.title)} (MONDO:
-                <ExternalLink href={`http://purl.obolibrary.org/obo/MONDO_${mondoInfo.code}`}>
-                  {mondoInfo.code}
-                </ExternalLink>
-                )
-              </div>
-            ) : (
-              TABLE_EMPTY_PLACE_HOLDER
-            );
-          }}
-        />
-      );
-    },
+    className: styles.diagnosisCell,
+    dataIndex: 'mondo_display_term',
+    render: (mondo_display_term: string) => (
+      <OntologyTermWithLink
+        term={mondo_display_term}
+        type={'mondo'}
+        hrefWithoutCode={'http://purl.obolibrary.org/obo/MONDO_'}
+      />
+    ),
   },
   {
     key: 'ncit_display_term',
     title: intl.get('entities.participant.diagnosis_NCIT'),
-    render: (diagnosis: IParticipantDiagnosis) =>
-      diagnosis?.ncit_display_term ? (
-        <ExternalLink
-          href={`http://purl.obolibrary.org/obo/${diagnosis.ncit_display_term.replace(':', '_')}`}
-        >
-          {diagnosis.ncit_display_term}
-        </ExternalLink>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      ),
+    dataIndex: 'ncit_display_term',
+    render: (ncit_display_term: string) => (
+      <OntologyTermWithLink
+        term={ncit_display_term}
+        type={'ncit'}
+        hrefWithoutCode={'http://purl.obolibrary.org/obo/NCIT_'}
+      />
+    ),
   },
   {
     key: 'source_text',

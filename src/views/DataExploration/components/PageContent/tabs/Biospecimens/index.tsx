@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DownloadOutlined } from '@ant-design/icons';
 import RequestBiospecimenButton from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenButton';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
@@ -21,8 +20,9 @@ import { Button, Tooltip } from 'antd';
 import keycloak from 'auth/keycloak-api/keycloak';
 import { AxiosRequestConfig } from 'axios';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
-import { IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
+import { IBiospecimenDiagnoses, IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
+import { ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
 import EnvironmentVariables, { getFTEnvVarByKey } from 'helpers/EnvVariables';
@@ -39,10 +39,12 @@ import {
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
+import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 import CollectionIdLink from 'views/ParticipantEntity/BiospecimenTable/CollectionIdLink';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import AgeCell from 'components/AgeCell';
+import { OntologyTermsWithLinksFromDiagnoses, OntologyTermWithLink } from 'components/Cells';
 import useApi from 'hooks/useApi';
 import { trackRequestBiospecimen } from 'services/analytics';
 import { ReportType } from 'services/api/reports/models';
@@ -56,8 +58,6 @@ import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { goToParticipantEntityPage, STATIC_ROUTES } from 'utils/routes';
 import { mergeBiosDiagnosesSpecificField } from 'utils/tables';
 import { getProTableDictionary } from 'utils/translation';
-
-import { generateSelectionSqon } from '../../../../utils/selectionSqon';
 
 import { getDataTypeColumns, getRequestBiospecimenDictionary } from './utils';
 
@@ -154,35 +154,14 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'diagnoses.mondo_display_term',
     title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
-    render: (record: IBiospecimenEntity) => {
-      const diagnoses = mergeBiosDiagnosesSpecificField(record, 'mondo_display_term')
-        .split(',')
-        .map((str) => str.trim())
-        .filter((diagnosis) => diagnosis.includes('(MONDO:'));
-
-      const nodesWithLinks = diagnoses.map((diagnosis, index) => {
-        const [beforeMatch, mondoCode, afterMatch = ''] = diagnosis.split(/(MONDO:[^)]+)/);
-        const link = (
-          <ExternalLink href={`http://purl.obolibrary.org/obo/${mondoCode.replace(':', '_')}`}>
-            {mondoCode.replace('MONDO:', 'MONDO: ')}
-          </ExternalLink>
-        );
-        return (
-          <li key={mondoCode}>
-            {beforeMatch}
-            {link}
-            {afterMatch.trim()}
-            {index !== diagnoses.length - 1 && ','}
-          </li>
-        );
-      });
-
-      return nodesWithLinks.length > 0 ? (
-        <ul className={styles.mondoList}>{nodesWithLinks}</ul>
-      ) : (
-        TABLE_EMPTY_PLACE_HOLDER
-      );
-    },
+    dataIndex: 'diagnoses',
+    render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnoses}
+        type={'mondo'}
+        hrefWithoutCode={'http://purl.obolibrary.org/obo/MONDO_'}
+      />
+    ),
   },
   {
     key: 'status',
@@ -229,8 +208,15 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
     dataIndex: 'collection_ncit_anatomy_site',
     defaultHidden: true,
-    render: (collection_ncit_anatomy_site) =>
-      collection_ncit_anatomy_site || TABLE_EMPTY_PLACE_HOLDER,
+    render: (collection_ncit_anatomy_site: string) => (
+      <OntologyTermWithLink
+        term={collection_ncit_anatomy_site}
+        type={'ncit'}
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
+    ),
   },
   {
     key: 'collection_anatomy_site',
@@ -256,9 +242,16 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   {
     key: 'diagnoses.ncit_display_term',
     title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
-    defaultHidden: true,
-    render: (record: IBiospecimenEntity) =>
-      mergeBiosDiagnosesSpecificField(record, 'ncit_display_term'),
+    dataIndex: 'diagnoses',
+    render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnoses}
+        type={'ncit'}
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
+    ),
   },
   {
     key: 'diagnoses.source_text',
