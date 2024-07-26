@@ -349,7 +349,6 @@ const getDefaultColumns = (): ProColumnType[] => [
     defaultHidden: true,
     render: (phenotype: IArrangerResultsTree<IParticipantPhenotype>) => {
       const phenotypeNames = phenotype?.hits?.edges.map((p) => p.node.hpo_phenotype_not_observed);
-
       return (
         <OntologyTermsWithLinks
           terms={phenotypeNames}

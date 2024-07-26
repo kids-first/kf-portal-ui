@@ -241,6 +241,7 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
   // },
   {
     key: 'diagnoses.ncit_display_term',
+    defaultHidden: true,
     title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
     dataIndex: 'diagnoses',
     render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (

@@ -68,7 +68,13 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     defaultHidden: true,
     dataIndex: 'diagnoses',
     render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
-      <OntologyTermsWithLinksFromDiagnoses dxs={diagnoses} type={'ncit'} />
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnoses}
+        type={'ncit'}
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
     ),
   },
   {
