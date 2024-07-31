@@ -1,3 +1,23 @@
+## VERSION 5.6.0 (2024-07-31)
+
+### Features
+
+- [SKFP-740](https://d3b.atlassian.net/browse/SKFP-740) Feature: [Data Exploration] Adjust the format of the Diagnosis (NCIT) field
+- [SKFP-1010](https://d3b.atlassian.net/browse/SKFP-1010) Feature: [Cavatica] Add disconnect button on CAVATICA connection error
+- [SKFP-1172](https://d3b.atlassian.net/browse/SKFP-1172) Feature: [Phenotypes] Update HPO browser to use the new ferlab-ui components
+- [SKFP-1184](https://d3b.atlassian.net/browse/SKFP-1184) Feature: [Registration] Implement email input box for newsletter
+
+### Technical / Other changes
+
+- [SKFP-374](https://d3b.atlassian.net/browse/SKFP-374) Refactor: [User Profile & Registration] Remove Persona - only use Users-API
+- [SKFP-839](https://d3b.atlassian.net/browse/SKFP-839) Issue: [Community] Search only takes the first institution word
+- [SKFP-1134](https://d3b.atlassian.net/browse/SKFP-1134) Issue: [Summary View] Adjust the parameter to not auto-adjust the width of the Bar charts
+- [SKFP-1140](https://d3b.atlassian.net/browse/SKFP-1140) Refactor: [UI] Remove Sass and add custom properties
+- [SKFP-1152](https://d3b.atlassian.net/browse/SKFP-1152) Issue: [UI] Adjust widgets in dashboard colors
+- [SKFP-1153](https://d3b.atlassian.net/browse/SKFP-1153) Issue: [Biospecimen Request] Share should not update the request
+- [SKFP-1190](https://d3b.atlassian.net/browse/SKFP-1190) Issue: [Facets] Wrong buttons alignment
+- [SKFP-1197](https://d3b.atlassian.net/browse/SKFP-1197) Update: [Authentication] Upgrade Keycloak Server to 23
+
 ## VERSION 5.5.0 (2024-25-06)
 
 ### Features
