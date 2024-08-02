@@ -61,7 +61,7 @@
   --sidebar-content-panel-close-icon-width: 16px;
   --grid-card-light-background-color: white;
   --grid-card-shade-background-color: var(--gray-2);
-  --empty-image-color: rgba(red(var(--gray-6)), green(var(--gray-6)), blue(var(--gray-6)), 50%);
+  --empty-image-color: var(--cyan-7); 
   --empty-content-color: var(--gray-6);
   --collapse-light-background-color: white;
   --collapse-shade-background-color: var(--gray-3);
