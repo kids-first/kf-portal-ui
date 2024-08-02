@@ -125,13 +125,13 @@ interface IPropsOntologyTerms {
   hrefWithoutCode?: string;
 }
 export const OntologyTermsWithLinks = ({ terms, type, hrefWithoutCode }: IPropsOntologyTerms) => {
-  const filteredTerms = terms ? terms.filter((t) => !!t) : [];
+  const cleanedUpTerms = terms ? [...new Set(terms.filter((t) => !!t))] : [];
   return (
     <>
-      {filteredTerms.length > 0 ? (
+      {cleanedUpTerms.length > 0 ? (
         <ExpandableCell
           nOfElementsWhenCollapsed={3}
-          dataSource={filteredTerms}
+          dataSource={cleanedUpTerms}
           renderItem={(t: string, index: string): React.ReactNode => (
             <OntologyTermWithLink
               key={`${index}${kebabCase(t)}`}
