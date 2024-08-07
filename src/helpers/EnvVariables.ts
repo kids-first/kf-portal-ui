@@ -28,6 +28,7 @@ export default class EnvironmentVariables {
     MAINTENANCE_MODE: process.env.REACT_APP_MAINTENANCE_MODE,
     // GA
     MEASUREMENT_ID: process.env.REACT_APP_MEASUREMENT_ID,
+    SENTRY_API: process.env.REACT_APP_SENTRY_API,
   };
 
   static configFor(key: string): string {
