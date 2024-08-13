@@ -25,11 +25,6 @@ export type Suggestion = {
   ensembl_gene_id?: string;
 };
 
-export type MembersCount = {
-  totalCount: number;
-  publicCount: number;
-};
-
 export interface IStatistics {
   families: number;
   fileSize: string;
@@ -37,7 +32,6 @@ export interface IStatistics {
   participants: number;
   samples: number;
   studies: number;
-  members: MembersCount;
 }
 
 export interface ArrangerSingleColumnState {
