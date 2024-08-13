@@ -8,7 +8,6 @@ import { AREA_OF_INTEREST_OPTIONS, ROLE_OPTIONS } from 'views/Community/constant
 import { MAIN_SCROLL_WRAPPER_ID } from 'common/constants';
 import { ISearchParams } from 'services/api/user';
 import { useCommunityUsers } from 'store/community';
-import { useStats } from 'store/global';
 import { scrollToTop } from 'utils/helper';
 
 const DEFAULT_PAGE_SIZE = 25;
@@ -22,7 +21,6 @@ const DEFAULT_SEARCH_PARAMS = {
 const CommunityPage = () => {
   const [activeFilter, setActiveFilter] = useState<ISearchParams>(DEFAULT_SEARCH_PARAMS);
   const { users, loading, total } = useCommunityUsers(activeFilter);
-  const stats = useStats();
 
   return (
     <CommunityMembersPage
@@ -68,7 +66,6 @@ const CommunityPage = () => {
       users={users}
       totalPage={total}
       loading={loading}
-      totalMembers={stats?.members.totalCount}
       handlePageChange={(page) => {
         setActiveFilter({
           ...activeFilter,
@@ -76,9 +73,9 @@ const CommunityPage = () => {
         });
         scrollToTop(MAIN_SCROLL_WRAPPER_ID);
       }}
-      renderMember={(activeFilter, item) => {
-        return <MemberCard match={activeFilter.match || ''} user={item} />;
-      }}
+      renderMember={(activeFilter, item) => (
+        <MemberCard match={activeFilter.match || ''} user={item} />
+      )}
     />
   );
 };
