@@ -3,7 +3,7 @@
 ### Technical / Other changes
 
 - [SKFP-1219](https://d3b.atlassian.net/browse/SKFP-1219) Issue: [UI] Adjust color for empty data
-- [SKFP-1227](ttps://d3b.atlassian.net/browse/SKFP-1227) Task: [Tools] Add Sentry to catch error logs 
+- [SKFP-1227](https://d3b.atlassian.net/browse/SKFP-1227) Task: [Tools] Add Sentry to catch error logs 
 - [SKFP-1094](https://d3b.atlassian.net/browse/SKFP-1094) Refactor: [UI] New border property for the "descriptions" component
 - [SKFP-1243](https://d3b.atlassian.net/browse/SKFP-1243) Issue: [Community] Error 500
 
