@@ -48,17 +48,15 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     ),
   },
   {
-    key: 'collection_ncit_anatomy_site',
-    title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
+    key: 'mondo_display_term',
+    title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
     defaultHidden: true,
-    dataIndex: 'collection_ncit_anatomy_site',
-    render: (collection_ncit_anatomy_site: string) => (
-      <OntologyTermWithLink
-        term={collection_ncit_anatomy_site}
-        type={'ncit'}
-        hrefWithoutCode={
-          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
-        }
+    dataIndex: 'diagnoses',
+    render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
+      <OntologyTermsWithLinksFromDiagnoses
+        dxs={diagnoses}
+        type="mondo"
+        hrefWithoutCode="http://purl.obolibrary.org/obo/MONDO_"
       />
     ),
   },
@@ -70,6 +68,27 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>) => (
       <OntologyTermsWithLinksFromDiagnoses
         dxs={diagnoses}
+        type="ncit"
+        hrefWithoutCode={
+          'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
+        }
+      />
+    ),
+  },
+  {
+    key: 'source_text',
+    title: intl.get('entities.biospecimen.diagnoses.source_text'),
+    defaultHidden: true,
+    render: (record: IBiospecimenEntity) => mergeBiosDiagnosesSpecificField(record, 'source_text'),
+  },
+  {
+    key: 'collection_ncit_anatomy_site',
+    title: intl.get('entities.biospecimen.anatomical_site_NCIT'),
+    defaultHidden: true,
+    dataIndex: 'collection_ncit_anatomy_site',
+    render: (collection_ncit_anatomy_site: string) => (
+      <OntologyTermWithLink
+        term={collection_ncit_anatomy_site}
         type={'ncit'}
         hrefWithoutCode={
           'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&version=22.07d&ns=ncit&code='
