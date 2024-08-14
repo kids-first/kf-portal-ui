@@ -115,19 +115,20 @@ const renderOmim = (pickedOmim: IArrangerEdge<IGeneOmim>[]) => {
   if (!pickedOmim.length) return [{ label: undefined, value: <>{TABLE_EMPTY_PLACE_HOLDER}</> }];
 
   return pickedOmim.map((omim) => ({
-    label: undefined,
+    label: (
+      <ExternalLink href={`https://www.omim.org/entry/${omim.node.omim_id}`}>
+        {omim.node.name}
+      </ExternalLink>
+    ),
     value: (
-      <Space size={4}>
-        <ExternalLink href={`https://www.omim.org/entry/${omim.node.omim_id}`}>
-          {omim.node.name}
-        </ExternalLink>
+      <>
         {omim.node.inheritance_code?.length > 0 &&
           omim.node.inheritance_code.map((code) => (
             <Tooltip key={code} title={intl.get(`screen.variants.table.inheritant.code.${code}`)}>
               <Tag>{code}</Tag>
             </Tooltip>
           ))}
-      </Space>
+      </>
     ),
   }));
 };
