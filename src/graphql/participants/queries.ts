@@ -178,6 +178,8 @@ export const GET_PARTICIPANT_ENTITY = gql`
                                 total
                                 edges {
                                   node {
+                                    mondo_display_term
+                                    source_text
                                     source_text_tumor_descriptor
                                     source_text_tumor_location
                                     ncit_display_term
