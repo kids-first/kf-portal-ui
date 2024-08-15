@@ -110,7 +110,18 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
                 visible: x.visible,
                 key: x.key,
               })),
-              rows: biospecimens,
+              rows: biospecimens.map((biospecimen) => ({
+                ...biospecimen,
+                source_text: (biospecimen.diagnoses?.hits?.edges ?? [])
+                  .map((diagnose) => diagnose.node.source_text)
+                  .join('\n'),
+                mondo_display_term: (biospecimen.diagnoses?.hits?.edges ?? [])
+                  .map((diagnose) => diagnose.node.mondo_display_term)
+                  .join('\n'),
+                ncit_display_term: (biospecimen.diagnoses?.hits?.edges ?? [])
+                  .map((diagnose) => diagnose.node.ncit_display_term)
+                  .join('\n'),
+              })),
             }),
           ),
       }}

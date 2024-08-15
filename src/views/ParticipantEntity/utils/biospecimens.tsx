@@ -61,7 +61,7 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     ),
   },
   {
-    key: 'diagnoses.ncit_display_term',
+    key: 'ncit_display_term',
     title: intl.get('entities.biospecimen.diagnoses.ncit_display_term'),
     defaultHidden: true,
     dataIndex: 'diagnoses',
