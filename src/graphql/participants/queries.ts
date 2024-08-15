@@ -180,8 +180,8 @@ export const GET_PARTICIPANT_ENTITY = gql`
                                   node {
                                     mondo_display_term
                                     source_text
-                                    source_text_tumor_descriptor
                                     source_text_tumor_location
+                                    source_text_tumor_descriptor
                                     ncit_display_term
                                   }
                                 }

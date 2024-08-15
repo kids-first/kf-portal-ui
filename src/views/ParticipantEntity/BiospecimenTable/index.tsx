@@ -121,6 +121,12 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
                 ncit_display_term: (biospecimen.diagnoses?.hits?.edges ?? [])
                   .map((diagnose) => diagnose.node.ncit_display_term)
                   .join('\n'),
+                source_text_tumor_descriptor: (biospecimen.diagnoses?.hits?.edges ?? [])
+                  .map((diagnose) => diagnose.node.source_text_tumor_descriptor)
+                  .join('\n'),
+                source_text_tumor_location: (biospecimen.diagnoses?.hits?.edges ?? [])
+                  .map((diagnose) => diagnose.node.source_text_tumor_location)
+                  .join('\n'),
               })),
             }),
           ),
