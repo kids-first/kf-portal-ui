@@ -181,7 +181,8 @@ const generateLocalTsvReport = createAsyncThunk<
       return thunkAPI.rejectWithValue('error');
     }
 
-    const doc: string = [visibleTitle, ...visibleRows]
+    const formattedVisibleRows = visibleRows.map((row: string[]) => row.map((r) => (r ? r : '--')));
+    const doc: string = [visibleTitle, ...formattedVisibleRows]
       .reduce((text, row) => text + '\n' + row.join('\t'), '')
       .trimStart();
 
