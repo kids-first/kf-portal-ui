@@ -694,7 +694,7 @@ const en = {
           noAvailableStudies: 'No available studies',
           authorization: 'Authorization : ',
           of: 'of',
-          files: 'Files',
+          files: 'files',
           dataGroups: 'Data use groups: ',
           modal: {
             title: 'Manage Connections',
