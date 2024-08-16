@@ -343,7 +343,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     },
   },
   {
-    key: 'phenotypes_hpo_not_observed',
+    key: 'phenotype.hpo_phenotype_not_observed',
     title: intl.get('entities.participant.phenotypes_hpo_not_observed'),
     dataIndex: 'phenotype',
     defaultHidden: true,
@@ -359,7 +359,7 @@ const getDefaultColumns = (): ProColumnType[] => [
     },
   },
   {
-    key: 'source_text_phenotype',
+    key: 'phenotype.source_text',
     title: intl.get('entities.participant.source_text_phenotype'),
     dataIndex: 'phenotype',
     defaultHidden: true,
