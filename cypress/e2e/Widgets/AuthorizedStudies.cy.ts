@@ -89,7 +89,7 @@ describe('Page Dashboard - Widget Authorized Studies (connecté)', () => {
     cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"] button').contains('Manage your connections').should('exist');
   });
 
-  it('Vérifier les informations affichées - Study [SKFP-1179]', () => {
+  it('Vérifier les informations affichées - Study', () => {
       cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
         if ($el.text().includes('Authorized Studies')) {
           cy.wrap($el).as('authStudiesCard');

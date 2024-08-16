@@ -45,7 +45,7 @@ describe('Page d\'un participant - Exporter le tableau Diagnoses en TSV', () => 
     cy.validateFileHeaders('ExportTableauDiagnosesPageParticipant.json');
   });
 
-  it('Valider le contenu du fichier [SKFP-778]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateFileContent('ExportTableauDiagnosesPageParticipant.json');
   });
 });
@@ -66,7 +66,7 @@ describe('Page d\'un participant - Exporter le tableau Phenotypes en TSV', () =>
     cy.validateFileHeaders('ExportTableauPhenotypesPageParticipant.json');
   });
 
-  it('Valider le contenu du fichier [SKFP-778]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateFileContent('ExportTableauPhenotypesPageParticipant.json');
   });
 });
@@ -101,7 +101,7 @@ describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () 
     cy.validateFileHeaders('ExportTableauBiospecimensPageParticipant.json');
   });
 
-  it('Valider le contenu du fichier [SKFP-778]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateFileContent('ExportTableauBiospecimensPageParticipant.json');
   });
 });
