@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
   ExperimentOutlined,
@@ -36,13 +37,11 @@ import { removeUnderscoreAndCapitalize, titleCase } from '@ferlab/ui/core/utils/
 import { INDEXES } from 'graphql/constants';
 import { GET_QUICK_FILTER_EXPLO } from 'graphql/quickFilter/queries';
 import { getFilters } from 'graphql/utils/Filters';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { capitalize, get } from 'lodash';
 import PageContent from 'views/DataExploration/components/PageContent';
 import TreeFacet from 'views/DataExploration/components/TreeFacet';
 import {
   DATA_EXPLORATION_QB_ID,
-  FT_QUICK_FILTER_KEY,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
@@ -51,6 +50,7 @@ import FilterList from 'components/uiKit/FilterList';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { ArrangerApi } from 'services/api/arranger';
+import { remoteSliceActions } from 'store/remote/slice';
 import { RemoteComponentList } from 'store/remote/types';
 import {
   mapFilterForBiospecimen,
@@ -200,6 +200,7 @@ const filterGroups: {
 };
 
 const DataExploration = () => {
+  const dispatch = useDispatch();
   const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
@@ -207,8 +208,35 @@ const DataExploration = () => {
   const biospecimenMappingResults = useGetExtendedMappings(INDEXES.BIOSPECIMEN);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [quickFilterData, setQuickFilterData] = useState<{ participant: { aggregations: any } }>();
+  const [forceClose, setForceClose] = useState<boolean>(false);
 
-  const enableQuickFilter = getFTEnvVarByKey(FT_QUICK_FILTER_KEY);
+  const quickfilterOpenRemote = (field: string): boolean => {
+    if (field === 'phenotype__hpo_phenotype_observed') {
+      dispatch(
+        remoteSliceActions.openRemoteComponent({
+          id: RemoteComponentList.HPOTree,
+          props: {
+            visible: true,
+          },
+        }),
+      );
+      return true;
+    }
+    if (field === 'diagnosis__diagnosis_mondo') {
+      dispatch(
+        remoteSliceActions.openRemoteComponent({
+          id: RemoteComponentList.MondoTree,
+          props: {
+            visible: true,
+          },
+        }),
+      );
+
+      return true;
+    }
+
+    return false;
+  };
 
   const fetchFacets = useCallback(async () => {
     const { data } = await ArrangerApi.graphqlRequest<{
@@ -307,6 +335,11 @@ const DataExploration = () => {
     option: TitleQFOption,
   ) => {
     setIsLoading(true);
+
+    if (quickfilterOpenRemote(option.key)) {
+      setForceClose(true);
+      return;
+    }
 
     const { data } = await ArrangerApi.graphqlRequest<{
       data: any;
@@ -486,11 +519,13 @@ const DataExploration = () => {
         quickFilter={{
           dictionary: getFiltersDictionary(),
           handleFacetClick,
-          enableQuickFilter: enableQuickFilter === 'true',
           getSuggestionsList: getQFSuggestions,
           handleOnApply: addQFOptionsToQB,
+          enableQuickFilter: true,
           inputSuffixIcon: <SearchOutlined />,
           isLoading,
+          forceClose,
+          handleClear: () => setForceClose(false),
         }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
