@@ -300,6 +300,7 @@ export const getFacetsDictionary = () => ({
     ncit_display_term: 'Diagnosis (NCIT)',
     source_text: 'Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',
+    diagnosis_mondo: 'Diagnosis (MONDO)',
   },
   outcomes: {
     vital_status: 'Vital Status',

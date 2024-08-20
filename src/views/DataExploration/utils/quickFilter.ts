@@ -1,5 +1,5 @@
-import { CheckboxQFOption } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
+import { CheckboxQFOption } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import {
   ISyntheticSqon,
   IValueFilter,

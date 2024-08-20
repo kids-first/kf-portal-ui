@@ -78,6 +78,12 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             count
           }
         }
+        diagnosis__diagnosis_mondo {
+          buckets {
+            key
+            doc_count
+          }
+        }
         diagnosis__ncit_display_term {
           buckets {
             key
@@ -91,6 +97,12 @@ export const GET_QUICK_FILTER_EXPLO = gql`
           }
         }
         family_type {
+          buckets {
+            key
+            doc_count
+          }
+        }
+        phenotype__hpo_phenotype_observed {
           buckets {
             key
             doc_count
