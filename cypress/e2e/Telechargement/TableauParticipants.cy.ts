@@ -27,7 +27,7 @@ describe('Page Data Exploration (Participants) - Exporter les participants en TS
     cy.validateFileName('kidsfirst-participant-table-'+`${strDate.slice(0, 4)}-${strDate.slice(4, 6)}-${strDate.slice(6, 8)}`+'.tsv');
   });
 
-  it('Valider les en-têtes du fichier [SKFP-809]', () => {
+  it('Valider les en-têtes du fichier', () => {
     cy.validateFileHeaders('ExportTableauParticipants.json');
   });
 
