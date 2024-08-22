@@ -599,7 +599,117 @@ const en = {
       settingsPage: 'settings page',
     },
     loginPage: {
-      title: 'Kids First Data Resource Portal',
+      topBanner: {
+        title: 'Kids First Data Portal',
+        subtitle1:
+          'Empower your research with our robust collection of childhood cancer, congenital disorder, and cross-condition data.',
+        subtitle2: 'Getting started is as easy as 1-2-3',
+        subtitle3: 'Sign up within minutes… free of charge!',
+      },
+      studies: {
+        sectionTitle: 'Leading the way through data-sharing',
+        title: '{count, plural, =0 {# Study} =1 {# Study} other {# Studies}}',
+        viewAll: 'View all studies',
+        explore:
+          ' Explore a broad collection of harmonized studies focused pediatric cancer and structural birth defects for cross condition research.',
+        participants: '{count, plural, =0 {Participant} =1 {Participant} other {Participants}}',
+        card1: {
+          title: 'Pediatric Cardiac Genomics Consortium Overview',
+          description:
+            'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes.',
+        },
+        card2: {
+          title: 'Study with truncated copy (max: 6 lines)',
+          description:
+            'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes. The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes.',
+        },
+        card3: {
+          title: 'Study with very little copy',
+          description:
+            'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital hear.',
+        },
+      },
+      chartsSection: {
+        title: 'Accelerating research',
+        description:
+          'Data from over 99k samples, including whole genome sequencing (WGS) and RNA-Sequencing, is available to empower your research today.',
+        getStarted: 'Get started',
+        stats: {
+          studies: 'Studies',
+          participants: 'Participants',
+          variants: 'Variants',
+          biospecimens: 'Biospecimens',
+          files: 'Files',
+          genomes: 'Genomes',
+        },
+        chart: {
+          demographics: 'Demographics',
+          mondo: 'Most Frequent Diagnoses (MONDO)',
+          familyComposition: 'Family Composition',
+          race: 'Race',
+        },
+      },
+      collaborationSection: {
+        title: 'Advancing science through collaboration',
+        description:
+          ' Easily gain access to a range of robust cloud-based resources to drive meaningful research progress.',
+        variant: {
+          title: 'Variant Explorer',
+          description:
+            'Build virtual cohorts using data from over 99k samples, including whole sequencing. With just a few clicks, you can explore millions of annotated germline variants from the genomes of Kids First participants.',
+          button: 'Explore variant data',
+        },
+        cavatica: {
+          description:
+            ' The portal integrates with CAVATICA, a cloud-based platform designed for worldwide data analysis and collaboration. Researchers can analyze Kids First datasets using custom or pre-existing workflows.',
+          button: 'Get started',
+        },
+        pedcbioportal: {
+          description:
+            ' The portal integrates with CAVATICA, a cloud-based platform designed for worldwide data analysis and collaboration. Researchers can analyze Kids First datasets using custom or pre-existing workflows.',
+          button: 'Get started',
+        },
+      },
+      footer: {
+        inspiration: {
+          title: 'Find inspiration',
+          description:
+            'Review published work that cites Kids First, then publish findings you’ve uncovered using this powerful resource.',
+          button: 'View publications',
+        },
+        answers: {
+          title: 'Get answers',
+          description:
+            'Navigate the Kids First landscape like a pro with tips and information found at the Data Portal Help Center.',
+          button: 'Help center',
+        },
+        about: {
+          about: 'About',
+          resources: 'Resources',
+          news: 'News',
+          aboutKF: 'About Kids First',
+          community: 'Community',
+          faqs: 'FAQs',
+          data: 'Data',
+          tools: 'Tools',
+          helpCenter: 'Help Center',
+          articles: 'Articles',
+          events: 'Events',
+          press: 'Press',
+          partner: 'Kids First Partner Institutions',
+        },
+        socials: {
+          follow: 'Follow @kidsfirstdrc',
+          email: 'Email kids first',
+          privacy: 'Privacy policy',
+          cookies: 'Cookies',
+        },
+        legal: {
+          description:
+            'The Kids First Data Resource Center (“DRC”) comprises partnered institutions supported by the NIH Common Fund under Award Number U2CHL138346 as part of the Common Fund’s Gabriella Miller Kids First Pediatric Research Program (“Kids First”). All content, terms and conditions and policies associated with the DRC Portal and Website (the “Services”) are produced by the DRC. The views and opinions of authors expressed on the Services do not necessarily state or reflect those of the National Institutes of Health (“NIH”) or the U.S. government. Furthermore, the NIH does not endorse or promote any DRC entity or any of its products or services nor guarantees the products, services, or information provided by the DRC.',
+          mention: '© 2024 Gabriella Miller Kids First Data Resource Center. All rights reserved.',
+        },
+      },
       datarelease: {
         title: 'Available Data',
       },
@@ -607,7 +717,7 @@ const en = {
         'Accelerating research and promoting new discoveries for children affected with cancer and structural birth defects.',
       accessLargeScale:
         'Data from over {count} samples, including whole genome sequencing (WGS) and RNA-Sequencing, is available to empower your research today.',
-      login: 'Login',
+      login: 'Log in',
       signup: 'Sign up',
     },
     dashboard: {

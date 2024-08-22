@@ -1,0 +1,35 @@
+.gradientHeader {
+  position: relative;
+}
+
+.gradientHeader .banner {
+  margin-left: 70px;
+  margin-right: 38px;
+  position: relative;
+  z-index: 1;
+}
+
+.gradientHeader .gradient {
+  position: absolute;
+  top: 54px;
+  bottom: 0;
+  left: 32px;
+  right: 0;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  background: linear-gradient(56deg, var(--secondary-gradient-1) 0.64%, var(--secondary-gradient-2) 17.42%, var(--secondary-gradient-3) 39.14%, var(--secondary-gradient-4) 58.88%, var(--secondary-gradient-5) 76.65%, var(--secondary-gradient-6) 90.47%, var(--secondary-gradient-7) 99.36%);
+  opacity: 0.75;
+}
+
+@media (max-width: 1024px) {
+  .gradientHeader .banner {
+    margin: 0;
+  }
+
+  .gradientHeader .gradient {
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+

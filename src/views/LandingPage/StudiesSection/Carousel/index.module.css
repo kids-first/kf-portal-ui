@@ -1,0 +1,49 @@
+.carouselContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.carouselContainer .carousel {
+  width: auto;
+}
+
+.carouselContainer .button:global(.ant-btn-default.ant-btn-background-ghost) {
+  border-color: var(--magenta-3);
+  color: var(--magenta-3);
+  width: 40px;
+  height: 40px;
+}
+
+.carouselContainer .wrapper {
+  height: 310px;
+  width: 720px;
+}
+
+.carouselContainer .controls {
+  display: flex;
+  width: 100%;
+}
+
+
+.carouselContainer .controls.previous {
+  justify-content: flex-start;
+}
+
+.carouselContainer .controls.next {
+  justify-content: flex-end;
+}
+
+@media (max-width: 1024px) {
+  .carouselContainer {
+    max-width: 100%;
+  }
+
+  .carouselContainer .wrapper {
+    width: 520px;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+}
