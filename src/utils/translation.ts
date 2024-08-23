@@ -300,7 +300,9 @@ export const getFacetsDictionary = () => ({
     ncit_display_term: 'Diagnosis (NCIT)',
     source_text: 'Diagnosis (Source Text)',
     source_text_tumor_location: 'Tumor Location (Source Text)',
-    diagnosis_mondo: 'Diagnosis (MONDO)',
+  },
+  mondo: {
+    name: 'Diagnosis (MONDO)',
   },
   outcomes: {
     vital_status: 'Vital Status',
@@ -310,9 +312,11 @@ export const getFacetsDictionary = () => ({
   },
   phenotype: {
     age_at_event_days: 'Age at Observed Phenotype (days)',
-    hpo_phenotype_observed: 'Observed Phenotype (HPO)',
     hpo_phenotype_not_observed: 'Not Observed Phenotype (HPO)',
     source_text: 'Observed Phenotype (Source Text)',
+  },
+  observed_phenotype: {
+    name: 'Observed Phenotype (HPO)',
   },
   family_type: 'Family Composition',
   age_at_biospecimen_collection: 'Age at Biospec. Collection (days)',
