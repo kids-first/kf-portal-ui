@@ -78,7 +78,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             count
           }
         }
-        diagnosis__diagnosis_mondo {
+        mondo__name {
           buckets {
             key
             doc_count
@@ -102,7 +102,7 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
-        phenotype__hpo_phenotype_observed {
+        observed_phenotype__name {
           buckets {
             key
             doc_count
