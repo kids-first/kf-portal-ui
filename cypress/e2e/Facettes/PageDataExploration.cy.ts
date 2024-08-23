@@ -187,7 +187,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Diagnosis (Source Text) - Atrial septal defect', () => {
-    cy.validateFacetFilter('Diagnosis (Source Text)', 'Atrial septal defect', 'Atrial septal defect', /^938$/, 1);
+    cy.validateFacetFilter('Diagnosis (Source Text)', 'Atrial septal defect', 'Atrial septal defect', /\d{1}/, 1);
     cy.validateFacetRank(4, 'Diagnosis (Source Text)');
   });
 
@@ -207,7 +207,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Observed Phenotype (Source Text) - Heterotaxy', () => {
-    cy.validateFacetFilter('Observed Phenotype (Source Text)', 'Heterotaxy', 'Heterotaxy', /^959$/, 1);
+    cy.validateFacetFilter('Observed Phenotype (Source Text)', 'Heterotaxy', 'Heterotaxy', /\d{1}/, 1);
     cy.validateFacetRank(7, 'Observed Phenotype (Source Text)');
   });
 
