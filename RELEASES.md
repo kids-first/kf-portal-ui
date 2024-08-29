@@ -1,3 +1,18 @@
+## VERSION 5.7.0 (2024-08-29)
+
+### Features
+
+- [SKFP-1136](https://d3b.atlassian.net/browse/SKFP-1136) Feature: [Data Exploration] Add Phenotype (HPO) & Diagnosis (MONDO) facet view to the Quick Filter search
+- [SKFP-1207](https://d3b.atlassian.net/browse/SKFP-1207) Feature: [Entity Page] Add Histological diagnoses column to Biospecimen table
+
+### Technical / Other changes
+
+- [SKFP-809](https://d3b.atlassian.net/browse/SKFP-809) Issue:[Data Exploration] added missing field for Not Observed Phenotype (HPO) and Observed Phenotype (Source text) in export as TSV
+- [SKFP-1094](https://d3b.atlassian.net/browse/SKFP-1094) Refactor:[UI] Modified the border property across the platform
+- [SKFP-1179](https://d3b.atlassian.net/browse/SKFP-1179) Refactor: [Dashboard] Fixed typo in Authorized Studies widget
+- [SKFP-1222](https://d3b.atlassian.net/browse/SKFP-1222) Issue: [Data Exploration] Remove repeated Phenotype (HPO) in the table for a given participant
+- [SKFP-1235](https://d3b.atlassian.net/browse/SKFP-1235) Refactor:[Data Exploration] Adjusted the alignment of the Quick Filter buttons 
+
 ## VERSION 5.6.1 (2024-08-13)
 
 ### Technical / Other changes
