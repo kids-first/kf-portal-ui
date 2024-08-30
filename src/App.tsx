@@ -88,7 +88,7 @@ const App = () => {
                     element={<FenceRedirect fence={PASSPORT.cavatica} />}
                   />
 
-                  {getFTEnvVarByKey('LANDING_PAGE') ? (
+                  {getFTEnvVarByKey('LANDING_PAGE') === 'true' ? (
                     <Route path={STATIC_ROUTES.LOGIN} element={<LandingPage />} />
                   ) : (
                     <Route

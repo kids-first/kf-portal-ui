@@ -33,6 +33,7 @@ export interface IDiagnosis {
 export interface IStatistics {
   sex: Record<string, number>;
   race: Record<string, number>;
+  ethnicity: Record<string, number>;
   downSyndromeStatus: Record<string, number>;
   diagnosis: IDiagnosis[];
   families: number;

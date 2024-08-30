@@ -23,7 +23,7 @@ const colors = getCommonColors();
 
 const StudiesChart = () => {
   const { stats } = useGlobals();
-  const { sex, race } = stats || {};
+  const { sex, race, ethnicity } = stats || {};
 
   const sexData = [];
   for (const key in sex) {
@@ -40,6 +40,15 @@ const StudiesChart = () => {
       id: key,
       label: key,
       value: race[key],
+    });
+  }
+
+  const ethnicityData = [];
+  for (const key in ethnicity) {
+    ethnicityData.push({
+      id: key,
+      label: key,
+      value: ethnicity[key],
     });
   }
 
@@ -61,7 +70,7 @@ const StudiesChart = () => {
           />
           <PieChart
             title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
-            data={[]}
+            data={ethnicityData}
             colors={colors}
             {...graphSetting}
           />

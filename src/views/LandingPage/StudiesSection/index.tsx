@@ -8,20 +8,13 @@ import LoginCarousel from 'views/LandingPage/StudiesSection/Carousel';
 
 import studiesSvg from 'components/assets/kf-portal-icons_studies_2.svg';
 import { useGlobals } from 'store/global';
-import { fetchStats } from 'store/global/thunks';
 
 import styles from './index.module.css';
 
 const { Paragraph } = Typography;
 
 const StudiesSection = () => {
-  const dispatch = useDispatch();
   const { stats } = useGlobals();
-
-  useEffect(() => {
-    dispatch(fetchStats());
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <div className={styles.studies}>

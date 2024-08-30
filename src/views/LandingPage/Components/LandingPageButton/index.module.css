@@ -41,11 +41,17 @@
   background-color: var(--magenta-7);
 }
 
+.landingPageButton.secondary:hover {
+  color: var(--gray-1);
+  border-color: var(--magenta-8);
+  background-color: var(--magenta-8);
+}
+
 .landingPageButton.secondary:focus, 
 .landingPageButton.secondary:active {
   color: var(--gray-1);
-  border-color: var(--magenta-5);
-  background-color: var(--magenta-5);
+  border-color: var(--magenta-9);
+  background-color: var(--magenta-9);
 }
 
 .landingPageButton.secondary:focus-visible {
