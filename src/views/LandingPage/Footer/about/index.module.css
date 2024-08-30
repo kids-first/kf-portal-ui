@@ -1,0 +1,34 @@
+.about {
+  display: flex;
+  flex: 1 0 0;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.about .navigation {
+  display: flex;
+  gap: 40px;
+}
+
+.about .navigation .row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about .navigation .link {
+  color: var(--gray-1);
+
+}
+
+.about .partners {
+  display: flex;
+  gap: 48px;
+}
+
+.about .partners .row {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

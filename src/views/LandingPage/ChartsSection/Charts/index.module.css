@@ -1,0 +1,13 @@
+.statsCharts {
+  display: flex;
+  flex-grow: 1;
+  padding-top: 80px;
+  gap: 40px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .statsCharts {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,10 @@
+.socials {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+}
+
+.socials a {
+  color: var(--gray-1);
+}

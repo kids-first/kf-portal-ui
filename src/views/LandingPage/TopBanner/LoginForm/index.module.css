@@ -1,0 +1,18 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding-bottom: 24px;
+}
+
+.login .logo {
+  padding: 10px 0px;
+}
+
+.login .small {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.17px;
+}
+
