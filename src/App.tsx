@@ -9,7 +9,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
-import { getEnvVarByKey } from 'helpers/EnvVariables';
+import { getEnvVarByKey, getFTEnvVarByKey } from 'helpers/EnvVariables';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import ProtectedRoute from 'ProtectedRoute';
 import ApolloProvider from 'provider/ApolloProvider';
@@ -18,6 +18,7 @@ import { GraphqlBackend } from 'provider/types';
 import ErrorPage from 'views/Error';
 import FakeStorybook from 'views/FakeStorybook';
 import FenceRedirect from 'views/FenceRedirect';
+import LandingPage from 'views/LandingPage';
 import Login from 'views/Login';
 import ParticipantEntity from 'views/ParticipantEntity';
 import ProfileView from 'views/Profile/View';
@@ -86,17 +87,22 @@ const App = () => {
                     path={STATIC_ROUTES.CAVATICA_PASSPORT_REDIRECT}
                     element={<FenceRedirect fence={PASSPORT.cavatica} />}
                   />
-                  <Route
-                    path={STATIC_ROUTES.LOGIN}
-                    element={
-                      <>
-                        <GradientAccent isFixed />
-                        <SideImageLayout sideImgSrc={MainSideImage}>
-                          <Login />
-                        </SideImageLayout>
-                      </>
-                    }
-                  />
+
+                  {getFTEnvVarByKey('LANDING_PAGE') ? (
+                    <Route path={STATIC_ROUTES.LOGIN} element={<LandingPage />} />
+                  ) : (
+                    <Route
+                      path={STATIC_ROUTES.LOGIN}
+                      element={
+                        <>
+                          <GradientAccent isFixed />
+                          <SideImageLayout sideImgSrc={MainSideImage}>
+                            <Login />
+                          </SideImageLayout>
+                        </>
+                      }
+                    />
+                  )}
                   <Route path={DYNAMIC_ROUTES.ERROR} element={<ErrorPage />} />
                   <Route
                     path={STATIC_ROUTES.DASHBOARD}

@@ -1,0 +1,15 @@
+.wrapper {
+  width: 100%;
+}
+
+.contentCard {
+  height: 270px !important;
+}
+
+
+.chartRowWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 232px;
+}

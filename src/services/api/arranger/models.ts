@@ -25,13 +25,26 @@ export type Suggestion = {
   ensembl_gene_id?: string;
 };
 
+export interface IDiagnosis {
+  mondo_id: string;
+  count: number;
+}
+
 export interface IStatistics {
+  sex: Record<string, number>;
+  race: Record<string, number>;
+  downSyndromeStatus: Record<string, number>;
+  diagnosis: IDiagnosis[];
   families: number;
   fileSize: string;
   files: number;
   participants: number;
   samples: number;
   studies: number;
+  studiesParticipants: Record<string, number>;
+  genomes: number;
+  variants: number;
+  transcriptomes: number;
 }
 
 export interface ArrangerSingleColumnState {

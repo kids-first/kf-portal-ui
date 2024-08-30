@@ -1,0 +1,29 @@
+.landingPageParagraph {
+  color: var(--gray-1);
+  font-family: "Source Sans Pro";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: 0.15px;
+}
+
+.landingPageParagraph.lead {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 30px */
+  letter-spacing: 0.15px;
+}
+
+.landingPageParagraph.lead.bold {
+  font-weight: 600;
+}
+
+.landingPageParagraph.small {
+  font-size: 14px;
+}
+
+.landingPageParagraph:global(.ant-typography) {
+  margin: 0;
+}

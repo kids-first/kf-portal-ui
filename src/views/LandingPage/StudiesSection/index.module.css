@@ -1,0 +1,103 @@
+.studies {
+  background-color: var(--gray-1);
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  padding-bottom: 80px;
+  width: 100%;
+}
+
+.studies .content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 1488px;
+  gap: 24px;
+}
+
+.studies .content .title {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+  margin-bottom: 64px;
+  width: 100%;
+}
+
+.studies .content .contentContainer {
+  display: flex;
+  align-items: center;
+  max-width: 1488px;
+  width: 100%;
+}
+
+.studies .content .contentContainer .studiesData {
+  background: var(--geekblue-1);
+  border-radius: 20px 0px 0px 20px;
+  display: flex;
+  max-width: 480px;
+  width: 480px;
+  padding: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.studies .content .contentContainer .titleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.studies .content .contentContainer .titleContainer h1 {
+  margin: 0;
+}
+
+.studies .content .contentContainer .subtitle {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+}
+
+.studies .content .contentContainer .carouselContainer {
+  border-radius: 0px 20px 20px 0px;
+  background: radial-gradient(50% 50% at 50% 50%, var(--primary-gradient) 0%, rgba(34, 43, 92, 0.60) 100%), var(--primary-gradient);
+  padding: 48px 32px;
+  max-width: 1008px;
+  width: 1008px;
+}
+
+.carouselContainer :global(.ant-carousel) {
+  width: 100%;
+}
+
+@media (max-width: 1488px) {
+  .studies .content .contentContainer .studiesData {
+    flex-shrink: 1;
+  }
+
+  .studies .content .contentContainer .carouselContainer {
+    flex-shrink: 1;
+    width: auto;
+  }
+
+  .studies .content .contentContainer .studiesData {
+    width: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .studies {
+    padding: 24px 0;
+  }
+
+  .studies .content {
+    max-width: 100%;
+  }
+
+  .contentContainer {
+    justify-content: center;
+  }
+
+}

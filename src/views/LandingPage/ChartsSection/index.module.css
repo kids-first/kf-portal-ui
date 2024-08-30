@@ -1,0 +1,47 @@
+.chartsSection {
+  background-color: var(--purple-gradient-1);
+  background: linear-gradient(90deg, var(--purple-gradient-1) 0%, var(--purple-gradient-2) 37%, var(--purple-gradient-3) 65%, var(--purple-gradient-4) 100%);
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  padding: 112px 24px;
+  width: 100%;
+}
+
+.chartsSection .content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1488px;
+  gap: 24px;
+  width: 100%;
+}
+
+.chartsSection .descriptionSection {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.chartsSection .statsCharts {
+  width: 100%;
+}
+
+.chartsSection .getStarted {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 603px;
+}
+
+@media (max-width: 1024px) {
+  .chartsSection .descriptionSection {
+    flex-direction: column;
+  }
+
+  .chartsSection .getStarted {
+    align-items: center;
+    max-width: 100%;
+    width: auto;
+  }
+}
