@@ -11,6 +11,10 @@
   gap: 40px;
 }
 
+.about .navigation a:hover {
+  text-decoration: underline;
+}
+
 .about .navigation .row {
   display: flex;
   flex-direction: column;

@@ -15,12 +15,23 @@ type TCarouselCard = {
   tags: string[];
 };
 
+const MAX_LENGTH = 600;
+const clampText = (text: string): string => {
+  if (text.length > MAX_LENGTH) {
+    return `${text.substring(0, MAX_LENGTH)}…`;
+  }
+
+  return text;
+};
+
 export const CarouselCard = ({ title, description, participants, tags }: TCarouselCard) => (
   <div className={styles.carouselCard}>
     <LandingPageTitle className={styles.title} level={4} margin={16}>
       {title}
     </LandingPageTitle>
-    <LandingPageParagraph>{description}</LandingPageParagraph>
+    <LandingPageParagraph className={styles.description}>
+      {clampText(description)}
+    </LandingPageParagraph>
     <Divider className={styles.divider} />
     <Space>
       <span className={styles.participant}>

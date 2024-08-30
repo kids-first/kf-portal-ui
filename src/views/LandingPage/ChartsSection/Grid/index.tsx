@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import intl from 'react-intl-universal';
-import { useDispatch } from 'react-redux';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
 
 import biosamplesSvg from 'components/assets/kf-portal-icons_biosamples.svg';
@@ -10,7 +8,6 @@ import genomesSvg from 'components/assets/kf-portal-icons_genomes.svg';
 import participantSvg from 'components/assets/kf-portal-icons_participants_3.svg';
 import studiesSvg from 'components/assets/kf-portal-icons_studies_1.svg';
 import { useGlobals } from 'store/global';
-import { fetchStats } from 'store/global/thunks';
 
 import styles from './index.module.css';
 
@@ -31,13 +28,8 @@ const Stats = ({ src, data, description }: TGrid): JSX.Element => (
 );
 
 const StatsGrid = () => {
-  const dispatch = useDispatch();
   const { stats } = useGlobals();
 
-  useEffect(() => {
-    dispatch(fetchStats());
-    // eslint-disable-next-line
-  }, []);
   return (
     <div className={styles.statsGrid}>
       <div className={styles.row}>

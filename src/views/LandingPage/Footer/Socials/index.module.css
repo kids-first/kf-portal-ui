@@ -8,3 +8,7 @@
 .socials a {
   color: var(--gray-1);
 }
+
+.socials a:hover {
+  text-decoration: underline;
+}

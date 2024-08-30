@@ -1,8 +1,6 @@
-import { RootState } from "store/types";
-import { initialState } from "store/global/types";
+import { initialState } from 'store/global/types';
+import { RootState } from 'store/types';
 
 export type GlobalProps = initialState;
 
-export const globalSelector = (state: RootState) => {
-  return state.global;
-};
+export const globalSelector = (state: RootState) => state.global;

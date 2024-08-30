@@ -2,9 +2,9 @@ import intl from 'react-intl-universal';
 import { Divider } from 'antd';
 import cx from 'classnames';
 import LandingPageParagraph from 'views/LandingPage/Components/LandingPageParagraph';
-import About from 'views/LandingPage/Footer/about';
+import About from 'views/LandingPage/Footer/About';
 import FooterCard from 'views/LandingPage/Footer/Card';
-import Socials from 'views/LandingPage/Footer/socials';
+import Socials from 'views/LandingPage/Footer/Socials';
 
 import styles from './index.module.css';
 
