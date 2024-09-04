@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
 import intl from 'react-intl-universal';
-import { useDispatch } from 'react-redux';
 import { Typography } from 'antd';
 import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';

@@ -1,5 +1,6 @@
 .gradientHeader {
   position: relative;
+  width: 707px;
 }
 
 .gradientHeader .banner {
@@ -21,15 +22,35 @@
   opacity: 0.75;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .gradientHeader {
+    margin-top: 25px;
+  }
+
   .gradientHeader .banner {
-    margin: 0;
+    margin-left: 0;
   }
 
   .gradientHeader .gradient {
+    left: 48px;
+    right: 120px;
+  }
+}
+
+@media (max-width: 900px) {
+  .gradientHeader {
+    position: absolute;
+    opacity: .1;
+  }
+
+  .gradientHeader .banner {
     top: 0;
-    left: 0;
-    right: 0;
+    margin: 0;
+    z-index: 0;
+  }
+
+  .gradientHeader .gradient {
+    display: none;
   }
 }
 

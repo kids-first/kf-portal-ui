@@ -26,7 +26,6 @@
   width: 100%;
 }
 
-
 .carouselContainer .controls.previous {
   justify-content: flex-start;
 }
@@ -35,15 +34,22 @@
   justify-content: flex-end;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .carouselContainer {
     max-width: 100%;
   }
 
   .carouselContainer .wrapper {
-    width: 520px;
+    width: 720px;
     gap: 24px;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .carouselContainer {
+    max-width: 100%;
+    gap: 16px;
   }
 }

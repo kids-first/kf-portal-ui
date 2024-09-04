@@ -12,3 +12,13 @@
 .socials a:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 900px) {
+  .socials {
+    justify-content: center;
+  }
+
+  .socials .email {
+    width: auto;
+  }
+}

@@ -37,3 +37,13 @@
   flex-direction: column;
   gap: 16px;
 }
+
+@media (max-width: 900px) {
+  .footer .cards {
+    flex-direction: column;
+  }
+  
+  .footer .legals {
+    text-align: center;
+  }
+}

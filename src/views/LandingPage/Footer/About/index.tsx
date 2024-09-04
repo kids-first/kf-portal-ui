@@ -59,7 +59,7 @@ const About = () => (
       </div>
     </div>
     <div>
-      <LandingPageTitle level={4} margin={16}>
+      <LandingPageTitle className={styles.partnersTitle} level={4} margin={16}>
         {intl.get('screen.loginPage.footer.about.partner')}
       </LandingPageTitle>
       <div className={styles.partners}>

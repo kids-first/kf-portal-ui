@@ -13,11 +13,11 @@ type TLandingPageButton = ButtonProps & {
 
 const LandingPageButton = ({ alt = false, external = false, ...rest }: TLandingPageButton) => (
   <Button
+    {...rest}
     className={cx(styles.landingPageButton, rest.className, {
       [styles.primary]: !alt,
       [styles.secondary]: alt,
     })}
-    {...rest}
   >
     {rest.children} {external && <ExternalIcon />}
   </Button>

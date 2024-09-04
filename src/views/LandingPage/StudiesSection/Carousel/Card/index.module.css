@@ -32,13 +32,23 @@
   background-color: var(--magenta-7);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .carouselContainer {
     max-width: 100%;
   }
 
   .carouselContainer .wrapper {
-    width: auto;
+    width: 720px;
+  }
+}
+
+@media (max-width: 900px) {
+  .carouselContainer {
+    max-width: 100%;
+  }
+
+  .carouselContainer .wrapper {
+    width: 100%;
   }
 }
 

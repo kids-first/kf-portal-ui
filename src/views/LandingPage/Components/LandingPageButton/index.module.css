@@ -84,3 +84,11 @@
   border-color: var(--magenta-3);
   background-color: transparent;
 }
+
+@media (max-width: 900px) {
+  .landingPageButton {
+    justify-content: center;
+    width: 400px;
+    max-width: 400px;
+  }
+}

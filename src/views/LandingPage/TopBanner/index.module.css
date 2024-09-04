@@ -24,26 +24,29 @@
 }
 
 @media (max-width: 1488px) {
+  .contentContainer {
+    gap: 0;
+  }
+}
+
+@media (max-width: 1200px) {
   .topBanner {
     background-position: center;
     background-size: auto 100%;
-    padding: 40px 40px 0 40px;
   }
   .contentContainer {
     gap: 24px;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .topBanner {
     padding: 0;
     align-items: start;
   }
-  .contentContainer {
-    flex-direction: column;
-  }
 
-  .content {
-    max-width: 520px;
+  .contentContainer {
+    flex-direction: column-reverse;
+    gap: 0;
   }
 }

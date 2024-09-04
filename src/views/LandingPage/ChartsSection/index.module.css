@@ -34,7 +34,13 @@
   max-width: 603px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .chartsSection .getStarted {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 900px) {
   .chartsSection .descriptionSection {
     flex-direction: column;
   }
@@ -44,4 +50,5 @@
     max-width: 100%;
     width: auto;
   }
+
 }

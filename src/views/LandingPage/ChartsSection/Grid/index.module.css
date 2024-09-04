@@ -44,7 +44,14 @@
 }
 
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .statsGrid {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 900px) {
   .statsGrid {
     align-items: center;
     justify-content: center;

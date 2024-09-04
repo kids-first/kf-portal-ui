@@ -32,7 +32,12 @@ const Socials = () => (
     <LandingPageParagraph>
       {intl.get('screen.loginPage.footer.socials.follow')}
     </LandingPageParagraph>
-    <LandingPageButton type="primary" size="large" href="mailto:support@kidsfirstdrc.org">
+    <LandingPageButton
+      className={styles.email}
+      type="primary"
+      size="large"
+      href="mailto:support@kidsfirstdrc.org"
+    >
       {intl.get('screen.loginPage.footer.socials.email')}
     </LandingPageButton>
     <a href="https://kidsfirstdrc.org/policies/#privacy">

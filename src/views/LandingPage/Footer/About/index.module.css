@@ -36,3 +36,25 @@
   flex-direction: column;
   gap: 24px;
 }
+
+@media (max-width: 900px) {
+  .about {
+    flex-direction: column;
+  }
+
+  .about .navigation {
+    margin-bottom: 56px;
+  }
+
+  .about .row {
+    width: 100%;
+  }
+
+  .about .partners {
+    text-align: center;
+  }
+
+  .about .partnersTitle {
+    text-align: center;
+  }
+}
