@@ -1,55 +1,55 @@
 .carouselContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
 }
 
 .carouselContainer .carousel {
-  width: auto;
+    width: auto;
 }
 
 .carouselContainer .button:global(.ant-btn-default.ant-btn-background-ghost) {
-  border-color: var(--magenta-3);
-  color: var(--magenta-3);
-  width: 40px;
-  height: 40px;
+    border-color: var(--magenta-3);
+    color: var(--magenta-3);
+    width: 40px;
+    height: 40px;
 }
 
 .carouselContainer .wrapper {
-  height: 310px;
-  width: 720px;
+    max-width: 720px;
+    width: 100%
 }
 
 .carouselContainer .controls {
-  display: flex;
-  width: 100%;
+    display: flex;
+    width: 100%;
 }
 
 .carouselContainer .controls.previous {
-  justify-content: flex-start;
+    justify-content: flex-start;
 }
 
 .carouselContainer .controls.next {
-  justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 @media (max-width: 1200px) {
-  .carouselContainer {
-    max-width: 100%;
-  }
+    .carouselContainer {
+        max-width: 100%;
+    }
 
-  .carouselContainer .wrapper {
-    width: 720px;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
-  }
+    .carouselContainer .wrapper {
+        max-width: 720px;
+        gap: 24px;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 900px) {
-  .carouselContainer {
-    max-width: 100%;
-    gap: 16px;
-  }
+    .carouselContainer {
+        max-width: 100%;
+        gap: 16px;
+    }
 }

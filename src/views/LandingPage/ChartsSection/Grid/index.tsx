@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import intl from 'react-intl-universal';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
 
@@ -17,7 +18,7 @@ type TGrid = {
   description: string;
 };
 
-const Stats = ({ src, data, description }: TGrid): JSX.Element => (
+const Stats = ({ src, data, description }: TGrid): ReactElement => (
   <div className={styles.stats}>
     <img src={src} className={styles.icon} />
     <div className={styles.container}>
@@ -32,44 +33,40 @@ const StatsGrid = () => {
 
   return (
     <div className={styles.statsGrid}>
-      <div className={styles.row}>
-        <Stats
-          src={studiesSvg}
-          data={numberFormat(stats?.studies ?? 0)}
-          description={intl.get('screen.loginPage.chartsSection.stats.studies')}
-        />
+      <Stats
+        src={studiesSvg}
+        data={numberFormat(stats?.studies ?? 0)}
+        description={intl.get('screen.loginPage.chartsSection.stats.studies')}
+      />
 
-        <Stats
-          src={participantSvg}
-          data={numberFormat(stats?.participants ?? 0)}
-          description={intl.get('screen.loginPage.chartsSection.stats.participants')}
-        />
+      <Stats
+        src={participantSvg}
+        data={numberFormat(stats?.participants ?? 0)}
+        description={intl.get('screen.loginPage.chartsSection.stats.participants')}
+      />
 
-        <Stats
-          src={genomesSvg}
-          data={`${numberFormat(stats?.variants ?? 0)}+`}
-          description={intl.get('screen.loginPage.chartsSection.stats.variants')}
-        />
-      </div>
-      <div className={styles.row}>
-        <Stats
-          src={biosamplesSvg}
-          data={numberFormat(stats?.samples ?? 0)}
-          description={intl.get('screen.loginPage.chartsSection.stats.biospecimens')}
-        />
+      <Stats
+        src={genomesSvg}
+        data={`${numberFormat(stats?.variants ?? 0)}+`}
+        description={intl.get('screen.loginPage.chartsSection.stats.variants')}
+      />
+      <Stats
+        src={biosamplesSvg}
+        data={numberFormat(stats?.samples ?? 0)}
+        description={intl.get('screen.loginPage.chartsSection.stats.biospecimens')}
+      />
 
-        <Stats
-          src={cloudSaveSvg}
-          data={stats?.fileSize ?? 0}
-          description={intl.get('screen.loginPage.chartsSection.stats.files')}
-        />
+      <Stats
+        src={cloudSaveSvg}
+        data={stats?.fileSize ?? 0}
+        description={intl.get('screen.loginPage.chartsSection.stats.files')}
+      />
 
-        <Stats
-          src={biospecimensSvg}
-          data={numberFormat(stats?.genomes ?? 0)}
-          description={intl.get('screen.loginPage.chartsSection.stats.genomes')}
-        />
-      </div>
+      <Stats
+        src={biospecimensSvg}
+        data={numberFormat(stats?.genomes ?? 0)}
+        description={intl.get('screen.loginPage.chartsSection.stats.genomes')}
+      />
     </div>
   );
 };

@@ -1,54 +1,53 @@
 .carouselCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .carouselCard .divider {
-  border-top-color: var(--geekblue-3);
-  margin-bottom: 8px;
+    border-top-color: var(--geekblue-3);
+    margin-bottom: 8px;
 }
 
 .carouselCard .title {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+.carouselCard .footer {
+    flex-wrap: wrap;
 }
 
 .carouselCard .participant {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-right: 32px;
 }
 
 .carouselCard .tag {
-  color: var(--gray-1);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 2px 8px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border-radius: 100px;
-  background-color: var(--magenta-7);
+    color: var(--gray-1);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 100px;
+    background-color: var(--magenta-7);
 }
 
 @media (max-width: 1200px) {
-  .carouselContainer {
-    max-width: 100%;
-  }
-
-  .carouselContainer .wrapper {
-    width: 720px;
-  }
+    .carouselContainer {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 900px) {
-  .carouselContainer {
-    max-width: 100%;
-  }
+    .carouselContainer {
+        max-width: 100%;
+    }
 
-  .carouselContainer .wrapper {
-    width: 100%;
-  }
+    .carouselContainer .wrapper {
+        width: 100%;
+    }
 }
 

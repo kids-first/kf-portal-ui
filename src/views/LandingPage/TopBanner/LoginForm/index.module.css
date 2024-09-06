@@ -1,70 +1,77 @@
 .login {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  text-align: left;
-  padding-bottom: 24px;
-  gap: 24px;
-  min-width: 606px;
-  z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+    padding-bottom: 24px;
+    gap: 24px;
+    min-width: 606px;
+    z-index: 10;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 .login .logo {
-  padding: 10px 0px;
-  width: 117px;
-  height: auto;
+    padding: 10px 0px;
+    width: 117px;
+    height: auto;
 }
 
 .login .small {
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0.17px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.17px;
 }
 
 .login .text {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 
 .login .text .description {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .login .buttons {
-  display: flex;
-  gap: 16px;
+    display: flex;
+    gap: 16px;
 }
 
 @media (max-width: 1200px) {
-  .login {
-    min-width: 579px;
-    margin-bottom: 40px;
-  }
+    .login {
+        min-width: 579px;
+        margin-bottom: 40px;
+    }
 
-  .login .text .description,
-  .login .buttons,
-  .login .text {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
+    .login .text .description,
+    .login .buttons,
+    .login .text {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 
-  .login .buttons button {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-  }
+    .login .buttons button {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 
 @media (max-width: 900px) {
-  .login {
-    padding-top: 80px;
-    height: 629px;
-  }
+    .login {
+        min-width: 0;
+        padding-top: 40px;
+        margin-bottom: 0;
+    }
+
+    .login .buttons {
+        flex-wrap: wrap;
+    }
 }

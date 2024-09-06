@@ -21,7 +21,6 @@ const CollaboratorSection = () => {
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      // eslint-disable-next-line max-len
       redirectUri: `${window.location.origin}/${
         query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
       }`,
@@ -42,21 +41,21 @@ const CollaboratorSection = () => {
         </div>
         <div className={styles.contentContainer}>
           <CollaboratorCard
-            icon={<img src={GeneticEngineering} />}
+            icon={<img src={GeneticEngineering} className={styles.logo} />}
             title={intl.get('screen.loginPage.collaborationSection.variant.title')}
             description={intl.get('screen.loginPage.collaborationSection.variant.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.variant.button')}
           />
           <CollaboratorCard
             alt
-            icon={<img src={Cavatica} />}
+            icon={<img src={Cavatica} className={styles.logo} />}
             description={intl.get('screen.loginPage.collaborationSection.cavatica.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.cavatica.button')}
             external
             handleClick={handleSignin}
           />
           <CollaboratorCard
-            icon={<img src={Pedcbioportal} />}
+            icon={<img src={Pedcbioportal} className={styles.logo} />}
             alt
             description={intl.get(
               'screen.loginPage.collaborationSection.pedcbioportal.description',
