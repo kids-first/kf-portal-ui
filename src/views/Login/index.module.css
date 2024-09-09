@@ -159,7 +159,7 @@
   .loginButtons > div {
     width: 100%;
   }
-  .loginButtons > div [type=button] {
+  .loginButtons > div [type='button'] {
     width: 100%;
   }
 }

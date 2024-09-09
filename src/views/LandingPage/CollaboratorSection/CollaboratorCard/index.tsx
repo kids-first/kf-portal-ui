@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { ReactNode } from 'react';
 import cx from 'classnames';
 import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageParagraph from 'views/LandingPage/Components/LandingPageParagraph';
@@ -7,7 +7,7 @@ import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 import styles from './index.module.css';
 
 type TCollaboratorCard = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   alt?: boolean;
   title?: string;
   external?: boolean;

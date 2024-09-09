@@ -27,11 +27,11 @@ export const LoginForm = () => {
   };
 
   return (
-    <Space className={styles.login} align="start" size={24}>
-      <Space direction="vertical" size={24}>
+    <div className={styles.login}>
+      <div className={styles.text}>
         <img className={styles.logo} src={logo} alt="kids-first-logo" />
         <LandingPageTitle>{intl.get('screen.loginPage.topBanner.title')}</LandingPageTitle>
-        <Space direction="vertical" size={16}>
+        <div className={styles.description}>
           <LandingPageParagraph lead>
             {intl.get('screen.loginPage.topBanner.subtitle1')}
           </LandingPageParagraph>
@@ -41,16 +41,16 @@ export const LoginForm = () => {
           <LandingPageParagraph className={styles.small}>
             {intl.get('screen.loginPage.topBanner.subtitle3')}
           </LandingPageParagraph>
-        </Space>
-      </Space>
-      <Space size={16}>
+        </div>
+      </div>
+      <div className={styles.buttons}>
         <LandingPageButton onClick={handleSignin} size="large">
           {intl.get('screen.loginPage.signup')}
         </LandingPageButton>
         <LandingPageButton alt onClick={handleSignin} size="large">
           {intl.get('screen.loginPage.login')}
         </LandingPageButton>
-      </Space>
-    </Space>
+      </div>
+    </div>
   );
 };

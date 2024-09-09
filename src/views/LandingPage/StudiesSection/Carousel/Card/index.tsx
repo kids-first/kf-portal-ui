@@ -33,7 +33,7 @@ export const CarouselCard = ({ title, description, participants, tags }: TCarous
       {clampText(description)}
     </LandingPageParagraph>
     <Divider className={styles.divider} />
-    <Space>
+    <Space className={styles.footer}>
       <span className={styles.participant}>
         <img src={participantSvg} width={40} height={40} />
         <Space>

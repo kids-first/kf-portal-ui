@@ -59,34 +59,28 @@ const About = () => (
       </div>
     </div>
     <div>
-      <LandingPageTitle level={4} margin={16}>
+      <LandingPageTitle className={styles.partnersTitle} level={4} margin={16}>
         {intl.get('screen.loginPage.footer.about.partner')}
       </LandingPageTitle>
       <div className={styles.partners}>
-        <div className={styles.row}>
-          <a href="https://d3b.center/" target="_blank">
-            <img src={chop} />
-          </a>
-          <a href="https://www.chusj.org/Home" target="_blank">
-            <img src={chu} />
-          </a>
-        </div>
-        <div className={styles.row}>
-          <a href="https://www.unchealth.org/home" target="_blank">
-            <img src={unc} />
-          </a>
-          <a href="https://ctds.uchicago.edu/" target="_blank">
-            <img src={chicago} />
-          </a>
-        </div>
-        <div className={styles.row}>
-          <a href="https://velsera.com/" target="_blank">
-            <img src={versera} />
-          </a>
-          <a href="https://medschool.vanderbilt.edu/" target="_blank">
-            <img src={vanderbilt} />
-          </a>
-        </div>
+        <a href="https://d3b.center/" target="_blank">
+          <img src={chop} />
+        </a>
+        <a href="https://www.chusj.org/Home" target="_blank">
+          <img src={chu} />
+        </a>
+        <a href="https://www.unchealth.org/home" target="_blank">
+          <img src={unc} />
+        </a>
+        <a href="https://ctds.uchicago.edu/" target="_blank">
+          <img src={chicago} />
+        </a>
+        <a href="https://velsera.com/" target="_blank">
+          <img src={versera} />
+        </a>
+        <a href="https://medschool.vanderbilt.edu/" target="_blank">
+          <img src={vanderbilt} />
+        </a>
       </div>
     </div>
   </div>

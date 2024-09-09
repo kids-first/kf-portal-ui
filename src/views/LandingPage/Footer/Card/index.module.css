@@ -3,3 +3,11 @@
   flex-direction: column;
   gap: 24px;
 }
+
+@media (max-width: 900px) {
+  .footerCard {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}

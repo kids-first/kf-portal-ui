@@ -4,7 +4,7 @@ import styles from './index.module.css';
 
 export const GradientHeader = () => (
   <div className={styles.gradientHeader}>
-    <img className={styles.banner} src={header} width="auto" height="562px" />
+    <img className={styles.banner} src={header} alt="banner-image" />
     <div className={styles.gradient} />
   </div>
 );

@@ -18,7 +18,6 @@ const ChartsSection = () => {
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      // eslint-disable-next-line max-len
       redirectUri: `${window.location.origin}/${
         query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
       }`,

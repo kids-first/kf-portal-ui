@@ -3,6 +3,6 @@
   flex-direction: column;
   justify-content: center;
   background-color: var(--gray-2);
-  font-family: "Source Sans Pro";
+  font-family: 'Source Sans Pro';
+  overflow: hidden;
 }
-

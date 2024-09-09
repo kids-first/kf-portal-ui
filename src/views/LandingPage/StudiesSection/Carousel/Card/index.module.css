@@ -1,8 +1,8 @@
 .carouselCard {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 310px;
 }
 
 .carouselCard .divider {
@@ -12,6 +12,10 @@
 
 .carouselCard .title {
   margin-bottom: 16px;
+}
+
+.carouselCard .footer {
+  flex-wrap: wrap;
 }
 
 .carouselCard .participant {
@@ -32,13 +36,18 @@
   background-color: var(--magenta-7);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .carouselContainer {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
   .carouselContainer {
     max-width: 100%;
   }
 
   .carouselContainer .wrapper {
-    width: auto;
+    width: 100%;
   }
 }
-

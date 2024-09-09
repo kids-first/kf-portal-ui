@@ -1,12 +1,22 @@
+.carouselContainer * {
+  min-height: 0;
+  min-width: 0;
+}
+
 .carouselContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 32px;
-}
-
-.carouselContainer .carousel {
-  width: auto;
+  background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--primary-gradient) 0%,
+      rgba(34, 43, 92, 0.6) 100%
+    ),
+    var(--primary-gradient);
+  border-radius: 0 20px 20px 0;
+  padding: 48px 32px;
+  width: 100%;
 }
 
 .carouselContainer .button:global(.ant-btn-default.ant-btn-background-ghost) {
@@ -14,36 +24,34 @@
   color: var(--magenta-3);
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
 }
 
-.carouselContainer .wrapper {
-  height: 310px;
-  width: 720px;
-}
-
-.carouselContainer .controls {
-  display: flex;
+.carousel {
+  max-width: 720px;
   width: 100%;
 }
 
-
-.carouselContainer .controls.previous {
-  justify-content: flex-start;
-}
-
-.carouselContainer .controls.next {
-  justify-content: flex-end;
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .carouselContainer {
-    max-width: 100%;
+    border-radius: 0 0 20px 20px;
+    padding: 36px 24px;
   }
 
-  .carouselContainer .wrapper {
-    width: 520px;
+  .carousel {
     gap: 24px;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .carouselContainer {
+    gap: 16px;
+  }
+
+  .carouselContainer .button:global(.ant-btn-default.ant-btn-background-ghost) {
+    width: 32px;
+    height: 32px;
   }
 }

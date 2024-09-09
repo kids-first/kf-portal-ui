@@ -1,9 +1,14 @@
 .topBanner {
   background: var(--primary-gradient);
-  background: radial-gradient(50% 50% at 50% 50%, var(--primary-gradient) 0%, rgba(34, 43, 92, 0.60) 100%), var(--primary-gradient);
+  background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--primary-gradient) 0%,
+      rgba(34, 43, 92, 0.6) 100%
+    ),
+    var(--primary-gradient);
   background-repeat: no-repeat;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
   padding: 106px 24px 0 24px;
 }
@@ -24,26 +29,30 @@
 }
 
 @media (max-width: 1488px) {
+  .contentContainer {
+    gap: 0;
+  }
+}
+
+@media (max-width: 1200px) {
   .topBanner {
     background-position: center;
     background-size: auto 100%;
-    padding: 40px 40px 0 40px;
   }
+
   .contentContainer {
     gap: 24px;
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .topBanner {
     padding: 0;
     align-items: start;
   }
-  .contentContainer {
-    flex-direction: column;
-  }
 
-  .content {
-    max-width: 520px;
+  .contentContainer {
+    flex-direction: column-reverse;
+    gap: 0;
   }
 }
