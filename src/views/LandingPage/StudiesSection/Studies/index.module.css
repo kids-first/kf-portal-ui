@@ -1,0 +1,51 @@
+.studiesContainer {
+    max-width: 480px;
+    width: 100%;
+    background: var(--geekblue-1);
+    padding: 40px;
+    border-radius: 20px 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+}
+
+.titleContainer h1 {
+    margin: 0;
+}
+
+.studies .content .contentContainer .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.15px;
+}
+
+.studies .content .contentContainer .carouselContainer {
+    border-radius: 0 20px 20px 0;
+    background: radial-gradient(50% 50% at 50% 50%, var(--primary-gradient) 0%, rgba(34, 43, 92, 0.60) 100%), var(--primary-gradient);
+    padding: 48px 32px;
+}
+
+.carouselContainer :global(.ant-carousel) {
+    width: 100%;
+}
+
+.carouselContainer {
+    height: 100%;
+    align-content: center;
+}
+
+@media (max-width: 1200px) {
+    .studiesContainer {
+        border-radius: 20px 20px 0 0;
+        align-items: center;
+        justify-content: center;
+        min-width: 100%;
+    }
+}
