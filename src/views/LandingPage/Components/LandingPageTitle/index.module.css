@@ -1,61 +1,59 @@
 .landingPageTitle.alt {
-    color: var(--geekblue-7);
-    overflow-wrap: break-word;
-    word-break: keep-all;
+  color: var(--geekblue-7);
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 h1.landingPageTitle {
-    color: var(--gray-1);
-    font-family: Rubik;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 116.7%; /* 56.016px */
-    text-transform: uppercase;
-    margin: 0;
+  color: var(--gray-1);
+  font-family: Rubik;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 116.7%; /* 56.016px */
+  text-transform: uppercase;
+  margin: 0;
 }
 
 h2.landingPageTitle {
-    color: var(--gray-1);
-    font-family: Rubik;
-    font-size: 34px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 123.5%; /* 41.99px */
-    letter-spacing: 0.25px;
-    margin: 0;
+  color: var(--gray-1);
+  font-family: Rubik;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 123.5%; /* 41.99px */
+  letter-spacing: 0.25px;
+  margin: 0;
 }
 
 h3.landingPageTitle {
-    color: var(--gray-1);
-    font-family: Rubik;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 133.4%; /* 32.016px */
-    letter-spacing: 0.15px;
-    margin: 0;
+  color: var(--gray-1);
+  font-family: Rubik;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 133.4%; /* 32.016px */
+  letter-spacing: 0.15px;
+  margin: 0;
 }
 
-
 h4.landingPageTitle {
-    color: var(--gray-1);
-    font-family: Rubik;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 160%; /* 32px */
-    letter-spacing: 0.15px;
-    margin: 0;
+  color: var(--gray-1);
+  font-family: Rubik;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 160%; /* 32px */
+  letter-spacing: 0.15px;
+  margin: 0;
 }
 
 h4.landingPageTitle:global(.ant-typography) {
-    margin-top: 0;
+  margin-top: 0;
 }
 
-
 @media (max-width: 900px) {
-    h1.landingPageTitle {
-        text-align: center;
-    }
+  h1.landingPageTitle {
+    text-align: center;
+  }
 }

@@ -1,49 +1,48 @@
 .collaboration {
-    background-color: var(--gray-1);
-    display: flex;
-    justify-content: center;
-    padding: 112px 24px;
-    width: 100%;
+  background-color: var(--gray-1);
+  display: flex;
+  justify-content: center;
+  padding: 112px 24px;
+  width: 100%;
 }
 
 .collaboration .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    max-width: 1488px;
-    gap: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 1488px;
+  gap: 80px;
 }
 
 .collaboration .content .title {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
 }
 
 .collaboration .content .contentContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
 }
 
 .collaboration .content .logo {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 @media (max-width: 900px) {
-    .collaboration {
-        flex-direction: column;
-    }
+  .collaboration {
+    flex-direction: column;
+  }
 
-    .collaboration .content .contentContainer {
-        flex-direction: column;
-    }
+  .collaboration .content .contentContainer {
+    flex-direction: column;
+  }
 
-    .collaboration .content .logo {
-        max-width: 100%;
-    }
+  .collaboration .content .logo {
+    max-width: 100%;
+  }
 }
-

@@ -11,7 +11,12 @@
 
 .collaboratorCard.alt {
   background: var(--primary-gradient);
-  background: radial-gradient(50% 50% at 50% 50%, var(--primary-gradient) 0%, rgba(34, 43, 92, 0.60) 100%), var(--primary-gradient);
+  background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--primary-gradient) 0%,
+      rgba(34, 43, 92, 0.6) 100%
+    ),
+    var(--primary-gradient);
   background-repeat: no-repeat;
 }
 

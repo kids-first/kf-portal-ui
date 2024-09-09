@@ -1,26 +1,26 @@
 .socials {
-    display: flex;
-    gap: 16px;
-    width: 100%;
-    align-items: center;
-    text-wrap: nowrap;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+  text-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .socials a {
-    color: var(--gray-1);
+  color: var(--gray-1);
 }
 
 .socials a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
-    .socials {
-        justify-content: center;
-    }
+  .socials {
+    justify-content: center;
+  }
 
-    .socials .email {
-        width: auto;
-    }
+  .socials .email {
+    width: auto;
+  }
 }

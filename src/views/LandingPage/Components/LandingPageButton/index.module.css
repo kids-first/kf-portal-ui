@@ -3,7 +3,7 @@
   text-transform: uppercase;
   font-size: 20px;
   font-weight: 600;
-  line-height: 24px; 
+  line-height: 24px;
   letter-spacing: 0.15px;
   display: flex;
   gap: 8px;
@@ -21,7 +21,7 @@
   border-color: var(--cyan-7);
 }
 
-.landingPageButton.primary:focus, 
+.landingPageButton.primary:focus,
 .landingPageButton.primary:active {
   color: var(--gray-1);
   background-color: var(--cyan-8);
@@ -47,7 +47,7 @@
   background-color: var(--magenta-8);
 }
 
-.landingPageButton.secondary:focus, 
+.landingPageButton.secondary:focus,
 .landingPageButton.secondary:active {
   color: var(--gray-1);
   border-color: var(--magenta-9);
@@ -72,7 +72,7 @@
   background-color: transparent;
 }
 
-.landingPageButton.secondary:global(.ant-btn-background-ghost):focus, 
+.landingPageButton.secondary:global(.ant-btn-background-ghost):focus,
 .landingPageButton.secondary:global(.ant-btn-background-ghost):active {
   color: var(--magenta-3);
   border-color: var(--magenta-3);

@@ -1,66 +1,63 @@
 .about {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 40px;
-    width: 100%;
-    gap: 40px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  width: 100%;
+  gap: 40px;
 }
 
 .about .navigation {
-    text-wrap: nowrap;
-    display: flex;
-    gap: 40px;
+  text-wrap: nowrap;
+  display: flex;
+  gap: 40px;
 }
 
 .about .navigation a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .about .navigation .row {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .about .navigation .link {
-    color: var(--gray-1);
-
+  color: var(--gray-1);
 }
 
 .about .partners {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    column-gap: 48px;
-    row-gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  column-gap: 48px;
+  row-gap: 24px;
 }
 
-
 @media (max-width: 900px) {
-    .about {
-        flex-direction: column;
-    }
+  .about {
+    flex-direction: column;
+  }
 
+  .about .row {
+    width: 100%;
+  }
 
-    .about .row {
-        width: 100%;
-    }
+  .about .partners {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    justify-items: center;
+    align-items: center;
+    column-gap: 24px;
+  }
 
-    .about .partners {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        justify-items: center;
-        align-items: center;
-        column-gap: 24px;
-    }
+  .about .navigation {
+    justify-content: space-around;
+  }
 
-    .about .navigation {
-        justify-content: space-around;
-    }
-
-    .about .partnersTitle {
-        text-align: center;
-        padding-top: 16px;
-    }
+  .about .partnersTitle {
+    text-align: center;
+    padding-top: 16px;
+  }
 }

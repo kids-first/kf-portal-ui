@@ -1,53 +1,58 @@
 .topBanner {
-    background: var(--primary-gradient);
-    background: radial-gradient(50% 50% at 50% 50%, var(--primary-gradient) 0%, rgba(34, 43, 92, 0.60) 100%), var(--primary-gradient);
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 106px 24px 0 24px;
+  background: var(--primary-gradient);
+  background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--primary-gradient) 0%,
+      rgba(34, 43, 92, 0.6) 100%
+    ),
+    var(--primary-gradient);
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 106px 24px 0 24px;
 }
 
 .contentContainer {
-    display: flex;
-    align-items: center;
-    gap: 80px;
-    max-width: 1488px;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  max-width: 1488px;
+  width: 100%;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
 }
 
 @media (max-width: 1488px) {
-    .contentContainer {
-        gap: 0;
-    }
+  .contentContainer {
+    gap: 0;
+  }
 }
 
 @media (max-width: 1200px) {
-    .topBanner {
-        background-position: center;
-        background-size: auto 100%;
-    }
+  .topBanner {
+    background-position: center;
+    background-size: auto 100%;
+  }
 
-    .contentContainer {
-        gap: 24px;
-    }
+  .contentContainer {
+    gap: 24px;
+  }
 }
 
 @media (max-width: 900px) {
-    .topBanner {
-        padding: 0;
-        align-items: start;
-    }
+  .topBanner {
+    padding: 0;
+    align-items: start;
+  }
 
-    .contentContainer {
-        flex-direction: column-reverse;
-        gap: 0;
-    }
+  .contentContainer {
+    flex-direction: column-reverse;
+    gap: 0;
+  }
 }
