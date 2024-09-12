@@ -2,6 +2,7 @@
 /// <reference types="cypress"/>
 import fs, { rmdir } from 'fs';
 import path from 'path';
+import ExcelJS from 'exceljs';
 
 require('dotenv').config();
 
@@ -19,6 +20,23 @@ module.exports = (on: Cypress.PluginEvents, config: Cypress.ConfigOptions) => {
           resolve(null);
         });
       });
+    },
+    async extractTextFromXLSX(filePath) {
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.readFile(filePath);
+    
+      let text = '';
+    
+      workbook.eachSheet((worksheet) => {
+        worksheet.eachRow((row) => {
+          const rowValues = Array.isArray(row.values)
+            ? row.values.map((value: any) => value || '').slice(1)
+            : [];
+          text += rowValues.join(',') + '\n';
+        });
+      });
+    
+      return text;
     },
     fileExists(folder) {
       const files = fs.readdirSync(folder);

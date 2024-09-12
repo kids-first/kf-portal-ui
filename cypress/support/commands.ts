@@ -466,6 +466,28 @@ Cypress.Commands.add('validateTotalSelectedQuery', (expectedCount: string|RegExp
   cy.get('[class*="QueryBar_selected"] [class*="QueryBar_total"]').contains(expectedCount).should('exist');
 });
 
+Cypress.Commands.add('validateXlsxFileContent', (fixture: string, replacements?: Replacement[]) => {
+  const arrReplacements = replacements !== undefined ? replacements : [];
+  cy.fixture(fixture).then((expectedData) => {
+    cy.exec(`/bin/ls ${Cypress.config('downloadsFolder')}/*.xlsx`).then((result) => {
+      const filename = result.stdout.trim();
+      cy.task('extractTextFromXLSX', filename).then((file) => {
+        let fileWithData = typeof file === 'string' ? file : '';
+        arrReplacements.forEach((replacement) => {
+          fileWithData = fileWithData.replace(replacement.placeholder, replacement.value);
+        });
+        expectedData.content.forEach((value: any) => {
+          let valueWithData = value;
+          arrReplacements.forEach((replacement) => {
+            valueWithData = valueWithData.replace(replacement.placeholder, replacement.value);
+          });
+          assert.include(fileWithData, valueWithData);
+        });
+      });
+    });
+  });
+});
+
 Cypress.Commands.add('visitAndIntercept', (url: string, methodHTTP: string, routeMatcher: string, nbCalls: number) => {
   cy.intercept(methodHTTP, routeMatcher).as('getRouteMatcher');
 
