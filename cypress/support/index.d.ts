@@ -41,6 +41,7 @@ declare namespace Cypress {
     validateTableFirstRow(expectedValue: string|RegExp, eq: number, hasCheckbox: boolean = false): cy & CyEventEmitter;
     validateTableResultsCount(expectedCount: string|RegExp, shouldExist: boolean = true): cy & CyEventEmitter;
     validateTotalSelectedQuery(expectedCount: string|RegExp): cy & CyEventEmitter;
+    validateXlsxFileContent(fixture: string, replacements?: Replacement[]): cy & CyEventEmitter;
     visitAndIntercept(url: string, methodHTTP: string, routeMatcher: string, nbCalls: number): cy & CyEventEmitter;
     visitCommunityPage(): cy & CyEventEmitter;
     visitDashboard(): cy & CyEventEmitter;
