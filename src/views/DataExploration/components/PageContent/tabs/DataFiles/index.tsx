@@ -16,7 +16,7 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Tag, Tooltip } from 'antd';
+import { Button, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useDataFiles } from 'graphql/files/actions';
 import {
@@ -64,6 +64,7 @@ export const getDefaultColumns = (
   fenceAcls: string[],
   isConnectedToCavatica: boolean,
   isConnectedToGen3: boolean,
+  activeButton: 'imaging' | 'datafiles',
 ): ProColumnType[] => [
   {
     key: 'lock',
@@ -71,6 +72,7 @@ export const getDefaultColumns = (
     iconTitle: <LockOutlined />,
     tooltip: intl.get('entities.file.fileAuthorization'),
     align: 'center',
+    defaultHidden: activeButton === 'datafiles',
     render: (record: IFileEntity) => {
       const hasAccess = userHasAccessToFile(
         record,
@@ -98,6 +100,8 @@ export const getDefaultColumns = (
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,
+    defaultHidden: activeButton === 'datafiles',
+
     render: (controlled_access: string) => {
       if (!controlled_access) {
         return TABLE_EMPTY_PLACE_HOLDER;
@@ -308,6 +312,11 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
     },
     queryConfig.operations,
   );
+  const [activeButton, setActiveButton] = useState<'imaging' | 'datafiles'>('datafiles');
+  const handleButtonClick = (buttonType: 'imaging' | 'datafiles') => {
+    setActiveButton(buttonType);
+  };
+
   const hasTooManyFiles =
     selectedKeys.length > MAX_ITEMS_QUERY ||
     (selectedAllResults && results.total > MAX_ITEMS_QUERY);
@@ -364,11 +373,12 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
           fencesAllAcls,
           cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
           gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+          activeButton,
         )}
         initialSelectedKey={selectedKeys}
         wrapperClassName={styles.dataFilesTabWrapper}
         loading={results.loading}
-        initialColumnState={userInfo?.config.data_exploration?.tables?.datafiles?.columns}
+        initialColumnState={userInfo?.config.data_exploration?.tables?.[activeButton]?.columns}
         enableRowSelection={true}
         showSorterTooltip={false}
         onChange={(_pagination, _filter, sorter) => {
@@ -380,6 +390,25 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
           });
         }}
         headerConfig={{
+          columnSelectorHeader: (
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 0 }}>
+              <Button
+                onClick={() => handleButtonClick('datafiles')}
+                size="small"
+                type={activeButton === 'datafiles' ? 'primary' : 'default'}
+              >
+                Data Files
+              </Button>
+              <Button
+                onClick={() => handleButtonClick('imaging')}
+                size="small"
+                style={{ marginLeft: 4 }}
+                type={activeButton === 'imaging' ? 'primary' : 'default'}
+              >
+                Imaging
+              </Button>
+            </div>
+          ),
           itemCount: {
             pageIndex: pageIndex,
             pageSize: queryConfig.size,
@@ -395,11 +424,12 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
           onTableExportClick: () =>
             dispatch(
               fetchTsvReport({
-                columnStates: userInfo?.config.data_exploration?.tables?.datafiles?.columns,
+                columnStates: userInfo?.config.data_exploration?.tables?.[activeButton]?.columns,
                 columns: getDefaultColumns(
                   fencesAllAcls,
                   cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
                   gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+                  activeButton,
                 ),
                 index: INDEXES.FILE,
                 sqon: getCurrentSqon(),
@@ -410,7 +440,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               updateUserConfig({
                 data_exploration: {
                   tables: {
-                    datafiles: {
+                    [activeButton]: {
                       columns: newState,
                     },
                   },
@@ -460,8 +490,8 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               updateUserConfig({
                 data_exploration: {
                   tables: {
-                    datafiles: {
-                      ...userInfo?.config.data_exploration?.tables?.datafiles,
+                    [activeButton]: {
+                      ...userInfo?.config.data_exploration?.tables?.[activeButton],
                       viewPerQuery,
                     },
                   },
