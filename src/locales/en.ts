@@ -617,9 +617,6 @@ const en = {
           CANCER: 'CANCER',
           BIRTHDEFECT: 'CROSS CONDITION',
           CANCERANDBIRTHDEFECT: 'CONGENITAL DISORDER',
-          // cancer: 'CANCER',
-          // birthDefect: 'CROSS CONDITION',
-          // cancerAndBirthDefect: 'CONGENITAL DISORDER',
         },
         cbtn: {
           name: "Children's Brain Tumor Network",
