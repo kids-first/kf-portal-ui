@@ -600,7 +600,7 @@ const en = {
     },
     loginPage: {
       topBanner: {
-        title: 'Kids First Data Portal',
+        title: 'Kids First Data Resource Portal',
         subtitle1:
           'Empower your research with our robust collection of childhood cancer, congenital disorder, and cross-condition data.',
         subtitle2: 'Getting started is as easy as 1-2-3',
@@ -613,26 +613,69 @@ const en = {
         explore:
           ' Explore a broad collection of harmonized studies focused pediatric cancer and structural birth defects for cross condition research.',
         participants: '{count, plural, =0 {Participant} =1 {Participant} other {Participants}}',
-        card1: {
-          title: 'Pediatric Cardiac Genomics Consortium Overview',
+        tags: {
+          CANCER: 'CANCER',
+          BIRTHDEFECT: 'CROSS CONDITION',
+          CANCERANDBIRTHDEFECT: 'CONGENITAL DISORDER',
+          // cancer: 'CANCER',
+          // birthDefect: 'CROSS CONDITION',
+          // cancerAndBirthDefect: 'CONGENITAL DISORDER',
+        },
+        cbtn: {
+          name: "Children's Brain Tumor Network",
+          description:
+            "The Children's Brain Tumor Network (CBTN) is a multi-institutional international clinical research consortium created to advance therapeutic development through the collection and rapid distribution of biospecimens and data via open-science research platforms for real-time access and use by the global research community.",
+        },
+        kfchd: {
+          name: 'National Heart, Lung, and Blood Institute (NHLBI) Bench to Bassinet Program: The Gabriella Miller Kids First Pediatric Research Program of the Pediatric Cardiac Genetics Consortium (PCGC)',
           description:
             'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes.',
         },
-        card2: {
-          title: 'Study with truncated copy (max: 6 lines)',
+        kfchdall: {
+          name: 'Kids First: Genomic Analysis of Congenital Heart Defects and Acute Lymphoblastic Leukemia in Children with Down Syndrome',
           description:
-            'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes. The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital heart disease and to relate genetic variants present in the congenital heart disease patient population to clinical outcomes.',
+            'As part of the Kids First, INCLUDE, and TOPMed data resource platforms, this study focuses on advancing our understanding of the biological factors that may lead to both heart disease and leukemia in individuals with Down syndrome (DS).',
         },
-        card3: {
-          title: 'Study with very little copy',
+        kfcdh: {
+          name: 'Kids First: Genomic Analysis of Congenital Diaphragmatic Hernia',
           description:
-            'The Pediatric Cardiac Genomics Consortium (PCGC) is a group of clinical research teams, supported by appropriate cores and research infrastructure, collaborating to identify genetic causes of human congenital hear.',
+            'This study focuses on probands with congenital diaphragmatic hernia (CDH)/defects and their biological parents, enrolled as part of the DHREAMS (Diaphragmatic Hernia Research & Exploration; Advancing Molecular Science) project, with the objective of improving our understanding of the molecular genetic and phenotypic basis of CDH.',
+        },
+        kfgnint: {
+          name: 'Kids First: Genetics at the Intersection of Childhood Cancer and Birth Defects',
+          description:
+            "Samples from this study were recruited into the Center for Applied Genomics (CAG) biobank from patient visits to the Children's Hospital of Philadelphia (CHOP) and were selected for whole genome sequencing as part of the Gabriella Miller Kids First project. All cases selected were based on a diagnosis for a childhood onset cancer as well as a congenital anomaly.",
+        },
+        kfnbl: {
+          name: 'Discovering the Genetic Basis of Human Neuroblastoma: A Gabriella Miller Kids First Pediatric Research Program (Kids First) Project',
+          description:
+            "Children with disseminated neuroblastoma have a very high risk of treatment failure and death despite receiving intensified chemotherapy, radiation therapy and immunotherapy. This study includes comprehensive whole genome sequencing of neuroblastoma patient germline and diagnostic tumor DNAs and germline DNAs from both parents. The case series was recently collected through a Children's Oncology Group epidemiology clinical trial.",
+        },
+        kfkut: {
+          name: 'Kids First: Genetics of Structural Defects of the Kidney and Urinary Tract',
+          description:
+            'Congenital defects of the kidney and urinary tract are a common cause of kidney failure in children and adults and elucidation of the genetics of these disorders will provide new opportunities for diagnosis, risk stratification and prevention of complications. Participants of this study were collected as part of the Genetics of Chronic Kidney disease study at Columbia University, which includes international collaborators. ',
+        },
+        kfocea: {
+          name: 'Genomic Studies of Orofacial Cleft Birth Defects',
+          description:
+            'Orofacial cleft birth defects (OFCs) are the most common craniofacial anomalies in humans, affecting approximately 1 in 700 newborns, and are one of the most common structural birth defects worldwide. This is a whole genome sequencing study of 415 White parent-case trios drawn from ongoing collaborations led by Dr. Mary L. Marazita of the University of Pittsburgh Center for Craniofacial and Dental Genetics, including collaborations with Dr. George Wehby of the University of Iowa, Dr. Jacqueline Hecht of the University of Texas, and Dr. Terri Beaty of Johns Hopkins University. ',
+        },
+        kftall: {
+          name: 'Comprehensive Genomic Profiling to Improve Prediction of Clinical Outcome for Children with T-cell Acute Lymphoblastic Leukemia',
+          description:
+            'The outcome for patients with relapsed T-ALL is dismal with 3-year event free survival of <15%. Thus, the primary goal in the treatment of T-ALL is to prevent relapse, which requires accurate risk stratification. Unfortunately, no reproducibly prognostic genetic alterations independent of minimal residual disease (MRD) have been identified, making it challenging to predict relapse at diagnosis. Therefore, the Gabriella Miller Kids First T-ALL project is conducting whole genome, exome sequencing, and transcriptome profiling of tumor and germline DNA acriss 1350 samples.',
+        },
+        kfesgr: {
+          name: 'Kids First: Expanded Ewing sarcoma cohort for tumor genomics and association with DNA repair deficiencies, clinical presentation, and outcome',
+          description:
+            'Ewing sarcoma (EWS) is a deadly bone cancer in children and adolescents, with growing evidence suggesting a genetic predisposition, although the specific genetic factors remain unidentified. This Kids First project aims to uncover the genetic factors contributing to EWS by focusing on three key objectives: identifying cancer predisposition genes, genome-wide GGAA microsatellite repeats, and de novo mutation and structural variant rates in EWS trios reflecting underlying DNA repair defects that increase disease risk.',
         },
       },
       chartsSection: {
         title: 'Accelerating research',
         description:
-          'Data from over 99k samples, including whole genome sequencing (WGS) and RNA-Sequencing, is available to empower your research today.',
+          'Build virtual cohorts using data from over 99K samples, including whole genome sequencing (WGS) and RNA-Sequencing, is available to empower your research today.',
         getStarted: 'Get started',
         stats: {
           studies: 'Studies',
@@ -654,9 +697,9 @@ const en = {
         description:
           ' Easily gain access to a range of robust cloud-based resources to drive meaningful research progress.',
         variant: {
-          title: 'Variant Explorer',
+          title: 'Germline Variants',
           description:
-            'Build virtual cohorts using data from over 99k samples, including whole sequencing. With just a few clicks, you can explore millions of annotated germline variants from the genomes of Kids First participants.',
+            'Our variant explorer offers advanced searching capabilities. With just a few clicks, you can explore millions of annotated germline variants from the genomes of Kids First participants.',
           button: 'Explore variant data',
         },
         cavatica: {
@@ -666,7 +709,7 @@ const en = {
         },
         pedcbioportal: {
           description:
-            ' The portal integrates with CAVATICA, a cloud-based platform designed for worldwide data analysis and collaboration. Researchers can analyze Kids First datasets using custom or pre-existing workflows.',
+            'A navigational tool housing clinical data sourced from patient medical visits, PedcBioPortal guides researchers and clinicians toward optimal treatment avenues to enhance the exploration of innovative therapies.',
           button: 'Get started',
         },
       },

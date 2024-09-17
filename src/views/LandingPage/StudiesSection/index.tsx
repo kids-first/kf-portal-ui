@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import LoginCarousel from 'views/LandingPage/StudiesSection/Carousel';
+import Carousel from 'views/LandingPage/StudiesSection/Carousel';
 
 import LandingPageTitle from '../Components/LandingPageTitle';
 
@@ -14,7 +14,7 @@ const StudiesSection = () => (
     </div>
     <div className={styles.content}>
       <Studies />
-      <LoginCarousel />
+      <Carousel />
     </div>
   </div>
 );

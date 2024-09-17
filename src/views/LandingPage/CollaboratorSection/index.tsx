@@ -1,29 +1,33 @@
 import intl from 'react-intl-universal';
+import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import { Typography } from 'antd';
 import CollaboratorCard from 'views/LandingPage/CollaboratorSection/CollaboratorCard';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
-import { REDIRECT_URI_KEY } from 'common/constants';
 import Cavatica from 'components/assets/cavatica-login-logo.png';
 import GeneticEngineering from 'components/assets/genetic_engineering.png';
 import Pedcbioportal from 'components/assets/pedcbioportal.png';
-import useQueryParams from 'hooks/useQueryParams';
 import { STATIC_ROUTES } from 'utils/routes';
+
+import { useGlobals } from '../../../store/global';
 
 import styles from './index.module.css';
 
 const { Title } = Typography;
 
 const CollaboratorSection = () => {
+  const { stats } = useGlobals();
   const { keycloak } = useKeycloak();
-  const query = useQueryParams();
+
+  const handleExternalRedirect = async (url: string) => {
+    window.location.assign(url);
+  };
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      redirectUri: `${window.location.origin}/${
-        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
-      }`,
+      redirectUri: `${window.location.origin}/${STATIC_ROUTES.VARIANTS}`,
+      locale: intl.getInitOptions().currentLocale,
     });
     window.location.assign(url);
   };
@@ -41,10 +45,13 @@ const CollaboratorSection = () => {
         </div>
         <div className={styles.contentContainer}>
           <CollaboratorCard
-            icon={<img src={GeneticEngineering} className={styles.logo} />}
-            title={intl.get('screen.loginPage.collaborationSection.variant.title')}
+            icon={<img src={GeneticEngineering} className={styles.logo} alt="Germline logo" />}
+            title={`${numberFormat(stats?.variants ?? 0)}+ ${intl.get(
+              'screen.loginPage.collaborationSection.variant.title',
+            )}`}
             description={intl.get('screen.loginPage.collaborationSection.variant.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.variant.button')}
+            handleClick={handleSignin}
           />
           <CollaboratorCard
             alt
@@ -52,7 +59,7 @@ const CollaboratorSection = () => {
             description={intl.get('screen.loginPage.collaborationSection.cavatica.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.cavatica.button')}
             external
-            handleClick={handleSignin}
+            handleClick={() => handleExternalRedirect('https://www.cavatica.org/')}
           />
           <CollaboratorCard
             icon={<img src={Pedcbioportal} className={styles.logo} />}
@@ -62,7 +69,7 @@ const CollaboratorSection = () => {
             )}
             external
             buttonText={intl.get('screen.loginPage.collaborationSection.pedcbioportal.button')}
-            handleClick={handleSignin}
+            handleClick={() => handleExternalRedirect('https://pedcbioportal.org/')}
           />
         </div>
       </div>

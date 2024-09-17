@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  margin-right: 32px;
+  margin-right: 16px;
 }
 
 .carouselCard .tag {

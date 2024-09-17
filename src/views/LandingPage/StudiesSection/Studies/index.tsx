@@ -1,6 +1,5 @@
 import intl from 'react-intl-universal';
 import { Typography } from 'antd';
-import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
 import studiesSvg from 'components/assets/kf-portal-icons_studies_2.svg';
@@ -24,9 +23,6 @@ const StudiesSection = () => {
       <Paragraph className={styles.subtitle}>
         {intl.get('screen.loginPage.studies.explore')}
       </Paragraph>
-      <LandingPageButton size="large">
-        {intl.get('screen.loginPage.studies.viewAll')}
-      </LandingPageButton>
     </div>
   );
 };

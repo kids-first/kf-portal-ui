@@ -8,35 +8,44 @@ import Socials from 'views/LandingPage/Footer/Socials';
 
 import styles from './index.module.css';
 
-const Footer = () => (
-  <div className={styles.footer}>
-    <div className={styles.contentContainer}>
-      <div className={styles.cards}>
-        <FooterCard
-          title={intl.get('screen.loginPage.footer.inspiration.title')}
-          description={intl.get('screen.loginPage.footer.inspiration.description')}
-          buttonText={intl.get('screen.loginPage.footer.inspiration.button')}
-        />
-        <FooterCard
-          title={intl.get('screen.loginPage.footer.answers.title')}
-          description={intl.get('screen.loginPage.footer.answers.description')}
-          buttonText={intl.get('screen.loginPage.footer.answers.button')}
-        />
-      </div>
-      <Divider className={styles.divider} />
-      <About />
-      <Socials />
-      <Divider className={cx(styles.divider, styles.legals)} />
-      <div className={styles.legals}>
-        <LandingPageParagraph small>
-          {intl.get('screen.loginPage.footer.legal.description')}
-        </LandingPageParagraph>
-        <LandingPageParagraph small>
-          {intl.get('screen.loginPage.footer.legal.mention')}
-        </LandingPageParagraph>
+const Footer = () => {
+  const handleExternalRedirect = async (url: string) => {
+    window.location.assign(url);
+  };
+  return (
+    <div className={styles.footer}>
+      <div className={styles.contentContainer}>
+        <div className={styles.cards}>
+          <FooterCard
+            title={intl.get('screen.loginPage.footer.inspiration.title')}
+            description={intl.get('screen.loginPage.footer.inspiration.description')}
+            buttonText={intl.get('screen.loginPage.footer.inspiration.button')}
+            external
+            handleClick={() => handleExternalRedirect('https://kidsfirstdrc.org/publications/')}
+          />
+          <FooterCard
+            title={intl.get('screen.loginPage.footer.answers.title')}
+            description={intl.get('screen.loginPage.footer.answers.description')}
+            buttonText={intl.get('screen.loginPage.footer.answers.button')}
+            external
+            handleClick={() => handleExternalRedirect('https://kidsfirstdrc.org/help-center/')}
+          />
+        </div>
+        <Divider className={styles.divider} />
+        <About />
+        <Socials />
+        <Divider className={cx(styles.divider, styles.legals)} />
+        <div className={styles.legals}>
+          <LandingPageParagraph small>
+            {intl.get('screen.loginPage.footer.legal.description')}
+          </LandingPageParagraph>
+          <LandingPageParagraph small>
+            {intl.get('screen.loginPage.footer.legal.mention')}
+          </LandingPageParagraph>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Footer;

@@ -15,6 +15,6 @@ export const useStats = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchStats());
-  }, []);
+  }, [dispatch]);
   return state.stats;
 };
