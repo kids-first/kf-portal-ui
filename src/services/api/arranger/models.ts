@@ -42,10 +42,16 @@ export interface IStatistics {
   participants: number;
   samples: number;
   studies: number;
-  studiesParticipants: Record<string, number>;
+  studiesStatistics: Record<string, Omit<IStudiesStatistics, 'study_code'>>;
   genomes: number;
   variants: number;
   transcriptomes: number;
+}
+
+export interface IStudiesStatistics {
+  participant_count: number;
+  domain: string;
+  study_code: string;
 }
 
 export interface ArrangerSingleColumnState {

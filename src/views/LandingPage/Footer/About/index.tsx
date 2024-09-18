@@ -23,7 +23,7 @@ const About = () => (
         <a className={styles.link} href="https://kidsfirstdrc.org/community/">
           {intl.get('screen.loginPage.footer.about.community')}
         </a>
-        <a className={styles.link} href="https://kidsfirstdrc.org/help-center/">
+        <a className={styles.link} href="https://kidsfirstdrc.org/faqs/">
           {intl.get('screen.loginPage.footer.about.faqs')}
         </a>
       </div>
@@ -32,13 +32,13 @@ const About = () => (
         <LandingPageTitle level={4}>
           {intl.get('screen.loginPage.footer.about.resources')}
         </LandingPageTitle>
-        <a className={styles.link} href="https://kidsfirstdrc.org/news/">
+        <a className={styles.link} href="https://kidsfirstdrc.org/portal/">
           {intl.get('screen.loginPage.footer.about.data')}
         </a>
-        <a className={styles.link} href="https://kidsfirstdrc.org/events/">
+        <a className={styles.link} href="https://kidsfirstdrc.org/tools/">
           {intl.get('screen.loginPage.footer.about.tools')}
         </a>
-        <a className={styles.link} href="https://kidsfirstdrc.org/category/press/">
+        <a className={styles.link} href="ttps://kidsfirstdrc.org/help-center/">
           {intl.get('screen.loginPage.footer.about.helpCenter')}
         </a>
       </div>
@@ -47,13 +47,13 @@ const About = () => (
         <LandingPageTitle level={4}>
           {intl.get('screen.loginPage.footer.about.news')}
         </LandingPageTitle>
-        <a className={styles.link} href={'#'}>
+        <a className={styles.link} href="https://kidsfirstdrc.org/news/">
           {intl.get('screen.loginPage.footer.about.articles')}
         </a>
-        <a className={styles.link} href={'#'}>
+        <a className={styles.link} href="https://kidsfirstdrc.org/events/">
           {intl.get('screen.loginPage.footer.about.events')}
         </a>
-        <a className={styles.link} href={'#'}>
+        <a className={styles.link} href="https://kidsfirstdrc.org/category/press/">
           {intl.get('screen.loginPage.footer.about.press')}
         </a>
       </div>
