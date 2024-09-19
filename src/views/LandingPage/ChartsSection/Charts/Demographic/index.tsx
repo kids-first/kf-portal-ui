@@ -69,14 +69,14 @@ const StudiesChart = () => {
             {...graphSetting}
           />
           <PieChart
-            title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
-            data={ethnicityData}
+            title={intl.get('screen.loginPage.chartsSection.chart.race')}
+            data={raceData}
             colors={colors}
             {...graphSetting}
           />
           <PieChart
-            title={intl.get('screen.loginPage.chartsSection.chart.race')}
-            data={raceData}
+            title={intl.get('screen.dataExploration.tabs.summary.demographic.ethnicityTitle')}
+            data={ethnicityData}
             colors={colors}
             {...graphSetting}
           />

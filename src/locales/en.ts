@@ -661,7 +661,7 @@ const en = {
         kftall: {
           name: 'Comprehensive Genomic Profiling to Improve Prediction of Clinical Outcome for Children with T-cell Acute Lymphoblastic Leukemia',
           description:
-            'The outcome for patients with relapsed T-ALL is dismal with 3-year event free survival of <15%. Thus, the primary goal in the treatment of T-ALL is to prevent relapse, which requires accurate risk stratification. Unfortunately, no reproducibly prognostic genetic alterations independent of minimal residual disease (MRD) have been identified, making it challenging to predict relapse at diagnosis. Therefore, the Gabriella Miller Kids First T-ALL project is conducting whole genome, exome sequencing, and transcriptome profiling of tumor and germline DNA acriss 1350 samples.',
+            'The outcome for patients with relapsed T-ALL is dismal with 3-year event free survival of <15%. Thus, the primary goal in the treatment of T-ALL is to prevent relapse, which requires accurate risk stratification. Unfortunately, no reproducibly prognostic genetic alterations independent of minimal residual disease (MRD) have been identified, making it challenging to predict relapse at diagnosis. Therefore, the Gabriella Miller Kids First T-ALL project is conducting whole genome, exome sequencing, and transcriptome profiling of tumor and germline DNA across 1350 samples.',
         },
         kfesgr: {
           name: 'Kids First: Expanded Ewing sarcoma cohort for tumor genomics and association with DNA repair deficiencies, clinical presentation, and outcome',
@@ -684,7 +684,11 @@ const en = {
         },
         chart: {
           demographics: 'Demographics',
-          mondo: 'Most Frequent Diagnoses (MONDO)',
+          mondo: {
+            title: 'Most Frequent Diagnoses (MONDO)',
+            bottomAxis: '# of participants',
+            leftAxis: 'Diagnoses (MONDO)',
+          },
           familyComposition: 'Family Composition',
           race: 'Race',
         },

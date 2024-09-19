@@ -27,7 +27,9 @@ const MondoChart = () => {
       wrapperClassName={styles.wrapper}
       contentClassName={styles.contentCard}
       theme="shade"
-      title={<Title level={4}>{intl.get('screen.loginPage.chartsSection.chart.mondo')}</Title>}
+      title={
+        <Title level={4}>{intl.get('screen.loginPage.chartsSection.chart.mondo.title')}</Title>
+      }
       content={
         <BarChart
           labelTextColor="white"
@@ -35,7 +37,7 @@ const MondoChart = () => {
           defs={undefined}
           axisBottom={{
             tickValues: 10,
-            legend: intl.get('screen.loginPage.mondoChart.bottomAxis'),
+            legend: intl.get('screen.loginPage.chartsSection.chart.mondo.bottomAxis'),
             legendOffset: 35,
             legendPosition: 'middle',
           }}
@@ -45,8 +47,8 @@ const MondoChart = () => {
                 .replace(/\(MONDO:\d+\)/g, '')
                 .split('-')
                 .pop(),
-            legend: intl.get('screen.loginPage.mondoChart.leftAxis'),
-            legendOffset: -185,
+            legend: intl.get('screen.loginPage.chartsSection.chart.mondo.leftAxis'),
+            legendOffset: -195,
             legendPosition: 'middle',
           }}
           padding={0.5}
@@ -54,7 +56,7 @@ const MondoChart = () => {
           layout="horizontal"
           margin={{
             bottom: 45,
-            left: 190,
+            left: 210,
             right: 12,
             top: 12,
           }}
