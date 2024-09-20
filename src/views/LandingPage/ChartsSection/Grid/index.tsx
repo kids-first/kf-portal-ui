@@ -58,7 +58,7 @@ const StatsGrid = () => {
 
       <Stats
         src={cloudSaveSvg}
-        data={stats?.fileSize ?? 0}
+        data={stats?.fileSize.replace(/\s/g, '') ?? 0}
         description={intl.get('screen.loginPage.chartsSection.stats.files')}
       />
 
