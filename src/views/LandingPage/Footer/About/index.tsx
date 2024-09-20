@@ -38,7 +38,7 @@ const About = () => (
         <a className={styles.link} href="https://kidsfirstdrc.org/tools/">
           {intl.get('screen.loginPage.footer.about.tools')}
         </a>
-        <a className={styles.link} href="ttps://kidsfirstdrc.org/help-center/">
+        <a className={styles.link} href="https://kidsfirstdrc.org/help-center/">
           {intl.get('screen.loginPage.footer.about.helpCenter')}
         </a>
       </div>
