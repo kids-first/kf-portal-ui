@@ -127,6 +127,7 @@ const en = {
       genericError: 'An error occured',
     },
     proTable: {
+      columnPreset: 'Column Preset',
       clear: 'Clear',
       clearFilters: 'Clear filters',
       noResults: 'No Results',

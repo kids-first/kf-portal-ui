@@ -1,6 +1,8 @@
-import { DownOutlined } from '@ant-design/icons';
-import { Button, Dropdown, MenuProps } from 'antd';
+import React from 'react';
+import intl from 'react-intl-universal';
+import { Select } from 'antd';
 
+import SearchLabel from '../../../../../../../components/uiKit/search/SearchLabel';
 import { PresetOptions } from '../index';
 
 import styles from './index.module.css';
@@ -16,22 +18,18 @@ const ColumnSelectorHeader = ({ activePreset, handlePresetSelection }: OwnProps)
     imaging: 'Imaging',
   };
 
-  const menuProps: MenuProps = {
-    onClick: (e) => handlePresetSelection(e.key as PresetOptions),
-    selectedKeys: [activePreset],
-    items: Object.keys(options).map((key) => ({
-      key,
-      label: options[key as PresetOptions],
-    })),
-  };
-
   return (
     <div className={styles.presetSelectorContainer}>
-      <Dropdown menu={menuProps} trigger={['click']} placement="bottomCenter">
-        <Button size="small">
-          {options[activePreset] || 'Select an option'} <DownOutlined />
-        </Button>
-      </Dropdown>
+      <SearchLabel title={intl.get('global.proTable.columnPreset')} />
+      <Select
+        value={activePreset}
+        onChange={(value) => handlePresetSelection(value as PresetOptions)}
+        options={Object.keys(options).map((key) => ({
+          value: key,
+          label: options[key as PresetOptions],
+        }))}
+        size="small"
+      />
     </div>
   );
 };

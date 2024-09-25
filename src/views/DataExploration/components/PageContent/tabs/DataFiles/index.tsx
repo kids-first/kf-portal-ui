@@ -316,10 +316,12 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
     },
     queryConfig.operations,
   );
-  const [activePreset, setActivePreset] = useState<PresetOptions>('datafiles');
+  const cachedPreset = localStorage.getItem('activePreset') as PresetOptions;
+  const [activePreset, setActivePreset] = useState<PresetOptions>(cachedPreset || 'datafiles');
 
   const handlePresetSelection = (presetOption: PresetOptions) => {
     setActivePreset(presetOption);
+    localStorage.setItem('activePreset', presetOption);
   };
 
   const hasTooManyFiles =
