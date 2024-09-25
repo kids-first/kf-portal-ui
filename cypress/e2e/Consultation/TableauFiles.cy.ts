@@ -76,11 +76,6 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
 describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du tableau', () => {
   beforeEach(() => {
     cy.visitDataExploration('datafiles');
-    cy.showColumn('File Name');
-    cy.showColumn('Platform');
-    cy.showColumn('Repository');
-    cy.showColumn('ACL');
-    cy.showColumn('Access URL');
   });
 
   it('Valider les fonctionnalités du tableau - Tri File ID', () => {
@@ -147,6 +142,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   });
 
   it('Valider les fonctionnalités du tableau - Tri File Name', () => {
+    cy.showColumn('File Name');
     cy.sortTableAndIntercept('File Name', 1);
     cy.validateTableFirstRow('0000e2ec-a59e-42aa-a312-85f1952779bc.CGP.filtered.deNovo.vep.vcf.gz', 12, true);
     cy.sortTableAndIntercept('File Name', 1);
@@ -154,31 +150,35 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   });
 
   it('Valider les fonctionnalités du tableau - Tri Platform', () => {
+    cy.showColumn('Platform');
     cy.sortTableAndIntercept('Platform', 1);
-    cy.validateTableFirstRow('-', 13, true);
+    cy.validateTableFirstRow('-', 12, true);
     cy.sortTableAndIntercept('Platform', 1);
-    cy.validateTableFirstRow('Not Reported', 13, true);
+    cy.validateTableFirstRow('Not Reported', 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Repository', () => {
+    cy.showColumn('Repository');
     cy.sortTableAndIntercept('Repository', 1);
-    cy.validateTableFirstRow(/^(?!-).*$/, 14, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
     cy.sortTableAndIntercept('Repository', 1);
-    cy.validateTableFirstRow('Gen3', 14, true);
+    cy.validateTableFirstRow('Gen3', 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri ACL', () => {
+    cy.showColumn('ACL');
     cy.sortTableAndIntercept('ACL', 1);
-    cy.validateTableFirstRow('-', 15, true);
+    cy.validateTableFirstRow('-', 12, true);
     cy.sortTableAndIntercept('ACL', 1);
-    cy.validateTableFirstRow(/^(?!-).*$/, 15, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Access URL', () => {
+    cy.showColumn('Access URL');
     cy.sortTableAndIntercept('Access URL', 1);
-    cy.validateTableFirstRow('drs://data.kidsfirstdrc.org/00000eae-7f56-4a89-854e-6e88c0683340', 16, true);
+    cy.validateTableFirstRow('drs://data.kidsfirstdrc.org/00000eae-7f56-4a89-854e-6e88c0683340', 12, true);
     cy.sortTableAndIntercept('Access URL', 1);
-    cy.validateTableFirstRow(/^(?!-).*$/, 16, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
