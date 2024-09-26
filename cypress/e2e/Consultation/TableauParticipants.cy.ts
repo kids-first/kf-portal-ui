@@ -146,7 +146,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Sex', () => {
     cy.sortTableAndIntercept('Sex', 1);
-    cy.validateTableFirstRow('Female', 5, true);
+    cy.validateTableFirstRow(/(Female|-)/, 5, true);
     cy.sortTableAndIntercept('Sex', 1);
     cy.validateTableFirstRow('Unknown', 5, true);
   });

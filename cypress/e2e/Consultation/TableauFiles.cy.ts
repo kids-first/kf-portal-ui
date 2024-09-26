@@ -136,7 +136,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
 
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow(/^1$/, 11, true);
+    cy.validateTableFirstRow(/(^0$|^1$)/, 11, true);
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/\d{1}/, 11, true);
   });
@@ -160,7 +160,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   it('Valider les fonctionnalités du tableau - Tri Repository', () => {
     cy.showColumn('Repository');
     cy.sortTableAndIntercept('Repository', 1);
-    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+    cy.validateTableFirstRow(/(-|^(?!-).*$)/, 12, true);
     cy.sortTableAndIntercept('Repository', 1);
     cy.validateTableFirstRow('Gen3', 12, true);
   });

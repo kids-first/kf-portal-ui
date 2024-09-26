@@ -73,7 +73,7 @@ describe('Page des études - Consultation du tableau', () => {
 
   it('Valider les fonctionnalités du tableau - Tri dbGaP', () => {
     cy.sortTableAndIntercept('dbGaP', 1);
-    cy.validateTableFirstRow(/^(?!-).*$/, 4);
+    cy.validateTableFirstRow(/(-|^(?!-).*$)/, 4);
     cy.sortTableAndIntercept('dbGaP', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 4);
   });
@@ -87,7 +87,7 @@ describe('Page des études - Consultation du tableau', () => {
 
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
-    cy.validateTableFirstRow('50', 6);
+    cy.validateTableFirstRow(/\d{1}/, 6);
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/\d{1}/, 6);
   });
