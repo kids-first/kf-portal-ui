@@ -10,14 +10,21 @@ import styles from './index.module.css';
 
 interface OwnProps {
   children: React.ReactElement;
+  scrollbarEnabled?: boolean;
 }
 
-const Layout = ({ children }: OwnProps) => (
+const Layout = ({ children, scrollbarEnabled = true }: OwnProps) => (
   <AntLayout className={styles.mainLayout}>
     <Header />
-    <ScrollContent id={MAIN_SCROLL_WRAPPER_ID} className={styles.mainContent}>
-      <div id="content">{children}</div>
-    </ScrollContent>
+    {scrollbarEnabled ? (
+      <ScrollContent id={MAIN_SCROLL_WRAPPER_ID} className={styles.mainContent}>
+        <div id="content">{children}</div>
+      </ScrollContent>
+    ) : (
+      <div className={`${styles.mainContent} ${styles.noScrollbar}`}>
+        <div id="content">{children}</div>
+      </div>
+    )}
     <Footer />
   </AntLayout>
 );

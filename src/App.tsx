@@ -156,7 +156,7 @@ const App = () => {
                   <Route
                     path={DYNAMIC_ROUTES.DATA_EXPLORATION}
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute mainLayoutScollbarEnabled={false}>
                         <DataExploration />
                       </ProtectedRoute>
                     }
@@ -174,7 +174,7 @@ const App = () => {
                   <Route
                     path={STATIC_ROUTES.VARIANTS}
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute mainLayoutScollbarEnabled={false}>
                         <Variants />
                       </ProtectedRoute>
                     }

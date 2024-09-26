@@ -7,9 +7,10 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 type TProtectedRoute = {
   children: React.ReactNode;
+  mainLayoutScollbarEnabled?: boolean;
 };
 
-const ProtectedRoute = ({ children }: TProtectedRoute) => {
+const ProtectedRoute = ({ children, mainLayoutScollbarEnabled = true }: TProtectedRoute) => {
   const location = useLocation();
   const { keycloak } = useKeycloak();
 
@@ -26,7 +27,7 @@ const ProtectedRoute = ({ children }: TProtectedRoute) => {
   }
 
   return (
-    <PageLayout>
+    <PageLayout scrollbarEnabled={mainLayoutScollbarEnabled}>
       <>{children}</>
     </PageLayout>
   );
