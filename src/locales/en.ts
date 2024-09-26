@@ -745,7 +745,7 @@ const en = {
         socials: {
           follow: 'Follow @kidsfirstdrc',
           email: 'Email kids first',
-          privacy: 'Privacy policy',
+          privacy: 'Privacy Policy',
           cookies: 'Cookies',
         },
         legal: {

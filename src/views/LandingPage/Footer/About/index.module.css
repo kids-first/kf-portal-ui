@@ -34,6 +34,12 @@
   row-gap: 24px;
 }
 
+.about .partners img {
+  width: 181px;
+  height: 80px;
+  object-fit: contain;
+}
+
 @media (max-width: 900px) {
   .about {
     flex-direction: column;
