@@ -42,6 +42,23 @@ export interface ISequencingExperiment {
   is_paired_end: boolean;
 }
 
+export interface IDevice {
+  device_id: string;
+  magnetic_field_strength: string;
+  manufacturer: string;
+  model_name: string;
+  software_version: string;
+}
+
+export interface IImagingData {
+  acquisition_number: string;
+  device?: IDevice;
+  info_body_part_examined: string;
+  modality: string;
+  scan_id: string;
+  subject_reference: string;
+}
+
 export interface IFileEntity {
   key?: string;
   id: string;
@@ -66,6 +83,9 @@ export interface IFileEntity {
     file_name: string;
   };
   is_harmonized: boolean;
+  imaging_sequence_type?: string;
+  imaging_technique?: string;
+  imaging?: IImagingData;
   nb_participants: number;
   nb_biospecimens: number;
   participants: IArrangerResultsTree<IParticipantEntity>;

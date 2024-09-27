@@ -2,7 +2,8 @@ import React from 'react';
 import intl from 'react-intl-universal';
 import { Select } from 'antd';
 
-import SearchLabel from '../../../../../../../components/uiKit/search/SearchLabel';
+import SearchLabel from 'components/uiKit/search/SearchLabel';
+
 import { PresetOptions } from '../index';
 
 import styles from './index.module.css';

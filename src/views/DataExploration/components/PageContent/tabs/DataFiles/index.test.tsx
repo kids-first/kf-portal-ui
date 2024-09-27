@@ -1,6 +1,6 @@
 import { IFileEntity } from 'graphql/files/models';
 
-import { getDefaultColumns } from './index';
+import { getDefaultColumns, PresetOptions } from './index';
 
 describe('getDefaultColumns', () => {
   let fileEntity = {} as IFileEntity;
@@ -100,7 +100,7 @@ describe('getDefaultColumns', () => {
   });
 
   test('sequencing experiment render should only disply first element', () => {
-    const defaultColumns = getDefaultColumns([], false, false, 'datafiles');
+    const defaultColumns = getDefaultColumns([], false, false, PresetOptions.Datafiles);
     const result = defaultColumns.filter(
       (column) => column.key === 'sequencing_experiment.experiment_strategy',
     );
@@ -112,7 +112,7 @@ describe('getDefaultColumns', () => {
   });
 
   test('sequencing experiment render should display - when no data available', () => {
-    const defaultColumns = getDefaultColumns([], false, false, 'datafiles');
+    const defaultColumns = getDefaultColumns([], false, false, PresetOptions.Datafiles);
     const result = defaultColumns.filter(
       (column) => column.key === 'sequencing_experiment.experiment_strategy',
     );

@@ -23,6 +23,7 @@ import {
   FileAccessType,
   IFileEntity,
   IFileStudyEntity,
+  IImagingData,
   ITableFileEntity,
 } from 'graphql/files/models';
 import { capitalize } from 'lodash';
@@ -58,17 +59,26 @@ import ColumnSelectorHeader from './ColumnSelectorHeader';
 
 import styles from './index.module.css';
 
-export type PresetOptions = 'imaging' | 'datafiles';
+export enum PresetOptions {
+  Imaging = 'imaging',
+  Datafiles = 'datafiles',
+}
 
 interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
+/**
+ * - Sequence Type
+ * - Technique
+ * - Age at Imaging
+ */
+
 export const getDefaultColumns = (
   fenceAcls: string[],
   isConnectedToCavatica: boolean,
   isConnectedToGen3: boolean,
-  activePreset: 'imaging' | 'datafiles',
+  activePreset: PresetOptions,
 ): ProColumnType[] => [
   {
     key: 'lock',
@@ -76,7 +86,7 @@ export const getDefaultColumns = (
     iconTitle: <LockOutlined />,
     tooltip: intl.get('entities.file.fileAuthorization'),
     align: 'center',
-    defaultHidden: activePreset === 'datafiles',
+    defaultHidden: activePreset === PresetOptions.Datafiles,
     render: (record: IFileEntity) => {
       const hasAccess = userHasAccessToFile(
         record,
@@ -104,7 +114,7 @@ export const getDefaultColumns = (
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,
-    defaultHidden: activePreset === 'datafiles',
+    defaultHidden: activePreset === PresetOptions.Datafiles,
 
     render: (controlled_access: string) => {
       if (!controlled_access) {
@@ -146,6 +156,7 @@ export const getDefaultColumns = (
   {
     key: 'data_category',
     title: intl.get('entities.file.data_access.data_category'),
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     sorter: { multiple: 1 },
     dataIndex: 'data_category',
     render: (data_category: string) => data_category || TABLE_EMPTY_PLACE_HOLDER,
@@ -154,6 +165,7 @@ export const getDefaultColumns = (
     key: 'data_type',
     title: intl.get('entities.file.data_access.data_type'),
     dataIndex: 'data_type',
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     sorter: { multiple: 1 },
     render: (data_type: string) => data_type || TABLE_EMPTY_PLACE_HOLDER,
   },
@@ -161,6 +173,7 @@ export const getDefaultColumns = (
     key: 'sequencing_experiment.experiment_strategy',
     title: intl.get('entities.file.data_access.experimental_strategy'),
     sorter: { multiple: 1 },
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     render: (record: IFileEntity) =>
       (record.sequencing_experiment &&
         record.sequencing_experiment.hits?.edges.at(0)?.node.experiment_strategy) ||
@@ -170,6 +183,7 @@ export const getDefaultColumns = (
     key: 'file_format',
     title: intl.get('entities.file.data_access.format'),
     dataIndex: 'file_format',
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     sorter: { multiple: 1 },
     render: (file_format: string) => (file_format ? file_format : TABLE_EMPTY_PLACE_HOLDER),
   },
@@ -177,6 +191,7 @@ export const getDefaultColumns = (
     key: 'size',
     title: intl.get('entities.file.data_access.size'),
     dataIndex: 'size',
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     sorter: { multiple: 1 },
     render: (size: number) => formatFileSize(size, { output: 'string' }),
   },
@@ -216,6 +231,7 @@ export const getDefaultColumns = (
     key: 'nb_biospecimens',
     title: intl.get('entities.biospecimen.biospecimens'),
     sorter: { multiple: 1 },
+    defaultHidden: activePreset !== PresetOptions.Datafiles,
     render: (record: IFileEntity) => {
       const nb_biospecimens = record?.nb_biospecimens || 0;
       return nb_biospecimens ? (
@@ -282,6 +298,73 @@ export const getDefaultColumns = (
     defaultHidden: true,
     sorter: { multiple: 1 },
   },
+  // Imaging columns
+  {
+    key: 'imaging.modality',
+    title: intl.get('entities.file.imaging.modality'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) => imaging?.modality || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging_sequence_type',
+    title: intl.get('entities.file.imaging.sequence_type'),
+    dataIndex: 'imaging_sequence_type',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging_sequence_type?: string) => imaging_sequence_type || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging_technique',
+    title: intl.get('entities.file.imaging.technique'),
+    dataIndex: 'imaging_technique',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging_technique?: string) => imaging_technique || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging.info_body_part_examined',
+    title: intl.get('entities.file.imaging.body_part'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) =>
+      imaging?.info_body_part_examined || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging.device.magnetic_field_strength',
+    title: intl.get('entities.file.imaging.device.field_strength'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) =>
+      imaging?.device?.magnetic_field_strength || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging.device.manufacturer',
+    title: intl.get('entities.file.imaging.device.manufacturer'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) => imaging?.device?.manufacturer || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging.device.model_name',
+    title: intl.get('entities.file.imaging.device.model'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) => imaging?.device?.model_name || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging.device.device_id',
+    title: intl.get('entities.file.imaging.device.id'),
+    dataIndex: 'imaging',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (imaging?: IImagingData) => imaging?.device?.device_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
 ];
 
 const DataFilesTab = ({ sqon }: OwnProps) => {
@@ -316,8 +399,11 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
     },
     queryConfig.operations,
   );
+
   const cachedPreset = localStorage.getItem('activePreset') as PresetOptions;
-  const [activePreset, setActivePreset] = useState<PresetOptions>(cachedPreset || 'datafiles');
+  const [activePreset, setActivePreset] = useState<PresetOptions>(
+    cachedPreset || PresetOptions.Datafiles,
+  );
 
   const handlePresetSelection = (presetOption: PresetOptions) => {
     setActivePreset(presetOption);
