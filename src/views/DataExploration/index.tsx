@@ -384,6 +384,7 @@ const DataExploration = () => {
     };
 
     const aggregations = getAgg();
+
     const filterGroup = getFilterGroup({
       extendedMapping: found,
       aggregation: aggregations,
