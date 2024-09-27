@@ -78,8 +78,6 @@ const CustomFilterContainer = ({
 
   const aggregations = results?.aggregations ? results?.aggregations[filterKey] : {};
 
-  console.log(filterKey);
-
   const filterGroup = getFilterGroup({
     extendedMapping: found,
     aggregation: aggregations,

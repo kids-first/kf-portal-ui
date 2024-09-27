@@ -68,12 +68,6 @@ interface OwnProps {
   sqon?: ISqonGroupFilter;
 }
 
-/**
- * - Sequence Type
- * - Technique
- * - Age at Imaging
- */
-
 export const getDefaultColumns = (
   fenceAcls: string[],
   isConnectedToCavatica: boolean,
@@ -115,7 +109,6 @@ export const getDefaultColumns = (
     align: 'center',
     width: 75,
     defaultHidden: activePreset === PresetOptions.Datafiles,
-
     render: (controlled_access: string) => {
       if (!controlled_access) {
         return TABLE_EMPTY_PLACE_HOLDER;
