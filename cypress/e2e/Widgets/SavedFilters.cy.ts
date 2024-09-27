@@ -62,8 +62,8 @@ describe('Page Dashboard - Widget Saved Filters', () => {
     cy.get('[class*="SavedFilters_setTabs"] [data-node-key*="variants"]').clickAndWait({force: true});
     cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress Variant Type Filter').clickAndWait({force: true});
     cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variants Exploration').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant Type').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('SNV').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant Type').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SNV').should('exist');
   });
 
   it('Valider les liens disponibles - Bouton Delete', () => {

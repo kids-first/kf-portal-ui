@@ -62,22 +62,22 @@ describe('Page Dashboard - Widget Saved Sets', () => {
     cy.get('[class*="SavedSets_setTabs"] [data-node-key="biospecimen"]').clickAndWait({force: true});
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Biospecimens').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Biospecimens').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Biospecimen').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Cypress Biospecimens').should('exist');
 
     cy.visitDashboard();
     cy.get('[class*="SavedSets_setTabs"] [data-node-key="files"]').clickAndWait({force: true});
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Data Files').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Data Files').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('File ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Cypress Data Files').should('exist');
 
     cy.visitDashboard();
     cy.get('[class*="SavedSets_setTabs"] [data-node-key="variants"]').clickAndWait({force: true});
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress Variants').clickAndWait({force: true});
     cy.get('[class*="VariantsTable_variantTabWrapper"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress Variants').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Cypress Variants').should('exist');
   });
 
   it('Valider les liens disponibles - Bouton Delete', () => {

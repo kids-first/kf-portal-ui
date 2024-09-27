@@ -65,8 +65,8 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
     });
     cy.get('@dashboardCard').contains('Cypress_BrB').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Biospecimen').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('Cypress_BrB').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Biospecimen').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Cypress_BrB').should('exist');
   });
 
   // Ne fonctionne pas, le popup "Copy to clipboard: ⌘+C, Enter" s'affiche et bloque le test

@@ -67,10 +67,9 @@ Cypress.Commands.add('clickAndWait', { prevSubject: 'element' }, (subject, optio
 });
 
 Cypress.Commands.add('closePopup', () => {
-  cy.get('body')
-    .find('button').then(($button) => {
+  cy.get('button').then(($button) => {
       if ($button.hasClass('close')) {
-          cy.get('body').find('button[class="close"]').clickAndWait({force: true});
+          cy.get('button[class="close"]').clickAndWait({force: true});
       };
   });
 });

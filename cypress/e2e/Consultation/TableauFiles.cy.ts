@@ -20,23 +20,23 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
   });
 
   it('Tableau', () => {
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(1).find('svg[data-icon="lock"]').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(2).contains('C').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(2).find('[class*="ant-tag-geekblue"]').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(3).contains('GF_6DVS70V9').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(4).contains('KF-CDH').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(5).contains('Genomics').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(6).contains('Simple Nucleotide Variations').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(7).contains('WGS').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(8).contains(/^vcf$/).should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(9).contains('3.04 GB').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(10).contains(/^3$/).should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(11).contains(/^3$/).should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(12).contains('2882b453-28b8-4238-bf7a-c4e0ff015a28.multi.vqsr.filtered.denovo.vep_105.vcf.gz').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(13).contains('Not Reported').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(14).contains('Gen3').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(15).contains('phs001110.c1').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(16).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(1).find('svg[data-icon="lock"]').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(2).contains('C').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(2).find('[class*="ant-tag-geekblue"]').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(3).contains('GF_6DVS70V9').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(4).contains('KF-CDH').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(5).contains('Genomics').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(6).contains('Simple Nucleotide Variations').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(7).contains('WGS').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(8).contains(/^vcf$/).should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(9).contains('3.04 GB').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(10).contains(/^3$/).should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(11).contains(/^3$/).should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(12).contains('2882b453-28b8-4238-bf7a-c4e0ff015a28.multi.vqsr.filtered.denovo.vep_105.vcf.gz').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(13).contains('Not Reported').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(14).contains('Gen3').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(15).contains('phs001110.c1').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(16).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
   });
 });
 
@@ -51,24 +51,24 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
   });
 
   it('Lien File ID du tableau', () => {
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(3).find('[href]').clickAndWait({force: true});
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(3).find('[href]').clickAndWait({force: true});
     cy.get('[id="file-entity-page"]').should('exist');
     cy.get('[class*="EntityTitle"]').contains('GF_6DVS70V9');
   });
 
   it('Lien Participants du tableau', () => {
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(10).find('[href]').clickAndWait({force: true});
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(10).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('File ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
     cy.validateTableResultsCount(/^3$/);
   });
 
   it('Lien Biospecimens du tableau', () => {
-    cy.get('tr[data-row-key="GF_6DVS70V9"]').find('[class*="ant-table-cell"]').eq(11).find('[href]').clickAndWait({force: true});
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(11).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('File ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('File ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
     cy.validateTableResultsCount(/^3$/);
   });
 });
@@ -188,36 +188,36 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
-    cy.get('body').find('span[class*="ant-select-selection-item"]').clickAndWait({force: true});
-    cy.get('body').find('div[class*="ant-select-item-option-content"]').contains('20').clickAndWait({force: true});
+    cy.get('span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+    cy.get('div[class*="ant-select-item-option-content"]').contains('20').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^1$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^20$/).should('exist');
-    cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');
-    cy.get('body').find('button[type="button"]').contains('First').parent('button').should('be.disabled');
+    cy.get('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');
+    cy.get('button[type="button"]').contains('First').parent('button').should('be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Next').clickAndWait({force: true});
+    cy.get('button[type="button"]').contains('Next').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^21$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^40$/).should('exist');
-    cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
-    cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Next').clickAndWait({force: true});
+    cy.get('button[type="button"]').contains('Next').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^41$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^60$/).should('exist');
-    cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
-    cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('Prev.').clickAndWait({force: true});
+    cy.get('button[type="button"]').contains('Prev.').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^21$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^40$/).should('exist');
-    cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
-    cy.get('body').find('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('Prev.').parent('button').should('not.be.disabled');
+    cy.get('button[type="button"]').contains('First').parent('button').should('not.be.disabled');
 
-    cy.get('body').find('button[type="button"]').contains('First').clickAndWait({force: true});
+    cy.get('button[type="button"]').contains('First').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^1$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^20$/).should('exist');
-    cy.get('body').find('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');
-    cy.get('body').find('button[type="button"]').contains('First').parent('button').should('be.disabled');
+    cy.get('button[type="button"]').contains('Prev.').parent('button').should('be.disabled');
+    cy.get('button[type="button"]').contains('First').parent('button').should('be.disabled');
   });
 });
   
