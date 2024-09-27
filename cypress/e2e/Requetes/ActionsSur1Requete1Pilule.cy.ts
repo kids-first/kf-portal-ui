@@ -71,7 +71,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
   it('Dupliquer une requête', () => {
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql');
-    cy.get('[class*="QueryBar_selected"]').find('[data-icon="copy"]').clickAndWait({force: true});
+    cy.get('[class*="QueryBar_selected"] [data-icon="copy"]').clickAndWait({force: true});
     cy.wait('@getPOSTgraphql');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);

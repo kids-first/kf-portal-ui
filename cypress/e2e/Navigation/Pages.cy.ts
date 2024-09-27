@@ -24,7 +24,7 @@ describe('Navigation', () => {
     cy.get('[class*="CommunityPage_title"]').should('exist'); // data-cy="Title_Community"
 
     cy.get('[class*="Header_userName"]').clickAndWait({force: true}); // data-cy="UserName"
-    cy.get('[data-menu-id*="profile_settings"]').find('[href]').clickAndWait({force: true});
+    cy.get('[data-menu-id*="profile_settings"] [href]').clickAndWait({force: true});
     cy.get('[class*="Settings_profileSettingsHeader"]').should('exist'); // data-cy="Title_ProfileSettings"
   });
 
@@ -35,7 +35,7 @@ describe('Navigation', () => {
     });
 
     cy.get('[class*="Header_resources_"]').clickAndWait({force: true}); // data-cy="Menu_Website"
-    cy.get('[data-menu-id*="website"]').find('[href]').clickAndWait({force: true}); // data-cy="MenuLink_Website"
+    cy.get('[data-menu-id*="website"] [href]').clickAndWait({force: true}); // data-cy="MenuLink_Website"
     cy.get("@windowOpen").should('be.calledWith', 'https://kidsfirstdrc.org/');
   });
 
@@ -46,7 +46,7 @@ describe('Navigation', () => {
     });
 
     cy.get('[class*="Header_resources_"]').clickAndWait({force: true}); // data-cy="Menu_Documentation"
-    cy.get('[data-menu-id*="documentation"]').find('[href]').clickAndWait({force: true}); // data-cy="MenuLink_Documentation"
+    cy.get('[data-menu-id*="documentation"] [href]').clickAndWait({force: true}); // data-cy="MenuLink_Documentation"
     cy.get("@windowOpen").should('be.calledWith', 'https://kidsfirstdrc.org/help-center/');
   });
 
@@ -57,7 +57,7 @@ describe('Navigation', () => {
     });
 
     cy.get('[class*="Header_resources_"]').clickAndWait({force: true}); // data-cy="Menu_Contact"
-    cy.get('[data-menu-id*="contact"]').find('[href]').clickAndWait({force: true}); // data-cy="MenuLink_Contact"
+    cy.get('[data-menu-id*="contact"] [href]').clickAndWait({force: true}); // data-cy="MenuLink_Contact"
     cy.get("@windowOpen").should("be.calledWith", "mailto:support@kidsfirstdrc.org");
   });
 
@@ -81,22 +81,22 @@ describe('Navigation', () => {
 
   it('Modals de la page Dashboard', () => {
     cy.visitDashboard();
-    cy.get('[class*="ListItem_savedSetListItem"]').find('svg[data-icon="edit"]').eq(0).clickAndWait({force: true}); // data-cy="SavedSets"
+    cy.get('[class*="ListItem_savedSetListItem"] svg[data-icon="edit"]').eq(0).clickAndWait({force: true}); // data-cy="SavedSets"
     cy.contains('Edit set').should('exist');
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     cy.visitDashboard();
-    cy.get('[class*="ListItem_savedSetListItem"]').find('svg[data-icon="delete"]').eq(0).clickAndWait({force: true}); // data-cy="SavedSets"
+    cy.get('[class*="ListItem_savedSetListItem"] svg[data-icon="delete"]').eq(0).clickAndWait({force: true}); // data-cy="SavedSets"
     cy.contains('Permanently delete this set?').should('exist');
     cy.get('button[type="button"]').contains('Cancel').clickAndWait({force: true});
 
     cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"]').find('svg[data-icon="edit"]').eq(0).clickAndWait({force: true}); // data-cy="SavedFilters"
+    cy.get('[class*="SavedFilters_setTabs"] svg[data-icon="edit"]').eq(0).clickAndWait({force: true}); // data-cy="SavedFilters"
     cy.contains('Edit filter').should('exist');
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     cy.visitDashboard();
-    cy.get('[class*="SavedFilters_setTabs"]').find('svg[data-icon="delete"]').eq(0).clickAndWait({force: true}); // data-cy="SavedFilters"
+    cy.get('[class*="SavedFilters_setTabs"] svg[data-icon="delete"]').eq(0).clickAndWait({force: true}); // data-cy="SavedFilters"
     cy.contains('Permanently delete this filter?').should('exist');
     cy.get('button[type="button"]').contains('Cancel').clickAndWait({force: true});
   });

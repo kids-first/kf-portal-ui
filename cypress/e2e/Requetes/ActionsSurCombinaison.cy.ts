@@ -18,7 +18,7 @@ describe('Page Data Exploration - Requêtes', () => {
   it('Supprimer une requête utilisée dans une combinaison', () => {
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql1');
     cy.get('.simplebar-wrapper').invoke('css', 'overflow', 'visible');
-    cy.get('[class*="QueryBar_selected"]').find('button[class*="QueryPill_close"]').clickAndWait();
+    cy.get('[class*="QueryBar_selected"] button[class*="QueryPill_close"]').clickAndWait();
     cy.wait('@getPOSTgraphql1');
     cy.wait('@getPOSTgraphql1');
     cy.wait('@getPOSTgraphql1');

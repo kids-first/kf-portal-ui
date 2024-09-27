@@ -58,8 +58,8 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -72,7 +72,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -85,7 +85,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -98,7 +98,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -111,8 +111,8 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -125,8 +125,8 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('11-119345794-C-T').should('exist'); //data-cy="Tag_11-119345794-C-T"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('11-119345794-C-T').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -139,7 +139,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -152,7 +152,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -228,8 +228,8 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Gene').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -242,8 +242,8 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Gene').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
@@ -256,8 +256,8 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
 
     cy.get('[class="ant-tag"]').contains('PRDX1').should('exist'); //data-cy="Tag_PRDX1"
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryPill_field"]').contains('Gene').should('exist');
-    cy.get('[class*="QueryBar_selected"]').find('[class*="QueryValues_value"]').contains('PRDX1').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Gene').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PRDX1').should('exist');
     cy.validateTableResultsCount(/^516$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
