@@ -1,6 +1,5 @@
 import intl from 'react-intl-universal';
 import { useKeycloak } from '@react-keycloak/web';
-import { Space } from 'antd';
 import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageParagraph from 'views/LandingPage/Components/LandingPageParagraph';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
@@ -18,7 +17,6 @@ export const LoginForm = () => {
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      // eslint-disable-next-line max-len
       redirectUri: `${window.location.origin}/${
         query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
       }`,
@@ -44,11 +42,11 @@ export const LoginForm = () => {
         </div>
       </div>
       <div className={styles.buttons}>
-        <LandingPageButton onClick={handleSignin} size="large">
-          {intl.get('screen.loginPage.signup')}
-        </LandingPageButton>
         <LandingPageButton alt onClick={handleSignin} size="large">
           {intl.get('screen.loginPage.login')}
+        </LandingPageButton>
+        <LandingPageButton onClick={handleSignin} size="large">
+          {intl.get('screen.loginPage.signup')}
         </LandingPageButton>
       </div>
     </div>
