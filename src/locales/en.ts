@@ -761,7 +761,7 @@ const en = {
         'Accelerating research and promoting new discoveries for children affected with cancer and structural birth defects.',
       accessLargeScale:
         'Data from over {count} samples, including whole genome sequencing (WGS) and RNA-Sequencing, is available to empower your research today.',
-      login: 'Log in',
+      login: 'Login',
       signup: 'Sign up',
     },
     dashboard: {
