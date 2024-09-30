@@ -354,7 +354,7 @@ export const getDefaultColumns = (
     key: 'imaging.device.device_id',
     title: intl.get('entities.file.imaging.device.id'),
     dataIndex: 'imaging',
-    defaultHidden: activePreset !== PresetOptions.Imaging,
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: (imaging?: IImagingData) => imaging?.device?.device_id || TABLE_EMPTY_PLACE_HOLDER,
   },
