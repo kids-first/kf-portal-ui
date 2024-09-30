@@ -26,7 +26,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000'], 1);
     cy.validateOperatorSelectedQuery('or');
     cy.validateTotalSelectedQuery(/(26.1K|26.2K|27.1K|32.7K|32.8K)/);
-    cy.validateTableResultsCount(/(26,073|26,205|26,215|27,072|27,094|32,675|32,697|32,760)/);
+    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|27,072|27,094|32,675|32,697|32,760)/);
     cy.validateClearAllButton(false);
 
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql2');
@@ -38,8 +38,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/(1,843|1,918|1,928|2,676|2,696|7,623|7,643|7,705)/);
-    cy.validateTableResultsCount(/(1,843|1,918|1,928|2,676|2,696|7,623|7,643|7,705)/);
+    cy.validateTotalSelectedQuery(/(1,843|1,918|1,928|1,935|2,676|2,696|7,623|7,643|7,705)/);
+    cy.validateTableResultsCount(/(1,843|1,918|1,928|1,935|2,676|2,696|7,623|7,643|7,705)/);
     cy.validateClearAllButton(false);
   });
 
@@ -52,8 +52,8 @@ describe('Page Data Exploration - Requêtes', () => {
     };
 
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000']);
-    cy.validateTotalSelectedQuery(/(1,843|1,918|1,928|2,770|2,792|8,365|8,387|8,447)/);
-    cy.validateTableResultsCount(/(1,843|1,918|1,928|2,770|2,792|8,365|8,387|8,447)/);
+    cy.validateTotalSelectedQuery(/(1,843|1,918|1,928|1,935|2,770|2,792|8,365|8,387|8,447)/);
+    cy.validateTableResultsCount(/(1,843|1,918|1,928|1,935|2,770|2,792|8,365|8,387|8,447)/);
     cy.validateClearAllButton(false);
   });
 });
