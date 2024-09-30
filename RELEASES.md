@@ -1,3 +1,14 @@
+## VERSION 5.8.0 (2024-09-30)
+
+### Features
+
+- [SKFP-1208](https://d3b.atlassian.net/browse/SKFP-1208) Feature: [Landing] Implement revamped Landing page
+
+### Technical / Other changes
+
+- [SKFP-1281](https://d3b.atlassian.net/browse/SKFP-1281) Issue: [Statistics] Updated the logic to count the number of families in the portal displayed in the statistics banner
+
+
 ## VERSION 5.7.0 (2024-08-29)
 
 ### Features
