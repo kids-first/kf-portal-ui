@@ -23,6 +23,22 @@ export const SEARCH_FILES_QUERY = gql`
             repository
             nb_participants
             nb_biospecimens
+            imaging_technique
+            imaging_sequence_type
+            imaging {
+              acquisition_number
+              device {
+                device_id
+                magnetic_field_strength
+                manufacturer
+                model_name
+                software_version
+              }
+              info_body_part_examined
+              modality
+              scan_id
+              subject_reference
+            }
             fhir_document_reference
             index {
               urls
@@ -181,7 +197,22 @@ export const GET_FILE_ENTITY = gql`
             }
             nb_biospecimens
             nb_participants
-
+            imaging_technique
+            imaging_sequence_type
+            imaging {
+              acquisition_number
+              device {
+                device_id
+                magnetic_field_strength
+                manufacturer
+                model_name
+                software_version
+              }
+              info_body_part_examined
+              modality
+              scan_id
+              subject_reference
+            }
             participants {
               hits {
                 total

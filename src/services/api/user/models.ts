@@ -18,6 +18,7 @@ export type TUserConfig = {
       participants?: TUserTableConfig;
       biospecimens?: TUserTableConfig;
       datafiles?: TUserTableConfig;
+      imaging?: TUserTableConfig;
     };
     summary?: {
       layouts?: TSerializedResizableGridLayoutConfig[];

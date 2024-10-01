@@ -195,6 +195,18 @@ const filterGroups: {
           'acl',
         ],
       },
+      {
+        title: 'Imaging',
+        facets: [
+          'imaging__modality',
+          'imaging_sequence_type',
+          'imaging_technique',
+          'imaging__info_body_part_examined',
+          'imaging__device__magnetic_field_strength',
+          'imaging__device__manufacturer',
+          'imaging__device__model_name',
+        ],
+      },
     ],
   },
 };

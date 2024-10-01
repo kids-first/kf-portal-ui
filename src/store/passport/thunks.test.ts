@@ -25,6 +25,22 @@ describe(`${extractMetadata.name}()`, () => {
       nb_participants: 1,
       nb_biospecimens: 2,
       fhir_document_reference: 'http://localhost:8000/DocumentReference?identifier=GF_000G102V',
+      imaging_technique: 'Special technique',
+      imaging_sequence_type: 'a sequence',
+      imaging: {
+        acquisition_number: 'acq-0-session-1-PurrPurr',
+        device: {
+          device_id: 'de-ny4ni8hp3x',
+          magnetic_field_strength: '130542',
+          manufacturer: 'GE',
+          model_name: 'Skyra',
+          software_version: 'syngo MR B17',
+        },
+        info_body_part_examined: 'CTSPINE',
+        modality: 'CT',
+        scan_id: 'is-7rjndqwx8m',
+        subject_reference: 'pt-grmpycat',
+      },
       participants: {
         hits: {
           edges: [

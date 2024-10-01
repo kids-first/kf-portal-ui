@@ -269,6 +269,17 @@ export const getQueryBuilderDictionary = (
 
 // ADD intl trad
 export const getFacetsDictionary = () => ({
+  imaging_sequence_type: 'Sequence Type',
+  imaging_technique: 'Technique',
+  imaging: {
+    modality: 'Image Modality',
+    info_body_part_examined: 'Body Part Examined',
+    device: {
+      magnetic_field_strength: 'Magnetic Field Strength',
+      manufacturer: 'Device Manufacturer',
+      model_name: 'Device Model',
+    },
+  },
   study: {
     study_name: 'Study Name',
     study_code: 'Study Code',

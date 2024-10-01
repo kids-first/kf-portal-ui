@@ -127,6 +127,7 @@ const en = {
       genericError: 'An error occured',
     },
     proTable: {
+      columnPreset: 'Column Preset',
       clear: 'Clear',
       clearFilters: 'Clear filters',
       noResults: 'No Results',
@@ -2002,10 +2003,21 @@ const en = {
       files: 'Files',
       format: 'Format',
       hash: 'Hash',
+      imaging: {
+        body_part: 'Body Part',
+        device: {
+          field_strength: 'Field Str.',
+          id: 'Device ID',
+          manufacturer: 'Device Manufacturer',
+          model: 'Device Model',
+        },
+        modality: 'Modality',
+        sequence_type: 'Imaging Sequence Type',
+        technique: 'Imaging Technique',
+      },
       repository: 'Repository',
       size: 'Size',
       type: 'Type',
-
       url: 'URL',
     },
     biospecimen: {
