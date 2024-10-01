@@ -11,6 +11,8 @@ import getDataAccessItems from 'views/FileEntity/utils/getDataAccessItems';
 import getDataTypeItems from 'views/FileEntity/utils/getDataTypeItems';
 import getSummaryItems from 'views/FileEntity/utils/getSummaryItems';
 
+import Imaging from './Imaging';
+
 const FileEntity = () => {
   const { file_id } = useParams<{ file_id: string }>();
 
@@ -19,9 +21,11 @@ const FileEntity = () => {
     value: file_id ?? '',
   });
 
+  const showImagingTable = !loading && file?.data_category === 'Imaging';
+
   return (
     <EntityPage
-      links={getLinks()}
+      links={getLinks(showImagingTable)}
       pageId={'file-entity-page'}
       data={file}
       loading={loading}
@@ -54,6 +58,7 @@ const FileEntity = () => {
       <BiospecimenTable file={file} loading={loading} />
 
       <ExperimentalProcedure file={file} loading={loading} />
+      {showImagingTable && <Imaging file={file} loading={loading} />}
     </EntityPage>
   );
 };
