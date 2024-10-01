@@ -13,7 +13,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="TopBanner"] [class*="LandingPageParagraph"]').contains('Getting started is as easy as 1-2-3').should('exist');
     cy.get('[class*="TopBanner"] [class*="LandingPageParagraph"]').contains('Sign up within minutes… free of charge!').should('exist');
     cy.get('[class*="TopBanner"] [class*="LandingPageButton_primary"]').contains('Sign up').should('exist');
-    cy.get('[class*="TopBanner"] [class*="LandingPageButton_secondary"]').contains('Log in').should('exist');
+    cy.get('[class*="TopBanner"] [class*="LandingPageButton_secondary"]').contains('Login').should('exist');
   });
 
   it('Section Studies Side Panel Tile', () => {
