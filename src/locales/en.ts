@@ -2004,6 +2004,7 @@ const en = {
       format: 'Format',
       hash: 'Hash',
       imaging: {
+        title: 'Imaging',
         body_part: 'Body Part',
         device: {
           field_strength: 'Field Str.',
