@@ -196,7 +196,7 @@ const filterGroups: {
         ],
       },
       {
-        title: 'Imaging',
+        title: intl.get('facets.files.imaging_facet_group'),
         facets: [
           'imaging__modality',
           'imaging_sequence_type',

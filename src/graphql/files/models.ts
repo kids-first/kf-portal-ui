@@ -74,6 +74,7 @@ export interface IFileEntity {
   file_format: string;
   file_id: string;
   file_name: string;
+  flywheel_url?: string;
   hashes: {
     etag: string;
     md5: string;

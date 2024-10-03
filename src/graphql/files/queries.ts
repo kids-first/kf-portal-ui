@@ -25,6 +25,7 @@ export const SEARCH_FILES_QUERY = gql`
             nb_biospecimens
             imaging_technique
             imaging_sequence_type
+            flywheel_url
             imaging {
               acquisition_number
               device {
@@ -199,6 +200,7 @@ export const GET_FILE_ENTITY = gql`
             nb_participants
             imaging_technique
             imaging_sequence_type
+            flywheel_url
             imaging {
               acquisition_number
               device {

@@ -294,7 +294,8 @@ export const getDefaultColumns = (
   // Imaging columns
   {
     key: 'imaging.modality',
-    title: intl.get('entities.file.imaging.modality'),
+    title: intl.get('entities.file.imaging.modality.value'),
+    tooltip: intl.get('entities.file.imaging.modality.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
@@ -318,7 +319,8 @@ export const getDefaultColumns = (
   },
   {
     key: 'imaging.info_body_part_examined',
-    title: intl.get('entities.file.imaging.body_part'),
+    title: intl.get('entities.file.imaging.body_part.value'),
+    tooltip: intl.get('entities.file.imaging.body_part.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
@@ -327,7 +329,8 @@ export const getDefaultColumns = (
   },
   {
     key: 'imaging.device.magnetic_field_strength',
-    title: intl.get('entities.file.imaging.device.field_strength'),
+    title: intl.get('entities.file.imaging.device.field_strength.value'),
+    tooltip: intl.get('entities.file.imaging.device.field_strength.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },

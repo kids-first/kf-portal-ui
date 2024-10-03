@@ -1,15 +1,26 @@
 import intl from 'react-intl-universal';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink/index';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
+import { Tooltip } from 'antd';
 import { IFileEntity, IImagingData } from 'graphql/files/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
+import styles from '../index.module.css';
+
 const getImagingItems = (
   imagingData?: Partial<IImagingData> &
-    Pick<IFileEntity, 'imaging_sequence_type' | 'imaging_technique'>,
+    Pick<IFileEntity, 'imaging_sequence_type' | 'imaging_technique' | 'flywheel_url'>,
 ): IEntityDescriptionsItem[] => [
   {
-    label: intl.get('entities.file.imaging.modality'),
+    label: (
+      <Tooltip
+        className={styles.tooltip}
+        title={intl.get('entities.file.imaging.modality.tooltip')}
+      >
+        {intl.get('entities.file.imaging.modality.value')}
+      </Tooltip>
+    ),
     value: imagingData?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -21,7 +32,25 @@ const getImagingItems = (
     value: imagingData?.imaging_technique || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    label: intl.get('entities.file.imaging.device.field_strength'),
+    label: (
+      <Tooltip
+        className={styles.tooltip}
+        title={intl.get('entities.file.imaging.body_part.tooltip')}
+      >
+        {intl.get('entities.file.imaging.body_part.value')}
+      </Tooltip>
+    ),
+    value: imagingData?.info_body_part_examined || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    label: (
+      <Tooltip
+        className={styles.tooltip}
+        title={intl.get('entities.file.imaging.device.field_strength.tooltip')}
+      >
+        {intl.get('entities.file.imaging.device.field_strength.value')}
+      </Tooltip>
+    ),
     value: imagingData?.device?.magnetic_field_strength || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
@@ -35,6 +64,16 @@ const getImagingItems = (
   {
     label: intl.get('entities.file.imaging.device.id'),
     value: imagingData?.device?.device_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    label: intl.get('entities.file.flywheel_url'),
+    value: imagingData?.flywheel_url ? (
+      <ExternalLink className={styles.link} href={imagingData?.flywheel_url}>
+        {imagingData?.flywheel_url}
+      </ExternalLink>
+    ) : (
+      TABLE_EMPTY_PLACE_HOLDER
+    ),
   },
 ];
 
