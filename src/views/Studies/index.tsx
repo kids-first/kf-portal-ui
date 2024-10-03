@@ -23,16 +23,17 @@ import { SCROLL_WRAPPER_ID } from './utils/constant';
 import styles from './index.module.css';
 
 const enum DataCategory {
-  METABOLOMIC = 'Metabolomic',
-  GENOMIC = 'Genomic',
-  PROTEOMIC = 'Proteomic',
-  TRANSCRIPTOMIC = 'Transcriptomic',
+  METABOLOMIC = 'Metabolomics',
+  GENOMICS = 'Genomics',
+  PROTEOMICS = 'Proteomics',
+  TRANSCRIPTOMICS = 'Transcriptomics',
   CLINICAL = 'Clinical',
   IMMUNE_MAP = 'Immune-Map',
+  IMAGING = 'Imaging',
 }
 
 const hasDataCategory = (dataCategory: string[], category: DataCategory) =>
-  dataCategory && dataCategory.includes(`${category}s`) ? <CheckOutlined /> : undefined;
+  dataCategory && dataCategory.includes(category) ? <CheckOutlined /> : undefined;
 
 const filterInfo: FilterInfo = {
   defaultOpenFacets: ['program', 'domain', 'data_category', 'experimental_strategy', 'family_data'],
@@ -171,22 +172,29 @@ const columns: ProColumnType<any>[] = [
     title: 'Genomics',
     align: 'center',
     render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.GENOMIC) || TABLE_EMPTY_PLACE_HOLDER,
+      hasDataCategory(record.data_category, DataCategory.GENOMICS) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'transcriptomic',
     title: 'Transcriptomics',
     align: 'center',
     render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMIC) ||
+      hasDataCategory(record.data_category, DataCategory.TRANSCRIPTOMICS) ||
       TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'imaging',
+    title: 'Imaging',
+    align: 'center',
+    render: (record: IStudyEntity) =>
+      hasDataCategory(record.data_category, DataCategory.IMAGING) || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'proteomic',
     title: 'Proteomics',
     align: 'center',
     render: (record: IStudyEntity) =>
-      hasDataCategory(record.data_category, DataCategory.PROTEOMIC) || TABLE_EMPTY_PLACE_HOLDER,
+      hasDataCategory(record.data_category, DataCategory.PROTEOMICS) || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 
