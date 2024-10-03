@@ -19,16 +19,17 @@ export const getLinks = (showImagingTable: boolean): IAnchorLink[] => {
       href: `#${SectionId.PARTICIPANT_SAMPLE}`,
       title: intl.get('entities.file.participant_sample.title'),
     },
-    {
-      href: `#${SectionId.EXPERIMENTAL_PROCEDURE}`,
-      title: intl.get('entities.file.experimental_procedure.title'),
-    },
   ];
 
   if (showImagingTable) {
     links.push({
       href: `#${SectionId.IMAGING}`,
       title: intl.get('entities.file.imaging.title'),
+    });
+  } else {
+    links.push({
+      href: `#${SectionId.EXPERIMENTAL_PROCEDURE}`,
+      title: intl.get('entities.file.experimental_procedure.title'),
     });
   }
 
