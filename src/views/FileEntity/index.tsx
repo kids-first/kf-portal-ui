@@ -56,9 +56,11 @@ const FileEntity = () => {
       />
 
       <BiospecimenTable file={file} loading={loading} />
-
-      <ExperimentalProcedure file={file} loading={loading} />
-      {showImagingTable && <Imaging file={file} loading={loading} />}
+      {showImagingTable ? (
+        <Imaging file={file} loading={loading} />
+      ) : (
+        <ExperimentalProcedure file={file} loading={loading} />
+      )}
     </EntityPage>
   );
 };
