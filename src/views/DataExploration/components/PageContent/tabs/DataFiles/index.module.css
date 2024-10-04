@@ -10,3 +10,6 @@
 .dataFilesTabWrapper .authorizedLock {
   color: var(--green-7);
 }
+.dataFilesTabWrapper .authorizedUndetermined {
+  color: var(--orange-7);
+}
