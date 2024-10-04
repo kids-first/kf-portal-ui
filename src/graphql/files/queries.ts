@@ -23,8 +23,8 @@ export const SEARCH_FILES_QUERY = gql`
             repository
             nb_participants
             nb_biospecimens
-            imaging_technique
-            imaging_sequence_type
+            imaging_techniques
+            imaging_sequence_types
             flywheel_url
             imaging {
               acquisition_number
@@ -198,8 +198,8 @@ export const GET_FILE_ENTITY = gql`
             }
             nb_biospecimens
             nb_participants
-            imaging_technique
-            imaging_sequence_type
+            imaging_techniques
+            imaging_sequence_types
             flywheel_url
             imaging {
               acquisition_number

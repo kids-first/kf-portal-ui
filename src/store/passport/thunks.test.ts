@@ -25,8 +25,8 @@ describe(`${extractMetadata.name}()`, () => {
       nb_participants: 1,
       nb_biospecimens: 2,
       fhir_document_reference: 'http://localhost:8000/DocumentReference?identifier=GF_000G102V',
-      imaging_technique: 'Special technique',
-      imaging_sequence_type: 'a sequence',
+      imaging_techniques: ['Special technique'],
+      imaging_sequence_types: ['a sequence'],
       imaging: {
         acquisition_number: 'acq-0-session-1-PurrPurr',
         device: {

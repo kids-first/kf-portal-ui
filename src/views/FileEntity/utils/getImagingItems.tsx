@@ -6,11 +6,13 @@ import { IFileEntity, IImagingData } from 'graphql/files/models';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 
+import { joinUniqueCleanWords } from '../../../helpers';
+
 import styles from '../index.module.css';
 
 const getImagingItems = (
   imagingData?: Partial<IImagingData> &
-    Pick<IFileEntity, 'imaging_sequence_type' | 'imaging_technique' | 'flywheel_url'>,
+    Pick<IFileEntity, 'imaging_sequence_types' | 'imaging_techniques' | 'flywheel_url'>,
 ): IEntityDescriptionsItem[] => [
   {
     label: (
@@ -24,12 +26,16 @@ const getImagingItems = (
     value: imagingData?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    label: intl.get('entities.file.imaging.sequence_type'),
-    value: imagingData?.imaging_sequence_type || TABLE_EMPTY_PLACE_HOLDER,
+    label: intl.get('entities.file.imaging.sequence_types'),
+    value: imagingData?.imaging_sequence_types
+      ? joinUniqueCleanWords(imagingData?.imaging_sequence_types)
+      : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    label: intl.get('entities.file.imaging.technique'),
-    value: imagingData?.imaging_technique || TABLE_EMPTY_PLACE_HOLDER,
+    label: intl.get('entities.file.imaging.techniques'),
+    value: imagingData?.imaging_techniques
+      ? joinUniqueCleanWords(imagingData?.imaging_techniques)
+      : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: (

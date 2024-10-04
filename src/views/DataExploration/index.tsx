@@ -199,8 +199,8 @@ const filterGroups: {
         title: intl.get('facets.files.imaging_facet_group'),
         facets: [
           'imaging__modality',
-          'imaging_sequence_type',
-          'imaging_technique',
+          'imaging_sequence_types',
+          'imaging_techniques',
           'imaging__info_body_part_examined',
           'imaging__device__magnetic_field_strength',
           'imaging__device__manufacturer',
