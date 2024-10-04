@@ -3,6 +3,8 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { LockOutlined, SafetyOutlined, UnlockFilled } from '@ant-design/icons';
+import ExternalLinkIcon from '@ferlab/ui/core/components/ExternalLink/ExternalLinkIcon';
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink/index';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
@@ -26,6 +28,7 @@ import {
   IImagingData,
   ITableFileEntity,
 } from 'graphql/files/models';
+import { joinUniqueCleanWords } from 'helpers';
 import { capitalize } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
@@ -293,32 +296,53 @@ export const getDefaultColumns = (
   },
   // Imaging columns
   {
+    key: 'flywheel_url',
+    title: intl.get('entities.file.flywheel'),
+    dataIndex: 'flywheel_url',
+    defaultHidden: activePreset !== PresetOptions.Imaging,
+    sorter: { multiple: 1 },
+    render: (flywheel_url?: string) =>
+      flywheel_url ? (
+        <ExternalLink href={flywheel_url}>
+          <ExternalLinkIcon />
+        </ExternalLink>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  },
+  {
     key: 'imaging.modality',
-    title: intl.get('entities.file.imaging.modality'),
+    title: intl.get('entities.file.imaging.modality.value'),
+    tooltip: intl.get('entities.file.imaging.modality.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
     render: (imaging?: IImagingData) => imaging?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_sequence_type',
-    title: intl.get('entities.file.imaging.sequence_type'),
-    dataIndex: 'imaging_sequence_type',
+    key: 'imaging_sequence_types',
+    title: intl.get('entities.file.imaging.sequence_types'),
+    dataIndex: 'imaging_sequence_types',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_sequence_type?: string) => imaging_sequence_type || TABLE_EMPTY_PLACE_HOLDER,
+    render: (imaging_sequence_types?: string[]) =>
+      imaging_sequence_types
+        ? joinUniqueCleanWords(imaging_sequence_types)
+        : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_technique',
-    title: intl.get('entities.file.imaging.technique'),
-    dataIndex: 'imaging_technique',
+    key: 'imaging_techniques',
+    title: intl.get('entities.file.imaging.techniques'),
+    dataIndex: 'imaging_techniques',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_technique?: string) => imaging_technique || TABLE_EMPTY_PLACE_HOLDER,
+    render: (imaging_techniques?: string[]) =>
+      imaging_techniques ? joinUniqueCleanWords(imaging_techniques) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'imaging.info_body_part_examined',
-    title: intl.get('entities.file.imaging.body_part'),
+    title: intl.get('entities.file.imaging.body_part.value'),
+    tooltip: intl.get('entities.file.imaging.body_part.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
@@ -327,7 +351,8 @@ export const getDefaultColumns = (
   },
   {
     key: 'imaging.device.magnetic_field_strength',
-    title: intl.get('entities.file.imaging.device.field_strength'),
+    title: intl.get('entities.file.imaging.device.field_strength.value'),
+    tooltip: intl.get('entities.file.imaging.device.field_strength.tooltip'),
     dataIndex: 'imaging',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },

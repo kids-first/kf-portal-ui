@@ -269,8 +269,8 @@ export const getQueryBuilderDictionary = (
 
 // ADD intl trad
 export const getFacetsDictionary = () => ({
-  imaging_sequence_type: 'Sequence Type',
-  imaging_technique: 'Technique',
+  imaging_sequence_types: 'Sequence Types',
+  imaging_techniques: 'Techniques',
   imaging: {
     modality: 'Image Modality',
     info_body_part_examined: 'Body Part Examined',

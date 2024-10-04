@@ -18,6 +18,18 @@ const filesFacets = {
   },
   is_harmonized: 'Harmonized Data',
   acl: 'ACL',
+  imaging_facet_group: 'Imaging',
+  imaging_sequence_types: 'Sequence Types',
+  imaging_techniques: 'Techniques',
+  imaging: {
+    modality: 'Image Modality',
+    info_body_part_examined: 'Body Part Examined',
+    device: {
+      magnetic_field_strength: 'Magnetic Field Strength',
+      manufacturer: 'Device Manufacturer',
+      model_name: 'Device Model',
+    },
+  },
 };
 
 const en = {
@@ -2001,20 +2013,23 @@ const en = {
       file_id: 'File ID',
       file_name: 'Name',
       files: 'Files',
+      flywheel_url: 'Flywheel URL',
+      flywheel: 'Flywheel',
+      open_flywheel: 'Open Flywheel',
       format: 'Format',
       hash: 'Hash',
       imaging: {
-        title: 'Imaging',
-        body_part: 'Body Part',
+        title: 'Imaging Study',
+        body_part: { value: 'Body Part', tooltip: 'Body Part Examined' },
         device: {
-          field_strength: 'Field Str.',
+          field_strength: { value: 'Field Str.', tooltip: 'Magnetic Field Strength' },
           id: 'Device ID',
           manufacturer: 'Device Manufacturer',
           model: 'Device Model',
         },
-        modality: 'Modality',
-        sequence_type: 'Imaging Sequence Type',
-        technique: 'Imaging Technique',
+        modality: { value: 'Modality', tooltip: 'Image Modality' },
+        sequence_types: 'Sequence Types',
+        techniques: 'Techniques',
       },
       repository: 'Repository',
       size: 'Size',

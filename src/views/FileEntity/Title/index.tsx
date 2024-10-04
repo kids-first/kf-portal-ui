@@ -1,3 +1,4 @@
+import React from 'react';
 import intl from 'react-intl-universal';
 import { FileTextOutlined, LockOutlined, UnlockFilled } from '@ant-design/icons';
 import PopoverContentLink from '@ferlab/ui/core/components/PopoverContentLink';
@@ -5,7 +6,7 @@ import { FENCE_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widget
 import { PASSPORT_AUTHENTIFICATION_STATUS } from '@ferlab/ui/core/components/Widgets/Cavatica/type';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { EntityTitle } from '@ferlab/ui/core/pages/EntityPage';
-import { Popover, Space } from 'antd';
+import { Button, Popover, Space } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { IFileEntity } from 'graphql/files/models';
 import { DATA_FILES_SAVED_SETS_FIELD } from 'views/DataExploration/utils/constant';
@@ -50,6 +51,10 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
       ],
     });
 
+  const handleRedirect = (flywheel_url: string | undefined) => {
+    window.open(flywheel_url, '_blank');
+  };
+
   const title = {
     text: file?.file_id,
     icon: <FileTextOutlined />,
@@ -89,6 +94,11 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
           hasTooManyFiles={false}
           hasFamily={hasFamily}
         />
+        {file?.flywheel_url && (
+          <Button type="primary" onClick={() => handleRedirect(file.flywheel_url)}>
+            {intl.get('entities.file.open_flywheel')}
+          </Button>
+        )}
         {file && (
           <CavaticaAnalyzeButton type="primary" fileIds={[file.file_id]} index={INDEXES.FILE} />
         )}
