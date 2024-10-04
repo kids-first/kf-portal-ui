@@ -3,10 +3,9 @@ import ExternalLink from '@ferlab/ui/core/components/ExternalLink/index';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
 import { Tooltip } from 'antd';
 import { IFileEntity, IImagingData } from 'graphql/files/models';
+import { joinUniqueCleanWords } from 'helpers';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
-
-import { joinUniqueCleanWords } from '../../../helpers';
 
 import styles from '../index.module.css';
 

@@ -28,6 +28,7 @@ import {
   IImagingData,
   ITableFileEntity,
 } from 'graphql/files/models';
+import { joinUniqueCleanWords } from 'helpers';
 import { capitalize } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
@@ -56,8 +57,6 @@ import { formatFileSize } from 'utils/formatFileSize';
 import { formatQuerySortList, scrollToTop } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { getProTableDictionary } from 'utils/translation';
-
-import { joinUniqueCleanWords } from '../../../../../../helpers';
 
 import ColumnSelectorHeader from './ColumnSelectorHeader';
 
