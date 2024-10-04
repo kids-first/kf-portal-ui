@@ -2015,6 +2015,7 @@ const en = {
       files: 'Files',
       flywheel_url: 'Flywheel URL',
       flywheel: 'Flywheel',
+      open_flywheel: 'Open Flywheel',
       format: 'Format',
       hash: 'Hash',
       imaging: {
