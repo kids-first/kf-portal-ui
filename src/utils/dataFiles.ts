@@ -1,8 +1,6 @@
 import { FileAccessType, IFileEntity } from 'graphql/files/models';
 import { intersection } from 'lodash';
 
-const STUDIES_CONTROLLED_AS_REGISTERED_RULES = ['CBTN'];
-
 export const userHasAccessToFile = (
   file: IFileEntity,
   userAcls: string[],
@@ -14,7 +12,11 @@ export const userHasAccessToFile = (
   }
 
   const fileAccess = file;
-  if (STUDIES_CONTROLLED_AS_REGISTERED_RULES.includes(fileAccess.study.study_code)) {
+  if (
+    fileAccess.controlled_access === FileAccessType.CONTROLLED &&
+    fileAccess.data_category === 'Imaging' &&
+    fileAccess.access_urls?.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/')
+  ) {
     fileAccess.controlled_access = FileAccessType.REGISTERED;
   }
 
