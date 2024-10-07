@@ -42,7 +42,7 @@ const generateAggregations = (extendedMappingFields: TExtendedMapping[]) => {
         dotToUnderscore(f.field) +
         ' {\n     buckets {\n      key\n        key_as_string\n        doc_count\n    }\n  }'
       );
-    } else if (['long', 'float', 'integer', 'date'].includes(f.type)) {
+    } else if (['long', 'float', 'integer', 'date', 'double'].includes(f.type)) {
       return dotToUnderscore(f.field) + '{\n    stats {\n  max\n   min\n    }\n    }';
     } else if (['boolean'].includes(f.type)) {
       return (
