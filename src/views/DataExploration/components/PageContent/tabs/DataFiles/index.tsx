@@ -87,7 +87,7 @@ export const getDefaultColumns = (
     render: (record: IFileEntity) => {
       if (
         record.controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() &&
-        record.access_urls.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/')
+        record.access_urls?.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/')
       ) {
         return (
           <Popover
@@ -316,6 +316,7 @@ export const getDefaultColumns = (
     dataIndex: 'access_urls',
     defaultHidden: true,
     sorter: { multiple: 1 },
+    render: (access_urls: string) => access_urls || TABLE_EMPTY_PLACE_HOLDER,
   },
   // Imaging columns
   {
