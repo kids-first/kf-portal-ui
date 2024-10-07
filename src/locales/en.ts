@@ -244,6 +244,9 @@ const en = {
       },
     },
     report: {
+      biospecimenData: {
+        download: 'Download sample data',
+      },
       clinicalData: {
         download: 'Download clinical data',
         family:
@@ -1773,6 +1776,7 @@ const en = {
       mondo_display_term: 'Histological Diagnosis (MONDO)',
       ncit_display_term: 'Histological Diagnosis (NCIT)',
     },
+    has_matched_normal_sample: 'Paired Normal Sample',
     // File
     files: filesFacets,
     ...filesFacets,
