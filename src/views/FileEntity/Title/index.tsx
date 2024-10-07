@@ -95,7 +95,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
           hasFamily={hasFamily}
         />
         {file?.flywheel_url && (
-          <Button type="primary" onClick={() => handleRedirect(file.flywheel_url)}>
+          <Button onClick={() => handleRedirect(file.flywheel_url)}>
             {intl.get('entities.file.open_flywheel')}
           </Button>
         )}

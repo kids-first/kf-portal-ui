@@ -83,7 +83,6 @@ export const getDefaultColumns = (
     iconTitle: <LockOutlined />,
     tooltip: intl.get('entities.file.fileAuthorization'),
     align: 'center',
-    defaultHidden: activePreset === PresetOptions.Datafiles,
     render: (record: IFileEntity) => {
       if (
         record.controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() &&
@@ -134,7 +133,6 @@ export const getDefaultColumns = (
     dataIndex: 'controlled_access',
     align: 'center',
     width: 75,
-    defaultHidden: activePreset === PresetOptions.Datafiles,
     render: (controlled_access: string) => {
       if (!controlled_access) {
         return TABLE_EMPTY_PLACE_HOLDER;
@@ -344,24 +342,24 @@ export const getDefaultColumns = (
     render: (imaging?: IImagingData) => imaging?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_sequence_types',
-    title: intl.get('entities.file.imaging.sequence_types'),
-    dataIndex: 'imaging_sequence_types',
+    key: 'imaging_sequence_type',
+    title: intl.get('entities.file.imaging.sequence_type'),
+    dataIndex: 'imaging_sequence_type',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_sequence_types?: string[]) =>
-      imaging_sequence_types
-        ? joinUniqueCleanWords(imaging_sequence_types)
+    render: (imaging_sequence_type?: string[]) =>
+      imaging_sequence_type
+        ? joinUniqueCleanWords(imaging_sequence_type)
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_techniques',
-    title: intl.get('entities.file.imaging.techniques'),
-    dataIndex: 'imaging_techniques',
+    key: 'imaging_technique',
+    title: intl.get('entities.file.imaging.technique'),
+    dataIndex: 'imaging_technique',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_techniques?: string[]) =>
-      imaging_techniques ? joinUniqueCleanWords(imaging_techniques) : TABLE_EMPTY_PLACE_HOLDER,
+    render: (imaging_technique?: string[]) =>
+      imaging_technique ? joinUniqueCleanWords(imaging_technique) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'imaging.info_body_part_examined',
@@ -395,7 +393,7 @@ export const getDefaultColumns = (
     key: 'imaging.device.model_name',
     title: intl.get('entities.file.imaging.device.model'),
     dataIndex: 'imaging',
-    defaultHidden: activePreset !== PresetOptions.Imaging,
+    defaultHidden: true,
     sorter: { multiple: 1 },
     render: (imaging?: IImagingData) => imaging?.device?.model_name || TABLE_EMPTY_PLACE_HOLDER,
   },
