@@ -1,5 +1,5 @@
-import React from 'react';
 import intl from 'react-intl-universal';
+import { CheckOutlined } from '@ant-design/icons';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
 import { IBiospecimenDiagnoses, IBiospecimenEntity, Status } from 'graphql/biospecimens/models';
 import { ArrangerEdge, ArrangerResultsTree } from 'graphql/models';
@@ -46,6 +46,12 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (biospecimen: IBiospecimenEntity) => (
       <AgeCell ageInDays={biospecimen?.age_at_biospecimen_collection} />
     ),
+  },
+  {
+    key: 'tumor_status',
+    title: intl.get('entities.biospecimen.tumor_status'),
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen.tumor_status || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'mondo_display_term',
@@ -125,6 +131,13 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
       mergeBiosDiagnosesSpecificField(biospecimen, 'source_text_tumor_descriptor'),
   },
   {
+    key: 'has_matched_normal_sample',
+    title: intl.get('entities.biospecimen.has_matched_normal_sample'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen.has_matched_normal_sample ? <CheckOutlined /> : TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'source_text_tumor_location',
     title: intl.get('entities.biospecimen.diagnoses.source_text_tumor_location'),
     defaultHidden: true,
@@ -145,6 +158,14 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (biospecimen: IBiospecimenEntity) =>
       biospecimen?.consent_type || TABLE_EMPTY_PLACE_HOLDER,
   },
+  {
+    key: 'preservation_method',
+    title: intl.get('entities.biospecimen.preservation_method'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) =>
+      biospecimen.preservation_method || TABLE_EMPTY_PLACE_HOLDER,
+  },
+
   {
     key: 'volume',
     title: intl.get('entities.biospecimen.volume'),
@@ -183,6 +204,12 @@ export const getBiospecimensDefaultColumns = (): ProColumnType[] => [
     render: (biospecimen: IBiospecimenEntity) =>
       biospecimen?.parent_sample_type || TABLE_EMPTY_PLACE_HOLDER,
     defaultHidden: true,
+  },
+  {
+    key: 'sdg_id',
+    title: intl.get('entities.biospecimen.external_collection_sample_id'),
+    defaultHidden: true,
+    render: (biospecimen: IBiospecimenEntity) => biospecimen.sdg_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 

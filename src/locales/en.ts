@@ -244,6 +244,9 @@ const en = {
       },
     },
     report: {
+      biospecimenData: {
+        download: 'Download sample data',
+      },
       clinicalData: {
         download: 'Download clinical data',
         family:

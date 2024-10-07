@@ -203,6 +203,10 @@ export const GET_PARTICIPANT_ENTITY = gql`
                             tissue_type_source_text
                             volume
                             volume_unit
+                            tumor_status
+                            has_matched_normal_sample
+                            preservation_method
+                            sdg_id
                           }
                         }
                       }
