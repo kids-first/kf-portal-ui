@@ -1577,6 +1577,11 @@ const en = {
               disabledButtonTooltip: 'You must select at least 1 item',
             },
           },
+          undeterminedAuthorization: {
+            popoverTitle: 'Undetermined Authorization',
+            popoverContent:
+              'We are unable to determine the authorization status of these files. Depending on your dbGaP authorization status, the files in this dataset may or may not be accessible in your Cavatica project. Read more on <a href="{href}" style="color:#0369a1;text-decoration-line:underline;" target="_blank">applying for data access</a>.',
+          },
         },
       },
     },
