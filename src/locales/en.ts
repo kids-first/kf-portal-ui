@@ -19,8 +19,8 @@ const filesFacets = {
   is_harmonized: 'Harmonized Data',
   acl: 'ACL',
   imaging_facet_group: 'Imaging',
-  imaging_sequence_type: 'Sequence Type',
-  imaging_technique: 'Technique',
+  imaging_sequence_types: 'Sequence Type',
+  imaging_techniques: 'Technique',
   imaging: {
     modality: 'Image Modality',
     info_body_part_examined: 'Body Part Examined',
