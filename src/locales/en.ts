@@ -1776,6 +1776,7 @@ const en = {
       mondo_display_term: 'Histological Diagnosis (MONDO)',
       ncit_display_term: 'Histological Diagnosis (NCIT)',
     },
+    has_matched_normal_sample: 'Paired Normal Sample',
     // File
     files: filesFacets,
     ...filesFacets,
