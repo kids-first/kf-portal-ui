@@ -49,6 +49,10 @@ export const SEARCH_BIOSPECIMEN_QUERY = gql`
             volume
             volume_unit
             external_sample_id
+            sdg_id
+            preservation_method
+            tumor_status
+            has_matched_normal_sample
 
             study {
               study_code
@@ -172,6 +176,7 @@ export const BIOSPECIMEN_SEARCH_BY_ID_QUERY = gql`
             sample_id
             external_sample_id
             collection_sample_id
+            sdg_id
           }
         }
       }

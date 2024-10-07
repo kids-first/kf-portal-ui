@@ -451,6 +451,7 @@ export const getFacetsDictionary = () => ({
       af: '1000 Genomes',
     },
   },
+  has_matched_normal_sample: 'Paired Normal Sample',
   tooltips: {
     genes: {
       hpo: {

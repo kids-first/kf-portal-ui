@@ -58,4 +58,8 @@ export interface IBiospecimenEntity {
   collection_method_of_sample_procurement: string;
   external_sample_id: string;
   diagnoses: ArrangerResultsTree<IBiospecimenDiagnoses>;
+  sdg_id: string;
+  preservation_method: string;
+  tumor_status: string;
+  has_matched_normal_sample: boolean;
 }

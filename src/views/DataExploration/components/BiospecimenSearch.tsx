@@ -50,6 +50,7 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
     <GlobalSearch<IBiospecimenEntity>
       queryBuilderId={queryBuilderId}
       field="collection_sample_id" // @todo: search_text, see when implemented
+      searchFields={['collection_sample_id', 'sdg_id']}
       index={INDEXES.BIOSPECIMEN}
       placeholder={intl.get('global.search.biospecimen.collection.placeholder')}
       emptyDescription={intl.get('global.search.biospecimen.collection.emptyText')}
@@ -61,12 +62,14 @@ const BiospecimenCollectionSearch = ({ queryBuilderId }: ICustomSearchProps) => 
             <SelectItem
               icon={<ExperimentOutlined />}
               title={highlightSearchMatch(option.collection_sample_id, matchRegex, search)}
+              caption={highlightSearchMatch(option.sdg_id, matchRegex, search)}
             />
           ),
           value: option.collection_sample_id,
         }))
       }
       title={intl.get('global.search.biospecimen.collection.title')}
+      tooltipText={intl.get('global.search.biospecimen.collection.tooltip')}
     />
   );
 };

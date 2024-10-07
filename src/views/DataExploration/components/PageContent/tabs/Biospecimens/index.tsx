@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DownloadOutlined } from '@ant-design/icons';
+import { CheckOutlined, DownloadOutlined } from '@ant-design/icons';
 import RequestBiospecimenButton from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenButton';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
@@ -152,6 +152,12 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     ),
   },
   {
+    key: 'tumor_status',
+    title: intl.get('entities.biospecimen.tumor_status'),
+    dataIndex: 'tumor_status',
+    render: (tumor_status: string) => tumor_status || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'diagnoses.mondo_display_term',
     title: intl.get('entities.biospecimen.diagnoses.mondo_display_term'),
     dataIndex: 'diagnoses',
@@ -282,6 +288,13 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     render: (consent_type) => consent_type || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'preservation_method',
+    title: intl.get('entities.biospecimen.preservation_method'),
+    dataIndex: 'preservation_method',
+    defaultHidden: true,
+    render: (preservation_method: string) => preservation_method || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     key: 'collection_method_of_sample_procurement',
     title: intl.get('entities.biospecimen.collection_method_of_sample_procurement'),
     dataIndex: 'collection_method_of_sample_procurement',
@@ -295,6 +308,14 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     defaultHidden: true,
     render: (record: IBiospecimenEntity) =>
       mergeBiosDiagnosesSpecificField(record, 'source_text_tumor_descriptor'),
+  },
+  {
+    key: 'has_matched_normal_sample',
+    title: intl.get('entities.biospecimen.has_matched_normal_sample'),
+    dataIndex: 'has_matched_normal_sample',
+    defaultHidden: true,
+    render: (has_matched_normal_sample) =>
+      has_matched_normal_sample ? <CheckOutlined /> : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'volume',
@@ -324,6 +345,13 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     dataIndex: 'external_sample_id',
     defaultHidden: true,
     render: (external_sample_id) => external_sample_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    key: 'sdg_id',
+    title: intl.get('entities.biospecimen.external_collection_sample_id'),
+    dataIndex: 'sdg_id',
+    defaultHidden: true,
+    render: (sdg_id: string) => sdg_id || TABLE_EMPTY_PLACE_HOLDER,
   },
 ];
 
@@ -452,7 +480,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
         enableColumnSort: true,
         enableTableExport: true,
         onSelectAllResultsChange: setSelectedAllResults,
-        onSelectedRowsChange: (keys, rows) => {
+        onSelectedRowsChange: (keys) => {
           setSelectedKeys(keys);
         },
         onColumnSortChange: (newState) =>
