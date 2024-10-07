@@ -1,6 +1,8 @@
 import { FileAccessType, IFileEntity } from 'graphql/files/models';
 import { intersection } from 'lodash';
 
+const STUDIES_CONTROLLED_AS_REGISTERED_RULES = ['CBTN'];
+
 export const userHasAccessToFile = (
   file: IFileEntity,
   userAcls: string[],
@@ -11,18 +13,23 @@ export const userHasAccessToFile = (
     return false;
   }
 
-  if (file.controlled_access === FileAccessType.CONTROLLED && !isConnectedToGen3) {
+  const fileAccess = file;
+  if (STUDIES_CONTROLLED_AS_REGISTERED_RULES.includes(fileAccess.study.study_code)) {
+    fileAccess.controlled_access = FileAccessType.REGISTERED;
+  }
+
+  if (fileAccess.controlled_access === FileAccessType.CONTROLLED && !isConnectedToGen3) {
     return false;
   }
 
-  if (file.controlled_access === FileAccessType.REGISTERED && !isConnectedToCavatica) {
+  if (fileAccess.controlled_access === FileAccessType.REGISTERED && !isConnectedToCavatica) {
     return false;
   }
 
   return (
-    !file.acl ||
-    file.acl.length === 0 ||
-    intersection(userAcls, file.acl).length > 0 ||
-    file.controlled_access === FileAccessType.REGISTERED
+    !fileAccess.acl ||
+    fileAccess.acl.length === 0 ||
+    intersection(userAcls, fileAccess.acl).length > 0 ||
+    fileAccess.controlled_access === FileAccessType.REGISTERED
   );
 };
