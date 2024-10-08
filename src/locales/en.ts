@@ -1925,7 +1925,7 @@ const en = {
       fileAuthorization: 'File Authorization',
       fileReadMore: 'applying for data access.',
       locked:
-        'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on',
+        'You are unauthorized to access this file. Users requesting access to controlled data require an eRA Commons account and permissions from an associated Data Access Committee. Read more on ',
       unlocked: 'You are authorized to access and copy this file to your Cavatica workspace.',
       data_access: {
         title: 'Data Access',
