@@ -11,7 +11,7 @@ export const userHasAccessToFile = (
     return false;
   }
 
-  const fileAccess = file;
+  const fileAccess = { ...file };
   if (
     fileAccess.controlled_access === FileAccessType.CONTROLLED &&
     fileAccess.data_category === 'Imaging' &&
