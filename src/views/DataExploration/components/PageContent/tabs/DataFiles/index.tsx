@@ -342,24 +342,24 @@ export const getDefaultColumns = (
     render: (imaging?: IImagingData) => imaging?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_sequence_type',
+    key: 'imaging_sequence_types',
     title: intl.get('entities.file.imaging.sequence_type'),
-    dataIndex: 'imaging_sequence_type',
+    dataIndex: 'imaging_sequence_types',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_sequence_type?: string[]) =>
-      imaging_sequence_type
-        ? joinUniqueCleanWords(imaging_sequence_type)
+    render: (imaging_sequence_types?: string[]) =>
+      imaging_sequence_types
+        ? joinUniqueCleanWords(imaging_sequence_types)
         : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    key: 'imaging_technique',
+    key: 'imaging_techniques',
     title: intl.get('entities.file.imaging.technique'),
-    dataIndex: 'imaging_technique',
+    dataIndex: 'imaging_techniques',
     defaultHidden: activePreset !== PresetOptions.Imaging,
     sorter: { multiple: 1 },
-    render: (imaging_technique?: string[]) =>
-      imaging_technique ? joinUniqueCleanWords(imaging_technique) : TABLE_EMPTY_PLACE_HOLDER,
+    render: (imaging_techniques?: string[]) =>
+      imaging_techniques ? joinUniqueCleanWords(imaging_techniques) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     key: 'imaging.info_body_part_examined',
