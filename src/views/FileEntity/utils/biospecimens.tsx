@@ -96,14 +96,24 @@ export const getBiospecimensFromFile = (file?: IFileEntity) => {
       ...e.node,
     })) || [];
 
-  return participantEdges.flatMap((participant) =>
-    participant.biospecimens.hits.edges.map((biospecimen) => ({
-      key: biospecimen.node.sample_id,
-      participant_id: participant.participant_id,
-      is_proband: participant.is_proband,
-      external_id: participant.external_id,
-      study_code: participant.study.study_code,
-      ...biospecimen.node,
-    })),
-  );
+  return participantEdges.flatMap((participant) => {
+    if (participant.biospecimens.hits.edges.length == 0) {
+      return {
+        key: participant.participant_id,
+        participant_id: participant.participant_id,
+        is_proband: participant.is_proband,
+        external_id: participant.external_id,
+        study_code: participant.study.study_code,
+      };
+    } else {
+      return participant.biospecimens.hits.edges.map((biospecimen) => ({
+        key: biospecimen.node.sample_id,
+        participant_id: participant.participant_id,
+        is_proband: participant.is_proband,
+        external_id: participant.external_id,
+        study_code: participant.study.study_code,
+        ...biospecimen.node,
+      }));
+    }
+  });
 };
