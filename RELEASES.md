@@ -1,3 +1,24 @@
+## VERSION 5.9.0 (2024-10-08)
+
+### Features
+
+- [SKFP-1246](https://d3b.atlassian.net/browse/SKFP-1246) Feature:[Data Exploration] Implement Imaging data column view preset
+- [SKFP-1249](https://d3b.atlassian.net/browse/SKFP-1249) Feature:[Data Exploration] Add new imaging fields to Data Exploration facets and columns
+- [SKFP-1262](https://d3b.atlassian.net/browse/SKFP-1262) Feature:[Data Exploration] Add new bio specimen fields to Data Exploration facets and columns
+- [SKFP-1273](https://d3b.atlassian.net/browse/SKFP-1273) Feature:[Report] Add new biospecimen fields to download sample data report
+- [SKFP-1286](https://d3b.atlassian.net/browse/SKFP-1286) Feature:[Entity] Add new Imaging Study section for imaging fields in the File Entity page
+- [SKFP-1295](https://d3b.atlassian.net/browse/SKFP-1295) Feature:[Entity] Add new biospecimen fields to Biospecimen table in the File Entity page
+- [SKFP-1296](https://d3b.atlassian.net/browse/SKFP-1296) Feature:[Studies] Add an Imaging Column in Studies page
+- [SKFP-1300](https://d3b.atlassian.net/browse/SKFP-1300) Feature:[Entity] Add Open Flywheel button at the top of the page for imaging files in the File Entity page
+
+### Technical / Other changes
+
+- [SKFP-1269](https://d3b.atlassian.net/browse/SKFP-1269) Refactor: [Data Exploration] Updated the link to data access support using the new KFDRC website
+- [SKFP-1299](https://d3b.atlassian.net/browse/SKFP-1299) Refactor: [Entity] Adjusted the Experimental procedure section to be hidden for imaging files 
+- [SKFP-1313](https://d3b.atlassian.net/browse/SKFP-1313) Refactor: [Data exploration & Entity] Adjusted authorization icon and flow for controlled Imaging files governed by the Cavatica DRS
+- [SKFP-1315](https://d3b.atlassian.net/browse/SKFP-1315) Refactor: [Data Exploration] Adjusted the access url field to display a dash if there are no values
+
+
 ## VERSION 5.8.0 (2024-09-30)
 
 ### Features
