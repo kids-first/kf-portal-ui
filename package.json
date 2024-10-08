@@ -64,7 +64,7 @@
     "@react-keycloak/core": "^3.2.0",
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "@sentry/browser": "^8.24.0",
+    "@sentry/browser": "^8.33.0",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^14.1.2",
