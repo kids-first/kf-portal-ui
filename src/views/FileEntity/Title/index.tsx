@@ -31,6 +31,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
   const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
   const hasFamily = file?.participants?.hits?.edges?.some((e) => e.node.families_id);
 
+  console.log('====Debug==== + The File: ', file);
   const hasAccess = file
     ? userHasAccessToFile(
         file,
@@ -39,6 +40,8 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
         gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
       )
     : false;
+
+  console.log('====Debug==== + Has access: ', hasAccess);
 
   const generateSqonForFile = (): any =>
     generateQuery({
@@ -56,10 +59,19 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
   };
 
   const renderTag = () => {
+    console.log(
+      '====Debug==== + Render Icon + is Controlled: ',
+      file?.controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase(),
+    );
+    console.log(
+      '====Debug==== + Render Icon + starts with cavatica ga4gh url: ',
+      file?.access_urls?.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/'),
+    );
     if (
       file?.controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() &&
       file?.access_urls?.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/')
     ) {
+      console.log('====Debug==== + Render Icon of Warning');
       return (
         <Popover
           placement="bottom"
@@ -78,6 +90,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
         </Popover>
       );
     } else if (hasAccess) {
+      console.log('====Debug==== + Render Icon of Access');
       return (
         <Popover
           placement="bottom"
@@ -89,6 +102,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
         </Popover>
       );
     } else {
+      console.log('====Debug==== + Render Icon of No Access');
       return (
         <Popover
           overlayClassName={styles.popOverContent}
