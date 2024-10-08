@@ -11,7 +11,6 @@ interface OwnProps {
 }
 
 const Imaging = ({ file, loading }: OwnProps) => {
-  console.log(file);
   const imagingData: Partial<IImagingData> &
     Pick<IFileEntity, 'imaging_sequence_types' | 'imaging_techniques' | 'flywheel_url'> = {
     ...file?.imaging,
