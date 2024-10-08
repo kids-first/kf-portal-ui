@@ -84,8 +84,8 @@ export interface IFileEntity {
     file_name: string;
   };
   is_harmonized: boolean;
-  imaging_sequence_type?: string[];
-  imaging_technique?: string[];
+  imaging_sequence_types?: string[];
+  imaging_techniques?: string[];
   imaging?: IImagingData;
   nb_participants: number;
   nb_biospecimens: number;
