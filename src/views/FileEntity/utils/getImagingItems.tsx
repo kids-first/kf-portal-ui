@@ -25,13 +25,13 @@ const getImagingItems = (
     value: imagingData?.modality || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    label: intl.get('entities.file.imaging.sequence_types'),
+    label: intl.get('entities.file.imaging.sequence_type'),
     value: imagingData?.imaging_sequence_type
       ? joinUniqueCleanWords(imagingData?.imaging_sequence_type)
       : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
-    label: intl.get('entities.file.imaging.techniques'),
+    label: intl.get('entities.file.imaging.technique'),
     value: imagingData?.imaging_technique
       ? joinUniqueCleanWords(imagingData?.imaging_technique)
       : TABLE_EMPTY_PLACE_HOLDER,
