@@ -13,3 +13,8 @@
 .unlocked {
   color: var(--green-7);
 }
+
+.authorizedUndetermined {
+  color: var(--orange-7);
+}
+
