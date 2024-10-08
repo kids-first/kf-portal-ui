@@ -222,7 +222,7 @@ const en = {
         fileAuth: {
           title: 'Unauthorized files',
           description:
-            'You are not authorized to analyze the files you have selected. Learn more about <a href="https://d3b.notion.site/Studies-and-Access-a5d2f55a8b40461eac5bf32d9483e90f" rel="noreferrer" style="color:unset;text-decoration:underline;" target="_blank">data access</a>.',
+            'You are not authorized to analyze the files you have selected. Learn more about <a href="https://kidsfirstdrc.org/help-center/accessing-controlled-data-via-dbgap/" rel="noreferrer" style="color:unset;text-decoration:underline;" target="_blank">data access</a>.',
         },
       },
       success: {
