@@ -118,6 +118,37 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(5).contains('2016-01-26T00:00:00+00:00').should('exist');
     cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(6).contains('IWG_IND-GMKFWC.CDH667-1_2pA').should('exist');
   });
+  
+  it('Panneau Experimental Procedure (Imaging)', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="experimental-procedure"]').should('not.exist');
+  });
+  
+  it('Panneau Imaging Study', () => {
+    cy.get('[id="imaging"]').should('not.exist');
+  });
+  
+  it('Panneau Imaging Study (Imaging)', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(0).contains('Modality').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(0).contains('MR').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(1).contains('Sequence Type').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(1).contains('Diffusion').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(2).contains('Technique').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(2).contains('Functional').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(3).contains('Body Part').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(3).contains('CTSPINE').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(4).contains('Field Str.').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(4).contains('1.3717760004328263').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(5).contains('Device Manufacturer').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(5).contains('Canon').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(6).contains('Device Model').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(6).contains('Avanto_fit').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(7).contains('Device ID').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(7).contains('de-pea26nptxz').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(8).contains('Flywheel URL').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).contains('https://chop.flywheel.io/#/projects/LGG_v2/sessions/').should('exist');
+  });
 });
 
 describe('Page d\'un fichier - Valider les liens disponibles', () => {
@@ -138,6 +169,12 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
     cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(0).find('[href]').clickAndWait({force: true});
     cy.get('[id="participant-entity-page"]').should('exist');
     cy.get('[class*="EntityTitle"]').contains('PT_1DYA8779');
+  });
+
+  it('Lien Flywheel URL du panneau Imaging Study', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).find('[href]')
+      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/LGG_v2\/sessions\/session-(0|1)-patient_09/);
   });
 });
 
@@ -180,5 +217,14 @@ describe('Page d\'un fichier - Valider les panneaux masquables', () => {
     cy.get('[id="experimental-procedure"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
     cy.get('[id="experimental-procedure"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="experimental-procedure"] div[class*="ant-collapse-content-active"]').should('exist');
+  });
+
+  it('Panneau Imaging Study', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="imaging"] div[class*="ant-collapse-content-active"]').should('exist');
+    cy.get('[id="imaging"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
+    cy.get('[id="imaging"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
+    cy.get('[id="imaging"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
+    cy.get('[id="imaging"] div[class*="ant-collapse-content-active"]').should('exist');
   });
 });

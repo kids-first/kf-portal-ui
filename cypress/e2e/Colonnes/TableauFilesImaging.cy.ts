@@ -5,22 +5,20 @@ beforeEach(() => {
   cy.login();
 });
 
-describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
+describe('Page Data Exploration (Data Files - Imaging) - Colonnes du tableau', () => {
   beforeEach(() => {
-    cy.visitDataExploration('datafiles');
+    cy.visitDataExploration('imaging');
   });
 
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
     cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(1)
-      .should('not.have.class', 'ant-table-column-has-sorters')
-      .find('span[class*="anticon"]')
+      .should('not.have.class', 'ant-table-column-has-sorters').find('span[class*="anticon"]')
       .should('have.class', 'anticon-lock');
     cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(0)
       .contains('File Authorization').should('exist');
 
     cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(2)
-      .should('not.have.class', 'ant-table-column-has-sorters')
-      .find('span[class*="anticon"]')
+      .should('not.have.class', 'ant-table-column-has-sorters').find('span[class*="anticon"]')
       .should('have.class', 'anticon-safety');
     cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(1)
       .contains('Data Access').should('exist');
@@ -33,32 +31,38 @@ describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Study').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(5)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Data Category').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(4)
       .contains('Data Category').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(6)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Data Type').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(5)
       .contains('Data Type').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(7)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Experimental Strategy').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(6)
       .contains('Experimental Strategy').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(8)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Format').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(7)
       .contains('Format').should('exist');
     
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(9)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Size').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(8)
       .contains('Size').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(10)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(5)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Participants').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(11)
-      .should('have.class', 'ant-table-column-has-sorters')
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Biospecimens').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(10)
       .contains('Biospecimens').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
@@ -85,40 +89,33 @@ describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
       .contains('Access URL').should('not.exist');
     cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(15)
       .contains('Access URL').should('exist');
-
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Flywheel').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(16)
+  
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(6)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Flywheel').should('exist');
-
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Modality').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(17)
+    
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(7)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Modality').should('exist');
 
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Sequence Type').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(18)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(8)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Sequence Type').should('exist');
 
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Technique').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(19)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(9)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Technique').should('exist');
-
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Body Part').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(20)
+  
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(10)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Body Part').should('exist');
-
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Field Str.').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(21)
+  
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(11)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Field Str.').should('exist');
-
-    cy.get('thead[class="ant-table-thead"]')
-      .contains('Manufacturer').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(22)
+  
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(12)
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Manufacturer').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')

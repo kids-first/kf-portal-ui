@@ -13,6 +13,15 @@ beforeEach(() => {
   cy.showColumn('Repository');
   cy.showColumn('ACL');
   cy.showColumn('Access URL');
+  cy.showColumn('Flywheel');
+  cy.showColumn('Modality');
+  cy.showColumn('Sequence Type');
+  cy.showColumn('Technique');
+  cy.showColumn('Body Part');
+  cy.showColumn('Field Str.');
+  cy.showColumn('Device Manufacturer');
+  cy.showColumn('Device Model');
+  cy.showColumn('Device ID');
   cy.wait(1000);
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, 1);

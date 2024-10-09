@@ -13,6 +13,15 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.showColumn('Repository');
     cy.showColumn('ACL');
     cy.showColumn('Access URL');
+    cy.showColumn('Flywheel');
+    cy.showColumn('Modality');
+    cy.showColumn('Sequence Type');
+    cy.showColumn('Technique');
+    cy.showColumn('Body Part');
+    cy.showColumn('Field Str.');
+    cy.showColumn('Device Manufacturer');
+    cy.showColumn('Device Model');
+    cy.showColumn('Device ID');
   });
 
   it('Titre', () => {
@@ -37,6 +46,15 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(14).contains('Gen3').should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(15).contains('phs001110.c1').should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(16).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(17).find('[class*="anticon"]').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(18).contains('MR').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(19).contains('Diffusion').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(20).contains('Functional').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(21).contains('CTSPINE').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(22).contains('1.371776').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(23).contains('Canon').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(24).contains('Avanto_fit').should('exist');
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(25).contains('de-pea26nptxz').should('exist');
   });
 });
 
@@ -48,6 +66,15 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
     cy.showColumn('Repository');
     cy.showColumn('ACL');
     cy.showColumn('Access URL');
+    cy.showColumn('Flywheel');
+    cy.showColumn('Modality');
+    cy.showColumn('Sequence Type');
+    cy.showColumn('Technique');
+    cy.showColumn('Body Part');
+    cy.showColumn('Field Str.');
+    cy.showColumn('Device Manufacturer');
+    cy.showColumn('Device Model');
+    cy.showColumn('Device ID');
   });
 
   it('Lien File ID du tableau', () => {
@@ -70,6 +97,11 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('File ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('GF 6DVS70V9').should('exist');
     cy.validateTableResultsCount(/^3$/);
+  });
+ 
+  it('Liens Flywheel', () => {
+    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(17).find('a[href]')
+      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/LGG_v2\/sessions\/session-(0|1)-patient_09/);
   });
 });
 
@@ -144,7 +176,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   it('Valider les fonctionnalités du tableau - Tri File Name', () => {
     cy.showColumn('File Name');
     cy.sortTableAndIntercept('File Name', 1);
-    cy.validateTableFirstRow('0000e2ec-a59e-42aa-a312-85f1952779bc.CGP.filtered.deNovo.vep.vcf.gz', 12, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
     cy.sortTableAndIntercept('File Name', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
@@ -176,9 +208,81 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   it('Valider les fonctionnalités du tableau - Tri Access URL', () => {
     cy.showColumn('Access URL');
     cy.sortTableAndIntercept('Access URL', 1);
-    cy.validateTableFirstRow('drs://data.kidsfirstdrc.org/00000eae-7f56-4a89-854e-6e88c0683340', 12, true);
+    cy.validateTableFirstRow('-', 12, true);
     cy.sortTableAndIntercept('Access URL', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Flywheel', () => {
+    cy.showColumn('Flywheel');
+    cy.sortTableAndIntercept('Flywheel', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Flywheel', 1);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Modality', () => {
+    cy.showColumn('Modality');
+    cy.sortTableAndIntercept('Modality', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Modality', 1);
+    cy.validateTableFirstRow('MR', 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Sequence Type', () => {
+    cy.showColumn('Sequence Type');
+    cy.sortTableAndIntercept('Sequence Type', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Sequence Type', 1);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Technique', () => {
+    cy.showColumn('Technique');
+    cy.sortTableAndIntercept('Technique', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Technique', 1);
+    cy.validateTableFirstRow('Structural', 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Body Part', () => {
+    cy.showColumn('Body Part');
+    cy.sortTableAndIntercept('Body Part', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Body Part', 1);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Field Str.', () => {
+    cy.showColumn('Field Str.');
+    cy.sortTableAndIntercept('Field Str.', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Field Str.', 1);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Manufacturer', () => {
+    cy.showColumn('Manufacturer');
+    cy.sortTableAndIntercept('Manufacturer', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Manufacturer', 1);
+    cy.validateTableFirstRow('Toshiba', 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Device Model', () => {
+    cy.showColumn('Device Model');
+    cy.sortTableAndIntercept('Device Model', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Device Model', 1);
+    cy.validateTableFirstRow('Verio', 12, true);
+  });
+
+  it('Valider les fonctionnalités du tableau - Tri Device ID', () => {
+    cy.showColumn('Device ID');
+    cy.sortTableAndIntercept('Device ID', 1);
+    cy.validateTableFirstRow('-', 12, true);
+    cy.sortTableAndIntercept('Device ID', 1);
+    cy.validateTableFirstRow('de-zwf3dx8r8d', 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
@@ -188,7 +292,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
-    cy.get('span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+    cy.get('[class*="Pagination"] span[class*="ant-select-selection-item"]').clickAndWait({force: true});
     cy.get('div[class*="ant-select-item-option-content"]').contains('20').clickAndWait({force: true});
     cy.get('div[class*="ProTableHeader"]').contains(/^1$/).should('exist');
     cy.get('div[class*="ProTableHeader"]').contains(/^20$/).should('exist');

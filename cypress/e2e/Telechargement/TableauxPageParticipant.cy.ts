@@ -81,15 +81,18 @@ describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () 
     cy.showColumn('Anatomical Site (NCIT)');
     cy.showColumn('Anatomical Site (Source Text)');
     cy.showColumn('Tumor Descriptor (Source Text)');
+    cy.showColumn('Paired Normal Sample');
     cy.showColumn('Tumor Location (Source Text)');
     cy.showColumn('Consent Code (dbGaP)');
     cy.showColumn('Consent Type');
+    cy.showColumn('Preservation Method');
     cy.showColumn(/^Volume$/);
     cy.showColumn('Volume Unit');
     cy.showColumn('Sample Availability');
     cy.showColumn('Parent Sample ID');
     cy.showColumn('Parent Sample Type');
-    cy.get('div[id="content"] svg[data-icon="download"]').eq(4).clickAndWait({force:true});
+    cy.showColumn('External Collection ID');
+    cy.get('div[id="content"] svg[data-icon="download"]').eq(5).clickAndWait({force:true});
     cy.waitUntilFile(oneMinute);
   });
   

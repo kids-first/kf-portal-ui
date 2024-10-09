@@ -15,12 +15,15 @@ beforeEach(() => {
   cy.showColumn('Tumor Location (Source Text)');
   cy.showColumn('Consent Code (dbGaP)');
   cy.showColumn('Consent Type');
+  cy.showColumn('Preservation Method');
   cy.showColumn('Method of Sample Procurement');
   cy.showColumn('Tumor Descriptor (Source Text)');
+  cy.showColumn('Paired Normal Sample');
   cy.showColumn(/^Volume$/);
   cy.showColumn('Volume Unit');
   cy.showColumn('External Participant ID');
   cy.showColumn('External Sample ID');
+  cy.showColumn('External Collection ID');
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, 1);
   cy.waitUntilFile(oneMinute);
