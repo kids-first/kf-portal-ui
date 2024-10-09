@@ -28,6 +28,7 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(8).find('[data-icon="check"]').should('exist');
     cy.validateTableFirstRow('-', 9);
     cy.validateTableFirstRow('-', 10);
+    cy.validateTableFirstRow('-', 11);
   });
 });
 

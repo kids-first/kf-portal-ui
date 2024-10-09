@@ -22,6 +22,7 @@ declare namespace Cypress {
     saveBioReqAs(bioreqName: string, itemPosition: number): cy & CyEventEmitter;
     saveFilterAs(filterName: string): cy & CyEventEmitter;
     saveSetAs(setName: string, itemPosition: number): cy & CyEventEmitter;
+    selectPreset(tab: string): cy & CyEventEmitter;
     showColumn(column: string|RegExp): cy & CyEventEmitter;
     sortTableAndIntercept(column: string|RegExp, nbCalls: number): cy & CyEventEmitter;
     sortTableAndWait(column: string): cy & CyEventEmitter;

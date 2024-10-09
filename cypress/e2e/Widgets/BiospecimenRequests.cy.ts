@@ -38,7 +38,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
     cy.visitDashboard();
   });
 
-  it('Vérifier les informations affichées - Nom [SKFP-1282]', () => {
+  it('Vérifier les informations affichées - Nom', () => {
     cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Biospecimen Requests')) {
         cy.wrap($el).as('dashboardCard');
@@ -102,7 +102,7 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
     cy.visitDashboard();
   });
 
-  it('Valider les liens disponibles - Bouton Edit [SKFP-1282]', () => {
+  it('Valider les liens disponibles - Bouton Edit', () => {
     cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Biospecimen Requests')) {
         cy.wrap($el).as('dashboardCard');

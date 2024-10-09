@@ -19,8 +19,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.checkValueFacetAndApply('Sample Type', 'RNA');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/(26.2K|26.3K|26.4K|27.2K|32K|32.1K|32.2K)/);
-    cy.validateTableResultsCount(/(26,173|26,339|26,349|26,368|27,172|27,192|32,036|32,056|32,155)/);
+    cy.validateTotalSelectedQuery(/(26.2K|26.3K|26.4K|27.2K|32K|32.1K|32.2K|32.3K)/);
+    cy.validateTableResultsCount(/(26,173|26,339|26,349|26,368|26,378|27,172|27,192|32,036|32,056|32,155|32,282)/);
     cy.validateClearAllButton(false);
   });
 
@@ -30,8 +30,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 27);
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/(26.2K|26.3K|26.4K|27.2K|32K|32.1K|32.2K)/);
-    cy.validateTableResultsCount(/(26,173|26,339|26,349|26,368|27,172|27,192|32,036|32,056|32,155)/);
+    cy.validateTotalSelectedQuery(/(26.2K|26.3K|26.4K|27.2K|32K|32.1K|32.2K|32.3K)/);
+    cy.validateTableResultsCount(/(26,173|26,339|26,349|26,368|26,378|27,172|27,192|32,036|32,056|32,155|32,282)/);
     cy.validateClearAllButton(false);
   });
 
@@ -41,8 +41,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Collection Sample Type', ['Saliva'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/(3,181|3,260|3,261|3,165|5,275|5,335|5,336)/);
-    cy.validateTableResultsCount(/(3,181|3,260|3,261|3,165|5,275|5,335|5,336)/);
+    cy.validateTotalSelectedQuery(/(3,181|3,182|3,260|3,261|3,165|5,275|5,309|5,335|5,336)/);
+    cy.validateTableResultsCount(/(3,181|3,182|3,260|3,261|3,165|5,275|5,309|5,335|5,336)/);
     cy.validateClearAllButton(false);
   });
 
@@ -75,8 +75,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
-    cy.validateTotalSelectedQuery(/(26.1K|26.2K|27K|31.9K|32K)/);
-    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,978|26,998|31,933|31,953|32,018)/);
+    cy.validateTotalSelectedQuery(/(26.1K|26.2K|27K|31.9K|32K|32.1K)/);
+    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,244|26,978|26,998|31,933|31,953|32,018|32,146)/);
     cy.validateClearAllButton(true);
   });
 });

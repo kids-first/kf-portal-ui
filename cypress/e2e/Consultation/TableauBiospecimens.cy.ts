@@ -15,12 +15,16 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.showColumn('Tumor Location (Source Text)');
     cy.showColumn('Consent Code (dbGaP)');
     cy.showColumn('Consent Type');
+    cy.showColumn('Preservation Method');
     cy.showColumn('Method of Sample Procurement');
     cy.showColumn('Tumor Descriptor (Source Text)');
+    cy.showColumn('Paired Normal Sample');
     cy.showColumn(/^Volume$/);
     cy.showColumn('Volume Unit');
     cy.showColumn('External Participant ID');
     cy.showColumn('External Sample ID');
+    cy.showColumn('External Collection ID');
+    cy.sortTableAndIntercept('Study', 1);
   });
 
   it('Titre', () => {
@@ -38,21 +42,25 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(8).contains('Leukocyte').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(9).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(10).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(11).contains('No').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(12).contains(/^4$/).should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(13).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(14).contains('Other').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(15).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(11).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(12).contains('No').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(13).contains(/^4$/).should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(14).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(15).contains('Other').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(16).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(17).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(18).contains('phs001110.c1').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(19).contains('GRU').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(20).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(18).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(19).contains('phs001110.c1').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(20).contains('GRU').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(21).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(22).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(23).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(24).contains('01-0665').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(25).contains('01-0665').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(24).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(25).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(26).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(27).contains('01-0665').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(28).contains('01-0665').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(29).contains('-').should('exist');
   });
 });
 
@@ -66,12 +74,16 @@ describe('Page Data Exploration (Biospecimens) - Valider les liens disponibles',
     cy.showColumn('Tumor Location (Source Text)');
     cy.showColumn('Consent Code (dbGaP)');
     cy.showColumn('Consent Type');
+    cy.showColumn('Preservation Method');
     cy.showColumn('Method of Sample Procurement');
     cy.showColumn('Tumor Descriptor (Source Text)');
+    cy.showColumn('Paired Normal Sample');
     cy.showColumn(/^Volume$/);
     cy.showColumn('Volume Unit');
     cy.showColumn('External Participant ID');
     cy.showColumn('External Sample ID');
+    cy.showColumn('External Collection ID');
+    cy.sortTableAndIntercept('Study', 1);
   });
 
   it('Lien Participant ID du tableau', () => {
@@ -87,7 +99,7 @@ describe('Page Data Exploration (Biospecimens) - Valider les liens disponibles',
   });
 
   it('Lien Files du tableau', () => {
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(12).find('[href]').clickAndWait({force: true});
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(13).find('[href]').clickAndWait({force: true});
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Sample ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('BS KB0GZCP5').should('exist');
@@ -105,12 +117,15 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
     cy.showColumn('Tumor Location (Source Text)');
     cy.showColumn('Consent Code (dbGaP)');
     cy.showColumn('Consent Type');
+    cy.showColumn('Preservation Method');
     cy.showColumn('Method of Sample Procurement');
     cy.showColumn('Tumor Descriptor (Source Text)');
+    cy.showColumn('Paired Normal Sample');
     cy.showColumn(/^Volume$/);
     cy.showColumn('Volume Unit');
     cy.showColumn('External Participant ID');
     cy.showColumn('External Sample ID');
+    cy.showColumn('External Collection ID');
   });
 
   it('Valider les fonctionnalités du tableau - Tri Sample ID', () => {
@@ -157,9 +172,9 @@ describe('Page Data Exploration (Biospecimens) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Files', () => {
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow(/^0$/, 12, true);
+    cy.validateTableFirstRow(/^0$/, 13, true);
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow(/\d{1}/, 12, true);
+    cy.validateTableFirstRow(/\d{1}/, 13, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {

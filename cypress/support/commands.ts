@@ -21,6 +21,7 @@ Cypress.Commands.add('checkValueFacetAndApply', (facetTitle: string, value: stri
  
   cy.get(`[data-cy="Checkbox_${facetTitle}_${value}"]`).check({force: true});
   cy.clickAndIntercept(`[data-cy="Apply_${facetTitle}"]`, 'POST', '**/graphql', 3);
+  cy.wait(1000);
   cy.waitWhileSpin(oneMinute);
 });
 
@@ -285,6 +286,13 @@ Cypress.Commands.add('saveSetAs', (setName: string, itemPosition: number) => {
   cy.get('form[id="save-set"]').should('not.exist');
 });
 
+Cypress.Commands.add('selectPreset', (tab: string) => {
+  const strTitle = tab === 'datafiles' ? 'Data Files' : 'Imaging';
+  cy.get('svg[data-icon="setting"]').clickAndWait({force: true});
+  cy.get('[class*="ColumnSelectorHeader_presetSelectorContainer"] [class="ant-select-selector"]').clickAndWait({force: true});
+  cy.get(`[class*="ant-select-dropdown"] [title="${strTitle}"]`).clickAndWait({force: true});
+});
+
 Cypress.Commands.add('showColumn', (column: string|RegExp) => {
   cy.intercept('PUT', '**/user').as('getPOSTuser');
 
@@ -513,16 +521,22 @@ Cypress.Commands.add('visitDashboard', () => {
 });
 
 Cypress.Commands.add('visitDataExploration', (tab?: string, sharedFilterOption?: string) => {
-  const strTab = tab !== undefined ? tab : '';
+  const strTab = tab === 'imaging' ? 'datafiles' : (tab !== undefined ? tab : '');
   const strSharedFilterOption = sharedFilterOption !== undefined ? sharedFilterOption : '';
   
   cy.visitAndIntercept(`/data-exploration/${strTab}${strSharedFilterOption}`,
                        'POST',
                        '**/graphql',
                        10);
+
+  if (strTab === 'datafiles') {
+    cy.selectPreset(tab !== undefined ? tab : '');
+  };
+  
   if (tab !== undefined) {
     cy.resetColumns();
   };
+  
 });
 
 Cypress.Commands.add('visitFileEntity', (fileId: string) => {

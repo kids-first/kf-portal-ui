@@ -239,7 +239,7 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   it('Search by sample ID - BS_KB0GZCP5', () => {
     cy.get('[class*="SearchLabel_title"]').contains('Search by Sample ID').should('exist'); //data-cy="SearchLabel_Title"
 
-    cy.get('[class*="SearchLabel_tooltipIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true}); //data-cy="SearchLabel_InfoCircleOutlined"
+    cy.get('[class*="SearchLabel_tooltipIcon"]').eq(0).trigger('mouseover', {eventConstructor: 'MouseEvent', force: true}); //data-cy="SearchLabel_InfoCircleOutlined"
     cy.get('div[class="ant-tooltip-inner"]').contains('Search by Sample ID or External Sample ID').should('exist');
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'bs_kb0gzcp5', 'POST', '*/grapgql', 3); //data-cy="SearchAutocomplete_Select"
@@ -356,11 +356,31 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.validateFacetFilter('Method of Sample Procurement', 'Not Reported', 'Not Reported', /\d{1}/, 1);
     cy.validateFacetRank(13, 'Method of Sample Procurement');
   });
+  
+  it('Preservation Method - Frozen at -80', () => {
+    // Pas de données
+    //cy.validateFacetFilter('Preservation Method', 'Frozen at -80', 'Frozen at -80', /\d{1}/, 1);
+    cy.validateFacetRank(14, 'Preservation Method');
+  });
+
+  it('Tumor Status - Normal', () => {
+    // Pas de données
+    //cy.validateFacetFilter('Tumor Status', 'Normal', 'Normal', /\d{1}/, 1);
+    cy.validateFacetRank(15, 'Tumor Status');
+  });
+
+  it('Paired Normal Sample - False', () => {
+    cy.get('[aria-expanded="true"] [data-cy="FilterContainer_Paired Normal Sample"]').should('exist');
+    cy.wait(1000);
+    cy.clickAndIntercept('input[type="radio"][value="false"]', 'POST', '**/graphql', 12);
+    cy.validatePillSelectedQuery('Paired Normal Sample', ['False'], 1);
+    cy.validateTableResultsCount(/\d{1}/);
+    cy.validateFacetRank(16, 'Paired Normal Sample');
+  });
 
   it('Tumor Descriptor (Source Text) - Primary', () => {
-    // Pas de données
-    //cy.validateFacetFilter('Tumor Descriptor (Source Text)', 'Primary', 'Primary', /\d{1}/, 1);
-    cy.validateFacetRank(14, 'Tumor Descriptor (Source Text)');
+    cy.validateFacetFilter('Tumor Descriptor (Source Text)', 'Primary', 'primary', /\d{1}/, 1);
+    cy.validateFacetRank(17, 'Tumor Descriptor (Source Text)');
   });
 });
 
@@ -456,5 +476,49 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
   it('ACL - Phs002330.c1', () => {
     cy.validateFacetFilter('ACL', 'Phs002330.c1', 'phs002330.c1', /\d{1}/, 1);
     cy.validateFacetRank(10, 'ACL');
+  });
+});
+
+describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () => {
+  beforeEach(() => {
+    cy.visitDataExploration('datafiles');
+    cy.get('[data-cy="SidebarMenuItem_Data File"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
+  });
+
+  it('Image Modality - MR', () => {
+    cy.validateFacetFilter('Image Modality', 'MR', 'MR', /\d{1}/);
+    cy.validateFacetRank(11, 'Image Modality');
+  });
+
+  it('Sequence Type - T1', () => {
+    cy.validateFacetFilter('Sequence Type', 'T1', 'T1', /\d{1}/);
+    cy.validateFacetRank(12, 'Sequence Type');
+  });
+
+  it('Technique - Structural', () => {
+    cy.validateFacetFilter('Technique', 'Structural', 'Structural', /\d{1}/);
+    cy.validateFacetRank(13, 'Technique');
+  });
+
+  it('Body Part Examined - BRAIN', () => {
+    cy.validateFacetFilter('Body Part Examined', 'BRAIN', 'BRAIN', /\d{1}/);
+    cy.validateFacetRank(14, 'Body Part Examined');
+  });
+
+  it('Magnetic Field Strength - Illumina', () => {
+    cy.validateFacetNumFilter('Magnetic Field Strength', '2', /\d{1}/, true);
+    cy.validateFacetRank(15, 'Magnetic Field Strength');
+  });
+
+  it('Device Manufacturer - Siemens', () => {
+    cy.validateFacetFilter('Device Manufacturer', 'Siemens', 'Siemens', /\d{1}/);
+    cy.validateFacetRank(16, 'Device Manufacturer');
+  });
+
+  it('Device Model - Skyra', () => {
+    cy.validateFacetFilter('Device Model', 'Skyra', 'Skyra', /\d{1}/);
+    cy.validateFacetRank(17, 'Device Model');
   });
 });

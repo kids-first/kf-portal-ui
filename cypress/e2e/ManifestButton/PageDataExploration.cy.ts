@@ -9,7 +9,7 @@ beforeEach(() => {
 
   cy.login();
   cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
-  cy.get('div[role="tabpanel"] [class*="ant-table-row"]').eq(2).find('[type="checkbox"]').check({force: true});
+  cy.get('tr[data-row-key="GF_MG8J1C62"]').find('[type="checkbox"]').check({force: true});
 });
 
 describe('Page Data Exploration (Data Files) - Bouton Manifest', () => {

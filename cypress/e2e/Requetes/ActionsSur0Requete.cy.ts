@@ -24,8 +24,8 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.wait(5000);
-    cy.validateTotalSelectedQuery(/(26.1K|26.2K|27K|31.9K|32K)/);
-    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,978|26,998|31,933|31,953|32,018)/);
+    cy.validateTotalSelectedQuery(/(26.1K|26.2K|27K|31.9K|32K|32.1K)/);
+    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,244|26,978|26,998|31,933|31,953|32,018|32,146)/);
     cy.validateClearAllButton(false);
   });
 });
