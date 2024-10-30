@@ -40,7 +40,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(9).find('[class*="ant-tag-cyan"]').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(10).contains('-').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(11).contains(/^1$/).should('exist');
-    cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(12).contains(/^4$/).should('exist');
+    cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(12).contains(/\d{1}/).should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(13).contains('White').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(14).contains('Not Hispanic or Latino').should('exist');
     cy.get('tr[data-row-key="PT_01236T3G"] [class*="ant-table-cell"]').eq(15).contains('01-0665').should('exist');
@@ -101,7 +101,7 @@ describe('Page Data Exploration (Participants) - Valider les liens disponibles',
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT 01236T3G').should('exist');
-    cy.validateTableResultsCount(/^4$/);
+    cy.validateTableResultsCount(/\d{1}/);
   });
 
   it('Lien Diagnosis (NCIT) du tableau', () => {

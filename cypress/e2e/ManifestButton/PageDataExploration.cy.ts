@@ -9,6 +9,8 @@ beforeEach(() => {
 
   cy.login();
   cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+  cy.sortTableAndIntercept('Format', 1);
+  cy.sortTableAndIntercept('Format', 1);
   cy.get('tr[data-row-key="GF_MG8J1C62"]').find('[type="checkbox"]').check({force: true});
 });
 

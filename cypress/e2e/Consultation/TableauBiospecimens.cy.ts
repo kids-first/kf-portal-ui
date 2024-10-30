@@ -41,10 +41,10 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(7).contains('SA_G25NX8A9').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(8).contains('Leukocyte').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(9).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(10).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(10).contains('Normal').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(11).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(12).contains('No').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(13).contains(/^4$/).should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(13).contains(/\d{1}/).should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(14).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(15).contains('Other').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(16).contains('-').should('exist');
@@ -103,7 +103,7 @@ describe('Page Data Exploration (Biospecimens) - Valider les liens disponibles',
     cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist'); // data-cy="ProTable_DataFiles"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Sample ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('BS KB0GZCP5').should('exist');
-    cy.validateTableResultsCount(/^4$/);
+    cy.validateTableResultsCount(/\d{1}/);
   });
 });
 

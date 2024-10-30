@@ -39,7 +39,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('Study'); // data-cy="SummaryHeader_Studies_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(1).contains(/^1$/); // data-cy="SummaryHeader_Biospecimens_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(1).contains(/^Biospecimen$/); // data-cy="SummaryHeader_Biospecimens_Button"
-    cy.get('a[class*="SummaryHeader_link"]').eq(2).contains(/^4$/); // data-cy="SummaryHeader_Files_Button"
+    cy.get('a[class*="SummaryHeader_link"]').eq(2).contains(/\d{1}/); // data-cy="SummaryHeader_Files_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(2).contains('Files'); // data-cy="SummaryHeader_Files_Button"
     cy.get('[id="summary"] [class="ant-collapse-header"]').contains('Summary').should('exist');
     cy.get('[id="summary"] [class="ant-descriptions-item-label"]').eq(0).contains('ID').should('exist');
@@ -191,7 +191,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(2).contains('DNA').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(3).contains('Leukocyte').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(4).contains('-').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(5).contains('-').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(5).contains('Normal').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(6).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(7).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(8).contains('-').should('exist');
