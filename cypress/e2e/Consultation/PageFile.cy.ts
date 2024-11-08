@@ -34,7 +34,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[class*="EntityTitle"]').contains('GF_6DVS70V9');
   });
 
-  it('Panneau Summary [SKFP-1334]', () => {
+  it('Panneau Summary', () => {
     cy.get('a[class*="SummaryHeader_link"]').eq(0).contains(/^1$/); // data-cy="SummaryHeader_Studies_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(0).contains('Study'); // data-cy="SummaryHeader_Studies_Button"
     cy.get('a[class*="SummaryHeader_link"]').eq(1).contains(/^3$/); // data-cy="SummaryHeader_Participants_Button"
