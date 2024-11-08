@@ -1,0 +1,107 @@
+name: Update Pull Request Template
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  update-pr-template:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Extract commit parts
+        id: extract_parts
+        shell: bash
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MESSAGE"
+          
+          # Simpler regex pattern that's more forgiving
+          if [[ "$COMMIT_MESSAGE" =~ ^([^(:]+)(\(([^)]*)\))?:[[:space:]]*([A-Z]+-[0-9]+)?[[:space:]]*(.+)$ ]]; then
+            echo "type=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+            echo "scope=${BASH_REMATCH[3]:-}" >> $GITHUB_OUTPUT
+            echo "ticket=${BASH_REMATCH[4]:-}" >> $GITHUB_OUTPUT
+            echo "subject=${BASH_REMATCH[5]}" >> $GITHUB_OUTPUT
+            
+            # Debug output
+            echo "Extracted parts:"
+            echo "Type: ${BASH_REMATCH[1]}"
+            echo "Full scope: ${BASH_REMATCH[2]}"
+            echo "Scope content: ${BASH_REMATCH[3]}"
+            echo "Ticket: ${BASH_REMATCH[4]}"
+            echo "Subject: ${BASH_REMATCH[5]}"
+          else
+            echo "Invalid commit message format. Expected: type(scope): TICKET-123 subject"
+            echo "Received: $COMMIT_MESSAGE"
+            exit 1
+          fi
+
+      - name: Generate PR body
+        id: generate_body
+        shell: bash
+        run: |
+          TYPE="${{ steps.extract_parts.outputs.type }}"
+          SCOPE="${{ steps.extract_parts.outputs.scope }}"
+          TICKET="${{ steps.extract_parts.outputs.ticket }}"
+          SUBJECT="${{ steps.extract_parts.outputs.subject }}"
+          
+          cat << EOF > pr_body.md
+          # ${TYPE}${SCOPE:+($SCOPE)}: ${SUBJECT}
+
+          ${TICKET:+- Closes ${TICKET}}
+
+          ## Description
+          <!-- Add a description of the changes proposed in the pull request -->
+
+          ## Acceptance Criterias
+          <!-- List all acceptance criteria from the ticket -->
+
+          ## Links
+          - [JIRA](https://d3b.atlassian.net/browse/${TICKET})
+          - [Design](https://)
+
+          ## Extra Validation
+          - [ ] Reviewer video or screenshots attached
+          - [ ] QA Done
+          - [ ] Design/UI Approved from design
+
+          ## Screenshot or Video
+          ### Before
+          <!-- Add screenshots/videos of the feature/bug before this PR -->
+
+          ### After
+          <!-- Add screenshots/videos of the feature/bug after this PR -->
+
+          ## QA
+          ### Steps to validate
+          <!-- Add step by step instructions to test this PR -->
+          1. 
+          2. 
+
+          ## Mention
+          <!-- @ mention any relevant teammates -->
+          EOF
+          
+          PR_BODY=$(cat pr_body.md)
+          echo "pr_body<<EOF" >> $GITHUB_OUTPUT
+          echo "$PR_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Update PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: `${{ steps.generate_body.outputs.pr_body }}`
+            });
