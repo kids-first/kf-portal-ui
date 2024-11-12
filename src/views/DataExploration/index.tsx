@@ -294,7 +294,7 @@ const DataExploration = () => {
     const suggestions: (TitleQFOption | CheckboxQFOption)[] = [];
 
     Object.entries(quickFilterData?.participant.aggregations).forEach(([key, value]) => {
-      const facetName = get(
+      const facetName: any = get(
         facetDictionary,
         underscoreToDot(getFieldWithoutPrefix(key)),
         removeUnderscoreAndCapitalize(getFieldWithoutPrefix(key)).replace('  ', ' '),
