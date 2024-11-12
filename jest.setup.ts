@@ -1,6 +1,5 @@
 // react-intl
 import intl from 'react-intl-universal';
-require('intl/locale-data/jsonp/en.js');
 
 const locales = require('./src/locales/index');
 const { LANG } = require('./src/common/constants');
