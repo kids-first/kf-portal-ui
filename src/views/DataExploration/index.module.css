@@ -6,13 +6,17 @@
   padding: 24px;
   width: 100%;
 }
-.dataExplorationLayout .sideMenu li[role=menuitem] {
+.dataExplorationLayout .sideMenu li[role='menuitem'] {
   color: white;
 }
-.dataExplorationLayout .sideMenu li[role=menuitem] span[class$=-title-content] {
+.dataExplorationLayout .sideMenu li[role='menuitem'] span[class$='-title-content'] {
   margin-left: 0 !important;
 }
 .dataExplorationLayout .scrollContent {
   width: 100%;
   padding: var(--default-page-content-padding);
+}
+.categoryIcon {
+  color: var(--gray-6);
+  font-size: 16px;
 }
