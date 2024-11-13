@@ -168,7 +168,11 @@ export const getDefaultColumns = (
     },
     dataIndex: 'study',
     render: (study: IFileStudyEntity) =>
-      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
+      study.study_code ? (
+        <Tooltip title={study.study_name}>{study.study_code}</Tooltip>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'data_category',

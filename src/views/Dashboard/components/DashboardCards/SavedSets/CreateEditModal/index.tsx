@@ -180,7 +180,11 @@ const CreateEditModal = ({
                   {intl.get('components.querybuilder.header.modal.edit.input.maximumLength')}
                 </span>
               ),
-              validateTrigger: 'onSubmit',
+            },
+            {
+              type: 'string',
+              pattern: new RegExp(/^[a-zA-Z0-9 ()[\]\-_:|.,]+$/i),
+              message: intl.get('components.savedSets.modal.errors.permittedCharacters'),
             },
             {
               type: 'string',
