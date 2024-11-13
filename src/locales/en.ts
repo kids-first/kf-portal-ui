@@ -1040,7 +1040,7 @@ const en = {
       title: 'Kids First Community',
       result: 'Public Member',
       results: 'Public Members',
-      noResults: 'No Public members',
+      noResults: 'No Public Members',
       totalMembers: '{members} Total Members',
       search: {
         filters: 'Filters',
