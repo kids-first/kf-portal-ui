@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import {
   ExperimentOutlined,
   FileSearchOutlined,
+  FileTextOutlined,
   MedicineBoxOutlined,
   ReadOutlined,
   SearchOutlined,
@@ -106,6 +107,8 @@ const filterGroups: {
           'study__domain',
           'study__external_id',
         ],
+
+        categoryIcon: <UserOutlined className={styles.categoryIcon} />,
       },
     ],
   },
@@ -118,6 +121,7 @@ const filterGroups: {
     groups: [
       {
         facets: ['is_proband', 'ethnicity', 'sex', 'race'],
+        categoryIcon: <UserOutlined className={styles.categoryIcon} />,
       },
     ],
   },
@@ -141,6 +145,7 @@ const filterGroups: {
           'phenotype__source_text',
           'outcomes__vital_status',
         ],
+        categoryIcon: <UserOutlined className={styles.categoryIcon} />,
       },
     ],
   },
@@ -173,6 +178,7 @@ const filterGroups: {
           'has_matched_normal_sample',
           'diagnoses__source_text_tumor_descriptor',
         ],
+        categoryIcon: <ExperimentOutlined className={styles.categoryIcon} />,
       },
     ],
   },
@@ -197,6 +203,7 @@ const filterGroups: {
           'repository',
           'acl',
         ],
+        categoryIcon: <FileTextOutlined className={styles.categoryIcon} />,
       },
       {
         title: intl.get('facets.files.imaging_facet_group'),
@@ -209,6 +216,7 @@ const filterGroups: {
           'imaging__device__manufacturer',
           'imaging__device__model_name',
         ],
+        categoryIcon: <FileTextOutlined className={styles.categoryIcon} />,
       },
     ],
   },
@@ -334,6 +342,7 @@ const DataExploration = () => {
           label: facetName,
           type: 'title',
           index: getIndexFromQFValueFacet(key),
+          categoryIcon: <UserOutlined className={styles.categoryIcon} />,
         });
         suggestions.push(...bucketFiltered);
       }
@@ -396,6 +405,7 @@ const DataExploration = () => {
       headerTooltip: false,
       dictionary: getFacetsDictionary(),
       noDataInputOption: false,
+      categoryIcon: <UserOutlined className={styles.categoryIcon} />,
     });
 
     const filters =
