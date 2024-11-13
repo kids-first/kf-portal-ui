@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useGlobals } from 'store/global';
-import { useKeycloak } from '@react-keycloak/web';
-import { fetchStats } from 'store/global/thunks';
-import { Button, Space, Typography, Divider } from 'antd';
 import intl from 'react-intl-universal';
-import { STATIC_ROUTES } from 'utils/routes';
+import { useDispatch } from 'react-redux';
+import { useKeycloak } from '@react-keycloak/web';
+import { Button, Divider, Space, Typography } from 'antd';
+
+import { REDIRECT_URI_KEY } from 'common/constants';
 import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import DataRelease from 'components/uiKit/DataRelease';
 import useQueryParams from 'hooks/useQueryParams';
-import { REDIRECT_URI_KEY } from 'common/constants';
+import { useGlobals } from 'store/global';
+import { fetchStats } from 'store/global/thunks';
+import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.css';
 
