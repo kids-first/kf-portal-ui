@@ -409,6 +409,9 @@ const en = {
           okText: 'Remove from set',
           cancelText: 'Cancel',
         },
+        errors: {
+          permittedCharacters: 'Permitted characters: A-Z a-z 0-9 ()[]-_:|.,',
+        },
       },
       popupConfirm: {
         delete: {

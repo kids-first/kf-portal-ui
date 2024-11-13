@@ -89,7 +89,11 @@ const getDefaultColumns = (): ProColumnType<any>[] => [
     dataIndex: 'study',
     sorter: { multiple: 1 },
     render: (study: IStudyEntity) =>
-      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
+      study.study_code ? (
+        <Tooltip title={study.study_name}>{study.study_code}</Tooltip>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'sample_type',

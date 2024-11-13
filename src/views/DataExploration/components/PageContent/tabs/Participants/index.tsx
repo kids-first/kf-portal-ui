@@ -84,7 +84,11 @@ const getDefaultColumns = (): ProColumnType[] => [
     dataIndex: 'study',
     className: styles.studyIdCell,
     render: (study: IParticipantStudy) =>
-      <Tooltip title={study.study_name}>{study.study_code}</Tooltip> || TABLE_EMPTY_PLACE_HOLDER,
+      study.study_code ? (
+        <Tooltip title={study.study_name}>{study.study_code}</Tooltip>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
   },
   {
     key: 'study_external_id',
