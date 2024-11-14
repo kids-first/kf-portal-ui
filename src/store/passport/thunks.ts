@@ -98,7 +98,7 @@ export const connectCavaticaPassport = createAsyncThunk<
 
   return new Promise((resolve, reject) => {
     const interval = setInterval(async () => {
-      if (authWindow.closed) {
+      if (authWindow?.closed) {
         await thunkAPI.dispatch(fetchCavaticaAuthentificationStatus());
         const {
           passport: {

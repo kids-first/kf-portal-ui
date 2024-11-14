@@ -108,7 +108,7 @@ export const fenceOpenAuhentificationTab = createAsyncThunk<
 
   return new Promise((resolve, reject) => {
     const interval = setInterval(async () => {
-      if (authWindow.closed) {
+      if (authWindow?.closed) {
         const { data } = await FenceApi.isAuthenticated(fence);
 
         if (data?.authenticated) {
