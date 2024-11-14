@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import { Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageParagraph from 'views/LandingPage/Components/LandingPageParagraph';
@@ -27,7 +28,9 @@ export const LoginForm = () => {
   return (
     <div className={styles.login}>
       <div className={styles.text}>
-        <img className={styles.logo} src={logo} alt="kids-first-logo" />
+        <Link to="https://kidsfirstdrc.org/" target="_blank">
+          <img className={styles.logo} src={logo} alt="kids-first-logo" />
+        </Link>
         <LandingPageTitle>{intl.get('screen.loginPage.topBanner.title')}</LandingPageTitle>
         <div className={styles.description}>
           <LandingPageParagraph lead>
