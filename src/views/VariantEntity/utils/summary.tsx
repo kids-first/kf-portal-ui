@@ -133,6 +133,7 @@ const renderOmim = (pickedOmim: IArrangerEdge<IGeneOmim>[]) => {
   }));
 };
 
+// eslint-disable-next-line complexity
 export const getSummaryItems = (variant?: IVariantEntity) => {
   const geneWithPickedConsequence = variant?.genes?.hits?.edges?.find((e) =>
     (e.node.consequences || [])?.hits?.edges?.some((e) => e.node?.picked),
@@ -158,7 +159,8 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
                 href={
                   geneWithPickedConsequence.omim_gene_id
                     ? `https://omim.org/entry/${geneWithPickedConsequence.omim_gene_id}`
-                    : `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
+                    : // eslint-disable-next-line max-len
+                      `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
                 }
               >
                 <Text>{geneWithPickedConsequence.symbol}</Text>
@@ -392,6 +394,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
               <>
                 <Text className={style.predictionLabel}>
                   {intl.get(
+                    // eslint-disable-next-line max-len
                     `filters.options.consequences.predictions.polyphen2_hvar_pred.${pickedConsequence.node.predictions.polyphen2_hvar_pred}`,
                   )}{' '}
                 </Text>
