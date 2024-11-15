@@ -3,7 +3,6 @@ import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
-import { removeUnderscoreAndCapitalize } from '@ferlab/ui/core/utils/stringUtils';
 import { Space, Tag, Tooltip } from 'antd';
 import cx from 'classnames';
 import { IClinVar, IGeneEntity } from 'graphql/variants/models';
@@ -16,19 +15,21 @@ export const ClinvarColorMap: Record<any, string> = {
   association_not_found: 'default',
   benign: 'green',
   confers_sensitivity: 'default',
-  conflicting_interpretations_of_pathogenicity: 'gold',
+  conflicting_classifications_of_pathogenicity: 'volcano',
+  conflicting_interpretations_of_pathogenicity: 'orange',
   drug_response: 'default',
   likely_benign: 'lime',
   likely_pathogenic: 'volcano',
   likely_risk_allele: 'default',
   low_penetrance: 'default',
+  no_classification_for_the_single_variant: 'default',
   not_provided: 'default',
   other: 'default',
   pathogenic: 'red',
   protective: 'default',
   risk_factor: 'default',
   uncertain_risk_allele: 'default',
-  uncertain_significance: 'gold',
+  uncertain_significance: 'orange',
 };
 
 export const renderOmim = (
@@ -91,7 +92,7 @@ export const renderClinvar = (clinVar: IClinVar) => {
         <Tooltip
           key={clinvarKey}
           placement="topLeft"
-          title={removeUnderscoreAndCapitalize(clinvarKey)}
+          title={intl.get(`screen.variants.table.clinvarTooltip.${clinvarKey}`)}
         >
           <Tag color={ClinvarColorMap[clinvarKey]}>
             <ExternalLink
