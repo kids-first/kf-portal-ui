@@ -8,7 +8,7 @@ beforeEach(() => {
 
 describe('Page des études - Vérifier les informations affichées', () => {
   beforeEach(() => {
-    cy.typeAndIntercept('[class*="PageContent_search"]', 'KF-CDH', 'POST', '**/graphql', 6);
+    cy.typeAndIntercept('[class*="PageContent_search"]', 'KF-CDH', 'POST', '**/graphql', 3);
   });
 
   it('Titre', () => {
@@ -34,7 +34,7 @@ describe('Page des études - Vérifier les informations affichées', () => {
 
 describe('Page des études - Valider les liens disponibles', () => {
   beforeEach(() => {
-    cy.typeAndIntercept('[class*="PageContent_search"]', 'KF-CDH', 'POST', '**/graphql', 6);
+    cy.typeAndIntercept('[class*="PageContent_search"]', 'KF-CDH', 'POST', '**/graphql', 3);
   });
 
   it('Lien dbGap du tableau', () => {
