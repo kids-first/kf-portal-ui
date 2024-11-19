@@ -18,7 +18,7 @@ describe('Page des études - Rechercher des études', () => {
   });
 
   it('Par study name', () => {
-    cy.typeAndIntercept('[class*="PageContent_search"]', 'PHRA', 'POST', '**/graphql', 4);
+    cy.typeAndIntercept('[class*="PageContent_search"]', 'PHRA', 'POST', '**/graphql', 3);
     cy.validateTableResultsCount(/1 Result/);
     cy.validateTableFirstRow('KF-CDH', 0);
 
@@ -27,7 +27,7 @@ describe('Page des études - Rechercher des études', () => {
   });
 
   it('Par dbGaP', () => {
-    cy.typeAndIntercept('[class*="PageContent_search"]', 'S001110', 'POST', '**/graphql', 7);
+    cy.typeAndIntercept('[class*="PageContent_search"]', 'S001110', 'POST', '**/graphql', 3);
     cy.validateTableResultsCount(/1 Result/);
     cy.validateTableFirstRow('phs001110', 4);
 
