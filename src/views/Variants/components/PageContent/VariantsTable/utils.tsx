@@ -1,6 +1,7 @@
 import intl from 'react-intl-universal';
 import { TABLE_EMPTY_PLACE_HOLDER } from '@ferlab/ui/core/common/constants';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import StackLayout from '@ferlab/ui/core/layout/StackLayout';
 import { Space, Tag, Tooltip } from 'antd';
@@ -118,3 +119,23 @@ export const GnomadCircle = ({ underOnePercent }: GnomadCircleProps) => (
     )}
   />
 );
+
+export const exportTsvColumns: TColumnStates = [
+  { index: 0, key: 'hgvsg', visible: true },
+  { index: 1, key: 'variant_class', visible: true },
+  { index: 2, key: 'rsnumber', visible: true },
+  { index: 3, key: 'genes.symbol', visible: true },
+  { index: 4, key: 'genes.consequences.consequence', visible: true },
+  { index: 5, key: 'genes.consequences.aa_change', visible: true },
+  { index: 6, key: 'genes.omim_gene_id', visible: true },
+  { index: 7, key: 'genes.omim.inheritance', visible: true },
+  { index: 8, key: 'clinvar.clin_sig', visible: true },
+  { index: 9, key: 'external_frequencies.gnomad_genomes_3.af', visible: true },
+  { index: 10, key: 'external_frequencies.gnomad_genomes_3.ac', visible: true },
+  { index: 11, key: 'internal_frequencies.total.pc', visible: true },
+  { index: 12, key: 'studies.study_code', visible: true },
+  { index: 13, key: 'genes.consequences.predictions.cadd_phred', visible: true },
+  { index: 14, key: 'genes.consequences.predictions.revel_score', visible: true },
+  { index: 15, key: 'internal_frequencies.total.ac', visible: true },
+  { index: 16, key: 'internal_frequencies.total.hom', visible: true },
+];

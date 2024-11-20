@@ -97,7 +97,7 @@ const fetchTsvReport = createAsyncThunk<void, TFetchTSVArgs, { rejectValue: stri
       globalActions.displayMessage({
         type: 'loading',
         key: messageKey,
-        content: 'Please wait while we generate your report',
+        content: intl.get('api.report.loading.message'),
         duration: 0,
       }),
     );
@@ -220,7 +220,7 @@ const fetchTsxReport = async (
     : args.columns.map((col, index) => ({
         index,
         key: col.key,
-        visible: col.defaultHidden || true,
+        visible: col.defaultHidden === true ? false : true,
       }));
   colStates = colStates.filter(({ visible }) => !!visible);
 

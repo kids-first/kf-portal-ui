@@ -254,9 +254,13 @@ const en = {
         participant:
           '{count, plural, =0 {Selected participant} =1 {Selected participant} other {Selected participants}}',
       },
+      loading: {
+        message: 'Your download is being prepared. This process may take several minutes.',
+      },
       error: {
         title: 'Error',
-        message: 'We were unable to generate the report at this time. Please try again later or ',
+        message:
+          'An error has occurred. Your download could not be processed. Please try again or ',
         support: 'contact support',
         tooMuchFilesTitle: 'Maximum number exceeded',
         tooMuchFiles:

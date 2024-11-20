@@ -52,7 +52,7 @@ import { getProTableDictionary } from 'utils/translation';
 
 import { SCROLL_WRAPPER_ID, VARIANT_SAVED_SETS_FIELD } from '../../../utils/constants';
 
-import { GnomadCircle, renderClinvar, renderOmim } from './utils';
+import { exportTsvColumns, GnomadCircle, renderClinvar, renderOmim } from './utils';
 
 import styles from './index.module.css';
 
@@ -130,7 +130,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
   },
   {
     title: intl.get('screen.variants.table.gene'),
-    key: 'genes',
+    key: 'genes.symbol',
     dataIndex: 'genes',
     render: (genes: IArrangerResultsTree<IGeneEntity>) => {
       const geneWithPickedConsequence = genes?.hits?.edges?.find((e) =>
@@ -210,7 +210,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     width: 80,
   },
   {
-    key: 'omim',
+    key: 'genes.omim.inheritance',
     title: intl.get('screen.variants.table.omim.title'),
     tooltip: intl.get('screen.variants.table.omim.tooltip'),
     dataIndex: 'genes',
@@ -228,7 +228,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     width: 95,
   },
   {
-    key: 'clinvar',
+    key: 'clinvar.clin_sig',
     title: intl.get('screen.variants.table.clinvar'),
     dataIndex: 'clinvar',
     render: (clinVar: IClinVar) => renderClinvar(clinVar),
@@ -332,7 +332,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     title: intl.get('screen.variants.table.studies.title'),
     tooltip: intl.get('screen.variants.table.studies.tooltip'),
     dataIndex: 'studies',
-    key: 'studies',
+    key: 'studies.study_code',
     render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => {
       const total = studies?.hits?.total ?? 0;
       if (total == 0) {
@@ -369,7 +369,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     width: 80,
   },
   {
-    key: 'CADD',
+    key: 'genes.consequences.predictions.cadd_phred',
     title: intl.get('screen.variants.table.CADD.title'),
     tooltip: intl.get('screen.variants.table.CADD.tooltip'),
     dataIndex: 'genes',
@@ -393,7 +393,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     width: 90,
   },
   {
-    key: 'REVEL',
+    key: 'genes.consequences.predictions.revel_score',
     title: intl.get('screen.variants.table.revel'),
     dataIndex: 'genes',
     defaultHidden: true,
@@ -545,8 +545,7 @@ const VariantsTable = ({
                   } else {
                     dispatch(
                       fetchTsvReport({
-                        columnStates:
-                          userInfo?.config.data_exploration?.tables?.participants?.columns,
+                        columnStates: exportTsvColumns,
                         columns: getDefaultColumns(
                           queryBuilderId,
                           results.data.length === 0 ? true : false,
