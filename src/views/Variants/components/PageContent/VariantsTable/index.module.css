@@ -20,7 +20,7 @@
   white-space: nowrap;
 }
 .fixedVariantTableCellElipsis div::after {
-  content: "";
+  content: '';
   display: block;
 }
 
@@ -86,4 +86,8 @@
 
 .partCell {
   padding-left: 4px;
+}
+
+.okButtonConfirmModal {
+  display: none;
 }
