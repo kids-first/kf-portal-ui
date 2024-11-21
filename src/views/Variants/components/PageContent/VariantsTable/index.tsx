@@ -34,7 +34,7 @@ import {
   IVariantInternalFrequencies,
   IVariantStudyEntity,
 } from 'graphql/variants/models';
-import { capitalize } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
 
@@ -438,7 +438,9 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
       multiple: 1,
     },
     render: (internalFrequencies: IVariantInternalFrequencies) =>
-      internalFrequencies.total.hom ? numberWithCommas(internalFrequencies.total.hom) : 0,
+      internalFrequencies.total.hom || internalFrequencies.total.hom === 0
+        ? numberWithCommas(internalFrequencies.total.hom)
+        : TABLE_EMPTY_PLACE_HOLDER,
     width: 75,
   },
 ];
@@ -533,13 +535,17 @@ const VariantsTable = ({
                   setSelectedRows(selectedRows);
                 },
                 onTableExportClick: () => {
-                  if (selectedRows.length > 10000 || results.total > 10000) {
+                  if (
+                    selectedRows.length > 10000 ||
+                    (isEmpty(selectedRows) && results.total > 10000)
+                  ) {
                     Modal.confirm({
                       title: intl.get('screen.variants.table.exportModal.title'),
                       icon: <ExclamationCircleOutlined />,
                       content: intl.get('screen.variants.table.exportModal.content'),
                       cancelText: intl.get('screen.variants.table.exportModal.button'),
                       okButtonProps: { className: styles.okButtonConfirmModal },
+                      cancelButtonProps: { type: 'primary' },
                       type: 'warn',
                     });
                   } else {
