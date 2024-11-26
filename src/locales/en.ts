@@ -1483,6 +1483,12 @@ const en = {
       tabs: {
         summary: {
           title: 'Summary',
+          graphs: {
+            sampleTypeGraph: {
+              legendAxisLeft: 'Sample Types',
+              legendAxisBottom: '# of participants',
+            },
+          },
           download: {
             fileNameTemplate: 'kidsfirst-%name-%type-%date%extension',
             fileNameDateFormat: 'yyyy-MM-dd',
@@ -1503,6 +1509,7 @@ const en = {
             dataCategoryTitle: 'Participants by Data Category',
             dataTypeTitle: 'Participants by Data Type',
             studiesTitle: 'Participants by Study',
+            sampleTypeTitle: 'Participants by Sample Type',
             mostFrequentPhenotypes: 'Most Frequent Phenotypes (HPO)',
             mostFrequentDiagnoses: 'Most Frequent Diagnoses (MONDO)',
           },
@@ -1514,6 +1521,9 @@ const en = {
               currentPath: 'Current Path',
             },
             empty: 'No observed phenotypes reported for these participants',
+          },
+          sampleType: {
+            cardTitle: 'Sample Type',
           },
           mondo: {
             cardTitle: ' Diagnosis (MONDO)',
