@@ -589,6 +589,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
             />,
             <CavaticaAnalyzeButton
               disabled={selectedKeys.length === 0 && !selectedAllResults}
+              maxFileReached={hasTooManyFiles}
               type="primary"
               fileIds={selectedAllResults ? [] : selectedKeys}
               sqon={sqon}

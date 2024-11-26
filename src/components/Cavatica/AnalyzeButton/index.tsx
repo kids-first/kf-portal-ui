@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import CavaticaAnalyse from '@ferlab/ui/core/components/Widgets/Cavatica/CavaticaAnalyse';
 import {
   CAVATICA_ANALYSE_STATUS,
@@ -9,6 +10,7 @@ import {
 import { BooleanOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { ISort } from '@ferlab/ui/core/graphql/types';
+import { Modal } from 'antd';
 import { CAVATICA_FILE_BATCH_SIZE } from 'views/DataExploration/utils/constant';
 
 import { trackCavaticaAction } from 'services/analytics';
@@ -33,12 +35,14 @@ interface OwnProps {
   sort?: ISort[];
   type?: 'default' | 'primary';
   disabled?: boolean;
+  maxFileReached?: boolean;
   index: string;
 }
 
 const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
   fileIds,
   sqon,
+  maxFileReached,
   sort = [],
   type = 'default',
   disabled = false,
@@ -69,18 +73,41 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
   // If the user is not connected to cavatica
   useEffect(() => {
     if (
+      !maxFileReached &&
       cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected &&
       cavatica.bulkImportData.status === CAVATICA_ANALYSE_STATUS.pending_analyse
     ) {
       onBeginAnalyse();
     }
-  }, [cavatica.authentification.status, cavatica.bulkImportData.status, onBeginAnalyse]);
+  }, [
+    cavatica.authentification.status,
+    cavatica.bulkImportData.status,
+    onBeginAnalyse,
+    maxFileReached,
+  ]);
 
   return (
     <CavaticaAnalyse
       disabled={disabled}
       type={type}
-      handleBeginAnalyse={onBeginAnalyse}
+      handleBeginAnalyse={() => {
+        if (maxFileReached) {
+          Modal.confirm({
+            title: intl.get('screen.dataExploration.tabs.datafiles.cavatica.maxFileReached.title'),
+            icon: <ExclamationCircleOutlined />,
+            okText: intl.get(
+              'screen.dataExploration.tabs.datafiles.cavatica.maxFileReached.okText',
+            ),
+            closable: true,
+            cancelButtonProps: { style: { display: 'none' } },
+            content: intl.get(
+              'screen.dataExploration.tabs.datafiles.cavatica.maxFileReached.description',
+            ),
+          });
+          return;
+        }
+        onBeginAnalyse();
+      }}
       handleFilesAndFolders={CavaticaApi.listFilesAndFolders}
       cavatica={cavatica}
       loading={cavatica.bulkImportData.loading}
