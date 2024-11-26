@@ -88,6 +88,24 @@ export const DATA_CATEGORY_QUERY = `
   }
 `;
 
+export const SAMPLE_TYPE_QUERY = `
+  query($sqon: JSON) {
+    participant {
+      hits(filters: $sqon) {
+        total
+      }
+      aggregations(filters: $sqon, aggregations_filter_themselves: true, include_missing: false) {
+        files__biospecimens__sample_type {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const AGE_AT_DIAGNOSIS_QUERY = `
     query($sqon: JSON) {
       participant {
