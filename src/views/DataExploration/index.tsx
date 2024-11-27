@@ -77,6 +77,7 @@ import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileUploadIds from './components/UploadIds/FileUploadIds';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import {
+  getFieldCategoryIcon,
   getFieldWithoutPrefix,
   getIndexFromQFValueFacet,
   getSelectedOptionsByQuery,
@@ -405,7 +406,7 @@ const DataExploration = () => {
       headerTooltip: false,
       dictionary: getFacetsDictionary(),
       noDataInputOption: false,
-      categoryIcon: <UserOutlined className={styles.categoryIcon} />,
+      categoryIcon: getFieldCategoryIcon(option.key, { className: styles.categoryIcon }),
     });
 
     const filters =
