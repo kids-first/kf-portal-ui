@@ -13,7 +13,7 @@ describe('Page Data Exploration - Requêtes', () => {
 
   it('Validation Facette numérique ou No Data', () => {
     cy.validateTotalSelectedQuery('15.6K');
-    cy.validateTableResultsCount('15,605');
+    cy.validateTableResultsCount('15,592');
   });
 
   it('Validation Facette numérique OU Facette standard', () => {
@@ -23,7 +23,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql');
 
     cy.validateTotalSelectedQuery('15.5K');
-    cy.validateTableResultsCount('15,513');
+    cy.validateTableResultsCount('15,500');
   });
 
   it('Validation Facette numérique ou No Data ET Facette standard', () => {
@@ -33,7 +33,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql');
 
     cy.validateTotalSelectedQuery('15.5K');
-    cy.validateTableResultsCount('15,513');
+    cy.validateTableResultsCount('15,500');
   });
 
   it('Validation Facette standard (Any of)', () => {
@@ -43,7 +43,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql');
 
     cy.validateTotalSelectedQuery('15.6K');
-    cy.validateTableResultsCount('15,605');
+    cy.validateTableResultsCount('15,592');
   });
 
   it('Validation Facette standard (All of)', () => {
