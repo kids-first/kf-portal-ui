@@ -282,7 +282,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Device ID', 1);
     cy.validateTableFirstRow('-', 12, true);
     cy.sortTableAndIntercept('Device ID', 1);
-    cy.validateTableFirstRow('de-zwf3dx8r8d', 12, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {

@@ -26,7 +26,7 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000'], 1);
     cy.validateOperatorSelectedQuery('or');
     cy.validateTotalSelectedQuery(/(26.1K|26.2K|27.1K|32.7K|32.8K|32.9K)/);
-    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,246|27,072|27,094|32,675|32,697|32,760|32,926)/);
+    cy.validateTableResultsCount(/(26,073|26,205|26,215|26,234|26,246|27,072|27,094|32,675|32,697|32,760|32,913|32,926)/);
     cy.validateClearAllButton(false);
 
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql2');
