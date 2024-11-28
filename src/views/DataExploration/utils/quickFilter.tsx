@@ -1,3 +1,5 @@
+import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
+import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
 import { VisualType } from '@ferlab/ui/core/components/filters/types';
 import { CheckboxQFOption } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import {
@@ -7,6 +9,17 @@ import {
 } from '@ferlab/ui/core/data/sqon/types';
 import { INDEXES } from 'graphql/constants';
 import { cloneDeep } from 'lodash';
+
+export const getFieldCategoryIcon = (facetKey: string, props: AntdIconProps): React.ReactNode => {
+  if (facetKey.startsWith('files__biospecimens__')) {
+    return <ExperimentOutlined {...props} />;
+  }
+  if (facetKey.startsWith('files__')) {
+    return <FileTextOutlined {...props} />;
+  }
+
+  return <UserOutlined {...props} />;
+};
 
 export const getIndexFromQFValueFacet = (facetKey: string): INDEXES => {
   if (facetKey.startsWith('files__biospecimens__')) return INDEXES.BIOSPECIMEN;
