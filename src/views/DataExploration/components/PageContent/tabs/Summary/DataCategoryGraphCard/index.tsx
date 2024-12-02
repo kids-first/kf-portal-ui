@@ -42,7 +42,9 @@ const DataCategoryGraphCard = () => {
   const dataCategoryResults = aggregationToChartData(
     result?.data?.participant?.aggregations?.files__data_category.buckets,
     result?.data?.participant?.hits?.total,
-  );
+  )
+    .sort((a, b) => a.value - b.value)
+    .slice(0, 10);
 
   return (
     <ResizableGridCard
