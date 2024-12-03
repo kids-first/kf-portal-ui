@@ -42,7 +42,9 @@ const DataCategoryGraphCard = () => {
   const dataCategoryResults = aggregationToChartData(
     result?.data?.participant?.aggregations?.files__data_category.buckets,
     result?.data?.participant?.hits?.total,
-  )
+  );
+
+  const filteredDataCategoryResults = dataCategoryResults
     .sort((a, b) => a.value - b.value)
     .slice(0, 10);
 
@@ -98,7 +100,7 @@ const DataCategoryGraphCard = () => {
             <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
-              data={dataCategoryResults}
+              data={filteredDataCategoryResults}
               ariaLabel={intl.get(
                 'screen.dataExploration.tabs.summary.availableData.dataCategoryTitle',
               )}

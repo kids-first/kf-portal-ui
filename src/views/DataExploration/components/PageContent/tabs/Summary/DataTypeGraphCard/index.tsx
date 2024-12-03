@@ -41,9 +41,9 @@ const DataTypeGraphCard = () => {
   const dataTypeResults = aggregationToChartData(
     result?.data?.participant?.aggregations?.files__data_type.buckets,
     result?.data?.participant?.hits?.total,
-  )
-    .sort((a, b) => a.value - b.value)
-    .slice(0, 10);
+  );
+
+  const filteredTypeResults = dataTypeResults.sort((a, b) => a.value - b.value).slice(0, 10);
 
   return (
     <ResizableGridCard
@@ -95,7 +95,7 @@ const DataTypeGraphCard = () => {
             <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
-              data={dataTypeResults}
+              data={filteredTypeResults}
               ariaLabel={intl.get(
                 'screen.dataExploration.tabs.summary.availableData.dataTypeTitle',
               )}

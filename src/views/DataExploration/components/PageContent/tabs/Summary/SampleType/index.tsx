@@ -42,7 +42,9 @@ const SampleTypeGraphCard = () => {
   const sampleTypeResults = aggregationToChartData(
     result?.data?.participant?.aggregations?.files__biospecimens__sample_type.buckets,
     result?.data?.participant?.hits?.total,
-  )
+  );
+
+  const filteredSampleTypeResults = sampleTypeResults
     .sort((a, b) => a.value - b.value)
     .slice(0, 10);
 
@@ -96,7 +98,7 @@ const SampleTypeGraphCard = () => {
             <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
-              data={sampleTypeResults}
+              data={filteredSampleTypeResults}
               axisLeft={{
                 legend: intl.get(
                   'screen.dataExploration.tabs.summary.graphs.sampleTypeGraph.legendAxisLeft',
