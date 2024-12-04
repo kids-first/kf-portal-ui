@@ -51,7 +51,7 @@ const Header = () => {
 
   return (
     <>
-      <GradientAccent />
+      <GradientAccent isFixed />
       <NotificationBanner
         className={styles.siteWideBanner}
         featureToggleKey={FT_FLAG_KEY}
