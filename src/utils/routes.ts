@@ -4,6 +4,7 @@ export enum STATIC_ROUTES {
   AUTH_REDIRECT = '/auth-redirect',
   DASHBOARD = '/dashboard',
   STUDIES = '/studies',
+  PUBLIC_STUDIES = '/public-studies',
   PROFILE_SETTINGS = '/profile/settings',
   PROFILE_VIEW = '/profile/view',
   COMMUNITY = '/community',
