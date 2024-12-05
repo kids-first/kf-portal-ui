@@ -15,7 +15,7 @@ import {
   ArrangerColumnStateResults,
   ArrangerPhenotypes,
   IStatistics,
-  IStudiesStatistics,
+  IStudiesStatistic,
   ISuggestionPayload,
   Suggestion,
   SuggestionType,
@@ -36,7 +36,7 @@ const fetchStatistics = () =>
   });
 
 const fetchStudiesStatistics = () =>
-  sendRequest<IStudiesStatistics[]>({
+  sendRequest<IStudiesStatistic[]>({
     method: 'GET',
     url: `${ARRANGER_API_URL}/statistics/studies`,
     headers: headers(),

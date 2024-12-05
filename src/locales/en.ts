@@ -1737,6 +1737,13 @@ const en = {
         noAffiliationOption: 'I do not have an institutional affiliation.',
       },
     },
+    publicStudies: {
+      title: 'Studies',
+      search: {
+        title: 'Search by study name',
+        placeholder: 'Kids First: Genomics of Orthopaedic Disease Program',
+      },
+    },
   },
   facets: {
     file_id: 'File ID',
@@ -2194,6 +2201,16 @@ const en = {
     study: {
       count: '{count, plural, =0 {Study} =1 {Study} other {Studies}}',
       study: 'Study',
+      study_code: 'Code',
+      study_name: 'Name',
+      program: 'Program',
+      domain: 'Domain',
+      external_id: 'dbGaP',
+      participant_count: 'Participants',
+      family_count: 'Families',
+      genomic: 'Genomics',
+      transcriptomic: 'Transcriptomics',
+      imaging: 'Imaging',
     },
     variant: {
       participant: '{count, plural, =0 {Participant} =1 {Participant} other {Participants}}',
