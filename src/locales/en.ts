@@ -1753,6 +1753,7 @@ const en = {
         signup: 'SIGN UP',
         close: 'Close',
       },
+      viewAllBtn: 'View all studies',
     },
   },
   facets: {
