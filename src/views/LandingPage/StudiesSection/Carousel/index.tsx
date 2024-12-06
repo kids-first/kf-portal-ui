@@ -5,8 +5,8 @@ import { Button } from 'antd';
 import Carousel, { CarouselRef } from 'antd/lib/carousel';
 import CarouselCard from 'views/LandingPage/StudiesSection/Carousel/Card';
 
-import { IStudiesStatistic } from '../../../../services/api/arranger/models';
-import { useGlobals } from '../../../../store/global';
+import { IStudiesStatistic } from 'services/api/arranger/models';
+import { useGlobals } from 'store/global';
 
 import styles from './index.module.css';
 
@@ -31,13 +31,13 @@ const formatStudies = (studiesStatistics: IStudiesStatistic[] = []) =>
     const studyStats = studiesStatistics.find((studyPart) => studyPart.study_code === study.code);
     const domain = studyStats?.domain || 'unknown';
     const participants = studyStats?.participant_count || 0;
-    const domainTag = intl.get(`screen.loginPage.studies.tags.${domain}`);
+    const domainLabel = intl.get(`screen.loginPage.studies.tags.${domain}`) || domain;
 
     return {
       code: study.code,
       title: intl.get(`screen.loginPage.studies.${study.formattedCode}.name`),
       description: intl.get(`screen.loginPage.studies.${study.formattedCode}.description`),
-      tags: domainTag ? [domainTag] : domain ? [domain] : [],
+      tags: domainLabel ? [domainLabel] : [],
       participants: participants,
     };
   });
