@@ -10,7 +10,11 @@ import { IStudiesStatistic } from 'services/api/arranger/models';
 export const SCROLL_WRAPPER_ID = 'public-studies-scroll-wrapper';
 export const TABLE_ID = 'public-studies';
 
-export const getColumns = (): ProColumnType<any>[] => [
+type ColumnsProps = {
+  manageLoginModal: (isOpen: boolean) => void;
+};
+
+export const getColumns = ({ manageLoginModal }: ColumnsProps): ProColumnType<any>[] => [
   {
     key: 'study_code',
     dataIndex: 'study_code',
@@ -60,8 +64,11 @@ export const getColumns = (): ProColumnType<any>[] => [
     sorter: { multiple: 1 },
     render: (record: IStudiesStatistic) => {
       const participantCount = record.participant_count;
-      //TODO open modal
-      return participantCount ? <a>{numberWithCommas(participantCount)}</a> : participantCount || 0;
+      return participantCount ? (
+        <a onClick={() => manageLoginModal(true)}>{numberWithCommas(participantCount)}</a>
+      ) : (
+        participantCount || 0
+      );
     },
   },
   {

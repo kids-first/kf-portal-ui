@@ -6,6 +6,7 @@ import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Input, Space, Typography } from 'antd';
 import { getColumns, TABLE_ID } from 'views/PublicStudies/utils';
 
+import LoginModal from 'components/PublicLayout/LoginModal';
 import { useGlobals } from 'store/global';
 import { getProTableDictionary } from 'utils/translation';
 
@@ -15,6 +16,8 @@ const { Title } = Typography;
 
 const PageContent = () => {
   const [searchValue, setSearchValue] = useState('');
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const manageLoginModal = (isOpen: boolean) => setOpenLoginModal(isOpen);
 
   const { stats, isFetchingStats } = useGlobals();
   const { studiesStatistics = [] } = stats || {};
@@ -40,7 +43,7 @@ const PageContent = () => {
     }
   };
 
-  const defaultColumns = getColumns();
+  const defaultColumns = getColumns({ manageLoginModal });
 
   return (
     <Space direction="vertical" size={16} className={styles.pageContent}>
@@ -79,6 +82,9 @@ const PageContent = () => {
           />
         }
       />
+      {openLoginModal && (
+        <LoginModal isOpen={openLoginModal} onClose={() => manageLoginModal(false)} />
+      )}
     </Space>
   );
 };
