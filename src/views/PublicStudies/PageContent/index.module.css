@@ -1,0 +1,18 @@
+.pageContent {
+  width: 100%;
+}
+.pageContent .tableWrapper {
+  width: 100%;
+  gap: 0 !important;
+}
+.pageContent .title {
+  margin: 0;
+}
+.pageContent .label {
+  margin-bottom: 8px;
+}
+.pageContent .inputContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}

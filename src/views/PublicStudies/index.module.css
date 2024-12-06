@@ -1,0 +1,20 @@
+.studiesPage {
+  display: flex;
+}
+
+.scrollContent {
+  width: 100%;
+  padding: var(--default-page-content-padding);
+}
+
+.descriptionCell::after {
+  content: '';
+  display: block;
+}
+
+.dbgapLink {
+  margin-right: 8px;
+}
+.dbgapLink:last-child {
+  margin-right: 0;
+}

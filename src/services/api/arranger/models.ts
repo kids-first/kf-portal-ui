@@ -25,6 +25,23 @@ export type Suggestion = {
   ensembl_gene_id?: string;
 };
 
+export interface IStudiesStatistic {
+  data_category: string[];
+  description?: string;
+  domain: string;
+  domains?: string[];
+  external_ids?: string[];
+  family_count?: number;
+  file_count?: number;
+  guid?: string;
+  is_harmonized?: boolean;
+  participant_count: number;
+  program: string;
+  study_code: string;
+  study_id: string;
+  study_name: string;
+}
+
 export interface IDiagnosis {
   mondo_id: string;
   count: number;
@@ -42,16 +59,10 @@ export interface IStatistics {
   participants: number;
   samples: number;
   studies: number;
-  studiesStatistics: Record<string, Omit<IStudiesStatistics, 'study_code'>>;
+  studiesStatistics: IStudiesStatistic[];
   genomes: number;
   variants: number;
   transcriptomes: number;
-}
-
-export interface IStudiesStatistics {
-  participant_count: number;
-  domain: string;
-  study_code: string;
 }
 
 export interface ArrangerSingleColumnState {

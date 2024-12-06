@@ -5,8 +5,8 @@ import { Button } from 'antd';
 import Carousel, { CarouselRef } from 'antd/lib/carousel';
 import CarouselCard from 'views/LandingPage/StudiesSection/Carousel/Card';
 
-import { IStudiesStatistics } from '../../../../services/api/arranger/models';
-import { useGlobals } from '../../../../store/global';
+import { IStudiesStatistic } from 'services/api/arranger/models';
+import { useGlobals } from 'store/global';
 
 import styles from './index.module.css';
 
@@ -26,26 +26,25 @@ const studies = [
   { code: 'KF-ESGR', formattedCode: 'kfesgr' },
 ];
 
-const formatStudies = (
-  studiesStatistics: Record<string, Omit<IStudiesStatistics, 'study_code'>> = {},
-) =>
+const formatStudies = (studiesStatistics: IStudiesStatistic[] = []) =>
   studies.map((study) => {
-    const studyStats = studiesStatistics[study.code] || {};
+    const studyStats = studiesStatistics.find((studyPart) => studyPart.study_code === study.code);
     const domain = studyStats?.domain || 'unknown';
     const participants = studyStats?.participant_count || 0;
+    const domainLabel = intl.get(`screen.loginPage.studies.tags.${domain}`) || domain;
 
     return {
       code: study.code,
       title: intl.get(`screen.loginPage.studies.${study.formattedCode}.name`),
       description: intl.get(`screen.loginPage.studies.${study.formattedCode}.description`),
-      tags: [intl.get(`screen.loginPage.studies.tags.${domain}`)] || [domain] || [],
+      tags: domainLabel ? [domainLabel] : [],
       participants: participants,
     };
   });
 
 const LoginCarousel = () => {
   const { stats } = useGlobals();
-  const { studiesStatistics = {} } = stats || {};
+  const { studiesStatistics = [] } = stats || {};
   const formattedStudies = formatStudies(studiesStatistics); // Fixed studiesStatistics reference
   const carouselRef = useRef<CarouselRef>(null);
 
