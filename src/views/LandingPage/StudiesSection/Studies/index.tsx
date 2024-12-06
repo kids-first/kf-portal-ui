@@ -1,9 +1,13 @@
 import intl from 'react-intl-universal';
+import { useNavigate } from 'react-router';
 import { Typography } from 'antd';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
+import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
 import studiesSvg from 'components/assets/kf-portal-icons_studies_2.svg';
 import { useGlobals } from 'store/global';
+import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.css';
 
@@ -11,6 +15,10 @@ const { Paragraph } = Typography;
 
 const StudiesSection = () => {
   const { stats } = useGlobals();
+  const navigate = useNavigate();
+  const publicStudiesBtn = getFTEnvVarByKey('PUBLIC_STUDIES');
+  const studiesBtnOnClick =
+    publicStudiesBtn === 'true' ? () => navigate(STATIC_ROUTES.PUBLIC_STUDIES) : undefined;
 
   return (
     <div className={styles.studiesContainer}>
@@ -23,6 +31,11 @@ const StudiesSection = () => {
       <Paragraph className={styles.subtitle}>
         {intl.get('screen.loginPage.studies.explore')}
       </Paragraph>
+      {studiesBtnOnClick && (
+        <LandingPageButton className={styles.viewAllBtn} onClick={studiesBtnOnClick}>
+          {intl.get('screen.publicStudies.viewAllBtn')}
+        </LandingPageButton>
+      )}
     </div>
   );
 };
