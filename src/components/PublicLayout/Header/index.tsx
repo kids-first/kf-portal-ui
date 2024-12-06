@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import intl from 'react-intl-universal';
 import {
   DownOutlined,
@@ -23,6 +24,8 @@ import { trackVisitResources } from 'services/analytics';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
 
+import LoginModal from '../LoginModal';
+
 import HeaderButton from './HeaderButton';
 
 import style from './index.module.css';
@@ -35,11 +38,15 @@ const Header = () => {
   const { keycloak } = useKeycloak();
   const query = useQueryParams();
 
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const closeLoginModal = () => setOpenLoginModal(false);
+
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
       redirectUri: `${window.location.origin}/${
         query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
       }`,
+      locale: intl.getInitOptions().currentLocale,
     });
     window.location.assign(url);
   };
@@ -54,6 +61,7 @@ const Header = () => {
             <HeaderButton
               key="dashboard"
               icon={<HomeOutlined />}
+              onClick={() => setOpenLoginModal(true)}
               title={intl.get('layout.main.menu.dashboard')}
             />
             <HeaderButton
@@ -65,11 +73,13 @@ const Header = () => {
             <HeaderButton
               key="explore-data"
               icon={<FileSearchOutlined />}
+              onClick={() => setOpenLoginModal(true)}
               title={intl.get('layout.main.menu.explore')}
             />
             <HeaderButton
               key="variant-data"
               icon={<LineStyleIcon />}
+              onClick={() => setOpenLoginModal(true)}
               title={intl.get('layout.main.menu.variants')}
             />
           </nav>
@@ -78,6 +88,7 @@ const Header = () => {
           <HeaderButton
             key="community"
             icon={<TeamOutlined />}
+            onClick={() => setOpenLoginModal(true)}
             title={intl.get('layout.main.menu.community')}
           />,
           <Dropdown
@@ -166,6 +177,7 @@ const Header = () => {
         ]}
         className={style.mainHeader}
       />
+      {openLoginModal && <LoginModal isOpen={openLoginModal} onClose={closeLoginModal} />}
     </>
   );
 };

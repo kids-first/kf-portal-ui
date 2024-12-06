@@ -1743,6 +1743,16 @@ const en = {
         title: 'Search by study name',
         placeholder: 'Kids First: Genomics of Orthopaedic Disease Program',
       },
+      loginModal: {
+        title: 'KIDS FIRST DATA PORTAL',
+        text1:
+          'Empower your research with our robust collection of childhood cancer, congenital disorder, and cross-condition data.',
+        text2: 'Getting started is as easy as 1-2-3',
+        text3: 'Sign up within minutes… free of charge!',
+        login: 'LOGIN',
+        signup: 'SIGN UP',
+        close: 'Close',
+      },
     },
   },
   facets: {
