@@ -10,6 +10,7 @@ import useQueryParams from 'hooks/useQueryParams';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import style from './index.module.css';
+import { trackPublicStudies } from 'services/analytics';
 
 const { Title, Paragraph } = Typography;
 
@@ -22,7 +23,8 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const { keycloak } = useKeycloak();
   const query = useQueryParams();
 
-  const handleSignin = async () => {
+  const handleSignin = async (btnName: string) => {
+    trackPublicStudies(btnName);
     const url = keycloak.createLoginUrl({
       redirectUri: `${window.location.origin}/${
         query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
@@ -61,10 +63,10 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           </Paragraph>
         </div>
         <Space size={24}>
-          <LandingPageButton alt onClick={handleSignin} size="large">
+          <LandingPageButton alt onClick={() => handleSignin('Modal Login')} size="large">
             {intl.get('screen.publicStudies.loginModal.login')}
           </LandingPageButton>
-          <LandingPageButton onClick={handleSignin} size="large">
+          <LandingPageButton onClick={() => handleSignin('Modal Sign up')} size="large">
             {intl.get('screen.publicStudies.loginModal.signup')}
           </LandingPageButton>
         </Space>

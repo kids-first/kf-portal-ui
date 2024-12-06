@@ -183,3 +183,21 @@ export const trackKFConnection = (connected: boolean) => {
     });
   }
 };
+
+export const trackViewAllStudies = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing page',
+      action: 'Landing page - View all studies',
+    });
+  }
+};
+
+export const trackPublicStudies = (btnName: string) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Public page',
+      action: `Public page - ${btnName}`,
+    });
+  }
+};

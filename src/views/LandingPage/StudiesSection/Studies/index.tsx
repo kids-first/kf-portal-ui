@@ -6,6 +6,7 @@ import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
 import studiesSvg from 'components/assets/kf-portal-icons_studies_2.svg';
+import { trackViewAllStudies } from 'services/analytics';
 import { useGlobals } from 'store/global';
 import { STATIC_ROUTES } from 'utils/routes';
 
@@ -18,7 +19,12 @@ const StudiesSection = () => {
   const navigate = useNavigate();
   const publicStudiesBtn = getFTEnvVarByKey('PUBLIC_STUDIES');
   const studiesBtnOnClick =
-    publicStudiesBtn === 'true' ? () => navigate(STATIC_ROUTES.PUBLIC_STUDIES) : undefined;
+    publicStudiesBtn === 'true'
+      ? () => {
+          trackViewAllStudies();
+          navigate(STATIC_ROUTES.PUBLIC_STUDIES);
+        }
+      : undefined;
 
   return (
     <div className={styles.studiesContainer}>
