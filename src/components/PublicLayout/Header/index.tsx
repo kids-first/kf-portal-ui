@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import intl from 'react-intl-universal';
+import { useNavigate } from 'react-router';
 import {
   DownOutlined,
   FileSearchOutlined,
@@ -37,6 +38,7 @@ const { Text } = Typography;
 const Header = () => {
   const { keycloak } = useKeycloak();
   const query = useQueryParams();
+  const navigate = useNavigate();
 
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const closeLoginModal = () => setOpenLoginModal(false);
@@ -56,7 +58,11 @@ const Header = () => {
     <>
       <GradientAccent isFixed />
       <PageHeader
-        title={<KidsFirstIcon className={style.logo} />}
+        title={
+          <a onClick={() => navigate(STATIC_ROUTES.LOGIN)}>
+            <KidsFirstIcon className={style.logo} />
+          </a>
+        }
         subTitle={
           <nav className={style.headerList}>
             <HeaderButton
