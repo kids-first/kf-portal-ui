@@ -56,6 +56,8 @@ import { exportTsvColumns, GnomadCircle, renderClinvar, renderOmim } from './uti
 
 import styles from './index.module.css';
 
+const EXPORT_TSV_LIMIT = 10000;
+
 interface OwnProps {
   pageIndex: number;
   sqon?: ISqonGroupFilter;
@@ -536,8 +538,11 @@ const VariantsTable = ({
                 },
                 onTableExportClick: () => {
                   if (
-                    selectedRows.length > 10000 ||
-                    (isEmpty(selectedRows) && results.total > 10000)
+                    selectedRows.length > EXPORT_TSV_LIMIT ||
+                    (isEmpty(selectedRows) &&
+                      !selectedAllResults &&
+                      results.total > EXPORT_TSV_LIMIT) ||
+                    (selectedAllResults && results.total > EXPORT_TSV_LIMIT)
                   ) {
                     Modal.confirm({
                       title: intl.get('screen.variants.table.exportModal.title'),
