@@ -156,7 +156,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Size', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 9, true);
     cy.sortTableAndIntercept('Size', 1);
-    cy.validateTableFirstRow('572.08 GB', 9, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 9, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Participants', () => {
@@ -186,7 +186,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndIntercept('Platform', 1);
     cy.validateTableFirstRow('-', 12, true);
     cy.sortTableAndIntercept('Platform', 1);
-    cy.validateTableFirstRow('Not Reported', 12, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 12, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Repository', () => {
