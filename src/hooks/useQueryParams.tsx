@@ -1,5 +1,3 @@
-const useQueryParams = () => {
-  return new URLSearchParams(window.location.search);
-};
+const useQueryParams = () => new URLSearchParams(window.location.search);
 
 export default useQueryParams;

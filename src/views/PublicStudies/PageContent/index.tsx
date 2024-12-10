@@ -17,7 +17,9 @@ const { Title } = Typography;
 const PageContent = () => {
   const [searchValue, setSearchValue] = useState('');
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [redirectUri, setRedirectUri] = useState<string>();
   const manageLoginModal = (isOpen: boolean) => setOpenLoginModal(isOpen);
+  const manageRedirectUri = (uri: string) => setRedirectUri(uri);
 
   const { stats, isFetchingStats } = useGlobals();
   const { studiesStatistics = [] } = stats || {};
@@ -43,7 +45,7 @@ const PageContent = () => {
     }
   };
 
-  const defaultColumns = getColumns({ manageLoginModal });
+  const defaultColumns = getColumns({ manageLoginModal, manageRedirectUri });
 
   return (
     <Space direction="vertical" size={16} className={styles.pageContent}>
@@ -83,7 +85,11 @@ const PageContent = () => {
         }
       />
       {openLoginModal && (
-        <LoginModal isOpen={openLoginModal} onClose={() => manageLoginModal(false)} />
+        <LoginModal
+          isOpen={openLoginModal}
+          onClose={() => manageLoginModal(false)}
+          redirectUri={redirectUri}
+        />
       )}
     </Space>
   );
