@@ -7,19 +7,20 @@ import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import { REDIRECT_URI_KEY } from 'common/constants';
 import logo from 'components/assets/logo.svg';
 import useQueryParams from 'hooks/useQueryParams';
+import { trackPublicStudies } from 'services/analytics';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import style from './index.module.css';
-import { trackPublicStudies } from 'services/analytics';
 
 const { Title, Paragraph } = Typography;
 
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  redirectUri?: string;
 };
 
-const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
+const LoginModal = ({ isOpen, onClose, redirectUri }: LoginModalProps) => {
   const { keycloak } = useKeycloak();
   const query = useQueryParams();
 
@@ -27,7 +28,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     trackPublicStudies(btnName);
     const url = keycloak.createLoginUrl({
       redirectUri: `${window.location.origin}/${
-        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
+        redirectUri || query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
       }`,
       locale: intl.getInitOptions().currentLocale,
     });

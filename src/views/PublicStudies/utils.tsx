@@ -1,20 +1,29 @@
 import intl from 'react-intl-universal';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { ProColumnType } from '@ferlab/ui/core/components/ProTable/types';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
+import { INDEXES } from 'graphql/constants';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 import { DataCategory, hasDataCategory } from 'views/Studies';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { IStudiesStatistic } from 'services/api/arranger/models';
+import { STATIC_ROUTES } from 'utils/routes';
 
 export const SCROLL_WRAPPER_ID = 'public-studies-scroll-wrapper';
 export const TABLE_ID = 'public-studies';
 
 type ColumnsProps = {
   manageLoginModal: (isOpen: boolean) => void;
+  manageRedirectUri: (uri: string) => void;
 };
 
-export const getColumns = ({ manageLoginModal }: ColumnsProps): ProColumnType<any>[] => [
+export const getColumns = ({
+  manageLoginModal,
+  manageRedirectUri,
+}: ColumnsProps): ProColumnType<any>[] => [
   {
     key: 'study_code',
     dataIndex: 'study_code',
@@ -65,7 +74,27 @@ export const getColumns = ({ manageLoginModal }: ColumnsProps): ProColumnType<an
     render: (record: IStudiesStatistic) => {
       const participantCount = record.participant_count;
       return participantCount ? (
-        <a onClick={() => manageLoginModal(true)}>{numberWithCommas(participantCount)}</a>
+        <a
+          onClick={() => {
+            manageRedirectUri(STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS);
+            manageLoginModal(true);
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'study.study_code',
+                    value: [record.study_code],
+                    index: INDEXES.PARTICIPANT,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            });
+          }}
+        >
+          {numberWithCommas(participantCount)}
+        </a>
       ) : (
         participantCount || 0
       );
