@@ -1,3 +1,9 @@
+## VERSION 5.10.1 (2024-12-12)
+
+### Technical / Other changes
+
+- [SKFP-1404](https://d3b.atlassian.net/browse/SKFP-1404) Issue:[Variant Exploration] Disable Export TSV
+
 ## VERSION 5.10.0 (2024-12-12)
 
 ### Features
