@@ -34,6 +34,7 @@ import {
   IVariantInternalFrequencies,
   IVariantStudyEntity,
 } from 'graphql/variants/models';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { capitalize, isEmpty } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import { DATA_EXPLORATION_QB_ID, DEFAULT_PAGE_INDEX } from 'views/DataExploration/utils/constant';
@@ -464,6 +465,8 @@ const VariantsTable = ({
   const [selectedRows, setSelectedRows] = useState<IVariantEntity[]>([]);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
 
+  const variantsExport = getFTEnvVarByKey('VARIANTS_EXPORT');
+
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
@@ -518,7 +521,7 @@ const VariantsTable = ({
                   total: results.total,
                 },
                 enableColumnSort: true,
-                enableTableExport: true,
+                enableTableExport: variantsExport === 'true' ? true : false,
                 onColumnSortChange: (newState) =>
                   dispatch(
                     updateUserConfig({

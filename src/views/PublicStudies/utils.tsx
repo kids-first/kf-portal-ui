@@ -55,7 +55,6 @@ export const getColumns = ({
     key: 'external_id',
     title: intl.get('entities.study.external_id'),
     dataIndex: 'external_id',
-    sorter: { multiple: 1 },
     render: (externalId: string) =>
       externalId ? (
         <ExternalLink
@@ -70,7 +69,6 @@ export const getColumns = ({
   {
     key: 'participant_count',
     title: intl.get('entities.study.participant_count'),
-    sorter: { multiple: 1 },
     render: (record: IStudiesStatistic) => {
       const participantCount = record.participant_count;
       return participantCount ? (
@@ -104,7 +102,6 @@ export const getColumns = ({
     key: 'family_count',
     title: intl.get('entities.study.family_count'),
     dataIndex: 'family_count',
-    sorter: { multiple: 1 },
     render: (family_count: number) =>
       family_count ? numberWithCommas(family_count) : TABLE_EMPTY_PLACE_HOLDER,
   },
