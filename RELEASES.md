@@ -1,3 +1,34 @@
+## VERSION 5.10.0 (2024-12-12)
+
+### Features
+
+- [SKFP-1223](https://d3b.atlassian.net/browse/SKFP-1223) Feature:[Variant Exploration] Export TSV Variant
+- [SKFP-1224](https://d3b.atlassian.net/browse/SKFP-1224) Feature:[Summary View] Add a Sample Type horizontal bar chart
+- [SKFP-1231](https://d3b.atlassian.net/browse/SKFP-1231) Feature:[Saved Set] Update the feedback message to respect given special characters
+- [SKFP-1273](https://d3b.atlassian.net/browse/SKFP-1273) Feature:[Reports] Add new biospecimen fields to download biospecimen report
+- [SKFP-1358](https://d3b.atlassian.net/browse/SKFP-1358) Feature:[Data Exploration] Add Category icon above each facet and in Quick Filter
+- [SKFP-1365](https://d3b.atlassian.net/browse/SKFP-1365) Feature:[Data Exploration] Add Maximum 10,000 limit modal prior to Analyze in Cavatica modal
+- [SKFP-1376](https://d3b.atlassian.net/browse/SKFP-1376) Feature:[Data Exploration] Across all horizontal bar charts set the max bars to 10
+- [SKFP-1387](https://d3b.atlassian.net/browse/SKFP-1387) Feature:[Public Studies] Add Public Studies page
+
+### Technical / Other changes
+
+- [SKFP-1147](https://d3b.atlassian.net/browse/SKFP-1147) Issue:[Community] Typo in "No Public Members"
+- [SKFP-1257](https://d3b.atlassian.net/browse/SKFP-1257) Issue:[Quick Filter] Adjusted query pill for diagnosis (MONDO) values
+- [SKFP-1266](https://d3b.atlassian.net/browse/SKFP-1266) Issue:[Quick Filter] Adjusted Apply button for numerical facets
+- [SKFP-1274](https://d3b.atlassian.net/browse/SKFP-1274) Issue:[Data Exploration] Search box isn't responsive to delete keystrokes
+- [SKFP-1285](https://d3b.atlassian.net/browse/SKFP-1285) Issue: [Variant Exploration] Remove double scrollbar
+- [SKFP-1294](https://d3b.atlassian.net/browse/SKFP-1294) Refactor:[ETL] Update ETL to extract the correct magnetic field strength
+- [SKFP-1332](https://d3b.atlassian.net/browse/SKFP-1332) Refactor:[ETL] Improve normalize Dataservice step
+- [SKFP-1333](https://d3b.atlassian.net/browse/SKFP-1333) Issue:[Clinvar] Add missing labels
+- [SKFP-1334](https://d3b.atlassian.net/browse/SKFP-1334) Issue:[ETL] Missing hash on some files
+- [SKFP-1354](https://d3b.atlassian.net/browse/SKFP-1354) Refactor:[ETL] Add more imaging fields into the ETL
+- [SKFP-1357](https://d3b.atlassian.net/browse/SKFP-1357) Refactor: [UI] Update package and dependencies
+- [SKFP-1360](https://d3b.atlassian.net/browse/SKFP-1360) Issue:[Data Exploration] Error 500 reported by UserSnap and Sentry
+- [SKFP-1361](https://d3b.atlassian.net/browse/SKFP-1361) Task: [ETL] Update ETL to latest MONDO obo file 
+- [SKFP-1377](https://d3b.atlassian.net/browse/SKFP-1377) Task: [Data Exploration] Remove both Sunburst MONDO & HPO as charts in the summary view
+
+
 ## VERSION 5.9.0 (2024-10-08)
 
 ### Features
@@ -17,7 +48,7 @@
 - [SKFP-1299](https://d3b.atlassian.net/browse/SKFP-1299) Refactor: [Entity] Adjusted the Experimental procedure section to be hidden for imaging files 
 - [SKFP-1313](https://d3b.atlassian.net/browse/SKFP-1313) Refactor: [Data exploration & Entity] Adjusted authorization icon and flow for controlled Imaging files governed by the Cavatica DRS
 - [SKFP-1315](https://d3b.atlassian.net/browse/SKFP-1315) Refactor: [Data Exploration] Adjusted the access url field to display a dash if there are no values
-
+00
 
 ## VERSION 5.8.0 (2024-09-30)
 
