@@ -284,6 +284,12 @@ export const GET_QUICK_FILTER_EXPLO = gql`
             doc_count
           }
         }
+        # Range
+        files__imaging__device__magnetic_field_strength {
+          stats {
+            count
+          }
+        }
       }
     }
   }
