@@ -97,6 +97,7 @@ const FilterList = ({
                   }
                   filterWithFooter={filterWithFooter}
                   categoryIcon={group.categoryIcon}
+                  defaults={group.defaults?.[facet]}
                 />
               ) : (
                 <div key={i + ii} className={cx(styles.customFilterWrapper, styles.filter)}>

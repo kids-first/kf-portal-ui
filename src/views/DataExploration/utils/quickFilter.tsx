@@ -1,7 +1,8 @@
 import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
-import { VisualType } from '@ferlab/ui/core/components/filters/types';
+import { IFilterGroupDefaultsRange, VisualType } from '@ferlab/ui/core/components/filters/types';
 import { CheckboxQFOption } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
+import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
 import {
   ISyntheticSqon,
   IValueFilter,
@@ -74,6 +75,18 @@ export const getFieldWithPrefixUnderscore = (index: string, field: string): stri
       return `files__${field}`;
     default:
       return field;
+  }
+};
+
+export const getDefaultOperator = (facetKey: string): IFilterGroupDefaultsRange | undefined => {
+  switch (facetKey) {
+    case 'files__imaging__device__magnetic_field_strength':
+      return {
+        operator: RangeOperators['>'],
+      };
+
+    default:
+      return undefined;
   }
 };
 

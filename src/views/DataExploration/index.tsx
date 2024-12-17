@@ -29,7 +29,7 @@ import {
 } from '@ferlab/ui/core/components/SidebarMenu/QuickFilter';
 import { underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { getFilterGroup, getFilterType } from '@ferlab/ui/core/data/filters/utils';
-import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
+import { RangeOperators, TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { IExtendedMappingResults, TAggregationBuckets } from '@ferlab/ui/core/graphql/types';
@@ -77,6 +77,7 @@ import BiospecimenUploadIds from './components/UploadIds/BiospecimenUploadIds';
 import FileUploadIds from './components/UploadIds/FileUploadIds';
 import ParticipantUploadIds from './components/UploadIds/ParticipantUploadIds';
 import {
+  getDefaultOperator,
   getFieldCategoryIcon,
   getFieldWithoutPrefix,
   getIndexFromQFValueFacet,
@@ -217,6 +218,11 @@ const filterGroups: {
           'imaging__device__manufacturer',
           'imaging__device__model_name',
         ],
+        defaults: {
+          imaging__device__magnetic_field_strength: {
+            operator: RangeOperators['>'],
+          },
+        },
         categoryIcon: <FileTextOutlined className={styles.categoryIcon} />,
       },
     ],
@@ -404,6 +410,7 @@ const DataExploration = () => {
     const filterGroup = getFilterGroup({
       extendedMapping: found,
       aggregation: aggregations,
+      defaults: getDefaultOperator(option.key),
       rangeTypes: [],
       filterFooter: false,
       headerTooltip: false,

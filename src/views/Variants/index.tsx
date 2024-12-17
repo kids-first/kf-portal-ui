@@ -1,6 +1,7 @@
 import intl from 'react-intl-universal';
 import { UserOutlined } from '@ant-design/icons';
 import SidebarMenu, { ISidebarMenuItem } from '@ferlab/ui/core/components/SidebarMenu';
+import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
 
@@ -66,6 +67,11 @@ const filterGroups: {
           'studies__zygosity',
           'studies__transmission',
         ],
+        defaults: {
+          start: {
+            operator: RangeOperators['between'],
+          },
+        },
         noDataOption: ['start'],
         intervalDecimal: {
           start: 0,
@@ -90,6 +96,11 @@ const filterGroups: {
           'genes__gnomad__pli',
           'genes__gnomad__loeuf',
         ],
+        defaults: {
+          genes__gnomad__pli: {
+            operator: RangeOperators['>'],
+          },
+        },
         noDataOption: ['genes__gnomad__pli', 'genes__gnomad__loeuf'],
       },
       {
@@ -129,6 +140,23 @@ const filterGroups: {
           'genes__spliceai__ds',
           'genes__consequences__predictions__sift_pred',
         ],
+        defaults: {
+          genes__consequences__predictions__cadd_score: {
+            operator: RangeOperators['>'],
+          },
+          genes__consequences__predictions__cadd_phred: {
+            operator: RangeOperators['>'],
+          },
+          genes__consequences__predictions__dann_score: {
+            operator: RangeOperators['>'],
+          },
+          genes__consequences__predictions__revel_score: {
+            operator: RangeOperators['>'],
+          },
+          genes__spliceai__ds: {
+            operator: RangeOperators['>'],
+          },
+        },
         tooltips: [
           'genes__consequences__predictions__cadd_score',
           'genes__consequences__predictions__cadd_phred',
