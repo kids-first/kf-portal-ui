@@ -1,7 +1,6 @@
 import intl from 'react-intl-universal';
 import { useNavigate } from 'react-router';
 import { Typography } from 'antd';
-import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
@@ -17,14 +16,10 @@ const { Paragraph } = Typography;
 const StudiesSection = () => {
   const { stats } = useGlobals();
   const navigate = useNavigate();
-  const publicStudiesBtn = getFTEnvVarByKey('PUBLIC_STUDIES');
-  const studiesBtnOnClick =
-    publicStudiesBtn === 'true'
-      ? () => {
-          trackViewAllStudies();
-          navigate(STATIC_ROUTES.PUBLIC_STUDIES);
-        }
-      : undefined;
+  const studiesBtnOnClick = () => {
+    trackViewAllStudies();
+    navigate(STATIC_ROUTES.PUBLIC_STUDIES);
+  };
 
   return (
     <div className={styles.studiesContainer}>

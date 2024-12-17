@@ -9,7 +9,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
-import { getEnvVarByKey, getFTEnvVarByKey } from 'helpers/EnvVariables';
+import { getEnvVarByKey } from 'helpers/EnvVariables';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import ProtectedRoute from 'ProtectedRoute';
 import ApolloProvider from 'provider/ApolloProvider';
@@ -19,16 +19,12 @@ import ErrorPage from 'views/Error';
 import FakeStorybook from 'views/FakeStorybook';
 import FenceRedirect from 'views/FenceRedirect';
 import LandingPage from 'views/LandingPage';
-import Login from 'views/Login';
 import ParticipantEntity from 'views/ParticipantEntity';
 import ProfileView from 'views/Profile/View';
 
 import { LANG } from 'common/constants';
 import { FENCE_NAMES } from 'common/fenceTypes';
-import MainSideImage from 'components/assets/mainSideImage.jpg';
 import ErrorBoundary from 'components/ErrorBoundary';
-import SideImageLayout from 'components/Layout/SideImage';
-import GradientAccent from 'components/uiKit/GradientAccent';
 import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
 import { initGa } from 'services/analytics';
@@ -89,21 +85,8 @@ const App = () => {
                     element={<FenceRedirect fence={PASSPORT.cavatica} />}
                   />
 
-                  {getFTEnvVarByKey('LANDING_PAGE') === 'true' ? (
-                    <Route path={STATIC_ROUTES.LOGIN} element={<LandingPage />} />
-                  ) : (
-                    <Route
-                      path={STATIC_ROUTES.LOGIN}
-                      element={
-                        <>
-                          <GradientAccent isFixed />
-                          <SideImageLayout sideImgSrc={MainSideImage}>
-                            <Login />
-                          </SideImageLayout>
-                        </>
-                      }
-                    />
-                  )}
+                  <Route path={STATIC_ROUTES.LOGIN} element={<LandingPage />} />
+
                   <Route path={DYNAMIC_ROUTES.ERROR} element={<ErrorPage />} />
                   <Route path={STATIC_ROUTES.PUBLIC_STUDIES} element={<PublicStudies />} />
                   <Route

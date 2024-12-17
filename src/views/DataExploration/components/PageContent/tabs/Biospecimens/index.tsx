@@ -25,7 +25,7 @@ import { INDEXES } from 'graphql/constants';
 import { ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
-import EnvironmentVariables, { getFTEnvVarByKey } from 'helpers/EnvVariables';
+import EnvironmentVariables from 'helpers/EnvVariables';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -35,7 +35,6 @@ import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE,
   DEFAULT_QUERY_CONFIG,
-  FT_REQUEST_BIOSPECIMEN_KEY,
   SCROLL_WRAPPER_ID,
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
@@ -388,8 +387,6 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
     queryConfig.operations,
   );
 
-  const enableRequestBiospecimen = getFTEnvVarByKey(FT_REQUEST_BIOSPECIMEN_KEY);
-
   const getCurrentSqon = (): any =>
     selectedAllResults || !selectedKeys.length
       ? sqon
@@ -509,23 +506,21 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             }),
           ),
         extra: [
-          enableRequestBiospecimen === 'true' ? (
-            <RequestBiospecimenButton
-              additionalHandleClick={() => trackRequestBiospecimen('open modal')}
-              additionalHandleFinish={() => trackRequestBiospecimen('download manifest')}
-              createAndFetchReport={(name) => fetchRequestBioReport(name)}
-              dictionary={getRequestBiospecimenDictionary()}
-              disabled={selectedKeys.length === 0 && !selectedAllResults}
-              columns={getDataTypeColumns()}
-              getSamples={() => useApi({ config })}
-              getSavedSets={useSavedSet}
-              key="requestBiospecimen"
-              maxTitleLength={200}
-              nbBiospecimenSelected={selectedAllResults ? results.total : selectedKeys.length}
-              sqon={getCurrentSqon()}
-              type="primary"
-            />
-          ) : undefined,
+          <RequestBiospecimenButton
+            additionalHandleClick={() => trackRequestBiospecimen('open modal')}
+            additionalHandleFinish={() => trackRequestBiospecimen('download manifest')}
+            createAndFetchReport={(name) => fetchRequestBioReport(name)}
+            dictionary={getRequestBiospecimenDictionary()}
+            disabled={selectedKeys.length === 0 && !selectedAllResults}
+            columns={getDataTypeColumns()}
+            getSamples={() => useApi({ config })}
+            getSavedSets={useSavedSet}
+            key="requestBiospecimen"
+            maxTitleLength={200}
+            nbBiospecimenSelected={selectedAllResults ? results.total : selectedKeys.length}
+            sqon={getCurrentSqon()}
+            type="primary"
+          />,
           <SetsManagementDropdown
             key={INDEXES.BIOSPECIMEN}
             idField={BIOSPECIMENS_SAVED_SETS_FIELD}

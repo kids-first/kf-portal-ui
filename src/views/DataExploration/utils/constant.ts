@@ -52,4 +52,3 @@ export enum TAB_IDS {
 }
 
 export const FT_QUICK_FILTER_KEY = 'QUICK_FILTER';
-export const FT_REQUEST_BIOSPECIMEN_KEY = 'REQUEST_BIOSPECIMEN';
