@@ -1238,12 +1238,6 @@ const en = {
         variant: 'Variant',
         variant_class: 'Variant class',
         variant_id: 'Variant ID',
-        exportModal: {
-          title: 'Maximum number exceeded',
-          content:
-            'A maximum of 10,000 items can be exported at a time. Please narrow your selection and try again.',
-          button: 'Close',
-        },
       },
       summary: {
         summary: 'Summary',
