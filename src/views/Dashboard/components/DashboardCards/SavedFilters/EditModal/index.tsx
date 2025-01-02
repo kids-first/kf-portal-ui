@@ -26,7 +26,7 @@ const EditModal = ({ visible = false, onCancel, filter }: OwnProps) => {
         onCancel();
         editForm.resetFields();
       }}
-      visible={visible}
+      open={visible}
       onOk={() => editForm.submit()}
       okText={intl.get('components.querybuilder.header.modal.edit.okText')}
     >

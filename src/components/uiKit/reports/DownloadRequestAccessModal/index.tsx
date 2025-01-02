@@ -50,7 +50,7 @@ const DownloadRequestAccessModal = ({
         {intl.get('api.report.requestAccess.button')}
       </Button>
       <Modal
-        visible={isModalVisible}
+        open={isModalVisible}
         title={intl.get('api.report.requestAccess.title')}
         okText={intl.get('api.report.requestAccess.okText')}
         okButtonProps={{ disabled: hasTooManyFiles }}

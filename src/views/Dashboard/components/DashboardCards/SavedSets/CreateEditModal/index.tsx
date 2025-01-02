@@ -150,6 +150,7 @@ const CreateEditModal = ({
       okButtonProps={{ disabled: isLoading, loading: isLoading || isUpdating }}
       okText="Save"
       destroyOnClose
+      forceRender
     >
       <Form
         form={form}

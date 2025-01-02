@@ -2,7 +2,7 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { DownloadOutlined } from '@ant-design/icons';
 import { ISqonGroupFilter, ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
-import { Button, Dropdown, Menu } from 'antd';
+import { Button, Dropdown } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { generateSelectionSqon } from 'views/DataExploration/utils/selectionSqon';
 
@@ -23,37 +23,34 @@ const DownloadClinicalDataDropdown = ({ participantIds, sqon, type = 'default' }
   const getCurrentSqon = (): ISyntheticSqon =>
     sqon || generateSelectionSqon(INDEXES.PARTICIPANT, participantIds);
 
-  const menu = (
-    <Menu
-      onClick={(e) =>
-        dispatch(
-          fetchReport({
-            data: {
-              sqon: getCurrentSqon(),
-              name: ReportType.CLINICAL_DATA,
-              withFamily: e.key === CLINICAL_DATA_WITH_FAMILY,
-            },
-          }),
-        )
-      }
-      items={[
-        {
-          key: ReportType.CLINICAL_DATA,
-          label: intl.get('api.report.clinicalData.participant', { count: participantIds.length }),
-        },
-        {
-          key: CLINICAL_DATA_WITH_FAMILY,
-          label: intl.get('api.report.clinicalData.family', { count: participantIds.length }),
-        },
-      ]}
-    />
-  );
+  const menu = {
+    onClick: (e: any) =>
+      dispatch(
+        fetchReport({
+          data: {
+            sqon: getCurrentSqon(),
+            name: ReportType.CLINICAL_DATA,
+            withFamily: e.key === CLINICAL_DATA_WITH_FAMILY,
+          },
+        }),
+      ),
+    items: [
+      {
+        key: ReportType.CLINICAL_DATA,
+        label: intl.get('api.report.clinicalData.participant', { count: participantIds.length }),
+      },
+      {
+        key: CLINICAL_DATA_WITH_FAMILY,
+        label: intl.get('api.report.clinicalData.family', { count: participantIds.length }),
+      },
+    ],
+  };
 
   return (
     <Dropdown
       key="actionDropdown"
       disabled={participantIds.length === 0}
-      overlay={menu}
+      menu={menu}
       placement="bottomLeft"
     >
       <Button type={type} icon={<DownloadOutlined />}>

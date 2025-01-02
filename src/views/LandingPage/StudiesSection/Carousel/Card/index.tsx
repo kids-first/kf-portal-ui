@@ -24,7 +24,7 @@ const clampText = (text: string): string => {
   return text;
 };
 
-export const CarouselCard = ({ title, description, participants, tags }: TCarouselCard) => (
+const CarouselCard = ({ title, description, participants, tags }: TCarouselCard) => (
   <div className={styles.carouselCard}>
     <LandingPageTitle className={styles.title} level={4} margin={16}>
       {title}

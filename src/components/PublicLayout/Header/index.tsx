@@ -182,7 +182,7 @@ const Header = () => {
               href=""
             >
               <LaptopOutlined />
-              <span className={style.resources}>Resources</span>
+              <span className={style.resources}>{intl.get('layout.main.menu.resources')}</span>
               <DownOutlined />
             </a>
           </Dropdown>,

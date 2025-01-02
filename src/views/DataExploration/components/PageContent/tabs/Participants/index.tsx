@@ -19,7 +19,7 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Dropdown, Menu, Tag, Tooltip } from 'antd';
+import { Button, Dropdown, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
 import {
@@ -433,30 +433,27 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
           ],
         });
 
-  const menu = (
-    <Menu
-      onClick={(e) =>
-        dispatch(
-          fetchReport({
-            data: {
-              sqon: getCurrentSqon(),
-              name: e.key,
-            },
-          }),
-        )
-      }
-      items={[
-        {
-          key: ReportType.CLINICAL_DATA,
-          label: 'Selected participants',
-        },
-        {
-          key: ReportType.CLINICAL_DATA_FAM,
-          label: 'Selected participants & families',
-        },
-      ]}
-    />
-  );
+  const menu = {
+    onClick: (e: any) =>
+      dispatch(
+        fetchReport({
+          data: {
+            sqon: getCurrentSqon(),
+            name: e.key,
+          },
+        }),
+      ),
+    items: [
+      {
+        key: ReportType.CLINICAL_DATA,
+        label: 'Selected participants',
+      },
+      {
+        key: ReportType.CLINICAL_DATA_FAM,
+        label: 'Selected participants & families',
+      },
+    ],
+  };
 
   useEffect(() => {
     if (selectedKeys.length) {
@@ -560,7 +557,7 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
             <div>
               <Dropdown
                 disabled={selectedKeys.length === 0}
-                overlay={menu}
+                menu={menu}
                 placement="bottomLeft"
                 key={'download-clinical-data-dropdown'}
               >
