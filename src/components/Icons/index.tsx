@@ -5,5 +5,4 @@ export type IconProps = {
   width?: number | string;
   className?: string;
   svgClass?: string;
-  viewBox?: string;
 };
