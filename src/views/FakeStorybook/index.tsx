@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Menu, Space, Switch, Typography } from 'antd';
+import { Button, Dropdown, Space, Switch, Typography } from 'antd';
 
 const { Text } = Typography;
 
@@ -1612,25 +1612,23 @@ const FakeStorybook = () => {
           <Dropdown.Button
             key="treeFacet-footer-dropdown-button"
             type="primary"
-            overlay={
-              <Menu
-                onClick={() => {}}
-                items={[
-                  {
-                    key: 'test1',
-                    label: 'Test 1',
-                  },
-                  {
-                    key: 'test2',
-                    label: 'Test 2',
-                  },
-                  {
-                    key: 'test3',
-                    label: 'Test 3',
-                  },
-                ]}
-              />
-            }
+            menu={{
+              onClick: () => {},
+              items: [
+                {
+                  key: 'test1',
+                  label: 'Test 1',
+                },
+                {
+                  key: 'test2',
+                  label: 'Test 2',
+                },
+                {
+                  key: 'test3',
+                  label: 'Test 3',
+                },
+              ],
+            }}
             style={{ marginLeft: '8px' }}
             onClick={() => {}}
           >

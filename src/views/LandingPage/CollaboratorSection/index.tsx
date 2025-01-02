@@ -1,7 +1,6 @@
 import intl from 'react-intl-universal';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
 import { useKeycloak } from '@react-keycloak/web';
-import { Typography } from 'antd';
 import CollaboratorCard from 'views/LandingPage/CollaboratorSection/CollaboratorCard';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
@@ -13,8 +12,6 @@ import { STATIC_ROUTES } from 'utils/routes';
 import { useGlobals } from '../../../store/global';
 
 import styles from './index.module.css';
-
-const { Title } = Typography;
 
 const CollaboratorSection = () => {
   const { stats } = useGlobals();
@@ -40,7 +37,7 @@ const CollaboratorSection = () => {
             {intl.get('screen.loginPage.collaborationSection.title')}
           </LandingPageTitle>
           <LandingPageTitle level={4} alt>
-            <Title level={4}>{intl.get('screen.loginPage.collaborationSection.description')}</Title>
+            {intl.get('screen.loginPage.collaborationSection.description')}
           </LandingPageTitle>
         </div>
         <div className={styles.contentContainer}>

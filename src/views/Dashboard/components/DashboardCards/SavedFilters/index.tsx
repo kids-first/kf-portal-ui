@@ -20,7 +20,6 @@ import SavedFiltersListItem from './ListItem';
 import styles from './index.module.css';
 
 const { Text } = Typography;
-const { TabPane } = Tabs;
 
 type SavedFilterListWrapperOwnprops = {
   tag: SavedFilterTag;
@@ -112,51 +111,53 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
         <Tabs
           className={cx(styles.setTabs, 'navNoMarginBtm')}
           defaultActiveKey={SavedFilterTag.ParticipantsExplorationPage}
-        >
-          <TabPane
-            key={SavedFilterTag.ParticipantsExplorationPage}
-            tab={
-              <div>
-                <FileSearchOutlined />
-                Data Exploration (
-                {
-                  savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage)
-                    .length
-                }
-                )
-              </div>
-            }
-          >
-            <SavedFilterListWrapper
-              tag={SavedFilterTag.ParticipantsExplorationPage}
-              savedFilters={savedFilters}
-              fetchingError={fetchingError}
-              isLoading={isLoading}
-            />
-          </TabPane>
-
-          <TabPane
-            key={SavedFilterTag.VariantsExplorationPage}
-            tab={
-              <div>
-                <LineStyleIcon height={14} width={14} />
-                Variants (
-                {
-                  savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage)
-                    .length
-                }
-                )
-              </div>
-            }
-          >
-            <SavedFilterListWrapper
-              tag={SavedFilterTag.VariantsExplorationPage}
-              savedFilters={savedFilters}
-              fetchingError={fetchingError}
-              isLoading={isLoading}
-            />
-          </TabPane>
-        </Tabs>
+          items={[
+            {
+              key: SavedFilterTag.ParticipantsExplorationPage,
+              label: (
+                <div>
+                  <FileSearchOutlined />
+                  Data Exploration (
+                  {
+                    savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage)
+                      .length
+                  }
+                  )
+                </div>
+              ),
+              children: (
+                <SavedFilterListWrapper
+                  tag={SavedFilterTag.ParticipantsExplorationPage}
+                  savedFilters={savedFilters}
+                  fetchingError={fetchingError}
+                  isLoading={isLoading}
+                />
+              ),
+            },
+            {
+              key: SavedFilterTag.VariantsExplorationPage,
+              label: (
+                <div>
+                  <LineStyleIcon height={14} width={14} />
+                  Variants (
+                  {
+                    savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage)
+                      .length
+                  }
+                  )
+                </div>
+              ),
+              children: (
+                <SavedFilterListWrapper
+                  tag={SavedFilterTag.VariantsExplorationPage}
+                  savedFilters={savedFilters}
+                  fetchingError={fetchingError}
+                  isLoading={isLoading}
+                />
+              ),
+            },
+          ]}
+        />
       }
     />
   );

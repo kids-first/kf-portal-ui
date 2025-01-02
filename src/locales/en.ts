@@ -504,6 +504,7 @@ const en = {
         explore: 'Data Exploration',
         help: 'Help',
         participants: 'Participants',
+        resources: 'Resources',
         studies: 'Studies',
         variants: 'Variants',
         website: 'Website',

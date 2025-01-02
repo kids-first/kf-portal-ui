@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { useKeycloak } from '@react-keycloak/web';
-import { Dropdown, Menu, PageHeader, Space, Typography } from 'antd';
+import { Dropdown, PageHeader, Space, Typography } from 'antd';
 import { formatProvider } from 'auth/keycloak-api/utils';
 import cx from 'classnames';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
@@ -186,52 +186,50 @@ const Header = () => {
           <Dropdown
             key="user-menu"
             trigger={['click']}
-            overlay={
-              <Menu
-                items={[
-                  {
-                    key: 'email',
-                    disabled: true,
-                    label: (
-                      <Space size={4} className={styles.userMenuEmail}>
-                        <Typography.Text>Signed in with</Typography.Text>
-                        <Typography.Text strong>
-                          {tokenParsed.email || formatProvider(tokenParsed.identity_provider)}
-                        </Typography.Text>
-                      </Space>
-                    ),
-                  },
-                  {
-                    type: 'divider',
-                  },
-                  {
-                    key: 'profile_settings',
-                    label: (
-                      <Link to={`/profile/settings`}>
-                        <Space>
-                          <UserOutlined />
-                          {intl.get('layout.user.menu.settings')}
-                        </Space>
-                      </Link>
-                    ),
-                  },
-                  {
-                    key: 'logout',
-                    label: (
+            menu={{
+              items: [
+                {
+                  key: 'email',
+                  disabled: true,
+                  label: (
+                    <Space size={4} className={styles.userMenuEmail}>
+                      <Typography.Text>Signed in with</Typography.Text>
+                      <Typography.Text strong>
+                        {tokenParsed.email || formatProvider(tokenParsed.identity_provider)}
+                      </Typography.Text>
+                    </Space>
+                  ),
+                },
+                {
+                  type: 'divider',
+                },
+                {
+                  key: 'profile_settings',
+                  label: (
+                    <Link to={`/profile/settings`}>
                       <Space>
-                        <LogoutOutlined />
-                        {intl.get('layout.user.menu.logout')}
+                        <UserOutlined />
+                        {intl.get('layout.user.menu.settings')}
                       </Space>
-                    ),
-                    onClick: () => {
-                      trackLogout();
-                      dispatch(userActions.cleanLogout());
-                      window.sessionStorage.clear();
-                    },
+                    </Link>
+                  ),
+                },
+                {
+                  key: 'logout',
+                  label: (
+                    <Space>
+                      <LogoutOutlined />
+                      {intl.get('layout.user.menu.logout')}
+                    </Space>
+                  ),
+                  onClick: () => {
+                    trackLogout();
+                    dispatch(userActions.cleanLogout());
+                    window.sessionStorage.clear();
                   },
-                ]}
-              />
-            }
+                },
+              ],
+            }}
           >
             <a
               className={cx(styles.userMenuTrigger, styles.menuTrigger)}
