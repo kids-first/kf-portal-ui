@@ -4,7 +4,7 @@ declare namespace Cypress {
   interface Chainable {
     checkValueFacetAndApply(facetTitle: string, value: string): cy & CyEventEmitter;
     checkValueFacet(facetTitle: string, value: string): cy & CyEventEmitter;
-    clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number): cy & CyEventEmitter;
+    clickAndIntercept(selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, beVisible: boolean = false, eq?: number): cy & CyEventEmitter;
     clickAndWait(options?: Partial<ClickOptions>): Chainable<Element>;
     closePopup(): cy & CyEventEmitter;
     createBioReqIfNotExists(bioreqName: string, itemPosition: number): cy & CyEventEmitter;
@@ -29,7 +29,7 @@ declare namespace Cypress {
     typeAndIntercept(selector: string, text: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq: number = 0): cy & CyEventEmitter;
     validateClearAllButton(shouldExist: boolean): cy & CyEventEmitter;
     validateFacetFilter(facetTitle: string, valueFront: string, valueBack: string, expectedCount: string|RegExp, eq: number = 0, applyButton: boolean = true): cy & CyEventEmitter;
-    validateFacetNumFilter(facetTitle: string, value: string, expectedCount: string|RegExp, isNoData: Boolean = false, eq: number = 0): cy & CyEventEmitter;
+    validateFacetNumFilter(operator: string, facetTitle: string, value: string, expectedCount: string|RegExp, isNoData: Boolean = false, eq: number = 0): cy & CyEventEmitter;
     validateFacetRank(facetRank: number, facetTitle: string): cy & CyEventEmitter;
     validateFileContent(fixture: string, replacements?: Replacement[]): cy & CyEventEmitter;
     validateFileHeaders(fixture: string): cy & CyEventEmitter;

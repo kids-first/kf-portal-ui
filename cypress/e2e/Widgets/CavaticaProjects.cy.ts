@@ -129,10 +129,10 @@ describe('Page Dashboard - Widget Cavatica Projects (connecté)', () => {
     });
 
     cy.get('@cavaticaFooter').find('button').clickAndWait({force: true});
-    cy.get('[class="ant-modal-title"]').contains('New project').should('exist');
-    cy.get('label[for="project_name"]').contains('Project name').should('exist');
-    cy.get('input').should('have.attr', 'placeholder', 'e.g. KF-NBL Neuroblastoma Aligned Reads');
-    cy.get('label[for="project_billing_group"]').contains('Project billing group').should('exist');
-    cy.get('[class="ant-select-selection-item"]').contains('Pilot Funds (mock)').should('exist');
+    cy.get('[class*="CavaticaCreateProjectModal"] [class="ant-modal-title"]').contains('New project').should('exist');
+    cy.get('[class*="CavaticaCreateProjectModal"] label[for="project_name"]').contains('Project name').should('exist');
+    cy.get('[class*="CavaticaCreateProjectModal"] input').should('have.attr', 'placeholder', 'e.g. KF-NBL Neuroblastoma Aligned Reads');
+    cy.get('[class*="CavaticaCreateProjectModal"] label[for="project_billing_group"]').contains('Project billing group').should('exist');
+    cy.get('[class*="CavaticaCreateProjectModal"] [class="ant-select-selection-item"]').contains('Pilot Funds (mock)').should('exist');
   });
 });

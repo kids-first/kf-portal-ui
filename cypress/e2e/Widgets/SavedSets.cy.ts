@@ -106,9 +106,9 @@ describe('Page Dashboard - Widget Saved Sets', () => {
         cy.wrap($el).find('svg[data-icon="edit"]').clickAndWait({force:true});
       }
     });
-    cy.get('[class="ant-modal-content"] input').clear().type('Cypress_SB');
+    cy.get('[class="ant-modal-content"] input[id="save-set_nameSet"]').filter(':visible').clear().type('Cypress_SB');
     cy.get('[class="ant-modal-content"] input[value="Cypress_SB"]').should('exist');
-    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/sets/**', 1);
+    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/sets/**', 1, true/*beVisible*/);
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress_SB').should('exist');
     cy.get('[class*="SavedSets_setTabs"]').contains('Cypress_SA').should('not.exist');
   });

@@ -113,9 +113,9 @@ describe('Page Dashboard - Widget Biospecimen Requests', () => {
         cy.wrap($el).find('svg[data-icon="edit"]').clickAndWait({force:true});
       };
     });
-    cy.get('[class="ant-modal-content"] input').clear().type('Cypress_BrB');
+    cy.get('[class="ant-modal-content"] input[id="name"]').filter(':visible').clear().type('Cypress_BrB');
     cy.get(`[class="ant-modal-content"] input[value="Cypress_BrB"]`).should('exist');
-    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/sets/**', 1);
+    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/sets/**', 1, true/*beVisible*/);
 
     cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Biospecimen Requests')) {

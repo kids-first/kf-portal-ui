@@ -92,9 +92,9 @@ describe('Page Dashboard - Widget Saved Filters', () => {
         cy.wrap($el).find('svg[data-icon="edit"]').clickAndWait({force:true});
       }
     });
-    cy.get('[class="ant-modal-content"] input').clear().type('Cypress_FB');
+    cy.get('[class="ant-modal-content"] input[id="title"]').filter(':visible').clear().type('Cypress_FB');
     cy.get(`[class="ant-modal-content"] input[value="Cypress_FB"]`).should('exist');
-    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/saved-filters', 1);
+    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/saved-filters', 1, true/*beVisible*/);
     cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress_FB').should('exist');
     cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress_FA').should('not.exist');
   });

@@ -46,14 +46,19 @@ Cypress.Commands.add('checkValueFacet', (facetTitle: string, value: string) => {
   cy.waitWhileSpin(oneMinute);
 });
 
-Cypress.Commands.add('clickAndIntercept', (selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq?: number) => {
+Cypress.Commands.add('clickAndIntercept', (selector: string, methodHTTP: string, routeMatcher: string, nbCalls: number, beVisible: boolean = false, eq?: number) => {
   if (!eq) {
     eq = 0;
   }
 
   cy.intercept(methodHTTP, routeMatcher).as('getRouteMatcher');
 
-  cy.get(selector).eq(eq).clickAndWait({force: true});
+  if (beVisible) {
+    cy.get(selector).filter(':visible').eq(eq).clickAndWait({force: true});
+  }
+  else {
+    cy.get(selector).eq(eq).clickAndWait({force: true});
+  }
 
   for (let i = 0; i < nbCalls; i++) {
     cy.wait('@getRouteMatcher', {timeout: oneMinute});
@@ -350,9 +355,15 @@ Cypress.Commands.add('validateFacetFilter', (facetTitle: string, valueFront: str
   cy.validateTableResultsCount(expectedCount);
 });
 
-Cypress.Commands.add('validateFacetNumFilter', (facetTitle: string, value: string, expectedCount: string|RegExp, isNoData: Boolean = false, eq: number = 0) => {
+Cypress.Commands.add('validateFacetNumFilter', (operator: string, facetTitle: string, value: string, expectedCount: string|RegExp, isNoData: Boolean = false, eq: number = 0) => {
   cy.wait(2000);
-  cy.get(`[data-cy="InputNumber_Max_${facetTitle}"]`).type(value, {force: true});
+  if (operator === 'MinMax') {
+    cy.get(`[data-cy="InputNumber_Min_${facetTitle}"]`).type(value, {force: true});
+    cy.get(`[data-cy="InputNumber_Max_${facetTitle}"]`).type(value, {force: true});
+  }
+  else {
+    cy.get(`[data-cy="InputNumber_${operator}_${facetTitle}"]`).type(value, {force: true});
+  }
   if (isNoData) {
     cy.get(`[data-cy="Checkbox_NoData_${facetTitle}"]`).check({force: true});
   }
