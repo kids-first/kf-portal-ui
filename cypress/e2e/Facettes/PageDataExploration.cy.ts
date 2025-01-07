@@ -162,17 +162,17 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Age at Diagnosis (days) - 1000', () => {
-    cy.validateFacetNumFilter('Age at Diagnosis (days)', '1000', /\d{1}/, true, 1);
+    cy.validateFacetNumFilter('Max', 'Age at Diagnosis (days)', '1000', /\d{1}/, true, 1);
     cy.validateFacetRank(0, 'Age at Diagnosis (days)');
   });
 
   it('Age at Vital Status (days) - 1000', () => {
-    cy.validateFacetNumFilter('Age at Vital Status (days)', '1000', /\d{1}/, true, 1);
+    cy.validateFacetNumFilter('Max', 'Age at Vital Status (days)', '1000', /\d{1}/, true, 1);
     cy.validateFacetRank(1, 'Age at Vital Status (days)');
   });
 
   it('Age at Observed Phenotype (days) - 1000', () => {
-    cy.validateFacetNumFilter('Age at Observed Phenotype (days)', '1000', /\d{1}/, true, 1);
+    cy.validateFacetNumFilter('Max', 'Age at Observed Phenotype (days)', '1000', /\d{1}/, true, 1);
     cy.validateFacetRank(2, 'Age at Observed Phenotype (days)');
   });
 
@@ -297,12 +297,12 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Age at Biospec. Collection (days) - 2000', () => {
-    cy.validateFacetNumFilter('Age at Biospec. Collection (days)', '2000', /\d{1}/, true, 1);
+    cy.validateFacetNumFilter('Max', 'Age at Biospec. Collection (days)', '2000', /\d{1}/, true, 1);
     cy.validateFacetRank(2, 'Age at Biospec. Collection (days)');
   });
 
   it('Age at Histological Diagnosis (days) - 1000', () => {
-    cy.validateFacetNumFilter('Age at Histological Diagnosis (days)', '1000', /\d{1}/, true, 1);
+    cy.validateFacetNumFilter('Max', 'Age at Histological Diagnosis (days)', '1000', /\d{1}/, true, 1);
     cy.validateFacetRank(3, 'Age at Histological Diagnosis (days)');
   });
 
@@ -507,8 +507,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(14, 'Body Part Examined');
   });
 
-  it('Magnetic Field Strength - Illumina', () => {
-    cy.validateFacetNumFilter('Magnetic Field Strength', '2', /\d{1}/, true);
+  it('Magnetic Field Strength', () => {
+    cy.validateFacetNumFilter('Min', 'Magnetic Field Strength', '2', /\d{1}/, true);
     cy.validateFacetRank(15, 'Magnetic Field Strength');
   });
 

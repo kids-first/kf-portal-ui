@@ -25,7 +25,7 @@ beforeEach(() => {
   cy.showColumn('External Sample ID');
   cy.showColumn('External Collection ID');
 
-  cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, 1);
+  cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, false/*beVisible*/, 1);
   cy.waitUntilFile(oneMinute);
 });
 
