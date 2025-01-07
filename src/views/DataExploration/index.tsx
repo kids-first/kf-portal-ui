@@ -327,7 +327,7 @@ const DataExploration = () => {
         const label = capitalize(facetValueMapping?.[bucket.key]) || titleCase(bucket.key);
         const index = getIndexFromQFValueFacet(key);
 
-        if (regexp.exec(label)) {
+        if (label.match(regexp)) {
           ++totalResult;
           bucketFiltered.push({
             key: bucket.key,
@@ -340,7 +340,7 @@ const DataExploration = () => {
         }
       });
 
-      const isFacetNameMatch = regexp.exec(facetName);
+      const isFacetNameMatch = facetName.match(regexp);
       if (isFacetNameMatch || bucketFiltered.length > 0) {
         if (isFacetNameMatch) ++totalResult;
 
