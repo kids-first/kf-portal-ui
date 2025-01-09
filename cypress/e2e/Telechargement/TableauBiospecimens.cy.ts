@@ -7,7 +7,7 @@ beforeEach(() => {
   cy.removeFilesFromFolder(Cypress.config('downloadsFolder'));
 
   cy.login();
-  cy.visitDataExploration('biospecimens', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+  cy.visitDataExploration('biospecimens', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
   cy.showColumn('Anatomical Site (NCIT)');
   cy.showColumn('Anatomical Site (Source Text)');
   cy.showColumn('Histological Diagnosis (NCIT)');

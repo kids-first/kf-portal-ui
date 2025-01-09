@@ -7,7 +7,7 @@ beforeEach(() => {
 
 describe('Page Data Exploration (Data Files) - Vérifier les informations affichées', () => {
   beforeEach(() => {
-    cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+    cy.visitDataExploration('datafiles', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
     cy.showColumn('File Name');
     cy.showColumn('Platform');
     cy.showColumn('Repository');
@@ -22,6 +22,7 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.showColumn('Device Manufacturer');
     cy.showColumn('Device Model');
     cy.showColumn('Device ID');
+    cy.sortTableAndIntercept('Data Category', 1);
   });
 
   it('Titre', () => {
@@ -46,21 +47,21 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(14).contains('Gen3').should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(15).contains('phs001110.c1').should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(16).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(17).find('[class*="anticon"]').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(18).contains('MR').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(19).contains('Diffusion').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(20).contains('Functional').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(21).contains('CTSPINE').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(22).contains('1.371776').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(23).contains('Canon').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(24).contains('Avanto_fit').should('exist');
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(25).contains('de-pea26nptxz').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(17).find('[class*="anticon"]').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(18).contains('MR').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(19).contains('Diffusion').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(20).contains('Structural').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(21).contains('CTSPINE').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(22).contains('1.5').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(23).contains('Siemens').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(24).contains('MAGNETOM Sola').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(25).contains('de-f89ftj9984').should('exist');
   });
 });
 
 describe('Page Data Exploration (Data Files) - Valider les liens disponibles', () => {
   beforeEach(() => {
-    cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+    cy.visitDataExploration('datafiles', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
     cy.showColumn('File Name');
     cy.showColumn('Platform');
     cy.showColumn('Repository');
@@ -75,6 +76,7 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
     cy.showColumn('Device Manufacturer');
     cy.showColumn('Device Model');
     cy.showColumn('Device ID');
+    cy.sortTableAndIntercept('Data Category', 1);
   });
 
   it('Lien File ID du tableau', () => {
@@ -100,8 +102,8 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
   });
  
   it('Liens Flywheel', () => {
-    cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(17).find('a[href]')
-      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/LGG_v2\/sessions\/session-(0|1)-patient_09/);
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(17).find('a[href]')
+      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/633dd5a977902b82c463a337\/sessions\/636d88331959ec8ef590a00d/);
   });
 });
 

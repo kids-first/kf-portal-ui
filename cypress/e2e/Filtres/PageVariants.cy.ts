@@ -69,7 +69,7 @@ describe('Page des variants - Filtres', () => {
     cy.get('[class="ant-modal-content"]').contains(/^Cypress_F1$/).parentsUntil('li[class*="ListItemWithActions"]').parent().find('[data-icon="edit"]').clickAndWait({force: true});
     cy.get('[class="ant-modal-content"] input').clear().type('Cypress_Fedit1');
     cy.get(`[class="ant-modal-content"] input[value="Cypress_Fedit1"]`).should('exist');
-    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/saved-filters/**', 1, 1);
+    cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'PUT', '**/saved-filters/**', 1, false/*beVisible*/, 1);
     cy.get('button[class="ant-modal-close"]').invoke('click');
 
     cy.get('[class*="ant-dropdown-menu-item"]').contains(/^Cypress_F1$/).should('not.exist');
