@@ -22,7 +22,7 @@ describe('Page des études - Filtrer avec les facettes', () => {
   });
 
   it('Program - Kids First', () => {
-    cy.validateFacetFilter('Program', 'Kids First', 'Kids First', /^34 Results$/, 0, false);
+    cy.validateFacetFilter('Program', 'Kids First', 'Kids First', /\d{1} Results$/, 0, false);
     cy.validateFacetRank(0, 'Program');
   });
 

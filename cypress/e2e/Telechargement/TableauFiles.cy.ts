@@ -7,7 +7,7 @@ beforeEach(() => {
   cy.removeFilesFromFolder(Cypress.config('downloadsFolder'));
 
   cy.login();
-  cy.visitDataExploration('datafiles', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+  cy.visitDataExploration('datafiles', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
   cy.showColumn('File Name');
   cy.showColumn('Platform');
   cy.showColumn('Repository');
@@ -22,6 +22,7 @@ beforeEach(() => {
   cy.showColumn('Device Manufacturer');
   cy.showColumn('Device Model');
   cy.showColumn('Device ID');
+  cy.sortTableAndIntercept('Data Category', 1);
   cy.wait(1000);
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, false/*beVisible*/, 1);

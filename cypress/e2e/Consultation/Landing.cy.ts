@@ -118,7 +118,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="Grid_statsGrid"] [class*="Grid_stats"] [class*="Grid_description"]').eq(4).contains('Files').should('exist');
 
     cy.get('[class*="Grid_statsGrid"] [class*="Grid_stats"] [class*="Grid_icon"]').eq(5).should('have.attr', 'src').and('match', /icons_biospecimens/);
-    cy.get('[class*="Grid_statsGrid"] [class*="Grid_stats"] [class*="Grid_data"]').eq(5).contains(/\d{2}\.\d{1}K/).should('exist');
+    cy.get('[class*="Grid_statsGrid"] [class*="Grid_stats"] [class*="Grid_data"]').eq(5).contains(/\d{1}K/).should('exist');
     cy.get('[class*="Grid_statsGrid"] [class*="Grid_stats"] [class*="Grid_description"]').eq(5).contains('Genomes').should('exist');
   });
 

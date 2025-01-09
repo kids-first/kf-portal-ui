@@ -7,7 +7,7 @@ beforeEach(() => {
 
 describe('Page Data Exploration (Participants) - Vérifier les informations affichées', () => {
   beforeEach(() => {
-    cy.visitDataExploration('participants', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+    cy.visitDataExploration('participants', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
     cy.showColumn('Race');
     cy.showColumn('Ethnicity');
     cy.showColumn('External Participant ID');
@@ -55,7 +55,7 @@ describe('Page Data Exploration (Participants) - Vérifier les informations affi
 
 describe('Page Data Exploration (Participants) - Valider les liens disponibles', () => {
   beforeEach(() => {
-    cy.visitDataExploration('participants', '?sharedFilterId=c80e4b42-a3e3-4525-a425-933b44eafef9');
+    cy.visitDataExploration('participants', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
     cy.showColumn('Race');
     cy.showColumn('Ethnicity');
     cy.showColumn('External Participant ID');

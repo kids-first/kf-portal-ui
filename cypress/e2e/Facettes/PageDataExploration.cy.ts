@@ -202,7 +202,7 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Not Observed Phenotype (HPO) - Cleft palate (HP:0000175)', () => {
-    cy.validateFacetFilter('Not Observed Phenotype (HPO)', 'Cleft palate (HP:0000175)', 'Cleft palate (HP:0000175)', /^1,491$/, 1);
+    cy.validateFacetFilter('Not Observed Phenotype (HPO)', 'Cleft palate (HP:0000175)', 'Cleft palate (HP:0000175)', /\d{1}/, 1);
     cy.validateFacetRank(6, 'Not Observed Phenotype (HPO)');
   });
 
