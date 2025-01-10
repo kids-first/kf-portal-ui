@@ -9,7 +9,8 @@ beforeEach(() => {
 
   cy.login();
   cy.visitDataExploration('biospecimens', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
-  cy.sortTableAndIntercept('Sample Type', 1);
+  cy.sortTableAndIntercept('Study', 1);
+  cy.sortTableAndIntercept('Study', 1);
   cy.get('div[role="tabpanel"] [class*="ant-table-row"]').eq(0).find('[type="checkbox"]').check({force: true});
   cy.clickAndIntercept('[class*="Header_ProTableHeader"] button[class*="ant-btn-default"]', 'POST', '**/biospecimen-data', 1, false/*beVisible*/, 1);
   cy.waitUntilFile(oneMinute);
