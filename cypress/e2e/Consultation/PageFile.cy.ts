@@ -137,7 +137,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(2).contains('Technique').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(2).contains('Structural').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(3).contains('Body Part').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(3).contains('CTSPINE').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(3).contains('CSPINE').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(4).contains('Field Str.').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(4).contains('1.5').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(5).contains('Device Manufacturer').should('exist');

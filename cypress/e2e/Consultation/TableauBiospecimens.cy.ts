@@ -24,7 +24,8 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.showColumn('External Participant ID');
     cy.showColumn('External Sample ID');
     cy.showColumn('External Collection ID');
-    cy.sortTableAndIntercept('Sample Type', 1);
+    cy.sortTableAndIntercept('Study', 1);
+    cy.sortTableAndIntercept('Study', 1);
   });
 
   it('Titre', () => {
@@ -83,6 +84,7 @@ describe('Page Data Exploration (Biospecimens) - Valider les liens disponibles',
     cy.showColumn('External Participant ID');
     cy.showColumn('External Sample ID');
     cy.showColumn('External Collection ID');
+    cy.sortTableAndIntercept('Study', 1);
     cy.sortTableAndIntercept('Study', 1);
   });
 

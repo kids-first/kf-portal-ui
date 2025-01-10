@@ -23,6 +23,8 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.showColumn('Device Model');
     cy.showColumn('Device ID');
     cy.sortTableAndIntercept('Data Category', 1);
+    cy.get('[class*="Pagination"] span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+    cy.get('div[class*="ant-select-item-option-content"]').contains('100').clickAndWait({force: true});
   });
 
   it('Titre', () => {
@@ -51,7 +53,7 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(18).contains('MR').should('exist');
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(19).contains('Diffusion').should('exist');
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(20).contains('Structural').should('exist');
-    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(21).contains('CTSPINE').should('exist');
+    cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(21).contains('CSPINE').should('exist');
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(22).contains('1.5').should('exist');
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(23).contains('Siemens').should('exist');
     cy.get('tr[data-row-key="dr-233gw9x3rk"] [class*="ant-table-cell"]').eq(24).contains('MAGNETOM Sola').should('exist');
@@ -77,6 +79,8 @@ describe('Page Data Exploration (Data Files) - Valider les liens disponibles', (
     cy.showColumn('Device Model');
     cy.showColumn('Device ID');
     cy.sortTableAndIntercept('Data Category', 1);
+    cy.get('[class*="Pagination"] span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+    cy.get('div[class*="ant-select-item-option-content"]').contains('100').clickAndWait({force: true});
   });
 
   it('Lien File ID du tableau', () => {
