@@ -17,6 +17,7 @@ import {
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
+import { useStudiesEntity } from 'graphql/studies/actions';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 
@@ -71,6 +72,12 @@ export default function VariantEntity() {
     (e: ArrangerEdge<IVariantStudyEntity>) => e.node,
   );
 
+  const studiesCodes = variantStudies.map((variant: IVariantStudyEntity) => variant.study_code);
+  const studies = useStudiesEntity({
+    field: 'study_code',
+    values: studiesCodes,
+  });
+
   const geneSymbolOfPicked = data?.genes?.hits?.edges?.find((e) =>
     (e.node.consequences || [])?.hits?.edges?.some((e) => e.node?.picked),
   )?.node?.symbol;
@@ -121,7 +128,7 @@ export default function VariantEntity() {
 
         <EntityTable
           id={SectionId.FREQUENCY}
-          columns={getFrequencyItems()}
+          columns={getFrequencyItems(studies.data || [])}
           data={variantStudies}
           title={intl.get('screen.variants.frequencies.frequency')}
           header={intl.get('screen.variants.frequencies.kfStudies')}

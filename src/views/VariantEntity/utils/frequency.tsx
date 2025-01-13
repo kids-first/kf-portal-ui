@@ -12,6 +12,7 @@ import {
 } from '@ferlab/ui/core/utils/numberUtils';
 import { Button, Space, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
+import { IStudyEntity } from 'graphql/studies/models';
 import { IVariantEntity, IVariantStudyEntity } from 'graphql/variants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
@@ -20,33 +21,38 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from '../index.module.css';
 
-export const getFrequencyItems = (): ProColumnType[] => [
+export const getFrequencyItems = (studies: IStudyEntity[]): ProColumnType[] => [
   {
     dataIndex: 'study_code',
     key: 'study_code',
     title: intl.get('screen.variants.frequencies.studies'),
-    render: (study_code: string) => (
-      <Link
-        to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
-        onClick={() =>
-          addQuery({
-            queryBuilderId: DATA_EXPLORATION_QB_ID,
-            query: generateQuery({
-              newFilters: [
-                generateValueFilter({
-                  field: 'study.study_code',
-                  value: [study_code],
-                  index: INDEXES.PARTICIPANT,
+    render: (study_code: string) => {
+      const study = studies.find((study) => study.study_code === study_code);
+      return (
+        <Tooltip title={study?.study_name}>
+          <Link
+            to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+            onClick={() =>
+              addQuery({
+                queryBuilderId: DATA_EXPLORATION_QB_ID,
+                query: generateQuery({
+                  newFilters: [
+                    generateValueFilter({
+                      field: 'study.study_code',
+                      value: [study_code],
+                      index: INDEXES.PARTICIPANT,
+                    }),
+                  ],
                 }),
-              ],
-            }),
-            setAsActive: true,
-          })
-        }
-      >
-        {study_code}
-      </Link>
-    ),
+                setAsActive: true,
+              })
+            }
+          >
+            {study_code}
+          </Link>
+        </Tooltip>
+      );
+    },
   },
   {
     title: intl.get('screen.variants.frequencies.participants'),
