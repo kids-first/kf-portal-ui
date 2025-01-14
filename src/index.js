@@ -33,8 +33,10 @@ Sentry.init({
     }),
     Sentry.contextLinesIntegration(),
     Sentry.browserProfilingIntegration(),
+    Sentry.globalHandlersIntegration({ onerror: true, onunhandledrejection: true }),
     localStorageIntegration('LocalStorage'),
   ],
+  attachStacktrace: true,
   // Performance Monitoring
   tracesSampleRate: 1.0, // Capture 100% of the transactions
 });
