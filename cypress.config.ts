@@ -6,7 +6,9 @@ const { strDate, strTime } = getDateTime();
 
 const getName = (url = '', parallel = '') => {
     if (url.includes('netlify')) {
-      return url.replace('https://', '').split('.')[0].split('-')[2]+'/'+parallel;
+      return (
+        url.replace('https://', '').split('.')[0].split('-')[2]+'/'+parallel
+      );
     } else {
       return 'QA/'+parallel;
     }

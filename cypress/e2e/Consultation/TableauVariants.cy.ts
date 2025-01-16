@@ -7,7 +7,7 @@ beforeEach(() => {
 
 describe('Page des variants - Consultation du tableau', () => {
   beforeEach(() => {
-    cy.visitVariantsPage('?sharedFilterId=70eb0eed-db95-428a-91fb-c4b1f71b0b27');
+    cy.visitVariantsPage('?sharedFilterId=d1485b4c-c28c-4d92-abbd-b90d75ccf8e6');
     cy.showColumn('CADD');
     cy.showColumn('REVEL');
     cy.showColumn(/^ALT$/);
@@ -15,15 +15,16 @@ describe('Page des variants - Consultation du tableau', () => {
   });
 
   it('Vérifier les informations affichées', () => {
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(1).contains('chr11:g.119345794C>T').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(1).contains('chr1:g.156176849G>A').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(2).contains('SNV').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(3).find('[class*="anticon"]').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(4).contains('MFRP').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(4).contains('SEMA4A').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(5).find('[class*="moderateImpact"]').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(5).contains('Missense').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(5).contains('p.Val136Met').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(5).contains('p.Arg713Gln').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(6).find('path[d*="M12.1872"]').should('exist'); // C
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(6).find('path[d*="0C5.37258"]').should('exist'); // M
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(7).contains('AD').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(7).contains('AR').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(7).find('[class*="ant-tag-blue"]').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(8).contains(/^B$/).should('exist');
@@ -31,15 +32,15 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(8).find('[class*="ant-tag-green"]').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(8).find('[class*="ant-tag-lime"]').should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(9).find('[class*="gnomadIndicatorDefault"]').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(9).contains('2.46e-1').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(10).contains('37,345').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains('135').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains(/(5.\d{2}e-1)/).should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(9).contains('3.26e-2').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(10).contains('4,955').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains('29').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(11).contains(/(1.\d{2}e-1)/).should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(12).contains('1').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(13).contains('0.003').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(14).contains('-').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains('163').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('28').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(13).contains('22.6').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(14).contains('0.238').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains('32').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('3').should('exist');
   });
  
   it('Valider l\'icône de sauvegarde des requêtes personnalisées', () => {
@@ -51,33 +52,33 @@ describe('Page des variants - Consultation du tableau', () => {
   });
  
   it('Valider les liens disponibles Lien Variant', () => {
-    cy.get('tr[data-row-key]').eq(0).contains('chr11:g.119345794C>T').clickAndWait({force: true});
-    cy.get('[class*="EntityTitle"]').contains('chr11:g.119345794C>T');
+    cy.get('tr[data-row-key]').eq(0).contains('chr1:g.156176849G>A').clickAndWait({force: true});
+    cy.get('[class*="EntityTitle"]').contains('chr1:g.156176849G>A');
   });
  
   it('Valider les liens disponibles Lien dbSNP', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(3).find('a[href]')
-    .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/snp/rs3814762');
+    .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/snp/rs41265017');
   });
  
   it('Valider les liens disponibles Lien Gene', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(4).find('a[href]')
-    .should('have.attr', 'href', 'https://www.omim.org/entry/606227');
+    .should('have.attr', 'href', 'https://www.omim.org/entry/607292');
   });
  
   it('Valider les liens disponibles Lien Gene Plus', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(4).find('[data-icon="plus"]').clickAndWait({force: true});
-    cy.validatePillSelectedQuery('Genes Symbol', ['MFRP']);
+    cy.validatePillSelectedQuery('Genes Symbol', ['SEMA4A']);
   });
  
   it('Valider les liens disponibles Lien OMIM', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(7).find('a[href]')
-      .should('have.attr', 'href', 'https://www.omim.org/entry/606227');
+      .should('have.attr', 'href', 'https://www.omim.org/entry/607292');
   });
  
   it('Valider les liens disponibles Lien ClinVar', () => {
     cy.get('tr[data-row-key]').eq(0).find('td').eq(8).find('a[href]').eq(0)
-    .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/clinvar/variation/167299');
+    .should('have.attr', 'href', 'https://www.ncbi.nlm.nih.gov/clinvar/variation/3362');
   });
  
   it('Valider les liens disponibles Lien Part.', () => {
@@ -102,9 +103,9 @@ describe('Page des variants - Consultation du tableau', () => {
   
   it('Valider les fonctionnalités du tableau - Tri Variant', () => {
     cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chr10:g.100000222G>A', 1, true);
+    cy.validateTableFirstRow('chr1:g.100000278G>C', 1, true);
     cy.sortTableAndIntercept('Variant', 1);
-    cy.validateTableFirstRow('chrY:g.9999310C>A', 1, true);
+    cy.validateTableFirstRow('chr6:g.99999821_99999831del', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Type', () => {
@@ -125,7 +126,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('gnomAD ALT', 1);
     cy.validateTableFirstRow('-', 10, true);
     cy.sortTableAndIntercept('gnomAD ALT', 1);
-    cy.validateTableFirstRow('152,312', 10, true);
+    cy.validateTableFirstRow('152,292', 10, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Part.', () => {
@@ -156,7 +157,7 @@ describe('Page des variants - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Type', 1);
     cy.sortTableAndIntercept('Variant', 1);
     cy.wait(2000);
-    cy.validateTableFirstRow('chr10:g.100000879_100000880insC', 1, true);
+    cy.validateTableFirstRow('chr1:g.100000884dup', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
