@@ -31,7 +31,7 @@ describe('Page des variants (Participant) - Filtrer avec les facettes', () => {
 
 describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   beforeEach(() => {
-    cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
+    cy.visitVariantsPage();
     cy.get('[data-cy="SidebarMenuItem_Variant"]').clickAndWait({force: true});
     cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
   });
@@ -158,6 +158,14 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_1-156176849-G-A"
   });
+});
+
+describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
+  beforeEach(() => {
+    cy.visitVariantsPage('?sharedFilterId=efbd0b69-3d16-4796-af2a-d590cdb99d1e');
+    cy.get('[data-cy="SidebarMenuItem_Variant"]').clickAndWait({force: true});
+    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
+  });
 
   it('Variant Type - SNV', () => {
     cy.validateFacetFilter('Variant Type', 'SNV', 'SNV', /^9,985,395$/, 1);
@@ -174,7 +182,7 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   });
 
   it('Variant External Reference - DbSNP', () => {
-    cy.validateFacetFilter('Variant External Reference', 'DbSNP', 'DBSNP', /^11,126,840$/, 1);
+    cy.validateFacetFilter('Variant External Reference', 'DbSNP', 'DBSNP', /^11,283,818$/, 1);
     cy.validateFacetRank(2, 'Variant External Reference');
   });
 
@@ -189,12 +197,12 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
   });
 
   it('Zygosity - Heterozygote', () => {
-    cy.validateFacetFilter('Zygosity', 'Heterozygote', 'HET', /^13,094,388$/, 1);
+    cy.validateFacetFilter('Zygosity', 'Heterozygote', 'HET', /^13,151,959$/, 1);
     cy.validateFacetRank(5, 'Zygosity');
   });
 
   it('Transmission - Autosomal Recessive', () => {
-    cy.validateFacetFilter('Transmission', 'Autosomal Recessive', 'autosomal_recessive', /^2,846,735$/, 1);
+    cy.validateFacetFilter('Transmission', 'Autosomal Recessive', 'autosomal_recessive', /^4,205,540$/, 1);
     cy.validateFacetRank(6, 'Transmission');
   });
 });
@@ -338,7 +346,7 @@ describe('Page des variants (Pathogenicity) - Filtrer avec les facettes', () => 
   });
 
   it('ClinVar - Likely Benign', () => {
-    cy.validateFacetFilter('ClinVar', 'Likely Benign', 'Likely_benign', /^13,858$/, 1);
+    cy.validateFacetFilter('ClinVar', 'Likely Benign', 'Likely_benign', /^16,591$/, 1);
     cy.validateFacetRank(0, 'ClinVar');
   });
 
@@ -412,7 +420,7 @@ describe('Page des variants (Frequency) - Filtrer avec les facettes', () => {
   });
 
   it('KF Allele Frequency', () => {
-    cy.validateFacetNumFilter('Max', 'KF Allele Frequency', '0.01', /^7,110,944$/, false, 1);
+    cy.validateFacetNumFilter('Max', 'KF Allele Frequency', '0.01', /^7,298,201$/, false, 1);
     cy.validateFacetRank(0, 'KF Allele Frequency');
   });
 
