@@ -25,7 +25,7 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(7).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(7).find('[class*="ant-tag-lime"]').contains('Likely Benign').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(10).contains('Participants').should('exist');
-    cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(11).contains('29 / 242(1.20e-1)').should('exist');
+    cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(11).contains('145 / 1,622(8.94e-2)').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(12).contains('gnomAD').should('exist');
     cy.get('div[class*="EntityVariantSummary_bannerWrapper"] [class="ant-space-item"]').eq(13).contains('3.26e-2').should('exist');
     // Info
@@ -126,11 +126,16 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="frequency"] thead th[class="ant-table-cell"]').eq(2).contains('Frequency').should('exist');
     cy.get('[id="frequency"] thead th[class="ant-table-cell"]').eq(3).contains('# ALT Alleles').should('exist');
     cy.get('[id="frequency"] thead th[class="ant-table-cell"]').eq(4).contains('# Homozygotes').should('exist');
-    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).contains('KF-EATF').should('exist');
-    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('29 / 242').should('exist');
-    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(2).contains('6.61e-2').should('exist');
-    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(3).contains('32').should('exist');
-    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(4).contains('3').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).contains('KF-NBL').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('116 / 1,380').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(2).contains('4.38e-2').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(3).contains('121').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(4).contains('5').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(0).contains('KF-EATF').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).contains('29 / 242').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(2).contains('6.61e-2').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(3).contains('32').should('exist');
+    cy.get('[id="frequency"] [class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(4).contains('3').should('exist');
     cy.get('[id="frequency"] tfoot[class="ant-table-summary"] td[class*="ant-table-cell"]').eq(1).contains(' / ').should('exist');
     cy.get('[id="frequency"] tfoot[class="ant-table-summary"] td[class*="ant-table-cell"]').eq(2).contains('e-').should('exist');
     cy.get('[id="frequency"] tfoot[class="ant-table-summary"] td[class*="ant-table-cell"]').eq(3).contains(/\d{1}/).should('exist');
@@ -172,24 +177,24 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[id="pathogenicity"] [class*="ant-collapse-header-text"]').contains('3362').should('exist');
     cy.get('[id="pathogenicity"] thead th[class="ant-table-cell"]').eq(0).contains('Interpretation').should('exist');
     cy.get('[id="pathogenicity"] thead th[class="ant-table-cell"]').eq(1).contains('Condition').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis Pigmentosa Recessive').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).contains('not provided').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).contains('not specified').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
     cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis Pigmentosa Recessive').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa 35').should('exist');
     cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
     cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).contains('not provided').should('exist');
+    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).contains('Cone-rod dystrophy 10').should('exist');
     cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).contains('not specified').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa 35').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).contains('Cone-rod dystrophy 10').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
   });
 
   it('Panneau Gene - Phenotype Association', () => {
@@ -235,7 +240,7 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT').should('exist');
-    cy.validateTableResultsCount(/^29$/);
+    cy.validateTableResultsCount(/^145$/);
   });
 
   it('Lien gnomAD du panneau Summary', () => {
@@ -325,7 +330,7 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
     cy.get('[id="frequency"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('a').clickAndWait({force: true});
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Study Code').should('exist');
-    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('KF-EATF').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains(/(KF-EATF|KF-NBL)/).should('exist');
   });
 
   it('Lien Participants du panneau Kids First Studies', () => {
@@ -333,7 +338,7 @@ describe('Page d\'un variant - Valider les liens disponibles', () => {
     cy.get('[class*="Participants_participantTabWrapper"]').should('exist'); // data-cy="ProTable_Participants"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Participant ID').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('PT').should('exist');
-    cy.validateTableResultsCount(/^29$/);
+    cy.validateTableResultsCount(/^(29|116)$/);
   });
 
   it('Lien TopMed du panneau Public Cohorts', () => {
