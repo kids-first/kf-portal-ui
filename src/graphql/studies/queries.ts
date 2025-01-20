@@ -53,3 +53,18 @@ export const GET_STUDY_COUNT = gql`
     }
   }
 `;
+
+export const GET_STUDIES_ENTITY = gql`
+  query searchStudyByCode($sqon: JSON) {
+    study {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            study_code
+            study_name
+          }
+        }
+      }
+    }
+  }
+`;
