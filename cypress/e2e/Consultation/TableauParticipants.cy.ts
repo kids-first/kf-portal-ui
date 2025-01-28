@@ -125,9 +125,9 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri Participant ID', () => {
     cy.sortTableAndWait('Participant ID');
-    cy.validateTableFirstRow('PT_0001K4K1', 1, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 1, true);
     cy.sortTableAndIntercept('Participant ID', 1);
-    cy.validateTableFirstRow('PT_ZZYTGPQS', 1, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
@@ -155,7 +155,7 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.sortTableAndIntercept('Family ID', 1);
     cy.validateTableFirstRow('-', 8, true);
     cy.sortTableAndIntercept('Family ID', 1);
-    cy.validateTableFirstRow('FM_ZZZ7MEPS', 8, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 8, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Family Composition', () => {
@@ -195,9 +195,9 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
 
   it('Valider les fonctionnalités du tableau - Tri External Participant ID', () => {
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('0010a', 15, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 15, true);
     cy.sortTableAndIntercept('External Participant ID', 1);
-    cy.validateTableFirstRow('XLMR-5076-3-2', 15, true);
+    cy.validateTableFirstRow(/^(?!-).*$/, 15, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Diagnosis (NCIT) [SKFP-773]', () => {

@@ -178,7 +178,7 @@ describe('Navigation', () => {
   });
  
   it('Modals de la page d\'un fichier', () => {
-    cy.visitFileEntity('GF_MM26B6YJ');
+    cy.visitFileEntity('GF_6DVS70V9');
 
     cy.get('[data-icon="cloud-upload"]').clickAndWait({force: true});
     cy.contains(/(Connect to Cavatica|Analyze in Cavatica)/).should('exist');

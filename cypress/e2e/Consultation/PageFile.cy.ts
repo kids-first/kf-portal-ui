@@ -120,7 +120,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
   });
   
   it('Panneau Experimental Procedure (Imaging)', () => {
-    cy.visitFileEntity('dr-233gw9x3rk');
+    cy.visitFileEntity('dr-2ahd9kpwqk');
     cy.get('[id="experimental-procedure"]').should('not.exist');
   });
   
@@ -129,25 +129,25 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
   });
   
   it('Panneau Imaging Study (Imaging)', () => {
-    cy.visitFileEntity('dr-233gw9x3rk');
+    cy.visitFileEntity('dr-2ahd9kpwqk');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(0).contains('Modality').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(0).contains('MR').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(1).contains('Sequence Type').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(1).contains('Diffusion').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(2).contains('Technique').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(2).contains('Structural').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(2).contains('Functional').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(3).contains('Body Part').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(3).contains('CSPINE').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(3).contains('CTSPINE').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(4).contains('Field Str.').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(4).contains('1.5').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(4).contains('1.3717760004328263').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(5).contains('Device Manufacturer').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(5).contains('Siemens').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(5).contains('Canon').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(6).contains('Device Model').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(6).contains('MAGNETOM Sola').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(6).contains('Avanto_fit').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(7).contains('Device ID').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(7).contains('de-f89ftj9984').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(7).contains('de-pea26nptxz').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(8).contains('Flywheel URL').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).contains('https://chop.flywheel.io/#/projects/633dd5a977902b82c463a337/sessions/636d88331959ec8ef590a00d').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).contains('https://chop.flywheel.io/#/projects/LGG_v2/sessions/session-0-patient_09').should('exist');
   });
 });
 
@@ -172,9 +172,9 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
   });
 
   it('Lien Flywheel URL du panneau Imaging Study', () => {
-    cy.visitFileEntity('dr-233gw9x3rk');
+    cy.visitFileEntity('dr-2ahd9kpwqk');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).find('[href]')
-      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/633dd5a977902b82c463a337\/sessions\/636d88331959ec8ef590a00d/);
+      .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/LGG_v2\/sessions\/session-0-patient_09/);
   });
 });
 
@@ -220,7 +220,7 @@ describe('Page d\'un fichier - Valider les panneaux masquables', () => {
   });
 
   it('Panneau Imaging Study', () => {
-    cy.visitFileEntity('dr-233gw9x3rk');
+    cy.visitFileEntity('dr-2ahd9kpwqk');
     cy.get('[id="imaging"] div[class*="ant-collapse-content-active"]').should('exist');
     cy.get('[id="imaging"] span[class*="ant-collapse-arrow"]').clickAndWait({force: true});
     cy.get('[id="imaging"] div[class*="ant-collapse-content-inactive ant-collapse-content-hidden"]').should('exist');
