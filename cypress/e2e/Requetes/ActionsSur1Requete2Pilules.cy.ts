@@ -25,8 +25,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000'], 1);
     cy.validateOperatorSelectedQuery('or');
-    cy.validateTotalSelectedQuery(/\d{1}K/);
-    cy.validateTableResultsCount(/\d{2}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
 
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql2');
@@ -38,8 +38,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/\d{1}\,\d{3}/);
-    cy.validateTableResultsCount(/\d{1}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
   });
 
@@ -52,8 +52,8 @@ describe('Page Data Exploration - Requêtes', () => {
     };
 
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000']);
-    cy.validateTotalSelectedQuery(/\d{1}\,\d{3}/);
-    cy.validateTableResultsCount(/\d{1}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
   });
 });

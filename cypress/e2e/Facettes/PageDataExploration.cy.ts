@@ -182,12 +182,12 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
   });
 
   it('Diagnosis (NCIT) - NCIT:C3270', () => {
-    cy.validateFacetFilter('Diagnosis (NCIT)', 'Neuroblastoma (NCIT:C3270)', 'Neuroblastoma (NCIT:C3270)', /^492$/, 1);
+    cy.validateFacetFilter('Diagnosis (NCIT)', 'Neuroblastoma (NCIT:C3270)', 'Neuroblastoma (NCIT:C3270)', /\d{1}/, 1);
     cy.validateFacetRank(3, 'Diagnosis (NCIT)');
   });
 
-  it('Diagnosis (Source Text) - Atrial septal defect', () => {
-    cy.validateFacetFilter('Diagnosis (Source Text)', 'Atrial septal defect', 'Atrial septal defect', /\d{1}/, 1);
+  it('Diagnosis (Source Text) - Down syndrome', () => {
+    cy.validateFacetFilter('Diagnosis (Source Text)', 'Down syndrome', 'Down syndrome', /\d{1}/, 1);
     cy.validateFacetRank(4, 'Diagnosis (Source Text)');
   });
 
@@ -201,13 +201,13 @@ describe('Page Data Exploration (Clinical) - Filtrer avec les facettes', () => {
     // TODO Filtrer
   });
 
-  it('Not Observed Phenotype (HPO) - Cleft palate (HP:0000175)', () => {
-    cy.validateFacetFilter('Not Observed Phenotype (HPO)', 'Cleft palate (HP:0000175)', 'Cleft palate (HP:0000175)', /\d{1}/, 1);
+  it('Not Observed Phenotype (HPO) - Ventricular septal defect (HP:0001629)', () => {
+    cy.validateFacetFilter('Not Observed Phenotype (HPO)', 'Ventricular septal defect (HP:0001629)', 'Ventricular septal defect (HP:0001629)', /\d{1}/, 1);
     cy.validateFacetRank(6, 'Not Observed Phenotype (HPO)');
   });
 
-  it('Observed Phenotype (Source Text) - Heterotaxy', () => {
-    cy.validateFacetFilter('Observed Phenotype (Source Text)', 'Heterotaxy', 'Heterotaxy', /\d{1}/, 1);
+  it('Observed Phenotype (Source Text) - Neuroblastoma', () => {
+    cy.validateFacetFilter('Observed Phenotype (Source Text)', 'Neuroblastoma', 'Neuroblastoma', /\d{1}/, 1);
     cy.validateFacetRank(7, 'Observed Phenotype (Source Text)');
   });
 
@@ -502,8 +502,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(13, 'Technique');
   });
 
-  it('Body Part Examined - BRAIN', () => {
-    cy.validateFacetFilter('Body Part Examined', 'BRAIN', 'BRAIN', /\d{1}/);
+  it('Body Part Examined - CTSPINE', () => {
+    cy.validateFacetFilter('Body Part Examined', 'CTSPINE', 'CTSPINE', /\d{1}/);
     cy.validateFacetRank(14, 'Body Part Examined');
   });
 

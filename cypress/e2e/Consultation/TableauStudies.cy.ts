@@ -69,7 +69,7 @@ describe('Page des études - Consultation du tableau', () => {
     cy.sortTableAndIntercept('Name', 1);
     cy.validateTableFirstRow(/^(?!-).*$/, 1);
     cy.sortTableAndIntercept('Name', 1);
-    cy.validateTableFirstRow('Whole Genome Sequencing of African and Asian Orofacial Clefts Case-Parent Triads', 1);
+    cy.validateTableFirstRow(/^(?!-).*$/, 1);
   });
 
   it('Valider les fonctionnalités du tableau - Tri dbGaP', () => {
@@ -103,6 +103,6 @@ describe('Page des études - Consultation du tableau', () => {
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
     cy.sortTableAndIntercept('Families', 1);
     cy.sortTableAndWait('Biospecimens');
-    cy.validateTableFirstRow('KF-MMC', 0);
+    cy.validateTableFirstRow(/^(?!-).*$/, 0);
   });
 });

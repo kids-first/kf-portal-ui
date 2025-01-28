@@ -22,7 +22,8 @@ beforeEach(() => {
   cy.showColumn('Device Manufacturer');
   cy.showColumn('Device Model');
   cy.showColumn('Device ID');
-  cy.sortTableAndIntercept('Data Category', 1);
+  cy.get('[class*="Pagination"] span[class*="ant-select-selection-item"]').clickAndWait({force: true});
+  cy.get('div[class*="ant-select-item-option-content"]').contains('50').clickAndWait({force: true});
   cy.wait(1000);
 
   cy.clickAndIntercept('div[id="content"] svg[data-icon="download"]', 'POST', '**/download', 1, false/*beVisible*/, 1);

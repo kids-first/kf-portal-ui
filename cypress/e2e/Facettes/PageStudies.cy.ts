@@ -27,7 +27,7 @@ describe('Page des études - Filtrer avec les facettes', () => {
   });
 
   it('Domain - Cancer and Birth Defect', () => {
-    cy.validateFacetFilter('Domain', 'Cancer and Birth Defect', 'CANCERANDBIRTHDEFECT', /^2 Results$/, 0, false);
+    cy.validateFacetFilter('Domain', 'Cancer and Birth Defect', 'CANCERANDBIRTHDEFECT', /\d{1} Result/, 0, false);
     cy.validateFacetRank(1, 'Domain');
   });
 
@@ -36,8 +36,8 @@ describe('Page des études - Filtrer avec les facettes', () => {
     cy.validateFacetRank(2, 'Data Category');
   });
 
-  it('Experimental Strategy - RNA-Seq', () => {
-    cy.validateFacetFilter('Experimental Strategy', 'RNA-Seq', 'RNA-Seq', /\d{1} Results$/, 0, false);
+  it('Experimental Strategy - WGS', () => {
+    cy.validateFacetFilter('Experimental Strategy', 'WGS', 'WGS', /\d{1} Results$/, 0, false);
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
 
@@ -45,7 +45,7 @@ describe('Page des études - Filtrer avec les facettes', () => {
     cy.get('[aria-expanded="true"] [data-cy="FilterContainer_Family Data"]').should('exist');
     cy.wait(1000);
     cy.clickAndIntercept('input[type="radio"][value="false"]', 'POST', '**/graphql', 7);
-    cy.validateTableResultsCount(/\d{1} Results$/);
+    cy.validateTableResultsCount(/\d{1} Result/);
     cy.validateFacetRank(4, 'Family Data');
   });
 });

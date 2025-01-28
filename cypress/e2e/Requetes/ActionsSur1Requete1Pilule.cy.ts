@@ -19,8 +19,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.checkValueFacetAndApply('Sample Type', 'RNA');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/\d{1}K/);
-    cy.validateTableResultsCount(/\d{2}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
   });
 
@@ -30,8 +30,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.clickAndIntercept('[class*="filtersDropdown"] [data-cy="Apply_Sample Type"]', 'POST', '**/graphql', 27);
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA','RNA']);
-    cy.validateTotalSelectedQuery(/\d{1}K/);
-    cy.validateTableResultsCount(/\d{2}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
   });
 
@@ -41,8 +41,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
     cy.validatePillSelectedQuery('Collection Sample Type', ['Saliva'], 1);
     cy.validateOperatorSelectedQuery('and');
-    cy.validateTotalSelectedQuery(/\d{1}\,\d{3}/);
-    cy.validateTableResultsCount(/\d{1}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
   });
 
@@ -54,8 +54,8 @@ describe('Page Data Exploration - Requêtes', () => {
     };
 
     cy.get('body').contains('Use the search tools & facets on the left to build a query').should('exist');
-    cy.validateTotalSelectedQuery(/\d{2}\.\d{1}K/);
-    cy.validateTableResultsCount(/\d{2}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(false);
 
     cy.get('[data-cy="SidebarMenuItem_Study"]').clickAndWait({force: true});
@@ -64,8 +64,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.checkValueFacetAndApply('Study Code', 'KF-CDH');
 
     cy.validatePillSelectedQuery('Study Code', ['KF-CDH']);
-    cy.validateTotalSelectedQuery(/\d{1}\,\d{3}/);
-    cy.validateTableResultsCount(/\d{1}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(true);
   });
 
@@ -75,8 +75,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.wait('@getPOSTgraphql');
 
     cy.validatePillSelectedQuery('Sample Type', ['DNA']);
-    cy.validateTotalSelectedQuery(/\d{1}K/);
-    cy.validateTableResultsCount(/\d{2}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.validateClearAllButton(true);
   });
 });

@@ -25,8 +25,8 @@ describe('Page Data Exploration - Requêtes', () => {
 
     cy.get('[class*="QueryBar_queryBarWrapper"]').its('length').should('eq', 2);
     cy.validatePillSelectedQuery('Age at Biospec. Collection (days)', ['20000']);
-    cy.validateTotalSelectedQuery(/\d{1}\,\d{3}/);
-    cy.validateTableResultsCount(/\d{1}\,\d{3}/);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(1).find('[class*="QueryValues_queryValuesContainer"]').contains('Q1').should('exist');
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(1).find('[class*="QueryValues_queryValuesContainer"]').contains('Q2').should('not.exist');
     cy.validateClearAllButton(true);

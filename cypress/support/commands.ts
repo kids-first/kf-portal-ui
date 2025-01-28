@@ -257,6 +257,9 @@ Cypress.Commands.add('resetColumns', (table_id?: string) => {
 Cypress.Commands.add('saveBioReqAs', (bioreqName: string, itemPosition: number) => {
   cy.visitDataExploration('biospecimens');
   cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist');
+  cy.checkValueFacetAndApply('Sample Availability', 'available');
   cy.get('div[role="tabpanel"] [class*="ant-table-row"], [class="ant-table-body"] [class*="ant-table-row"]').eq(itemPosition).find('[type="checkbox"]').check({force: true});
   cy.get('button').each(($el: JQuery<HTMLElement>) => {
     if ($el.text().includes('Request biospecimen')) {
@@ -273,6 +276,7 @@ Cypress.Commands.add('saveBioReqAs', (bioreqName: string, itemPosition: number) 
 
 Cypress.Commands.add('saveFilterAs', (filterName: string) => {
   cy.get('button[class*="Header_iconBtnAction"]').clickAndWait({force: true});
+  cy.wait(1000);
   cy.get('[class="ant-modal-content"] input').clear().type(filterName);
   cy.get(`[class="ant-modal-content"] input[value="`+filterName+`"]`).should('exist');
   cy.clickAndIntercept('[class="ant-modal-content"] button[class*="ant-btn-primary"]', 'POST', '**/saved-filters', 1);
