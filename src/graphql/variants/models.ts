@@ -3,6 +3,9 @@ import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 export interface IVariantResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
 }
+export interface IVariantSomaticResultTree {
+  variants_somatic: IArrangerResultsTree<IVariantSomaticEntity>;
+}
 
 export interface IVariantEntityResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
@@ -202,6 +205,41 @@ export interface IVariantEntity {
   studies: IArrangerResultsTree<IVariantStudyEntity>;
 }
 
+export interface IVariantSomaticEntity {
+  id: string;
+  score: number;
+  alternate: string;
+  assembly_version: string;
+  chromosome: string;
+  clinvar: IClinVar;
+  cmc: {
+    mutation_url: string;
+    shared_aa: number;
+    cosmic_id: string;
+    sample_mutated: number;
+    sample_tested: number;
+    tier: string;
+    sample_ratio: number;
+  };
+  dna_change: string;
+  end: number;
+  external_frequencies: IExternalFrequenciesEntity;
+  gene_external_reference: string[];
+  genes: IArrangerResultsTree<IGeneEntity>;
+  hash: string;
+  hgvsg: string;
+  hotspot: boolean;
+  internal_frequencies: IVariantInternalFrequencies;
+  locus: string;
+  max_impact_score: number;
+  reference: string;
+  rsnumber: string;
+  start: number;
+  studies: IArrangerResultsTree<IVariantStudyEntity>;
+  variant_class: string;
+  variant_external_reference: string;
+}
+
 export interface IVariantStudyEntity {
   id: string;
   score: number | null;
@@ -214,5 +252,9 @@ export interface IVariantStudyEntity {
 }
 
 export type ITableVariantEntity = IVariantEntity & {
+  key: string;
+};
+
+export type ITableVariantSomaticEntity = IVariantSomaticEntity & {
   key: string;
 };

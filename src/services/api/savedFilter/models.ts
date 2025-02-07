@@ -10,6 +10,7 @@ export type TUserSavedFilter = ISavedFilter & {
 export enum SavedFilterTag {
   ParticipantsExplorationPage = 'participants-data-exploration-page',
   VariantsExplorationPage = 'variants-variants-exploration-page',
+  VariantsSomaticExplorationPage = 'variants-variants-somatic-exploration-page',
 }
 
 export type TUserSavedFilterInsert = Omit<

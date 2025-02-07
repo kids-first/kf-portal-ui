@@ -9,7 +9,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { ConfigProvider } from 'antd';
 import enUS from 'antd/lib/locale/en_US';
 import frFR from 'antd/lib/locale/fr_FR';
-import { getEnvVarByKey } from 'helpers/EnvVariables';
+import { getEnvVarByKey, getFTEnvVarByKey } from 'helpers/EnvVariables';
 import AuthMiddleware from 'middleware/AuthMiddleware';
 import ProtectedRoute from 'ProtectedRoute';
 import ApolloProvider from 'provider/ApolloProvider';
@@ -40,6 +40,7 @@ const PublicStudies = loadable(() => import('views/PublicStudies'), loadableProp
 const DataExploration = loadable(() => import('views/DataExploration'), loadableProps);
 const Variants = loadable(() => import('views/Variants'), loadableProps);
 const VariantEntity = loadable(() => import('views/VariantEntity'), loadableProps);
+const VariantsSomatic = loadable(() => import('views/VariantsSomatic'), loadableProps);
 const FileEntity = loadable(() => import('views/FileEntity'), loadableProps);
 const ProfileSettings = loadable(() => import('views/Profile/Settings'), loadableProps);
 
@@ -173,6 +174,17 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   />
+
+                  {getFTEnvVarByKey('SOMATIC') === 'true' && (
+                    <Route
+                      path={STATIC_ROUTES.VARIANTS_SOMATIC}
+                      element={
+                        <ProtectedRoute>
+                          <VariantsSomatic />
+                        </ProtectedRoute>
+                      }
+                    />
+                  )}
 
                   <Route
                     path={DYNAMIC_ROUTES.FILE_ENTITY}

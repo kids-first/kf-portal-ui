@@ -8,8 +8,14 @@ import { INDEXES } from 'graphql/constants';
 
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
 
-import { IVariantEntity, IVariantEntityResultTree, IVariantResultTree } from './models';
-import { GET_VARIANT_ENTITY, SEARCH_VARIANT_QUERY } from './queries';
+import {
+  IVariantEntity,
+  IVariantEntityResultTree,
+  IVariantResultTree,
+  IVariantSomaticEntity,
+  IVariantSomaticResultTree,
+} from './models';
+import { GET_VARIANT_ENTITY, SEARCH_VARIANT_QUERY, SEARCH_VARIANT_SOMATIC_QUERY } from './queries';
 
 export const useVariant = (
   variables?: IQueryVariable,
@@ -24,6 +30,25 @@ export const useVariant = (
     data: hydrateResults(result?.variants?.hits?.edges || [], operations?.previous),
     total: result?.variants?.hits?.total || 0,
     searchAfter: computeSearchAfter(result?.variants?.hits?.edges || [], operations),
+  };
+};
+
+export const useVariantSomatic = (
+  variables?: IQueryVariable,
+  operations?: IQueryOperationsConfig,
+): IQueryResults<IVariantSomaticEntity[]> => {
+  const { loading, result } = useLazyResultQuery<IVariantSomaticResultTree>(
+    SEARCH_VARIANT_SOMATIC_QUERY,
+    {
+      variables,
+    },
+  );
+
+  return {
+    loading,
+    data: hydrateResults(result?.variants_somatic?.hits?.edges || [], operations?.previous),
+    total: result?.variants_somatic?.hits?.total || 0,
+    searchAfter: computeSearchAfter(result?.variants_somatic?.hits?.edges || [], operations),
   };
 };
 
