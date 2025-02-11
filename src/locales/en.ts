@@ -1198,7 +1198,7 @@ const en = {
         frequency: 'Frequency',
         pathogenicity: 'Pathogenicity',
       },
-      title: 'Variants Exploration',
+      title: 'Germline Variant Exploration',
       table: {
         alt: {
           title: 'ALT',
