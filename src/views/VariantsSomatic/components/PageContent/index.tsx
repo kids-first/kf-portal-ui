@@ -14,6 +14,15 @@ import copy from 'copy-to-clipboard';
 import { useVariantSomatic } from 'graphql/variants/actions';
 import { IVariantSomaticResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_SOMATIC_COUNT } from 'graphql/variants/queries';
+import VariantsTable from 'views/VariantsSomatic/components/PageContent/VariantsTable';
+import {
+  DEFAULT_OFFSET,
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_QUERY_CONFIG,
+  DEFAULT_SORT_QUERY,
+  VARIANT_SOMATIC_REPO_QB_ID,
+} from 'views/VariantsSomatic/utils/constants';
 
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
@@ -36,18 +45,7 @@ import { combineExtendedMappings } from 'utils/fieldMapper';
 import { getCurrentUrl } from 'utils/helper';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
-import {
-  DEFAULT_OFFSET,
-  DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_QUERY_CONFIG,
-  DEFAULT_SORT_QUERY,
-  VARIANT_SOMATIC_REPO_QB_ID,
-} from '../../utils/constants';
-
-import VariantsTable from './VariantsTable';
-
-import styles from './index.module.css';
+import styles from 'views/VariantsSomatic/components/PageContent/index.module.css';
 
 type OwnProps = {
   variantSomaticMapping: IExtendedMappingResults;

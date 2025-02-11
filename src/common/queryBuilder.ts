@@ -2,14 +2,13 @@ import {
   DATA_EPLORATION_FILTER_TAG,
   DATA_EXPLORATION_QB_ID,
 } from 'views/DataExploration/utils/constant';
+import { VARIANT_FILTER_TAG, VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 import {
   VARIANT_SOMATIC_FILTER_TAG,
   VARIANT_SOMATIC_REPO_QB_ID,
 } from 'views/VariantsSomatic/utils/constants';
 
 import { STATIC_ROUTES } from 'utils/routes';
-
-import { VARIANT_FILTER_TAG, VARIANT_REPO_QB_ID } from '../views/Variants/utils/constants';
 
 export const FILTER_TAG_PAGE_MAPPING: Record<string, string> = {
   [DATA_EPLORATION_FILTER_TAG]: STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS,

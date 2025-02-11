@@ -5,6 +5,10 @@ import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
 import ScrollContent from '@ferlab/ui/core/layout/ScrollContent';
 import { INDEXES } from 'graphql/constants';
 import VariantGeneSearch from 'views/Variants/components/VariantGeneSearch';
+import GenesUploadIds from 'views/VariantsSomatic/components/GeneUploadIds';
+import PageContent from 'views/VariantsSomatic/components/PageContent';
+import { VARIANT_SOMATIC_REPO_QB_ID } from 'views/VariantsSomatic/utils/constants';
+import { SCROLL_WRAPPER_ID } from 'views/VariantsSomatic/utils/constants';
 
 import DiseaseIcon from 'components/Icons/DiseaseIcon';
 import FrequencyIcon from 'components/Icons/FrequencyIcon';
@@ -15,12 +19,7 @@ import { FilterInfo } from 'components/uiKit/FilterList/types';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
 import { SuggestionType } from 'services/api/arranger/models';
 
-import GenesUploadIds from './components/GeneUploadIds';
-import PageContent from './components/PageContent';
-import { VARIANT_SOMATIC_REPO_QB_ID } from './utils/constants';
-import { SCROLL_WRAPPER_ID } from './utils/constants';
-
-import styles from './index.module.css';
+import styles from 'views/VariantsSomatic/index.module.css';
 
 enum FilterTypes {
   Participant,

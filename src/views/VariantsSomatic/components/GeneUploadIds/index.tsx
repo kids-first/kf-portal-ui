@@ -10,12 +10,11 @@ import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
 import { Descriptions } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { CHECK_GENE_MATCH_QUERY2 as CHECK_GENE_MATCH_QUERY } from 'graphql/genes/queries';
+import { IGeneEntity } from 'graphql/variants/models';
 
 import { ArrangerApi } from 'services/api/arranger';
 
-import { IGeneEntity } from '../../../../graphql/variants/models';
-
-import styles from './index.module.css';
+import styles from 'views/VariantsSomatic/components/GeneUploadIds/index.module.css';
 
 interface OwnProps {
   queryBuilderId: string;
