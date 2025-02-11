@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import Gravatar from '@ferlab/ui/core/components/Gravatar';
 import { useKeycloak } from '@react-keycloak/web';
-import { Dropdown, PageHeader, Space, Typography } from 'antd';
+import { Button, Dropdown, PageHeader, Space, Typography } from 'antd';
 import { formatProvider } from 'auth/keycloak-api/utils';
 import cx from 'classnames';
 import { getFTEnvVarByKey } from 'helpers/EnvVariables';
@@ -48,6 +48,11 @@ const Header = () => {
   const location = useLocation();
   const currentPathName = location.pathname;
   const tokenParsed = keycloak.tokenParsed as KidsFirstKeycloakTokenParsed;
+
+  const isVariantsActive = () => {
+    const to: string[] = [STATIC_ROUTES.VARIANTS, STATIC_ROUTES.VARIANTS_SOMATIC];
+    return to.includes(currentPathName);
+  };
 
   return (
     <>
@@ -91,13 +96,45 @@ const Header = () => {
               icon={<FileSearchOutlined />}
               title={intl.get('layout.main.menu.explore')}
             />
-            <HeaderLink
-              key="variant-data"
-              currentPathName={currentPathName}
-              to={[STATIC_ROUTES.VARIANTS]}
-              icon={<LineStyleIcon />}
-              title={intl.get('layout.main.menu.variants')}
-            />
+            {getFTEnvVarByKey('SOMATIC') !== 'true' && (
+              <HeaderLink
+                key="variant-data"
+                currentPathName={currentPathName}
+                to={[STATIC_ROUTES.VARIANTS]}
+                icon={<LineStyleIcon />}
+                title={intl.get('layout.main.menu.variants')}
+              />
+            )}
+            {getFTEnvVarByKey('SOMATIC') === 'true' && (
+              <Dropdown
+                key="user-menu"
+                trigger={['click']}
+                overlayClassName={styles.dropdown}
+                placement="bottom"
+                menu={{
+                  items: [
+                    {
+                      key: 'germline',
+                      label: <Link to={`/variants`}>{intl.get('layout.main.menu.germline')}</Link>,
+                    },
+                    {
+                      key: 'somatic',
+                      label: (
+                        <Link to={`/variants-somatic`}>{intl.get('layout.main.menu.somatic')}</Link>
+                      ),
+                    },
+                  ],
+                }}
+              >
+                <Button
+                  className={cx(styles.dropdownHeaderBtn, isVariantsActive() ? styles.active : '')}
+                  key="variant-data"
+                  icon={<LineStyleIcon />}
+                >
+                  {intl.get('layout.main.menu.variants')}
+                </Button>
+              </Dropdown>
+            )}
           </nav>
         }
         extra={[
