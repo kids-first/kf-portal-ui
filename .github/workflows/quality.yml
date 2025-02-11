@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '18.8'
       - name: use cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: '18.8'
       - name: use cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -51,22 +51,22 @@ jobs:
         with:
           node-version: '18.8'
       - name: use cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Run tests
         run: npm run test:github
   coverage:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - uses: ArtiomTr/jest-coverage-report-action@v2
-          id: coverage
-          with:
-            test-script: npm run coverage:changed
-            output: report-markdown
-        - uses: marocchino/sticky-pull-request-comment@v2
-          with:
-            header: PR Coverage
-            message: ${{ steps.coverage.outputs.report }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
+        with:
+          test-script: npm run coverage:changed
+          output: report-markdown
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: PR Coverage
+          message: ${{ steps.coverage.outputs.report }}
