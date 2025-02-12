@@ -143,7 +143,7 @@ const DemographicsGraphCard = () => {
                   translateX: 0,
                   translateY: (LEGEND_ITEM_HEIGHT * raceData.length - 1) / 2,
                   direction: 'column',
-                  itemWidth: 100,
+                  itemWidth: 175,
                   itemHeight: LEGEND_ITEM_HEIGHT,
                 },
               ]}
@@ -171,7 +171,7 @@ const DemographicsGraphCard = () => {
         </Row>
       }
       modalSettings={{
-        width: 1000,
+        width: 1200,
         height: 600,
       }}
       content={
