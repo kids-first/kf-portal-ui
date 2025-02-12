@@ -55,6 +55,7 @@ declare namespace Cypress {
     visitStudiesPage(): cy & CyEventEmitter;
     visitVariantEntityPage(locusId: string, nbGraphqlCalls: number): cy & CyEventEmitter;
     visitVariantsPage(sharedFilterOption?: string): cy & CyEventEmitter;
+    visitVariantsSomaticPage(sharedFilterOption?: string): cy & CyEventEmitter;
     waitUntilFile(ms: number): cy & CyEventEmitter;
     waitWhileSpin(ms: number): cy & CyEventEmitter;
   }
