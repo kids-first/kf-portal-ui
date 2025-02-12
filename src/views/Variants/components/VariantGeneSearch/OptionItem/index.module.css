@@ -1,4 +1,5 @@
-.searchLabel.variants {
+.searchLabel.variants,
+.searchLabel.variantsSomatic {
   background-color: var(--purple-2);
 }
 .searchLabel.genes {

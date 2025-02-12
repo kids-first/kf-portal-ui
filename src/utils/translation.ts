@@ -365,6 +365,11 @@ export const getFacetsDictionary = () => ({
       dann_rankscore: 'DANN',
     },
   },
+  cmc: {
+    sample_mutated: 'COSMIC CMC',
+    sample_ratio: 'COSMIC CMC (Ratio)',
+    tier: 'COSMIC CMC Tier',
+  },
   genes: {
     consequences: {
       consequence: 'Consequence',
@@ -483,6 +488,15 @@ export const getFacetsDictionary = () => ({
         },
       },
     },
+    cmc: {
+      sample_mutated: 'Number of samples in COSMIC with this mutation',
+      sample_ratio:
+        'Ratio of samples in COSMIC with this mutation compared to the variant compared to all the samples',
+      tier:
+        // eslint-disable-next-line max-len
+        'Mutation significance. 1 - high significance, 2 - medium significance, 3 - low significance, Other - No predicted significance (other mutations)',
+    },
+    hotspot: 'Hotspot Cancer',
   },
 });
 

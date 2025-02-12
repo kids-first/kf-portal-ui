@@ -58,6 +58,13 @@ const en = {
         tooltip:
           'Enter Variant Locus, Gene Symbol, Gene Alias, Gene AA Change, dbSNP ID, Clinvar ID, Ensembl ID, refseq ID',
       },
+      variantsSomatic: {
+        emptyText: 'No variant found',
+        placeholder: 'e.g. 10-100063679-C-T, rs341',
+        title: 'Search by variant',
+        tooltip:
+          'Enter Variant Locus, Gene Symbol, Gene Alias, Gene AA Change, dbSNP ID, Clinvar ID, Ensembl ID, refseq ID',
+      },
       study: {
         emptyText: 'No study found',
         placeholder: 'e.g. KF DSD, Neuroblastoma',
@@ -1114,6 +1121,73 @@ const en = {
         discardChanges: 'Discard changes',
       },
     },
+    variantsSomatic: {
+      title: 'Somatic Variant Exploration',
+      facetGroup: {
+        predictions: 'Predictions',
+        oncology: 'Oncology',
+      },
+      table: {
+        alt: {
+          title: 'ALT',
+          tooltip: '# of alternative alleles',
+        },
+        CADD: {
+          title: 'CADD',
+          tooltip: 'CADD (Phred) score',
+        },
+        clinvar: 'ClinVar',
+        cmc: {
+          tier: {
+            1: 'Tier 1',
+            2: 'Tier 2',
+            3: 'Tier 3',
+            null: 'ND',
+            Other: 'Other',
+          },
+          title: 'CMC',
+          tooltip: 'Number of samples in COSMIC with this mutation followed by its ratio',
+        },
+        dbsnp: 'dbSNP',
+        freq: {
+          title: 'Freq.',
+          tooltip: 'Frequency of the variant across Kids First cohorts',
+        },
+        gene: 'Gene',
+        gnomAD: {
+          title: 'gnomAD',
+          tooltip: 'gnomAD Genome 3.1.2 (Allele Frequency)',
+        },
+        gnomADAlt: {
+          title: 'gnomAD ALT',
+          tooltip: 'gnomAD Genome 3.1.2 (alternative allele count)',
+        },
+        homozygotes: {
+          title: 'Homo.',
+          tooltip: '# of homozygotes',
+        },
+        mane: 'MANE',
+        mostDeleteriousConsequence: {
+          title: 'Most Deleterious Consequence',
+          tooltip: 'Functional consequences of genetic variations annotated using VEP',
+        },
+        omim: {
+          title: 'OMIM',
+          tooltip: 'MIM inheritance modes',
+        },
+        participant: {
+          title: 'Part.',
+          tooltip: '# of affected participants across Kids First cohorts',
+        },
+        revel: 'REVEL',
+        studies: {
+          title: 'Studies',
+          tooltip: '# of studies with affected participants',
+        },
+        type: 'Type',
+        variant: 'Variant',
+      },
+    },
     variants: {
       sidemenu: {
         participant: 'Participant',
@@ -1864,6 +1938,11 @@ const en = {
     genePanels: 'Gene Panels',
     start: 'Position',
     locus: 'Variant ID',
+    cmc: {
+      sample_mutated: 'COSMIC CMC',
+      sample_ratio: 'COSMIC CMC (Ratio)',
+      tier: 'COSMIC CMC Tier',
+    },
     consequences: {
       consequences: 'Consequence',
       biotype: 'Gene Type',
@@ -2241,6 +2320,11 @@ const en = {
         },
       },
       no_gene: 'No gene',
+    },
+    variant_somatic: {
+      hotspot: 'Hotspot',
+      cmc: 'CMC',
+      cmcTier: 'Tier',
     },
   },
 };

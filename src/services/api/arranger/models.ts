@@ -8,6 +8,7 @@ export interface ISuggestionPayload<T> {
 export enum SuggestionType {
   VARIANTS = 'variants',
   GENES = 'genes',
+  SOMATIC = 'variantsSomatic',
 }
 
 export enum GenomicFeatureType {

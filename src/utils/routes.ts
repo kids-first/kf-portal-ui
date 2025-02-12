@@ -19,6 +19,7 @@ export enum STATIC_ROUTES {
   PARTICIPANTS = '/participants',
 
   VARIANTS = '/variants',
+  VARIANTS_SOMATIC = '/variants-somatic',
   FILES = '/files',
   PARTICIPANT = '/participant',
 
