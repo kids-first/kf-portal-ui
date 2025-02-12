@@ -327,6 +327,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
   },
   {
     title: intl.get('screen.variantsSomatic.table.studies.title'),
+    tooltip: intl.get('screen.variantsSomatic.table.studies.tooltip'),
     dataIndex: 'studies',
     key: 'studies.study_code',
     render: (studies: IArrangerResultsTree<IVariantStudyEntity>) => {
@@ -390,30 +391,26 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
       }
       return (
         <>
-          {participantIds.length > 10 ? (
-            <Link
-              to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
-              onClick={() => {
-                addQuery({
-                  queryBuilderId: DATA_EXPLORATION_QB_ID,
-                  query: generateQuery({
-                    newFilters: [
-                      generateValueFilter({
-                        field: 'participant_id',
-                        value: participantIds,
-                        index: INDEXES.PARTICIPANT,
-                      }),
-                    ],
-                  }),
-                  setAsActive: true,
-                });
-              }}
-            >
-              {numberWithCommas(totalNbOfParticipants)}
-            </Link>
-          ) : (
-            numberWithCommas(totalNbOfParticipants)
-          )}
+          <Link
+            to={STATIC_ROUTES.DATA_EXPLORATION_PARTICIPANTS}
+            onClick={() => {
+              addQuery({
+                queryBuilderId: DATA_EXPLORATION_QB_ID,
+                query: generateQuery({
+                  newFilters: [
+                    generateValueFilter({
+                      field: 'participant_id',
+                      value: participantIds,
+                      index: INDEXES.PARTICIPANT,
+                    }),
+                  ],
+                }),
+                setAsActive: true,
+              });
+            }}
+          >
+            {numberWithCommas(totalNbOfParticipants)}
+          </Link>
           {v.internal_frequencies?.total?.pf && isNumber(v.internal_frequencies.total.pf) && (
             <span className={styles.partCell}>
               ({toExponentialNotation(v.internal_frequencies.total.pf)})
@@ -424,7 +421,6 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     },
     width: 125,
   },
-  // Freq
   {
     title: intl.get('screen.variantsSomatic.table.freq.title'),
     tooltip: intl.get('screen.variantsSomatic.table.freq.tooltip'),

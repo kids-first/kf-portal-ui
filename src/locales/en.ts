@@ -1134,7 +1134,7 @@ const en = {
         },
         CADD: {
           title: 'CADD',
-          tootlip: 'CADD (Phred) score',
+          tooltip: 'CADD (Phred) score',
         },
         clinvar: 'ClinVar',
         cmc: {
@@ -1160,7 +1160,7 @@ const en = {
         },
         gnomADAlt: {
           title: 'gnomAD ALT',
-          tootlip: 'gnomAD Genome 3.1.2 (alternative allele count)',
+          tooltip: 'gnomAD Genome 3.1.2 (alternative allele count)',
         },
         homozygotes: {
           title: 'Homo.',
@@ -1182,6 +1182,7 @@ const en = {
         revel: 'REVEL',
         studies: {
           title: 'Studies',
+          tooltip: '# of studies with affected participants',
         },
         type: 'Type',
         variant: 'Variant',
