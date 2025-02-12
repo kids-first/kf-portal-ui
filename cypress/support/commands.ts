@@ -611,6 +611,15 @@ Cypress.Commands.add('visitVariantsPage', (sharedFilterOption?: string) => {
   cy.resetColumns();
 });
 
+Cypress.Commands.add('visitVariantsSomaticPage', (sharedFilterOption?: string) => {
+  const strSharedFilterOption = sharedFilterOption !== undefined ? sharedFilterOption : '';
+  cy.visitAndIntercept(`/variants-somatic${strSharedFilterOption}`,
+                       'POST',
+                       '**/graphql',
+                       4);
+  cy.resetColumns();
+});
+
 Cypress.Commands.add('waitUntilFile', (ms: number) => {
   const start = new Date().getTime();
 

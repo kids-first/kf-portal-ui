@@ -177,6 +177,19 @@ describe('Navigation', () => {
     cy.get('button[class="ant-modal-close"]').invoke('click');
   });
  
+  it('Modals de la page des variants (Somatic)', () => {
+    cy.visitVariantsSomaticPage();
+    cy.get('[data-cy="SidebarMenuItem_Gene"]').clickAndWait({force: true});
+
+    cy.get('button[class*="UploadIdsButton"]').clickAndWait({force: true});
+    cy.get('[class="ant-modal-header"]').contains('gene').should('exist');
+    cy.get('button[class="ant-modal-close"]').invoke('click');
+
+    cy.get('button[class*="Header_iconBtnAction"]').clickAndWait({force: true});
+    cy.contains('Save this filter').should('exist');
+    cy.get('button[class="ant-modal-close"]').invoke('click');
+  });
+ 
   it('Modals de la page d\'un fichier', () => {
     cy.visitFileEntity('GF_6DVS70V9');
 
