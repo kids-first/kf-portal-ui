@@ -103,7 +103,8 @@
 .dropdownHeaderBtn:hover,
 .dropdownHeaderBtn:focus,
 .dropdownHeaderBtn:active,
-.dropdownHeaderBtn.active {
+.dropdownHeaderBtn.active,
+.dropdownHeaderBtn:global(.ant-dropdown-open) {
   background-color: var(--purple-1);
   border: none;
   color: var(--purple-6);
