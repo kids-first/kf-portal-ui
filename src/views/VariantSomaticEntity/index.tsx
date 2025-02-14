@@ -17,27 +17,30 @@ import {
 import { Space, Tag } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 import { useStudiesEntity } from 'graphql/studies/actions';
-import { useVariantEntity } from 'graphql/variants/actions';
+import { useVariantSomaticEntity } from 'graphql/variants/actions';
 import { IVariantStudyEntity } from 'graphql/variants/models';
-
-import LineStyleIcon from 'components/Icons/LineStyleIcon';
-
-import { links, SectionId } from './utils/anchorMenu';
-import { expandedRowRender, getColumn } from './utils/consequence';
+import { links, SectionId } from 'views/VariantEntity/utils/anchorMenu';
+import { expandedRowRender, getColumn } from 'views/VariantEntity/utils/consequence';
 import {
   getFrequencyItems,
   getFrequencyTableSummaryColumns,
   getPublicCohorts,
-} from './utils/frequency';
-import { getClinvarColumns, getGenePhenotypeColumns } from './utils/pathogenicity';
+} from 'views/VariantEntity/utils/frequency';
+import {
+  getClinvarColumns,
+  getGenePhenotypeColumns,
+} from 'views/VariantEntity/utils/pathogenicity';
+
+import LineStyleIcon from 'components/Icons/LineStyleIcon';
+
 import { getSummaryItems } from './utils/summary';
 
 import styles from './index.module.css';
 
-export default function VariantEntity() {
+export default function VariantSomaticEntity() {
   const { locus } = useParams<{ locus: string }>();
 
-  const { data, loading } = useVariantEntity({
+  const { data, loading } = useVariantSomaticEntity({
     field: 'locus',
     values: locus ? [locus] : [],
   });
@@ -58,7 +61,7 @@ export default function VariantEntity() {
 
   return (
     <EntityPageWrapper
-      pageId="variant-entity-page"
+      pageId="variant-somatic-entity-page"
       links={links}
       data={data}
       loading={loading}
@@ -72,9 +75,7 @@ export default function VariantEntity() {
           tag={
             <>
               <Tag>{data?.assembly_version}</Tag>
-              <Tag className={styles.variantTag}>
-                {intl.get('screen.variants.summary.germline')}
-              </Tag>
+              <Tag color="cyan">{intl.get('screen.variantsSomatic.summary.somaticTag')}</Tag>
             </>
           }
         />
