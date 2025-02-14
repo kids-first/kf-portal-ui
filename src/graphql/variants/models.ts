@@ -11,6 +11,10 @@ export interface IVariantEntityResultTree {
   variants: IArrangerResultsTree<IVariantEntity>;
 }
 
+export interface IVariantSomaticEntityResultTree {
+  variants_somatic: IArrangerResultsTree<IVariantSomaticEntity>;
+}
+
 export enum Impact {
   High = 'HIGH',
   Moderate = 'MODERATE',

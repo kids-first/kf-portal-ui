@@ -1129,6 +1129,17 @@ const en = {
         predictions: 'Predictions',
         oncology: 'Oncology',
       },
+      summary: {
+        clinVar: 'ClinVar',
+        consequence: 'Consequence',
+        cosmic: 'Cosmic',
+        cosmicTooltip: 'Number of samples in COSMIC with this mutation followed by its ratio',
+        ensembl: 'Ensembl',
+        hotspot: 'Hotspot',
+        participants: 'Participants',
+        participantTooltip: '# of affected participants and frequency across KF cohorts',
+        somaticTag: 'Somatic',
+      },
       table: {
         alt: {
           title: 'ALT',
@@ -2327,6 +2338,7 @@ const en = {
       hotspot: 'Hotspot',
       cmc: 'CMC',
       cmcTier: 'Tier',
+      no_gene: 'No gene',
     },
   },
 };

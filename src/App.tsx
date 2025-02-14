@@ -41,6 +41,7 @@ const DataExploration = loadable(() => import('views/DataExploration'), loadable
 const Variants = loadable(() => import('views/Variants'), loadableProps);
 const VariantEntity = loadable(() => import('views/VariantEntity'), loadableProps);
 const VariantsSomatic = loadable(() => import('views/VariantsSomatic'), loadableProps);
+const VariantSomaticEntity = loadable(() => import('views/VariantSomaticEntity'), loadableProps);
 const FileEntity = loadable(() => import('views/FileEntity'), loadableProps);
 const ProfileSettings = loadable(() => import('views/Profile/Settings'), loadableProps);
 
@@ -176,14 +177,25 @@ const App = () => {
                   />
 
                   {getFTEnvVarByKey('SOMATIC') === 'true' && (
-                    <Route
-                      path={STATIC_ROUTES.VARIANTS_SOMATIC}
-                      element={
-                        <ProtectedRoute>
-                          <VariantsSomatic />
-                        </ProtectedRoute>
-                      }
-                    />
+                    <>
+                      <Route
+                        path={STATIC_ROUTES.VARIANTS_SOMATIC}
+                        element={
+                          <ProtectedRoute>
+                            <VariantsSomatic />
+                          </ProtectedRoute>
+                        }
+                      />
+
+                      <Route
+                        path={DYNAMIC_ROUTES.VARIANT_SOMATIC_ENTITY}
+                        element={
+                          <ProtectedRoute>
+                            <VariantSomaticEntity />
+                          </ProtectedRoute>
+                        }
+                      />
+                    </>
                   )}
 
                   <Route
