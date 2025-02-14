@@ -509,9 +509,11 @@ const en = {
         datafiles: 'Data Files',
         documentation: 'Documentation',
         explore: 'Data Exploration',
+        germline: 'Germline',
         help: 'Help',
         participants: 'Participants',
         resources: 'Resources',
+        somatic: 'Somatic',
         studies: 'Studies',
         variants: 'Variants',
         website: 'Website',
@@ -1196,7 +1198,7 @@ const en = {
         frequency: 'Frequency',
         pathogenicity: 'Pathogenicity',
       },
-      title: 'Variants Exploration',
+      title: 'Germline Variant Exploration',
       table: {
         alt: {
           title: 'ALT',

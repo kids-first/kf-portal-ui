@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import intl from 'react-intl-universal';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
   DownOutlined,
   FileSearchOutlined,
@@ -14,6 +15,7 @@ import {
 import { useKeycloak } from '@react-keycloak/web';
 import { Button, Dropdown, PageHeader, Typography } from 'antd';
 import cx from 'classnames';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 
 import { REDIRECT_URI_KEY } from 'common/constants';
 import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
@@ -92,16 +94,66 @@ const Header = () => {
               }}
               title={intl.get('layout.main.menu.explore')}
             />
-            <HeaderButton
-              key="variant-data"
-              icon={<LineStyleIcon />}
-              onClick={() => {
-                setRedirectUri(STATIC_ROUTES.VARIANTS);
-                trackPublicStudies('Variants');
-                setOpenLoginModal(true);
-              }}
-              title={intl.get('layout.main.menu.variants')}
-            />
+            {getFTEnvVarByKey('SOMATIC') !== 'true' && (
+              <HeaderButton
+                key="variant-data"
+                icon={<LineStyleIcon />}
+                onClick={() => {
+                  setRedirectUri(STATIC_ROUTES.VARIANTS);
+                  trackPublicStudies('Variants');
+                  setOpenLoginModal(true);
+                }}
+                title={intl.get('layout.main.menu.variants')}
+              />
+            )}
+            {getFTEnvVarByKey('SOMATIC') === 'true' && (
+              <Dropdown
+                key="user-menu"
+                trigger={['click']}
+                overlayClassName={style.dropdown}
+                placement="bottom"
+                menu={{
+                  items: [
+                    {
+                      key: 'germline',
+                      label: (
+                        <Link
+                          to=""
+                          onClick={() => {
+                            setRedirectUri(STATIC_ROUTES.VARIANTS);
+                            trackPublicStudies('Variants Germline');
+                            setOpenLoginModal(true);
+                          }}
+                        >
+                          {intl.get('layout.main.menu.germline')}
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: 'somatic',
+                      label: (
+                        <Link
+                          to=""
+                          onClick={() => {
+                            setRedirectUri(STATIC_ROUTES.VARIANTS_SOMATIC);
+                            trackPublicStudies('Variants Somatic');
+                            setOpenLoginModal(true);
+                          }}
+                        >
+                          {intl.get('layout.main.menu.somatic')}
+                        </Link>
+                      ),
+                    },
+                  ],
+                }}
+              >
+                <HeaderButton
+                  key="variant-data"
+                  icon={<LineStyleIcon />}
+                  title={intl.get('layout.main.menu.variants')}
+                />
+              </Dropdown>
+            )}
           </nav>
         }
         extra={[

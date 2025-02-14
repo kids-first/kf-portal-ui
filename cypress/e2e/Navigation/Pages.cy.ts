@@ -17,10 +17,15 @@ describe('Navigation', () => {
     cy.get('button[class*="HeaderLink_headerBtn"]').eq(2).clickAndWait(); // data-cy="HeaderLink_Data Exploration"
     cy.get('[class*="PageContent_title"]').contains('Data Exploration').should('exist'); // data-cy="Title_DataExploration"
 
-    cy.get('button[class*="HeaderLink_headerBtn"]').eq(3).clickAndWait(); // data-cy="HeaderLink_Variants"
-    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variants Exploration').should('exist'); // data-cy="Title_Variants"
+    cy.get('button[class*="Header_dropdownHeaderBtn"]').clickAndWait();
+    cy.get('[data-menu-id*="germline"]').clickAndWait();
+    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Germline Variant Exploration').should('exist');
 
-    cy.get('button[class*="HeaderLink_headerBtn"]').eq(4).clickAndWait(); // data-cy="HeaderLink_Community"
+    cy.get('button[class*="Header_dropdownHeaderBtn"]').clickAndWait();
+    cy.get('[data-menu-id*="somatic"]').clickAndWait();
+    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Somatic Variant Exploration').should('exist');
+
+    cy.get('button[class*="HeaderLink_headerBtn"]').eq(3).clickAndWait(); // data-cy="HeaderLink_Community"
     cy.get('[class*="CommunityPage_title"]').should('exist'); // data-cy="Title_Community"
 
     cy.get('[class*="Header_userName"]').clickAndWait({force: true}); // data-cy="UserName"
