@@ -3,13 +3,10 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitVariantsSomaticPage();
 });
 
 describe('Page des variants (Somatic) - Colonnes du tableau', () => {
-  beforeEach(() => {
-    cy.visitVariantsSomaticPage();
-  });
-
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
     cy.get('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(1)

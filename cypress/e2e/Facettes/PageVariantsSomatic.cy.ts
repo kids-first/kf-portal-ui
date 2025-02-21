@@ -3,16 +3,13 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitVariantsSomaticPage('?sharedFilterId=d9f2ccfa-9d56-40c1-899f-836d0546af6a');
+  cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist');
 });
 
 describe('Page des variants (Somatic) (Pathogenicity) - Filtrer avec les facettes', () => {
-  beforeEach(() => {
-    cy.visitVariantsSomaticPage('?sharedFilterId=d9f2ccfa-9d56-40c1-899f-836d0546af6a');
-    cy.get('[data-cy="SidebarMenuItem_Pathogenicity"]').clickAndWait({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').clickAndWait({force: true}); //data-cy="ExpandAll"
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button[class*="ant-btn-link"]').contains('Collapse all').should('exist'); //data-cy="ExpandAll"
-  });
-
   it('Expand all/Collapse all', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('exist');
     cy.get('section[class*="Filters"] [aria-expanded="false"]').should('not.exist');
