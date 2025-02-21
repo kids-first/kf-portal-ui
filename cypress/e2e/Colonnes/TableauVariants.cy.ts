@@ -3,13 +3,10 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitVariantsPage();
 });
 
 describe('Page des variants - Colonnes du tableau', () => {
-  beforeEach(() => {
-    cy.visitVariantsPage();
-  });
-
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
     cy.get('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(1)

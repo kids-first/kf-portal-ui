@@ -3,13 +3,10 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitDashboard();
 });
 
 describe('Page Dashboard - Widget Kids First FHIR API', () => {
-  beforeEach(() => {
-    cy.visitDashboard();
-  });
-
   it('Vérifier les informations affichées - Tooltip', () => {
     cy.get('[class*="DashboardCards_dashboardCard"]').each(($el: JQuery<HTMLElement>) => {
       if ($el.text().includes('Kids First FHIR API')) {

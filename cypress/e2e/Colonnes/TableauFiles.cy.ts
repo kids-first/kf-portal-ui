@@ -3,13 +3,10 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitDataExploration('datafiles');
 });
 
 describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
-  beforeEach(() => {
-    cy.visitDataExploration('datafiles');
-  });
-
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
     cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(1)
       .should('not.have.class', 'ant-table-column-has-sorters')

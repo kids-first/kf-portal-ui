@@ -3,18 +3,14 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
+  cy.visitDataExploration('participants', '?sharedFilterId=c32c1174-fad6-4e02-a6eb-09e1454e2d21');
+
+  cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button').clickAndWait({force: true});
+  cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist');
 });
 
 describe('Page Data Exploration - Requêtes', () => {
-
-  beforeEach(() => {
-    cy.visitDataExploration('participants', '?sharedFilterId=c32c1174-fad6-4e02-a6eb-09e1454e2d21');
-
-    cy.get('[data-cy="SidebarMenuItem_Biospecimen"]').clickAndWait({force: true});
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').clickAndWait({force: true}); // data-cy="ExpandAll"
-    cy.get('[class*="Filters_filterExpandBtnWrapper"] button').contains('Collapse all').should('exist'); // data-cy="ExpandAll"
-  });
-
   it('Modifier l\'opérateur d\'une requête', () => {
     cy.intercept('POST', '**/graphql').as('getPOSTgraphql1');
     cy.get('[class*="QueryBar_selected"] [class*="Combiner_operator"]').clickAndWait({force: true});
