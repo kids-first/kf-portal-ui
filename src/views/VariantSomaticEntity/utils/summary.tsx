@@ -255,7 +255,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
           {pickedConsequence.node.ensembl_transcript_id}
         </ExternalLink>
         {pickedConsequence.node.canonical && (
-          <Tooltip title={intl.get('screen.variants.summary.canonicalTooltip')}>
+          <Tooltip title={intl.get('screen.variantsSomatic.summary.canonicalTooltip')}>
             <div>
               <CanonicalIcon className={style.canonicalIcon} height={16} width={16} />
             </div>
@@ -275,7 +275,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
             <Popover
               overlayClassName={style.popOverContent}
               placement="bottom"
-              title={intl.get('screen.variants.summary.seeMorePopover.title', {
+              title={intl.get('screen.variantsSomatic.summary.seeMorePopover.title', {
                 ensemblTranscriptId: pickedConsequence.node.ensembl_transcript_id,
               })}
               content={
@@ -295,7 +295,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
               }
             >
               <Button className={style.seeMore} type="link">
-                {intl.get('screen.variants.summary.seeMore')}
+                {intl.get('screen.variantsSomatic.summary.seeMore')}
               </Button>
             </Popover>
           )}
@@ -323,12 +323,12 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
       leftSection: {
         title: (
           <Text className={style.functionalScores}>
-            {intl.get('screen.variants.summary.details.functionalScores')}
+            {intl.get('screen.variantsSomatic.summary.details.functionalScores')}
           </Text>
         ),
         items: [
           {
-            label: intl.get('screen.variants.summary.details.sift'),
+            label: intl.get('screen.variantsSomatic.summary.details.sift'),
             value: pickedConsequence.node.predictions?.sift_pred ? (
               <>
                 <Text className={style.predictionLabel}>
@@ -343,7 +343,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
             ),
           },
           {
-            label: intl.get('screen.variants.summary.details.fathmm'),
+            label: intl.get('screen.variantsSomatic.summary.details.fathmm'),
             value: pickedConsequence.node.predictions?.fathmm_pred ? (
               <>
                 <Text className={style.predictionLabel}>
@@ -359,19 +359,19 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
             ),
           },
           {
-            label: intl.get('screen.variants.summary.details.caddRaw'),
+            label: intl.get('screen.variantsSomatic.summary.details.caddRaw'),
             value: pickedConsequence.node.predictions?.cadd_score || TABLE_EMPTY_PLACE_HOLDER,
           },
           {
-            label: intl.get('screen.variants.summary.details.caddPhred'),
+            label: intl.get('screen.variantsSomatic.summary.details.caddPhred'),
             value: pickedConsequence.node.predictions?.cadd_phred || TABLE_EMPTY_PLACE_HOLDER,
           },
           {
-            label: intl.get('screen.variants.summary.details.dann'),
+            label: intl.get('screen.variantsSomatic.summary.details.dann'),
             value: pickedConsequence.node.predictions?.dann_score || TABLE_EMPTY_PLACE_HOLDER,
           },
           {
-            label: intl.get('screen.variants.summary.details.lrt'),
+            label: intl.get('screen.variantsSomatic.summary.details.lrt'),
             value: pickedConsequence.node.predictions?.lrt_pred ? (
               <>
                 <Text className={style.predictionLabel}>
@@ -386,11 +386,11 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
             ),
           },
           {
-            label: intl.get('screen.variants.summary.details.revel'),
+            label: intl.get('screen.variantsSomatic.summary.details.revel'),
             value: pickedConsequence.node.predictions?.revel_score || TABLE_EMPTY_PLACE_HOLDER,
           },
           {
-            label: intl.get('screen.variants.summary.details.polyphen2hvar'),
+            label: intl.get('screen.variantsSomatic.summary.details.polyphen2hvar'),
             value: pickedConsequence.node.predictions?.polyphen2_hvar_pred ? (
               <>
                 <Text className={style.predictionLabel}>
@@ -406,7 +406,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
             ),
           },
           {
-            label: intl.get('screen.variants.summary.details.phyloP17Way'),
+            label: intl.get('screen.variantsSomatic.summary.details.phyloP17Way'),
             value:
               pickedConsequence.node.conservations?.phyloP17way_primate || TABLE_EMPTY_PLACE_HOLDER,
           },
@@ -414,28 +414,30 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
       },
       middleSection: [
         {
-          title: intl.get('screen.variants.summary.details.geneConstraints'),
+          title: intl.get('screen.variantsSomatic.summary.details.geneConstraints'),
           items: [
             {
-              label: intl.get('screen.variants.summary.details.pli'),
+              label: intl.get('screen.variantsSomatic.summary.details.pli'),
               value: geneWithPickedConsequence.gnomad?.pli || TABLE_EMPTY_PLACE_HOLDER,
             },
             {
-              label: intl.get('screen.variants.summary.details.loeuf'),
+              label: intl.get('screen.variantsSomatic.summary.details.loeuf'),
               value: geneWithPickedConsequence.gnomad?.loeuf || TABLE_EMPTY_PLACE_HOLDER,
             },
           ],
         },
         {
-          title: intl.get('screen.variants.summary.details.spliceAltering'),
+          title: intl.get('screen.variantsSomatic.summary.details.spliceAltering'),
           items: [
             {
-              label: intl.get('screen.variants.summary.details.spliceAi'),
+              label: intl.get('screen.variantsSomatic.summary.details.spliceAi'),
               value: geneWithPickedConsequence.spliceai?.ds ? (
                 <>
                   <Text className={style.spliceAi}>{geneWithPickedConsequence.spliceai.ds}</Text>
                   {geneWithPickedConsequence.spliceai.type.map((t: string, index: number) => (
-                    <Tooltip title={intl.get(`screen.variants.summary.details.spliceAiType.${t}`)}>
+                    <Tooltip
+                      title={intl.get(`screen.variantsSomatic.summary.details.spliceAiType.${t}`)}
+                    >
                       <Tag key={index}>{t}</Tag>
                     </Tooltip>
                   ))}
@@ -448,7 +450,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
         },
       ],
       rightSection: {
-        title: intl.get('screen.variants.summary.details.associatedConditions'),
+        title: intl.get('screen.variantsSomatic.summary.details.associatedConditions'),
         items: renderOmim(pickedOmim),
       },
     },
