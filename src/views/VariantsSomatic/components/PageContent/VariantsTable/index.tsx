@@ -86,7 +86,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
       hgvsg ? (
         <Tooltip placement="topLeft" title={hgvsg}>
           <div>
-            <Link to={`${STATIC_ROUTES.VARIANTS}/${entity?.locus}`}>{hgvsg}</Link>
+            <Link to={`${STATIC_ROUTES.VARIANTS_SOMATIC}/${entity?.locus}`}>{hgvsg}</Link>
           </div>
         </Tooltip>
       ) : (
