@@ -11,19 +11,21 @@ import { ICustomSearchProps } from 'components/uiKit/search/GlobalSearch';
 import SearchAutocomplete, {
   OptionsType,
 } from 'components/uiKit/search/GlobalSearch/Search/SearchAutocomplete';
+import { trackFacetSearch } from 'services/analytics';
 import { ArrangerApi } from 'services/api/arranger';
 import { Suggestion, SuggestionType } from 'services/api/arranger/models';
 
 import OptionItem from './OptionItem';
 
 type OwnProps = ICustomSearchProps & {
+  analyticsName: string;
   type: SuggestionType;
 };
 
 const getValue = (type: SuggestionType, option: Suggestion) =>
   (type === SuggestionType.GENES ? option.symbol : option.locus) ?? '';
 
-const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
+const VariantGeneSearch = ({ analyticsName, queryBuilderId, type }: OwnProps) => {
   const [options, setOptions] = useState<OptionsType[]>([]);
   const { activeQuery } = useQueryBuilderState(queryBuilderId);
   const field =
@@ -43,15 +45,16 @@ const VariantGeneSearch = ({ queryBuilderId, type }: OwnProps) => {
   return (
     <SearchAutocomplete
       onSearch={(value) => handleSearch(value)}
-      onSelect={(values) =>
+      onSelect={(values) => {
+        trackFacetSearch(analyticsName, field);
         updateActiveQueryField({
           queryBuilderId,
           field,
           value: values,
           index: INDEXES.VARIANTS,
           merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-        })
-      }
+        });
+      }}
       placeHolder={intl.get(`global.search.${type}.placeholder`)}
       options={options}
       selectedItems={

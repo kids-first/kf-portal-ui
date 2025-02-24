@@ -598,6 +598,7 @@ const VariantsTable = ({
                     sqon={getCurrentSqon()}
                     type={SetType.VARIANT}
                     key="variants-somatic-set-management"
+                    analyticsPage={intl.get('global.googleAnalytics.somatic')}
                   />,
                 ],
               }}

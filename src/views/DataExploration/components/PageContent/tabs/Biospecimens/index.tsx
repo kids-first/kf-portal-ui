@@ -529,6 +529,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             selectedAllResults={selectedAllResults}
             type={SetType.BIOSPECIMEN}
             selectedKeys={selectedKeys}
+            analyticsPage={intl.get('global.googleAnalytics.biospecimenTab')}
           />,
           <Tooltip
             title={

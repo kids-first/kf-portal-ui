@@ -54,6 +54,7 @@ const filterGroups: {
         key="variants"
         type={SuggestionType.VARIANTS}
         queryBuilderId={VARIANT_REPO_QB_ID}
+        analyticsName={intl.get('global.googleAnalytics.germline')}
       />,
     ],
     groups: [
@@ -85,6 +86,7 @@ const filterGroups: {
         key="genes"
         type={SuggestionType.GENES}
         queryBuilderId={VARIANT_REPO_QB_ID}
+        analyticsName={intl.get('global.googleAnalytics.germline')}
       />,
       <GenesUploadIds key="genes_upload_ids" queryBuilderId={VARIANT_REPO_QB_ID} />,
     ],
@@ -218,6 +220,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Participant]}
+          analyticsName={intl.get('global.googleAnalytics.germline')}
         />
       ),
     },
@@ -233,6 +236,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Variant]}
+          analyticsName={intl.get('global.googleAnalytics.germline')}
         />
       ),
     },
@@ -248,6 +252,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Gene]}
+          analyticsName={intl.get('global.googleAnalytics.germline')}
         />
       ),
     },
@@ -263,6 +268,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Pathogenicity]}
+          analyticsName={intl.get('global.googleAnalytics.germline')}
         />
       ),
     },
@@ -278,6 +284,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_REPO_QB_ID}
           extendedMappingResults={variantMappingResults}
           filterInfo={filterGroups[FilterTypes.Frequency]}
+          analyticsName={intl.get('global.googleAnalytics.germline')}
         />
       ),
     },

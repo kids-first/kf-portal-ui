@@ -22,6 +22,7 @@ type OwnProps = {
   sqon?: ISqonGroupFilter;
   setActionType: SetActionType;
   type: SetType;
+  analyticsPage: string;
 };
 
 const finishButtonText = (type: string) => {
@@ -57,6 +58,7 @@ const AddRemoveSaveSetModal = ({
   setActionType,
   sqon,
   type,
+  analyticsPage,
 }: OwnProps) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
@@ -78,7 +80,7 @@ const AddRemoveSaveSetModal = ({
     switch (setActionType) {
       case SetActionType.ADD_IDS:
       case SetActionType.REMOVE_IDS:
-        trackSetActions(setActionType, type);
+        trackSetActions(setActionType, analyticsPage, type);
         dispatch(
           updateSavedSet({
             id: setId,

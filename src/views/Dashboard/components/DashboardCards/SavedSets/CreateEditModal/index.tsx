@@ -80,7 +80,11 @@ const CreateEditModal = ({
       ]);
     } else {
       if (saveSetActionType === SetActionType.UPDATE_SET && currentSaveSet) {
-        trackSetActions(SetActionType.UPDATE_SET, setType);
+        trackSetActions(
+          SetActionType.UPDATE_SET,
+          intl.get('global.googleAnalytics.dashboard'),
+          setType,
+        );
         dispatch(
           updateSavedSet({
             onCompleteCb: onSuccessCreateCb,
@@ -90,7 +94,11 @@ const CreateEditModal = ({
           }),
         );
       } else {
-        trackSetActions(SetActionType.CREATE_SET, setType);
+        trackSetActions(
+          SetActionType.CREATE_SET,
+          intl.get('global.googleAnalytics.dashboard'),
+          setType,
+        );
         dispatch(
           createSavedSet({
             idField,

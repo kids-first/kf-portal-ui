@@ -170,6 +170,15 @@ const en = {
       placeholder: 'Search...',
       results: 'Results',
     },
+    googleAnalytics: {
+      biospecimenTab: 'Data Exploration biospecimen tab',
+      dashboard: 'Dashboard',
+      dataExploration: 'Data Exploration',
+      fileTab: 'Data Exploration file tab',
+      germline: 'Germline',
+      participantTab: 'Data Exploration participant tab',
+      somatic: 'Somatic',
+    },
   },
   maintenance: {
     title: 'We are currently down for maintenance',

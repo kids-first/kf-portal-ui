@@ -53,6 +53,7 @@ const filterGroups: {
         key="variantsSomatic"
         type={SuggestionType.SOMATIC}
         queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
+        analyticsName={intl.get('global.googleAnalytics.somatic')}
       />,
     ],
     groups: [
@@ -82,6 +83,7 @@ const filterGroups: {
         key="genes"
         type={SuggestionType.GENES}
         queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
+        analyticsName={intl.get('global.googleAnalytics.somatic')}
       />,
       <GenesUploadIds key="genes_upload_ids" queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID} />,
     ],
@@ -229,6 +231,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
           extendedMappingResults={variantSomaticMappingResults}
           filterInfo={filterGroups[FilterTypes.Participant]}
+          analyticsName={intl.get('global.googleAnalytics.somatic')}
         />
       ),
     },
@@ -244,6 +247,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
           extendedMappingResults={variantSomaticMappingResults}
           filterInfo={filterGroups[FilterTypes.Variant]}
+          analyticsName={intl.get('global.googleAnalytics.somatic')}
         />
       ),
     },
@@ -259,6 +263,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
           extendedMappingResults={variantSomaticMappingResults}
           filterInfo={filterGroups[FilterTypes.Gene]}
+          analyticsName={intl.get('global.googleAnalytics.somatic')}
         />
       ),
     },
@@ -274,6 +279,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
           extendedMappingResults={variantSomaticMappingResults}
           filterInfo={filterGroups[FilterTypes.Pathogenicity]}
+          analyticsName={intl.get('global.googleAnalytics.somatic')}
         />
       ),
     },
@@ -289,6 +295,7 @@ const Variants = () => {
           queryBuilderId={VARIANT_SOMATIC_REPO_QB_ID}
           extendedMappingResults={variantSomaticMappingResults}
           filterInfo={filterGroups[FilterTypes.Frequency]}
+          analyticsName={intl.get('global.googleAnalytics.somatic')}
         />
       ),
     },

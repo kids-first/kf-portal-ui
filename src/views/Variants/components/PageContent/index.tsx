@@ -14,6 +14,7 @@ import copy from 'copy-to-clipboard';
 import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+import { FilterActionType } from 'views/DataExploration/components/PageContent';
 import {
   DEFAULT_OFFSET,
   DEFAULT_PAGE_INDEX,
@@ -30,6 +31,7 @@ import GenericFilters from 'components/uiKit/FilterList/GenericFilters';
 import { FilterInfo } from 'components/uiKit/FilterList/types';
 import { getNoDataOptionValue } from 'components/utils/filterUtils';
 import useQBStateWithSavedFilters from 'hooks/useQBStateWithSavedFilters';
+import { trackFilterActions } from 'services/analytics';
 import { ArrangerApi } from 'services/api/arranger';
 import { SavedFilterTag } from 'services/api/savedFilter/models';
 import { globalActions } from 'store/global';
@@ -126,13 +128,27 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
         )?.displayName || key;
   };
 
-  const handleOnUpdateFilter = (filter: ISavedFilter) => dispatch(updateSavedFilter(filter));
-  const handleOnSaveFilter = (filter: ISavedFilter) =>
+  const handleOnUpdateFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.UPDATE_FILTER, intl.get('global.googleAnalytics.germline'));
+    dispatch(updateSavedFilter(filter));
+  };
+  const handleOnSaveFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.CREATE_FILTER, intl.get('global.googleAnalytics.germline'));
     dispatch(createSavedFilter(addTagToFilter(filter)));
-  const handleOnDeleteFilter = (id: string) => dispatch(deleteSavedFilter(id));
-  const handleOnSaveAsFavorite = (filter: ISavedFilter) =>
+  };
+  const handleOnDeleteFilter = (id: string) => {
+    trackFilterActions(FilterActionType.REMOVE_FILTER, intl.get('global.googleAnalytics.germline'));
+    dispatch(deleteSavedFilter(id));
+  };
+  const handleOnSaveAsFavorite = (filter: ISavedFilter) => {
+    trackFilterActions(
+      FilterActionType.FAVORITE_FILTER,
+      intl.get('global.googleAnalytics.germline'),
+    );
     dispatch(setSavedFilterAsDefault(addTagToFilter(filter)));
+  };
   const handleOnShareFilter = (filter: ISavedFilter) => {
+    trackFilterActions(FilterActionType.SHARE_FILTER, intl.get('global.googleAnalytics.germline'));
     copy(`${getCurrentUrl()}?${SHARED_FILTER_ID_QUERY_PARAM_KEY}=${filter.id}`);
     dispatch(
       globalActions.displayMessage({

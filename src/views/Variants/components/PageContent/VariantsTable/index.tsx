@@ -540,6 +540,7 @@ const VariantsTable = ({
                     sqon={getCurrentSqon()}
                     type={SetType.VARIANT}
                     key="variants-set-management"
+                    analyticsPage={intl.get('global.googleAnalytics.germline')}
                   />,
                 ],
               }}

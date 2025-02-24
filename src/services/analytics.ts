@@ -88,7 +88,7 @@ export const trackVariantWorkbench = (action: string) => {
   }
 };
 
-export const trackSetActions = (action: string, setType: SetType) => {
+export const trackSetActions = (action: string, page: string, setType: SetType) => {
   let message = '';
   switch (action) {
     case SetActionType.CREATE_SET:
@@ -113,7 +113,7 @@ export const trackSetActions = (action: string, setType: SetType) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'Sets',
-      action: `${message} - ${setType}`,
+      action: `${page} - ${message} - ${setType}`,
     });
   }
 };
