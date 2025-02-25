@@ -215,11 +215,14 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
         value: (
           <>
             {variant.cmc?.mutation_url && (
-              <ExternalLink href={variant.cmc.mutation_url}>
-                {variant.cmc.sample_mutated}
-              </ExternalLink>
-            )}{' '}
-            ({toExponentialNotation(variant.cmc.sample_ratio)})
+              <>
+                <ExternalLink href={variant.cmc.mutation_url}>
+                  {variant.cmc.sample_mutated}
+                </ExternalLink>{' '}
+              </>
+            )}
+            {variant.cmc?.sample_ratio && toExponentialNotation(variant.cmc.sample_ratio)}
+            {!variant.cmc?.mutation_url && !variant.cmc?.sample_ratio && TABLE_EMPTY_PLACE_HOLDER}
           </>
         ),
       },
