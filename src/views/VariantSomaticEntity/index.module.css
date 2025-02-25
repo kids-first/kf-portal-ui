@@ -7,6 +7,17 @@
   font-size: 24px;
 }
 
+.titleTag {
+  margin-right: 12px;
+}
+
+.germlineLink {
+  text-decoration: underline;
+}
+.germlineLink:hover {
+  text-decoration: none;
+}
+
 .clinVar {
   white-space: wrap;
   text-decoration: underline;

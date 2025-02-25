@@ -1,6 +1,18 @@
 .variantTag {
   color: var(--variant-tag-color);
   background-color: var(--variant-tag-bg-color);
+  margin-right: 12px;
+}
+
+.titleTag {
+  margin-right: 12px;
+}
+
+.somaticLink {
+  text-decoration: underline;
+}
+.somaticLink:hover {
+  text-decoration: none;
 }
 
 .frequencyParticipantLink {
@@ -120,14 +132,18 @@
   color: var(--canonical-icon-color);
 }
 
-.expandedTable :global(.ant-spin-nested-loading
-      .ant-spin-container
-      .ant-table
-      .ant-table-container
-      .ant-table-content) table > tbody > tr > td {
+.expandedTable
+  :global(
+    .ant-spin-nested-loading .ant-spin-container .ant-table .ant-table-container .ant-table-content
+  )
+  table
+  > tbody
+  > tr
+  > td {
   background-color: var(--gray-1);
 }
 
-.contentWrapper :global(.ant-table-tbody > tr:nth-child(even):not(.ant-table-row-selected):not(:hover) td) {
+.contentWrapper
+  :global(.ant-table-tbody > tr:nth-child(even):not(.ant-table-row-selected):not(:hover) td) {
   background-color: var(--gray-1);
 }

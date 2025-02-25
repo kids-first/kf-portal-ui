@@ -1125,6 +1125,7 @@ const en = {
     },
     variantsSomatic: {
       title: 'Somatic Variant Exploration',
+      germlineLink: 'View germline',
       facetGroup: {
         predictions: 'Predictions',
         oncology: 'Oncology',
@@ -1240,6 +1241,7 @@ const en = {
         pathogenicity: 'Pathogenicity',
       },
       title: 'Germline Variant Exploration',
+      somaticLink: 'View somatic',
       table: {
         alt: {
           title: 'ALT',
