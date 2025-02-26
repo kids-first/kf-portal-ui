@@ -22,6 +22,7 @@ import {
   DEFAULT_SORT_QUERY,
   VARIANT_REPO_QB_ID,
 } from 'views/Variants/utils/constants';
+import HeaderDropdown from 'views/VariantsSomatic/components/HeaderDropdown';
 
 import { SHARED_FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
@@ -147,6 +148,7 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
         <Typography.Title className={styles.pageHeaderTitle} level={1}>
           {intl.get('screen.variants.title')}
         </Typography.Title>
+        <HeaderDropdown pageName={intl.get('layout.main.menu.germline')} />
       </div>
 
       <QueryBuilder

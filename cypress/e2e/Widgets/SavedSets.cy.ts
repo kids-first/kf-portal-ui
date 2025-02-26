@@ -37,7 +37,8 @@ describe('Page Dashboard - Widget Saved Sets', () => {
       }
     });
     cy.get('a[href]').contains('Variants Exploration').clickAndWait({force: true});
-    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Germline Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeader"]').contains('Germline').should('exist');
   });
 });
 

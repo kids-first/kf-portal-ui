@@ -37,7 +37,8 @@ describe('Page Dashboard - Widget Saved Filters', () => {
       }
     });
     cy.get('a[href]').contains('Variants Exploration').clickAndWait({force: true});
-    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Germline Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeader"]').contains('Germline').should('exist');
   });
 });
 
@@ -61,7 +62,8 @@ describe('Page Dashboard - Widget Saved Filters', () => {
   it('Valider les liens disponibles - Nom', () => {
     cy.get('[class*="SavedFilters_setTabs"] [data-node-key*="variants"]').clickAndWait({force: true});
     cy.get('[class*="SavedFilters_setTabs"]').contains('Cypress Variant Type Filter').clickAndWait({force: true});
-    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Germline Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variant Exploration').should('exist');
+    cy.get('[class*="PageContent_pageHeader"]').contains('Germline').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant Type').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SNV').should('exist');
   });

@@ -45,6 +45,8 @@ import { combineExtendedMappings } from 'utils/fieldMapper';
 import { getCurrentUrl } from 'utils/helper';
 import { getQueryBuilderDictionary } from 'utils/translation';
 
+import HeaderDropdown from '../HeaderDropdown';
+
 import styles from 'views/VariantsSomatic/components/PageContent/index.module.css';
 
 type OwnProps = {
@@ -150,6 +152,7 @@ const PageContent = ({ variantSomaticMapping, filterGroups }: OwnProps) => {
         <Typography.Title className={styles.pageHeaderTitle} level={1}>
           {intl.get('screen.variantsSomatic.title')}
         </Typography.Title>
+        <HeaderDropdown pageName={intl.get('layout.main.menu.somatic')} />
       </div>
 
       <QueryBuilder
