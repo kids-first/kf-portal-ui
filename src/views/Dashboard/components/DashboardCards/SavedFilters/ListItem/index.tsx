@@ -5,15 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithActions';
 import { setQueryBuilderState } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
-import { Modal } from 'antd';
+import { Modal, Tag } from 'antd';
 import { formatDistance } from 'date-fns';
 
 import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import { FILTER_TAG_PAGE_MAPPING, FILTER_TAG_QB_ID_MAPPING } from 'common/queryBuilder';
-import { TUserSavedFilter } from 'services/api/savedFilter/models';
+import { SavedFilterTag, TUserSavedFilter } from 'services/api/savedFilter/models';
 import { deleteSavedFilter } from 'store/savedFilter/thunks';
 
 import EditModal from '../EditModal';
+
+import styles from './index.module.css';
 
 interface OwnProps {
   id: any;
@@ -24,6 +26,20 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let tag;
+  if (data.tag === SavedFilterTag.VariantsExplorationPage)
+    tag = (
+      <Tag className={styles.germlineTag}>
+        {intl.get('screen.dashboard.cards.savedFilters.tabs.germline')}
+      </Tag>
+    );
+  else if (data.tag === SavedFilterTag.VariantsSomaticExplorationPage)
+    tag = (
+      <Tag className={styles.somaticTag} color="cyan">
+        {intl.get('screen.dashboard.cards.savedFilters.tabs.somatic')}
+      </Tag>
+    );
 
   return (
     <>
@@ -49,7 +65,12 @@ const SavedFiltersListItem = ({ data }: OwnProps) => {
             state: data.queries,
           });
         }}
-        title={data.title}
+        title={
+          <>
+            {data.title}
+            {tag && tag}
+          </>
+        }
         description={
           data.updated_date
             ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {

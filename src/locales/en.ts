@@ -955,6 +955,12 @@ const en = {
               'A saved filter is a virtual query created by applying one or more filters to a data set. They can be saved and revisited for later use. You can create and manage saved filters from the query builder at the top of the ',
             title: 'Managing Saved Filters',
           },
+          tabs: {
+            dataExploration: 'Data Exploration',
+            variants: 'Variants',
+            germline: 'Germline',
+            somatic: 'Somatic',
+          },
         },
         savedSets: {
           errorCard: {
