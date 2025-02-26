@@ -1,3 +1,16 @@
+## VERSION 5.11.0 (2025-02-26)
+
+### Features
+
+- [SKFP-257](https://d3b.atlassian.net/browse/SKFP-257) Feature [Variant] Add study name on hover to study code in entity page
+
+### Technical / Other changes
+
+- [SKFP-1379](https://d3b.atlassian.net/browse/SKFP-1379) Issue:[Sentry] Data exploration undefined error
+- [SKFP-1392](https://d3b.atlassian.net/browse/SKFP-1392) Issue:[Summary] Demographics legend is truncated 
+- [SKFP-1407](https://d3b.atlassian.net/browse/SKFP-1407) Refactor:[Facet] Set Default Operators for numerical range facets
+- [SKFP-1417](https://d3b.atlassian.net/browse/SKFP-1417) Issue:[Quick Filter] Search does not return all facet names
+
 ## VERSION 5.10.1 (2024-12-12)
 
 ### Technical / Other changes
