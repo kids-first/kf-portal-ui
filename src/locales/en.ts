@@ -1170,6 +1170,7 @@ const en = {
           },
         },
       },
+      frequencies: { participantsTooltip: '# of affected participants across KF cohorts' },
       table: {
         alt: {
           title: 'ALT',

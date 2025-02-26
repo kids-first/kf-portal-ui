@@ -221,7 +221,7 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
                 </ExternalLink>{' '}
               </>
             )}
-            {variant.cmc?.sample_ratio && toExponentialNotation(variant.cmc.sample_ratio)}
+            {variant.cmc?.sample_ratio && <> ({toExponentialNotation(variant.cmc.sample_ratio)})</>}
             {!variant.cmc?.mutation_url && !variant.cmc?.sample_ratio && TABLE_EMPTY_PLACE_HOLDER}
           </>
         ),

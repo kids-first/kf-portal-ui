@@ -103,7 +103,7 @@ export default function VariantSomaticEntity() {
 
         <EntityTable
           id={SectionId.FREQUENCY}
-          columns={getFrequencyItems(studies.data || [])}
+          columns={getFrequencyItems({ isSomatic: true, studies: studies.data || [] })}
           data={variantStudies}
           title={intl.get('screen.variants.frequencies.frequency')}
           header={intl.get('screen.variants.frequencies.kfStudies')}
