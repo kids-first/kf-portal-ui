@@ -17,7 +17,7 @@ import {
   makeClinvarRows,
   makeGenesOrderedRow,
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
-import { Space, Tag } from 'antd';
+import { Space, Tag, Tooltip } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 import { useStudiesEntity } from 'graphql/studies/actions';
 import { useVariantEntity } from 'graphql/variants/actions';
@@ -83,27 +83,29 @@ export default function VariantEntity() {
                 {intl.get('screen.variants.summary.germline')}
               </Tag>
               {getFTEnvVarByKey('SOMATIC') === 'true' && (
-                <Link
-                  to={STATIC_ROUTES.VARIANTS_SOMATIC}
-                  className={styles.somaticLink}
-                  onClick={() =>
-                    addQuery({
-                      queryBuilderId: VARIANT_SOMATIC_REPO_QB_ID,
-                      query: generateQuery({
-                        newFilters: [
-                          generateValueFilter({
-                            field: 'locus',
-                            value: data?.locus ? [data.locus] : [],
-                          }),
-                        ],
-                      }),
-                      setAsActive: true,
-                    })
-                  }
-                >
-                  {intl.get('screen.variants.somaticLink')}{' '}
-                  <ExternalLinkIcon height="16" width="16" />
-                </Link>
+                <Tooltip title={intl.get('screen.variants.somaticLinkTooltip')}>
+                  <Link
+                    to={STATIC_ROUTES.VARIANTS_SOMATIC}
+                    className={styles.somaticLink}
+                    onClick={() =>
+                      addQuery({
+                        queryBuilderId: VARIANT_SOMATIC_REPO_QB_ID,
+                        query: generateQuery({
+                          newFilters: [
+                            generateValueFilter({
+                              field: 'locus',
+                              value: data?.locus ? [data.locus] : [],
+                            }),
+                          ],
+                        }),
+                        setAsActive: true,
+                      })
+                    }
+                  >
+                    {intl.get('screen.variants.somaticLink')}{' '}
+                    <ExternalLinkIcon height="16" width="16" />
+                  </Link>
+                </Tooltip>
               )}
             </>
           }
