@@ -580,6 +580,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
               type={SetType.FILE}
               selectedKeys={selectedKeys}
               key="file-set-management"
+              analyticsPage={intl.get('global.googleAnalytics.fileTab')}
             />,
             <DownloadFileManifestModal
               key="download-file-manifest"

@@ -88,7 +88,11 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
             cancelText: intl.get('components.savedSets.popupConfirm.delete.cancelText'),
             okButtonProps: { danger: true },
             onOk: () => {
-              trackSetActions(SetActionType.REMOVE_SET, data.setType);
+              trackSetActions(
+                SetActionType.REMOVE_SET,
+                intl.get('global.googleAnalytics.dashboard'),
+                data.setType,
+              );
               dispatch(deleteSavedSet(data.id));
             },
           })

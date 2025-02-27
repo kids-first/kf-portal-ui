@@ -38,6 +38,7 @@ type Props = {
   selectedAllResults: boolean;
   selectedKeys?: string[];
   type: SetType;
+  analyticsPage: string;
 };
 
 export enum SetActionType {
@@ -113,6 +114,7 @@ const SetsManagementDropdown = ({
   type,
   selectedKeys = [],
   selectedAllResults,
+  analyticsPage,
 }: Props) => {
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [modal, setModal] = useState<ModalState>(modals.hideAll);
@@ -159,6 +161,7 @@ const SetsManagementDropdown = ({
           }}
           userSets={savedSets}
           type={type}
+          analyticsPage={analyticsPage}
         />
       )}
       <Tooltip

@@ -546,6 +546,7 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
             sqon={getCurrentSqon()}
             type={SetType.PARTICIPANT}
             key="participant-set-management"
+            analyticsPage={intl.get('global.googleAnalytics.participantTab')}
           />,
           <Tooltip
             title={

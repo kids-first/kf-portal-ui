@@ -21,6 +21,7 @@ type OwnProps = {
   filterInfo: FilterInfo;
   filterWithFooter?: boolean;
   filterMapper?: TCustomFilterMapper;
+  analyticsName?: string;
 };
 
 const { Text } = Typography;
@@ -45,6 +46,7 @@ const FilterList = ({
   filterInfo,
   filterWithFooter = true,
   filterMapper,
+  analyticsName,
 }: OwnProps) => {
   const [filtersOpen, setFiltersOpen] = useState<boolean | undefined>(isAllFacetOpen(filterInfo));
 
@@ -98,6 +100,7 @@ const FilterList = ({
                   filterWithFooter={filterWithFooter}
                   categoryIcon={group.categoryIcon}
                   defaults={group.defaults?.[facet]}
+                  analyticsName={analyticsName}
                 />
               ) : (
                 <div key={i + ii} className={cx(styles.customFilterWrapper, styles.filter)}>

@@ -42,6 +42,7 @@ type OwnProps = {
   intervalDecimal?: number;
   filterWithFooter?: boolean;
   categoryIcon?: ReactNode;
+  analyticsName?: string;
 };
 
 const CustomFilterContainer = ({
@@ -59,6 +60,7 @@ const CustomFilterContainer = ({
   intervalDecimal,
   filterWithFooter = true,
   categoryIcon,
+  analyticsName,
 }: OwnProps) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -75,7 +77,7 @@ const CustomFilterContainer = ({
   }, [filtersOpen]);
 
   const onChange = (fg: IFilterGroup, f: IFilter[]) => {
-    trackFacetSearch(index, fg.field);
+    trackFacetSearch(analyticsName || index, fg.field);
 
     updateActiveQueryFilters({
       queryBuilderId,
