@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { singularizeSetTypeIfNeeded } from 'views/DataExploration/components/SetsManagementDropdown';
+import { VARIANT_SOMATIC_SAVED_SETS_FIELD } from 'views/VariantsSomatic/utils/constants';
 
 import { SetType } from 'services/api/savedSet/models';
 
@@ -16,6 +17,10 @@ export const MAX_LENGTH_NAME = 50;
 export const getSetFieldId = (type: SetType) => {
   if (type === SetType.VARIANT) {
     return VARIANT_SAVED_SETS_FIELD;
+  }
+
+  if (type === SetType.SOMATIC) {
+    return VARIANT_SOMATIC_SAVED_SETS_FIELD;
   }
 
   if (type === SetType.BIOSPECIMEN_REQUEST || type === SetType.BIOSPECIMEN) {

@@ -51,4 +51,5 @@ export enum SetType {
   FILE = 'file',
   BIOSPECIMEN = 'biospecimen',
   VARIANT = 'variants',
+  SOMATIC = 'variants_somatic',
 }

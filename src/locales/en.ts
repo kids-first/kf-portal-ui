@@ -973,6 +973,8 @@ const en = {
             files: 'Files',
             participants: 'Participants',
             variants: 'Variants',
+            germline: 'Germline',
+            somatic: 'Somatic',
           },
           title: 'Saved Sets',
           noSavedSets:

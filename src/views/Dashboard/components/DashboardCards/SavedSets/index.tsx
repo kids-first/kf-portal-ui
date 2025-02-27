@@ -9,8 +9,6 @@ import cx from 'classnames';
 import CardErrorPlaceholder from 'views/Dashboard/components/CardErrorPlaceHolder';
 import CardHeader from 'views/Dashboard/components/CardHeader';
 import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
-import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
-import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
@@ -25,12 +23,11 @@ import styles from './index.module.css';
 const { Text } = Typography;
 
 const getItemList = (
-  type: SetType,
+  types: SetType[],
   savedSets: IUserSetOutput[],
   fetchingError: boolean,
   isLoading: boolean,
   icon: ReactElement,
-  queryBuilderId = DATA_EXPLORATION_QB_ID,
 ) => (
   <List<IUserSetOutput>
     className={styles.savedSetsList}
@@ -67,9 +64,9 @@ const getItemList = (
         />
       ),
     }}
-    dataSource={fetchingError ? [] : savedSets.filter((s) => s.setType === type)}
+    dataSource={fetchingError ? [] : savedSets.filter((s) => types.includes(s.setType))}
     loading={isLoading}
-    renderItem={(item) => <ListItem data={item} icon={icon} queryBuilderId={queryBuilderId} />}
+    renderItem={(item) => <ListItem data={item} icon={icon} />}
   />
 );
 
@@ -119,7 +116,7 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
               ),
               key: 'participants',
               children: getItemList(
-                SetType.PARTICIPANT,
+                [SetType.PARTICIPANT],
                 savedSets,
                 fetchingError,
                 isLoading,
@@ -136,7 +133,7 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
               ),
               key: 'biospecimen',
               children: getItemList(
-                SetType.BIOSPECIMEN,
+                [SetType.BIOSPECIMEN],
                 savedSets,
                 fetchingError,
                 isLoading,
@@ -153,7 +150,7 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
               ),
               key: 'files',
               children: getItemList(
-                SetType.FILE,
+                [SetType.FILE],
                 savedSets,
                 fetchingError,
                 isLoading,
@@ -165,17 +162,21 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
                 <div>
                   <LineStyleIcon />
                   {intl.get('screen.dashboard.cards.savedSets.tabs.variants')} (
-                  {savedSets.filter((s) => s.setType === SetType.VARIANT).length})
+                  {
+                    savedSets.filter(
+                      (s) => s.setType === SetType.VARIANT || s.setType === SetType.SOMATIC,
+                    ).length
+                  }
+                  )
                 </div>
               ),
               key: 'variants',
               children: getItemList(
-                SetType.VARIANT,
+                [SetType.VARIANT, SetType.SOMATIC],
                 savedSets,
                 fetchingError,
                 isLoading,
                 <LineStyleIcon />,
-                VARIANT_REPO_QB_ID,
               ),
             },
           ]}

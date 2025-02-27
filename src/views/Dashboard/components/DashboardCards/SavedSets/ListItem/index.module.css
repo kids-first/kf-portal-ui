@@ -4,3 +4,13 @@
 .savedSetListItem .countDisplay .count {
   font-weight: 500;
 }
+
+.somaticTag {
+  margin-left: 16px;
+}
+
+.germlineTag {
+  margin-left: 16px;
+  color: var(--variant-tag-color);
+  background-color: var(--variant-tag-bg-color);
+}
