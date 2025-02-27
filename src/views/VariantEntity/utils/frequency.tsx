@@ -21,7 +21,15 @@ import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from '../index.module.css';
 
-export const getFrequencyItems = (studies: IStudyEntity[]): ProColumnType[] => [
+interface IGetFreqItems {
+  isSomatic?: boolean;
+  studies: IStudyEntity[];
+}
+
+export const getFrequencyItems = ({
+  isSomatic = false,
+  studies,
+}: IGetFreqItems): ProColumnType[] => [
   {
     dataIndex: 'study_code',
     key: 'study_code',
@@ -56,7 +64,14 @@ export const getFrequencyItems = (studies: IStudyEntity[]): ProColumnType[] => [
   },
   {
     title: intl.get('screen.variants.frequencies.participants'),
-    iconTitle: (
+    iconTitle: isSomatic ? (
+      <Tooltip
+        className={styles.dotted}
+        title={intl.get('screen.variantsSomatic.frequencies.participantsTooltip')}
+      >
+        {intl.get('screen.variants.frequencies.participants')}
+      </Tooltip>
+    ) : (
       <Space>
         <Tooltip
           className={styles.dotted}

@@ -58,7 +58,7 @@ describe('Page des variants (Somatic) - Consultation du tableau', () => {
  
   it('Valider les liens disponibles Lien Variant', () => {
     cy.get('tr[data-row-key]').eq(0).contains('chr2:g.240757426C>A').clickAndWait({force: true});
-    cy.get('[class*="Empty_content"]').should('exist');
+    cy.get('[class*="EntityTitle"]').contains('chr2:g.240757426C>A');
   });
  
   it('Valider les liens disponibles Lien dbSNP', () => {

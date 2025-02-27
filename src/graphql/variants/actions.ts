@@ -13,9 +13,15 @@ import {
   IVariantEntityResultTree,
   IVariantResultTree,
   IVariantSomaticEntity,
+  IVariantSomaticEntityResultTree,
   IVariantSomaticResultTree,
 } from './models';
-import { GET_VARIANT_ENTITY, SEARCH_VARIANT_QUERY, SEARCH_VARIANT_SOMATIC_QUERY } from './queries';
+import {
+  GET_VARIANT_ENTITY,
+  GET_VARIANT_SOMATIC_ENTITY,
+  SEARCH_VARIANT_QUERY,
+  SEARCH_VARIANT_SOMATIC_QUERY,
+} from './queries';
 
 export const useVariant = (
   variables?: IQueryVariable,
@@ -76,6 +82,40 @@ export const useVariantEntity = ({
   });
 
   const data = result?.variants?.hits?.edges[0]?.node;
+
+  return {
+    loading,
+    data,
+  };
+};
+
+interface IUseVariantSomaticEntityProps {
+  field: string;
+  values: string[];
+}
+
+interface IUseVariantSomaticEntityReturn {
+  loading: boolean;
+  data?: IVariantSomaticEntity;
+}
+
+export const useVariantSomaticEntity = ({
+  field,
+  values,
+}: IUseVariantSomaticEntityProps): IUseVariantSomaticEntityReturn => {
+  const sqon = {
+    content: [{ content: { field, value: values, index: INDEXES.VARIANTS_SOMATIC }, op: 'in' }],
+    op: 'and',
+  };
+
+  const { loading, result } = useLazyResultQuery<IVariantSomaticEntityResultTree>(
+    GET_VARIANT_SOMATIC_ENTITY,
+    {
+      variables: { sqon },
+    },
+  );
+
+  const data = result?.variants_somatic?.hits?.edges[0]?.node;
 
   return {
     loading,
