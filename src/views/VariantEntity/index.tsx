@@ -22,6 +22,7 @@ import { ArrangerEdge } from 'graphql/models';
 import { useStudiesEntity } from 'graphql/studies/actions';
 import { useVariantEntity } from 'graphql/variants/actions';
 import { IVariantStudyEntity } from 'graphql/variants/models';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { VARIANT_SOMATIC_REPO_QB_ID } from 'views/VariantsSomatic/utils/constants';
 
 import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
@@ -81,27 +82,29 @@ export default function VariantEntity() {
               <Tag className={styles.variantTag}>
                 {intl.get('screen.variants.summary.germline')}
               </Tag>
-              <Link
-                to={STATIC_ROUTES.VARIANTS_SOMATIC}
-                className={styles.somaticLink}
-                onClick={() =>
-                  addQuery({
-                    queryBuilderId: VARIANT_SOMATIC_REPO_QB_ID,
-                    query: generateQuery({
-                      newFilters: [
-                        generateValueFilter({
-                          field: 'locus',
-                          value: data?.locus ? [data.locus] : [],
-                        }),
-                      ],
-                    }),
-                    setAsActive: true,
-                  })
-                }
-              >
-                {intl.get('screen.variants.somaticLink')}{' '}
-                <ExternalLinkIcon height="16" width="16" />
-              </Link>
+              {getFTEnvVarByKey('SOMATIC') === 'true' && (
+                <Link
+                  to={STATIC_ROUTES.VARIANTS_SOMATIC}
+                  className={styles.somaticLink}
+                  onClick={() =>
+                    addQuery({
+                      queryBuilderId: VARIANT_SOMATIC_REPO_QB_ID,
+                      query: generateQuery({
+                        newFilters: [
+                          generateValueFilter({
+                            field: 'locus',
+                            value: data?.locus ? [data.locus] : [],
+                          }),
+                        ],
+                      }),
+                      setAsActive: true,
+                    })
+                  }
+                >
+                  {intl.get('screen.variants.somaticLink')}{' '}
+                  <ExternalLinkIcon height="16" width="16" />
+                </Link>
+              )}
             </>
           }
         />
