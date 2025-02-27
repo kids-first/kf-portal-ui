@@ -14,6 +14,7 @@ import copy from 'copy-to-clipboard';
 import { useVariant } from 'graphql/variants/actions';
 import { IVariantResultTree } from 'graphql/variants/models';
 import { GET_VARIANT_COUNT } from 'graphql/variants/queries';
+import { getFTEnvVarByKey } from 'helpers/EnvVariables';
 import { FilterActionType } from 'views/DataExploration/components/PageContent';
 import {
   DEFAULT_OFFSET,
@@ -164,7 +165,9 @@ const PageContent = ({ variantMapping, filterGroups }: OwnProps) => {
         <Typography.Title className={styles.pageHeaderTitle} level={1}>
           {intl.get('screen.variants.title')}
         </Typography.Title>
-        <HeaderDropdown pageName={intl.get('layout.main.menu.germline')} />
+        {getFTEnvVarByKey('SOMATIC') === 'true' && (
+          <HeaderDropdown pageName={intl.get('layout.main.menu.germline')} />
+        )}
       </div>
 
       <QueryBuilder
