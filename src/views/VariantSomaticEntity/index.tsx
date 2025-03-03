@@ -1,7 +1,10 @@
 import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { NO_GENE } from '@ferlab/ui/core/components/Consequences/Cell';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import EntityPageWrapper, {
   EntityPublicCohortTable,
@@ -14,7 +17,7 @@ import {
   makeClinvarRows,
   makeGenesOrderedRow,
 } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
-import { Space, Tag } from 'antd';
+import { Space, Tag, Tooltip } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 import { useStudiesEntity } from 'graphql/studies/actions';
 import { useVariantSomaticEntity } from 'graphql/variants/actions';
@@ -30,8 +33,11 @@ import {
   getClinvarColumns,
   getGenePhenotypeColumns,
 } from 'views/VariantEntity/utils/pathogenicity';
+import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
+import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
+import { STATIC_ROUTES } from 'utils/routes';
 
 import { getSummaryItems } from './utils/summary';
 
@@ -74,8 +80,33 @@ export default function VariantSomaticEntity() {
           loading={loading}
           tag={
             <>
-              <Tag>{data?.assembly_version}</Tag>
-              <Tag color="cyan">{intl.get('screen.variantsSomatic.summary.somaticTag')}</Tag>
+              <Tag className={styles.titleTag}>{data?.assembly_version}</Tag>
+              <Tag className={styles.titleTag} color="cyan">
+                {intl.get('screen.variantsSomatic.summary.somaticTag')}
+              </Tag>
+              <Tooltip title={intl.get('screen.variantsSomatic.germlineLinkTooltip')}>
+                <Link
+                  to={STATIC_ROUTES.VARIANTS}
+                  className={styles.germlineLink}
+                  onClick={() =>
+                    addQuery({
+                      queryBuilderId: VARIANT_REPO_QB_ID,
+                      query: generateQuery({
+                        newFilters: [
+                          generateValueFilter({
+                            field: 'locus',
+                            value: data?.locus ? [data.locus] : [],
+                          }),
+                        ],
+                      }),
+                      setAsActive: true,
+                    })
+                  }
+                >
+                  {intl.get('screen.variantsSomatic.germlineLink')}{' '}
+                  <ExternalLinkIcon height="16" width="16" />
+                </Link>
+              </Tooltip>
             </>
           }
         />
