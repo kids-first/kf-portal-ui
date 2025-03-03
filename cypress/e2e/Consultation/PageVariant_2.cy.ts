@@ -7,6 +7,13 @@ beforeEach(() => {
 });
 
 describe('Page d\'un variant - Valider les liens disponibles', () => {
+  it('Lien View somatic du Titre', () => {
+    cy.get('[class*="EntityTitle"] [class*="VariantEntity_somaticLink"]').clickAndWait({force: true});
+    cy.get('[class*="VariantsTable_variantTabWrapper"]').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('1-156176849-G-A').should('exist');
+  });
+  
   it('Lien Gene du panneau Summary', () => {
     // data-cy="Summary_Gene_ExternalLink"
     cy.get('a[class*="VariantEntity_symbolLink"]').eq(0).should('have.attr', 'href', 'https://omim.org/entry/607292');
