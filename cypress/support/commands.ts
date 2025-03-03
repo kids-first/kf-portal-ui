@@ -652,7 +652,7 @@ Cypress.Commands.add('waitWhileSpin', (ms: number) => {
 
     return cy.get('body').then(($body) => {
       if ($body.find('.ant-spin-blur').length > 0) {
-        return cy.wait(500).then(checkForSpinners);
+        return cy.wait(1000).then(checkForSpinners);
       };
     });
   };

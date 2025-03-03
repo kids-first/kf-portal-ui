@@ -8,9 +8,11 @@ beforeEach(() => {
 
 describe('Page d\'un variant - Vérifier les informations affichées', () => {
   it('Titre', () => {
-    cy.get('[class*="EntityTitle"]').contains('chr1:g.156176849G>A');
+    cy.get('[class*="EntityTitle"]').contains('chr1:g.156176849G>A').should('exist');
     cy.get('[class*="EntityTitle"] [class*="ant-tag"]').contains('GRCh38').should('exist');
     cy.get('[class*="EntityTitle"] [class*="variantTag"]').contains('Germline').should('exist');
+    cy.get('[class*="EntityTitle"]').contains('View somatic').should('exist');
+    cy.get('[class*="EntityTitle"] [class="anticon"]').should('exist');
   });
 
   it('Panneau Summary', () => {
