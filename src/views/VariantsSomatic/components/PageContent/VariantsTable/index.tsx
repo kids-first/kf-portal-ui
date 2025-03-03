@@ -589,14 +589,13 @@ const VariantsTable = ({
                   setSelectedRows(selectedRows);
                 },
                 extra: [
-                  // TODO SKFP-1443
                   <SetsManagementDropdown
                     idField={VARIANT_SOMATIC_SAVED_SETS_FIELD}
                     results={results}
                     selectedKeys={selectedKeys}
                     selectedAllResults={selectedAllResults}
                     sqon={getCurrentSqon()}
-                    type={SetType.VARIANT}
+                    type={SetType.SOMATIC}
                     key="variants-somatic-set-management"
                     analyticsPage={intl.get('global.googleAnalytics.somatic')}
                   />,

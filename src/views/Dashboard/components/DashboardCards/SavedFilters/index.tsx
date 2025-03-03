@@ -22,21 +22,21 @@ import styles from './index.module.css';
 const { Text } = Typography;
 
 type SavedFilterListWrapperOwnprops = {
-  tag: SavedFilterTag;
+  tags: SavedFilterTag[];
   savedFilters: TUserSavedFilter[];
   fetchingError: boolean;
   isLoading: boolean;
 };
 
 const SavedFilterListWrapper = ({
-  tag,
+  tags,
   savedFilters,
   fetchingError,
   isLoading,
 }: SavedFilterListWrapperOwnprops) => (
   <List<TUserSavedFilter>
     className={styles.savedFiltersList}
-    key={tag}
+    key={tags[0]}
     bordered
     locale={{
       emptyText: fetchingError ? (
@@ -70,7 +70,9 @@ const SavedFilterListWrapper = ({
         />
       ),
     }}
-    dataSource={fetchingError ? [] : savedFilters.filter((s) => s.tag === tag)}
+    dataSource={
+      fetchingError ? [] : savedFilters.filter((s) => tags.includes(s.tag as SavedFilterTag))
+    }
     loading={isLoading}
     renderItem={(item) => <SavedFiltersListItem id={item.id} data={item} />}
   />
@@ -117,7 +119,7 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               label: (
                 <div>
                   <FileSearchOutlined />
-                  Data Exploration (
+                  {intl.get('screen.dashboard.cards.savedFilters.tabs.dataExploration')} (
                   {
                     savedFilters.filter((s) => s.tag === SavedFilterTag.ParticipantsExplorationPage)
                       .length
@@ -127,7 +129,7 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               ),
               children: (
                 <SavedFilterListWrapper
-                  tag={SavedFilterTag.ParticipantsExplorationPage}
+                  tags={[SavedFilterTag.ParticipantsExplorationPage]}
                   savedFilters={savedFilters}
                   fetchingError={fetchingError}
                   isLoading={isLoading}
@@ -139,17 +141,23 @@ const SavedFilters = ({ id, key, className = '' }: DashboardCardProps) => {
               label: (
                 <div>
                   <LineStyleIcon height={14} width={14} />
-                  Variants (
+                  {intl.get('screen.dashboard.cards.savedFilters.tabs.variants')} (
                   {
-                    savedFilters.filter((s) => s.tag === SavedFilterTag.VariantsExplorationPage)
-                      .length
+                    savedFilters.filter(
+                      (s) =>
+                        s.tag === SavedFilterTag.VariantsExplorationPage ||
+                        s.tag === SavedFilterTag.VariantsSomaticExplorationPage,
+                    ).length
                   }
                   )
                 </div>
               ),
               children: (
                 <SavedFilterListWrapper
-                  tag={SavedFilterTag.VariantsExplorationPage}
+                  tags={[
+                    SavedFilterTag.VariantsExplorationPage,
+                    SavedFilterTag.VariantsSomaticExplorationPage,
+                  ]}
                   savedFilters={savedFilters}
                   fetchingError={fetchingError}
                   isLoading={isLoading}

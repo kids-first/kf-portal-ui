@@ -7,7 +7,7 @@ import ListItemWithActions from '@ferlab/ui/core/components/List/ListItemWithAct
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { Col, Modal, Row, Typography } from 'antd';
+import { Col, Modal, Row, Tag, Typography } from 'antd';
 import { formatDistance } from 'date-fns';
 import { INDEXES } from 'graphql/constants';
 import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
@@ -17,8 +17,9 @@ import {
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
 
+import { SET_TYPE_QB_ID_MAPPING } from 'common/queryBuilder';
 import { trackSetActions } from 'services/analytics';
-import { IUserSetOutput } from 'services/api/savedSet/models';
+import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
 import { getSetFieldId } from 'store/savedSet';
 import { deleteSavedSet } from 'store/savedSet/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -32,7 +33,6 @@ import styles from './index.module.css';
 interface OwnProps {
   data: IUserSetOutput;
   icon: ReactElement;
-  queryBuilderId: string;
 }
 
 const { Text } = Typography;
@@ -47,6 +47,8 @@ const redirectToPage = (setType: string) => {
       return STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS;
     case INDEXES.VARIANTS:
       return STATIC_ROUTES.VARIANTS;
+    case INDEXES.VARIANTS_SOMATIC:
+      return STATIC_ROUTES.VARIANTS_SOMATIC;
     default:
       return STATIC_ROUTES.DATA_EXPLORATION;
   }
@@ -65,13 +67,27 @@ const getIdField = (setType: string) => {
   }
 };
 
-const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
+const ListItem = ({ data, icon }: OwnProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onCancel = () => {
     setModalVisible(false);
   };
+
+  let typeTag;
+  if (data.setType === SetType.VARIANT)
+    typeTag = (
+      <Tag className={styles.germlineTag}>
+        {intl.get('screen.dashboard.cards.savedSets.tabs.germline')}
+      </Tag>
+    );
+  else if (data.setType === SetType.SOMATIC)
+    typeTag = (
+      <Tag className={styles.somaticTag} color="cyan">
+        {intl.get('screen.dashboard.cards.savedSets.tabs.somatic')}
+      </Tag>
+    );
 
   return (
     <>
@@ -110,7 +126,7 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
         onClick={() => {
           const setValue = `${SET_ID_PREFIX}${data.id}`;
           addQuery({
-            queryBuilderId: queryBuilderId,
+            queryBuilderId: SET_TYPE_QB_ID_MAPPING[data.setType],
             query: generateQuery({
               newFilters: [
                 generateValueFilter({
@@ -125,7 +141,12 @@ const ListItem = ({ data, icon, queryBuilderId }: OwnProps) => {
 
           navigate(redirectToPage(data.setType));
         }}
-        title={data.tag}
+        title={
+          <>
+            {data.tag}
+            {typeTag && typeTag}
+          </>
+        }
         description={
           data.updated_date
             ? intl.get('screen.dashboard.cards.savedFilters.lastSaved', {

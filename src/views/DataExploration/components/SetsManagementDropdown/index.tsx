@@ -96,8 +96,16 @@ export const itemIcon = (type: string) => {
   }
 };
 
-export const singularizeSetTypeIfNeeded = (type: string) =>
-  type === SetType.VARIANT ? type.slice(0, -1) : type;
+export const singularizeSetTypeIfNeeded = (type: string) => {
+  switch (type) {
+    case SetType.VARIANT:
+      return type.slice(0, -1);
+    case SetType.SOMATIC:
+      return intl.get('screen.variantsSomatic.table.variant').toLowerCase();
+    default:
+      return type;
+  }
+};
 
 const getSetCount = (selected: string[], total: number, allSelected: boolean) => {
   if (allSelected) {
