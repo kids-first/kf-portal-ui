@@ -30,7 +30,6 @@ import {
   IExternalFrequenciesEntity,
   IGeneEntity,
   ITableVariantSomaticEntity,
-  IVariantInternalFrequencies,
   IVariantSomaticEntity,
   IVariantStudyEntity,
 } from 'graphql/variants/models';
@@ -234,6 +233,7 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
   {
     key: 'hotspot',
     title: intl.get('entities.variant_somatic.hotspot'),
+    tooltip: intl.get('screen.variantsSomatic.table.hotspot.tooltip'),
     iconTitle: <FireOutlined className={styles.hotspotHeader} />,
     dataIndex: 'hotspot',
     width: 70,
@@ -270,7 +270,8 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
   },
   {
     key: 'cmc.tier',
-    title: intl.get('entities.variant_somatic.cmcTier'),
+    title: intl.get('screen.variantsSomatic.table.cmc.tier.title'),
+    tooltip: intl.get('screen.variantsSomatic.table.cmc.tier.tooltip'),
     render: (variant: IVariantSomaticEntity) => (
       <Tag color={variant.cmc?.tier ? CmcTierColorMap[variant.cmc.tier] : 'default'}>
         {intl.get(
@@ -422,15 +423,6 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
     width: 125,
   },
   {
-    title: intl.get('screen.variantsSomatic.table.freq.title'),
-    tooltip: intl.get('screen.variantsSomatic.table.freq.tooltip'),
-    dataIndex: ['internal_frequencies', 'total', 'af'],
-    key: 'internal_frequencies.total.af',
-    render: (af: number) =>
-      af && isNumber(af) ? toExponentialNotation(af) : TABLE_EMPTY_PLACE_HOLDER,
-    width: 80,
-  },
-  {
     key: 'genes.consequences.predictions.cadd_phred',
     title: intl.get('screen.variantsSomatic.table.CADD.title'),
     tooltip: intl.get('screen.variantsSomatic.table.CADD.tooltip'),
@@ -490,12 +482,11 @@ const getDefaultColumns = (queryBuilderId: string, noData: boolean = false): Pro
   {
     title: intl.get('screen.variantsSomatic.table.homozygotes.title'),
     tooltip: intl.get('screen.variantsSomatic.table.homozygotes.tooltip'),
-    dataIndex: 'internal_frequencies',
     defaultHidden: true,
-    key: 'internal_frequencies.total.hom',
-    render: (internalFrequencies: IVariantInternalFrequencies) =>
-      internalFrequencies.total.hom || internalFrequencies.total.hom === 0
-        ? numberWithCommas(internalFrequencies.total.hom)
+    key: 'hom',
+    render: (v: IVariantSomaticEntity) =>
+      v.internal_frequencies?.total?.hom || v.internal_frequencies?.total?.hom === 0
+        ? numberWithCommas(v.internal_frequencies.total.hom)
         : TABLE_EMPTY_PLACE_HOLDER,
     width: 75,
   },
