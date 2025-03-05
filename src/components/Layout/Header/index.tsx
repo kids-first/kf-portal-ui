@@ -96,45 +96,35 @@ const Header = () => {
               icon={<FileSearchOutlined />}
               title={intl.get('layout.main.menu.explore')}
             />
-            {getFTEnvVarByKey('SOMATIC') !== 'true' && (
-              <HeaderLink
+
+            <Dropdown
+              key="user-menu"
+              trigger={['click']}
+              overlayClassName={styles.dropdown}
+              placement="bottom"
+              menu={{
+                items: [
+                  {
+                    key: 'germline',
+                    label: <Link to={`/variants`}>{intl.get('layout.main.menu.germline')}</Link>,
+                  },
+                  {
+                    key: 'somatic',
+                    label: (
+                      <Link to={`/variants-somatic`}>{intl.get('layout.main.menu.somatic')}</Link>
+                    ),
+                  },
+                ],
+              }}
+            >
+              <Button
+                className={cx(styles.dropdownHeaderBtn, isVariantsActive() ? styles.active : '')}
                 key="variant-data"
-                currentPathName={currentPathName}
-                to={[STATIC_ROUTES.VARIANTS]}
                 icon={<LineStyleIcon />}
-                title={intl.get('layout.main.menu.variants')}
-              />
-            )}
-            {getFTEnvVarByKey('SOMATIC') === 'true' && (
-              <Dropdown
-                key="user-menu"
-                trigger={['click']}
-                overlayClassName={styles.dropdown}
-                placement="bottom"
-                menu={{
-                  items: [
-                    {
-                      key: 'germline',
-                      label: <Link to={`/variants`}>{intl.get('layout.main.menu.germline')}</Link>,
-                    },
-                    {
-                      key: 'somatic',
-                      label: (
-                        <Link to={`/variants-somatic`}>{intl.get('layout.main.menu.somatic')}</Link>
-                      ),
-                    },
-                  ],
-                }}
               >
-                <Button
-                  className={cx(styles.dropdownHeaderBtn, isVariantsActive() ? styles.active : '')}
-                  key="variant-data"
-                  icon={<LineStyleIcon />}
-                >
-                  {intl.get('layout.main.menu.variants')}
-                </Button>
-              </Dropdown>
-            )}
+                {intl.get('layout.main.menu.variants')}
+              </Button>
+            </Dropdown>
           </nav>
         }
         extra={[
