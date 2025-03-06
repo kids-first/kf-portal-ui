@@ -38,11 +38,10 @@ describe('Page des variants (Somatic) - Consultation du tableau', () => {
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(14).contains(/^1$/).should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains(/^1$/).should('exist');
     cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(15).contains('2.98e-3').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('1.49e-3').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(17).contains('10.85').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(18).contains('0.091').should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(19).contains(/^1$/).should('exist');
-    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(20).contains(/^0$/).should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(16).contains('10.85').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(17).contains('0.091').should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(18).contains(/^1$/).should('exist');
+    cy.get('tr[data-row-key]').eq(0).find('[class*="ant-table-cell"]').eq(19).contains(/^0$/).should('exist');
   });
  
   it('Valider l\'icône de sauvegarde des requêtes personnalisées', () => {

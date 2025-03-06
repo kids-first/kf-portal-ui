@@ -1152,7 +1152,7 @@ const en = {
         canonicalTooltip: 'Canonical transcript',
         clinVar: 'ClinVar',
         consequence: 'Consequence',
-        cosmic: 'Cosmic',
+        cosmic: 'COSMIC',
         cosmicTooltip: 'Number of samples in COSMIC with this mutation followed by its ratio',
         ensembl: 'Ensembl',
         hotspot: 'Hotspot',
@@ -1205,6 +1205,9 @@ const en = {
             1: 'Tier 1',
             2: 'Tier 2',
             3: 'Tier 3',
+            title: 'Tier',
+            tooltip:
+              'CMC Tier. Mutation significance. 1 - high significance, 2 - medium significance, 3 - low significance, Other - No predicted significance (other mutations)',
             null: 'ND',
             Other: 'Other',
           },
@@ -1212,10 +1215,6 @@ const en = {
           tooltip: 'Number of samples in COSMIC with this mutation followed by its ratio',
         },
         dbsnp: 'dbSNP',
-        freq: {
-          title: 'Freq.',
-          tooltip: 'Frequency of the variant across Kids First cohorts',
-        },
         gene: 'Gene',
         gnomAD: {
           title: 'gnomAD',
@@ -1228,6 +1227,9 @@ const en = {
         homozygotes: {
           title: 'Homo.',
           tooltip: '# of homozygotes',
+        },
+        hotspot: {
+          tooltip: 'Hotspot Cancer',
         },
         mane: 'MANE',
         mostDeleteriousConsequence: {

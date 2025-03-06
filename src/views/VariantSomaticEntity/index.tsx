@@ -76,6 +76,7 @@ export default function VariantSomaticEntity() {
       <div className={styles.contentWrapper}>
         <EntityTitle
           text={data?.hgvsg}
+          textWithTooltip={true}
           icon={<LineStyleIcon className={styles.titleIcon} />}
           loading={loading}
           tag={
