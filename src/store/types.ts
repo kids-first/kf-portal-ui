@@ -9,6 +9,7 @@ import { RemoteInitialState } from './remote';
 import { ReportInitialState } from './report';
 import { SavedFilterInitialState } from './savedFilter';
 import { SavedSetInitialState } from './savedSet';
+import { VennInitialState } from './venn';
 
 export type RootState = {
   global: GlobalInitialState;
@@ -21,4 +22,5 @@ export type RootState = {
   remote: RemoteInitialState;
   passport: PassportInitialState;
   community: CommunityInitialState;
+  venn: VennInitialState;
 };

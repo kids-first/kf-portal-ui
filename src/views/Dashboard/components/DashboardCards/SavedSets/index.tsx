@@ -64,7 +64,9 @@ const getItemList = (
         />
       ),
     }}
-    dataSource={fetchingError ? [] : savedSets.filter((s) => types.includes(s.setType))}
+    dataSource={
+      fetchingError ? [] : savedSets.filter((s) => types.includes(s.setType) && !s.is_invisible)
+    }
     loading={isLoading}
     renderItem={(item) => <ListItem data={item} icon={icon} />}
   />
@@ -111,7 +113,11 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
                 <div>
                   <UserOutlined />
                   {intl.get('screen.dashboard.cards.savedSets.tabs.participants')} (
-                  {savedSets.filter((s) => s.setType === SetType.PARTICIPANT).length})
+                  {
+                    savedSets.filter((s) => s.setType === SetType.PARTICIPANT && !s.is_invisible)
+                      .length
+                  }
+                  )
                 </div>
               ),
               key: 'participants',
@@ -128,7 +134,11 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
                 <div>
                   <ExperimentOutlined />
                   {intl.get('screen.dashboard.cards.savedSets.tabs.biospecimens')} (
-                  {savedSets.filter((s) => s.setType === SetType.BIOSPECIMEN).length})
+                  {
+                    savedSets.filter((s) => s.setType === SetType.BIOSPECIMEN && !s.is_invisible)
+                      .length
+                  }
+                  )
                 </div>
               ),
               key: 'biospecimen',
@@ -145,7 +155,7 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
                 <div>
                   <FileTextOutlined />
                   {intl.get('screen.dashboard.cards.savedSets.tabs.files')} (
-                  {savedSets.filter((s) => s.setType === SetType.FILE).length})
+                  {savedSets.filter((s) => s.setType === SetType.FILE && !s.is_invisible).length})
                 </div>
               ),
               key: 'files',
@@ -163,9 +173,9 @@ const SavedSets = ({ id, key, className = '' }: DashboardCardProps) => {
                   <LineStyleIcon />
                   {intl.get('screen.dashboard.cards.savedSets.tabs.variants')} (
                   {
-                    savedSets.filter(
-                      (s) => s.setType === SetType.VARIANT || s.setType === SetType.SOMATIC,
-                    ).length
+                    savedSets
+                      .filter((s) => s.setType === SetType.VARIANT || s.setType === SetType.SOMATIC)
+                      .filter((s) => !s.is_invisible).length
                   }
                   )
                 </div>

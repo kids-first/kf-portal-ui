@@ -201,3 +201,57 @@ export const trackPublicStudies = (btnName: string) => {
     });
   }
 };
+
+export const trackCompareQueries = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Data Exploration',
+      action: 'Data Exploration - Compare Queries',
+    });
+  }
+};
+
+export const trackVennViewInExploration = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Venn',
+      action: 'Venn - View in Exploration ',
+    });
+  }
+};
+
+export const trackVennClickOnSections = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Venn',
+      action: 'Venn - Click on sections',
+    });
+  }
+};
+
+export const trackVennViewSet = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Venn',
+      action: 'Venn modal - View set',
+    });
+  }
+};
+
+export const trackVennCancel = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Venn',
+      action: 'Venn modal - Cancel',
+    });
+  }
+};
+
+export const trackVennViewEntityCounts = (type: string, entityCount: number) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Venn',
+      action: `View ${entityCount} counts`,
+    });
+  }
+};
