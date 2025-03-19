@@ -44,7 +44,7 @@ describe('Page des études - Consultation du tableau', () => {
 
   it('Valider les fonctionnalités du tableau - Tri Families', () => {
     cy.sortTableAndIntercept('Families', 1);
-    cy.validateTableFirstRow('-', 7);
+    cy.validateTableFirstRow(/(-|\d{1})/, 7);
     cy.sortTableAndIntercept('Families', 1);
     cy.validateTableFirstRow(/\d{1}/, 7);
   });

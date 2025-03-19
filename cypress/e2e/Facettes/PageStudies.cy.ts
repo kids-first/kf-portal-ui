@@ -38,10 +38,10 @@ describe('Page des études - Filtrer avec les facettes', () => {
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
 
-  it('Family Data - False', () => {
+  it('Family Data - True', () => {
     cy.get('[aria-expanded="true"] [data-cy="FilterContainer_Family Data"]').should('exist');
     cy.wait(1000);
-    cy.clickAndIntercept('input[type="radio"][value="false"]', 'POST', '**/graphql', 7);
+    cy.clickAndIntercept('input[type="radio"][value="true"]', 'POST', '**/graphql', 7);
     cy.validateTableResultsCount(/\d{1} Result/);
     cy.validateFacetRank(4, 'Family Data');
   });
