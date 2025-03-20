@@ -65,7 +65,7 @@ const Search = <T,>({
         },
       });
 
-      setOptions(setCurrentOptions(data.data, search));
+      setOptions(setCurrentOptions(data?.data || [], search));
     }
   };
 
