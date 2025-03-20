@@ -168,6 +168,7 @@ const en = {
       emptyMessage: 'Min. 3 characters',
       menuTitle: 'Quick filter',
       placeholder: 'Search...',
+      placeholderError: 'Forbidden characters  ( ) [ ] | \\',
       results: 'Results',
     },
     googleAnalytics: {

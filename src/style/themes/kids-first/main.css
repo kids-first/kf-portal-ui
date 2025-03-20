@@ -5,7 +5,9 @@
   font-weight: 400 600 900;
   font-display: swap;
   src: local('Rubik'), url(./fonts/Rubik.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
 }
 
 @font-face {
@@ -14,7 +16,9 @@
   font-weight: 400 600 900;
   font-display: swap;
   src: local('Source Sans Pro'), url(./fonts/SourceSansPro.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
 }
 
 :root {
@@ -68,10 +72,13 @@
   --sidebar-menu-item-border-focus-color: var(--gray-1);
   --sidebar-quick-filter-input-box-shadow-hover: 0 0 0 2px var(--cyan-8);
   --sidebar-quick-filter-input-box-shadow-focus: 0 0 0 2px var(--cyan-7), 0 0 0 3px var(--gray-1);
+  --sidebar-quick-filter-input-box-shadow-focus-error: 0 0 0 2px var(--red-7), 0 0 0 3px white;
   --sidebar-quick-filter-input-placeholder-color: var(--gray-6);
   --sidebar-quick-filter-input-text-color: var(--gray-8);
   --sidebar-quick-filter-input-border-color-focus: var(--blue-8);
+  --sidebar-quick-filter-input-border-color-focus-error: var(--red-7);
   --sidebar-quick-filter-higlight-color: var(--cyan-2);
+  --sidebar-quick-filter-popover-placeholder-error: var(--red-7);
   --sidebar-content-panel-padding: 16px;
   --sidebar-content-panel-width: 320px;
   --sidebar-content-panel-close-icon-color: var(--gray-8);
@@ -80,7 +87,7 @@
   --sidebar-content-panel-close-icon-width: 16px;
   --grid-card-light-background-color: white;
   --grid-card-shade-background-color: var(--gray-2);
-  --empty-image-color: var(--geekblue-2); 
+  --empty-image-color: var(--geekblue-2);
   --empty-content-color: var(--gray-6);
   --collapse-light-background-color: white;
   --collapse-shade-background-color: var(--gray-3);

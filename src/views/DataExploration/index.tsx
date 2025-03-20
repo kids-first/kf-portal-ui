@@ -562,6 +562,7 @@ const DataExploration = () => {
           isLoading,
           forceClose,
           handleClear: () => setForceClose(false),
+          forbiddenChars: ['(', ')', '[', ']', '\\', '|'],
         }}
       />
       <ScrollContent id={SCROLL_WRAPPER_ID} className={styles.scrollContent}>
