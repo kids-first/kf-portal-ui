@@ -1,3 +1,13 @@
+## VERSION 5.12.0 (2025-03-20) 
+
+### Feature
+
+- [SKFP-1429](https://d3b.atlassian.net/browse/SKFP-1429) Feature: [Variant] Implement Somatic Variant Exploration page
+- [SKFP-1432](https://d3b.atlassian.net/browse/SKFP-1432) Feature: [Entity] Implement Somatic Variant Entity page
+- [SKFP-1441](https://d3b.atlassian.net/browse/SKFP-1441) Feature: [Entity] Add Search in Somatic DB to Germline entity page
+- [SKFP-1443](https://d3b.atlassian.net/browse/SKFP-1443) Feature: [Dashboard] Add Saved Filter and Saved Set for both somatic and germline distinguished by tags
+- [SKFP-1448](https://d3b.atlassian.net/browse/SKFP-1448) Feature: [Variant] Add dropdown select beside title of page to change from somatic to gremlin database
+
 ## VERSION 5.11.0 (2025-02-26)
 
 ### Features
