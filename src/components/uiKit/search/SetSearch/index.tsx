@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import {
@@ -9,9 +10,10 @@ import { findSqonValueByField } from '@ferlab/ui/core/data/sqon/utils';
 import { Select, Tag } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { intersection } from 'lodash';
-import { useEffect, useState } from 'react';
+
 import { SetType } from 'services/api/savedSet/models';
 import { getSetFieldId, useSavedSet } from 'store/savedSet';
+
 import SearchLabel from '../SearchLabel';
 
 import styles from './index.module.css';
@@ -54,7 +56,7 @@ const SetSearch = ({
   const [values, setValues] = useState<string[]>(getDefaultValues(getSetFieldId(type), sqon));
   const [options, setOptions] = useState<OptionsType[]>([]);
 
-  const getTypedSets = () => savedSets.filter((set) => set.setType === type);
+  const getTypedSets = () => savedSets.filter((set) => set.setType === type && !set.is_invisible);
 
   const getSetName = (setId: string) => getTypedSets().find(({ id }) => id === setId)?.tag;
 

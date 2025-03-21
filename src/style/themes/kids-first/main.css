@@ -127,6 +127,14 @@
   --default-page-content-padding: 16px 24px;
   --main-header-height: 64px;
   --community-profile-banner-btn: var(--cyan-4);
+  --venn-chart-table-title: var(--geekblue-7);
+  --venn-chart-outline: var(--gray-6);
+  --venn-chart-fill: var(--gray-1);
+  --venn-chart-fill-hover: var(--blue-1);
+  --venn-chart-fill-active: var(--blue-3);
+  --venn-chart-legend: var(--gray-8);
+  --venn-chart-legend-disabled: var(--gray-6);
+  --venn-chart-fill-disabled: var(--gray-3);
 }
 
 html {

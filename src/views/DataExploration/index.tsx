@@ -231,7 +231,6 @@ const filterGroups: {
 
 const DataExploration = () => {
   const dispatch = useDispatch();
-  const { tab } = useParams<{ tab: string }>();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const participantMappingResults = useGetExtendedMappings(INDEXES.PARTICIPANT);
   const fileMappingResults = useGetExtendedMappings(INDEXES.FILE);
@@ -551,7 +550,7 @@ const DataExploration = () => {
       />
       <SidebarMenu
         className={styles.sideMenu}
-        menuItems={menuItems} /* defaultSelectedKey={tab} */
+        menuItems={menuItems}
         quickFilter={{
           dictionary: getFiltersDictionary(),
           handleFacetClick,
@@ -570,7 +569,6 @@ const DataExploration = () => {
           fileMapping={fileMappingResults}
           biospecimenMapping={biospecimenMappingResults}
           participantMapping={participantMappingResults}
-          tabId={tab}
           filterGroups={filterGroups}
         />
       </ScrollContent>

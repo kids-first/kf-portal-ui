@@ -108,6 +108,7 @@ const CreateEditModal = ({
             tag: nameSet,
             type: setType,
             onCompleteCb: onSuccessCreateCb,
+            is_invisible: false,
           }),
         );
       }

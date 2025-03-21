@@ -7,6 +7,7 @@ export type TUserSavedSet = ISavedSet & {
   keycloak_id: string;
   creation_date: string;
   updated_date: string;
+  is_invisible: boolean;
 };
 
 export type TUpdateSet = ISavedSet & {
@@ -20,6 +21,7 @@ export type IUserSetOutput = {
   tag: string;
   size: number;
   setType: SetType;
+  is_invisible: boolean;
 };
 
 export type TBiospecimenRequest = {

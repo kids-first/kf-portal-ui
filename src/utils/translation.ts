@@ -250,6 +250,8 @@ export const getQueryBuilderDictionary = (
   actions: {
     new: intl.get('components.querybuilder.actions.new'),
     addQuery: intl.get('components.querybuilder.actions.addQuery'),
+    compare: intl.get('components.querybuilder.actions.compare'),
+    compareTooltips: intl.get('components.querybuilder.actions.compareTooltips'),
     combine: intl.get('components.querybuilder.actions.combine'),
     labels: intl.get('components.querybuilder.actions.labels'),
     changeOperatorTo: intl.get('components.querybuilder.actions.changeOperatorTo'),
