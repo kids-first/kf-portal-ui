@@ -35,7 +35,8 @@
     "theme:antd": "npm run theme:antd:main",
     "theme:antd:main": "lessc --js src/style/themes/kids-first/antd-kids-first-theme.less src/style/themes/kids-first/dist/antd.css",
     "theme:colors": "ferlabui-less2css src/style/themes/kids-first/ colors.less",
-    "prepare": "npm run theme",
+    "commit:lint": "commitlint --edit $1",
+    "prepare": "npm run theme; husky install",
     "storybook": "DISABLE_ESLINT_PLUGIN=true start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "cypress:install": "cypress install",
@@ -146,6 +147,8 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@ferlab/eslint-config": "^1.0.1",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.2",
@@ -168,6 +171,7 @@
     "eslint-plugin-sort-destructure-keys": "^1.6.0",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "exceljs": "^4.4.0",
+    "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
     "less": "^4.2.2",
     "nodemon": "^2.0.22",
