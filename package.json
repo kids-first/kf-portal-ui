@@ -36,7 +36,7 @@
     "theme:antd:main": "lessc --js src/style/themes/kids-first/antd-kids-first-theme.less src/style/themes/kids-first/dist/antd.css",
     "theme:colors": "ferlabui-less2css src/style/themes/kids-first/ colors.less",
     "commit:lint": "commitlint --edit $1",
-    "prepare": "npm run theme; husky install",
+    "prepare": "husky",
     "storybook": "DISABLE_ESLINT_PLUGIN=true start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "cypress:install": "cypress install",
