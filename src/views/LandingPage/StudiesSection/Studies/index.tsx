@@ -5,7 +5,7 @@ import LandingPageButton from 'views/LandingPage/Components/LandingPageButton';
 import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 
 import studiesSvg from 'components/assets/kf-portal-icons_studies_2.svg';
-import { trackViewAllStudies } from 'services/analytics';
+import { trackLandingPageViewAllStudies } from 'services/analytics';
 import { useGlobals } from 'store/global';
 import { STATIC_ROUTES } from 'utils/routes';
 
@@ -17,7 +17,7 @@ const StudiesSection = () => {
   const { stats } = useGlobals();
   const navigate = useNavigate();
   const studiesBtnOnClick = () => {
-    trackViewAllStudies();
+    trackLandingPageViewAllStudies();
     navigate(STATIC_ROUTES.PUBLIC_STUDIES);
   };
 
