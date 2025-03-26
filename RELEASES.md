@@ -1,3 +1,11 @@
+## VERSION 5.12.1 (2025-03-26)
+
+### Technical / Other Changes:
+- [SKFP-1415](https://d3b.atlassian.net/browse/SKFP-1415) Issue: [Sentry] Fixed error for UnhandledRejection: Non-Error promise rejection captured with value: true
+- [SKFP-1485](https://d3b.atlassian.net/browse/SKFP-1485) Issue:[Sentry] Fixed regex error when searching in the QuickFilter using special characters
+- [SKFP-1487](https://d3b.atlassian.net/browse/SKFP-1487) Issue:[Sentry] Fixed error on the Global search when data is returned as undefined
+- [SKFP-1488](https://d3b.atlassian.net/browse/SKFP-1488) Issue:[QuickFilter] Fixed regex error when searching in the QuickFilter using special characters *, +, ?
+
 ## VERSION 5.12.0 (2025-03-20) 
 
 ### Feature
