@@ -6,6 +6,11 @@ import About from 'views/LandingPage/Footer/About';
 import FooterCard from 'views/LandingPage/Footer/Card';
 import Socials from 'views/LandingPage/Footer/Socials';
 
+import {
+  trackLandingPageFooterHelpCenter,
+  trackLandingPageFooterPublications,
+} from 'services/analytics';
+
 import styles from './index.module.css';
 
 const Footer = () => {
@@ -21,14 +26,20 @@ const Footer = () => {
             description={intl.get('screen.loginPage.footer.inspiration.description')}
             buttonText={intl.get('screen.loginPage.footer.inspiration.button')}
             external
-            handleClick={() => handleExternalRedirect('https://kidsfirstdrc.org/publications/')}
+            handleClick={() => {
+              trackLandingPageFooterPublications();
+              handleExternalRedirect('https://kidsfirstdrc.org/publications/');
+            }}
           />
           <FooterCard
             title={intl.get('screen.loginPage.footer.answers.title')}
             description={intl.get('screen.loginPage.footer.answers.description')}
             buttonText={intl.get('screen.loginPage.footer.answers.button')}
             external
-            handleClick={() => handleExternalRedirect('https://kidsfirstdrc.org/help-center/')}
+            handleClick={() => {
+              trackLandingPageFooterHelpCenter();
+              handleExternalRedirect('https://kidsfirstdrc.org/help-center/');
+            }}
           />
         </div>
         <Divider className={styles.divider} />

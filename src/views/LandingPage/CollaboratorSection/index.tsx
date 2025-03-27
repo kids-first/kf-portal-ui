@@ -7,6 +7,11 @@ import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 import Cavatica from 'components/assets/cavatica-login-logo.png';
 import GeneticEngineering from 'components/assets/genetic_engineering.png';
 import Pedcbioportal from 'components/assets/pedcbioportal.png';
+import {
+  trackLandingPageCollaboratorCavatica,
+  trackLandingPageCollaboratorPedcBioportal,
+  trackLandingPageCollaboratorVariant,
+} from 'services/analytics';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import { useGlobals } from '../../../store/global';
@@ -48,7 +53,10 @@ const CollaboratorSection = () => {
             )}`}
             description={intl.get('screen.loginPage.collaborationSection.variant.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.variant.button')}
-            handleClick={handleSignin}
+            handleClick={() => {
+              trackLandingPageCollaboratorVariant();
+              handleSignin();
+            }}
           />
           <CollaboratorCard
             alt
@@ -56,7 +64,10 @@ const CollaboratorSection = () => {
             description={intl.get('screen.loginPage.collaborationSection.cavatica.description')}
             buttonText={intl.get('screen.loginPage.collaborationSection.cavatica.button')}
             external
-            handleClick={() => handleExternalRedirect('https://www.cavatica.org/')}
+            handleClick={() => {
+              trackLandingPageCollaboratorCavatica();
+              handleExternalRedirect('https://www.cavatica.org/');
+            }}
           />
           <CollaboratorCard
             icon={<img src={Pedcbioportal} className={styles.logo} />}
@@ -66,7 +77,10 @@ const CollaboratorSection = () => {
             )}
             external
             buttonText={intl.get('screen.loginPage.collaborationSection.pedcbioportal.button')}
-            handleClick={() => handleExternalRedirect('https://pedcbioportal.org/')}
+            handleClick={() => {
+              trackLandingPageCollaboratorPedcBioportal();
+              handleExternalRedirect('https://pedcbioportal.org/');
+            }}
           />
         </div>
       </div>

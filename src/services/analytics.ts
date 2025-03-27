@@ -184,11 +184,83 @@ export const trackKFConnection = (connected: boolean) => {
   }
 };
 
-export const trackViewAllStudies = () => {
+export const trackLandingPageViewAllStudies = () => {
   if (isGaActive) {
     ReactGA.event({
-      category: 'Landing page',
-      action: 'Landing page - View all studies',
+      category: 'Landing',
+      action: 'Landing - View all studies',
+    });
+  }
+};
+
+export const trackLandingPageUpperSectionLogin = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Login',
+    });
+  }
+};
+
+export const trackLandingPageUpperSectionSignUp = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Sign Up',
+    });
+  }
+};
+
+export const trackLandingPageCollaboratorVariant = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Variant ',
+    });
+  }
+};
+
+export const trackLandingPageCollaboratorCavatica = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Get Started (Cavatica)',
+    });
+  }
+};
+
+export const trackLandingPageCollaboratorPedcBioportal = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Get Started (pedcbio)',
+    });
+  }
+};
+
+export const trackLandingPageFooterPublications = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Publications',
+    });
+  }
+};
+
+export const trackLandingPageFooterHelpCenter = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Help Center',
+    });
+  }
+};
+
+export const trackLandingPageFooterSocialEmail = () => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'Landing',
+      action: 'Landing - Email KF',
     });
   }
 };

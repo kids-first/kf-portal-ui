@@ -8,6 +8,10 @@ import LandingPageTitle from 'views/LandingPage/Components/LandingPageTitle';
 import { REDIRECT_URI_KEY } from 'common/constants';
 import logo from 'components/assets/logo.svg';
 import useQueryParams from 'hooks/useQueryParams';
+import {
+  trackLandingPageUpperSectionLogin,
+  trackLandingPageUpperSectionSignUp,
+} from 'services/analytics';
 import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from './index.module.css';
@@ -45,10 +49,23 @@ export const LoginForm = () => {
         </div>
       </div>
       <div className={styles.buttons}>
-        <LandingPageButton alt onClick={handleSignin} size="large">
+        <LandingPageButton
+          alt
+          onClick={() => {
+            trackLandingPageUpperSectionLogin();
+            handleSignin();
+          }}
+          size="large"
+        >
           {intl.get('screen.loginPage.login')}
         </LandingPageButton>
-        <LandingPageButton onClick={handleSignin} size="large">
+        <LandingPageButton
+          onClick={() => {
+            trackLandingPageUpperSectionSignUp();
+            handleSignin();
+          }}
+          size="large"
+        >
           {intl.get('screen.loginPage.signup')}
         </LandingPageButton>
       </div>
