@@ -73,6 +73,7 @@ export default function VariantEntity() {
       <div className={styles.contentWrapper}>
         <EntityTitle
           text={data?.hgvsg}
+          textWithTooltip={true}
           icon={<LineStyleIcon className={styles.titleIcon} />}
           loading={loading}
           tag={
