@@ -7,6 +7,7 @@ import instagram from 'components/assets/instagram.svg';
 import linkedIn from 'components/assets/linkedin-in.svg';
 import twitter from 'components/assets/x-twitter.svg';
 import youtube from 'components/assets/youtube.svg';
+import { trackLandingPageFooterSocialEmail } from 'services/analytics';
 
 import styles from './index.module.css';
 
@@ -36,6 +37,9 @@ const Socials = () => (
       className={styles.email}
       type="primary"
       size="large"
+      onClick={() => {
+        trackLandingPageFooterSocialEmail();
+      }}
       href="mailto:support@kidsfirstdrc.org"
     >
       {intl.get('screen.loginPage.footer.socials.email')}
