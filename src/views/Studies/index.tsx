@@ -95,7 +95,7 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'participant_count',
-    title: 'Participants',
+    title: intl.get('screen.studies.participants'),
     sorter: { multiple: 1 },
     render: (record: IStudyEntity) => {
       const participantCount = record.participant_count;
@@ -128,7 +128,7 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'biospecimen_count',
-    title: 'Biospecimens',
+    title: intl.get('screen.studies.biospecimens'),
     sorter: { multiple: 1 },
     render: (record: IStudyEntity) => {
       const biospecimenCount = record.biospecimen_count;
@@ -161,7 +161,7 @@ const columns: ProColumnType<any>[] = [
   },
   {
     key: 'family_count',
-    title: 'Families',
+    title: intl.get('screen.studies.families'),
     dataIndex: 'family_count',
     sorter: { multiple: 1 },
     render: (family_count: number) =>

@@ -27,4 +27,13 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.validateTableFirstRow('-', 10);
     cy.validateTableFirstRow('-', 11);
   });
+
+  it('Summary', () => {
+    cy.get('tfoot [class*="summaryTitle"]').eq(0).contains('Participants').should('exist');
+    cy.get('tfoot [class*="summarySum"]').eq(0).contains(/\d{1}/).should('exist');
+    cy.get('tfoot [class*="summaryTitle"]').eq(1).contains('Biospecimens').should('exist');
+    cy.get('tfoot [class*="summarySum"]').eq(1).contains(/\d{1}/).should('exist');
+    cy.get('tfoot [class*="summaryTitle"]').eq(2).contains('Families').should('exist');
+    cy.get('tfoot [class*="summarySum"]').eq(2).contains(/\d{1}/).should('exist');
+  });
 });
