@@ -1566,6 +1566,9 @@ const en = {
         title: 'Search by study code, study name, dbGaP',
         placeholder: 'KF-AIS, Kids First: Genomics of Orthopaedic Disease Program, phs001410',
       },
+      participants: 'Participants',
+      families: 'Families',
+      biospecimens: 'Biospecimens',
     },
     dataExploration: {
       title: 'Data Exploration',
