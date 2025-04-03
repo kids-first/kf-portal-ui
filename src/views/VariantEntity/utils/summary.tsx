@@ -171,7 +171,7 @@ export const getSummaryItems = (variant?: IVariantEntity) => {
                 (
                 <ExternalLink
                   className={style.ensemblLink}
-                  href={`https://www.ensembl.org/id/${pickedConsequence.node.ensembl_transcript_id}`}
+                  href={`https://www.ensembl.org/id/${geneWithPickedConsequence.ensembl_gene_id}`}
                 >
                   {intl.get('screen.variants.summary.ensembl')}
                 </ExternalLink>
