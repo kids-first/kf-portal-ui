@@ -160,8 +160,8 @@ export const getSummaryItems = (variant?: IVariantSomaticEntity) => {
               <ExternalLink
                 className={style.symbolLink}
                 href={
-                  geneWithPickedConsequence.omim_gene_id
-                    ? `https://omim.org/entry/${geneWithPickedConsequence.omim_gene_id}`
+                  geneWithPickedConsequence.ensembl_gene_id
+                    ? `https://omim.org/entry/${geneWithPickedConsequence.ensembl_gene_id}`
                     : // eslint-disable-next-line max-len
                       `https://www.omim.org/search?index=entry&start=1&limit=10&sort=score+desc%2C+prefix_sort+desc&search=${geneWithPickedConsequence.symbol}`
                 }
