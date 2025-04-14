@@ -5,6 +5,8 @@ import { IUser } from '@ferlab/ui/core/pages/CommunityPage/type';
 
 export type TUser = IUser & {
   is_public: boolean;
+  newsletter_email?: string | null;
+  newsletter_subscription_status?: string;
 };
 
 export type TUserTableConfig = {
@@ -61,3 +63,4 @@ export enum TUserGroups {
 
 export type TUserInsert = Omit<TUser, 'id' | 'keycloak_id' | 'creation_date' | 'update_date'>;
 export type TUserUpdate = Partial<TUserInsert>;
+export type TNewsletterSubscribe = Pick<TUser, 'newsletter_email'>;

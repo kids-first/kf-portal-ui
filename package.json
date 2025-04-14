@@ -4,7 +4,7 @@
   "private": true,
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
-      "npm run lint&fix"
+      "npm run lint:fix"
     ],
     "!src/cypress/**/*.{ts,tsx}": "echo Ignoring Cypress files"
   },

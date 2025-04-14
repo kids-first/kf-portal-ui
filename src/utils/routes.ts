@@ -9,6 +9,8 @@ export enum STATIC_ROUTES {
   PROFILE_VIEW = '/profile/view',
   COMMUNITY = '/community',
   ERROR = '/error',
+  ANALYTICS = '/analytics',
+  ANALYTICS_SET_OPERATIONS = '/analytics/set-operations',
 
   DATA_EXPLORATION = '/data-exploration',
   DATA_EXPLORATION_SUMMARY = '/data-exploration/summary',
