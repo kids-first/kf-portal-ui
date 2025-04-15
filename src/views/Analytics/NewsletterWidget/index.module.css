@@ -1,0 +1,57 @@
+.widget {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+  border-color: var(--blue-4);
+  background: linear-gradient(0deg, #f0f9ff 0%, #f0f9ff 100%),
+    linear-gradient(346deg, #1c3863 20.53%, #0369a1 100.05%);
+}
+.widget *[class$='-card-body'] {
+  width: 100%;
+}
+
+.spaceWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  align-self: stretch;
+  align-items: flex-start;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: stretch;
+  align-items: center;
+}
+
+.description {
+  text-align: center;
+  margin-bottom: 0 !important;
+}
+
+.form {
+  width: 100%;
+}
+
+.formItems {
+  display: flex;
+  gap: 8px;
+  flex-direction: row;
+  width: 100%;
+}

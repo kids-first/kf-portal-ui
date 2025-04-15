@@ -2,6 +2,7 @@ import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import {
+  DotChartOutlined,
   DownOutlined,
   FileSearchOutlined,
   HomeOutlined,
@@ -28,6 +29,7 @@ import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import HeaderLink from 'components/Layout/Header/HeaderLink';
 import styles from 'components/Layout/Header/index.module.css';
 import GradientAccent from 'components/uiKit/GradientAccent';
+import useFeatureToggle from 'hooks/useFeatureToggle';
 import { trackLogout, trackVisitResources } from 'services/analytics';
 import { SUPPORT_EMAIL } from 'store/report/thunks';
 import { useUser } from 'store/user';
@@ -38,6 +40,7 @@ const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
+const ANALYTICS = 'ANALYTICS';
 
 const { Text } = Typography;
 
@@ -53,6 +56,8 @@ const Header = () => {
     const to: string[] = [STATIC_ROUTES.VARIANTS, STATIC_ROUTES.VARIANTS_SOMATIC];
     return to.includes(currentPathName);
   };
+
+  const { isEnabled: isAnalyticsActive } = useFeatureToggle(ANALYTICS);
 
   return (
     <>
@@ -125,6 +130,16 @@ const Header = () => {
                 {intl.get('layout.main.menu.variants')}
               </Button>
             </Dropdown>
+
+            {isAnalyticsActive && (
+              <HeaderLink
+                key="analytics"
+                currentPathName={currentPathName}
+                to={STATIC_ROUTES.ANALYTICS}
+                icon={<DotChartOutlined />}
+                title={intl.get('layout.main.menu.analytics')}
+              />
+            )}
           </nav>
         }
         extra={[

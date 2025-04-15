@@ -1,9 +1,10 @@
+import intl from 'react-intl-universal';
 import { TColumnStates } from '@ferlab/ui/core/components/ProTable/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { cloneDeep, get, keys, merge, set } from 'lodash';
 
 import { UserApi } from 'services/api/user';
-import { TUser, TUserConfig, TUserUpdate } from 'services/api/user/models';
+import { TNewsletterSubscribe, TUser, TUserConfig, TUserUpdate } from 'services/api/user/models';
 import { globalActions } from 'store/global';
 import { RootState } from 'store/types';
 import { handleThunkApiReponse } from 'store/utils';
@@ -119,7 +120,7 @@ const deleteUser = createAsyncThunk<void, void, { rejectValue: string; state: Ro
       data: undefined,
       reject: thunkAPI.rejectWithValue,
       onSuccess: () => thunkAPI.dispatch(userActions.cleanLogout()),
-      onError: (_) =>
+      onError: () =>
         thunkAPI.dispatch(
           globalActions.displayNotification({
             type: 'error',
@@ -131,4 +132,45 @@ const deleteUser = createAsyncThunk<void, void, { rejectValue: string; state: Ro
   },
 );
 
-export { fetchUser, updateUser, updateUserConfig, deleteUser };
+const subscribeNewsletter = createAsyncThunk<
+  TUser,
+  {
+    data: TNewsletterSubscribe;
+    callback?: () => void;
+  },
+  { rejectValue: string }
+>(
+  'user/update',
+  async (args, thunkAPI) => {
+    const { data, error } = await UserApi.subscribeNewsletter({
+      newsletter_email: args.data.newsletter_email,
+    });
+
+    if (error) {
+      thunkAPI.dispatch(
+        globalActions.displayNotification({
+          type: 'error',
+          message: intl.get('screen.analytics.newsletter.error.title'),
+          description: intl.get('screen.analytics.newsletter.error.subscribeMessage'),
+        }),
+      );
+    }
+
+    return handleThunkApiReponse({
+      error,
+      data: data!,
+      reject: thunkAPI.rejectWithValue,
+      onSuccess: args.callback,
+    });
+  },
+  {
+    condition: (args) => {
+      if (Object.keys(args.data).length < 1) {
+        return false;
+      }
+      return true;
+    },
+  },
+);
+
+export { fetchUser, updateUser, updateUserConfig, deleteUser, subscribeNewsletter };

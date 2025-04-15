@@ -1,0 +1,28 @@
+.widget {
+  flex: 1 0 0;
+}
+
+.widget *[class$='-card-body'] {
+  padding-bottom: 16px;
+}
+
+.spaceWrapper {
+  width: 100%;
+}
+
+.contentWrapper {
+  margin-bottom: 8px;
+}
+
+.description {
+  margin-bottom: 0 !important;
+}
+
+.divider {
+  margin: 0;
+}
+
+.footerWrapper {
+  display: flex;
+  justify-content: end;
+}
