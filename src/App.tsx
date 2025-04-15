@@ -27,6 +27,7 @@ import { FENCE_NAMES } from 'common/fenceTypes';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Spinner from 'components/uiKit/Spinner';
 import NotificationContextHolder from 'components/utils/NotificationContextHolder';
+import useFeatureToggle from 'hooks/useFeatureToggle';
 import { initGa } from 'services/analytics';
 import { useLang } from 'store/global';
 import { DYNAMIC_ROUTES, STATIC_ROUTES } from 'utils/routes';
@@ -44,6 +45,8 @@ const VariantsSomatic = loadable(() => import('views/VariantsSomatic'), loadable
 const VariantSomaticEntity = loadable(() => import('views/VariantSomaticEntity'), loadableProps);
 const FileEntity = loadable(() => import('views/FileEntity'), loadableProps);
 const ProfileSettings = loadable(() => import('views/Profile/Settings'), loadableProps);
+const Analytics = loadable(() => import('views/Analytics'), loadableProps);
+const SetOperations = loadable(() => import('views/Analytics/SetOperations'), loadableProps);
 
 initGa();
 
@@ -51,6 +54,8 @@ const App = () => {
   const lang = useLang();
   const { keycloak, initialized } = useKeycloak();
   const keycloakIsReady = keycloak && initialized;
+
+  const { isEnabled: isAnalyticsActive } = useFeatureToggle('ANALYTICS');
 
   setLocale(lang);
 
@@ -202,6 +207,27 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   />
+
+                  {isAnalyticsActive && (
+                    <>
+                      <Route
+                        path={STATIC_ROUTES.ANALYTICS}
+                        element={
+                          <ProtectedRoute>
+                            <Analytics />
+                          </ProtectedRoute>
+                        }
+                      />
+                      <Route
+                        path={STATIC_ROUTES.ANALYTICS_SET_OPERATIONS}
+                        element={
+                          <ProtectedRoute>
+                            <SetOperations />
+                          </ProtectedRoute>
+                        }
+                      />
+                    </>
+                  )}
 
                   <Route
                     path={STATIC_ROUTES.FAKE_STORYBOOK}

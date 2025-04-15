@@ -27,8 +27,11 @@ describe('Navigation', () => {
     cy.get('[class*="PageContent_pageHeaderTitle"]').contains('Variant Exploration').should('exist');
     cy.get('[class*="PageContent_pageHeader"]').contains('Somatic').should('exist');
 
-    cy.get('button[class*="HeaderLink_headerBtn"]').eq(3).clickAndWait(); // data-cy="HeaderLink_Community"
-    cy.get('[class*="CommunityPage_title"]').should('exist'); // data-cy="Title_Community"
+    cy.get('button[class*="HeaderLink_headerBtn"]').eq(3).clickAndWait();
+    cy.get('[class*="Analytics_title"]').should('exist');
+
+    cy.get('button[class*="HeaderLink_headerBtn"]').eq(4).clickAndWait();
+    cy.get('[class*="CommunityPage_title"]').should('exist');
 
     cy.get('[class*="Header_userName"]').clickAndWait({force: true}); // data-cy="UserName"
     cy.get('[data-menu-id*="profile_settings"] [href]').clickAndWait({force: true});

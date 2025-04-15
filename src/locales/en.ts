@@ -516,6 +516,7 @@ const en = {
   layout: {
     main: {
       menu: {
+        analytics: 'Analysis',
         biospecimen: 'Biospecimen',
         community: 'Community',
         contact: 'Contact',
@@ -1939,6 +1940,34 @@ const en = {
         close: 'Close',
       },
       viewAllBtn: 'View all studies',
+    },
+    analytics: {
+      title: 'Analytics',
+      subtitle: 'Quickly visualize and interpret Kids First Data with our user-friendly tools.',
+      newsletter: {
+        title: 'New Analysis Tools Coming Soon!',
+        description:
+          'Join our mailing list to receive updates and be among the first to try our upcoming tools.',
+        form: {
+          placeholder: 'email@example.com',
+          buttonLabel: 'Get updates',
+        },
+        error: {
+          title: 'Newsletter Subscription',
+          subscribeMessage:
+            'We encountered an issue while trying to subscribe you to our newsletter. Please try again later from your profile page or contact support for assistance.',
+        },
+      },
+      setOperations: {
+        title: 'Set Operations',
+        description:
+          'Visualize intersections between virtual cohorts saved as sets of the same type using an interactive Venn diagram.',
+        tags: {
+          clinical: 'Clinical',
+          genomics: 'Genomics',
+        },
+        launch: 'Launch',
+      },
     },
   },
   facets: {

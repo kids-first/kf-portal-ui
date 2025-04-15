@@ -4,9 +4,10 @@ import EnvironmentVariables from 'helpers/EnvVariables';
 import { KidsFirstKeycloakTokenParsed } from 'common/tokenTypes';
 import { sendRequest } from 'services/api';
 
-import { TUser, TUserInsert, TUserUpdate } from './models';
+import { TNewsletterSubscribe, TUser, TUserInsert, TUserUpdate } from './models';
 
 export const USER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/user`;
+export const NEWSLETTER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/newsletter`;
 
 export const headers = () => ({
   'Content-Type': 'application/json',
@@ -76,10 +77,19 @@ const deleteUser = () =>
     headers: headers(),
   });
 
+const subscribeNewsletter = (body: TNewsletterSubscribe) =>
+  sendRequest<TUser>({
+    method: 'PUT',
+    url: `${NEWSLETTER_API_URL}/subscribe`,
+    headers: headers(),
+    data: body,
+  });
+
 export const UserApi = {
   search,
   fetch,
   create,
   update,
   deleteUser,
+  subscribeNewsletter,
 };

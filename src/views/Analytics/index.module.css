@@ -1,0 +1,21 @@
+.analyticsWrapper {
+  width: 100%;
+  padding: 16px 24px 24px;
+}
+
+.analytics {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.title {
+  margin-bottom: 0 !important;
+}
+.subtitle {
+  color: var(--gray-7);
+}
+
+.widgetsWrapper {
+  display: flex;
+  gap: 24px;
+}
