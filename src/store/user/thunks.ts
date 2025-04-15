@@ -168,6 +168,7 @@ const subscribeNewsletter = createAsyncThunk<
       if (Object.keys(args.data).length < 1) {
         return false;
       }
+      return true;
     },
   },
 );
