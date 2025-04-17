@@ -2043,6 +2043,7 @@ const en = {
           files: 'Data Files',
           participants: 'Participants',
           variants: 'Variants',
+          somatics: 'Somatic Variants',
           title: 'Set operations',
           ok: 'Close',
           download: {

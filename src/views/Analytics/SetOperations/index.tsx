@@ -20,6 +20,10 @@ import {
   TAB_IDS,
 } from 'views/DataExploration/utils/constant';
 import { VARIANT_REPO_QB_ID, VARIANT_SAVED_SETS_FIELD } from 'views/Variants/utils/constants';
+import {
+  VARIANT_SOMATIC_REPO_QB_ID,
+  VARIANT_SOMATIC_SAVED_SETS_FIELD,
+} from 'views/VariantsSomatic/utils/constants';
 
 import LineStyleIcon from 'components/Icons/LineStyleIcon';
 import useGetExtendedMappings from 'hooks/graphql/useGetExtendedMappings';
@@ -67,6 +71,8 @@ const getIdField = (setType: string) => {
       return BIOSPECIMENS_SAVED_SETS_FIELD;
     case INDEXES.VARIANTS:
       return VARIANT_SAVED_SETS_FIELD;
+    case INDEXES.VARIANTS_SOMATIC:
+      return VARIANT_SOMATIC_SAVED_SETS_FIELD;
     default:
       return 'fhir_id';
   }
@@ -239,6 +245,16 @@ const SetOperations = () => {
                 sets.forEach((set) => {
                   sqonGroupFilter.content.push(resolveSyntheticSqon(sqons, set.entitySqon));
                 });
+                const qbId = (() => {
+                  switch (index) {
+                    case INDEXES.VARIANTS:
+                      return VARIANT_REPO_QB_ID;
+                    case INDEXES.VARIANTS_SOMATIC:
+                      return VARIANT_SOMATIC_REPO_QB_ID;
+                    default:
+                      return DATA_EXPLORATION_QB_ID;
+                  }
+                })();
 
                 await dispatch(
                   createSavedSet({
@@ -254,8 +270,7 @@ const SetOperations = () => {
                       if (!data) return;
                       const setValue = `${SET_ID_PREFIX}${data.id}`;
                       addQuery({
-                        queryBuilderId:
-                          index === INDEXES.VARIANTS ? VARIANT_REPO_QB_ID : DATA_EXPLORATION_QB_ID,
+                        queryBuilderId: qbId,
                         query: generateQuery({
                           newFilters: [
                             generateValueFilter({
@@ -284,6 +299,9 @@ const SetOperations = () => {
                     break;
                   case INDEXES.VARIANTS:
                     navigate(`${STATIC_ROUTES.VARIANTS}/${window.location.search}`);
+                    break;
+                  case INDEXES.VARIANTS_SOMATIC:
+                    navigate(`${STATIC_ROUTES.VARIANTS_SOMATIC}/${window.location.search}`);
                     break;
                   case INDEXES.PARTICIPANT:
                   default:
@@ -318,6 +336,12 @@ const SetOperations = () => {
                 {
                   label: intl.get('screen.analytics.setOperations.venn.variants'),
                   value: INDEXES.VARIANTS,
+                  tabId: undefined,
+                  icon: <LineStyleIcon height={16} width={16} />,
+                },
+                {
+                  label: intl.get('screen.analytics.setOperations.venn.somatics'),
+                  value: INDEXES.VARIANTS_SOMATIC,
                   tabId: undefined,
                   icon: <LineStyleIcon height={16} width={16} />,
                 },
