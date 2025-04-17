@@ -1,6 +1,6 @@
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
-import { INDEXES } from 'graphql/constants';
+import { ES_INDEXES, INDEXES } from 'graphql/constants';
 import { IParticipantResultTree } from 'graphql/participants/models';
 import { MATCH_PARTICIPANT_QUERY } from 'graphql/participants/queries';
 import EnvironmentVariables from 'helpers/EnvVariables';
@@ -44,7 +44,11 @@ const fetchStudiesStatistics = () =>
     headers: headers(),
   });
 
-const fetchVenn = (qbSqons: ISyntheticSqon[], entitySqons: ISyntheticSqon[], index: INDEXES) =>
+const fetchVenn = (
+  qbSqons: ISyntheticSqon[],
+  entitySqons: ISyntheticSqon[],
+  index: INDEXES | ES_INDEXES,
+) =>
   sendRequest<any>({
     method: 'POST',
     url: `${ARRANGER_API_URL}/venn`,
