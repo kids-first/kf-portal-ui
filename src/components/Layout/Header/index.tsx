@@ -40,14 +40,8 @@ const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
-<<<<<<< HEAD
-const BANNER_PERSISTENT_KEY = FT_FLAG_KEY + '_PERSISTENT';
-||||||| parent of 96405387 (feat(banner): SJIP-1511 add persistent wide banner (#4232))
-const ANALYTICS = 'ANALYTICS';
-=======
 const ANALYTICS = 'ANALYTICS';
 const BANNER_PERSISTENT_KEY = FT_FLAG_KEY + '_PERSISTENT';
->>>>>>> 96405387 (feat(banner): SJIP-1511 add persistent wide banner (#4232))
 
 const { Text } = Typography;
 
