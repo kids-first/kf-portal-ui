@@ -1,3 +1,8 @@
+## VERSION 5.13.0 (2025-03-26)
+
+### Feature
+- [SKFP-1511](https://d3b.atlassian.net/browse/SKFP-1511) Feature: [Sitewide] Add an alert banner that will be present across the portal
+
 ## VERSION 5.12.1 (2025-03-26)
 
 ### Technical / Other Changes:
