@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import useQueryParams from 'hooks/useQueryParams';
 import { isBoolTrue } from 'helpers';
+
+import useQueryParams from 'hooks/useQueryParams';
 
 const FEATURE_TOGGLE_PREFIX = 'REACT_APP_FT_';
 
@@ -17,6 +18,11 @@ const useFeatureToggle = (name: string) => {
     localStorage.setItem(name, 'false');
   };
 
+  const persistentFeature = () => {
+    setEnabled(true);
+    localStorage.setItem(name, 'true');
+  };
+
   useEffect(() => {
     const paramFlag = queryParams.get(name);
     const isCached = localStorage.getItem(name) !== null;
@@ -28,6 +34,7 @@ const useFeatureToggle = (name: string) => {
   return {
     isEnabled,
     hideFeature,
+    persistentFeature,
     clear: () => {
       setEnabled(false);
       localStorage.removeItem(name);

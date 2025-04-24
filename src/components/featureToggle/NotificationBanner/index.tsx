@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Alert, AlertProps } from 'antd';
 import parseHTML from 'html-react-parser';
 
@@ -8,7 +9,13 @@ type OwnProps = Omit<AlertProps, 'afterClose'> & {
 };
 
 const NotificationBanner = ({ featureToggleKey, ...rest }: OwnProps) => {
-  const { isEnabled, hideFeature } = useFeatureToggle(featureToggleKey);
+  const { isEnabled, hideFeature, persistentFeature } = useFeatureToggle(featureToggleKey);
+
+  useEffect(() => {
+    if (!rest.closable) {
+      persistentFeature();
+    }
+  }, []);
 
   return (
     <>
