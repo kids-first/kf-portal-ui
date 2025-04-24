@@ -328,11 +328,16 @@ const PageContent = ({
             column: intl.get('screen.dataExploration.venn.query.column'),
             title: intl.get('screen.dataExploration.venn.query.title'),
           },
+          download: {
+            png: intl.get('screen.dataExploration.venn.download.png'),
+            fileNameDateFormat: intl.get('screen.dataExploration.venn.download.fileNameDateFormat'),
+            fileNameTemplate: intl.get('screen.dataExploration.venn.download.fileNameTemplate'),
+          },
           set: {
             column: intl.get('screen.dataExploration.venn.set.column'),
             title: intl.get('screen.dataExploration.venn.set.title'),
             footer: intl.get('screen.dataExploration.venn.set.footer'),
-            tooltips: intl.get('screen.dataExploration.venn.set.tooltips'),
+            tooltipDataExplo: intl.get('screen.dataExploration.venn.set.tooltips'),
             max: intl.get('screen.dataExploration.venn.set.max'),
           },
           save: {
@@ -343,7 +348,7 @@ const PageContent = ({
             permittedCharacters: intl.get('components.savedSets.modal.errors.permittedCharacters'),
             alreadyExist: intl.get('screen.dataExploration.venn.save.alreadyExist'),
             requiredField: intl.get('global.forms.errors.requiredField'),
-            title: intl.get('screen.dataExploration.venn.save.title'),
+            titleData: intl.get('screen.dataExploration.venn.save.title'),
             getEntityText: (index: string, entityCount: number) => {
               if (index === INDEXES.BIOSPECIMEN) {
                 return intl.get('screen.dataExploration.venn.save.entity.biospecimens', {

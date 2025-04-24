@@ -1,0 +1,85 @@
+.contentWrapper {
+  padding: 0 24px 24px;
+}
+
+.content {
+  border-radius: 2px;
+  border: 1px solid var(--gray-4);
+  background: var(--gray-1);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.noSetWrapper,
+.selectSetWrapper {
+  max-width: 800px;
+  padding: 24px;
+}
+.noSetContent,
+.selectSetContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+.noSetTitle {
+  margin-bottom: 16px;
+  color: var(--gray-7) !important;
+}
+.noSetDescription {
+  color: var(--gray-7);
+}
+
+.selectSetForm {
+  width: 400px;
+}
+.selectEntity {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.inputLabel {
+  padding-bottom: 4px;
+}
+.option {
+  color: var(--gray-9);
+}
+.iconOption {
+  margin-right: 8px;
+  color: var(--gray-7);
+  font-size: 16px;
+}
+
+.selectSets {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.filterTag {
+  display: flex;
+  align-items: center;
+  background-color: var(--blue-8);
+  color: var(--gray-1);
+  margin-right: 3px !important;
+}
+.filterTag > * {
+  color: var(--gray-1);
+}
+.filterTag .filterTagText {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compareWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.disabledOption {
+  color: var(--gray-6) !important;
+}
+
+.vennChart {
+  width: 50% !important;
+}
