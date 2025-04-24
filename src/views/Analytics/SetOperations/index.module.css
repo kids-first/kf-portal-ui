@@ -79,3 +79,7 @@
 .disabledOption {
   color: var(--gray-6) !important;
 }
+
+.vennChart {
+  width: 50% !important;
+}

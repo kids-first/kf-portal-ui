@@ -2033,7 +2033,9 @@ const en = {
               files:
                 'You have selected {count, plural, =0 {# data file} =1 {# data file} other {# data files}}',
               variants:
-                'You have selected {count, plural, =0 {# variant} =1 {# variant} other {# variants}}',
+                'You have selected {count, plural, =0 {# variant} =1 {# variant} other {# variants}} (Germline)',
+              somatics:
+                'You have selected {count, plural, =0 {# variant} =1 {# variant} other {# variants}} (Somatic)',
             },
             titleData: 'View in data exploration',
             titleVariant: 'View in variant exploration',

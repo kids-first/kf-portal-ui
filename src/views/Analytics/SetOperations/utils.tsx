@@ -36,6 +36,10 @@ export const vennDictionary: TVennChartDictionary = {
         return intl.get('screen.analytics.setOperations.venn.save.entity.variants', {
           count: entityCount,
         });
+      } else if (index === INDEXES.VARIANTS_SOMATIC) {
+        return intl.get('screen.analytics.setOperations.venn.save.entity.somatics', {
+          count: entityCount,
+        });
       } else {
         return intl.get('screen.analytics.setOperations.venn.save.entity.participants', {
           count: entityCount,
