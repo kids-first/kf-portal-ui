@@ -1,4 +1,4 @@
-import { ISetOperation, ISummaryData } from '@ferlab/ui/core/components/Charts/Venn';
+import { ISetOperation, ISummaryData } from '@ferlab/ui/core/components/Charts/Venn/utils';
 import { INDEXES } from 'graphql/constants';
 
 export type initialState = {

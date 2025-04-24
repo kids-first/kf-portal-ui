@@ -8,3 +8,8 @@ export enum INDEXES {
   VARIANTS_SOMATIC = 'variants_somatic',
   GENES = 'genes',
 }
+
+export enum ES_INDEXES {
+  VARIANT = 'variant',
+  VARIANT_SOMATIC = 'variant_somatic',
+}
