@@ -38,6 +38,7 @@ const iconSize = { width: 14, height: 14 };
 const FT_FLAG_KEY = 'SITE_WIDE_BANNER';
 const BANNER_TYPE_KEY = FT_FLAG_KEY + '_TYPE';
 const BANNER_MSG_KEY = FT_FLAG_KEY + '_MSG';
+const BANNER_PERSISTENT_KEY = FT_FLAG_KEY + '_PERSISTENT';
 
 const { Text } = Typography;
 
@@ -63,7 +64,7 @@ const Header = () => {
         type={getFTEnvVarByKey<AlterTypes>(BANNER_TYPE_KEY, 'warning')}
         message={getFTEnvVarByKey(BANNER_MSG_KEY)}
         banner
-        closable
+        closable={getFTEnvVarByKey(BANNER_PERSISTENT_KEY) === 'false'}
       />
       <PageHeader
         title={<KidsFirstIcon className={styles.logo} />}
