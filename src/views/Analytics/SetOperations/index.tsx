@@ -349,7 +349,6 @@ const SetOperations = () => {
               ]}
               queryPillDictionary={getQueryBuilderDictionary(facetTransResolver, savedSets)}
               savedSets={savedSets}
-              size={{ width: 830, height: 498 }}
               summary={vennData.summary}
               chartClassname={styles.vennChart}
             />

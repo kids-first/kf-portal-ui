@@ -393,7 +393,8 @@ const en = {
         addQuery: 'New query',
         combine: 'Combine',
         compare: 'Compare',
-        compareTooltips: 'Available with 2 or 3 queries selected',
+        compareLessTooltips: 'Select 2 or 3 queries to generate a Venn diagram comparison',
+        compareGreaterTooltips: 'Only available with 2 or 3 queries selected',
         labels: 'Labels',
         delete: {
           title: 'Delete this query?',
