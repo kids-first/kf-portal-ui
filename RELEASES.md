@@ -1,3 +1,16 @@
+## VERSION 5.14.0 (2025-05-19)
+
+### Feature
+
+- [SKFP-1504](https://d3b.atlassian.net/browse/SKFP-1504) Feature: [Analytics] Create a Set Operations application to generate a Venn Diagram from Saved set input
+
+### Technical / Other Changes:
+
+- [SKFP-1475](https://d3b.atlassian.net/browse/SKFP-1475) Refactor: [Variant Entity] Set an ellipsis with tooltip on variant id title after 40 characters 
+- [SKFP-1501](https://d3b.atlassian.net/browse/SKFP-1501) Fix: [Registration] sign up form
+- [SKFP-1513](https://d3b.atlassian.net/browse/SKFP-1513) Refactor: [Analytics] Make chart responsive
+- [SKFP-1514](https://d3b.atlassian.net/browse/SKFP-1514) Refactor: [Data Exploration] Always display the Compare button in the Data Exploration
+
 ## VERSION 5.13.0 (2025-03-26)
 
 ### Feature
