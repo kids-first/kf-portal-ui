@@ -1,4 +1,5 @@
 import intl from 'react-intl-universal';
+import LegendSymbol from '@ferlab/ui/core/components/Charts/LegendSymbol';
 import PieChart from '@ferlab/ui/core/components/Charts/Pie';
 import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
@@ -76,12 +77,13 @@ const StudiesGraphCard = () => {
           legends={[
             {
               anchor: 'bottom',
+              symbolShape: (props) => <LegendSymbol {...props} data={data} />,
               translateX: -310,
               translateY: 92,
               direction: 'column',
               itemWidth: 100,
-              itemHeight: 15,
-              itemsSpacing: 2,
+              itemHeight: 16,
+              itemsSpacing: 4,
             },
           ]}
         />
