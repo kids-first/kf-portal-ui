@@ -1,9 +1,11 @@
+import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
 import EnvironmentVariables from 'helpers/EnvVariables';
 
 import { sendRequest } from 'services/api';
 
 import {
   IUserSetOutput,
+  IUserSetOutputAlias,
   TBiospecimenRequest,
   TUserSavedSet,
   TUserSavedSetInsert,
@@ -22,6 +24,16 @@ const fetchAll = () =>
     method: 'GET',
     url: SETS_API_URL,
     headers: headers(),
+  });
+
+const fetchSetsAliases = (sqon: ISyntheticSqon[]) =>
+  sendRequest<{ data: IUserSetOutputAlias[] }>({
+    method: 'POST',
+    url: `${SETS_API_URL}/aliases`,
+    headers: headers(),
+    data: {
+      queries: sqon,
+    },
   });
 
 const shareById = (id: string) =>
@@ -78,6 +90,7 @@ const destroy = (id: string) =>
 
 export const SavedSetApi = {
   fetchAll,
+  fetchSetsAliases,
   fetchById,
   create,
   update,

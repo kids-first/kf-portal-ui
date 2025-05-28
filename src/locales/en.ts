@@ -874,15 +874,6 @@ const en = {
             existingNameError: 'A biospecimen request with this name already exists.',
             maximumLength: 'characters maximum',
           },
-          shareModal: {
-            title: 'Share link to biospecimen request?',
-            cancelText: 'Cancel',
-            okText: 'Copy link',
-            content:
-              'Note that anyone with this link will have access to:<ul><li>The biospecimen request title</li><li>The list of biospecimens in the request</li></ul>',
-            firstPoint: 'The biospecimen request title',
-            secondPoint: 'The list of biospecimens in the request',
-          },
           shareLink: {
             success: { title: 'Success', description: 'Link copied to clipboard' },
             error: { title: 'Error', description: 'Unable to copy link to clipboard' },
