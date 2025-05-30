@@ -113,7 +113,6 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
         );
       }}
       handleListItemShare={async (id: string) => {
-        // call back to change sharedpublicly boolean
         copy(
           `${window.location.protocol}//${window.location.host}` +
             `${STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}?${SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY}=${id}`,
