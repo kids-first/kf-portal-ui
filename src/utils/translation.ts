@@ -4,7 +4,7 @@ import { IProTableDictionary } from '@ferlab/ui/core/components/ProTable/types';
 import { IDictionary as QueryBuilderDict } from '@ferlab/ui/core/components/QueryBuilder/types';
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 
-import { IUserSetOutput } from 'services/api/savedSet/models';
+import { IUserSetOutput, IUserSetOutputAlias } from 'services/api/savedSet/models';
 
 import { numberWithCommas } from './string';
 
@@ -118,6 +118,7 @@ export const getFiltersDictionary = (): FiltersDict => ({
 export const getQueryBuilderDictionary = (
   facetResolver: (key: string) => React.ReactNode,
   savedSets?: IUserSetOutput[],
+  alias?: IUserSetOutputAlias[],
 ): QueryBuilderDict => ({
   queryBuilderHeader: {
     modal: {
@@ -200,7 +201,15 @@ export const getQueryBuilderDictionary = (
     facet: facetResolver,
     setNameResolver: (setId: string) => {
       const set = savedSets?.find((set) => set.id === setId.replace(SET_ID_PREFIX, ''));
-      return set ? set.tag : setId;
+      if (set && set.tag) {
+        return set.tag;
+      }
+      const aliasSetId = alias?.find((a) => a.setId === setId);
+      if (aliasSetId) {
+        return aliasSetId.alias;
+      }
+
+      return setId;
     },
     facetValueMapping: {
       variant_external_reference: {

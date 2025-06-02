@@ -12,7 +12,6 @@ import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/ut
 import copy from 'copy-to-clipboard';
 import { formatDistance } from 'date-fns';
 
-import { SavedSetApi } from '../../../../../services/api/savedSet';
 import { SetType } from '../../../../../services/api/savedSet/models';
 import { globalActions } from '../../../../../store/global/slice';
 import { SUPPORT_EMAIL } from '../../../../../store/report/thunks';
@@ -100,14 +99,6 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
               'screen.dashboard.cards.biospecimenRequest.popupConfirm.delete.cancelText',
             ),
           },
-          share: {
-            title: intl.get('screen.dashboard.cards.biospecimenRequest.shareModal.title'),
-            okText: intl.get('screen.dashboard.cards.biospecimenRequest.shareModal.okText'),
-            content: intl.getHTML('screen.dashboard.cards.biospecimenRequest.shareModal.content'),
-            cancelText: intl.getHTML(
-              'screen.dashboard.cards.biospecimenRequest.shareModal.cancelText',
-            ),
-          },
         },
       }}
       handleListItemEdit={(id: string, name: string, callback: () => void) => {
@@ -123,32 +114,16 @@ const BiospecimenRequests = ({ id, className = '' }: DashboardCardProps) => {
       }}
       handleListItemShare={async (id: string) => {
         // call back to change sharedpublicly boolean
-        const { data } = await SavedSetApi.shareById(id);
-        if (data) {
-          copy(
-            `${window.location.protocol}//${window.location.host}` +
-              `${STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}?${SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY}=${id}`,
-          );
-          dispatch(
-            globalActions.displayNotification({
-              type: 'success',
-              message: intl.get(
-                'screen.dashboard.cards.biospecimenRequest.shareLink.success.title',
-              ),
-              description: intl.get(
-                'screen.dashboard.cards.biospecimenRequest.shareLink.success.description',
-              ),
-            }),
-          );
-          return;
-        }
-
+        copy(
+          `${window.location.protocol}//${window.location.host}` +
+            `${STATIC_ROUTES.DATA_EXPLORATION_BIOSPECIMENS}?${SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY}=${id}`,
+        );
         dispatch(
           globalActions.displayNotification({
-            type: 'error',
-            message: intl.get('screen.dashboard.cards.biospecimenRequest.shareLink.error.title'),
+            type: 'success',
+            message: intl.get('screen.dashboard.cards.biospecimenRequest.shareLink.success.title'),
             description: intl.get(
-              'screen.dashboard.cards.biospecimenRequest.shareLink.error.description',
+              'screen.dashboard.cards.biospecimenRequest.shareLink.success.description',
             ),
           }),
         );

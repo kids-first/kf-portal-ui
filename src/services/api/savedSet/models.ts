@@ -15,6 +15,11 @@ export type TUpdateSet = ISavedSet & {
   newTag?: string;
 };
 
+export type IUserSetOutputAlias = {
+  setId: string;
+  alias: string;
+};
+
 export type IUserSetOutput = {
   updated_date?: string;
   id: string;
