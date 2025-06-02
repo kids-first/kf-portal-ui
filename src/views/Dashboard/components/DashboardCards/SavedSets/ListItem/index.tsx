@@ -8,6 +8,7 @@ import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQuery
 import { SET_ID_PREFIX } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { Col, Modal, Row, Tag, Typography } from 'antd';
+import copy from 'copy-to-clipboard';
 import { formatDistance } from 'date-fns';
 import { INDEXES } from 'graphql/constants';
 import { SetActionType } from 'views/DataExploration/components/SetsManagementDropdown';
@@ -17,9 +18,11 @@ import {
   PARTICIPANTS_SAVED_SETS_FIELD,
 } from 'views/DataExploration/utils/constant';
 
+import { SHARED_SET_ID_QUERY_PARAM_KEY, SHARED_SET_TYPE_QUERY_PARAM_KEY } from 'common/constants';
 import { SET_TYPE_QB_ID_MAPPING } from 'common/queryBuilder';
 import { trackSetActions } from 'services/analytics';
 import { IUserSetOutput, SetType } from 'services/api/savedSet/models';
+import { globalActions } from 'store/global';
 import { getSetFieldId } from 'store/savedSet';
 import { deleteSavedSet } from 'store/savedSet/thunks';
 import { STATIC_ROUTES } from 'utils/routes';
@@ -113,6 +116,26 @@ const ListItem = ({ data, icon }: OwnProps) => {
             },
           })
         }
+        onShare={() => {
+          copy(
+            `${window.location.protocol}//${window.location.host}${redirectToPage(
+              data.setType,
+            )}?${SHARED_SET_ID_QUERY_PARAM_KEY}=${data.id}&${SHARED_SET_TYPE_QUERY_PARAM_KEY}=${
+              data.setType
+            }`,
+          );
+          dispatch(
+            globalActions.displayNotification({
+              type: 'success',
+              message: intl.get(
+                'screen.dashboard.cards.biospecimenRequest.shareLink.success.title',
+              ),
+              description: intl.get(
+                'screen.dashboard.cards.biospecimenRequest.shareLink.success.description',
+              ),
+            }),
+          );
+        }}
         extra={
           <Row gutter={8} className={styles.countDisplay}>
             <Col>
