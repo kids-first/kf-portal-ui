@@ -32,10 +32,10 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(1).contains('BS_KB0GZCP5').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(2).contains('KF-CDH').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(3).contains('DNA').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(4).contains('SA_G25NX8A9').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(4).contains('SA_KWGNQQQ8').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(5).contains('Leukocyte').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(6).contains('PT_01236T3G').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(7).contains('SA_G25NX8A9').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(7).contains('SA_KWGNQQQ8').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(8).contains('Leukocyte').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(9).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(10).contains('Normal').should('exist');
@@ -50,7 +50,7 @@ describe('Page Data Exploration (Biospecimens) - Vérifier les informations affi
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(19).contains('phs001110.c1').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(20).contains('GRU').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(21).contains('-').should('exist');
-    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(22).contains('-').should('exist');
+    cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(22).contains('Not Reported').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(23).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(24).contains('-').should('exist');
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(25).contains('-').should('exist');

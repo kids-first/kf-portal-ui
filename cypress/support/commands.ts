@@ -565,7 +565,7 @@ Cypress.Commands.add('visitParticipantEntity', (participantId: string) => {
   cy.visitAndIntercept(`/participants/${participantId}`,
                        'POST',
                        '**/graphql',
-                       6);
+                       5);
 });
 
 Cypress.Commands.add('visitProfileSettingsPage', () => {

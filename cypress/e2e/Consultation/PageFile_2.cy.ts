@@ -74,7 +74,7 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(3).contains('BS_VMV9N2KK').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(4).contains('DNA').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(5).contains('Leukocyte').should('exist');
-    cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(6).contains('SA_3RKYWRX4').should('exist');
+    cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(6).contains('SA_37W3KNMD').should('exist');
     cy.get('[data-row-key="BS_VMV9N2KK"] td[class="ant-table-cell"]').eq(7).contains('667').should('exist');
   });
 
