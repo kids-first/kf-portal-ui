@@ -54,7 +54,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
   });
   
   it('Panneau Family (sans famille)', () => {
-    cy.visitParticipantEntity('PT_0YQCPJVV');
+    cy.visitParticipantEntity('PT_004FA63H');
     cy.get('[id="family"]').should('not.exist');
   });
 
@@ -164,7 +164,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[id="biospecimen"] thead th[class="ant-table-cell"]').eq(21).contains('Parent Sample Type').should('exist');
     cy.get('[id="biospecimen"] thead th[class="ant-table-cell"]').eq(22).contains('External Collection ID').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(0).contains('BS_KB0GZCP5').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(1).contains('SA_G25NX8A9').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(1).contains('SA_KWGNQQQ8').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(2).contains('DNA').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(3).contains('Leukocyte').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(4).contains('-').should('exist');
@@ -183,7 +183,7 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(17).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(18).contains('-').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(19).contains('No').should('exist');
-    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(20).contains('SA_G25NX8A9').should('exist');
+    cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(20).contains('SA_KWGNQQQ8').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(21).contains('Leukocyte').should('exist');
     cy.get('[data-row-key="BS_KB0GZCP5"] td[class="ant-table-cell"]').eq(22).contains('-').should('exist');
   });

@@ -19,11 +19,11 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.validateTableFirstRow('Kids First', 2);
     cy.validateTableFirstRow('Birth Defect', 3);
     cy.validateTableFirstRow('phs001110', 4);
-    cy.validateTableFirstRow('2,030', 5);
-    cy.validateTableFirstRow('2,121', 6);
-    cy.validateTableFirstRow('753', 7);
+    cy.validateTableFirstRow('3,959', 5);
+    cy.validateTableFirstRow('4,458', 6);
+    cy.validateTableFirstRow('1,312', 7);
     cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(8).find('[data-icon="check"]').should('exist');
-    cy.validateTableFirstRow('-', 9);
+    cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(9).find('[data-icon="check"]').should('exist');
     cy.validateTableFirstRow('-', 10);
     cy.validateTableFirstRow('-', 11);
   });

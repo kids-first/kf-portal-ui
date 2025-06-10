@@ -75,7 +75,7 @@ describe('Page d\'un participant - Valider les liens disponibles', () => {
     cy.get('[id="biospecimen"] td[class="ant-table-cell"]').eq(1).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Collection ID').should('exist');
-    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SA G25NX8A9').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SA KWGNQQQ8').should('exist');
   });
 
   it('Lien DataExploration du panneau Files', () => {

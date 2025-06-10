@@ -33,7 +33,7 @@ describe('Page Data Exploration (Biospecimens) - Valider les liens disponibles',
   it('Lien Collection ID du tableau', () => {
     cy.get('tr[class*="ant-table-row"] [class*="ant-table-cell"]').eq(7).find('[href]').clickAndWait({force: true});
     cy.get('[class*="Biospecimens_biospecimenTabWrapper"]').should('exist'); // data-cy="ProTable_Biospecimens"
-    cy.validatePillSelectedQuery('Collection ID', ['SA G25NX8A9']);
+    cy.validatePillSelectedQuery('Collection ID', ['SA KWGNQQQ8']);
   });
 
   it('Lien Files du tableau', () => {

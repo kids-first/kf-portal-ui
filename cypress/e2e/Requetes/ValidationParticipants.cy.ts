@@ -8,8 +8,8 @@ beforeEach(() => {
 
 describe('Page Data Exploration - Requêtes', () => {
   it('Validation Facette numérique ou No Data', () => {
-    cy.validateTotalSelectedQuery('3,976');
-    cy.validateTableResultsCount('3,976');
+    cy.validateTotalSelectedQuery('5,905');
+    cy.validateTableResultsCount('5,905');
   });
 
   it('Validation Facette numérique OU Facette standard', () => {
@@ -18,8 +18,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(3).clickAndWait();
     cy.wait('@getPOSTgraphql');
 
-    cy.validateTotalSelectedQuery('3,642');
-    cy.validateTableResultsCount('3,642');
+    cy.validateTotalSelectedQuery('5,559');
+    cy.validateTableResultsCount('5,559');
   });
 
   it('Validation Facette numérique ou No Data ET Facette standard', () => {
@@ -29,8 +29,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(4).clickAndWait();
     cy.wait('@getPOSTgraphql');
 
-    cy.validateTotalSelectedQuery('3,642');
-    cy.validateTableResultsCount('3,642');
+    cy.validateTotalSelectedQuery('5,559');
+    cy.validateTableResultsCount('5,559');
   });
 
   it('Validation Facette standard (Any of)', () => {
@@ -39,8 +39,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(5).clickAndWait();
     cy.wait('@getPOSTgraphql');
 
-    cy.validateTotalSelectedQuery('3,642');
-    cy.validateTableResultsCount('3,642');
+    cy.validateTotalSelectedQuery('5,571');
+    cy.validateTableResultsCount('5,571');
   });
 
   it('Validation Facette standard (All of)', () => {
@@ -49,8 +49,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(6).clickAndWait();
     cy.wait('@getPOSTgraphql');
 
-    cy.validateTotalSelectedQuery('209');
-    cy.validateTableResultsCount('209');
+    cy.validateTotalSelectedQuery('574');
+    cy.validateTableResultsCount('574');
   });
 
   it('Validation Facette standard (None of)', () => {
@@ -59,8 +59,8 @@ describe('Page Data Exploration - Requêtes', () => {
     cy.get('[class*="QueryBar_queryBarWrapper"]').eq(7).clickAndWait();
     cy.wait('@getPOSTgraphql');
 
-    cy.validateTotalSelectedQuery('394');
-    cy.validateTableResultsCount('394');
+    cy.validateTotalSelectedQuery('410');
+    cy.validateTableResultsCount('410');
   });
 
   it('Validation Facette standard (None of) ET Facette numérique', () => {

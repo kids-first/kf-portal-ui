@@ -54,16 +54,16 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
     cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').should('not.exist'); //data-cy="Tag_BS_KB0GZCP5"
   });
 
-  it('Search by collection ID - SA_G25NX8A9', () => {
+  it('Search by collection ID - SA_KWGNQQQ8', () => {
     cy.get('[class*="SearchLabel_title"]').contains('Search by Collection ID').should('exist');
 
-    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'SA_G25NX8A9', 'POST', '*/grapgql', 3, 1);
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_G25NX8A9').should('exist');
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_G25NX8A9').clickAndWait({force: true});
+    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'SA_KWGNQQQ8', 'POST', '*/grapgql', 3, 1);
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_KWGNQQQ8').should('exist');
+    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SA_KWGNQQQ8').clickAndWait({force: true});
 
-    cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').contains('SA_G25NX8A9').should('exist');
+    cy.get('[class*="ant-select-show-search"] [class*="ant-tag"]').contains('SA_KWGNQQQ8').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Collection ID').should('exist');
-    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SA G25NX8A9').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('SA KWGNQQQ8').should('exist');
     cy.validateTableResultsCount(/^1 Result$/);
 
     cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
