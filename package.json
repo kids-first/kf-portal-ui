@@ -151,6 +151,7 @@
     "@commitlint/config-conventional": "^19.8.0",
     "@ferlab/eslint-config": "^1.0.1",
     "@testing-library/user-event": "^13.5.0",
+    "@testquality/cli": "^1.2.3",
     "@types/jest": "^27.0.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
