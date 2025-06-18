@@ -83,7 +83,7 @@ const MostFrequentPhenotypesGraphCard = () => {
       tsvSettings={{
         contentMap: ['label', 'value'],
         data: [phenotypes],
-        headers: ['Value', 'Count'],
+        headers: ['Phenotype (HPO)', 'Count'],
       }}
       modalContent={
         <BarChart

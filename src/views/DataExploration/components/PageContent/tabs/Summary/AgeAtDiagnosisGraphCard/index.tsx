@@ -5,6 +5,7 @@ import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import { RangeOperators } from '@ferlab/ui/core/data/sqon/operators';
 import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
+import { formatAggregationChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import { AGE_AT_DIAGNOSIS_QUERY } from 'graphql/summary/queries';
@@ -106,7 +107,10 @@ const AgeAtDiagnosisGraphCard = () => {
     },
   });
 
-  const ageAtDiagnosisresults = transformAgeAtDiagnosis(result, result?.hits?.total);
+  const ageAtDiagnosisResults = transformAgeAtDiagnosis(
+    result,
+    result?.data?.participant?.['hits']?.total,
+  );
 
   return (
     <ResizableGridCard
@@ -119,11 +123,13 @@ const AgeAtDiagnosisGraphCard = () => {
       downloadSettings={{ png: true, svg: false, tsv: true }}
       headerTitle={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
       tsvSettings={{
-        data: [ageAtDiagnosisresults],
+        contentMap: ['id', 'value', 'frequency'],
+        headers: ['Age At Diagnosis', 'Count', 'Frequency'],
+        data: [formatAggregationChartData(ageAtDiagnosisResults)],
       }}
       modalContent={
         <BarChart
-          data={ageAtDiagnosisresults}
+          data={ageAtDiagnosisResults}
           tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}
           ariaLabel={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
           barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
@@ -155,11 +161,11 @@ const AgeAtDiagnosisGraphCard = () => {
       }}
       content={
         <>
-          {isEmpty(ageAtDiagnosisresults) ? (
+          {isEmpty(ageAtDiagnosisResults) ? (
             <Empty imageType="grid" size="large" noPadding />
           ) : (
             <BarChart
-              data={ageAtDiagnosisresults}
+              data={ageAtDiagnosisResults}
               ariaLabel={intl.get('screen.dataExploration.tabs.summary.ageAtDiagnosis.cardTitle')}
               barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
               tooltipLabel={(node: any) => `Participant${node.data.value > 1 ? 's' : ''}`}

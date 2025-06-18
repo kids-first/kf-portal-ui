@@ -5,7 +5,10 @@ import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
-import { aggregationToChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
+import {
+  aggregationToChartData,
+  formatAggregationChartData,
+} from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { Col, Row } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
@@ -93,7 +96,19 @@ const DemographicsGraphCard = () => {
       loadingType="spinner"
       headerTitle={intl.get('screen.dataExploration.tabs.summary.demographic.cardTitle')}
       tsvSettings={{
-        data: [sexData, raceData, ethnicityData, familyData],
+        contentMap: ['label', 'value', 'frequency'],
+        data: [
+          formatAggregationChartData(sexData),
+          formatAggregationChartData(raceData),
+          formatAggregationChartData(ethnicityData),
+          formatAggregationChartData(familyData),
+        ],
+        headers: [
+          ['Sex', 'Count', 'Frequency'],
+          ['Race', 'Count', 'Frequency'],
+          ['Ethnicity', 'Count', 'Frequency'],
+          ['Family Composition', 'Count', 'Frequency'],
+        ],
       }}
       modalContent={
         <Row gutter={[12, 24]} className={styles.graphRowWrapper}>

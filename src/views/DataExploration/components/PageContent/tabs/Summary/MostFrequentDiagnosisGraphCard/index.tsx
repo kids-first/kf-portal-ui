@@ -83,7 +83,7 @@ const MostFrequentDiagnosisGraphCard = () => {
       tsvSettings={{
         contentMap: ['label', 'value'],
         data: [mondo],
-        headers: ['Value', 'Count'],
+        headers: ['Diagnosis (MONDO)', 'Count'],
       }}
       modalContent={
         <BarChart

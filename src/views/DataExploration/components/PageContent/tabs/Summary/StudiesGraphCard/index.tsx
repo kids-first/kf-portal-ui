@@ -5,7 +5,10 @@ import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
-import { aggregationToChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
+import {
+  aggregationToChartData,
+  formatAggregationChartData,
+} from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { Col, Row } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
@@ -62,7 +65,9 @@ const StudiesGraphCard = () => {
       loadingType="spinner"
       headerTitle={intl.get('screen.dataExploration.tabs.summary.studies.cardTitle')}
       tsvSettings={{
-        data: [data],
+        contentMap: ['label', 'value', 'frequency'],
+        data: [formatAggregationChartData(data)],
+        headers: ['Study', 'Count', 'Frequency'],
       }}
       modalContent={
         <PieChart

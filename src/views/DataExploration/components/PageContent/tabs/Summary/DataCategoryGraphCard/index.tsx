@@ -4,7 +4,10 @@ import Empty from '@ferlab/ui/core/components/Empty';
 import { updateActiveQueryField } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ArrangerValues } from '@ferlab/ui/core/data/arranger/formatting';
 import ResizableGridCard from '@ferlab/ui/core/layout/ResizableGridLayout/ResizableGridCard';
-import { aggregationToChartData } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
+import {
+  aggregationToChartData,
+  formatAggregationChartData,
+} from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { INDEXES } from 'graphql/constants';
 import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
 import { DATA_CATEGORY_QUERY } from 'graphql/summary/queries';
@@ -57,7 +60,9 @@ const DataCategoryGraphCard = () => {
       downloadSettings={{ png: true, svg: false, tsv: true }}
       headerTitle={intl.get('screen.dataExploration.tabs.summary.availableData.dataCategoryTitle')}
       tsvSettings={{
-        data: [dataCategoryResults],
+        contentMap: ['label', 'value', 'frequency'],
+        headers: ['Data Category', 'Count', 'Frequency'],
+        data: [formatAggregationChartData(dataCategoryResults)],
       }}
       modalContent={
         <BarChart
