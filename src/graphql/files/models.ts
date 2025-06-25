@@ -56,6 +56,8 @@ export interface IImagingData {
   info_body_part_examined: string;
   modality: string;
   scan_id: string;
+  session_id: string;
+  session_n_total_acquisitions: number;
   subject_reference: string;
 }
 

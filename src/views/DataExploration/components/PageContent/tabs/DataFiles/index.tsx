@@ -249,6 +249,39 @@ export const getDefaultColumns = (
     },
   },
   {
+    key: 'imaging.session_n_total_acquisitions',
+    title: intl.get('entities.file.imaging.session.label'),
+    tooltip: intl.get('entities.file.imaging.session.tooltip'),
+    defaultHidden: activePreset === PresetOptions.Datafiles,
+    sorter: { multiple: 1 },
+    render: (record: IFileEntity) =>
+      record.imaging?.session_n_total_acquisitions ? (
+        <Link
+          to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
+          onClick={() =>
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'imaging.session_id',
+                    value: [record.imaging?.session_id!],
+                    index: INDEXES.FILE,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            })
+          }
+          style={{ textDecoration: 'underline' }}
+        >
+          {record.imaging?.session_n_total_acquisitions}
+        </Link>
+      ) : (
+        TABLE_EMPTY_PLACE_HOLDER
+      ),
+  },
+  {
     key: 'nb_biospecimens',
     title: intl.get('entities.biospecimen.biospecimens'),
     sorter: { multiple: 1 },

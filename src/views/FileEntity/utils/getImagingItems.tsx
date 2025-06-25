@@ -1,11 +1,17 @@
 import intl from 'react-intl-universal';
+import { Link } from 'react-router-dom';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink/index';
+import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
+import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { IEntityDescriptionsItem } from '@ferlab/ui/core/pages/EntityPage';
 import { Tooltip } from 'antd';
+import { INDEXES } from 'graphql/constants';
 import { IFileEntity, IImagingData } from 'graphql/files/models';
 import { joinUniqueCleanWords } from 'helpers';
+import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
+import { STATIC_ROUTES } from 'utils/routes';
 
 import styles from '../index.module.css';
 
@@ -65,6 +71,70 @@ const getImagingItems = (
   {
     label: intl.get('entities.file.imaging.device.model'),
     value: imagingData?.device?.model_name || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
+    label: (
+      <Tooltip
+        className={styles.tooltip}
+        title={intl.get('entities.file.imaging.session.tooltip')}
+        placement="topLeft"
+      >
+        {intl.get('entities.file.imaging.session.label')}
+      </Tooltip>
+    ),
+    value: imagingData?.session_n_total_acquisitions ? (
+      <Link
+        to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
+        onClick={() =>
+          addQuery({
+            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            query: generateQuery({
+              newFilters: [
+                generateValueFilter({
+                  field: 'imaging.session_id',
+                  value: [imagingData?.session_id!],
+                  index: INDEXES.FILE,
+                }),
+              ],
+            }),
+            setAsActive: true,
+          })
+        }
+        style={{ textDecoration: 'underline' }}
+      >
+        {imagingData?.session_n_total_acquisitions}
+      </Link>
+    ) : (
+      TABLE_EMPTY_PLACE_HOLDER
+    ),
+  },
+  {
+    label: intl.get('entities.file.imaging.acquisition_number'),
+    value: imagingData?.acquisition_number ? (
+      <Link
+        to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
+        onClick={() =>
+          addQuery({
+            queryBuilderId: DATA_EXPLORATION_QB_ID,
+            query: generateQuery({
+              newFilters: [
+                generateValueFilter({
+                  field: 'imaging.acquisition_number',
+                  value: [imagingData?.acquisition_number!],
+                  index: INDEXES.FILE,
+                }),
+              ],
+            }),
+            setAsActive: true,
+          })
+        }
+        style={{ textDecoration: 'underline' }}
+      >
+        {imagingData?.acquisition_number}
+      </Link>
+    ) : (
+      TABLE_EMPTY_PLACE_HOLDER
+    ),
   },
   {
     label: intl.get('entities.file.imaging.device.id'),
