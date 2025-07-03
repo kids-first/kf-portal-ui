@@ -63,6 +63,14 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.validateTableFirstRow(/\d{1}/, 10, true);
   });
 
+  it('Valider les fonctionnalités du tableau - Tri Session', () => {
+    cy.showColumn('Session');
+    cy.sortTableAndIntercept('Session', 1);
+    cy.validateTableFirstRow('-', 11, true);
+    cy.sortTableAndIntercept('Session', 1);
+    cy.validateTableFirstRow(/\d{1}/, 11, true);
+  });
+
   it('Valider les fonctionnalités du tableau - Tri Biospecimens', () => {
     cy.sortTableAndIntercept('Biospecimens', 1);
     cy.validateTableFirstRow(/(^0$|^1$)/, 11, true);

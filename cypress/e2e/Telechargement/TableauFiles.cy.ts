@@ -8,6 +8,7 @@ beforeEach(() => {
 
   cy.login();
   cy.visitDataExploration('datafiles', '?sharedFilterId=c0f70cfd-a161-4444-881f-0cb0e6a68a6d');
+  cy.showColumn('Session');
   cy.showColumn('File Name');
   cy.showColumn('Platform');
   cy.showColumn('Repository');
