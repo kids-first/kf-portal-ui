@@ -73,6 +73,10 @@ const getImagingItems = (
     value: imagingData?.device?.model_name || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    label: intl.get('entities.file.imaging.device.id'),
+    value: imagingData?.device?.device_id || TABLE_EMPTY_PLACE_HOLDER,
+  },
+  {
     label: (
       <Tooltip
         className={styles.tooltip}
@@ -135,10 +139,6 @@ const getImagingItems = (
     ) : (
       TABLE_EMPTY_PLACE_HOLDER
     ),
-  },
-  {
-    label: intl.get('entities.file.imaging.device.id'),
-    value: imagingData?.device?.device_id || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.flywheel_url'),
