@@ -20,7 +20,7 @@ const DEFAULT_SEARCH_PARAMS = {
 
 const CommunityPage = () => {
   const [activeFilter, setActiveFilter] = useState<ISearchParams>(DEFAULT_SEARCH_PARAMS);
-  const { users, loading, total } = useCommunityUsers(activeFilter);
+  const { users, loading, total, allActiveUsersTotal } = useCommunityUsers(activeFilter);
 
   return (
     <CommunityMembersPage
@@ -40,10 +40,13 @@ const CommunityPage = () => {
       }}
       dictionary={{
         title: intl.get('screen.community.search.barPlaceholder'),
-        result: intl.get('screen.community.resultMember'),
-        results: intl.get('screen.community.resultsMember'),
+        result: intl.get('screen.community.result'),
+        results: intl.get('screen.community.results'),
         noResults: intl.get('screen.community.noResults'),
         totalMembers: (members: number) => intl.get('screen.community.totalMembers', { members }),
+        resultSuffix: intl.get('screen.community.allActiveUsersTotal', {
+          allActiveUsersTotal,
+        }),
         filterBox: {
           barPlaceholder: intl.get('screen.community.search.barPlaceholder'),
           filter: intl.get('screen.community.search.filters'),

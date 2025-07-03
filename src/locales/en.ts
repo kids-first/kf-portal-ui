@@ -1069,10 +1069,11 @@ const en = {
     },
     community: {
       title: 'Kids First Community',
-      result: 'Public Member',
-      results: 'Public Members',
+      result: 'Result',
+      results: 'Results',
       noResults: 'No Public Members',
       totalMembers: '{members} Total Members',
+      allActiveUsersTotal: 'public members (Total: {allActiveUsersTotal} members)',
       search: {
         filters: 'Filters',
         selectPlaceholder: 'Select',

@@ -48,6 +48,7 @@ const search = ({ pageIndex = 0, pageSize = 15, match, sort, roles, interests }:
   sendRequest<{
     users: TUser[];
     total: number;
+    allActiveUsersTotal: number;
   }>({
     method: 'GET',
     url: `${USER_API_URL}/search`,

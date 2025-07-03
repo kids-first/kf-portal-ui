@@ -5,4 +5,5 @@ export type initialState = {
   total: number;
   error?: boolean;
   loading: boolean;
+  allActiveUsersTotal: number;
 };
