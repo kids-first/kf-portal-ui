@@ -50,9 +50,21 @@ const sortByKey = ({
       const x = a[sort.field];
       const y = b[sort.field];
       if (sort.order === SortDirection.Asc) {
-        return x < y ? -1 : x > y ? 1 : 0;
+        if (x < y) {
+          return -1;
+        } else if (x > y) {
+          return 1;
+        } else {
+          return 0;
+        }
       } else {
-        return x > y ? -1 : x < y ? 1 : 0;
+        if (x > y) {
+          return -1;
+        } else if (x < y) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     });
   });
