@@ -49,17 +49,11 @@ const sortByKey = ({
     resultSorted = resultSorted.sort((a, b) => {
       const x = a[sort.field];
       const y = b[sort.field];
-      return sort.order === SortDirection.Asc
-        ? x < y
-          ? -1
-          : x > y
-          ? 1
-          : 0
-        : x > y
-        ? -1
-        : x < y
-        ? 1
-        : 0;
+      if (sort.order === SortDirection.Asc) {
+        return x < y ? -1 : x > y ? 1 : 0;
+      } else {
+        return x > y ? -1 : x < y ? 1 : 0;
+      }
     });
   });
   return resultSorted;
