@@ -1742,6 +1742,10 @@ const en = {
             cardTitle: 'Most Frequent Phenotypes (HPO)',
             legendAxisLeft: 'Phenotypes (HPO)',
             legendAxisBottom: '# of participants',
+            tooltip: {
+              exactCount: 'Participants with this exact term: <strong>{count}</strong>',
+              allCount: 'Participants including descendant terms: <strong>{count}</strong>',
+            },
           },
         },
         participants: {
