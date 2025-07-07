@@ -243,6 +243,7 @@ describe(`${extractMetadata.name}()`, () => {
                   family_count: 0,
                   participant_count: 0,
                   biospecimen_count: 0,
+                  file_count: 0,
                   data_category: [],
                   website: '',
                 },

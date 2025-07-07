@@ -168,6 +168,39 @@ const columns: ProColumnType<any>[] = [
       family_count ? numberWithCommas(family_count) : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
+    key: 'file_count',
+    title: intl.get('screen.studies.files'),
+    sorter: { multiple: 1 },
+    render: (record: IStudyEntity) => {
+      const fileCount = record.file_count;
+
+      return fileCount ? (
+        <Link
+          to={STATIC_ROUTES.DATA_EXPLORATION_DATAFILES}
+          onClick={() =>
+            addQuery({
+              queryBuilderId: DATA_EXPLORATION_QB_ID,
+              query: generateQuery({
+                newFilters: [
+                  generateValueFilter({
+                    field: 'study.study_code',
+                    value: [record.study_code],
+                    index: INDEXES.PARTICIPANT,
+                  }),
+                ],
+              }),
+              setAsActive: true,
+            })
+          }
+        >
+          {numberWithCommas(fileCount)}
+        </Link>
+      ) : (
+        fileCount || 0
+      );
+    },
+  },
+  {
     key: 'genomic',
     title: 'Genomics',
     align: 'center',
