@@ -5,7 +5,7 @@ import { TUser } from '../../services/api/user/models';
 import { handleThunkApiReponse } from '../utils';
 
 const fetchCommunityUsers = createAsyncThunk<
-  { users: TUser[]; total: number },
+  { users: TUser[]; total: number; allActiveUsersTotal: number },
   ISearchParams,
   { rejectValue: string }
 >('users/fetch', async (query, thunkAPI) => {

@@ -6,6 +6,7 @@ import { initialState } from 'store/community/types';
 export const CommunityState: initialState = {
   users: [],
   total: 0,
+  allActiveUsersTotal: 0,
   loading: false,
 };
 
@@ -23,6 +24,7 @@ const communitySlice = createSlice({
       ...state,
       users: action.payload.users,
       total: action.payload.total,
+      allActiveUsersTotal: action.payload.allActiveUsersTotal,
       loading: false,
     }));
     builder.addCase(fetchCommunityUsers.rejected, (state) => ({
