@@ -38,6 +38,8 @@ export const SEARCH_FILES_QUERY = gql`
               info_body_part_examined
               modality
               scan_id
+              session_id
+              session_n_total_acquisitions
               subject_reference
             }
             fhir_document_reference
@@ -213,6 +215,8 @@ export const GET_FILE_ENTITY = gql`
               info_body_part_examined
               modality
               scan_id
+              session_id
+              session_n_total_acquisitions
               subject_reference
             }
             participants {

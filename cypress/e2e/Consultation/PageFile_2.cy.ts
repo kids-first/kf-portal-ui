@@ -123,7 +123,11 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(6).contains('Avanto_fit').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(7).contains('Device ID').should('exist');
     cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(7).contains('de-pea26nptxz').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(8).contains('Flywheel URL').should('exist');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).contains('https://chop.flywheel.io/#/projects/LGG_v2/sessions/session-0-patient_09').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(8).contains('Session').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).contains('2').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(9).contains('Acquisition ID').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(9).contains('acq-0-session-0-patient_09').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-label"]').eq(10).contains('Flywheel URL').should('exist');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(10).contains('https://chop.flywheel.io/#/projects/LGG_v2/sessions/session-0-patient_09').should('exist');
   });
 });

@@ -53,6 +53,11 @@ describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
     cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(10)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Participants').should('exist');
+
+    cy.get('thead[class="ant-table-thead"]')
+      .contains('Session').should('not.exist');
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(10)
+      .contains('Session').should('exist');
   
     cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(11)
       .should('have.class', 'ant-table-column-has-sorters')
@@ -60,72 +65,72 @@ describe('Page Data Exploration (Data Files) - Colonnes du tableau', () => {
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('File Name').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(11)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(12)
       .contains('File Name').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Platform').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(12)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(13)
       .contains('Platform').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Repository').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(13)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(14)
       .contains('Repository').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('ACL').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(14)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(15)
       .contains('ACL').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Access URL').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(15)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(16)
       .contains('Access URL').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Flywheel').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(16)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(17)
       .contains('Flywheel').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Modality').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(17)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(18)
       .contains('Modality').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Sequence Type').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(18)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(19)
       .contains('Sequence Type').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Technique').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(19)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(20)
       .contains('Technique').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Body Part').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(20)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(21)
       .contains('Body Part').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Field Str.').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(21)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(22)
       .contains('Field Str.').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Manufacturer').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(22)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(23)
       .contains('Manufacturer').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Device Model').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(23)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(24)
       .contains('Device Model').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Device ID').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(24)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(25)
       .contains('Device ID').should('exist');
   });
 

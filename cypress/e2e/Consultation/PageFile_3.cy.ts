@@ -26,9 +26,25 @@ describe('Page d\'un fichier - Valider les liens disponibles', () => {
     cy.get('[class*="EntityTitle"]').contains('PT_1DYA8779');
   });
 
+  it('Lien Session du panneau Imaging Study', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).find('[href]').clickAndWait({force: true});
+    cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Session ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Session-0-patient 09').should('exist');
+  });
+
+  it('Lien Acquisition ID du panneau Imaging Study', () => {
+    cy.visitFileEntity('dr-2ahd9kpwqk');
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(9).find('[href]').clickAndWait({force: true});
+    cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Acquisition ID').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('Acq-0-session-0-patient 09').should('exist');
+  });
+
   it('Lien Flywheel URL du panneau Imaging Study', () => {
     cy.visitFileEntity('dr-2ahd9kpwqk');
-    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(8).find('[href]')
+    cy.get('[id="imaging"] [class="ant-descriptions-item-content"]').eq(10).find('[href]')
       .should('have.attr', 'href').and('match', /https\:\/\/chop\.flywheel\.io\/\#\/projects\/LGG_v2\/sessions\/session-0-patient_09/);
   });
 });

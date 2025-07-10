@@ -29,6 +29,8 @@ const filesFacets = {
       manufacturer: 'Device Manufacturer',
       model_name: 'Device Model',
     },
+    session_id: 'Session ID',
+    acquisition_number: 'Acquisition ID',
   },
 };
 
@@ -2411,6 +2413,11 @@ const en = {
         },
         modality: { value: 'Modality', tooltip: 'Image Modality' },
         sequence_type: 'Sequence Type',
+        session: {
+          label: 'Session',
+          tooltip: 'Total number of acquisitions linked to this session',
+        },
+        acquisition_number: 'Acquisition ID',
         technique: 'Technique',
       },
       repository: 'Repository',

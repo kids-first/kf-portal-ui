@@ -39,6 +39,8 @@ describe(`${extractMetadata.name}()`, () => {
         info_body_part_examined: 'CTSPINE',
         modality: 'CT',
         scan_id: 'is-7rjndqwx8m',
+        session_id: '63f562ec7be55b68b4f0fc2c',
+        session_n_total_acquisitions: 24,
         subject_reference: 'pt-grmpycat',
       },
       participants: {

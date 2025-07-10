@@ -57,72 +57,76 @@ describe('Page Data Exploration (Data Files - Imaging) - Colonnes du tableau', (
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Participants').should('exist');
   
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(6)
+      .should('have.class', 'ant-table-column-has-sorters')
+      .contains('Session').should('exist');
+  
     cy.get('thead[class="ant-table-thead"]')
       .contains('Biospecimens').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(10)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(11)
       .contains('Biospecimens').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('File Name').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(11)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(12)
       .contains('File Name').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Platform').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(12)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(13)
       .contains('Platform').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Repository').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(13)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(14)
       .contains('Repository').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('ACL').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(14)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(15)
       .contains('ACL').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Access URL').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(15)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(16)
       .contains('Access URL').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(6)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(7)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Flywheel').should('exist');
     
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(7)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(8)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Modality').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(8)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(9)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Sequence Type').should('exist');
 
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(9)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(10)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Technique').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(10)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(11)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Body Part').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(11)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(12)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Field Str.').should('exist');
   
-    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(12)
+    cy.get('thead[class="ant-table-thead"] th[class*="ant-table-cell"]').eq(13)
       .should('have.class', 'ant-table-column-has-sorters')
       .contains('Manufacturer').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Device Model').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(23)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(24)
       .contains('Device Model').should('exist');
 
     cy.get('thead[class="ant-table-thead"]')
       .contains('Device ID').should('not.exist');
-    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(24)
+    cy.get('[class="ant-popover-inner"] [class*="ProTablePopoverColumnListWrapper"] [class="ant-space-item"]').eq(25)
       .contains('Device ID').should('exist');
   });
 
