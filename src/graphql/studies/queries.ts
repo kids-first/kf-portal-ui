@@ -17,6 +17,7 @@ export const SEARCH_STUDIES_QUERY = gql`
             participant_count
             family_count
             biospecimen_count
+            file_count
             attribution
             data_category
             website

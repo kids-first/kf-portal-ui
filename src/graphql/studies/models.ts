@@ -15,6 +15,7 @@ export interface IStudyEntity {
   family_count: number;
   participant_count: number;
   biospecimen_count: number;
+  file_count: number;
   data_category: string[];
   website: string;
 }

@@ -1566,6 +1566,7 @@ const en = {
       participants: 'Participants',
       families: 'Families',
       biospecimens: 'Biospecimens',
+      files: 'Files',
     },
     dataExploration: {
       title: 'Data Exploration',
