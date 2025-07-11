@@ -22,10 +22,11 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.validateTableFirstRow('3,959', 5);
     cy.validateTableFirstRow('4,458', 6);
     cy.validateTableFirstRow('1,312', 7);
-    cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(8).find('[data-icon="check"]').should('exist');
+    cy.validateTableFirstRow('30,109', 8);
     cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(9).find('[data-icon="check"]').should('exist');
-    cy.validateTableFirstRow('-', 10);
+    cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(10).find('[data-icon="check"]').should('exist');
     cy.validateTableFirstRow('-', 11);
+    cy.validateTableFirstRow('-', 12);
   });
 
   it('Summary', () => {
@@ -35,5 +36,7 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.get('tfoot [class*="summarySum"]').eq(1).contains(/\d{1}/).should('exist');
     cy.get('tfoot [class*="summaryTitle"]').eq(2).contains('Families').should('exist');
     cy.get('tfoot [class*="summarySum"]').eq(2).contains(/\d{1}/).should('exist');
+    cy.get('tfoot [class*="summaryTitle"]').eq(3).contains('Files').should('exist');
+    cy.get('tfoot [class*="summarySum"]').eq(3).contains(/\d{1}/).should('exist');
   });
 });
