@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
+import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { EntityTable } from '@ferlab/ui/core/pages/EntityPage';
 import { Button } from 'antd';
+import { IBiospecimenEntity } from 'graphql/biospecimens/models';
 import { INDEXES } from 'graphql/constants';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
@@ -14,6 +17,7 @@ import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
 import { generateLocalTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
+import { formatQuerySortList } from 'utils/helper';
 import { STATIC_ROUTES } from 'utils/routes';
 import { userColsHaveSameKeyAsDefaultCols } from 'utils/tables';
 
@@ -30,12 +34,54 @@ interface OwnProps {
   loading: boolean;
 }
 
+const sortByKey = ({
+  array,
+  sortList,
+}: {
+  array: any[];
+  sortList: { field: string; order: SortDirection }[];
+}): any[] => {
+  if (!sortList || !sortList.length) {
+    return array;
+  }
+  let resultSorted = array;
+  sortList.forEach((sort) => {
+    resultSorted = resultSorted.sort((a, b) => {
+      const x = a[sort.field];
+      const y = b[sort.field];
+      if (sort.order === SortDirection.Asc) {
+        if (x < y) {
+          return -1;
+        } else if (x > y) {
+          return 1;
+        } else {
+          return 0;
+        }
+      } else {
+        if (x > y) {
+          return -1;
+        } else if (x < y) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+  });
+  return resultSorted;
+};
+
 const BiospecimenTable = ({ participant, loading }: OwnProps) => {
   const navigate = useNavigate();
   const { userInfo } = useUser();
   const dispatch = useDispatch();
+  const [bioData, setBioData] = useState<IBiospecimenEntity[]>([]);
 
   const { biospecimens, total } = getBiospecimensFromParticipant(participant);
+  useEffect(() => {
+    if (biospecimens.length == 0) setBioData([]); // Reset bioData if no biospecimens
+    if (bioData.length == 0) setBioData(biospecimens.map((i) => ({ ...i, key: i.id })));
+  }, [bioData.length, biospecimens]);
 
   const biospecimensDefaultColumns = getBiospecimensDefaultColumns();
 
@@ -55,7 +101,7 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
     <EntityTable
       id={SectionId.BIOSPECIMEN}
       loading={loading}
-      data={biospecimens}
+      data={bioData}
       title={intl.get('entities.biospecimen.biospecimen')}
       titleExtra={[
         <Button
@@ -137,6 +183,14 @@ const BiospecimenTable = ({ participant, loading }: OwnProps) => {
               })),
             }),
           ),
+      }}
+      showSorterTooltip={false}
+      onChange={(_, __, sorter) => {
+        const bioSorted = sortByKey({
+          array: biospecimens,
+          sortList: formatQuerySortList(sorter),
+        });
+        setBioData(bioSorted);
       }}
     />
   );

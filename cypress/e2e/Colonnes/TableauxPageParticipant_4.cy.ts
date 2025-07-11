@@ -12,31 +12,31 @@ describe('Page d\'un participant - Colonnes du tableau Biospecimens', () => {
     cy.get('[id="biospecimen"]')
       .find('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(0)
-      .should('not.have.class', 'ant-table-column-has-sorters')
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Sample ID').should('exist');
     
     cy.get('[id="biospecimen"]')
       .find('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(1)
-      .should('not.have.class', 'ant-table-column-has-sorters')
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Collection ID').should('exist');
 
     cy.get('[id="biospecimen"]')
       .find('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(2)
-      .should('not.have.class', 'ant-table-column-has-sorters')
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains(/^Sample Type$/).should('exist');
 
     cy.get('[id="biospecimen"]')
       .find('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(3)
-      .should('not.have.class', 'ant-table-column-has-sorters')
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Collection Sample Type').should('exist');
 
     cy.get('[id="biospecimen"]')
       .find('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(4)
-      .should('not.have.class', 'ant-table-column-has-sorters')
+      .should('have.class', 'ant-table-column-has-sorters')
       .contains('Age').should('exist');
 
     cy.get('[id="biospecimen"]')

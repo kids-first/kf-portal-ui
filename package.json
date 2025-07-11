@@ -60,7 +60,7 @@
     "@babel/core": "^7.26.9",
     "@dnd-kit/core": "^4.0.3",
     "@dnd-kit/sortable": "^5.1.0",
-    "@ferlab/ui": "^10.25.7",
+    "@ferlab/ui": "^10.25.8",
     "@loadable/component": "^5.16.4",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@react-keycloak/core": "^3.2.0",
