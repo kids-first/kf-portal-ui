@@ -26,4 +26,11 @@ describe('Page des études - Valider les liens disponibles', () => {
     cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Study Code').should('exist');
     cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('KF-CDH').should('exist');
   });
+
+  it('Lien Files du tableau', () => {
+    cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(8).find('[href]').clickAndWait({force: true});
+    cy.get('[class*="DataFiles_dataFilesTabWrapper"]').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Study Code').should('exist');
+    cy.get('[class*="QueryBar_selected"] [class*="QueryValues_value"]').contains('KF-CDH').should('exist');
+  });
 });

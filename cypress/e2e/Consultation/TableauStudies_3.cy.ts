@@ -49,6 +49,13 @@ describe('Page des études - Consultation du tableau', () => {
     cy.validateTableFirstRow(/\d{1}/, 7);
   });
 
+  it('Valider les fonctionnalités du tableau - Tri Files', () => {
+    cy.sortTableAndIntercept('Files', 1);
+    cy.validateTableFirstRow(/(-|\d{1})/, 8);
+    cy.sortTableAndIntercept('Files', 1);
+    cy.validateTableFirstRow(/\d{1}/, 8);
+  });
+
   it('Valider les fonctionnalités du tableau - Tri multiple', () => {
     cy.sortTableAndIntercept('Families', 1);
     cy.sortTableAndWait('Biospecimens');
