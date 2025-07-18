@@ -16,6 +16,7 @@ import { PhenotypeStore } from 'views/DataExploration/utils/PhenotypeStore';
 import { truncateString } from 'utils/string';
 import { getResizableGridDictionary } from 'utils/translation';
 
+import { getTooltip } from '../MostFrequentPhenotypesGraphCard';
 import { MOST_FREQUENT_DIAGNOSES_ID, UID } from '../utils/grid';
 
 const addToQuery = (field: string, key: string) =>
@@ -144,7 +145,7 @@ const MostFrequentDiagnosisGraphCard = () => {
                   return truncateString(title ?? '', 15);
                 },
               }}
-              tooltipLabel={(node: any) => node.data.label}
+              tooltip={(node: any) => getTooltip(node)}
               axisBottom={{
                 legend: intl.get(
                   'screen.dataExploration.tabs.summary.mostFrequentDiagnoses.legendAxisBottom',

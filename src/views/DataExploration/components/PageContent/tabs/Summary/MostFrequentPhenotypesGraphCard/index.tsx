@@ -41,6 +41,42 @@ const filterPhenotypesData = (data: any[], key = 'label') => {
   return result;
 };
 
+export const getTooltip = (node: any) => (
+  <div
+    style={{
+      backgroundColor: 'white',
+      padding: '5px 10px',
+      boxShadow: '0 2px 3px #ccc',
+      display: 'flex',
+      alignItems: 'start',
+      flexDirection: 'column',
+    }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          width: '12px',
+          height: '12px',
+          backgroundColor: node.color,
+          marginRight: '5px',
+        }}
+      ></div>
+      {node.data.label}
+    </div>
+    <div style={{ paddingLeft: '18px' }}>
+      {intl.getHTML(
+        'screen.dataExploration.tabs.summary.mostFrequentPhenotypes.tooltip.exactCount',
+        { count: node.data.value },
+      )}
+    </div>
+    <div style={{ paddingLeft: '18px' }}>
+      {intl.getHTML('screen.dataExploration.tabs.summary.mostFrequentPhenotypes.tooltip.allCount', {
+        count: node.data.valueWithDescendants,
+      })}
+    </div>
+  </div>
+);
+
 const MostFrequentPhenotypesGraphCard = () => {
   const [phenotypes, setPhenotypes] = useState<any>([]);
   const [phenotypesLoading, setPhenotypesLoading] = useState<boolean>(true);
@@ -144,7 +180,7 @@ const MostFrequentPhenotypesGraphCard = () => {
                   return truncateString(title ?? '', 15);
                 },
               }}
-              tooltipLabel={(node: any) => node.data.label}
+              tooltip={(node: any) => getTooltip(node)}
               axisBottom={{
                 legend: intl.get(
                   'screen.dataExploration.tabs.summary.mostFrequentPhenotypes.legendAxisBottom',
