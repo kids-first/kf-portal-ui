@@ -41,7 +41,7 @@ const filterPhenotypesData = (data: any[], key = 'label') => {
   return result;
 };
 
-const getTooltip = (node: any) => (
+export const getTooltip = (node: any) => (
   <div
     style={{
       backgroundColor: 'white',
