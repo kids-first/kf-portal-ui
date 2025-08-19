@@ -1,3 +1,17 @@
+## VERSION 5.15.0 (2025-09-19)
+### Feature
+- [SKFP-1537](https://d3b.atlassian.net/browse/SKFP-1537) Feature:[Community] Show Total User Count on Community Page
+- [SKFP-1542](https://d3b.atlassian.net/browse/SKFP-1542) Feature:[Data Exploration & file Entity] Add Session and Acquisition fields
+- [SKFP-1549](https://d3b.atlassian.net/browse/SKFP-1549) Feature:[Participant Entity] Add sort to Biospecimen section table
+### Technical / Other Changes:
+- [SKFP-829](https://d3b.atlassian.net/browse/SKFP-829) Fix: [Summary] Fixed missing data when downloading TSV
+- [SKFP-1515](https://d3b.atlassian.net/browse/SKFP-1515) Fix: [Summary] Fixed graph results when applying a No Data value in the numerical range facets
+- [SKFP-1539](https://d3b.atlassian.net/browse/SKFP-1539) Refactor: [UI] Updated text in Community page for the results of the page
+- [SKFP-1540](https://d3b.atlassian.net/browse/SKFP-1540) Refactor: [Newsletter] Merged both opt-in checkboxes
+- [SKFP-1545](https://d3b.atlassian.net/browse/SKFP-1545) Refactor:[ETL] Fixed Variant ETL to import multiple elements of alternateAlleles column in DbSNP table
+- [SKFP-1547](https://d3b.atlassian.net/browse/SKFP-1547) Refactor: [Studies] Added a file columns and  total files entry in the studies table
+- [SKFP-1550](https://d3b.atlassian.net/browse/SKFP-1550) Refactor: [Data Exploration] Added a Participant descendant term count to the tooltip of Most Frequent Diagnoses/Phenotypes charts
+
 ## VERSION 5.14.0 (2025-05-19)
 
 ### Feature
