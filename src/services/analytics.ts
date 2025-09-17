@@ -70,11 +70,37 @@ export const trackRequestBiospecimen = (action: string) => {
   }
 };
 
-export const trackCavaticaAction = (page: string) => {
+export const trackCavaticaAction = (
+  page: string,
+  options?: {
+    studyCodes?: string[];
+    projectId?: string;
+    projectName?: string;
+    fileCount?: number;
+  },
+) => {
   if (isGaActive) {
+    const baseAction = `Cavatica Analyze - ${capitalize(page)}`;
+
+    // Build additional details string
+    const details: string[] = [];
+    if (options?.studyCodes?.length) {
+      details.push(`Study: ${options.studyCodes.join(', ')}`);
+    }
+    if (options?.projectName) {
+      details.push(`Project: ${options.projectName}`);
+    }
+    if (options?.fileCount) {
+      details.push(`Files: ${options.fileCount}`);
+    }
+
+    const action = details.length > 0 ? `${baseAction} (${details.join(' | ')})` : baseAction;
+
     ReactGA.event({
       category: 'Cavatica',
-      action: `Cavatica Analyze - ${capitalize(page)}`,
+      action,
+      // You can also use custom dimensions/metrics if configured in GA
+      ...(options?.fileCount && { value: options.fileCount }),
     });
   }
 };
