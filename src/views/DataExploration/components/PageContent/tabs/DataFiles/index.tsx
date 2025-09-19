@@ -448,7 +448,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
   const dispatch = useDispatch();
   const { userInfo } = useUser();
   const cavatica = useCavaticaPassport();
-  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
+  const dcf = useFenceAuthentification(FENCE_NAMES.dcf);
   const fencesAllAcls = useAllFencesAcl();
   const { activeQuery } = useQueryBuilderState(DATA_EXPLORATION_QB_ID);
   const [selectedAllResults, setSelectedAllResults] = useState(false);
@@ -542,7 +542,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
         columns={getDefaultColumns(
           fencesAllAcls,
           cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
-          gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+          dcf.status === FENCE_AUTHENTIFICATION_STATUS.connected,
           activePreset,
         )}
         initialSelectedKey={selectedKeys}
@@ -585,7 +585,7 @@ const DataFilesTab = ({ sqon }: OwnProps) => {
                 columns: getDefaultColumns(
                   fencesAllAcls,
                   cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
-                  gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+                  dcf.status === FENCE_AUTHENTIFICATION_STATUS.connected,
                   activePreset,
                 ),
                 index: INDEXES.FILE,

@@ -2,7 +2,6 @@ import { IAuthorizedStudies, IFence } from '@ferlab/ui/core/components/Widgets/A
 
 export type InitialState = {
   authorizedStudies: IAuthorizedStudies;
-  gen3: IFence;
   dcf: IFence;
 };
 

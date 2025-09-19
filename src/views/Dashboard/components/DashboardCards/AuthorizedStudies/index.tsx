@@ -2,16 +2,14 @@ import { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import AuthorizedStudiesWidget, {
-  FENCE_AUTHENTIFICATION_STATUS,
   IFenceService,
 } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
 import { INDEXES } from 'graphql/constants';
 import { DATA_EXPLORATION_QB_ID } from 'views/DataExploration/utils/constant';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
-import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
 import NciIcon from 'components/Icons/NciIcon';
-import { trackKFConnection, trackNCIConnection } from 'services/analytics';
+import { trackNCIConnection } from 'services/analytics';
 import { useFenceAuthentification, useFencesAuthorizedStudies } from 'store/fences';
 import {
   fenceDisconnection,
@@ -25,24 +23,10 @@ import { DashboardCardProps } from '..';
 
 const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
   const dcf = useFenceAuthentification(FENCE_NAMES.dcf);
-  const fences = [gen3, dcf];
+  const fences = [dcf];
   const authorizedStudies = useFencesAuthorizedStudies();
   const services: IFenceService[] = [
-    {
-      fence: FENCE_NAMES.gen3,
-      name: 'Kids First Framework Services',
-      icon: <KidsFirstLoginIcon width={45} height={45} />,
-      onConnectToFence: () => {
-        trackKFConnection(true);
-        dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.gen3));
-      },
-      onDisconnectFromFence: () => {
-        trackKFConnection(false);
-        dispatch(fenceDisconnection(FENCE_NAMES.gen3));
-      },
-    },
     {
       fence: FENCE_NAMES.dcf,
       name: 'NCI CRDC Framework Services',
@@ -61,7 +45,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
   useEffect(() => {
     dispatch(fetchAuthorizedStudies(fences));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gen3.status, dcf.status]);
+  }, [dcf.status]);
 
   return (
     <AuthorizedStudiesWidget
@@ -82,7 +66,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
         }),
         disconnect: intl.get('screen.dashboard.cards.cavatica.disconnect'),
         connectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice'),
-        manageConnections: intl.get('screen.dashboard.cards.authorizedStudies.manageConnections'),
+        manageConnections: undefined as any,
         noAvailableStudies: intl.get('screen.dashboard.cards.authorizedStudies.noAvailableStudies'),
         authentification: {
           description: intl.get('screen.dashboard.cards.authorizedStudies.disconnectedNotice'),
@@ -110,12 +94,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
           ),
           content: intl.get('screen.dashboard.cards.authorizedStudies.infoPopover.content'),
         },
-        modal: {
-          title: intl.get('screen.dashboard.cards.authorizedStudies.modal.title'),
-          close: intl.get('global.close'),
-          description: intl.get('screen.dashboard.cards.authorizedStudies.modal.description'),
-          error: intl.get('screen.dashboard.cards.authorizedStudies.modal.error'),
-        },
+        modal: undefined as any,
       }}
     />
   );

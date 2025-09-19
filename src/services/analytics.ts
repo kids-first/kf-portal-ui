@@ -201,15 +201,6 @@ export const trackNCIConnection = (connected: boolean) => {
   }
 };
 
-export const trackKFConnection = (connected: boolean) => {
-  if (isGaActive) {
-    ReactGA.event({
-      category: 'FencesConnections',
-      action: `${connected ? 'Connected to' : 'Disconnected from'} Kids First Framework Services`,
-    });
-  }
-};
-
 export const trackLandingPageViewAllStudies = () => {
   if (isGaActive) {
     ReactGA.event({

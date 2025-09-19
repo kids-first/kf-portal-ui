@@ -26,7 +26,6 @@ export enum STATIC_ROUTES {
   PARTICIPANT = '/participant',
 
   DCF_FENCE_REDIRECT = '/dcf_redirect',
-  GEN3_FENCE_REDIRECT = '/gen3_redirect',
   CAVATICA_PASSPORT_REDIRECT = '/cavatica_redirect',
 
   FAKE_STORYBOOK = '/v2/temp/fake/storybook',

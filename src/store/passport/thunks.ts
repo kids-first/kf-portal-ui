@@ -268,7 +268,7 @@ export const beginCavaticaAnalyse = createAsyncThunk<
       file,
       acls,
       passport.cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
-      fences.gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+      fences.dcf.status === FENCE_AUTHENTIFICATION_STATUS.connected,
     ),
   );
 

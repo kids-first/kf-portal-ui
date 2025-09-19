@@ -5,9 +5,9 @@ export const userHasAccessToFile = (
   file: IFileEntity,
   userAcls: string[],
   isConnectedToCavatica: boolean = false,
-  isConnectedToGen3: boolean = false,
+  isConnectedToDcf: boolean = false,
 ) => {
-  if (!isConnectedToGen3 && !isConnectedToCavatica) {
+  if (!isConnectedToDcf && !isConnectedToCavatica) {
     return false;
   }
 
@@ -20,7 +20,7 @@ export const userHasAccessToFile = (
     fileAccess.controlled_access = FileAccessType.REGISTERED;
   }
 
-  if (fileAccess.controlled_access === FileAccessType.CONTROLLED && !isConnectedToGen3) {
+  if (fileAccess.controlled_access === FileAccessType.CONTROLLED && !isConnectedToDcf) {
     return false;
   }
 
