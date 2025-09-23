@@ -1,11 +1,9 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { ApiOutlined, RocketOutlined } from '@ant-design/icons';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import PopoverContentLink from '@ferlab/ui/core/components/PopoverContentLink';
-import { IFenceService } from '@ferlab/ui/core/components/Widgets/AuthorizedStudies';
-import FencesAuthentificationModal from '@ferlab/ui/core/components/Widgets/AuthorizedStudies/FencesAuthentificationModal';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
 import { Alert, Button, Space, Typography } from 'antd';
 import CardHeader from 'views/Dashboard/components/CardHeader';
@@ -13,10 +11,8 @@ import { DashboardCardProps } from 'views/Dashboard/components/DashboardCards';
 
 import { FENCE_NAMES } from 'common/fenceTypes';
 import logo from 'components/assets/jupyterLab.png';
-import KidsFirstLoginIcon from 'components/Icons/KidsFirstLoginIcon';
-import NciIcon from 'components/Icons/NciIcon';
 import { useAtLeastOneFenceConnected, useFenceAuthentification } from 'store/fences';
-import { fenceDisconnection, fenceOpenAuhentificationTab } from 'store/fences/thunks';
+import { fenceOpenAuhentificationTab } from 'store/fences/thunks';
 import { useNotebook } from 'store/notebook';
 import { getNotebookClusterManifest } from 'store/notebook/thunks';
 
@@ -27,41 +23,8 @@ const { Text } = Typography;
 
 const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
   const dispatch = useDispatch();
-  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
   const dcf = useFenceAuthentification(FENCE_NAMES.dcf);
-  const services: IFenceService[] = [
-    {
-      fence: FENCE_NAMES.gen3,
-      name: 'Kids First Framework Services',
-      icon: <KidsFirstLoginIcon width={45} height={45} />,
-      onConnectToFence: () => {
-        dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.gen3));
-      },
-      onDisconnectFromFence: () => {
-        dispatch(fenceDisconnection(FENCE_NAMES.gen3));
-      },
-    },
-    {
-      fence: FENCE_NAMES.dcf,
-      name: 'NCI CRDC Framework Services',
-      icon: <NciIcon width={45} height={45} />,
-      onConnectToFence: () => {
-        dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.dcf));
-      },
-      onDisconnectFromFence: () => {
-        dispatch(fenceDisconnection(FENCE_NAMES.dcf));
-      },
-    },
-  ];
-  const [isFenceModalAuthentificationOpen, setIsFenceModalAuthentificationOpen] =
-    useState<boolean>(false);
   const { isLoading, error } = useNotebook();
-  const onCloseFenceAuthentificationModal = () => {
-    setIsFenceModalAuthentificationOpen(false);
-    if (hasAtLeastOneAuthentificatedFence) {
-      handleGetManifest();
-    }
-  };
 
   const hasAtLeastOneAuthentificatedFence = useAtLeastOneFenceConnected();
 
@@ -71,21 +34,14 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
     dispatch(getNotebookClusterManifest());
   };
 
+  useEffect(() => {
+    if (dcf.status && hasAtLeastOneAuthentificatedFence) {
+      // No-op for now; user can click Launch after connecting
+    }
+  }, [dcf.status, hasAtLeastOneAuthentificatedFence]);
+
   return (
     <>
-      <FencesAuthentificationModal
-        open={isFenceModalAuthentificationOpen}
-        onCancel={onCloseFenceAuthentificationModal}
-        onOk={onCloseFenceAuthentificationModal}
-        fences={[gen3, dcf]}
-        services={services}
-        dictionary={{
-          title: intl.get('screen.dashboard.cards.authorizedStudies.modal.title'),
-          close: intl.get('global.close'),
-          description: intl.get('screen.dashboard.cards.authorizedStudies.modal.description'),
-          error: intl.get('screen.dashboard.cards.authorizedStudies.modal.error'),
-        }}
-      />
       <GridCard
         theme="shade"
         wrapperClassName={className}
@@ -161,7 +117,7 @@ const Notebook = ({ id, key, className = '' }: DashboardCardProps) => {
                   icon={<ApiOutlined />}
                   onClick={() => {
                     trackVariantWorkbench('Connect');
-                    setIsFenceModalAuthentificationOpen(true);
+                    dispatch(fenceOpenAuhentificationTab(FENCE_NAMES.dcf));
                   }}
                 >
                   {intl.get('global.connect')}

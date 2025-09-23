@@ -122,7 +122,23 @@ const CavaticaAnalyzeButton: React.FC<OwnProps> = ({
         dispatch(passportActions.setCavaticaBulkImportDataStatus(CAVATICA_ANALYSE_STATUS.unknow));
       }}
       handleImportBulkData={(value) => {
-        trackCavaticaAction(index);
+        // Extract study codes from authorized files
+        const studyCodes = Array.from(
+          new Set(
+            cavatica.bulkImportData.authorizedFiles
+              .filter((file) => file.study?.study_code)
+              .map((file) => file.study.study_code),
+          ),
+        );
+
+        // Track with additional metadata
+        trackCavaticaAction(index, {
+          studyCodes,
+          projectId: value.id,
+          projectName: value.title || value.name,
+          fileCount: cavatica.bulkImportData.authorizedFiles.length,
+        });
+
         dispatch(startBulkImportJob(value));
       }}
       createProjectModalProps={{

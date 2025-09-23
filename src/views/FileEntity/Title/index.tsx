@@ -28,7 +28,7 @@ interface OwnProps {
 const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
   const fencesAllAcls = useAllFencesAcl();
   const cavatica = useCavaticaPassport();
-  const gen3 = useFenceAuthentification(FENCE_NAMES.gen3);
+  const dcf = useFenceAuthentification(FENCE_NAMES.dcf);
   const hasFamily = file?.participants?.hits?.edges?.some((e) => e.node.families_id);
 
   const hasAccess = file
@@ -36,7 +36,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
         file,
         fencesAllAcls,
         cavatica.authentification.status === PASSPORT_AUTHENTIFICATION_STATUS.connected,
-        gen3.status === FENCE_AUTHENTIFICATION_STATUS.connected,
+        dcf.status === FENCE_AUTHENTIFICATION_STATUS.connected,
       )
     : false;
 
