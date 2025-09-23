@@ -3,7 +3,7 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
-  cy.intercept('GET', '**/fence/gen3/authenticated', {
+  cy.intercept('GET', '**/fence/dcf/authenticated', {
     statusCode: 200,
     body: {
       "authenticated": true,
@@ -13,7 +13,7 @@ beforeEach(() => {
   cy.intercept('POST', '**/authorized-studies', {
     statusCode: 200,
     body: {
-      "gen3": {
+      "dcf": {
           "data": [
               {
                   "study_id": "Study_ID",
