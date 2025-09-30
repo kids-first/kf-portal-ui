@@ -68,13 +68,14 @@ export const getFieldWithPrefixFile = (index: string, field: string): string => 
 };
 
 export const getFieldWithPrefixUnderscore = (index: string, field: string): string => {
+  const fieldFormated = field.replace(/\./g, '__');
   switch (index) {
     case INDEXES.BIOSPECIMEN:
-      return `files__biospecimens__${field}`;
+      return `files__biospecimens__${fieldFormated}`;
     case INDEXES.FILE:
-      return `files__${field}`;
+      return `files__${fieldFormated}`;
     default:
-      return field;
+      return fieldFormated;
   }
 };
 
