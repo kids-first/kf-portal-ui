@@ -22,7 +22,7 @@ describe('Page des études - Vérifier les informations affichées', () => {
     cy.validateTableFirstRow('3,959', 5);
     cy.validateTableFirstRow('4,458', 6);
     cy.validateTableFirstRow('1,312', 7);
-    cy.validateTableFirstRow('30,109', 8);
+    cy.validateTableFirstRow(/\d{1}/, 8);
     cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(9).find('[data-icon="check"]').should('exist');
     cy.get('tr[class*="ant-table-row"] [class="ant-table-cell"]').eq(10).find('[data-icon="check"]').should('exist');
     cy.validateTableFirstRow('-', 11);

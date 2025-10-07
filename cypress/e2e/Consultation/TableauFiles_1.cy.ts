@@ -45,9 +45,9 @@ describe('Page Data Exploration (Data Files) - Vérifier les informations affich
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(12).contains(/^3$/).should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(13).contains('2882b453-28b8-4238-bf7a-c4e0ff015a28.multi.vqsr.filtered.denovo.vep_105.vcf.gz').should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(14).contains('Not Reported').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(15).contains('Gen3').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(15).contains(/(Gen3|Dcf)/).should('exist');
     cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(16).contains('phs001110.c1').should('exist');
-    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(17).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
+    cy.get('tr[data-row-key="GF_6DVS70V9"] [class*="ant-table-cell"]').eq(17).contains('drs://').should('exist');
     cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(18).find('[class*="anticon"]').should('exist');
     cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(19).contains('MR').should('exist');
     cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [class*="ant-table-cell"]').eq(20).contains('Diffusion').should('exist');

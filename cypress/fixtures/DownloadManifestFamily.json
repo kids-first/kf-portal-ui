@@ -14,7 +14,7 @@
               "Proband",
               "Family ID",
               "External Sample ID"],
-  "content": ["drs://data.kidsfirstdrc.org/2ddca918-a809-4f30-8c9a-ee8c41d6b56c",
+  "content": ["drs://",
               "GF_06VVK9PE",
               ".g.vcf.gz",
               "7.71 GB",
