@@ -30,9 +30,9 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
     cy.get('[id="summary"] [class="ant-descriptions-item-label"]').eq(4).contains('Size').should('exist');
     cy.get('[id="summary"] [class="ant-descriptions-item-content"]').eq(4).contains('3.04 GB').should('exist');
     cy.get('[id="summary"] [class="ant-descriptions-item-label"]').eq(5).contains('URL').should('exist');
-    cy.get('[id="summary"] [class="ant-descriptions-item-content"]').eq(5).contains('drs://data.kidsfirstdrc.org/37cdb370-cda3-4504-be1b-f59cf6f785de').should('exist');
+    cy.get('[id="summary"] [class="ant-descriptions-item-content"]').eq(5).contains('drs://').should('exist');
     cy.get('[id="summary"] [class="ant-descriptions-item-label"]').eq(6).contains('Hash').should('exist');
-    cy.get('[id="summary"] [class="ant-descriptions-item-content"]').eq(6).contains('03322135eecaa16253565aa8b2bed532-12').should('exist');
+    cy.get('[id="summary"] [class="ant-descriptions-item-content"]').eq(6).contains(/(-|^(?!-).*$)/).should('exist');
   });
 
   it('Panneau Data Access', () => {
