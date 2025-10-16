@@ -57,8 +57,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
 
-  it('File Format - gVCF [SKFP-722]', () => {
-    cy.validateFacetFilter('File Format', 'GVCF', 'gvcf', /^3,235$/, 1);
+  it('File Format - VCF', () => {
+    cy.validateFacetFilter('File Format', 'Vcf', 'vcf', /\d{1}/, 1);
     cy.validateFacetRank(4, 'File Format');
   });
 

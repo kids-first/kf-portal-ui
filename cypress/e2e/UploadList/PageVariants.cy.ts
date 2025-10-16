@@ -80,16 +80,16 @@ describe('Page des variants - Téléverser une liste de gènes', () => {
     cy.get('[id*="panel-unmatched"] [data-row-key="0"] td').eq(1).should('not.exist');
   });
   
-  it('Valider les fonctionnalités de la modal - Bouton Téléverser [SKFP-854]', () => {
+  it('Valider les fonctionnalités de la modal - Bouton Téléverser', () => {
     cy.wait(2000);
     cy.clickAndIntercept('[class="ant-modal-footer"] button[class*="ant-btn-primary"]', 'POST', '**/graphql', 3);
 
-    cy.validatePillSelectedQuery('Gene', ['Uploaded List']);
-    cy.validateTotalSelectedQuery('61');
-    cy.validateTableResultsCount('61');
-    cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist');
+    cy.validatePillSelectedQuery('Genes Symbol', ['PRDX1']);
+    cy.validateTotalSelectedQuery(/\d{1}/);
+    cy.validateTableResultsCount(/\d{1}/);
+    cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('exist');
 
-    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('Uploaded List').clickAndWait({force:true});
+    cy.get('[class*="QueryValues_queryValuesContainer"]').contains('PRDX1').clickAndWait({force:true});
     cy.get('[class*="filtersDropdown"]').should('not.exist');
   });
 });

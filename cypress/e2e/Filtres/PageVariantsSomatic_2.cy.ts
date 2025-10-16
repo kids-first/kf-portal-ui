@@ -56,7 +56,7 @@ describe('Page des variants (Somatic) - Filtres', () => {
     cy.validateFilterInManager('Cypress_Fedit1', 'exist');
   });
 
-  it('Dupliquer un filtre sans sauvegarder [SKFP-1020]', () => {
+  it('Dupliquer un filtre sans sauvegarder', () => {
     cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').clickAndWait({force: true});
     cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_F1').clickAndWait({force: true});
     cy.get('[id="query-builder-header-tools"] [data-icon="copy"]').clickAndWait({force: true});
@@ -65,13 +65,13 @@ describe('Page des variants (Somatic) - Filtres', () => {
     cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_F1 COPY').should('not.exist');
     cy.validateFilterInManager('Cypress_F1 COPY', 'not.exist');
     cy.validateIconStates('plus', true/*isDisable*/, false/*isDirty*/);
-    cy.validateIconStates('save', false/*isDisable*/, true/*isDirty*/);
+    cy.validateIconStates('save', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('copy', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('delete', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('share-alt', true/*isDisable*/, false/*isDirty*/);
   });
 
-  it('Dupliquer un filtre et sauvegarder [SKFP-1020]', () => {
+  it('Dupliquer un filtre et sauvegarder', () => {
     cy.get('button[class*="QueryBuilderHeaderTools_queryBuilderHeaderDdb"]').clickAndWait({force: true});
     cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_F1').clickAndWait({force: true});
     cy.get('[id="query-builder-header-tools"] [data-icon="copy"]').clickAndWait({force: true});
@@ -81,7 +81,7 @@ describe('Page des variants (Somatic) - Filtres', () => {
     cy.get('[class*="ant-dropdown-menu-item"]').contains('Cypress_F1 COPY').should('not.exist');
     cy.validateFilterInManager('Cypress_F1 COPY', 'not.exist');
     cy.validateIconStates('plus', true/*isDisable*/, false/*isDirty*/);
-    cy.validateIconStates('save', false/*isDisable*/, true/*isDirty*/);
+    cy.validateIconStates('save', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('copy', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('delete', true/*isDisable*/, false/*isDirty*/);
     cy.validateIconStates('share-alt', true/*isDisable*/, false/*isDirty*/);

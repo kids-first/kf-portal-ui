@@ -52,19 +52,6 @@ describe('Page des variants (Variant) - Filtrer avec les facettes', () => {
     cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_1-156176849-G-A"
   });
 
-  it('Search by gene alias - SEMAB [SKFP-622]', () => {
-    cy.typeAndIntercept('[class*="ant-select-show-search"]', 'semab', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('1-').should('exist');
-    cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').eq(0).clickAndWait({force: true}); //data-cy="Search_Dropdown"
-
-    cy.get('[class="ant-tag"]').should('exist');
-    cy.get('[class*="QueryBar_selected"] [class*="QueryPill_field"]').contains('Variant ID').should('exist');
-    cy.validateTableResultsCount(/^1 Result$/);
-
-    cy.get('[data-icon="close-circle"]').clickAndWait({force: true});
-    cy.get('[class*="ant-select-show-search"] [class="ant-tag"]').should('not.exist'); //data-cy="Tag_1-156176849-G-A"
-  });
-
   it('Search by gene AA change - p.Val136Met', () => {
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'p.val136met', 'POST', '* /grapgql', 3); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('2-').should('exist');

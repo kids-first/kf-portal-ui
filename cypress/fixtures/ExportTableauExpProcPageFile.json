@@ -1,0 +1,14 @@
+{
+  "headers": ["Experimental Strategy",
+              "Platform",
+              "Instrument Model",
+              "Library Strand",
+              "Library Name",
+              "Experiment Date",
+              "Sequencing Center ID"],
+  "content": ["WGS",
+              "Not Reported",
+              "HiSeq X Ten",
+              "IWG_IND-GMKFWC.CDH668-1_2pA",
+              "2016-01-26T00:00:00+00:00"]
+}

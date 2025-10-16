@@ -19,7 +19,7 @@ describe('Page d\'un participant - Télécharger le clinical data (family)', () 
     cy.validateFileName(`kf_familyClinicalData_${strDate.slice(0, 4)}${strDate.slice(4, 6)}${strDate.slice(6, 8)}T*.xlsx`);
   });
 
-  it('Valider le contenu du fichier [SKFP-1277]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateXlsxFileContent('DownloadClinicalDataFamily.json');
   });
 });
