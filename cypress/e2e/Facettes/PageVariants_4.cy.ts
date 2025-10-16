@@ -20,11 +20,11 @@ describe('Page des variants (Gene) - Filtrer avec les facettes', () => {
     cy.get('section[class*="Filters"] [aria-expanded="true"]').should('not.exist');
   });
 
-  it('Search by gene symbol - SEMA4A [SKFP-939]', () => {
+  it('Search by gene symbol - SEMA4A', () => {
     cy.get('[class*="SearchLabel_title"]').contains('Search by gene').should('exist'); //data-cy="SearchLabel_Title"
 
     cy.get('[class*="SearchLabel_tooltipIcon"]').trigger('mouseover', {eventConstructor: 'MouseEvent', force: true}); //data-cy="SearchLabel_InfoCircleOutlined"
-    cy.get('div[class="ant-tooltip-inner"]').contains('Enter a Gene Symbol, Gene Alias or Ensemble ID').should('exist');
+    cy.get('div[class="ant-tooltip-inner"]').contains('Enter a Gene Symbol, Gene Alias ​​or Ensembl ID').should('exist');
 
     cy.typeAndIntercept('[class*="ant-select-show-search"]', 'sema4a', 'POST', '*/grapgql', 2); //data-cy="SearchAutocomplete_Select"
     cy.get('[class*="ant-select-dropdown"] [class*="ant-select-item"]').contains('SEMA4A').should('exist'); //data-cy="Search_Dropdown"

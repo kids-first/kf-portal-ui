@@ -316,7 +316,7 @@ Cypress.Commands.add('showColumn', (column: string|RegExp) => {
 Cypress.Commands.add('sortTableAndIntercept', (column: string|RegExp, nbCalls: number) => {
   cy.intercept('POST', '**/graphql').as('getPOSTgraphql');
 
-  cy.get('thead[class="ant-table-thead"]').contains(column).clickAndWait({force: true});
+  cy.get('thead[class="ant-table-thead"]').contains(column).scrollIntoView().clickAndWait({force: true});
 
   for (let i = 0; i < nbCalls; i++) {
     cy.wait('@getPOSTgraphql', {timeout: oneMinute});

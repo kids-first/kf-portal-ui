@@ -23,7 +23,7 @@ describe('Page d\'un fichier - Exporter le tableau Participants-Samples en TSV',
     cy.validateFileHeaders('ExportTableauParticipantsPageFile.json');
   });
 
-  it('Valider le contenu du fichier [SKFP-778]', () => {
+  it('Valider le contenu du fichier', () => {
     cy.validateFileContent('ExportTableauParticipantsPageFile.json');
   });
 });

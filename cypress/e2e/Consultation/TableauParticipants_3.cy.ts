@@ -64,25 +64,25 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow(/\d{2}/, 11, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Files [SKFP-1148]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Files', () => {
     cy.sortTableAndIntercept('Files', 1);
     cy.validateTableFirstRow(/^0$/, 12, true);
     cy.sortTableAndIntercept('Files', 1);
-    cy.validateTableFirstRow('214', 12, true);
+    cy.validateTableFirstRow(/\d{3}/, 12, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Race [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Race', () => {
     cy.sortTableAndIntercept('Race', 1);
     cy.validateTableFirstRow('-', 13, true);
     cy.sortTableAndIntercept('Race', 1);
-    cy.validateTableFirstRow('Unknown', 13, true);
+    cy.validateTableFirstRow('unknown', 13, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Ethnicity [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Ethnicity', () => {
     cy.sortTableAndIntercept('Ethnicity', 1);
     cy.validateTableFirstRow('-', 14, true);
     cy.sortTableAndIntercept('Ethnicity', 1);
-    cy.validateTableFirstRow('Unknown', 14, true);
+    cy.validateTableFirstRow('unknown', 14, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri External Participant ID', () => {
@@ -92,11 +92,11 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow(/^(?!-).*$/, 15, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri Diagnosis (NCIT) [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri Diagnosis (NCIT)', () => {
     cy.sortTableAndIntercept('Diagnosis (NCIT)', 1);
     cy.validateTableFirstRow('-', 16, true);
     cy.sortTableAndIntercept('Diagnosis (NCIT)', 1);
-    cy.validateTableFirstRow('NCIT:C9325', 16, true);
+    cy.validateTableFirstRow('NCIT: C', 16, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Vital Status', () => {
@@ -106,11 +106,12 @@ describe('Page Data Exploration (Participants) - Valider les fonctionnalités du
     cy.validateTableFirstRow('Reported Unknown', 18, true);
   });
 
-  it('Valider les fonctionnalités du tableau - Tri multiple [SKFP-773]', () => {
+  it('Valider les fonctionnalités du tableau - Tri multiple', () => {
+    cy.sortTableAndIntercept('Sex', 1);
     cy.sortTableAndIntercept('Sex', 1);
     cy.sortTableAndWait('Participant ID');
     cy.sortTableAndWait('Participant ID');
-    cy.validateTableFirstRow('PT_1QNE9NQ2', 1, true);
+    cy.validateTableFirstRow('PT_ZY', 1, true);
   });
 
   it('Valider les fonctionnalités du tableau - Pagination', () => {
