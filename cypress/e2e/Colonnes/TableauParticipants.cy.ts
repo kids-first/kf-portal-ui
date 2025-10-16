@@ -6,7 +6,7 @@ beforeEach(() => {
   cy.visitDataExploration('participants');
 });
 
-describe('Page Data Exploration (Participants) - Colonnes du tableau', () => {  
+describe('Page Data Exploration (Participants) - Colonnes du tableau', () => {
   it('Valider l\'affichage (par défaut/optionnel) et l\'ordre des colonnes', () => {
     cy.get('thead[class="ant-table-thead"]')
       .find('th[class*="ant-table-cell"]').eq(1)
