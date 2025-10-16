@@ -12,7 +12,7 @@ beforeEach(() => {
   cy.wait(1000);
 });
 
-describe('Page d\'un participant - Exporter le tableau Family en TSV', () => {  
+describe('Page d\'un participant - Exporter le tableau Family en TSV', () => {
   it('Valider le nom du fichier', () => {
     cy.validateFileName('kidsfirst-family-table-'+`${strDate.slice(0, 4)}-${strDate.slice(4, 6)}-${strDate.slice(6, 8)}`+'.tsv');
   });

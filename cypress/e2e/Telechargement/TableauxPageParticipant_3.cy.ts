@@ -12,7 +12,7 @@ beforeEach(() => {
   cy.waitUntilFile(oneMinute);
 });
 
-describe('Page d\'un participant - Exporter le tableau Phenotypes en TSV', () => {  
+describe('Page d\'un participant - Exporter le tableau Phenotypes en TSV', () => {
   it('Valider le nom du fichier', () => {
     cy.validateFileName('kidsfirst-phenotypes-table-'+`${strDate.slice(0, 4)}-${strDate.slice(4, 6)}-${strDate.slice(6, 8)}`+'.tsv');
   });

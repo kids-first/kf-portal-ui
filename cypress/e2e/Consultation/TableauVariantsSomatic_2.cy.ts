@@ -6,7 +6,7 @@ beforeEach(() => {
   cy.visitVariantsSomaticPage();
 });
 
-describe('Page des variants (Somatic) - Consultation du tableau', () => {  
+describe('Page des variants (Somatic) - Consultation du tableau', () => {
   it('Valider les fonctionnalités du tableau - Tri Variant', () => {
     cy.sortTableAndIntercept('Variant', 1);
     cy.validateTableFirstRow('chr1:g.1', 1, true);

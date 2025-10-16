@@ -29,7 +29,7 @@ beforeEach(() => {
   cy.waitUntilFile(oneMinute);
 });
 
-describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () => {  
+describe('Page d\'un participant - Exporter le tableau Biospecimens en TSV', () => {
   it('Valider le nom du fichier', () => {
     cy.validateFileName('kidsfirst-biospecimens-table-'+`${strDate.slice(0, 4)}-${strDate.slice(4, 6)}-${strDate.slice(6, 8)}`+'.tsv');
   });

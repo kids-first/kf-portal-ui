@@ -6,7 +6,7 @@ beforeEach(() => {
   cy.visitVariantsPage();
 });
 
-describe('Page des variants - Consultation du tableau', () => {  
+describe('Page des variants - Consultation du tableau', () => {
   it('Valider les fonctionnalités du tableau - Tri Variant', () => {
     cy.sortTableAndIntercept('Variant', 1);
     cy.validateTableFirstRow('chr1:g.100000075C>A', 1, true);
