@@ -2367,6 +2367,7 @@ const en = {
         instrument_model: 'Instrument Model',
         library_strand: 'Library Strand',
         library_name: 'Library Name',
+        paired_reads: 'Paired Reads',
         total_reads: 'Total Reads',
         max_insert_size: 'Max Insert Size',
         mean_insert_size: 'Mean Insert Size',
@@ -2374,6 +2375,7 @@ const en = {
         mean_read_length: 'Mean Read Length',
         experiment_date: 'Experiment Date',
         sequencing_center_id: 'Sequencing Center ID',
+        unpaired_reads: 'Unpaired Reads',
       },
       summary: {
         title: 'Summary',

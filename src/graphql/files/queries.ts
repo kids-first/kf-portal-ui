@@ -254,14 +254,20 @@ export const GET_FILE_ENTITY = gql`
               hits {
                 edges {
                   node {
-                    sequencing_experiment_id
-                    experiment_strategy
                     experiment_date
+                    experiment_strategy
+                    external_id
+                    instrument_model
+                    is_paired_end
                     library_name
                     library_strand
+                    max_insert_size
+                    mean_insert_size
+                    mean_depth
+                    mean_read_length
                     platform
-                    instrument_model
-                    external_id
+                    sequencing_experiment_id
+                    total_reads
                   }
                 }
               }
