@@ -23,7 +23,7 @@ declare namespace Cypress {
     saveFilterAs(filterName: string): cy & Chainable<void>;
     saveSetAs(setName: string, itemPosition: number): cy & Chainable<void>;
     selectPreset(tab: string): cy & Chainable<void>;
-    showColumn(column: string|RegExp): cy & Chainable<void>;
+    showColumn(column: string|RegExp, eq?: number): cy & Chainable<void>;
     sortTableAndIntercept(column: string|RegExp, nbCalls: number): cy & Chainable<void>;
     sortTableAndWait(column: string): cy & Chainable<void>;
     typeAndIntercept(selector: string, text: string, methodHTTP: string, routeMatcher: string, nbCalls: number, eq: number = 0): cy & Chainable<void>;

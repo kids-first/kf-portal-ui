@@ -302,7 +302,9 @@ Cypress.Commands.add('selectPreset', (tab: string) => {
   cy.get(`[class*="ant-select-dropdown"] [title="${strTitle}"]`).clickAndWait({force: true});
 });
 
-Cypress.Commands.add('showColumn', (column: string|RegExp) => {
+Cypress.Commands.add('showColumn', (column: string|RegExp, eq?: number) => {
+  const numEq = eq !== undefined ? eq : 0;
+  cy.get('svg[data-icon="setting"]').eq(numEq).clickAndWait({force: true});
   cy.intercept('PUT', '**/user').as('getPOSTuser');
 
   cy.get('div[class="ant-popover-inner"]')
