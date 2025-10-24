@@ -60,7 +60,8 @@ const getExperimentalProcedureColumns = (): ProColumnType[] => [
     key: 'mean_insert_size',
     dataIndex: 'mean_insert_size',
     title: intl.get('entities.file.experimental_procedure.mean_insert_size'),
-    render: (mean_insert_size: number) => mean_insert_size || TABLE_EMPTY_PLACE_HOLDER,
+    render: (mean_insert_size: number) =>
+      mean_insert_size ? Number(mean_insert_size).toFixed(3) : TABLE_EMPTY_PLACE_HOLDER,
     defaultHidden: true,
   },
   {
