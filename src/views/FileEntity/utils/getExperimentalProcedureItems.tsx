@@ -43,7 +43,9 @@ const getExperimentalProcedureItems = (
   },
   {
     label: intl.get('entities.file.experimental_procedure.mean_insert_size'),
-    value: sequencingExperiment?.mean_insert_size || TABLE_EMPTY_PLACE_HOLDER,
+    value: sequencingExperiment?.mean_insert_size
+      ? Number(sequencingExperiment?.mean_insert_size).toFixed(3)
+      : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.mean_depth'),
