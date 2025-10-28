@@ -80,20 +80,38 @@ describe('Page d\'un fichier - Vérifier les informations affichées', () => {
 
   it('Panneau Experimental Procedure', () => {
     cy.resetColumns('experimental-procedure');
+    cy.showColumn('Max Insert Size', 1/*eq*/);
+    cy.showColumn('Mean Insert Size', 1/*eq*/);
+    cy.showColumn('Mean Depth', 1/*eq*/);
+    cy.showColumn('Mean Read Length', 1/*eq*/);
+    cy.showColumn('Experiment Date', 1/*eq*/);
+    cy.showColumn('Sequencing Center ID', 1/*eq*/);
     cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(0).contains('Experimental Strategy').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(1).contains('Platform').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(2).contains('Instrument Model').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(3).contains('Library Strand').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(4).contains('Library Name').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(5).contains('Experiment Date').should('exist');
-    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(6).contains('Sequencing Center ID').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(1).contains('Sequencing Type').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(2).contains('Platform').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(3).contains('Instrument Model').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(4).contains('Library Strand').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(5).contains('Library Name').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(6).contains('Total Reads').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(7).contains('Max Insert Size').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(8).contains('Mean Insert Size').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(9).contains('Mean Depth').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(10).contains('Mean Read Length').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(11).contains('Experiment Date').should('exist');
+    cy.get('[id="experimental-procedure"] thead th[class="ant-table-cell"]').eq(12).contains('Sequencing Center ID').should('exist');
     cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(0).contains('WGS').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(1).contains('Not Reported').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(2).contains('HiSeq X Ten').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(3).contains('Not Reported').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(4).contains('IWG_IND-GMKFWC.CDH667-1_2pA').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(5).contains('2016-01-26T00:00:00+00:00').should('exist');
-    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(6).contains('IWG_IND-GMKFWC.CDH667-1_2pA').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(1).contains('Paired Reads').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(2).contains('Not Reported').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(3).contains('HiSeq X Ten').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(4).contains('Not Reported').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(5).contains('IWG_IND-GMKFWC.CDH667-1_2pA').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(6).contains('-').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(7).contains('421').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(8).contains('349.21').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(9).contains('-').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(10).contains('150').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(11).contains('2016-01-26T00:00:00+00:00').should('exist');
+    cy.get('[data-row-key="SE_X9RPH18C"] td[class="ant-table-cell"]').eq(12).contains('IWG_IND-GMKFWC.CDH667-1_2pA').should('exist');
   });
   
   it('Panneau Experimental Procedure (Imaging)', () => {

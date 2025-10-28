@@ -27,19 +27,24 @@ export interface IFileStudyEntity {
 
 export interface ISequencingExperiment {
   id: string;
-  sequencing_experiment_id: string;
-  experiment_strategy: string;
-  experiment_date?: string;
   center: string;
+  experiment_date?: string;
+  experiment_strategy: string;
+  external_id?: string;
+  instrument_model: string;
+  is_paired_end: boolean;
   library_name: string;
   library_prep: string;
   library_selection: string;
   library_strand: string;
+  max_insert_size?: number;
+  mean_insert_size?: number;
+  mean_depth?: number;
+  mean_read_length?: number;
   platform: string;
-  instrument_model: string;
-  external_id?: string;
   sequencing_center_id: string;
-  is_paired_end: boolean;
+  sequencing_experiment_id: string;
+  total_reads?: number;
 }
 
 export interface IDevice {

@@ -8,6 +8,12 @@ beforeEach(() => {
   cy.login();
   cy.visitFileEntity('GF_6DVS70V9');
   cy.resetColumns('experimental-procedure');
+  cy.showColumn('Max Insert Size', 1/*eq*/);
+  cy.showColumn('Mean Insert Size', 1/*eq*/);
+  cy.showColumn('Mean Depth', 1/*eq*/);
+  cy.showColumn('Mean Read Length', 1/*eq*/);
+  cy.showColumn('Experiment Date', 1/*eq*/);
+  cy.showColumn('Sequencing Center ID', 1/*eq*/);
   cy.get('div[id="content"] svg[data-icon="download"]').eq(2).clickAndWait({force:true});
   cy.waitUntilFile(oneMinute);
 });

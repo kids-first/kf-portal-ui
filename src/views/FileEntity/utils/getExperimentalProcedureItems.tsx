@@ -13,7 +13,9 @@ const getExperimentalProcedureItems = (
   },
   {
     label: intl.get('entities.file.experimental_procedure.sequencing_type'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.is_paired_end
+      ? intl.get('entities.file.experimental_procedure.paired_reads')
+      : intl.get('entities.file.experimental_procedure.unpaired_reads'),
   },
   {
     label: intl.get('entities.file.experimental_procedure.platform'),
@@ -33,23 +35,25 @@ const getExperimentalProcedureItems = (
   },
   {
     label: intl.get('entities.file.experimental_procedure.total_reads'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.total_reads || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.max_insert_size'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.max_insert_size || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.mean_insert_size'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.mean_insert_size
+      ? Number(sequencingExperiment?.mean_insert_size).toFixed(2)
+      : TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.mean_depth'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.mean_depth || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.mean_read_length'),
-    value: TABLE_EMPTY_PLACE_HOLDER, // TODO
+    value: sequencingExperiment?.mean_read_length || TABLE_EMPTY_PLACE_HOLDER,
   },
   {
     label: intl.get('entities.file.experimental_procedure.experiment_date'),
