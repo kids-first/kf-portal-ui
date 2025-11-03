@@ -1673,7 +1673,7 @@ const en = {
           graphs: {
             sampleTypeGraph: {
               legendAxisLeft: 'Sample Types',
-              legendAxisBottom: '# of participants',
+              legendAxisBottom: '# of samples',
             },
           },
           download: {
@@ -1693,10 +1693,10 @@ const en = {
             ethnicityTitle: 'Ethnicity',
           },
           availableData: {
-            dataCategoryTitle: 'Participants by Data Category',
-            dataTypeTitle: 'Participants by Data Type',
+            dataCategoryTitle: 'Files by Data Category',
+            dataTypeTitle: 'Files by Data Type',
             studiesTitle: 'Participants by Study',
-            sampleTypeTitle: 'Participants by Sample Type',
+            sampleTypeTitle: 'Biospecimen by Sample Type',
             mostFrequentPhenotypes: 'Most Frequent Phenotypes (HPO)',
             mostFrequentDiagnoses: 'Most Frequent Diagnoses (MONDO)',
           },
