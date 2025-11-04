@@ -45,7 +45,7 @@ const DataTypeGraphCard = () => {
     result?.data?.file?.aggregations?.data_type.buckets,
     result?.data?.file?.hits?.total,
   )
-    .sort((a, b) => b.value - a.value)
+    .sort((a, b) => a.value - b.value)
     .slice(0, 10);
 
   return (

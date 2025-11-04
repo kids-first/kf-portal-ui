@@ -1696,7 +1696,7 @@ const en = {
             dataCategoryTitle: 'Files by Data Category',
             dataTypeTitle: 'Files by Data Type',
             studiesTitle: 'Participants by Study',
-            sampleTypeTitle: 'Biospecimen by Sample Type',
+            sampleTypeTitle: 'Biospecimens by Sample Type',
             mostFrequentPhenotypes: 'Most Frequent Phenotypes (HPO)',
             mostFrequentDiagnoses: 'Most Frequent Diagnoses (MONDO)',
           },
