@@ -9,7 +9,7 @@ import {
   formatAggregationChartData,
 } from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import { INDEXES } from 'graphql/constants';
-import useParticipantResolvedSqon from 'graphql/participants/useParticipantResolvedSqon';
+import useFileResolvedSqon from 'graphql/files/useFileResolvedSqon';
 import { DATATYPE_QUERY } from 'graphql/summary/queries';
 import { isEmpty } from 'lodash';
 import { ARRANGER_API_PROJECT_URL } from 'provider/ApolloProvider';
@@ -30,7 +30,7 @@ const addToQuery = (field: string, key: string) =>
   });
 
 const DataTypeGraphCard = () => {
-  const { sqon } = useParticipantResolvedSqon(DATA_EXPLORATION_QB_ID);
+  const { sqon } = useFileResolvedSqon(DATA_EXPLORATION_QB_ID);
   const { loading, result } = useApi<any>({
     config: {
       url: ARRANGER_API_PROJECT_URL,
@@ -42,8 +42,8 @@ const DataTypeGraphCard = () => {
     },
   });
   const dataTypeResults = aggregationToChartData(
-    result?.data?.participant?.aggregations?.files__data_type.buckets,
-    result?.data?.participant?.hits?.total,
+    result?.data?.file?.aggregations?.data_type.buckets,
+    result?.data?.file?.hits?.total,
   )
     .sort((a, b) => a.value - b.value)
     .slice(0, 10);
@@ -67,7 +67,7 @@ const DataTypeGraphCard = () => {
         <BarChart
           data={dataTypeResults}
           ariaLabel={intl.get('screen.dataExploration.tabs.summary.availableData.dataTypeTitle')}
-          barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
+          barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} files`}
           axisLeft={{
             legend: 'Data Types',
             legendPosition: 'middle',
@@ -76,7 +76,7 @@ const DataTypeGraphCard = () => {
           }}
           tooltipLabel={(node: any) => node.data.id}
           axisBottom={{
-            legend: '# of participants',
+            legend: '# of files',
             legendPosition: 'middle',
             legendOffset: 35,
           }}
@@ -104,7 +104,7 @@ const DataTypeGraphCard = () => {
               ariaLabel={intl.get(
                 'screen.dataExploration.tabs.summary.availableData.dataTypeTitle',
               )}
-              barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} participants`}
+              barAriaLabel={(e) => `${e.indexValue}, ${e.formattedValue} files`}
               axisLeft={{
                 legend: 'Data Types',
                 legendPosition: 'middle',
@@ -113,7 +113,7 @@ const DataTypeGraphCard = () => {
               }}
               tooltipLabel={(node: any) => node.data.id}
               axisBottom={{
-                legend: '# of participants',
+                legend: '# of files',
                 legendPosition: 'middle',
                 legendOffset: 35,
               }}
