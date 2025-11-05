@@ -29,7 +29,7 @@ beforeEach(() => {
   },
   }).as('cavaticaProjects');
 
-  cy.visitFileEntity('GF_0023NT7Z');
+  cy.visitFileEntity('GF_0021JE73');
   cy.wait('@cavaticaAuthenticated');
   cy.wait('@cavaticaProjects');
   cy.get('button[aria-label="Analyze in Cavatica"]').clickAndWait({force: true});

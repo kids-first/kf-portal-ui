@@ -191,14 +191,14 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
   it('Panneau Files', () => {
     cy.get('[id="files"] [class*="EntityTable_title"]').contains('Data File').should('exist');
     cy.get('[id="files"] [class="ant-collapse-header"]').contains('Data File').should('exist');
-    cy.get('[id="files"] [class="ant-collapse-header"]').contains('(32)').should('exist');
+    cy.get('[id="files"] [class="ant-collapse-header"]').contains('(30)').should('exist');
     cy.get('[id="files"] [class="ant-collapse-header"]').contains('View in exploration').should('exist');
     cy.get('[id="files"] [class="ant-collapse-header"] svg[class="anticon"]').should('exist');
     cy.get('[id="files"] [class*="EntityTable_subTitle"]').eq(0).contains('File counts by Data Category').should('exist');
     cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(0).find('thead th[class="ant-table-cell"]').eq(0).contains('Data Category').should('exist');
     cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(0).find('thead th[class="ant-table-cell"]').eq(1).contains('Files').should('exist');
-    cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(0).find('thead th[class="ant-table-cell"]').eq(2).contains('(n=32)').should('exist');
-    cy.get('[id="files"] [data-row-key="Genomics"] td[class="ant-table-cell"]').eq(1).contains(/^32$/).should('exist');
+    cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(0).find('thead th[class="ant-table-cell"]').eq(2).contains('(n=30)').should('exist');
+    cy.get('[id="files"] [data-row-key="Genomics"] td[class="ant-table-cell"]').eq(1).contains(/^30$/).should('exist');
     cy.get('[id="files"] [data-row-key="Genomics"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 100%"]').should('exist');
     cy.get('[id="files"] [data-row-key="Transcriptomics"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
     cy.get('[id="files"] [data-row-key="Transcriptomics"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
@@ -208,8 +208,8 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[id="files"] [class*="EntityTable_subTitle"]').eq(1).contains('File counts by Experimental Strategy').should('exist');
     cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(1).find('thead th[class="ant-table-cell"]').eq(0).contains('Experimental Strategy').should('exist');
     cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(1).find('thead th[class="ant-table-cell"]').eq(1).contains('Files').should('exist');
-    cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(1).find('thead th[class="ant-table-cell"]').eq(2).contains('(n=32)').should('exist');
-    cy.get('[id="files"] [data-row-key="WGS"] td[class="ant-table-cell"]').eq(1).contains(/^32$/).should('exist');
+    cy.get('[id="files"] [class*="EntityTable_contentTable"]').eq(1).find('thead th[class="ant-table-cell"]').eq(2).contains('(n=30)').should('exist');
+    cy.get('[id="files"] [data-row-key="WGS"] td[class="ant-table-cell"]').eq(1).contains(/^30$/).should('exist');
     cy.get('[id="files"] [data-row-key="WGS"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 100%"]').should('exist');
     cy.get('[id="files"] [data-row-key="RNA-Seq"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
     cy.get('[id="files"] [data-row-key="RNA-Seq"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');

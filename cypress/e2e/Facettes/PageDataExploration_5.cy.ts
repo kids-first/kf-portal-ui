@@ -86,8 +86,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(8, 'Is Paired End');
   });
 
-  it('Repository - Gen3', () => {
-    cy.validateFacetFilter('Repository', 'Gen3', 'gen3', /\d{1}/, 1);
+  it('Repository - Dcf', () => {
+    cy.validateFacetFilter('Repository', 'Dcf', 'dcf', /\d{1}/, 1);
     cy.validateFacetRank(9, 'Repository');
   });
 
