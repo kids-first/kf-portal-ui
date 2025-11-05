@@ -11,7 +11,7 @@ describe('Page Data Exploration (Data Files) - Valider les fonctionnalités du t
     cy.sortTableAndWait('File ID',);
     cy.validateTableFirstRow(/^(?!-).*$/, 3, true);
     cy.sortTableAndIntercept('File ID', 1);
-    cy.validateTableFirstRow('GF_ZZZYCMZQ', 3, true);
+    cy.validateTableFirstRow('GF_ZZ', 3, true);
   });
 
   it('Valider les fonctionnalités du tableau - Tri Study', () => {
