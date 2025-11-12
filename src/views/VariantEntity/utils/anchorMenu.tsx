@@ -16,10 +16,11 @@ export const links: IAnchorLink[] = [
     title: intl.get('screen.variants.consequences.consequence'),
   },
   { href: `#${SectionId.FREQUENCY}`, title: intl.get('screen.variants.frequencies.frequency') },
-  {
-    href: `#${SectionId.PATHOGENICITY}`,
-    title: intl.get('screen.variants.pathogenicity.pathogenicity'),
-  },
+  // Pathogenicity section is temporarily removed SJIP-1482
+  // {
+  //   href: `#${SectionId.PATHOGENICITY}`,
+  //   title: intl.get('screen.variants.pathogenicity.pathogenicity'),
+  // },
   {
     href: `#${SectionId.CONDITION}`,
     title: intl.get('screen.variants.conditions.title'),

@@ -2,7 +2,6 @@ import intl from 'react-intl-universal';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { NO_GENE } from '@ferlab/ui/core/components/Consequences/Cell';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
@@ -13,11 +12,8 @@ import EntityPageWrapper, {
 } from '@ferlab/ui/core/pages/EntityPage';
 import EntityNestedTable from '@ferlab/ui/core/pages/EntityPage/EntityNestedTable';
 import EntityVariantSummary from '@ferlab/ui/core/pages/EntityPage/EntityVariantSummary';
-import {
-  makeClinvarRows,
-  makeGenesOrderedRow,
-} from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
-import { Space, Tag, Tooltip } from 'antd';
+import { makeGenesOrderedRow } from '@ferlab/ui/core/pages/EntityPage/utils/pathogenicity';
+import { Tag, Tooltip } from 'antd';
 import { ArrangerEdge } from 'graphql/models';
 import { useStudiesEntity } from 'graphql/studies/actions';
 import { useVariantSomaticEntity } from 'graphql/variants/actions';
@@ -29,10 +25,7 @@ import {
   getFrequencyTableSummaryColumns,
   getPublicCohorts,
 } from 'views/VariantEntity/utils/frequency';
-import {
-  getClinvarColumns,
-  getGenePhenotypeColumns,
-} from 'views/VariantEntity/utils/pathogenicity';
+import { getGenePhenotypeColumns } from 'views/VariantEntity/utils/pathogenicity';
 import { VARIANT_REPO_QB_ID } from 'views/Variants/utils/constants';
 
 import ExternalLinkIcon from 'components/Icons/ExternalLinkIcon';
@@ -153,7 +146,8 @@ export default function VariantSomaticEntity() {
           emptyMessage={intl.get('no.data.available')}
         />
 
-        <EntityTable
+        {/* Pathogenicity section is temporarily removed SJIP-1482 */}
+        {/* <EntityTable
           id={SectionId.PATHOGENICITY}
           loading={loading}
           title={intl.get('screen.variants.pathogenicity.pathogenicity')}
@@ -172,7 +166,7 @@ export default function VariantSomaticEntity() {
           }
           data={makeClinvarRows(data?.clinvar)}
           columns={getClinvarColumns()}
-        />
+        />*/}
 
         <EntityTable
           id={SectionId.CONDITION}
