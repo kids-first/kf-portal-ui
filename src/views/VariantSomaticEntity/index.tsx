@@ -146,7 +146,7 @@ export default function VariantSomaticEntity() {
           emptyMessage={intl.get('no.data.available')}
         />
 
-        {/* Pathogenicity section is temporarily removed SJIP-1482 */}
+        {/* Pathogenicity section is temporarily removed SKFP-1591 */}
         {/* <EntityTable
           id={SectionId.PATHOGENICITY}
           loading={loading}

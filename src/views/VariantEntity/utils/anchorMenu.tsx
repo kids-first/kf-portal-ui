@@ -16,7 +16,7 @@ export const links: IAnchorLink[] = [
     title: intl.get('screen.variants.consequences.consequence'),
   },
   { href: `#${SectionId.FREQUENCY}`, title: intl.get('screen.variants.frequencies.frequency') },
-  // Pathogenicity section is temporarily removed SJIP-1482
+  // Pathogenicity section is temporarily removed SKFP-1591
   // {
   //   href: `#${SectionId.PATHOGENICITY}`,
   //   title: intl.get('screen.variants.pathogenicity.pathogenicity'),
