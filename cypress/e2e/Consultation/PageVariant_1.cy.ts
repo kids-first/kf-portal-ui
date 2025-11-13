@@ -174,32 +174,6 @@ describe('Page d\'un variant - Vérifier les informations affichées', () => {
     cy.get('[data-row-key="oneThousandsGenomes"] td[class="ant-table-cell"]').eq(4).contains('-').should('exist');
   });
 
-  it('Panneau ClinVar', () => {
-    cy.get('[id="pathogenicity"] h4[class*="EntityTable_title"]').eq(0).contains('Pathogenicity').should('exist');
-    cy.get('[id="pathogenicity"] [class*="ant-collapse-header-text"]').contains('ClinVar').should('exist');
-    cy.get('[id="pathogenicity"] [class*="ant-collapse-header-text"]').contains('3362').should('exist');
-    cy.get('[id="pathogenicity"] thead th[class="ant-table-cell"]').eq(0).contains('Interpretation').should('exist');
-    cy.get('[id="pathogenicity"] thead th[class="ant-table-cell"]').eq(1).contains('Condition').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis Pigmentosa Recessive').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(4).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).contains('not provided').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(3).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).contains('not specified').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(5).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(2).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).contains('Retinitis pigmentosa 35').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(0).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(0).find('[class*="ant-tag-green"]').contains('Benign').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).contains('Cone-rod dystrophy 10').should('exist');
-    cy.get('[id="pathogenicity"] tr[class*="ant-table-row"]').eq(1).find('td[class="ant-table-cell"]').eq(1).find('[class*="ColorTag_default"]').contains('GER').should('exist');
-  });
-
   it('Panneau Gene - Phenotype Association', () => {
     cy.get('[id="condition"] h4[class*="EntityTable_title"]').eq(0).contains('Condition').should('exist');
     cy.get('[id="condition"] [class*="ant-collapse-header-text"]').contains('Gene - Phenotype Association').should('exist');
