@@ -66,7 +66,7 @@ const AuthorizedStudies = ({ id, className = '' }: DashboardCardProps) => {
         }),
         disconnect: intl.get('screen.dashboard.cards.cavatica.disconnect'),
         connectedNotice: intl.get('screen.dashboard.cards.authorizedStudies.connectedNotice'),
-        manageConnections: undefined as any,
+        manageConnections: intl.get('screen.dashboard.cards.cavatica.disconnect'),
         noAvailableStudies: intl.get('screen.dashboard.cards.authorizedStudies.noAvailableStudies'),
         authentification: {
           description: intl.get('screen.dashboard.cards.authorizedStudies.disconnectedNotice'),
