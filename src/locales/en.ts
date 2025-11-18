@@ -883,7 +883,8 @@ const en = {
         },
         authorizedStudies: {
           title: 'Authorized Studies {count, plural, =0 {} other {(#)}}',
-          connectedNotice: 'You have access to the following Kids First controlled data. ',
+          connectedNotice:
+            'You have access to the following Kids First controlled data through your NIH credentials. ',
           disconnectedNotice:
             'To access controlled study files, connect to our data repository partners using your NIH credentials.',
           disconnect: 'Disconnect',

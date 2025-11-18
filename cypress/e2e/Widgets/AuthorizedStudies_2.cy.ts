@@ -47,8 +47,8 @@ describe('Page Dashboard - Widget Authorized Studies (connecté)', () => {
     });
 
     cy.get('@authStudiesCard').contains('Authorized Studies (1)').should('exist');
-    cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"]').contains('You have access to the following Kids First controlled data.').should('exist');
-    cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"] button').contains('Manage your connections').should('not.exist');
+    cy.get('@authStudiesCard').find('[class*="widget_authenticatedHeader"]').contains('You have access to the following Kids First controlled data through your NIH credentials.').should('exist');
+    cy.get('@authStudiesCard').find('button').contains('Disconnect').should('exist');
   });
 
   it('Vérifier les informations affichées - Study', () => {
