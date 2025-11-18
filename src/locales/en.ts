@@ -874,7 +874,7 @@ const en = {
             placeholder: 'Biospecimen request name',
             requiredError: 'You must provide a name for this request.',
             existingNameError: 'A biospecimen request with this name already exists.',
-            maximumLength: 'characters maximum ',
+            maximumLength: 'characters maximum',
           },
           shareLink: {
             success: { title: 'Success', description: 'Link copied to clipboard' },
