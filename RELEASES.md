@@ -1,3 +1,15 @@
+## VERSION 5.16.0 (2025-11-19)
+### Technical / Other Changes:
+- [SKFP-1228](https://d3b.atlassian.net/browse/SKFP-1228) Refactor: [File Entity] Added sequencing experiment fields from Arranger & added optional columns
+- [SKFP-1327](https://d3b.atlassian.net/browse/SKFP-1327) Refactor: [ETL] Adjusted repository field not populated following a fix done to extract access url
+- [SKFP-1476](https://d3b.atlassian.net/browse/SKFP-1476) Issue: [Cavatica] Fixed pushing VCF files to Cavatica should also send the corresponding index files
+- [SKFP-1559](https://d3b.atlassian.net/browse/SKFP-1559) Refactor: [GA] Augmented Google Analytics Event "analyze in Cavatica" from File repository
+- [SKFP-1567](https://d3b.atlassian.net/browse/SKFP-1567) Issue: [Data Exploration] Fixed the search for value in the quick filter
+- [SKFP-1573](https://d3b.atlassian.net/browse/SKFP-1573) Refactor: [Dashboard] Consolidated NCI DCF fence from Authorized Studies Widget
+- [SKFP-1584](https://d3b.atlassian.net/browse/SKFP-1584) Issue: [Summary View]  Fixed sample type with most counts are not appearing in the chart
+- [SKFP-1591](https://d3b.atlassian.net/browse/SKFP-1591) Refactor: [Variant Entity] Hide Pathogenicity section of the variant entity page
+- [SKFP-1595](https://d3b.atlassian.net/browse/SKFP-1595) Issue: [Authorized Studies] Fixed missing disconnect button
+
 ## VERSION 5.15.0 (2025-09-19)
 ### Feature
 - [SKFP-1537](https://d3b.atlassian.net/browse/SKFP-1537) Feature:[Community] Show Total User Count on Community Page
