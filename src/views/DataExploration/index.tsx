@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import {
   ExperimentOutlined,
   FileSearchOutlined,

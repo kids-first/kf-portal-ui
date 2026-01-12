@@ -1,4 +1,6 @@
+/* eslint-disable max-len */
 import * as React from 'react';
+
 import { IconProps } from 'components/Icons';
 
 const KidsFirstIcon = ({ width = 90, height = 41, className = '' }: IconProps) => (

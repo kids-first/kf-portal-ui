@@ -1,5 +1,5 @@
-import { RootState } from 'store/types';
 import { initialState } from 'store/remote/types';
+import { RootState } from 'store/types';
 
 export type TRemoteProps = initialState;
 

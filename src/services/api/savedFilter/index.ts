@@ -1,6 +1,8 @@
 import EnvironmentVariables from 'helpers/EnvVariables';
-import { TUserSavedFilter, TUserSavedFilterInsert, TUserSavedFilterUpdate } from './models';
+
 import { sendRequest } from 'services/api';
+
+import { TUserSavedFilter, TUserSavedFilterInsert, TUserSavedFilterUpdate } from './models';
 
 export const SAVED_FILTER_API_URL = `${EnvironmentVariables.configFor('USERS_API')}/saved-filters`;
 

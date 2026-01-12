@@ -1,6 +1,7 @@
 import { ISavedFilter } from '@ferlab/ui/core/components/QueryBuilder/types';
 import useQueryBuilderState from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { ISyntheticSqon } from '@ferlab/ui/core/data/sqon/types';
+
 import { useSavedFilter } from 'store/savedFilter';
 
 const getSelectedSavedFilter = (

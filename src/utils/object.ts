@@ -3,9 +3,8 @@
  * @param item
  * @returns {boolean}
  */
-export const isObject = (item: any): boolean => {
-  return item && typeof item === "object" && !Array.isArray(item);
-};
+export const isObject = (item: any): boolean =>
+  item && typeof item === 'object' && !Array.isArray(item);
 
 /**
  * Deep merge two objects.

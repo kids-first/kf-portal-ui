@@ -59,7 +59,7 @@ const passportSlice = createSlice({
   extraReducers: (builder) => {
     // Cavatica
     // AUTHENTIFICATION
-    builder.addCase(fetchCavaticaAuthentificationStatus.pending, (state, action) => {
+    builder.addCase(fetchCavaticaAuthentificationStatus.pending, (state) => {
       state.cavatica.projects.error = false;
       state.cavatica.billingGroups.error = false;
       state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.unknow;
@@ -70,37 +70,37 @@ const passportSlice = createSlice({
       state.cavatica.authentification.loading = false;
       state.cavatica.authentification.status = action.payload.status;
     });
-    builder.addCase(fetchCavaticaAuthentificationStatus.rejected, (state, action) => {
+    builder.addCase(fetchCavaticaAuthentificationStatus.rejected, (state) => {
       state.cavatica.authentification.loading = false;
       state.cavatica.authentification.error = true;
     });
     // DISCONNECTION
-    builder.addCase(disconnectCavaticaPassport.pending, (state, action) => {
+    builder.addCase(disconnectCavaticaPassport.pending, (state) => {
       state.cavatica.authentification.loading = true;
       state.cavatica.authentification.status = PASSPORT_AUTHENTIFICATION_STATUS.unknown;
     });
-    builder.addCase(disconnectCavaticaPassport.fulfilled, (state, action) => {
+    builder.addCase(disconnectCavaticaPassport.fulfilled, (state) => {
       state.cavatica.authentification.loading = false;
       state.cavatica.authentification.status = PASSPORT_AUTHENTIFICATION_STATUS.disconnected;
     });
-    builder.addCase(disconnectCavaticaPassport.rejected, (state, action) => {
+    builder.addCase(disconnectCavaticaPassport.rejected, (state) => {
       state.cavatica.authentification.loading = false;
       state.cavatica.authentification.error = true;
     });
     // FETCH PROJECT
-    builder.addCase(fetchCavaticaProjects.pending, (state, action) => {
+    builder.addCase(fetchCavaticaProjects.pending, (state) => {
       state.cavatica.projects.loading = true;
     });
     builder.addCase(fetchCavaticaProjects.fulfilled, (state, action) => {
       state.cavatica.projects.loading = false;
       state.cavatica.projects.data = action.payload;
     });
-    builder.addCase(fetchCavaticaProjects.rejected, (state, action) => {
+    builder.addCase(fetchCavaticaProjects.rejected, (state) => {
       state.cavatica.projects.loading = false;
       state.cavatica.projects.error = CAVATICA_API_ERROR_TYPE.fetch;
     });
     // BILLINGS GROUPS
-    builder.addCase(fetchCavaticaBillingGroups.pending, (state, action) => {
+    builder.addCase(fetchCavaticaBillingGroups.pending, (state) => {
       state.cavatica.billingGroups.loading = true;
     });
     builder.addCase(fetchCavaticaBillingGroups.fulfilled, (state, action) => {
@@ -112,19 +112,19 @@ const passportSlice = createSlice({
       state.cavatica.billingGroups.error = action.payload;
     });
     // CREATE PROJECT
-    builder.addCase(createCavaticaProjet.pending, (state, action) => {
+    builder.addCase(createCavaticaProjet.pending, (state) => {
       state.cavatica.projects.loading = true;
     });
     builder.addCase(createCavaticaProjet.fulfilled, (state, action) => {
       state.cavatica.projects.loading = false;
       state.cavatica.projects.data.push(action.payload.newProject);
     });
-    builder.addCase(createCavaticaProjet.rejected, (state, action) => {
+    builder.addCase(createCavaticaProjet.rejected, (state) => {
       state.cavatica.projects.loading = false;
       state.cavatica.projects.error = CAVATICA_API_ERROR_TYPE.create;
     });
     // ANALYSE PROJECT
-    builder.addCase(beginCavaticaAnalyse.pending, (state, action) => {
+    builder.addCase(beginCavaticaAnalyse.pending, (state) => {
       state.cavatica.bulkImportData.loading = true;
       state.cavatica.bulkImportData.status = CAVATICA_ANALYSE_STATUS.unknow;
     });

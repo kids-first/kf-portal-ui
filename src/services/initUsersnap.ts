@@ -30,6 +30,6 @@ export const initUserSnap = () => {
       document.head.append(script);
     })
     .catch((error: any) => {
-      console.log(error.message);
+      console.error(error.message);
     });
 };

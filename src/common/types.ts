@@ -1,1 +1,1 @@
-export type AlterTypes = "success" | "info" | "warning" | "error";
+export type AlterTypes = 'success' | 'info' | 'warning' | 'error';

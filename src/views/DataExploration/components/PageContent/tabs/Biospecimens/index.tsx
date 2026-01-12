@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -513,6 +513,7 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
             dictionary={getRequestBiospecimenDictionary()}
             disabled={selectedKeys.length === 0 && !selectedAllResults}
             columns={getDataTypeColumns()}
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             getSamples={() => useApi({ config })}
             getSavedSets={useSavedSet}
             key="requestBiospecimen"

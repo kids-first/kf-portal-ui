@@ -1,9 +1,10 @@
 import {
-  KEYCLOAK_AUTH_GRANT_TYPE,
-  rptRequest,
-  Rpt,
   getAccessTokenStatus,
+  KEYCLOAK_AUTH_GRANT_TYPE,
+  Rpt,
+  rptRequest,
 } from 'auth/keycloak-api/utils';
+
 import { keycloakConfig } from './config';
 
 export class RptManager {

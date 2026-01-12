@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
-import EnvVariables from 'helpers/EnvVariables';
-import cx from 'classnames';
 import { Row } from 'antd';
+import cx from 'classnames';
+import EnvVariables from 'helpers/EnvVariables';
 
-import style from 'components/Layout/SideImage/index.module.css';
 import { Theme } from 'common/theme';
+import style from 'components/Layout/SideImage/index.module.css';
 
 interface OwnProps {
   alt?: boolean;

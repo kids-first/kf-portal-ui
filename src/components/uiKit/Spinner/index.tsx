@@ -1,9 +1,8 @@
-/* eslint-disable react/prop-types */
-import { FunctionComponent } from "react";
-import { Spin } from "antd";
-import { SpinProps } from "antd/lib/spin";
+import { FunctionComponent } from 'react';
+import { Spin } from 'antd';
+import { SpinProps } from 'antd/lib/spin';
 
-import style from "./index.module.css";
+import style from './index.module.css';
 
 type SpinnerProps = SpinProps & {
   className?: string;

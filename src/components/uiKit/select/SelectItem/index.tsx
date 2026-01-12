@@ -1,5 +1,5 @@
-import { Space, Typography } from 'antd';
 import { ReactNode } from 'react';
+import { Space, Typography } from 'antd';
 
 import styles from './index.module.css';
 

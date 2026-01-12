@@ -1,18 +1,18 @@
-import { Spin, Row, Col } from 'antd';
-import cx from 'classnames';
+import { useEffect } from 'react';
+import intl from 'react-intl-universal';
+import { useDispatch } from 'react-redux';
+import { FileTextOutlined, ReadOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import MultiLabel, {
   MultiLabelIconPositionEnum,
 } from '@ferlab/ui/core/components/labels/MultiLabel';
 import { numberFormat } from '@ferlab/ui/core/utils/numberUtils';
-import { UserOutlined, ReadOutlined, FileTextOutlined, TeamOutlined } from '@ant-design/icons';
-import intl from 'react-intl-universal';
-import { useGlobals } from 'store/global';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchStats } from 'store/global/thunks';
+import { Col, Row, Spin } from 'antd';
+import cx from 'classnames';
 
-import styles from 'components/uiKit/DataRelease/index.module.css';
 import BiospecimenIcon from 'components/Icons/BiospecimenIcon';
+import styles from 'components/uiKit/DataRelease/index.module.css';
+import { useGlobals } from 'store/global';
+import { fetchStats } from 'store/global/thunks';
 
 interface OwnProps {
   className?: string;
