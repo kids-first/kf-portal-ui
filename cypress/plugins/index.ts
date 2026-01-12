@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 /// <reference types="cypress"/>
-import ExcelJS from 'exceljs';
 import fs, { rmdir } from 'fs';
 import path from 'path';
+import ExcelJS from 'exceljs';
 
 require('dotenv').config();
 
