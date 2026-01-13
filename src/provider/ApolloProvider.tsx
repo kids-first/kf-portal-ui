@@ -7,9 +7,9 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { GraphqlBackend, GraphqlProvider } from 'provider/types';
-import EnvironmentVariables from 'helpers/EnvVariables';
 import keycloak from 'auth/keycloak-api/keycloak';
+import EnvironmentVariables from 'helpers/EnvVariables';
+import { GraphqlBackend, GraphqlProvider } from 'provider/types';
 
 export const ARRANGER_API = EnvironmentVariables.configFor('ARRANGER_API');
 const PROJECT_ID = EnvironmentVariables.configFor('ARRANGER_PROJECT_ID');

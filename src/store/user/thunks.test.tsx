@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+
 import { cleanupConfig } from './thunks';
 import {
   emptyUserConfig,

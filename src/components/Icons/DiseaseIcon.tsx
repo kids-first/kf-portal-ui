@@ -1,4 +1,6 @@
+/* eslint-disable max-len */
 import Icon from '@ant-design/icons/lib/components/Icon';
+
 import { IconProps } from '.';
 
 const DiseaseIcon = (props: IconProps) => (

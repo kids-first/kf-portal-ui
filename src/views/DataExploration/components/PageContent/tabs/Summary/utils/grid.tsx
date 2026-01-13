@@ -1,11 +1,5 @@
 import intl from 'react-intl-universal';
 import { IResizableGridLayoutConfig } from '@ferlab/ui/core/layout/ResizableGridLayout';
-import {
-  ageAtDiagnosisDefaultGridConfig,
-  dataCategoryDefaultGridConfig,
-  demographicsDefaultGridConfig,
-  studiesDefaultGridConfig,
-} from '@ferlab/ui/core/layout/ResizableGridLayout/utils';
 import SampleTypeGraphCard from 'views/DataExploration/components/PageContent/tabs/Summary/SampleType';
 
 import AgeAtDiagnosisGraphCard from '../AgeAtDiagnosisGraphCard';

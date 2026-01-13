@@ -1,5 +1,6 @@
 import { DocumentNode, TypedDocumentNode } from '@apollo/client';
 import { IGqlResults } from '@ferlab/ui/core/graphql/types';
+
 import useLazyResultQuery from 'hooks/graphql/useLazyResultQuery';
 
 const useGetAggregations = (

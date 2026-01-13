@@ -1,7 +1,8 @@
-import { Typography, Result } from 'antd';
-import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import intl from 'react-intl-universal';
-import {SUPPORT_EMAIL} from "store/report/thunks";
+import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
+import { Result, Typography } from 'antd';
+
+import { SUPPORT_EMAIL } from 'store/report/thunks';
 
 interface OwnProps {
   title?: React.ReactNode;

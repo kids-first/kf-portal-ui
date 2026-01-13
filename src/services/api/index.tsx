@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import keycloak from 'auth/keycloak-api/keycloak';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const apiInstance = axios.create();
 
@@ -24,8 +24,8 @@ apiInstance.interceptors.request.use((config) => {
   return config;
 });
 
-export const sendRequest = async <T,>(config: AxiosRequestConfig) => {
-  return apiInstance
+export const sendRequest = async <T,>(config: AxiosRequestConfig) =>
+  apiInstance
     .request<T>(config)
     .then(
       (response): ApiResponse<T> => ({
@@ -41,10 +41,9 @@ export const sendRequest = async <T,>(config: AxiosRequestConfig) => {
         error: err,
       }),
     );
-};
 
-export const sendRequestMock = async <T,>(config: AxiosRequestConfig, mockResponsed: any) => {
-  return apiInstance
+export const sendRequestMock = async <T,>(config: AxiosRequestConfig, mockResponsed: any) =>
+  apiInstance
     .request<T>(config)
     .then(
       (response): ApiResponse<T> => ({
@@ -53,13 +52,12 @@ export const sendRequestMock = async <T,>(config: AxiosRequestConfig, mockRespon
         error: undefined,
       }),
     )
-    .catch((err): ApiResponse<T> => {
-      return {
+    .catch(
+      (err): ApiResponse<T> => ({
         response: err.response,
         data: mockResponsed,
         error: undefined,
-      };
-    });
-};
+      }),
+    );
 
 export default apiInstance;

@@ -1,4 +1,4 @@
-import { DecodedJwt } from "common/tokenTypes";
+import { DecodedJwt } from 'common/tokenTypes';
 
 export const isDecodedJwtExpired = (decodedJwt: DecodedJwt) => {
   const currentTimestamp = new Date().getTime() / 1000;

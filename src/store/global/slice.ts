@@ -1,9 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState, MessageArgsPropsCustom } from 'store/global/types';
-import { LANG } from 'common/constants';
 import intl from 'react-intl-universal';
-import locales from 'locales';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ArgsProps as NotificationArgsProps } from 'antd/lib/notification';
+import locales from 'locales';
+
+import { LANG } from 'common/constants';
+import { initialState, MessageArgsPropsCustom } from 'store/global/types';
+
 import { fetchStats } from './thunks';
 
 export const GlobalState: initialState = {

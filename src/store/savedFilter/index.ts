@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux';
+
 import { FILTER_ID_QUERY_PARAM_KEY } from 'common/constants';
 import useQueryParams from 'hooks/useQueryParams';
-import { useSelector } from 'react-redux';
+
 import { savedFilterSelector } from './selector';
 
 export type { initialState as SavedFilterInitialState } from './types';

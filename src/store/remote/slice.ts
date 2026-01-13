@@ -1,5 +1,6 @@
 import { IRemoteComponent } from '@ferlab/ui/core/data/sqon/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { initialState, RemoteComponentList } from './types';
 
 export const RemoteState: initialState = {

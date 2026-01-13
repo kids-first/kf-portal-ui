@@ -1,7 +1,7 @@
-import { Form, FormInstance } from 'antd';
-import { Store } from 'antd/lib/form/interface';
 import { PropsWithChildren } from 'react';
 import intl from 'react-intl-universal';
+import { Form, FormInstance } from 'antd';
+import { Store } from 'antd/lib/form/interface';
 
 interface OwnProps<T> {
   form: FormInstance;

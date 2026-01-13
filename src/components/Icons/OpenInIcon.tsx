@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
+import Icon from '@ant-design/icons';
 import cx from 'classnames';
 
-import Icon from '@ant-design/icons';
 import { IconProps } from '.';
 
 const OpenInNewIcon = ({ className = '', width = 14, height = 15 }: IconProps) => (
