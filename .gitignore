@@ -121,3 +121,4 @@ build/
 /cypress/downloads
 /cypress/videos
 .testquality
+.copilot
