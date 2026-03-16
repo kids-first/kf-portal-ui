@@ -101,7 +101,7 @@ const MostFrequentPhenotypesGraphCard = () => {
           return 0;
         },
       );
-      setPhenotypes(filterPhenotypesData(treeNodeToChartData(flattenHPOTree)));
+      setPhenotypes(filterPhenotypesData(treeNodeToChartData(flattenHPOTree)).reverse());
     });
   }, [JSON.stringify(sqon)]);
 
