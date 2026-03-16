@@ -44,7 +44,7 @@ const GlobalSearch = <T,>({
 }: OwnProps<T>) => (
   <Search<T>
     onSelect={(values) => {
-      trackFacetSearch(index, field);
+      trackFacetSearch(index, field, values);
       updateActiveQueryField({
         queryBuilderId,
         field,

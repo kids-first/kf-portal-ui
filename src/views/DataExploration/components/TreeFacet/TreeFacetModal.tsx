@@ -7,6 +7,7 @@ import { TermOperators } from '@ferlab/ui/core/data/sqon/operators';
 import { MERGE_VALUES_STRATEGIES } from '@ferlab/ui/core/data/sqon/types';
 import { removeFieldFromSqon } from '@ferlab/ui/core/data/sqon/utils';
 
+import { trackOntologyTreeFacetApply } from 'services/analytics';
 import { RemoteComponentList } from 'store/remote/types';
 
 import { INDEXES } from '../../../../graphql/constants';
@@ -73,6 +74,7 @@ const TreeFacetModal = ({ type, field }: Props) => {
               },
             },
           });
+          trackOntologyTreeFacetApply(type, field, value);
         } else {
           updateActiveQueryField({
             queryBuilderId: DATA_EXPLORATION_QB_ID,
