@@ -1,13 +1,14 @@
 import intl from 'react-intl-universal';
 import FilterContainer from '@ferlab/ui/core/components/filters/FilterContainer';
 import FilterSelector from '@ferlab/ui/core/components/filters/FilterSelector';
-import { IFilter, TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
+import { IFilter, TExtendedMapping, VisualType } from '@ferlab/ui/core/components/filters/types';
 import { updateActiveQueryFilters } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { keyEnhance, underscoreToDot } from '@ferlab/ui/core/data/arranger/formatting';
 import { getFilterGroup } from '@ferlab/ui/core/data/filters/utils';
 import { getSelectedFilters } from '@ferlab/ui/core/data/sqon/utils';
 import { IExtendedMappingResults, TAggregations } from '@ferlab/ui/core/graphql/types';
 
+import { trackFacetSearch } from 'services/analytics';
 import { getFiltersDictionary } from 'utils/translation';
 
 import { transformNameIfNeeded } from './nameTransformer';
@@ -85,6 +86,8 @@ export const generateFilters = ({
             headerBorderOnly: true,
           }}
           onChange={(fg, f) => {
+            const values = fg.type === VisualType.Checkbox ? f.map((filter) => filter.id) : [];
+            trackFacetSearch(index || 'index not filled', fg.field, values);
             updateActiveQueryFilters({
               queryBuilderId,
               filterGroup: fg,

@@ -43,11 +43,22 @@ export const trackLogout = () => {
   }
 };
 
-export const trackFacetSearch = (page: string, field: string) => {
+export const trackFacetSearch = (page: string, field: string, values: string[] = []) => {
   if (isGaActive) {
     ReactGA.event({
       category: 'FacetSearch',
-      action: `Facet Search - ${capitalize(page)} - ${field}`,
+      action: `${capitalize(page)} -- ${field}${
+        values.length > 0 ? ` -- ${values.join(',')}` : ''
+      }`,
+    });
+  }
+};
+
+export const trackOntologyTreeFacetApply = (page: string, field: string, values: string[]) => {
+  if (isGaActive) {
+    ReactGA.event({
+      category: 'OntologyTreeFacetApply',
+      action: `${capitalize(page)} -- ${field} -- ${values.join(',')}`,
     });
   }
 };
