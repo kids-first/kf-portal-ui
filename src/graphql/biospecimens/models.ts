@@ -62,4 +62,7 @@ export interface IBiospecimenEntity {
   preservation_method: string;
   tumor_status: string;
   has_matched_normal_sample: boolean;
+  external_parent_sample_id: string;
+  external_collection_sample_id: string;
+  external_container_id: string;
 }
