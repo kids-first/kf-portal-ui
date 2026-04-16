@@ -1,3 +1,10 @@
+## VERSION 5.17.0 (2026-04-16)
+### Technical / Other Changes:
+- [SKFP-1601](https://d3b.atlassian.net/browse/SKFP-1601) Issue: [Cavatica API] Update cavatica suggest key fields to custom fields
+- [SKFP-1599](https://d3b.atlassian.net/browse/SKFP-1599) Issue: [Dependencies] Upgrade and fix vulnerabilities
+- [SKFP-1605](https://d3b.atlassian.net/browse/SKFP-1605) Issue: [Data Exploration] Set graphs to descending order
+- [SKFP-1604](https://d3b.atlassian.net/browse/SKFP-1604) Issue: [GA] Track Specific Phenotype / Diagnosis / Condition Values Applied in Data Exploration Filters
+
 ## VERSION 5.16.0 (2025-11-19)
 ### Technical / Other Changes:
 - [SKFP-1228](https://d3b.atlassian.net/browse/SKFP-1228) Refactor: [File Entity] Added sequencing experiment fields from Arranger & added optional columns
