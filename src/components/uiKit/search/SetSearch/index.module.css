@@ -1,6 +1,9 @@
 .container .tag {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  height: 22px;
+  line-height: 1;
+  margin-block: 0;
   background-color: var(--cyan-7);
   color: var(--gray-1);
 }
