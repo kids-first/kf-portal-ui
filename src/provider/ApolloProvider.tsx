@@ -31,9 +31,7 @@ const getAuthLink = () =>
   }));
 
 // Single client (and cache), instantiated once for the whole session so the
-// InMemoryCache is not thrown away on every render. The auth link reads
-// `keycloak.token` at request time, so the client stays valid across token
-// refreshes.
+// InMemoryCache is not thrown away on every render.
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache: new InMemoryCache({ addTypename: false }),
   link: getAuthLink().concat(arrangerLink),
