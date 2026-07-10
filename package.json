@@ -91,7 +91,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "classnames": "^2.5.1",
     "css-loader": "^6.11.0",
-    "css-minimizer-webpack-plugin": "^8.0.0",
+    "css-minimizer-webpack-plugin": "^5.0.1",
     "cypress": "^15.5.0",
     "d3": "^5.16.0",
     "date-fns": "2.29.3",
