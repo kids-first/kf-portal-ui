@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import ProLabel from '@ferlab/ui/core/components/ProLabel';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import SummarySumCell from '@ferlab/ui/core/components/ProTable/SummarySumCell';
@@ -21,12 +22,13 @@ import { generateQuery, isEmptySqon } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IExtendedMappingResults } from '@ferlab/ui/core/graphql/types';
 import GridCard from '@ferlab/ui/core/view/v2/GridCard';
-import { Input, Space, Typography } from 'antd';
+import { Input, Modal, Space, Typography } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useStudies } from 'graphql/studies/actions';
 import { IStudyEntity } from 'graphql/studies/models';
 import { cloneDeep } from 'lodash';
 
+import { MAX_ROW_EXPORTED } from 'services/api/arranger/models';
 import { fetchTsvReport } from 'store/report/thunks';
 import { useUser } from 'store/user';
 import { updateUserConfig } from 'store/user/thunks';
@@ -235,6 +237,16 @@ const PageContent = ({ defaultColumns = [] }: OwnProps) => {
                 ),
               enableTableExport: true,
               onTableExportClick: () => {
+                if (data.length > MAX_ROW_EXPORTED) {
+                  Modal.error({
+                    title: intl.get('global.exportModal.title'),
+                    icon: <CloseCircleOutlined />,
+                    content: intl.get('global.exportModal.content'),
+                    okText: intl.get('global.exportModal.button'),
+                  });
+                  return;
+                }
+
                 dispatch(
                   fetchTsvReport({
                     columnStates: userInfo?.config.study?.tables?.study?.columns,

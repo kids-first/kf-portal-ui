@@ -96,3 +96,18 @@ export interface ArrangerPhenotypes {
   type: string;
   aggregations_filter_themselves: boolean;
 }
+
+export type TTsvReportColumn = {
+  field: string;
+  header: string;
+};
+
+export type TTsvReportConfig = {
+  index: string;
+  fileName: string;
+  sqon: ISyntheticSqon;
+  sort: { field: string; order: string }[];
+  columns: TTsvReportColumn[];
+};
+
+export const MAX_ROW_EXPORTED = 10000;

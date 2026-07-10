@@ -145,6 +145,12 @@ const en = {
         },
       },
     },
+    exportModal: {
+      title: 'Maximum number exceeded',
+      content:
+        'A maximum of 10,000 items can be exported at a time. Please narrow your selection and try again.',
+      button: 'Close',
+    },
     notification: {
       genericError: 'An error occured',
     },

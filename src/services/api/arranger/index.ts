@@ -21,6 +21,7 @@ import {
   ISuggestionPayload,
   Suggestion,
   SuggestionType,
+  TTsvReportConfig,
 } from './models';
 
 const ARRANGER_API_URL = EnvironmentVariables.configFor('ARRANGER_API');
@@ -112,6 +113,21 @@ const searchSuggestions = (type: SuggestionType, value: string) =>
     url: `${ARRANGER_API}/${type}Feature/suggestions/${value}`,
   });
 
+const generateTsv = (config: TTsvReportConfig) =>
+  sendRequest<string>({
+    method: 'POST',
+    url: `${ARRANGER_API}/export`,
+    responseType: 'text',
+    data: {
+      index: config.index,
+      fileName: config.fileName,
+      sqon: config.sqon,
+      sort: config.sort,
+      columns: config.columns,
+      fileType: 'tsv',
+    },
+  });
+
 export const ArrangerApi = {
   fetchStatistics,
   fetchStudiesStatistics,
@@ -122,4 +138,5 @@ export const ArrangerApi = {
   columnStates,
   fetchMatchParticipant,
   searchSuggestions,
+  generateTsv,
 };

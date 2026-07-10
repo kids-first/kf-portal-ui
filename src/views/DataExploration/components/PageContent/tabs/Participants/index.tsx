@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DownloadOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 import ColorTag, { ColorTagType } from '@ferlab/ui/core/components/ColorTag';
 import ExternalLink from '@ferlab/ui/core/components/ExternalLink';
 import ProTable from '@ferlab/ui/core/components/ProTable';
@@ -19,7 +19,7 @@ import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { IArrangerResultsTree } from '@ferlab/ui/core/graphql/types';
 import { hydrateResults } from '@ferlab/ui/core/graphql/utils';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Dropdown, Tag, Tooltip } from 'antd';
+import { Button, Dropdown, Modal, Tag, Tooltip } from 'antd';
 import { INDEXES } from 'graphql/constants';
 import { useParticipants } from 'graphql/participants/actions';
 import {
@@ -32,7 +32,7 @@ import {
   ITableParticipantEntity,
 } from 'graphql/participants/models';
 import { makeUniqueCleanWords } from 'helpers';
-import { capitalize } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   DATA_EXPLORATION_QB_ID,
@@ -48,6 +48,7 @@ import { areFilesDataTypeValid, mapStudyToPedcBioportal } from 'views/Studies/ut
 
 import { TABLE_EMPTY_PLACE_HOLDER } from 'common/constants';
 import { OntologyTermsWithLinks, OntologyTermsWithLinksFromDiagnoses } from 'components/Cells';
+import { MAX_ROW_EXPORTED } from 'services/api/arranger/models';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
@@ -523,7 +524,19 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
               },
             }),
           ),
-        onTableExportClick: () =>
+        onTableExportClick: () => {
+          const nbRowsToExport =
+            selectedAllResults || isEmpty(selectedKeys) ? results.total : selectedKeys.length;
+          if (nbRowsToExport > MAX_ROW_EXPORTED) {
+            Modal.error({
+              title: intl.get('global.exportModal.title'),
+              icon: <CloseCircleOutlined />,
+              content: intl.get('global.exportModal.content'),
+              okText: intl.get('global.exportModal.button'),
+            });
+            return;
+          }
+
           dispatch(
             fetchTsvReport({
               columnStates: userInfo?.config.data_exploration?.tables?.participants?.columns,
@@ -531,7 +544,8 @@ const ParticipantsTab = ({ sqon }: OwnProps) => {
               index: INDEXES.PARTICIPANT,
               sqon: getCurrentSqon(),
             }),
-          ),
+          );
+        },
         onSelectAllResultsChange: setSelectedAllResults,
         onSelectedRowsChange: (keys, rows) => {
           setSelectedKeys(keys);

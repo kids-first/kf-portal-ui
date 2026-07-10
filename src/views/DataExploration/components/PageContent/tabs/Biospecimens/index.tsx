@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { CheckOutlined, DownloadOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons';
 import RequestBiospecimenButton from '@ferlab/ui/core/components/BiospecimenRequest/RequestBiospecimenButton';
 import ProTable from '@ferlab/ui/core/components/ProTable';
 import { PaginationViewPerQuery } from '@ferlab/ui/core/components/ProTable/Pagination/constants';
@@ -16,7 +16,7 @@ import { ISqonGroupFilter } from '@ferlab/ui/core/data/sqon/types';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { SortDirection } from '@ferlab/ui/core/graphql/constants';
 import { numberWithCommas } from '@ferlab/ui/core/utils/numberUtils';
-import { Button, Tooltip } from 'antd';
+import { Button, Modal, Tooltip } from 'antd';
 import keycloak from 'auth/keycloak-api/keycloak';
 import { AxiosRequestConfig } from 'axios';
 import { useBiospecimen } from 'graphql/biospecimens/actions';
@@ -26,6 +26,7 @@ import { ArrangerResultsTree } from 'graphql/models';
 import { IParticipantEntity } from 'graphql/participants/models';
 import { IStudyEntity } from 'graphql/studies/models';
 import EnvironmentVariables from 'helpers/EnvVariables';
+import { isEmpty } from 'lodash';
 import SetsManagementDropdown from 'views/DataExploration/components/SetsManagementDropdown';
 import {
   BIOSPECIMENS_SAVED_SETS_FIELD,
@@ -46,6 +47,7 @@ import AgeCell from 'components/AgeCell';
 import { OntologyTermsWithLinksFromDiagnoses, OntologyTermWithLink } from 'components/Cells';
 import useApi from 'hooks/useApi';
 import { trackRequestBiospecimen } from 'services/analytics';
+import { MAX_ROW_EXPORTED } from 'services/api/arranger/models';
 import { ReportType } from 'services/api/reports/models';
 import { SetType } from 'services/api/savedSet/models';
 import { fetchReport, fetchTsvReport } from 'store/report/thunks';
@@ -496,7 +498,19 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
               },
             }),
           ),
-        onTableExportClick: () =>
+        onTableExportClick: () => {
+          const nbRowsToExport =
+            selectedAllResults || isEmpty(selectedKeys) ? results.total : selectedKeys.length;
+          if (nbRowsToExport > MAX_ROW_EXPORTED) {
+            Modal.error({
+              title: intl.get('global.exportModal.title'),
+              icon: <CloseCircleOutlined />,
+              content: intl.get('global.exportModal.content'),
+              okText: intl.get('global.exportModal.button'),
+            });
+            return;
+          }
+
           dispatch(
             fetchTsvReport({
               columnStates: userInfo?.config.data_exploration?.tables?.biospecimens?.columns,
@@ -504,7 +518,8 @@ const BioSpecimenTab = ({ sqon }: OwnProps) => {
               index: INDEXES.BIOSPECIMEN,
               sqon: getCurrentSqon(),
             }),
-          ),
+          );
+        },
         extra: [
           <RequestBiospecimenButton
             additionalHandleClick={() => trackRequestBiospecimen('open modal')}
