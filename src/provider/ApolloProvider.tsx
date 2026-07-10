@@ -38,14 +38,27 @@ const getAuthLink = () =>
 const backendUrl = (backend: GraphqlBackend) =>
   backend === GraphqlBackend.FHIR ? fhirLink : arrangerLink;
 
-const Provider = ({ children, backend = GraphqlBackend.FHIR }: GraphqlProvider): ReactElement => {
-  const header = getAuthLink();
-
-  const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+const createClient = (backend: GraphqlBackend): ApolloClient<NormalizedCacheObject> =>
+  new ApolloClient({
     cache: new InMemoryCache({ addTypename: false }),
-    link: header.concat(backendUrl(backend)),
+    link: getAuthLink().concat(backendUrl(backend)),
   });
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+
+// One client (and cache) per backend, instantiated once for the whole session.
+// Re-instantiating on every render would throw away the InMemoryCache, so we
+// keep the client stable here. The auth link reads `keycloak.token` at request
+// time, so a single client stays valid across token refreshes.
+const clients = new Map<GraphqlBackend, ApolloClient<NormalizedCacheObject>>();
+
+const getClient = (backend: GraphqlBackend): ApolloClient<NormalizedCacheObject> => {
+  if (!clients.has(backend)) {
+    clients.set(backend, createClient(backend));
+  }
+  return clients.get(backend)!;
 };
+
+const Provider = ({ children, backend = GraphqlBackend.FHIR }: GraphqlProvider): ReactElement => (
+  <ApolloProvider client={getClient(backend)}>{children}</ApolloProvider>
+);
 
 export default Provider;
