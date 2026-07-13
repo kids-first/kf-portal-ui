@@ -14,7 +14,6 @@ import AuthMiddleware from 'middleware/AuthMiddleware';
 import ProtectedRoute from 'ProtectedRoute';
 import ApolloProvider from 'provider/ApolloProvider';
 import ContextProvider from 'provider/ContextProvider';
-import { GraphqlBackend } from 'provider/types';
 import ErrorPage from 'views/Error';
 import FakeStorybook from 'views/FakeStorybook';
 import FenceRedirect from 'views/FenceRedirect';
@@ -73,7 +72,7 @@ const App = () => {
       locale={lang === LANG.FR ? frFR : enUS}
       renderEmpty={() => <Empty imageType="grid" />}
     >
-      <ApolloProvider backend={GraphqlBackend.ARRANGER}>
+      <ApolloProvider>
         <div className="App" id="appContainer">
           {keycloakIsReady ? (
             <AuthMiddleware>
