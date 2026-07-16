@@ -162,7 +162,8 @@ describe('Page Data Exploration (Biospecimen) - Filtrer avec les facettes', () =
   });
 
   it('Tumor Descriptor (Source Text) - Primary', () => {
-    cy.validateFacetFilter('Tumor Descriptor (Source Text)', 'Primary', 'primary', /\d{1}/, 1);
+    // Pas de données
+    //cy.validateFacetFilter('Tumor Descriptor (Source Text)', 'Primary', 'primary', /\d{1}/, 1);
     cy.validateFacetRank(17, 'Tumor Descriptor (Source Text)');
   });
 });
