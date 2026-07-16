@@ -3,8 +3,8 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
-  cy.visitDataExploration('datafiles', '?sharedFilterId=4fec6182-edd8-4937-8a80-6f790d7df665');
-  cy.get('tr[data-row-key="GF_0021JE73"] [type="checkbox"]').check({force: true});
+  cy.visitDataExploration('datafiles');
+  cy.get('tr[data-row-key="dr-2ahd9kpwqk"] [type="checkbox"]').check({force: true});
   cy.get('button[aria-label="Analyze in Cavatica"]').clickAndWait({force: true});
 });
 

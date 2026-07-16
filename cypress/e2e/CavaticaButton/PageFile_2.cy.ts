@@ -29,7 +29,7 @@ beforeEach(() => {
   },
   }).as('cavaticaProjects');
 
-  cy.visitFileEntity('GF_0021JE73');
+  cy.visitFileEntity('dr-2ahd9kpwqk');
   cy.wait('@cavaticaAuthenticated');
   cy.wait('@cavaticaProjects');
   cy.get('button[aria-label="Analyze in Cavatica"]').clickAndWait({force: true});
@@ -42,7 +42,7 @@ describe('Page Dashboard - Bouton Analyze in Cavatica (connecté)', () => {
     cy.get('[class="ant-modal-body"]').contains('You are authorized to copy').should('exist');
     cy.get('[class="ant-modal-body"]').contains('1 files').should('exist');
     cy.get('[class="ant-modal-body"]').contains('(out of 1 selected) to your Cavatica workspace.').should('exist');
-    cy.get('[class*="CavaticaAnalyzeModal_studiesList"]').contains('Kids First: Genomic Analysis of Congenital Heart Defects and Acute Lymphoblastic Leukemia in Children with Down Syndrome').should('exist');
+    cy.get('[class*="CavaticaAnalyzeModal_studiesList"]').contains('Mr. Meow\'s Memorable Meme Emporium').should('exist');
     cy.get('[class*="CavaticaAnalyzeModal_studiesList"] [class*="ant-typography-secondary"]').contains('1').should('exist');
     cy.get('[class*="CavaticaAnalyzeModal_studiesList"] [data-icon="file-text"]').should('exist');
     cy.get('[class="ant-modal-footer"] button[class*="ant-btn-default"]').contains('Cancel').should('exist');

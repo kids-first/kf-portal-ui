@@ -23,8 +23,8 @@ describe('Page des études - Filtrer avec les facettes', () => {
     cy.validateFacetRank(0, 'Program');
   });
 
-  it('Domain - Cancer and Birth Defect', () => {
-    cy.validateFacetFilter('Domain', 'Cancer and Birth Defect', 'CANCERANDBIRTHDEFECT', /\d{1} Result/, 0, false);
+  it('Domain - Cancer', () => {
+    cy.validateFacetFilter('Domain', 'Cancer', 'CANCER', /\d{1} Result/, 0, false);
     cy.validateFacetRank(1, 'Domain');
   });
 

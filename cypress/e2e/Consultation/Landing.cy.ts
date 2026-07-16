@@ -39,9 +39,6 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="Carousel_carouselContainer"] [src*="/static/media/kf-portal-icons_participants_3."]').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_bold"]').contains(/\d{1}/).should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_small"]').contains('Participants').should('exist');
-    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CANCER').should('exist');
-    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CROSS CONDITION').should('exist');
-    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CONGENITAL DISORDER').should('exist');
 
     cy.get('[class*="Carousel_carouselContainer"] h4').contains('Kids First: Genomic Analysis of Congenital Heart Defects and Acute Lymphoblastic Leukemia in Children with Down Syndrome').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph"]').contains('As part of the Kids First, INCLUDE, and TOPMed data resource platforms, this study focuses on advancing our understanding of the biological factors that may lead to both heart disease and leukemia in individuals with Down syndrome (DS).').should('exist');
@@ -54,6 +51,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="Carousel_carouselContainer"] [src*="/static/media/kf-portal-icons_participants_3."]').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_bold"]').contains(/\d{1}/).should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_small"]').contains('Participants').should('exist');
+    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CROSS CONDITION').should('exist');
 
     cy.get('[class*="Carousel_carouselContainer"] h4').contains('Kids First: Genetics at the Intersection of Childhood Cancer and Birth Defects').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph"]').contains('Samples from this study were recruited into the Center for Applied Genomics (CAG) biobank from patient visits to the Children\'s Hospital of Philadelphia (CHOP) and were selected for whole genome sequencing as part of the Gabriella Miller Kids First project. All cases selected were based on a diagnosis for a childhood onset cancer as well as a congenital anomaly.').should('exist');
@@ -66,6 +64,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="Carousel_carouselContainer"] [src*="/static/media/kf-portal-icons_participants_3."]').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_bold"]').contains(/\d{1}/).should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_small"]').contains('Participants').should('exist');
+    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CANCER').should('exist');
 
     cy.get('[class*="Carousel_carouselContainer"] h4').contains('Kids First: Genetics of Structural Defects of the Kidney and Urinary Tract').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph"]').contains('Congenital defects of the kidney and urinary tract are a common cause of kidney failure in children and adults and elucidation of the genetics of these disorders will provide new opportunities for diagnosis, risk stratification and prevention of complications. Participants of this study were collected as part of the Genetics of Chronic Kidney disease study at Columbia University, which includes international collaborators.').should('exist');
@@ -84,6 +83,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="Carousel_carouselContainer"] [src*="/static/media/kf-portal-icons_participants_3."]').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_bold"]').contains(/\d{1}/).should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph_small"]').contains('Participants').should('exist');
+    cy.get('[class*="Carousel_carouselContainer"] [class*="Card_tag"]').contains('CANCER').should('exist');
 
     cy.get('[class*="Carousel_carouselContainer"] h4').contains('Kids First: Expanded Ewing sarcoma cohort for tumor genomics and association with DNA repair deficiencies, clinical presentation, and outcome').should('exist');
     cy.get('[class*="Carousel_carouselContainer"] [class*="LandingPageParagraph"]').contains('Ewing sarcoma (EWS) is a deadly bone cancer in children and adolescents, with growing evidence suggesting a genetic predisposition, although the specific genetic factors remain unidentified. This Kids First project aims to uncover the genetic factors contributing to EWS by focusing on three key objectives: identifying cancer predisposition genes, genome-wide GGAA microsatellite repeats, and de novo mutation and structural variant rates in EWS trios reflecting underlying DNA repair defects that increase disease risk.').should('exist');
@@ -126,7 +126,7 @@ describe('Page Landing - Vérifier les informations affichées', () => {
     cy.get('[class*="ChartsSection"] [class*="Mondo"] h4').contains('Most Frequent Diagnoses (MONDO)').should('exist');
     cy.get('[class*="ChartsSection"] [class*="Mondo"] text[style*="dominant-baseline"]').contains('Diagnoses (MONDO)').should('exist');
     cy.get('[class*="ChartsSection"] [class*="Mondo"] text[style*="dominant-baseline"]').contains('# of participants').should('exist');
-    cy.get('[class*="ChartsSection"] [class*="Mondo"] text[dominant-baseline="central"]').contains('Down Syndrome').should('exist');
+    cy.get('[class*="ChartsSection"] [class*="Mondo"] text[dominant-baseline="central"]').contains('Congenital').should('exist');
     cy.get('[class*="ChartsSection"] [class*="Mondo"] text[dominant-baseline="central"]').contains(/\d{1}/).should('exist');
   });
 

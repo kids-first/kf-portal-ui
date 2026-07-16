@@ -217,8 +217,6 @@ describe('Page d\'un participant - Vérifier les informations affichées', () =>
     cy.get('[id="files"] [data-row-key="Whole Genome Sequencing"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
     cy.get('[id="files"] [data-row-key="WXS"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
     cy.get('[id="files"] [data-row-key="WXS"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
-    cy.get('[id="files"] [data-row-key="RNA Sequencing"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
-    cy.get('[id="files"] [data-row-key="RNA Sequencing"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
     cy.get('[id="files"] [data-row-key="Linked-Read WGS (10x Chromium)"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');
     cy.get('[id="files"] [data-row-key="Linked-Read WGS (10x Chromium)"] td[class="ant-table-cell"]').eq(2).find('[style*="width: 0%"]').should('exist');
     cy.get('[id="files"] [data-row-key="Continuous Long Reads WGS"] td[class="ant-table-cell"]').eq(1).contains(/^0$/).should('exist');

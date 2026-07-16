@@ -3,7 +3,7 @@ import '../../support/commands';
 
 beforeEach(() => {
   cy.login();
-  cy.visitFileEntity('GF_0021JE73');
+  cy.visitFileEntity('dr-2ahd9kpwqk');
   cy.get('button[aria-label="Analyze in Cavatica"]').clickAndWait({force: true});
 });
 

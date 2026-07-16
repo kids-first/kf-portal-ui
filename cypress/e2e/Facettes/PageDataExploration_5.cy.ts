@@ -52,7 +52,7 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(2, 'Data Type');
   });
 
-  it('Experimental Strategy - Whole Genome Sequencing', () => {
+  it('Experimental Strategy - Whole Genome Sequencing [SKFP-1614]', () => {
     cy.validateFacetFilter('Experimental Strategy', 'Whole Genome Sequencing', 'Whole Genome Sequencing', /\d{1}/, 1);
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
@@ -91,8 +91,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(9, 'Repository');
   });
 
-  it('ACL - Phs002330.c1', () => {
-    cy.validateFacetFilter('ACL', 'Phs002330.c1', 'phs002330.c1', /\d{1}/, 1);
+  it('ACL - Phs001436.c1', () => {
+    cy.validateFacetFilter('ACL', 'Phs001436.c1', 'phs001436.c1', /\d{1}/, 1);
     cy.validateFacetRank(10, 'ACL');
   });
 });
