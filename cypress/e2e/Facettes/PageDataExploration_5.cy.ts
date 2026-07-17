@@ -52,8 +52,8 @@ describe('Page Data Exploration (Data Files) - Filtrer avec les facettes', () =>
     cy.validateFacetRank(2, 'Data Type');
   });
 
-  it('Experimental Strategy - Whole Genome Sequencing [SKFP-1614]', () => {
-    cy.validateFacetFilter('Experimental Strategy', 'Whole Genome Sequencing', 'Whole Genome Sequencing', /\d{1}/, 1);
+  it('Experimental Strategy - WGS', () => {
+    cy.validateFacetFilter('Experimental Strategy', 'WGS', 'WGS', /\d{1}/, 1);
     cy.validateFacetRank(3, 'Experimental Strategy');
   });
 
