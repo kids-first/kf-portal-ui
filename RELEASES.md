@@ -1,3 +1,9 @@
+## VERSION 5.18.0 (2026-08-05)
+
+### Technical / Other Changes:
+- [SKFP-1609](https://d3b.atlassian.net/browse/SKFP-1609) Refactor: [Apollo] Apollo upgrade to improve client-side caching
+- [SKFP-1613](https://d3b.atlassian.net/browse/SKFP-1613) Fix: [UI] Tags misaligned inside filter boxes
+
 ## VERSION 5.17.0 (2026-04-16)
 ### Technical / Other Changes:
 - [SKFP-1601](https://d3b.atlassian.net/browse/SKFP-1601) Issue: [Cavatica API] Update cavatica suggest key fields to custom fields
