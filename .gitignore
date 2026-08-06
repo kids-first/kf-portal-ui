@@ -121,7 +121,6 @@ build/
 /cypress/downloads
 /cypress/videos
 .testquality
-.copilot
 
 # secrets — never commit private keys / certs
 *.key
