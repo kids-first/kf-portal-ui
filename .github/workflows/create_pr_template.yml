@@ -20,7 +20,7 @@ jobs:
         id: extract_parts
         shell: bash
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          COMMIT_MESSAGE=$(git log -1 --pretty=%s)
           echo "Commit message: $COMMIT_MESSAGE"
           
           # Simpler regex pattern that's more forgiving
