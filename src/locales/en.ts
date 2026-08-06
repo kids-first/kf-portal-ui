@@ -1587,7 +1587,7 @@ const en = {
       venn: {
         download: {
           png: 'Download PNG',
-          fileNameTemplate: 'include-%name-%type-%date%extension',
+          fileNameTemplate: 'kidsfirst-%name-%type-%date%extension',
           fileNameDateFormat: 'yyyy-MM-dd',
         },
         query: {
@@ -2057,7 +2057,7 @@ const en = {
           ok: 'Close',
           download: {
             png: 'Download PNG',
-            fileNameTemplate: 'include-%name-%type-%date%extension',
+            fileNameTemplate: 'kidsfirst-%name-%type-%date%extension',
             fileNameDateFormat: 'yyyy-MM-dd',
           },
         },
