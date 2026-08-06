@@ -126,3 +126,6 @@ build/
 # secrets — never commit private keys / certs
 *.key
 *.pem
+
+# Claude Code local settings
+.claude/settings.local.json
