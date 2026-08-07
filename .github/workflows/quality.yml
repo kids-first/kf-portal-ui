@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.8'
+          node-version: '20'
       - name: use cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -28,13 +28,13 @@ jobs:
     needs: build
     steps:
       - name: Check out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.8'
+          node-version: '20'
       - name: use cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -45,13 +45,13 @@ jobs:
     needs: build
     steps:
       - name: Check out source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.8'
+          node-version: '20'
       - name: use cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -60,7 +60,7 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ArtiomTr/jest-coverage-report-action@v2
         id: coverage
         with:

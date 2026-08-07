@@ -26,7 +26,7 @@ const SideImageLayout = ({
   <div className={cx(style.sideImagePageContainer, { [style.sideImagePageContainerAlt]: alt })}>
     {logoSrc && (
       <a href={EnvVariables.configFor('WEB_ROOT')}>
-        <img className={style.logoImage} src={logoSrc} alt="Include Logo Logo" />
+        <img className={style.logoImage} src={logoSrc} alt="Kids First Logo" />
       </a>
     )}
     <Row className={style.contentWrapper}>

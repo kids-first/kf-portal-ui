@@ -24,7 +24,7 @@ export const getDefaultContentType = (responseType: string) => {
 };
 
 const getBlobFromResponse = (res: AxiosResponse<any, any>, responseType = 'json') => {
-  const contentType = res.headers['content-type'] || getDefaultContentType(responseType);
+  const contentType = (res.headers['content-type'] as string) || getDefaultContentType(responseType);
 
   switch (responseType) {
     case 'blob':
@@ -64,7 +64,7 @@ const downloader = async (opts: AxiosRequestConfig = {}) => {
     const blob = getBlobFromResponse(response, opts.responseType);
 
     let filename;
-    const disposition = response.headers['content-disposition'];
+    const disposition = response.headers['content-disposition'] as string | undefined;
     if (disposition) {
       try {
         const filenameFromContentDisposition = disposition

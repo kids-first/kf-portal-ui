@@ -57,7 +57,7 @@ const FileEntityTitle: React.FC<OwnProps> = ({ file, loading }) => {
 
   const renderTag = () => {
     if (
-      file?.controlled_access.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() &&
+      file?.controlled_access?.toLowerCase() === FileAccessType.CONTROLLED.toLowerCase() &&
       file?.access_urls?.startsWith('drs://cavatica-ga4gh-api.sbgenomics.com/')
     ) {
       return (

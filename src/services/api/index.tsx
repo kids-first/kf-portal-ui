@@ -14,11 +14,10 @@ apiInstance.interceptors.request.use((config) => {
   // setting headers on axios get/put/post or common seems to be shared across all axios instances
 
   const token = keycloak?.token;
-  if (token) {
-    config.headers = {
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...config.headers,
-    };
+  // axios 1.x: config.headers is an AxiosHeaders instance, so assign directly instead of
+  // replacing it with a plain object. Keep any Authorization already set on the request.
+  if (token && !config.headers.Authorization) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;

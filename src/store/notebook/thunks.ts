@@ -18,7 +18,7 @@ const getNotebookClusterManifest = createAsyncThunk<
   let errorMessage = '';
   let errorDescription = '';
   if (error) {
-    const msg = error.response?.data?.error ?? '';
+    const msg = (error.response?.data as { error?: string } | undefined)?.error ?? '';
     if (msg === 'no_fence_connection') {
       errorMessage = 'screen.dashboard.cards.notebook.error.no_fence_connection.message';
       errorDescription = 'screen.dashboard.cards.notebook.error.no_fence_connection.description';
