@@ -1,3 +1,8 @@
+## VERSION 5.18.1 (2026-08-10)
+
+### Technical / Other Changes:
+- [SKFP-1609]([https://d3b.atlassian.net/browse/SKFP-1609](https://d3b.atlassian.net/browse/SKFP-1619)) Refactor: [UI] Chores - Modernization
+
 ## VERSION 5.18.0 (2026-08-05)
 
 ### Technical / Other Changes:
