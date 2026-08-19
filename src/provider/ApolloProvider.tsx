@@ -31,10 +31,9 @@ const getAuthLink = () =>
     },
   }));
 
-// Each Arranger index is exposed as a root field returning an object with no id,
-// and addTypename is false so there is no __typename either. Apollo cannot
-// normalize those objects, so it replaces them wholesale on every write, losing
-// sibling entries such as a hits(...) or aggregations(...) already cached under
+// Each Arranger index is exposed as a root field returning an object with no id.
+// Apollo cannot normalize those objects, so it replaces them wholesale on every write,
+// losing sibling entries such as a hits(...) or aggregations(...) already cached under
 // different arguments. A shallow merge keeps them side by side.
 const rootIndexFields = Object.fromEntries(
   Object.values(INDEXES).map((index) => [index, { merge: true }]),
