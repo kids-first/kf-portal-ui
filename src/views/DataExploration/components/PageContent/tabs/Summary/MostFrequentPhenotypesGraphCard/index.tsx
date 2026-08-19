@@ -88,21 +88,23 @@ const MostFrequentPhenotypesGraphCard = () => {
 
   useEffect(() => {
     setPhenotypesLoading(true);
-    phenotypeStore.current?.fetch({ field: 'observed_phenotype', sqon }).then(() => {
-      setPhenotypesLoading(false);
-      const flattenHPOTree = getFlattenTree(phenotypeStore.current?.tree as TreeNode).sort(
-        (a, b) => {
-          if ((a.exactTagCount ?? 0) > (b.exactTagCount ?? 0)) {
-            return -1;
-          }
-          if ((a.exactTagCount ?? 0) < (b.exactTagCount ?? 0)) {
-            return 1;
-          }
-          return 0;
-        },
-      );
-      setPhenotypes(filterPhenotypesData(treeNodeToChartData(flattenHPOTree)).reverse());
-    });
+    phenotypeStore.current
+      ?.fetch({ field: 'observed_phenotype', sqon, filterThemselves: true })
+      .then(() => {
+        setPhenotypesLoading(false);
+        const flattenHPOTree = getFlattenTree(phenotypeStore.current?.tree as TreeNode).sort(
+          (a, b) => {
+            if ((a.exactTagCount ?? 0) > (b.exactTagCount ?? 0)) {
+              return -1;
+            }
+            if ((a.exactTagCount ?? 0) < (b.exactTagCount ?? 0)) {
+              return 1;
+            }
+            return 0;
+          },
+        );
+        setPhenotypes(filterPhenotypesData(treeNodeToChartData(flattenHPOTree)).reverse());
+      });
   }, [JSON.stringify(sqon)]);
 
   return (
