@@ -8,6 +8,7 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import keycloak from 'auth/keycloak-api/keycloak';
+import { INDEXES } from 'graphql/constants';
 import EnvironmentVariables from 'helpers/EnvVariables';
 import { IProvider } from 'provider/types';
 
@@ -30,10 +31,26 @@ const getAuthLink = () =>
     },
   }));
 
+// Each Arranger index is exposed as a root field returning an object with no id,
+// and addTypename is false so there is no __typename either. Apollo cannot
+// normalize those objects, so it replaces them wholesale on every write, losing
+// sibling entries such as a hits(...) or aggregations(...) already cached under
+// different arguments. A shallow merge keeps them side by side.
+const rootIndexFields = Object.fromEntries(
+  Object.values(INDEXES).map((index) => [index, { merge: true }]),
+);
+
 // Single client (and cache), instantiated once for the whole session so the
 // InMemoryCache is not thrown away on every render.
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
-  cache: new InMemoryCache({ addTypename: false }),
+  cache: new InMemoryCache({
+    addTypename: false,
+    typePolicies: {
+      Query: {
+        fields: rootIndexFields,
+      },
+    },
+  }),
   link: getAuthLink().concat(arrangerLink),
 });
 
