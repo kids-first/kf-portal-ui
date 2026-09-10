@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const ignoredFiles = require('react-dev-utils/ignoredFiles');
 const redirectServedPath = require('react-dev-utils/redirectServedPathMiddleware');
@@ -110,33 +109,15 @@ module.exports = function (proxy, allowedHost) {
       disableDotRule: true,
       index: paths.publicUrlOrPath,
     },
-    // `proxy` runs between the middlewares prepended and appended below
+    // `proxy` runs before the middlewares appended below
     proxy,
     // `onBeforeSetupMiddleware` and `onAfterSetupMiddleware` were removed in
-    // webpack-dev-server 5. `setupMiddlewares` replaces both: inserting near the front of
-    // the array is the former "before" hook, pushing to the end the former "after" hook.
+    // webpack-dev-server 5. `setupMiddlewares` replaces both; pushing to the end of the
+    // array is the former "after" hook.
     setupMiddlewares(middlewares, devServer) {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
-
-      // Keep `evalSourceMapMiddleware`
-      // middlewares before `redirectServedPath` otherwise will not have any effect
-      // This lets us fetch source contents from webpack for the error overlay
-      //
-      // Insert after the dev server's own `*-header-check` entries rather than at index 0:
-      // in version 4 `setupHostHeaderCheck()` ran before `setupMiddlewares()`, so the Host
-      // check came first, and a plain unshift would now put us ahead of it. If those entries
-      // are ever renamed this falls back to index 0, which is the unshift behaviour.
-      let insertAt = 0;
-      while (
-        insertAt < middlewares.length &&
-        typeof middlewares[insertAt].name === 'string' &&
-        middlewares[insertAt].name.endsWith('-header-check')
-      ) {
-        insertAt += 1;
-      }
-      middlewares.splice(insertAt, 0, evalSourceMapMiddleware(devServer));
 
       if (fs.existsSync(paths.proxySetup)) {
         // This registers user provided middleware for proxy reasons
