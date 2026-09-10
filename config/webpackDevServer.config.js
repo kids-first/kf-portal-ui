@@ -15,6 +15,18 @@ const sockPort = process.env.WDS_SOCKET_PORT;
 
 module.exports = function (proxy, allowedHost) {
   const disableFirewall = !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true';
+
+  // `https` was removed in webpack-dev-server 5 in favour of `server`. getHttpsConfig()
+  // returns false when HTTPS is off, true when it is on without a certificate pair (the
+  // dev server then generates a self-signed one), or the { cert, key } pair itself.
+  const httpsConfig = getHttpsConfig();
+  let server = { type: 'http' };
+  if (httpsConfig === true) {
+    server = { type: 'https' };
+  } else if (httpsConfig) {
+    server = { type: 'https', options: httpsConfig };
+  }
+
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -90,7 +102,7 @@ module.exports = function (proxy, allowedHost) {
       publicPath: paths.publicUrlOrPath.slice(0, -1),
     },
 
-    https: getHttpsConfig(),
+    server,
     host,
     historyApiFallback: {
       // Paths with dots should still use the history fallback.
@@ -98,29 +110,51 @@ module.exports = function (proxy, allowedHost) {
       disableDotRule: true,
       index: paths.publicUrlOrPath,
     },
-    // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
+    // `proxy` runs between the middlewares prepended and appended below
     proxy,
-    onBeforeSetupMiddleware(devServer) {
+    // `onBeforeSetupMiddleware` and `onAfterSetupMiddleware` were removed in
+    // webpack-dev-server 5. `setupMiddlewares` replaces both: inserting near the front of
+    // the array is the former "before" hook, pushing to the end the former "after" hook.
+    setupMiddlewares(middlewares, devServer) {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+
       // Keep `evalSourceMapMiddleware`
       // middlewares before `redirectServedPath` otherwise will not have any effect
       // This lets us fetch source contents from webpack for the error overlay
-      devServer.app.use(evalSourceMapMiddleware(devServer));
+      //
+      // Insert after the dev server's own `*-header-check` entries rather than at index 0:
+      // in version 4 `setupHostHeaderCheck()` ran before `setupMiddlewares()`, so the Host
+      // check came first, and a plain unshift would now put us ahead of it. If those entries
+      // are ever renamed this falls back to index 0, which is the unshift behaviour.
+      let insertAt = 0;
+      while (
+        insertAt < middlewares.length &&
+        typeof middlewares[insertAt].name === 'string' &&
+        middlewares[insertAt].name.endsWith('-header-check')
+      ) {
+        insertAt += 1;
+      }
+      middlewares.splice(insertAt, 0, evalSourceMapMiddleware(devServer));
 
       if (fs.existsSync(paths.proxySetup)) {
         // This registers user provided middleware for proxy reasons
         require(paths.proxySetup)(devServer.app);
       }
-    },
-    onAfterSetupMiddleware(devServer) {
-      // Redirect to `PUBLIC_URL` or `homepage` from `package.json` if url not match
-      devServer.app.use(redirectServedPath(paths.publicUrlOrPath));
 
-      // This service worker file is effectively a 'no-op' that will reset any
-      // previous service worker registered for the same host:port combination.
-      // We do this in development to avoid hitting the production cache if
-      // it used the same host and port.
-      // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
-      devServer.app.use(noopServiceWorkerMiddleware(paths.publicUrlOrPath));
+      middlewares.push(
+        // Redirect to `PUBLIC_URL` or `homepage` from `package.json` if url not match
+        redirectServedPath(paths.publicUrlOrPath),
+        // This service worker file is effectively a 'no-op' that will reset any
+        // previous service worker registered for the same host:port combination.
+        // We do this in development to avoid hitting the production cache if
+        // it used the same host and port.
+        // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
+        noopServiceWorkerMiddleware(paths.publicUrlOrPath),
+      );
+
+      return middlewares;
     },
   };
 };
