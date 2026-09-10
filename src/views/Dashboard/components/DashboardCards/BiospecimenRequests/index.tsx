@@ -1,6 +1,6 @@
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import {
   IUserSetOutput,
   SHARED_BIOSPECIMEN_REQUEST_ID_QUERY_PARAM_KEY,

@@ -1,5 +1,24 @@
 {
   "extends": [
     "@ferlab"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "config/**/*.js",
+        "scripts/**/*.js"
+      ],
+      "env": {
+        "node": true
+      }
+    },
+    {
+      "files": [
+        "scripts/**/*.js"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
   ]
 }
