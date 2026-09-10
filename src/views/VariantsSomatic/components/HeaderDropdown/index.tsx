@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown } from 'antd';
 

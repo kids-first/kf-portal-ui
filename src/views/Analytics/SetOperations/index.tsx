@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import intl from 'react-intl-universal';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ExperimentOutlined, FileTextOutlined, UserOutlined } from '@ant-design/icons';
 import VennChartWithFilters from '@ferlab/ui/core/components/Charts/Venn/VennChartWithFilters';
 import { TExtendedMapping } from '@ferlab/ui/core/components/filters/types';
