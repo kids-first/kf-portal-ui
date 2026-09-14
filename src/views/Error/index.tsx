@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { Button, Result } from 'antd';
 import { ExceptionStatusType } from 'antd/lib/result';
 

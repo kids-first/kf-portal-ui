@@ -1,5 +1,5 @@
 import intl from 'react-intl-universal';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { addQuery } from '@ferlab/ui/core/components/QueryBuilder/utils/useQueryBuilderState';
 import { generateQuery, generateValueFilter } from '@ferlab/ui/core/data/sqon/utils';
 import { EntityTableMultiple } from '@ferlab/ui/core/pages/EntityPage';

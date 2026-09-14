@@ -36,17 +36,6 @@
 ### Running NGINX locally
 - Follow the steps here: https://github.com/kids-first/kf-portal-ui/blob/2.0/dev_tools/nginx/README.md
 
-## Storybook
-
-Run to install storybook submodules
-
-```git
-git submodule init
-git submodule update
-```
-
-
-
 ### Branch
 
 Name structure is `type/SKFP-[github ticker number]/description`

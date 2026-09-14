@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import intl from 'react-intl-universal';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   DownOutlined,
   FileSearchOutlined,

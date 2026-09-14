@@ -1,6 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import EnvVariables from 'helpers/EnvVariables';
-import { combineReducers } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import createFilter from 'redux-persist-transform-filter';

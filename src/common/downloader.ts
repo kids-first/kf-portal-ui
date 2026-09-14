@@ -24,7 +24,8 @@ export const getDefaultContentType = (responseType: string) => {
 };
 
 const getBlobFromResponse = (res: AxiosResponse<any, any>, responseType = 'json') => {
-  const contentType = (res.headers['content-type'] as string) || getDefaultContentType(responseType);
+  const contentType =
+    (res.headers['content-type'] as string) || getDefaultContentType(responseType);
 
   switch (responseType) {
     case 'blob':
