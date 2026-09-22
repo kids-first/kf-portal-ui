@@ -28,7 +28,7 @@ const CollaboratorSection = () => {
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      redirectUri: `${window.location.origin}/${STATIC_ROUTES.VARIANTS}`,
+      redirectUri: new URL(STATIC_ROUTES.VARIANTS, window.location.origin).href,
       locale: intl.getInitOptions().currentLocale,
     });
     window.location.assign(url);

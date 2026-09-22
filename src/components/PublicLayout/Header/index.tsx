@@ -47,9 +47,10 @@ const Header = () => {
   const handleSignin = async (btnName: string) => {
     trackPublicStudies(btnName);
     const url = keycloak.createLoginUrl({
-      redirectUri: `${window.location.origin}/${
-        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
-      }`,
+      redirectUri: new URL(
+        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD,
+        window.location.origin,
+      ).href,
       locale: intl.getInitOptions().currentLocale,
     });
     window.location.assign(url);

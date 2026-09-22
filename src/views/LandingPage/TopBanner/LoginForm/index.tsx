@@ -22,9 +22,10 @@ export const LoginForm = () => {
 
   const handleSignin = async () => {
     const url = keycloak.createLoginUrl({
-      redirectUri: `${window.location.origin}/${
-        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
-      }`,
+      redirectUri: new URL(
+        query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD,
+        window.location.origin,
+      ).href,
     });
     window.location.assign(url);
   };
