@@ -27,9 +27,10 @@ const LoginModal = ({ isOpen, onClose, redirectUri }: LoginModalProps) => {
   const handleSignin = async (btnName: string) => {
     trackPublicStudies(btnName);
     const url = keycloak.createLoginUrl({
-      redirectUri: `${window.location.origin}/${
-        redirectUri || query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD
-      }`,
+      redirectUri: new URL(
+        redirectUri || query.get(REDIRECT_URI_KEY) || STATIC_ROUTES.DASHBOARD,
+        window.location.origin,
+      ).href,
       locale: intl.getInitOptions().currentLocale,
     });
     window.location.assign(url);
