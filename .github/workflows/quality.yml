@@ -22,6 +22,12 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
+      - name: Build
+        # .env is gitignored, so CRA would treat pre-existing warnings as errors
+        # when CI is set. This checks the build compiles, not that it is clean.
+        env:
+          CI: 'false'
+        run: npm run build
   linter:
     name: Run Linter
     runs-on: ubuntu-latest
