@@ -46,8 +46,8 @@ const SampleTypeGraphCard = () => {
     result?.data?.biospecimen?.aggregations?.sample_type.buckets,
     result?.data?.biospecimen?.hits?.total,
   )
-    .sort((a, b) => a.value - b.value)
-    .slice(0, 10);
+    .slice(0, 10)
+    .reverse();
 
   return (
     <ResizableGridCard
