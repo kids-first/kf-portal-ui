@@ -45,8 +45,8 @@ const DataTypeGraphCard = () => {
     result?.data?.file?.aggregations?.data_type.buckets,
     result?.data?.file?.hits?.total,
   )
-    .sort((a, b) => a.value - b.value)
-    .slice(0, 10);
+    .slice(0, 10)
+    .reverse();
 
   return (
     <ResizableGridCard
