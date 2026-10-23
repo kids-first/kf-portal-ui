@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /// <reference types="cypress"/>
-import fs, { rmdir } from 'fs';
+import fs, { rm } from 'fs';
 import path from 'path';
 import ExcelJS from 'exceljs';
 
@@ -12,7 +12,7 @@ module.exports = (on: Cypress.PluginEvents, config: Cypress.ConfigOptions) => {
       console.log('deleting folder %s', folderName);
 
       return new Promise((resolve, reject) => {
-        rmdir(folderName, { maxRetries: 10, recursive: true }, (err: any) => {
+        rm(folderName, { maxRetries: 10, recursive: true }, (err: any) => {
           if (err) {
             console.error(err);
             return reject(err);
