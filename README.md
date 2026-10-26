@@ -6,7 +6,7 @@
 
 ## Pre-requisites
 
-- Node 16+
+- Node 26 (exact version in `.nvmrc`, run `nvm use`)
 - Docker
 
 ## Get Started
