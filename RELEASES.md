@@ -1,3 +1,13 @@
+## VERSION 5.19.0 (2026-10-27)
+
+### Technical / Other Changes:
+- [SKFP-1610](https://d3b.atlassian.net/browse/SKFP-1610) Fix: [Summary] Top sample types not appearing in Biospecimens by Sample Type chart
+- [SKFP-1620](https://d3b.atlassian.net/browse/SKFP-1620) Fix: [Summary] Some graphs not applying filters correctly
+- [SKFP-1624](https://d3b.atlassian.net/browse/SKFP-1624) Refactor: [Dependencies] Upgrade dependencies
+- [SKFP-1625](https://d3b.atlassian.net/browse/SKFP-1625) Refactor: [Dependencies] Upgrade keycloak-js for compatibility with Keycloak Server v26
+- [SKFP-1626](https://d3b.atlassian.net/browse/SKFP-1626) Refactor: [Dependencies] Update and pin Node.js version
+- [SKFP-1630](https://d3b.atlassian.net/browse/SKFP-1630) Refactor: [Dependencies] Upgrade Node.js version
+
 ## VERSION 5.18.1 (2026-08-10)
 
 ### Technical / Other Changes:

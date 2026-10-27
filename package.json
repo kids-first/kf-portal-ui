@@ -1,6 +1,6 @@
 {
   "name": "kids-first-portal-ui",
-  "version": "5.18.1",
+  "version": "5.19.0",
   "private": true,
   "engines": {
     "node": ">=26 <27",
