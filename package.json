@@ -87,7 +87,7 @@
     "classnames": "^2.5.1",
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "^6.11.0",
-    "css-minimizer-webpack-plugin": "^5.0.1",
+    "css-minimizer-webpack-plugin": "^8.0.0",
     "cypress": "^15.5.0",
     "date-fns": "2.29.3",
     "dotenv": "^10.0.0",
@@ -136,7 +136,7 @@
     "webpack": "^5.98.0",
     "webpack-dev-server": "^5.2.6",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1"
+    "workbox-webpack-plugin": "^7.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
